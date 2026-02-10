@@ -1,0 +1,298 @@
+# Energy News Ontology — Conceptual Model
+# Produced by: ontology-conceptualizer (Phase 3)
+# Input: pre-glossary.csv, competency-questions.yaml, reuse-report.md
+
+ontology:
+  name: Energy News Ontology
+  prefix: enews
+  namespace: "http://example.org/ontology/energy-news#"
+  profile: OWL 2 DL
+  serialization: Turtle
+  target_size: "~80 classes, ~12 properties"
+
+# --- Module Structure ---
+
+modules:
+  - id: enews-core
+    name: "Energy News Core"
+    description: >
+      Single T-box module containing the energy topic taxonomy, media entity
+      classes, and all properties. Small enough for a single module.
+    layer: problem-specific
+    file: "ontologies/energy-news/energy-news.ttl"
+
+  - id: enews-data
+    name: "Energy News Data"
+    description: >
+      A-box module containing instance data (articles, posts, authors,
+      publications, organizations, geographic entities). Populated from
+      the SkyGent store.
+    layer: problem-specific
+    file: "ontologies/energy-news/energy-news-data.ttl"
+
+# --- Architecture Layers ---
+
+layers:
+  foundational:
+    description: "Standard W3C vocabularies imported by prefix"
+    vocabularies:
+      - prefix: rdf
+        namespace: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+      - prefix: rdfs
+        namespace: "http://www.w3.org/2000/01/rdf-schema#"
+      - prefix: owl
+        namespace: "http://www.w3.org/2002/07/owl#"
+      - prefix: xsd
+        namespace: "http://www.w3.org/2001/XMLSchema#"
+      - prefix: skos
+        namespace: "http://www.w3.org/2004/02/skos/core#"
+      - prefix: dcterms
+        namespace: "http://purl.org/dc/terms/"
+
+  domain-independent:
+    description: "Alignment targets — referenced by equivalence axioms, not imported"
+    vocabularies:
+      - prefix: schema
+        namespace: "https://schema.org/"
+        usage: "Equivalence axioms for media entity classes and properties"
+      - prefix: sioc
+        namespace: "http://rdfs.org/sioc/ns#"
+        usage: "Equivalence axioms for Post and Author"
+
+  domain-dependent:
+    description: "No domain-standard energy ontology exists for import"
+    vocabularies: []
+
+  problem-specific:
+    description: "Our ontology modules"
+    modules: [enews-core, enews-data]
+
+# --- Class Hierarchy ---
+
+class_hierarchy:
+  # -- Energy Topic Taxonomy --
+  - class: EnergyTopic
+    parent: owl:Thing
+    bfo: none
+    children:
+      - class: Renewable
+        children:
+          - class: Solar
+          - class: Wind
+          - class: Hydro
+          - class: Geothermal
+        disjoint_siblings: true
+
+      - class: Fossil
+        children:
+          - class: Coal
+          - class: NaturalGas
+          - class: Oil
+        disjoint_siblings: true
+
+      - class: Nuclear
+        children:
+          - class: SMR
+          - class: Fusion
+        disjoint_siblings: true
+
+      - class: EnergyStorage
+      - class: Hydrogen
+      - class: CarbonCapture
+
+      - class: GridAndInfrastructure
+        children:
+          - class: Transmission
+          - class: Distribution
+          - class: Interconnection
+          - class: GridOperators
+        disjoint_siblings: true
+
+      - class: EnergyPolicy
+        children:
+          - class: Regulation
+          - class: Legislation
+          - class: Tariffs
+          - class: Permitting
+        disjoint_siblings: true
+
+      - class: EnergyMarkets
+        children:
+          - class: WholesaleMarkets
+          - class: Commodities
+          - class: PowerPurchaseAgreement
+        disjoint_siblings: true
+
+      - class: EnergyFinance
+        children:
+          - class: ProjectFinance
+          - class: CorporateDeals
+          - class: PublicFunding
+        disjoint_siblings: true
+
+      - class: ClimateAndEmissions
+        children:
+          - class: EmissionsTracking
+          - class: Decarbonization
+          - class: NetZero
+        disjoint_siblings: true
+
+      - class: Electrification
+        children:
+          - class: ElectricVehicles
+          - class: EVCharging
+          - class: HeatPumps
+          - class: ElectricTransport
+        disjoint_siblings: true
+
+      - class: DataCenterDemand
+
+      - class: EnergyGeopolitics
+        children:
+          - class: TradeAndSanctions
+          - class: SupplyChains
+          - class: CriticalMinerals
+        disjoint_siblings: true
+
+      - class: EnergyJustice
+        children:
+          - class: Affordability
+          - class: CommunityEnergy
+          - class: EnergyAccess
+        disjoint_siblings: true
+
+      - class: WorkforceAndManufacturing
+        children:
+          - class: EnergyJobs
+          - class: Manufacturing
+          - class: LaborRelations
+        disjoint_siblings: true
+
+      - class: ResearchAndInnovation
+        children:
+          - class: EfficiencyRecords
+          - class: Patents
+        disjoint_siblings: true
+
+      - class: BuildingsAndEfficiency
+        children:
+          - class: BuildingElectrification
+          - class: Retrofits
+          - class: RooftopSolar
+        disjoint_siblings: true
+
+      - class: EnvironmentAndLandUse
+        children:
+          - class: WaterUse
+          - class: Agrivoltaics
+          - class: WasteAndPollution
+        disjoint_siblings: true
+
+    disjoint_siblings: true  # All top-level EnergyTopic children are disjoint
+
+  # -- Media Entity Classes --
+  - class: Article
+    parent: owl:Thing
+    bfo: "GDC (BFO:0000031)"
+    schema_alignment: "rdfs:subClassOf schema:NewsArticle"
+
+  - class: Publication
+    parent: owl:Thing
+    bfo: "Object (BFO:0000030)"
+    schema_alignment: "rdfs:subClassOf schema:NewsMediaOrganization"
+
+  - class: Post
+    parent: owl:Thing
+    bfo: "GDC (BFO:0000031)"
+    schema_alignment: "owl:equivalentClass schema:SocialMediaPosting"
+
+  - class: Author
+    parent: owl:Thing
+    bfo: "GDC (BFO:0000031)"
+    schema_alignment: "rdfs:subClassOf schema:Person"
+    sioc_alignment: "owl:equivalentClass sioc:UserAccount"
+
+  - class: Feed
+    parent: owl:Thing
+    bfo: "GDC (BFO:0000031)"
+
+  - class: Organization
+    parent: owl:Thing
+    bfo: "Object (BFO:0000030)"
+    schema_alignment: "owl:equivalentClass schema:Organization"
+
+  - class: GeographicEntity
+    parent: owl:Thing
+    bfo: "Site (BFO:0000029)"
+    schema_alignment: "rdfs:subClassOf schema:Place"
+
+# --- Disjointness Declarations ---
+
+top_level_disjoint_groups:
+  - description: "All top-level domain classes are pairwise disjoint"
+    classes:
+      - EnergyTopic
+      - Article
+      - Publication
+      - Post
+      - Author
+      - Feed
+      - Organization
+      - GeographicEntity
+
+# --- Design Decisions ---
+
+design_decisions:
+  - id: DD-001
+    decision: "Model EnergyTopic subclasses as OWL classes, not SKOS Concepts"
+    rationale: >
+      Articles are classified under topics via coversTopic object property.
+      OWL classes enable rdfs:subClassOf inference (if an article covers Solar,
+      it also covers Renewable). SKOS prefLabel/altLabel/definition are used as
+      annotation properties on the OWL classes.
+
+  - id: DD-002
+    decision: "Hydrogen is a direct child of EnergyTopic, not under Renewable"
+    rationale: >
+      Hydrogen production spans renewable (green), fossil (grey/blue), and nuclear
+      sources. Placing it under Renewable would be factually incorrect for blue
+      and grey hydrogen. It is an energy carrier, not an energy source category.
+
+  - id: DD-003
+    decision: "EnergyStorage is a direct child of EnergyTopic, not under any source"
+    rationale: >
+      Energy storage is technology-agnostic — batteries store energy from any
+      source. It is a crosscutting technology topic.
+
+  - id: DD-004
+    decision: "RooftopSolar under BuildingsAndEfficiency, not under Solar"
+    rationale: >
+      Single inheritance requires one parent. RooftopSolar is primarily a
+      building-level distributed energy topic. Utility-scale solar is classified
+      under Solar. An article about rooftop solar can be tagged with both
+      RooftopSolar and Solar via multiple coversTopic relations.
+
+  - id: DD-005
+    decision: "Minimal BFO alignment — documented but not imported"
+    rationale: >
+      Per scope constraint 'Minimal BFO alignment where natural; not forced'.
+      BFO categories are documented in the glossary and BFO alignment report
+      for reference, but BFO is not owl:imported. Media classes align naturally
+      to GDC/Object/Site. EnergyTopic classes are classification categories
+      with no natural BFO alignment.
+
+  - id: DD-006
+    decision: "schema.org alignment via equivalence axioms, not import"
+    rationale: >
+      schema.org has ~800+ types and ~1400+ properties. Importing the full
+      vocabulary would overwhelm our lightweight ontology. Instead, we declare
+      owl:equivalentClass and owl:equivalentProperty axioms for the ~14 relevant
+      schema.org types and properties. Per reuse-report.md Tier 2 strategy.
+
+  - id: DD-007
+    decision: "Author represents a Bluesky account, not a natural person"
+    rationale: >
+      Our data source is Bluesky handles. An Author is a social media account
+      (information entity / GDC), not a Person. One person may have multiple
+      accounts. We use rdfs:subClassOf schema:Person (loose alignment) rather
+      than owl:equivalentClass.

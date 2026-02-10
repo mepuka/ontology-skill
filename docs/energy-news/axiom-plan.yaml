@@ -1,0 +1,223 @@
+# Energy News Ontology — Axiom Plan
+# Produced by: ontology-conceptualizer (Phase 3)
+# Maps each CQ to the OWL axiom patterns required to answer it.
+
+cq_axiom_mappings:
+  # --- Must Have CQs ---
+
+  - cq: CQ-001
+    question: "What energy topics exist in the ontology?"
+    axiom_patterns:
+      - pattern: "Simple SubClassOf (#1)"
+        description: >
+          All energy topic classes are declared as rdfs:subClassOf EnergyTopic
+          (directly or transitively). The SPARQL query traverses the
+          subClassOf+ chain from EnergyTopic to enumerate all topics.
+        axioms:
+          - "Solar SubClassOf Renewable"
+          - "Renewable SubClassOf EnergyTopic"
+          - "(... all 55 topic classes in hierarchy)"
+      - pattern: "Annotations"
+        description: >
+          Every topic class has rdfs:label and skos:definition annotations
+          so the SPARQL query can return human-readable results.
+
+  - cq: CQ-002
+    question: "What subtopics exist under a given energy topic?"
+    axiom_patterns:
+      - pattern: "Simple SubClassOf (#1)"
+        description: >
+          Direct rdfs:subClassOf assertions create the parent-child hierarchy.
+          SPARQL queries direct subClassOf (not transitive) for subtopics.
+        axioms:
+          - "Solar SubClassOf Renewable"
+          - "Wind SubClassOf Renewable"
+          - "Coal SubClassOf Fossil"
+      - pattern: "Disjoint Classes (#5)"
+        description: >
+          Siblings under the same parent are declared disjoint. This ensures
+          an article tagged as Solar cannot also be classified as Wind through
+          the same coversTopic relation.
+        axioms:
+          - "DisjointClasses: Solar, Wind, Hydro, Geothermal"
+          - "DisjointClasses: Coal, NaturalGas, Oil"
+          - "(... all sibling groups)"
+
+  - cq: CQ-003
+    question: "Which articles cover a given energy topic?"
+    axiom_patterns:
+      - pattern: "Existential Restriction (#2)"
+        description: >
+          Articles must cover at least one topic.
+        axioms:
+          - "Article SubClassOf coversTopic some EnergyTopic"
+      - pattern: "Simple SubClassOf (#1)"
+        description: >
+          Article is declared as a class with rdfs:label.
+      - pattern: "HasKey (#11)"
+        description: >
+          Article HasKey url — allows deduplication of articles by URL.
+        axioms:
+          - "HasKey(Article, url)"
+
+  - cq: CQ-004
+    question: "Which publication published a given article?"
+    axiom_patterns:
+      - pattern: "Existential Restriction (#2) — optional"
+        description: >
+          Not all articles have a known publisher, so this is not a universal
+          restriction. publishedBy is functional (at most one publisher).
+        axioms:
+          - "publishedBy rdf:type owl:FunctionalProperty"
+      - pattern: "Simple SubClassOf (#1)"
+        description: >
+          Publication is declared as a class with rdfs:label.
+
+  - cq: CQ-005
+    question: "What energy topics does a given publication cover?"
+    axiom_patterns:
+      - pattern: "No additional axioms beyond CQ-003 and CQ-004"
+        description: >
+          This CQ is answered by traversing: Article publishedBy Publication
+          and Article coversTopic EnergyTopic. The required axioms are
+          already covered by CQ-003 (coversTopic) and CQ-004 (publishedBy).
+
+  - cq: CQ-006
+    question: "How many articles has each publication contributed?"
+    axiom_patterns:
+      - pattern: "No additional axioms beyond CQ-004"
+        description: >
+          Aggregation query over publishedBy. Requires Article and Publication
+          classes with publishedBy property (covered by CQ-004).
+
+  - cq: CQ-007
+    question: "Who are the top authors sharing energy news?"
+    axiom_patterns:
+      - pattern: "Existential Restriction (#2)"
+        description: >
+          Every post has exactly one author.
+        axioms:
+          - "Post SubClassOf postedBy some Author"
+          - "postedBy rdf:type owl:FunctionalProperty"
+      - pattern: "HasKey (#11)"
+        description: >
+          Author HasKey handle — unique identity per Bluesky account.
+        axioms:
+          - "HasKey(Author, handle)"
+
+  - cq: CQ-008
+    question: "What energy topics does a given author primarily share about?"
+    axiom_patterns:
+      - pattern: "No additional axioms beyond CQ-003 and CQ-007"
+        description: >
+          This CQ traverses Post postedBy Author, Post sharesArticle
+          Article, Article coversTopic EnergyTopic. Requires sharesArticle
+          property (functional, optional).
+        axioms:
+          - "sharesArticle rdf:type owl:FunctionalProperty"
+
+  - cq: CQ-009
+    question: "Which Bluesky feeds exist for energy content?"
+    axiom_patterns:
+      - pattern: "Simple SubClassOf (#1)"
+        description: >
+          Feed is declared as a class with rdfs:label. Simple enumeration query.
+
+  - cq: CQ-010
+    question: "Is a given energy source classified as renewable or fossil?"
+    axiom_patterns:
+      - pattern: "Simple SubClassOf (#1)"
+        description: >
+          The taxonomy hierarchy answers this via rdfs:subClassOf+ inference.
+          Solar SubClassOf Renewable, so ASK { Solar rdfs:subClassOf+ Renewable }
+          returns true.
+      - pattern: "Disjoint Classes (#5)"
+        description: >
+          Renewable and Fossil are disjoint — an energy source cannot be both.
+        axioms:
+          - "DisjointClasses: Renewable, Fossil, Nuclear, EnergyStorage, Hydrogen, CarbonCapture, ..."
+
+  # --- Should Have CQs ---
+
+  - cq: CQ-011
+    question: "Which organizations are mentioned in energy news?"
+    axiom_patterns:
+      - pattern: "Simple SubClassOf (#1)"
+        description: >
+          Organization is declared as a class with rdfs:label. Simple enumeration.
+
+  - cq: CQ-012
+    question: "Which energy topics is a given organization associated with?"
+    axiom_patterns:
+      - pattern: "No additional axioms beyond CQ-003"
+        description: >
+          Traverses Article mentionsOrganization Organization and
+          Article coversTopic EnergyTopic. Requires mentionsOrganization
+          property.
+
+  - cq: CQ-013
+    question: "Which countries or regions are covered in energy news?"
+    axiom_patterns:
+      - pattern: "Simple SubClassOf (#1)"
+        description: >
+          GeographicEntity is declared as a class with rdfs:label. Simple
+          enumeration.
+      - pattern: "HasKey (#11)"
+        description: >
+          GeographicEntity could use a HasKey on a code property (e.g., ISO
+          country code) but this is optional for v1.
+
+  - cq: CQ-014
+    question: "What energy topics are covered in a given country?"
+    axiom_patterns:
+      - pattern: "No additional axioms beyond CQ-003 and CQ-013"
+        description: >
+          Traverses Article hasGeographicFocus GeographicEntity and
+          Article coversTopic EnergyTopic. Requires hasGeographicFocus
+          property.
+
+# --- Axiom Pattern Summary ---
+
+patterns_used:
+  - id: 1
+    name: "Simple SubClassOf"
+    count: "~67 axioms (all classes)"
+    notes: "Foundation of the taxonomy"
+
+  - id: 2
+    name: "Existential Restriction"
+    count: 2
+    notes: "Article coversTopic some EnergyTopic; Post postedBy some Author"
+
+  - id: 5
+    name: "Disjoint Classes"
+    count: "~14 groups"
+    notes: "All sibling groups within EnergyTopic; top-level domain classes"
+
+  - id: 11
+    name: "HasKey"
+    count: 3
+    notes: "Article(url), Author(handle), Publication(domain)"
+
+patterns_not_needed:
+  - id: 3
+    name: "Universal Restriction"
+    reason: "No CQ requires closure axioms"
+  - id: 4
+    name: "Equivalent Class"
+    reason: "No defined classes needed — taxonomy is asserted"
+  - id: 6
+    name: "Covering Axiom"
+    reason: "Topic taxonomy is not exhaustive — new topics may be added"
+  - id: 7
+    name: "Qualified Cardinality"
+    reason: "No CQ requires exact cardinality"
+  - id: 8
+    name: "Value Partition"
+    reason: "No quality values modeled"
+  - id: 9
+    name: "N-ary Relation"
+    reason: "All relations are binary"
+  - id: 12
+    name: "Property Chain"
+    reason: "SPARQL handles multi-hop traversal; no inferred chains needed"

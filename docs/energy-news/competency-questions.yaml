@@ -1,0 +1,271 @@
+# Energy News Ontology — Competency Questions
+
+# --- Must Have ---
+
+- id: CQ-001
+  source_use_case: UC-001
+  natural_language: "What energy topics exist in the ontology?"
+  type: enumerative
+  priority: must_have
+  sample_answer:
+    - topic: enews:Solar
+      label: "Solar"
+    - topic: enews:NaturalGas
+      label: "Natural Gas"
+  derivation_method: direct_lookup
+  sparql: |
+    SELECT ?topic ?label WHERE {
+      ?topic rdfs:subClassOf+ enews:EnergyTopic ;
+             rdfs:label ?label .
+    }
+  expected_result: non_empty
+  required_classes: [EnergyTopic]
+
+- id: CQ-002
+  source_use_case: UC-001
+  natural_language: "What subtopics exist under a given energy topic?"
+  type: enumerative
+  priority: must_have
+  sample_answer:
+    - parent: enews:Renewable
+      child: enews:Solar
+      label: "Solar"
+  derivation_method: direct_lookup
+  sparql: |
+    SELECT ?child ?label WHERE {
+      ?child rdfs:subClassOf enews:Renewable ;
+             rdfs:label ?label .
+    }
+  expected_result: non_empty
+  required_classes: [EnergyTopic, Renewable]
+
+- id: CQ-003
+  source_use_case: UC-001
+  natural_language: "Which articles cover a given energy topic?"
+  type: relational
+  priority: must_have
+  sample_answer:
+    - article: enews:article_001
+      title: "CATL signs multi-GWh storage agreements"
+      topic: enews:EnergyStorage
+  derivation_method: direct_lookup
+  sparql: |
+    SELECT ?article ?title WHERE {
+      ?article a enews:Article ;
+               enews:coversTopic enews:EnergyStorage ;
+               enews:title ?title .
+    }
+  expected_result: non_empty
+  required_classes: [Article, EnergyTopic]
+  required_properties: [coversTopic, title]
+
+- id: CQ-004
+  source_use_case: UC-002
+  natural_language: "Which publication published a given article?"
+  type: relational
+  priority: must_have
+  sample_answer:
+    - article: enews:article_001
+      publication: enews:pub_canary_media
+      label: "Canary Media"
+  derivation_method: direct_lookup
+  sparql: |
+    SELECT ?article ?pub ?pubLabel WHERE {
+      ?article a enews:Article ;
+               enews:publishedBy ?pub .
+      ?pub rdfs:label ?pubLabel .
+    }
+  expected_result: non_empty
+  required_classes: [Article, Publication]
+  required_properties: [publishedBy]
+
+- id: CQ-005
+  source_use_case: UC-002
+  natural_language: "What energy topics does a given publication cover?"
+  type: relational
+  priority: must_have
+  sample_answer:
+    - publication: enews:pub_bloomberg
+      topic: enews:Oil
+  derivation_method: aggregation
+  sparql: |
+    SELECT DISTINCT ?topic ?topicLabel WHERE {
+      ?article enews:publishedBy enews:pub_bloomberg ;
+               enews:coversTopic ?topic .
+      ?topic rdfs:label ?topicLabel .
+    }
+  expected_result: non_empty
+  required_classes: [Article, Publication, EnergyTopic]
+  required_properties: [publishedBy, coversTopic]
+
+- id: CQ-006
+  source_use_case: UC-002
+  natural_language: "How many articles has each publication contributed?"
+  type: quantitative
+  priority: must_have
+  sample_answer:
+    - publication: enews:pub_canary_media
+      count: 339
+  derivation_method: aggregation
+  sparql: |
+    SELECT ?pub ?pubLabel (COUNT(?article) AS ?count) WHERE {
+      ?article a enews:Article ;
+               enews:publishedBy ?pub .
+      ?pub rdfs:label ?pubLabel .
+    }
+    GROUP BY ?pub ?pubLabel
+    ORDER BY DESC(?count)
+  expected_result: non_empty
+  required_classes: [Article, Publication]
+  required_properties: [publishedBy]
+
+- id: CQ-007
+  source_use_case: UC-003
+  natural_language: "Who are the top authors sharing energy news?"
+  type: quantitative
+  priority: must_have
+  sample_answer:
+    - author: enews:author_torsolarfred
+      handle: "torsolarfred.bsky.social"
+      postCount: 300
+  derivation_method: aggregation
+  sparql: |
+    SELECT ?author ?handle (COUNT(?post) AS ?postCount) WHERE {
+      ?post a enews:Post ;
+            enews:postedBy ?author .
+      ?author enews:handle ?handle .
+    }
+    GROUP BY ?author ?handle
+    ORDER BY DESC(?postCount)
+  expected_result: non_empty
+  required_classes: [Post, Author]
+  required_properties: [postedBy, handle]
+
+- id: CQ-008
+  source_use_case: UC-003
+  natural_language: "What energy topics does a given author primarily share about?"
+  type: relational
+  priority: must_have
+  sample_answer:
+    - author: enews:author_torsolarfred
+      topic: enews:Solar
+  derivation_method: aggregation
+  sparql: |
+    SELECT ?topic ?topicLabel (COUNT(?post) AS ?count) WHERE {
+      ?post enews:postedBy enews:author_torsolarfred ;
+            enews:sharesArticle ?article .
+      ?article enews:coversTopic ?topic .
+      ?topic rdfs:label ?topicLabel .
+    }
+    GROUP BY ?topic ?topicLabel
+    ORDER BY DESC(?count)
+  expected_result: non_empty
+  required_classes: [Post, Author, Article, EnergyTopic]
+  required_properties: [postedBy, sharesArticle, coversTopic]
+
+- id: CQ-009
+  source_use_case: UC-003
+  natural_language: "Which Bluesky feeds exist for energy content?"
+  type: enumerative
+  priority: must_have
+  sample_answer:
+    - feed: enews:feed_energysky
+      label: "EnergySky"
+  derivation_method: direct_lookup
+  sparql: |
+    SELECT ?feed ?label WHERE {
+      ?feed a enews:Feed ;
+            rdfs:label ?label .
+    }
+  expected_result: non_empty
+  required_classes: [Feed]
+
+- id: CQ-010
+  source_use_case: UC-003
+  natural_language: "Is a given energy source classified as renewable or fossil?"
+  type: boolean
+  priority: must_have
+  sample_answer:
+    - source: enews:Solar
+      category: enews:Renewable
+  derivation_method: inference
+  sparql: |
+    ASK {
+      enews:Solar rdfs:subClassOf+ enews:Renewable .
+    }
+  expected_result: "true"
+  required_classes: [EnergyTopic, Renewable, Fossil]
+
+# --- Should Have ---
+
+- id: CQ-011
+  source_use_case: UC-004
+  natural_language: "Which organizations are mentioned in energy news?"
+  type: enumerative
+  priority: should_have
+  sample_answer:
+    - org: enews:org_catl
+      label: "CATL"
+  derivation_method: direct_lookup
+  sparql: |
+    SELECT ?org ?label WHERE {
+      ?org a enews:Organization ;
+           rdfs:label ?label .
+    }
+  expected_result: non_empty
+  required_classes: [Organization]
+
+- id: CQ-012
+  source_use_case: UC-004
+  natural_language: "Which energy topics is a given organization associated with?"
+  type: relational
+  priority: should_have
+  sample_answer:
+    - org: enews:org_catl
+      topic: enews:EnergyStorage
+  derivation_method: aggregation
+  sparql: |
+    SELECT DISTINCT ?topic ?topicLabel WHERE {
+      ?article enews:mentionsOrganization enews:org_catl ;
+               enews:coversTopic ?topic .
+      ?topic rdfs:label ?topicLabel .
+    }
+  expected_result: non_empty
+  required_classes: [Article, Organization, EnergyTopic]
+  required_properties: [mentionsOrganization, coversTopic]
+
+- id: CQ-013
+  source_use_case: UC-005
+  natural_language: "Which countries or regions are covered in energy news?"
+  type: enumerative
+  priority: should_have
+  sample_answer:
+    - geo: enews:geo_us
+      label: "United States"
+  derivation_method: direct_lookup
+  sparql: |
+    SELECT ?geo ?label WHERE {
+      ?geo a enews:GeographicEntity ;
+           rdfs:label ?label .
+    }
+  expected_result: non_empty
+  required_classes: [GeographicEntity]
+
+- id: CQ-014
+  source_use_case: UC-005
+  natural_language: "What energy topics are covered in a given country?"
+  type: relational
+  priority: should_have
+  sample_answer:
+    - geo: enews:geo_australia
+      topic: enews:Solar
+  derivation_method: aggregation
+  sparql: |
+    SELECT DISTINCT ?topic ?topicLabel WHERE {
+      ?article enews:hasGeographicFocus enews:geo_australia ;
+               enews:coversTopic ?topic .
+      ?topic rdfs:label ?topicLabel .
+    }
+  expected_result: non_empty
+  required_classes: [Article, GeographicEntity, EnergyTopic]
+  required_properties: [hasGeographicFocus, coversTopic]

@@ -1,0 +1,15 @@
+stakeholder_need,use_case_id,cq_id,ontology_terms,sparql_test
+"Browse energy news by topic",UC-001,CQ-001,"EnergyTopic",tests/cq-001.sparql
+"Browse energy news by topic",UC-001,CQ-002,"EnergyTopic;Renewable",tests/cq-002.sparql
+"Browse energy news by topic",UC-001,CQ-003,"Article;EnergyTopic;coversTopic;title",tests/cq-003.sparql
+"Analyze publication coverage",UC-002,CQ-004,"Article;Publication;publishedBy",tests/cq-004.sparql
+"Analyze publication coverage",UC-002,CQ-005,"Article;Publication;EnergyTopic;publishedBy;coversTopic",tests/cq-005.sparql
+"Analyze publication coverage",UC-002,CQ-006,"Article;Publication;publishedBy",tests/cq-006.sparql
+"Map the energy news landscape",UC-003,CQ-007,"Post;Author;postedBy;handle",tests/cq-007.sparql
+"Map the energy news landscape",UC-003,CQ-008,"Post;Author;Article;EnergyTopic;postedBy;sharesArticle;coversTopic",tests/cq-008.sparql
+"Map the energy news landscape",UC-003,CQ-009,"Feed",tests/cq-009.sparql
+"Map the energy news landscape",UC-003,CQ-010,"EnergyTopic;Renewable;Fossil",tests/cq-010.sparql
+"Track organizations in energy news",UC-004,CQ-011,"Organization",tests/cq-011.sparql
+"Track organizations in energy news",UC-004,CQ-012,"Article;Organization;EnergyTopic;mentionsOrganization;coversTopic",tests/cq-012.sparql
+"Explore geographic energy coverage",UC-005,CQ-013,"GeographicEntity",tests/cq-013.sparql
+"Explore geographic energy coverage",UC-005,CQ-014,"Article;GeographicEntity;EnergyTopic;hasGeographicFocus;coversTopic",tests/cq-014.sparql

@@ -1,0 +1,199 @@
+# Energy News Ontology — Property Design
+# Produced by: ontology-conceptualizer (Phase 3)
+
+# --- Object Properties ---
+
+object_properties:
+
+  - name: coversTopic
+    type: ObjectProperty
+    definition: "Links an Article to an EnergyTopic it covers"
+    domain: Article
+    range: EnergyTopic
+    cardinality:
+      min: 1
+      max: unbounded
+    characteristics: []
+    inverse: null
+    schema_alignment: "owl:equivalentProperty schema:about"
+    notes: >
+      An article must cover at least one topic. Multiple topics are common
+      (e.g., an article about solar tariffs covers both Solar and Tariffs).
+      No cardinality ceiling — articles can cover many topics.
+
+  - name: publishedBy
+    type: ObjectProperty
+    definition: "Links an Article to the Publication that published it"
+    domain: Article
+    range: Publication
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    schema_alignment: "owl:equivalentProperty schema:publisher"
+    notes: >
+      Functional — each article has at most one publisher. Min 0 because
+      some articles may come from unidentified sources. The Publication is
+      identified by domain name extraction from the article URL.
+
+  - name: postedBy
+    type: ObjectProperty
+    definition: "Links a Post to the Author who created it"
+    domain: Post
+    range: Author
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    schema_alignment: "rdfs:subPropertyOf schema:author"
+    notes: >
+      Functional — every post has exactly one author on Bluesky.
+      SubPropertyOf (not equivalentProperty) because schema:author has a
+      broader range (Person or Organization).
+
+  - name: sharesArticle
+    type: ObjectProperty
+    definition: "Links a Post to the Article it shares via embedded link"
+    domain: Post
+    range: Article
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    schema_alignment: "owl:equivalentProperty schema:sharedContent"
+    notes: >
+      Functional — a post shares at most one article link. Min 0 because
+      some posts may be text-only commentary without an embedded article.
+
+  - name: mentionsOrganization
+    type: ObjectProperty
+    definition: "Links an Article to an Organization mentioned in its coverage"
+    domain: Article
+    range: Organization
+    cardinality:
+      min: 0
+      max: unbounded
+    characteristics: []
+    inverse: null
+    schema_alignment: "rdfs:subPropertyOf schema:mentions"
+    notes: >
+      Should-have property (CQ-012). Articles may mention zero or many
+      organizations. SubPropertyOf schema:mentions because our range is
+      restricted to Organization while schema:mentions allows any Thing.
+
+  - name: hasGeographicFocus
+    type: ObjectProperty
+    definition: "Links an Article to a GeographicEntity representing its geographic focus"
+    domain: Article
+    range: GeographicEntity
+    cardinality:
+      min: 0
+      max: unbounded
+    characteristics: []
+    inverse: null
+    schema_alignment: "owl:equivalentProperty schema:contentLocation"
+    notes: >
+      Should-have property (CQ-014). Articles may have zero geographic
+      focus (abstract/global topics) or multiple (cross-border coverage).
+
+# --- Datatype Properties ---
+
+datatype_properties:
+
+  - name: handle
+    type: DatatypeProperty
+    definition: "The Bluesky handle string for an Author"
+    domain: Author
+    range: xsd:string
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    notes: >
+      Format: "username.bsky.social" or custom domain. Functional — each
+      Author has exactly one handle. Could serve as a key property (HasKey).
+
+  - name: title
+    type: DatatypeProperty
+    definition: "The headline or title string of an Article"
+    domain: Article
+    range: xsd:string
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    schema_alignment: "owl:equivalentProperty schema:headline"
+    notes: >
+      Functional. Min 0 because some embedded links may lack title metadata.
+
+  - name: url
+    type: DatatypeProperty
+    definition: "The URL of an Article"
+    domain: Article
+    range: xsd:anyURI
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    schema_alignment: "owl:equivalentProperty schema:url"
+    notes: >
+      Functional. Every article must have a URL — it is the primary
+      identifier. Could serve as a key property (HasKey).
+
+  - name: description
+    type: DatatypeProperty
+    definition: "The description or summary text of an Article"
+    domain: Article
+    range: xsd:string
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    schema_alignment: "owl:equivalentProperty schema:description"
+    notes: >
+      Functional. Optional — not all article embeds include description.
+
+  - name: publishedDate
+    type: DatatypeProperty
+    definition: "The publication date of an Article"
+    domain: Article
+    range: xsd:dateTime
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    schema_alignment: "owl:equivalentProperty schema:datePublished"
+    notes: >
+      Functional. Optional — publication date may not always be extractable.
+
+  - name: domain
+    type: DatatypeProperty
+    definition: "The domain name string of a Publication"
+    domain: Publication
+    range: xsd:string
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    notes: >
+      Functional. Every publication has exactly one domain (e.g.,
+      "bloomberg.com", "canarymedia.com"). Serves as the primary identifier
+      for publications. Could serve as a key property (HasKey).
+
+# --- Key Properties (HasKey candidates) ---
+
+key_properties:
+  - class: Article
+    keys: [url]
+    rationale: "URL uniquely identifies an article across the dataset"
+
+  - class: Author
+    keys: [handle]
+    rationale: "Bluesky handle uniquely identifies an author account"
+
+  - class: Publication
+    keys: [domain]
+    rationale: "Domain name uniquely identifies a publication"
