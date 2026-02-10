@@ -66,12 +66,17 @@ uv run runoak -i sqlite:obo:{source} lexmatch \
 
 ### Step 2: Confidence Triage
 
+**Practitioner warning**: Lexical matching at the 0.7-0.95 confidence level
+produces 40-60% false positives in practice. Labels match but meanings differ
+(homonyms across domains). The LLM verification step is not optional — it is
+essential for this tier.
+
 Sort candidates into three tiers:
 
 | Tier | Confidence | Action |
 |------|-----------|--------|
-| Auto-accept | ≥ 0.95 AND exact label match | Accept with `semapv:LexicalMatching` justification |
-| LLM-verify | 0.7 – 0.95 | Present to LLM for semantic evaluation |
+| Auto-accept | ≥ 0.98 AND exact label match AND compatible parent classes | Accept with `semapv:LexicalMatching` justification |
+| LLM-verify | 0.7 – 0.98 | Present to LLM for semantic evaluation |
 | Human queue | < 0.7 | Flag for manual expert review |
 
 ### Step 3: LLM Verification (for uncertain mappings)
@@ -128,6 +133,20 @@ Check:
 - No self-mappings (subject ≠ object)
 - No duplicate mappings
 
+### Step 5.5: Clique Analysis (mandatory for exactMatch)
+
+After validation, compute the transitive closure of `skos:exactMatch` and
+flag any clique larger than 3 terms for human review. One bad exactMatch
+link contaminates an entire clique.
+
+```bash
+# Query for exactMatch cliques using SPARQL property paths
+robot query --input mappings/merged.sssom.ttl --query sparql/clique-check.sparql
+```
+
+For cross-domain mappings (source and target are in different domains),
+default to `skos:relatedMatch` or `skos:closeMatch`, not `skos:exactMatch`.
+
 ### Step 6: Quality Report
 
 Generate a quality assessment:
@@ -138,7 +157,7 @@ Generate a quality assessment:
 - Target coverage (% of target terms mapped)
 - Potential conflicts (same subject mapped to multiple objects with
   exactMatch)
-- Clique analysis (transitive closure of exactMatch)
+- Clique analysis (transitive closure of exactMatch — flag cliques > 3)
 
 ## Tool Commands
 

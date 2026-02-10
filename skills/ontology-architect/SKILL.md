@@ -160,10 +160,17 @@ uv run runoak -i ontology.ttl apply "rename EX:0001 from 'Old Name' to 'New Name
 uv run runoak -i ontology.ttl apply --changes-input changes.kgcl
 ```
 
-### Step 5: Complex Axioms via OWLAPY
+### Step 5: Complex Axioms via OWLAPY or rdflib
 
 When ROBOT templates and KGCL cannot express the needed axiom (qualified
-cardinality, role chains, nested class expressions):
+cardinality, role chains, nested class expressions).
+
+**Tool choice**: Most OBO community practitioners use **rdflib** for
+programmatic OWL work in Python (triple-level manipulation). **OWLAPY**
+provides a higher-level OWL API but has a smaller community and requires
+a JVM. Use whichever fits your team's stack — examples of both follow.
+
+OWLAPY example:
 
 ```python
 from owlapy.model import (
@@ -189,6 +196,27 @@ intersection = OWLObjectIntersectionOf([instrument, restriction])
 manager.save_ontology(onto, IRI.create("file:///path/to/ontology.owl"))
 ```
 
+rdflib alternative (no JVM required):
+
+```python
+from rdflib import Graph, Namespace, OWL, RDF, RDFS, URIRef, BNode
+from rdflib.collection import Collection
+
+g = Graph()
+g.parse("ontology.ttl", format="turtle")
+
+EX = Namespace("http://example.org/")
+
+# Add existential restriction: StringInstrument SubClassOf hasComponent some String
+restriction = BNode()
+g.add((restriction, RDF.type, OWL.Restriction))
+g.add((restriction, OWL.onProperty, EX.hasComponent))
+g.add((restriction, OWL.someValuesFrom, EX.String))
+g.add((EX.StringInstrument, RDFS.subClassOf, restriction))
+
+g.serialize("ontology.ttl", format="turtle")
+```
+
 ### Step 5.5: Individual Management
 
 Handle individuals as A-box content with explicit module boundaries:
@@ -201,7 +229,18 @@ Handle individuals as A-box content with explicit module boundaries:
 - If reference individuals exceed about 50, split into a separate file and
   import it explicitly.
 
-### Step 6: Schema-First via LinkML (for new ontologies)
+### Step 6: Schema-First via LinkML (for data model schemas)
+
+LinkML excels at defining data schemas that generate multiple artifact types.
+Use it when the primary deliverable is a **data model** (JSON Schema, SHACL,
+Python dataclasses) rather than a **rich OWL ontology**.
+
+**Best for**: ABox validation schemas, data exchange formats, projects where
+domain experts review YAML rather than OWL.
+
+**Not ideal for**: Rich TBox ontologies with complex axioms (qualified
+cardinality, role chains, nested class expressions). LinkML-generated OWL
+is relatively flat and typically needs enrichment with ROBOT or OWLAPY.
 
 When starting from scratch with a schema-first approach:
 
@@ -265,6 +304,23 @@ in the release file (`robot reason --output`). If consumers will reason
 independently, ship asserted-only and document this in the release notes.
 
 ## Tool Commands
+
+### ODK Awareness
+
+If the project uses the Ontology Development Kit (ODK), understand these
+conventions:
+
+- **Edit file**: Work in `src/ontology/{name}-edit.owl` — never touch
+  release artifacts directly
+- **Makefile pipeline**: `sh run.sh make` runs the full build (merge,
+  reason, report, release) reproducibly via Docker
+- **Import management**: `src/ontology/imports/{source}_terms.txt` lists
+  imported IRIs; `make refresh-imports` regenerates `*_import.owl` modules
+- **DOSDP patterns**: YAML pattern files generate OWL from TSV data — more
+  structured than raw ROBOT templates for pattern-based term creation
+- **Release**: `make prepare_release` produces multi-format release artifacts
+
+When working in a non-ODK project, the ROBOT commands below apply directly.
 
 ### ROBOT operations
 

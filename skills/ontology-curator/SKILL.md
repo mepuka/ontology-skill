@@ -112,7 +112,14 @@ Update the ontology header:
     owl:priorVersion <http://example.org/onto/2024-03-01> .
 ```
 
-Versioning rules:
+Versioning rules (choose one scheme per project):
+
+**OBO date-based versioning** (preferred for OBO Foundry ontologies):
+- Format: `YYYY-MM-DD` (e.g., `2024-06-01`)
+- Stable PURL resolves to latest release
+- Versioned IRI: `http://purl.obolibrary.org/obo/{name}/2024-06-01/{name}.owl`
+
+**Semantic versioning** (for project-specific ontologies):
 - **MAJOR**: Backward-incompatible changes (removing axioms, changing
   semantics of existing terms)
 - **MINOR**: Backward-compatible additions (new classes/properties)
@@ -203,6 +210,27 @@ robot annotate --input reasoned.ttl \
 robot convert --input release/ontology.ttl --output release/ontology.owl && \
 robot convert --input release/ontology.ttl --output release/ontology.json \
   --format json-ld
+```
+
+### Import refresh
+
+When upstream ontologies release new versions:
+
+```bash
+# Check for obsoleted terms in import lists
+for f in imports/*_terms.txt; do
+  ontology=$(basename "$f" _terms.txt)
+  while IFS= read -r iri; do
+    uv run runoak -i "sqlite:obo:${ontology}" info "$iri" 2>/dev/null | \
+      grep -q "OBSOLETE" && echo "STALE: $iri in $f"
+  done < "$f"
+done
+
+# Re-extract imports after updating term lists
+robot extract --method MIREOT \
+  --input-iri "http://purl.obolibrary.org/obo/${ontology}.owl" \
+  --term-file "imports/${ontology}_terms.txt" \
+  --output "imports/${ontology}_import.owl"
 ```
 
 ### Diff operations

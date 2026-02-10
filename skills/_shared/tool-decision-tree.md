@@ -138,7 +138,8 @@ create definition 'A thing that...' for EX:0001
 
 ### OWLAPY — When to escalate
 
-Use when ROBOT templates cannot express the axiom:
+Use when ROBOT templates cannot express the axiom AND you need the full OWL
+API (e.g., computing entailments, DL learners). Requires a JVM.
 
 - Qualified cardinality restrictions (`ObjectMinCardinality 2 hasWheel`)
 - Role chains (`hasParent o hasParent SubPropertyOf hasGrandparent`)
@@ -146,6 +147,10 @@ Use when ROBOT templates cannot express the axiom:
 - Complex equivalent class definitions
 - Property characteristics requiring OWL API (asymmetric, reflexive)
 - Programmatic axiom generation from external data with complex logic
+
+**Note**: Most OBO community practitioners use **rdflib** (triple-level
+manipulation, no JVM) rather than OWLAPY for programmatic Python work.
+Consider rdflib first unless you specifically need the OWL API abstraction.
 
 ### owlready2 — When to escalate
 
@@ -158,12 +163,16 @@ Use for:
 
 ### LinkML — When to escalate
 
-Use for:
+Best for **data model schemas**, not rich OWL ontologies:
 
-- Starting a new ontology from scratch (schema-first approach)
+- Primary deliverable is a data schema (JSON Schema, SHACL, Python classes)
 - Needing multiple artifact types from one source (OWL + SHACL + JSON Schema)
 - Data models with strong tabular/JSON structure
 - When domain experts need to review YAML rather than OWL
+
+**Not ideal when**: The ontology requires complex axioms (qualified cardinality,
+property chains, nested class expressions). LinkML-generated OWL is flat and
+needs post-processing with ROBOT or OWLAPY for rich TBox content.
 
 ### rdflib — When to escalate
 

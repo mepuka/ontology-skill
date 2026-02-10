@@ -114,6 +114,26 @@ candidate (or extracted module) to test practical fit:
 
 ### Step 4: Module Extraction
 
+#### Extraction Method Trade-offs
+
+| Method | What It Extracts | Best For | Watch Out |
+|--------|-----------------|----------|-----------|
+| MIREOT | Term + ancestors only | Large ontologies (GO, ChEBI) — fast, minimal | Loses sibling context and some axioms |
+| STAR | All axioms involving the term | Small/medium ontologies — most complete | Can pull in unexpected classes via axiom references |
+| BOT | Term + all ancestors (bottom module) | Good middle ground | May include more than needed for deep hierarchies |
+| TOP | Term + all descendants (top module) | Extracting a subtree | Large result if term has many descendants |
+
+**Import management pitfalls**:
+- **Transitive import chains**: Importing one OBO ontology can pull in dozens
+  of transitive imports. Check what you are actually loading.
+- **Import freshness**: Upstream ontologies release on their own schedule. Pin
+  versions and use a refresh workflow (see curator skill).
+- **Circular imports**: Occasionally A imports B imports C imports A. This
+  causes reasoner failures. Check for cycles before committing.
+- **Stale term files**: The `*_terms.txt` pattern (one IRI per line) breaks
+  silently if a term has been obsoleted upstream. Validate term existence
+  during import refresh.
+
 For recommended imports:
 
 ```bash
