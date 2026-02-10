@@ -280,20 +280,37 @@ If you assert `NurseJane prescribes Aspirin`, the reasoner will infer
 are inference rules. Any use of the property triggers classification
 of subject/object into the declared domain/range.
 
-**Fix**: Either:
-1. Broaden the domain: `Domain: HealthcareProvider`
-2. Remove domain/range and use local restrictions instead:
+**The key misconception**: Most newcomers (and many experienced practitioners)
+treat domain/range like SQL foreign keys. They are not — they are inference
+rules. This is the single most common OWL "gotcha" in practice.
+
+**The "too narrow domain" cascade**: Setting domain to a leaf class causes
+everything that uses the property to be classified as that leaf class. This
+is a major source of unexpected unsatisfiable classes in real-world ontologies.
+
+**Fix** — use this decision procedure:
+
+1. **Want to constrain?** Use SHACL `sh:class` on a property shape.
+2. **Want to infer?** Use OWL domain/range, but keep it BROAD (parent
+   classes, not leaves).
+3. **Want per-class restrictions?** Use local OWL restrictions:
    `Physician SubClassOf prescribes only Drug`
-3. Use SHACL shapes for validation constraints instead of OWL domain/range
 
 **Detection (SPARQL)**:
 ```sparql
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
 
+# Find properties with domain/range set to leaf classes (high risk)
 SELECT ?prop ?domain ?range WHERE {
   ?prop rdfs:domain ?domain .
-  ?prop rdfs:range ?range .
-  # Review manually: are these too narrow?
+  OPTIONAL { ?prop rdfs:range ?range . }
+  FILTER NOT EXISTS {
+    ?child rdfs:subClassOf ?domain .
+    FILTER(?child != ?domain)
+    FILTER(!isBlank(?child))
+  }
+  FILTER(?domain != owl:Thing)
 }
 ```
 

@@ -110,6 +110,33 @@ robot template --template instruments-template.tsv \
   --output ontology.ttl
 ```
 
+### ROBOT Template Pitfalls
+
+These issues are learned through experience and not well-documented:
+
+- **Column header syntax is fragile**: The second row defines semantics
+  (e.g., `SC %`, `A rdfs:label`). A typo or extra space causes silent
+  failures, not errors. Double-check headers before running.
+- **The `%` placeholder in expressions**: `SC 'has part' some %` must have
+  exact quoting and spacing. This is where most template errors occur.
+- **Merge vs replace**: `--merge-before` and `--merge-after` control whether
+  template output merges with the input or replaces it. Getting this wrong
+  can delete your entire ontology. Default behavior is merge.
+- **IRI resolution**: Template values must be full IRIs or CURIEs that
+  resolve via the ontology's prefix declarations. Undeclared prefixes
+  produce blank or invalid output with no error.
+- **Multi-value columns**: To put multiple superclasses or annotations on
+  one term, use `SPLIT=|` in the column header. Not obvious from docs.
+- **Empty cells skip silently**: Empty cells in required columns skip the
+  row rather than raising an error. Terms can be partially created (label
+  but no definition).
+- **Language tags**: Use `A rdfs:label@en` to add a language tag. Without
+  it, labels are untagged string literals, causing issues with tools that
+  filter by language.
+
+**Pre-flight check**: Before running `robot template`, verify that all column
+headers parse correctly and all CURIEs resolve against declared prefixes.
+
 ### Step 4: Individual Changes via KGCL
 
 For single additions, modifications, or reparenting. **Important**: For
@@ -204,11 +231,27 @@ uv run gen-shacl schema.yaml > shapes.ttl
 uv run gen-python schema.yaml > models.py
 ```
 
-### Step 7: Verify (ALWAYS after changes)
+### Step 7: Verify (after structural changes)
+
+Reasoning strategy depends on context:
+
+| Context | Reasoner | Frequency | Time Budget |
+|---------|----------|-----------|-------------|
+| Active development | ELK | After each batch of changes | Seconds (10K classes) |
+| Pre-commit / CI | ELK | Every commit | < 2 minutes |
+| Pre-release validation | HermiT or Pellet | Before each release | Minutes to hours |
+
+**Important**: ELK only supports OWL 2 EL. If your ontology uses qualified
+cardinality, universal restrictions, or class complements, ELK will silently
+ignore those axioms. Run HermiT at least before releases to catch what ELK
+misses.
 
 ```bash
-# Classify and check consistency
+# Fast classification (ELK — use during development and CI)
 robot reason --reasoner ELK --input ontology.ttl --output classified.ttl
+
+# Full DL classification (HermiT — use pre-release)
+robot reason --reasoner HermiT --input ontology.ttl --output classified.ttl
 
 # Quality report
 robot report --input ontology.ttl --fail-on ERROR --output report.tsv
@@ -216,6 +259,10 @@ robot report --input ontology.ttl --fail-on ERROR --output report.tsv
 # SHACL validation (if shapes exist)
 uv run pyshacl -s shapes/ontology-shapes.ttl -i rdfs ontology.ttl -f human
 ```
+
+**Materialization decision**: The ODK default is to include inferred axioms
+in the release file (`robot reason --output`). If consumers will reason
+independently, ship asserted-only and document this in the release notes.
 
 ## Tool Commands
 

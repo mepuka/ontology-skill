@@ -179,6 +179,28 @@ Indicative mapping between granularity, BFO category, and common OBO sources.
 | Phenotype/quality | Quality / Disposition | PATO, HPO |
 | Information artifact | GDC | OBI, IAO |
 
+## Known Ambiguities
+
+The decision trees above present clean categories, but practitioners regularly
+encounter entities where the correct BFO alignment is genuinely debated. When
+you hit one of these, document your choice and rationale explicitly.
+
+| Entity | Debate | Recommended Default | Alternative | Choose Alternative When |
+|--------|--------|--------------------:|-------------|------------------------|
+| Disease | Disposition vs Process | **Disposition** (per OGMS) — a tendency toward pathological processes | Process | Your domain treats disease as something that "happens" rather than something an organism "has" |
+| Organization | Object vs Object Aggregate | **Object** (per BFO 2020) — identity persists through member changes | Object Aggregate | Your domain defines the organization by its members (e.g., a research consortium) |
+| Information entity | GDC with concretization chain | **GDC** (per IAO pattern) — model the 3-hop chain: GDC → concretized in → SDC → inheres in → Material Entity | Skip concretization, model as GDC directly | Concretization detail is not relevant to your CQs |
+| "Being toxic" | Disposition vs Role | **Disposition** — arises from physical makeup | Role | Toxicity is context-dependent (e.g., a substance toxic only to certain organisms) |
+| "Being a drug" | Function vs Disposition vs Role | **Role** — exists because of social/regulatory designation | Function | Your domain defines drugs by their biochemical mechanism, not regulatory status |
+| Software, algorithms | Does not fit BFO cleanly | **GDC** (information content entity pattern) | No BFO alignment | Your domain is purely computational; BFO may not add value |
+| Legal entities, money, prices | Social constructs with no BFO consensus | **GDC** or **Role** depending on perspective | Consider DOLCE or no upper ontology | Social/legal domains where BFO categories cause more confusion than clarity |
+
+**BFO version note**: The published book (Arp, Smith, Spear 2015) is based on
+BFO 2.0. The ISO standard (ISO 21838-2:2021) reflects BFO 2020, which has some
+differences in category names and relation definitions. Always check which
+version your target community uses. OBO Foundry ontologies generally follow
+BFO 2020.
+
 ## Quick Reference: "Is it a...?"
 
 | If your concept is... | Then it's probably... |

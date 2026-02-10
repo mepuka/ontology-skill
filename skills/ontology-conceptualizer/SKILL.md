@@ -129,6 +129,26 @@ Use this categorization to avoid mixed semantics in one property:
 | Object property (entity-to-entity) | `hasParticipant` | `owl:ObjectProperty` |
 | Data property (entity-to-literal) | `hasIdentifier` | `owl:DatatypeProperty` |
 
+#### Domain/Range Decision Procedure
+
+OWL `rdfs:domain` and `rdfs:range` are **inference rules**, not constraints.
+Before declaring domain/range on any property, use this decision:
+
+```
+Do you want to CONSTRAIN usage (reject invalid data)?
+  → Use SHACL: sh:class on a property shape
+
+Do you want to INFER types (classify subjects/objects)?
+  → Use OWL: rdfs:domain / rdfs:range
+  → But keep domain/range BROAD (parent classes, not leaves)
+
+Do you want to RESTRICT per-class usage?
+  → Use local OWL restrictions: SubClassOf hasP some/only C
+```
+
+See anti-pattern #10 in `_shared/anti-patterns.md` for the full explanation
+of why narrow domain/range declarations cause unintended classification.
+
 Output as `docs/property-design.yaml`.
 
 ### Step 5: Axiom Pattern Selection

@@ -125,8 +125,12 @@ requirements ──→ scout ──→ conceptualizer ──→ architect ──
 
 These rules apply to every skill. Violations are never acceptable.
 
-1. **Never hand-edit** `.owl`, `.ttl`, or `.rdf` files directly — always
-   use ROBOT, oaklib, or Python tools
+1. **Never hand-edit structural axioms** (SubClassOf, EquivalentClass,
+   DisjointClasses, property assertions) in `.owl`, `.ttl`, or `.rdf`
+   files — always use ROBOT, oaklib, or Python tools. Annotation-only
+   edits (labels, definitions, synonyms) may be hand-edited if followed
+   by `robot report` validation. Merge conflict resolution inherently
+   requires hand-editing — always run `robot reason` afterward.
 2. **Always run the reasoner** (`robot reason`) after any structural change
    to the ontology
 3. **Always run quality report** (`robot report`) before committing

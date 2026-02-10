@@ -247,13 +247,25 @@ This skill produces:
 ## Anti-Patterns to Avoid
 
 - **Vague CQs**: "What is the meaning of X?" — CQs must be answerable by
-  a SPARQL query against the ontology
+  a SPARQL query against the ontology. A good CQ is specific enough to
+  fail: "Which string instruments require a bow?" can return zero results;
+  "What instruments exist?" cannot.
 - **Implementation-coupled CQs**: "How is X stored in the database?" — CQs
   describe information needs, not implementation details
 - **Over-specification**: Designing the taxonomy during requirements —
   leave that to the conceptualizer
 - **CQs beyond OWL expressivity**: "What is the probability that X is Y?" —
   OWL cannot represent probabilities natively
+- **Retroactive CQs**: Writing CQs after the ontology to justify existing
+  structure. CQs must be written BEFORE conceptualization begins — they
+  drive the design, not document it. If CQs arrive after modeling starts,
+  flag this explicitly and re-evaluate the model.
+- **Stale CQ tests**: CQ SPARQL tests must be updated whenever the ontology
+  evolves. Untouched tests become meaningless. Link CQ maintenance to the
+  curator skill's change workflow.
+- **Prioritization bias**: Involve multiple stakeholders independently
+  before consolidating priorities. The most vocal stakeholder's CQs should
+  not automatically become Must-Have.
 
 ## Error Handling
 

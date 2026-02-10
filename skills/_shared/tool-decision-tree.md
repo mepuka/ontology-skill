@@ -69,9 +69,17 @@ What do you need to do?
 | Pellet/Openllet | Full DL + useful explanations | Slower/heavier runtime | Need explanation support or DL completeness checks |
 
 Practical guidance:
-- Run ELK first for fast feedback.
-- Escalate to HermiT or Pellet/Openllet when using cardinality, complements,
-  complex class expressions, or when ELK results are inconclusive.
+- ELK is the workhorse for OBO ontologies — use it for daily development and CI.
+- ELK handles OWL 2 EL only. It silently ignores axioms outside EL (qualified
+  cardinality, universal restrictions, complements). This can cause missed
+  inferences that are hard to debug.
+- Escalate to HermiT or Pellet/Openllet for pre-release validation, when using
+  full DL features, or when ELK results seem incomplete.
+- Timing expectations: ELK on 10K classes takes seconds; HermiT on the same
+  ontology may take minutes to hours.
+- Incremental reasoning is not widely supported — reasoners re-classify the
+  entire ontology even for a single axiom change. Reason at commit time or CI,
+  not after every edit during active development.
 
 ### oaklib (runoak)
 
@@ -84,6 +92,27 @@ Practical guidance:
 | Lexical match | `runoak lexmatch` | Generating mapping candidates |
 | Term info | `runoak info` | Retrieving term metadata |
 | Validate | `runoak validate` | OBO-specific validation |
+
+#### Known Limitations
+
+oaklib is powerful but has rough edges that practitioners regularly encounter:
+
+- **Adapter inconsistency**: Operations that work on one backend (SQLite,
+  OLS, local OWL) may fail or return different results on another. Test
+  commands against your specific adapter.
+- **KGCL implementation is incomplete**: `obsolete` and `rename` work
+  reliably, but complex operations like `create axiom` with full Manchester
+  Syntax may fail. When KGCL fails, fall back to ROBOT or rdflib.
+- **SQLite cache staleness**: The `sqlite:obo:` adapter caches downloaded
+  ontologies. Clear `~/.data/oaklib/` to force refresh after upstream
+  ontology releases.
+- **Serialization instability**: Applying KGCL changes to local `.ttl` files
+  can produce different prefix ordering or serialization format than the
+  input. Run `robot convert --input file.ttl --output file.ttl` afterward
+  to normalize serialization before committing.
+- **Large batch performance**: oaklib's SQLite adapter is fast for search
+  but slow for bulk KGCL application. For >20 changes, consider ROBOT
+  template or direct rdflib manipulation instead.
 
 ### KGCL (Knowledge Graph Change Language)
 
