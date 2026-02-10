@@ -19,7 +19,9 @@ if [[ "$FILE_PATH" =~ \.(ttl|owl|rdf|xml)$ ]]; then
   # If it's under ontologies/, warn about using programmatic tools
   if [[ "$FILE_PATH" =~ ontologies/ ]]; then
     jq -n '{
-      additionalContext: "REMINDER: Ontology files should be modified via ROBOT, oaklib (runoak), or Python libraries — not direct file edits. If you are bootstrapping a new ontology header, this is acceptable. Otherwise, use the programmatic tools from the tool-decision-tree."
+      hookSpecificOutput: {
+        additionalContext: "REMINDER: Ontology files should be modified via ROBOT, oaklib (runoak), or Python libraries — not direct file edits. If you are bootstrapping a new ontology header, this is acceptable. Otherwise, use the programmatic tools from the tool-decision-tree."
+      }
     }'
     exit 0
   fi

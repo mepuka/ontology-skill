@@ -30,7 +30,7 @@ repos:
 
       - id: validate-sssom
         name: Validate SSSOM mappings
-        entry: uv run sssom validate
+        entry: uv run python scripts/validate_sssom.py
         language: system
         files: '\.sssom\.tsv$'
         types: [file]

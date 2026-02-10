@@ -130,7 +130,7 @@ uv run runoak -i ontology.ttl apply "create definition 'A keyboard instrument th
 uv run runoak -i ontology.ttl apply "rename EX:0001 from 'Old Name' to 'New Name'"
 
 # Batch changes from file
-uv run runoak -i ontology.ttl apply --changes-file changes.kgcl
+uv run runoak -i ontology.ttl apply --changes-input changes.kgcl
 ```
 
 ### Step 5: Complex Axioms via OWLAPY

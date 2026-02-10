@@ -95,7 +95,7 @@ move EX:0010 from EX:0001 to EX:0002
 
 ```bash
 # Apply batch changes
-uv run runoak -i ontology.ttl apply --changes-file changes.kgcl
+uv run runoak -i ontology.ttl apply --changes-input changes.kgcl
 
 # Or apply individual changes
 uv run runoak -i ontology.ttl apply "rename EX:0001 from 'Old' to 'New'"

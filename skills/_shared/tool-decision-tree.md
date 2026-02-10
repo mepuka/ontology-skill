@@ -80,7 +80,7 @@ Practical guidance:
 | Term search | `runoak search` | Finding existing terms before creating |
 | Hierarchy nav | `runoak ancestors` / `runoak descendants` | Exploring taxonomy |
 | Apply change | `runoak apply` | Single KGCL changes |
-| Batch changes | `runoak apply --changes-file` | Applying KGCL patch files |
+| Batch changes | `runoak apply --changes-input` | Applying KGCL patch files |
 | Lexical match | `runoak lexmatch` | Generating mapping candidates |
 | Term info | `runoak info` | Retrieving term metadata |
 | Validate | `runoak validate` | OBO-specific validation |

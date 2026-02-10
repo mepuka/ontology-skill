@@ -40,7 +40,7 @@ Read these files from `_shared/` before beginning work:
 ```bash
 # Using oaklib lexmatch
 uv run runoak -i sqlite:obo:{source} lexmatch \
-  -R sqlite:obo:{target} \
+  --add sqlite:obo:{target} \
   -o mappings/{source}-to-{target}.sssom.tsv
 ```
 
@@ -59,8 +59,8 @@ rules:
 
 ```bash
 uv run runoak -i sqlite:obo:{source} lexmatch \
-  -R sqlite:obo:{target} \
-  --rules lexmatch-rules.yaml \
+  --add sqlite:obo:{target} \
+  --rules-file lexmatch-rules.yaml \
   -o mappings/{source}-to-{target}.sssom.tsv
 ```
 
@@ -150,14 +150,14 @@ uv run sssom validate mappings/file.sssom.tsv
 
 # Merge mapping sets
 uv run sssom merge \
-  -i set1.sssom.tsv set2.sssom.tsv \
+  set1.sssom.tsv set2.sssom.tsv \
   -o merged.sssom.tsv
 
 # Deduplicate
-uv run sssom dedupe -i merged.sssom.tsv -o final.sssom.tsv
+uv run sssom dedupe merged.sssom.tsv -o final.sssom.tsv
 
 # Convert to OWL (bridge ontology)
-uv run sssom convert -i mappings/file.sssom.tsv -o bridge.owl -O owl
+uv run sssom convert mappings/file.sssom.tsv -o bridge.owl -O owl
 ```
 
 Before publishing bridge ontologies, review any generated identity axioms:
