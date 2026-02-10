@@ -136,7 +136,9 @@ Before declaring domain/range on any property, use this decision:
 
 ```
 Do you want to CONSTRAIN usage (reject invalid data)?
-  → Use SHACL: sh:class on a property shape
+  → Use SHACL:
+    - Object properties: sh:class on a property shape
+    - Data properties: sh:datatype (and sh:nodeKind sh:Literal)
 
 Do you want to INFER types (classify subjects/objects)?
   → Use OWL: rdfs:domain / rdfs:range

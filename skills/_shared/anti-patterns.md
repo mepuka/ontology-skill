@@ -301,16 +301,22 @@ is a major source of unexpected unsatisfiable classes in real-world ontologies.
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 
-# Find properties with domain/range set to leaf classes (high risk)
-SELECT ?prop ?domain ?range WHERE {
-  ?prop rdfs:domain ?domain .
-  OPTIONAL { ?prop rdfs:range ?range . }
+# Find properties with domain or range set to leaf classes (high risk)
+SELECT ?prop ?narrowClass ?position WHERE {
+  {
+    ?prop rdfs:domain ?narrowClass .
+    BIND("domain" AS ?position)
+  } UNION {
+    ?prop rdfs:range ?narrowClass .
+    FILTER(isIRI(?narrowClass))
+    BIND("range" AS ?position)
+  }
   FILTER NOT EXISTS {
-    ?child rdfs:subClassOf ?domain .
-    FILTER(?child != ?domain)
+    ?child rdfs:subClassOf ?narrowClass .
+    FILTER(?child != ?narrowClass)
     FILTER(!isBlank(?child))
   }
-  FILTER(?domain != owl:Thing)
+  FILTER(?narrowClass != owl:Thing)
 }
 ```
 
