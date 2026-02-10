@@ -139,9 +139,21 @@ After validation, compute the transitive closure of `skos:exactMatch` and
 flag any clique larger than 3 terms for human review. One bad exactMatch
 link contaminates an entire clique.
 
+```sparql
+# Inline clique detection: find terms reachable via exactMatch chains > 3
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?start ?mid ?end WHERE {
+  ?start skos:exactMatch+ ?mid .
+  ?mid skos:exactMatch+ ?end .
+  FILTER(?start != ?end)
+}
+```
+
 ```bash
-# Query for exactMatch cliques using SPARQL property paths
-robot query --input mappings/merged.sssom.ttl --query sparql/clique-check.sparql
+# Run against the mapping file (convert SSSOM to RDF first if needed)
+robot query --input mappings/{source}-to-{target}.sssom.ttl \
+  --query sparql/clique-check.sparql --output clique-report.csv
 ```
 
 For cross-domain mappings (source and target are in different domains),

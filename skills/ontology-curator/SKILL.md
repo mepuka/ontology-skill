@@ -217,20 +217,22 @@ robot convert --input release/ontology.ttl --output release/ontology.json \
 When upstream ontologies release new versions:
 
 ```bash
-# Check for obsoleted terms in import lists
+# Check for obsoleted terms and re-extract each import
 for f in imports/*_terms.txt; do
   ontology=$(basename "$f" _terms.txt)
+
+  # Check for stale terms
   while IFS= read -r iri; do
     uv run runoak -i "sqlite:obo:${ontology}" info "$iri" 2>/dev/null | \
       grep -q "OBSOLETE" && echo "STALE: $iri in $f"
   done < "$f"
-done
 
-# Re-extract imports after updating term lists
-robot extract --method MIREOT \
-  --input-iri "http://purl.obolibrary.org/obo/${ontology}.owl" \
-  --term-file "imports/${ontology}_terms.txt" \
-  --output "imports/${ontology}_import.owl"
+  # Re-extract this import module
+  robot extract --method MIREOT \
+    --input-iri "http://purl.obolibrary.org/obo/${ontology}.owl" \
+    --term-file "imports/${ontology}_terms.txt" \
+    --output "imports/${ontology}_import.owl"
+done
 ```
 
 ### Diff operations
