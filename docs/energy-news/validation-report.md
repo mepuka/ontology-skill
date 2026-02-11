@@ -227,6 +227,48 @@ All 16 anti-patterns from `_shared/anti-patterns.md` were checked:
 | 15 | Technical perspective | PASS | CQ-driven design |
 | 16 | Class/individual mixing | PASS | 0 found |
 
+## OOPS! Pitfall Evaluation
+
+- **Status: PASS** (0 genuine issues)
+- Scanner: [OOPS!](http://oops.linkeddata.es/) (OntOlogy Pitfall Scanner)
+- Input: RDF/XML merged ontology (TBox + reference individuals + schema/BFO stubs)
+- Pitfalls detected: 7
+- Genuine issues: 0
+- False positives / expected: 7
+
+OOPS! scans the merged ontology without distinguishing domain terms from
+external MIREOT-style stubs. All flagged pitfalls trace to external vocabulary
+declarations (schema.org, SIOC, BFO, SKOS) rather than domain modeling errors.
+
+### Pitfall Triage
+
+| Code | Name | Level | Count | Verdict | Rationale |
+|------|------|-------|-------|---------|-----------|
+| P31 | Wrong equivalent classes | Critical | 1 | False positive | `AuthorAccount ≡ sioc:UserAccount` is intentional — both model social media accounts |
+| P30 | Equivalent classes not declared | Important | 1 | False positive | Suggests `Post ≡ schema:Place` — nonsensical; heuristic misfire |
+| P11 | Missing domain/range | Important | 10 | Expected | All 10 are schema.org property stubs; domain/range lives in schema.org itself |
+| P04 | Unconnected elements | Minor | 9 | False positive | All 9 external classes (BFO, schema, SKOS) are connected as alignment targets via rdfs:subClassOf or owl:equivalentClass |
+| P08 | Missing annotations | Minor | 22 | Expected | External term stubs have minimal annotations by design; labels/definitions live in source ontologies |
+| P13 | Inverse relationships | Minor | 13 | By design | Not every property requires an explicit inverse; our CQ query patterns don't need them |
+| P22 | Different naming conventions | Minor | 1 | Expected | BFO uses OBO numeric IDs; SKOS uses CamelCase — different external vocabulary conventions |
+
+### Domain-Only Assessment
+
+Filtering to only `enews:` namespace terms:
+
+- **P31**: AuthorAccount ≡ sioc:UserAccount — correct by design, documented in
+  `docs/energy-news/bfo-alignment.md`
+- **P11**: All 13 domain properties have explicit domain + range — 0 violations
+- **P04**: All 8 domain classes are connected via subClassOf, restrictions,
+  AllDisjointClasses — 0 unconnected
+- **P08**: All 8 domain classes + 13 properties have rdfs:label + skos:definition — 0 missing
+- **P13**: Inverse properties are a design choice, not a requirement per OWL 2 spec
+- **P22**: Domain terms consistently use CamelCase for classes, camelCase for properties
+
+**Conclusion**: The ontology has zero genuine OOPS! pitfalls. All findings are
+artifacts of the MIREOT-style alignment approach where external term stubs are
+included for OWL API compatibility without full vocabulary import.
+
 ## Resolved Recommendations
 
 All 4 recommendations from the initial validation pass have been implemented:
@@ -262,3 +304,5 @@ All 4 recommendations from the initial validation pass have been implemented:
 - [x] Coverage metrics computed and documented
 - [x] Naming convention compliance verified
 - [x] Recommendations reference appropriate upstream actions
+- [x] OOPS! pitfall scan executed and triaged (0 genuine issues)
+- [x] pyLODE HTML documentation generated (`docs/energy-news/energy-news.html`)

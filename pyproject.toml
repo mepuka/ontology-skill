@@ -47,6 +47,7 @@ dev = [
     "pytest-cov>=6.0",
     # Pre-commit
     "pre-commit>=4.0",
+    "pylode>=3.2.3",
 ]
 
 [build-system]

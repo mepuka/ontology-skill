@@ -129,6 +129,17 @@ validate-energy-news: build-energy-news
         --output ontologies/energy-news/energy-news-report.tsv
     uv run pytest tests/unit/test_energy_news_ontology.py -v
 
+# Generate pyLODE HTML documentation for Energy News Ontology
+doc-energy-news: build-energy-news
+    @test -x {{robot_bin}} || just robot-install
+    cd {{justfile_directory()}} && {{robot_bin}} merge \
+        --catalog ontologies/energy-news/catalog-v001.xml \
+        --input ontologies/energy-news/energy-news.ttl \
+        --output /tmp/energy-news-pylode.ttl
+    uv run pylode /tmp/energy-news-pylode.ttl \
+        -o docs/energy-news/energy-news.html -c true
+    @echo "Documentation generated: docs/energy-news/energy-news.html"
+
 # ---------------------------------------------------------------------------
 # Cleanup
 # ---------------------------------------------------------------------------
