@@ -1,5 +1,6 @@
 # Energy News Ontology — Conceptual Model
 # Produced by: ontology-conceptualizer (Phase 3)
+# Updated: Codex review remediation — SKOS conversion, naming fixes, AuthorAccount
 # Input: pre-glossary.csv, competency-questions.yaml, reuse-report.md
 
 ontology:
@@ -8,7 +9,7 @@ ontology:
   namespace: "http://example.org/ontology/energy-news#"
   profile: OWL 2 DL
   serialization: Turtle
-  target_size: "~80 classes, ~12 properties"
+  target_size: "~8 classes, ~12 properties, ~55 SKOS topic individuals"
 
 # --- Module Structure ---
 
@@ -16,15 +17,16 @@ modules:
   - id: enews-core
     name: "Energy News Core"
     description: >
-      Single T-box module containing the energy topic taxonomy, media entity
-      classes, and all properties. Small enough for a single module.
+      Single T-box module containing the EnergyTopic class, media entity
+      classes, all properties, and the EnergyTopicScheme SKOS concept scheme
+      with ~55 topic individuals. Small enough for a single module.
     layer: problem-specific
     file: "ontologies/energy-news/energy-news.ttl"
 
   - id: enews-data
     name: "Energy News Data"
     description: >
-      A-box module containing instance data (articles, posts, authors,
+      A-box module containing instance data (articles, posts, author accounts,
       publications, organizations, geographic entities). Populated from
       the SkyGent store.
     layer: problem-specific
@@ -57,7 +59,7 @@ layers:
         usage: "Equivalence axioms for media entity classes and properties"
       - prefix: sioc
         namespace: "http://rdfs.org/sioc/ns#"
-        usage: "Equivalence axioms for Post and Author"
+        usage: "Equivalence axioms for Post and AuthorAccount"
 
   domain-dependent:
     description: "No domain-standard energy ontology exists for import"
@@ -67,128 +69,155 @@ layers:
     description: "Our ontology modules"
     modules: [enews-core, enews-data]
 
-# --- Class Hierarchy ---
+# --- SKOS Concept Scheme ---
+
+concept_scheme:
+  iri: "enews:EnergyTopicScheme"
+  type: "skos:ConceptScheme"
+  label: "Energy News Topic Scheme"
+  description: >
+    A SKOS concept scheme organizing ~55 energy topic individuals into a
+    broader/narrower hierarchy. Each topic is an instance of enews:EnergyTopic
+    (an owl:Class) and simultaneously a skos:Concept within this scheme.
+
+# --- Topic Hierarchy (SKOS Concepts) ---
+# Each topic is an individual of type enews:EnergyTopic and skos:Concept.
+# Hierarchy is expressed via skos:broader (not rdfs:subClassOf).
+
+topic_hierarchy:
+  # -- Top-level topics (skos:topConceptOf enews:EnergyTopicScheme) --
+  - individual: Renewable
+    broader: null  # top concept
+    narrower:
+      - individual: Solar
+      - individual: Wind
+      - individual: Hydro
+      - individual: Geothermal
+
+  - individual: Fossil
+    broader: null
+    narrower:
+      - individual: Coal
+      - individual: NaturalGas
+      - individual: Oil
+
+  - individual: Nuclear
+    broader: null
+    narrower:
+      - individual: SMR
+      - individual: Fusion
+
+  - individual: EnergyStorage
+    broader: null
+
+  - individual: Hydrogen
+    broader: null
+
+  - individual: CarbonCapture
+    broader: null
+
+  - individual: GridAndInfrastructure
+    broader: null
+    narrower:
+      - individual: Transmission
+      - individual: Distribution
+      - individual: Interconnection
+      - individual: GridOperator
+
+  - individual: EnergyPolicy
+    broader: null
+    narrower:
+      - individual: Regulation
+      - individual: Legislation
+      - individual: Tariff
+      - individual: Permitting
+
+  - individual: EnergyMarkets
+    broader: null
+    narrower:
+      - individual: WholesaleMarkets
+      - individual: Commodity
+      - individual: PowerPurchaseAgreement
+
+  - individual: EnergyFinance
+    broader: null
+    narrower:
+      - individual: ProjectFinance
+      - individual: CorporateDeals
+      - individual: PublicFunding
+
+  - individual: ClimateAndEmissions
+    broader: null
+    narrower:
+      - individual: EmissionsTracking
+      - individual: Decarbonization
+      - individual: NetZero
+
+  - individual: Electrification
+    broader: null
+    narrower:
+      - individual: ElectricVehicles
+      - individual: EVCharging
+      - individual: HeatPumps
+      - individual: ElectricTransport
+
+  - individual: DataCenterDemand
+    broader: null
+
+  - individual: EnergyGeopolitics
+    broader: null
+    narrower:
+      - individual: TradeAndSanctions
+      - individual: SupplyChain
+      - individual: CriticalMinerals
+
+  - individual: EnergyJustice
+    broader: null
+    narrower:
+      - individual: Affordability
+      - individual: CommunityEnergy
+      - individual: EnergyAccess
+
+  - individual: WorkforceAndManufacturing
+    broader: null
+    narrower:
+      - individual: EnergyJobs
+      - individual: Manufacturing
+      - individual: LaborRelations
+
+  - individual: ResearchAndInnovation
+    broader: null
+    narrower:
+      - individual: EfficiencyRecords
+      - individual: Patent
+
+  - individual: BuildingsAndEfficiency
+    broader: null
+    narrower:
+      - individual: BuildingElectrification
+      - individual: Retrofits
+      - individual: RooftopSolar
+
+  - individual: EnvironmentAndLandUse
+    broader: null
+    narrower:
+      - individual: WaterUse
+      - individual: Agrivoltaics
+      - individual: WasteAndPollution
+
+# --- Class Hierarchy (OWL Classes) ---
 
 class_hierarchy:
-  # -- Energy Topic Taxonomy --
+  # -- EnergyTopic (the OWL class whose instances are SKOS Concepts) --
   - class: EnergyTopic
     parent: owl:Thing
-    bfo: none
-    children:
-      - class: Renewable
-        children:
-          - class: Solar
-          - class: Wind
-          - class: Hydro
-          - class: Geothermal
-        disjoint_siblings: true
-
-      - class: Fossil
-        children:
-          - class: Coal
-          - class: NaturalGas
-          - class: Oil
-        disjoint_siblings: true
-
-      - class: Nuclear
-        children:
-          - class: SMR
-          - class: Fusion
-        disjoint_siblings: true
-
-      - class: EnergyStorage
-      - class: Hydrogen
-      - class: CarbonCapture
-
-      - class: GridAndInfrastructure
-        children:
-          - class: Transmission
-          - class: Distribution
-          - class: Interconnection
-          - class: GridOperators
-        disjoint_siblings: true
-
-      - class: EnergyPolicy
-        children:
-          - class: Regulation
-          - class: Legislation
-          - class: Tariffs
-          - class: Permitting
-        disjoint_siblings: true
-
-      - class: EnergyMarkets
-        children:
-          - class: WholesaleMarkets
-          - class: Commodities
-          - class: PowerPurchaseAgreement
-        disjoint_siblings: true
-
-      - class: EnergyFinance
-        children:
-          - class: ProjectFinance
-          - class: CorporateDeals
-          - class: PublicFunding
-        disjoint_siblings: true
-
-      - class: ClimateAndEmissions
-        children:
-          - class: EmissionsTracking
-          - class: Decarbonization
-          - class: NetZero
-        disjoint_siblings: true
-
-      - class: Electrification
-        children:
-          - class: ElectricVehicles
-          - class: EVCharging
-          - class: HeatPumps
-          - class: ElectricTransport
-        disjoint_siblings: true
-
-      - class: DataCenterDemand
-
-      - class: EnergyGeopolitics
-        children:
-          - class: TradeAndSanctions
-          - class: SupplyChains
-          - class: CriticalMinerals
-        disjoint_siblings: true
-
-      - class: EnergyJustice
-        children:
-          - class: Affordability
-          - class: CommunityEnergy
-          - class: EnergyAccess
-        disjoint_siblings: true
-
-      - class: WorkforceAndManufacturing
-        children:
-          - class: EnergyJobs
-          - class: Manufacturing
-          - class: LaborRelations
-        disjoint_siblings: true
-
-      - class: ResearchAndInnovation
-        children:
-          - class: EfficiencyRecords
-          - class: Patents
-        disjoint_siblings: true
-
-      - class: BuildingsAndEfficiency
-        children:
-          - class: BuildingElectrification
-          - class: Retrofits
-          - class: RooftopSolar
-        disjoint_siblings: true
-
-      - class: EnvironmentAndLandUse
-        children:
-          - class: WaterUse
-          - class: Agrivoltaics
-          - class: WasteAndPollution
-        disjoint_siblings: true
-
-    disjoint_siblings: true  # All top-level EnergyTopic children are disjoint
+    bfo: "ICE (IAO:0000030)"
+    notes: >
+      EnergyTopic is an owl:Class. Its instances are the ~55 energy topic
+      individuals listed in topic_hierarchy above. Each instance is also
+      typed as skos:Concept and belongs to enews:EnergyTopicScheme.
+      The hierarchy among topics is expressed via skos:broader/skos:narrower,
+      not rdfs:subClassOf. Articles link to topic individuals via coversTopic.
 
   # -- Media Entity Classes --
   - class: Article
@@ -206,11 +235,15 @@ class_hierarchy:
     bfo: "GDC (BFO:0000031)"
     schema_alignment: "owl:equivalentClass schema:SocialMediaPosting"
 
-  - class: Author
+  - class: AuthorAccount
     parent: owl:Thing
     bfo: "GDC (BFO:0000031)"
-    schema_alignment: "rdfs:subClassOf schema:Person"
     sioc_alignment: "owl:equivalentClass sioc:UserAccount"
+    schema_alignment: "skos:relatedMatch schema:Person"
+    notes: >
+      Renamed from Author to AuthorAccount to clarify that this represents
+      a Bluesky social media account, not a natural person. Aligned to
+      sioc:UserAccount (equivalence) and schema:Person (related match only).
 
   - class: Feed
     parent: owl:Thing
@@ -235,7 +268,7 @@ top_level_disjoint_groups:
       - Article
       - Publication
       - Post
-      - Author
+      - AuthorAccount
       - Feed
       - Organization
       - GeographicEntity
@@ -244,22 +277,31 @@ top_level_disjoint_groups:
 
 design_decisions:
   - id: DD-001
-    decision: "Model EnergyTopic subclasses as OWL classes, not SKOS Concepts"
+    decision: "Model energy topics as SKOS Concepts (individuals of EnergyTopic class)"
     rationale: >
-      Articles are classified under topics via coversTopic object property.
-      OWL classes enable rdfs:subClassOf inference (if an article covers Solar,
-      it also covers Renewable). SKOS prefLabel/altLabel/definition are used as
-      annotation properties on the OWL classes.
+      Energy topics are modeled as named individuals that are simultaneously
+      instances of enews:EnergyTopic (an owl:Class) and skos:Concept within
+      the enews:EnergyTopicScheme. The topic hierarchy uses skos:broader/
+      skos:narrower instead of rdfs:subClassOf. This follows the W3C SKOS
+      recommendation for controlled vocabularies, aligns with IPTC NewsCodes
+      practice, and avoids the class-as-instance modeling problem that arose
+      from treating topic categories as OWL subclasses. Articles link to
+      topic individuals via coversTopic; hierarchical inference uses
+      skos:broader* property paths in SPARQL. This was changed from the
+      original OWL-class approach after review by multiple research agents
+      citing W3C SKOS, IPTC NewsCodes, Gangemi ODP patterns, BFO guidance,
+      schema.org, and Dublin Core usage — all unanimously favoring SKOS
+      Concepts for topic classification schemes.
 
   - id: DD-002
-    decision: "Hydrogen is a direct child of EnergyTopic, not under Renewable"
+    decision: "Hydrogen is a top-level topic, not under Renewable"
     rationale: >
       Hydrogen production spans renewable (green), fossil (grey/blue), and nuclear
       sources. Placing it under Renewable would be factually incorrect for blue
       and grey hydrogen. It is an energy carrier, not an energy source category.
 
   - id: DD-003
-    decision: "EnergyStorage is a direct child of EnergyTopic, not under any source"
+    decision: "EnergyStorage is a top-level topic, not under any source"
     rationale: >
       Energy storage is technology-agnostic — batteries store energy from any
       source. It is a crosscutting technology topic.
@@ -267,10 +309,10 @@ design_decisions:
   - id: DD-004
     decision: "RooftopSolar under BuildingsAndEfficiency, not under Solar"
     rationale: >
-      Single inheritance requires one parent. RooftopSolar is primarily a
-      building-level distributed energy topic. Utility-scale solar is classified
-      under Solar. An article about rooftop solar can be tagged with both
-      RooftopSolar and Solar via multiple coversTopic relations.
+      Single-parent hierarchy requires one broader topic. RooftopSolar is
+      primarily a building-level distributed energy topic. Utility-scale solar
+      is classified under Solar. An article about rooftop solar can be tagged
+      with both RooftopSolar and Solar via multiple coversTopic relations.
 
   - id: DD-005
     decision: "Minimal BFO alignment — documented but not imported"
@@ -278,8 +320,8 @@ design_decisions:
       Per scope constraint 'Minimal BFO alignment where natural; not forced'.
       BFO categories are documented in the glossary and BFO alignment report
       for reference, but BFO is not owl:imported. Media classes align naturally
-      to GDC/Object/Site. EnergyTopic classes are classification categories
-      with no natural BFO alignment.
+      to GDC/Object/Site. EnergyTopic instances align to IAO:0000030
+      (information content entity) as they are concept definitions.
 
   - id: DD-006
     decision: "schema.org alignment via equivalence axioms, not import"
@@ -290,9 +332,11 @@ design_decisions:
       schema.org types and properties. Per reuse-report.md Tier 2 strategy.
 
   - id: DD-007
-    decision: "Author represents a Bluesky account, not a natural person"
+    decision: "AuthorAccount represents a Bluesky account, not a natural person"
     rationale: >
-      Our data source is Bluesky handles. An Author is a social media account
-      (information entity / GDC), not a Person. One person may have multiple
-      accounts. We use rdfs:subClassOf schema:Person (loose alignment) rather
-      than owl:equivalentClass.
+      Our data source is Bluesky handles. An AuthorAccount is a social media
+      account (information entity / GDC), not a Person. One person may have
+      multiple accounts. We align to sioc:UserAccount (equivalence) and declare
+      skos:relatedMatch to schema:Person. The rdfs:subClassOf schema:Person
+      axiom was removed because a social media account is not a subclass of
+      Person — it is an information artifact about/operated by a person.

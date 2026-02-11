@@ -11,25 +11,20 @@ ontology lightweight while maintaining interoperability documentation.
 
 ## Top-Level Class Alignment
 
-### EnergyTopic (and all subclasses)
+### EnergyTopic (and all instances)
 
-**BFO Category**: None (classification category)
+**BFO Category**: Information Content Entity (IAO:0000030)
 
-**Rationale**: EnergyTopic and its 55+ subclasses (Solar, Wind, Nuclear, etc.)
-are topical classification categories used to tag news articles. They function
-as a controlled vocabulary modeled as OWL classes to enable `rdfs:subClassOf`
-inference chains (e.g., an article covering Solar also covers Renewable).
+**Rationale**: EnergyTopic is an owl:Class whose ~55 instances are SKOS Concepts
+representing topical classification categories used to tag news articles. Each
+instance (e.g., enews:Solar, enews:Wind) is an information content entity — a
+concept definition that is about a real-world phenomenon. This aligns with
+IAO:0000030 (information content entity), which is a subclass of Generically
+Dependent Continuant (BFO:0000031).
 
-These are not entities that exist in the physical world — they are categories
-in a classification scheme. They do not naturally map to any BFO category:
-- Not Continuants (they don't persist through time as individual entities)
-- Not Occurrents (they don't unfold in time)
-- Not GDCs (they are universals/types, not information content entities)
-
-The closest BFO-adjacent pattern would be modeling them as instances of
-IAO:0000030 (information content entity) representing concept definitions,
-but this would add complexity without benefit for our CQs. We model them
-as OWL classes and annotate with SKOS properties.
+The topic hierarchy is expressed via `skos:broader`/`skos:narrower` relationships
+between individuals, not via `rdfs:subClassOf`. Articles link to topic instances
+via the `coversTopic` object property.
 
 ### Article
 
@@ -65,21 +60,23 @@ in the AT Protocol data store and potentially cached in multiple locations.
 
 **schema.org alignment**: `enews:Post owl:equivalentClass schema:SocialMediaPosting`
 
-### Author
+### AuthorAccount
 
 **BFO Category**: Generically Dependent Continuant (BFO:0000031)
 
-**Rationale**: In our ontology, Author represents a Bluesky account
-(handle + profile), not a natural person. A Bluesky account is an
+**Rationale**: AuthorAccount (renamed from Author) represents a Bluesky
+account (handle + profile), not a natural person. A Bluesky account is an
 information entity — it exists in the AT Protocol identity system and
 depends on infrastructure for its existence. One natural person may have
-multiple Author accounts.
+multiple AuthorAccount instances.
 
-Note: This is a deliberate divergence from schema.org's `Person` (which is
-an Independent Continuant / Object). We declare `rdfs:subClassOf schema:Person`
-as a loose alignment, acknowledging the impedance mismatch.
+The `rdfs:subClassOf schema:Person` axiom has been removed because a social
+media account is not a subclass of Person — it is an information artifact
+about/operated by a person. Instead, we declare:
+- `owl:equivalentClass sioc:UserAccount` (precise semantic match)
+- `skos:relatedMatch schema:Person` (loose cross-vocabulary link)
 
-**SIOC alignment**: `enews:Author owl:equivalentClass sioc:UserAccount`
+**SIOC alignment**: `enews:AuthorAccount owl:equivalentClass sioc:UserAccount`
 
 ### Feed
 
@@ -116,11 +113,12 @@ objects themselves.
 
 | Class | BFO Category | BFO ID | Alignment Strength |
 |-------|-------------|--------|-------------------|
-| EnergyTopic (+ subtypes) | None | — | N/A (classification category) |
+| EnergyTopic (class) | ICE | IAO:0000030 | Natural (concept definitions) |
+| EnergyTopic instances | ICE | IAO:0000030 | Natural (concept definitions) |
 | Article | GDC | BFO:0000031 | Natural |
 | Publication | Object | BFO:0000030 | Natural |
 | Post | GDC | BFO:0000031 | Natural |
-| Author | GDC | BFO:0000031 | Natural (account, not person) |
+| AuthorAccount | GDC | BFO:0000031 | Natural (account, not person) |
 | Feed | GDC | BFO:0000031 | Natural |
 | Organization | Object | BFO:0000030 | Natural (per BFO 2020) |
 | GeographicEntity | Site | BFO:0000029 | Natural |

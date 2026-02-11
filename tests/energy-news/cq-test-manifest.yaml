@@ -1,0 +1,182 @@
+# Energy News Ontology — CQ Test Manifest (TDOD-style)
+# Framework: Test-Driven Ontology Development (Keet & Lawrynowicz, 2016)
+# Runner: ROBOT verify (--queries flag) or custom SPARQL test harness
+
+ontology:
+  name: Energy News Ontology
+  prefix: enews
+  namespace: "http://example.org/ontology/energy-news#"
+
+prefixes_file: prefixes.sparql
+
+# --- Competency Question Tests ---
+
+cq_tests:
+  - id: cq-001
+    file: cq-001.sparql
+    cq: CQ-001
+    question: "What energy topics exist in the ontology?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: false
+
+  - id: cq-002
+    file: cq-002.sparql
+    cq: CQ-002
+    question: "What subtopics exist under a given energy topic?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: false
+
+  - id: cq-003
+    file: cq-003.sparql
+    cq: CQ-003
+    question: "Which articles cover a given energy topic?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-004
+    file: cq-004.sparql
+    cq: CQ-004
+    question: "Which publication published a given article?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-005
+    file: cq-005.sparql
+    cq: CQ-005
+    question: "What energy topics does a given publication cover?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-006
+    file: cq-006.sparql
+    cq: CQ-006
+    question: "How many articles has each publication contributed?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-007
+    file: cq-007.sparql
+    cq: CQ-007
+    question: "Who are the top authors sharing energy news?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-008
+    file: cq-008.sparql
+    cq: CQ-008
+    question: "What energy topics does a given author primarily share about?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-009
+    file: cq-009.sparql
+    cq: CQ-009
+    question: "Which Bluesky feeds exist for energy content?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-010
+    file: cq-010.sparql
+    cq: CQ-010
+    question: "Is a given energy source classified as renewable or fossil?"
+    type: ASK
+    expected: true
+    requires_abox: false
+
+  - id: cq-011
+    file: cq-011.sparql
+    cq: CQ-011
+    question: "Which organizations are mentioned in energy news?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-012
+    file: cq-012.sparql
+    cq: CQ-012
+    question: "Which energy topics is a given organization associated with?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-013
+    file: cq-013.sparql
+    cq: CQ-013
+    question: "Which countries or regions are covered in energy news?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-014
+    file: cq-014.sparql
+    cq: CQ-014
+    question: "What energy topics are covered in a given country?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-015
+    file: cq-015.sparql
+    cq: CQ-015
+    question: "What type or sector does a given organization belong to?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-016
+    file: cq-016.sparql
+    cq: CQ-016
+    question: "How does energy news coverage volume compare across geographic regions?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+# --- TBox Structure Tests ---
+
+tbox_tests:
+  - id: tbox-001
+    file: tbox-001.sparql
+    description: "EnergyTopic is declared as an OWL class"
+    type: ASK
+    expected: true
+    requires_abox: false
+
+  - id: tbox-002
+    file: tbox-002.sparql
+    description: "Article is declared as an OWL class"
+    type: ASK
+    expected: true
+    requires_abox: false
+
+  - id: tbox-003
+    file: tbox-003.sparql
+    description: "AuthorAccount is declared as an OWL class"
+    type: ASK
+    expected: true
+    requires_abox: false
+
+# --- Non-Entailment Tests ---
+
+non_entailment_tests:
+  - id: neg-001
+    file: neg-001.sparql
+    description: "Solar is NOT a broader concept of Fossil"
+    type: ASK
+    expected: false
+    requires_abox: false
+
+  - id: neg-002
+    file: neg-002.sparql
+    description: "Nuclear is NOT classified under Renewable"
+    type: ASK
+    expected: false
+    requires_abox: false

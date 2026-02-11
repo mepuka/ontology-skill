@@ -12,9 +12,10 @@ across topics, publications, authors, and geographies.
 
 See `scope.md` for full in/out scope boundaries.
 
-**In short**: Energy topic taxonomy + news media entities (articles,
-publications, authors, posts, feeds) + organizations + geography. Lightweight,
-~50-100 classes, ~20 properties.
+**In short**: Energy topic taxonomy (~55 SKOS concept individuals) + news media
+entity classes (articles, publications, author accounts, posts, feeds) +
+organizations + geography. Lightweight, ~8 OWL classes, ~55 topic individuals,
+~12 properties.
 
 ### 3. Target Users
 
@@ -34,9 +35,9 @@ publications, authors, posts, feeds) + organizations + geography. Lightweight,
 
 ### 5. Competency Questions
 
-14 CQs defined in `competency-questions.yaml`:
+16 CQs defined in `competency-questions.yaml`:
 - 10 Must-Have (CQ-001 through CQ-010)
-- 4 Should-Have (CQ-011 through CQ-014)
+- 6 Should-Have (CQ-011 through CQ-016)
 
 ### 6. Non-Functional Requirements
 
@@ -53,8 +54,8 @@ from energy-focused feeds, author accounts, and network searches.
 
 ### 8. Pre-Glossary
 
-See `pre-glossary.csv` — 28 candidate classes, 8 candidate properties
-extracted from CQs.
+See `pre-glossary.csv` — 8 candidate classes, 55 topic individuals,
+12 candidate properties extracted from CQs.
 
 ### 9. Traceability
 

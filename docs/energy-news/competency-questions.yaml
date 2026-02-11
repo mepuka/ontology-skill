@@ -1,4 +1,5 @@
 # Energy News Ontology — Competency Questions
+# Updated: Codex review remediation — PREFIX declarations, new fields, SKOS SPARQL, CQ-015/016
 
 # --- Must Have ---
 
@@ -14,12 +15,19 @@
       label: "Natural Gas"
   derivation_method: direct_lookup
   sparql: |
+    PREFIX enews: <http://example.org/ontology/energy-news#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     SELECT ?topic ?label WHERE {
-      ?topic rdfs:subClassOf+ enews:EnergyTopic ;
+      ?topic a enews:EnergyTopic ;
              rdfs:label ?label .
     }
   expected_result: non_empty
   required_classes: [EnergyTopic]
+  out_of_scope: "Does not return hierarchy depth or broader/narrower structure"
+  required_axioms:
+    - "enews:Solar rdf:type enews:EnergyTopic"
+    - "enews:Solar rdfs:label 'Solar'@en"
+  requires_reasoning: false
 
 - id: CQ-002
   source_use_case: UC-001
@@ -32,12 +40,20 @@
       label: "Solar"
   derivation_method: direct_lookup
   sparql: |
+    PREFIX enews: <http://example.org/ontology/energy-news#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
     SELECT ?child ?label WHERE {
-      ?child rdfs:subClassOf enews:Renewable ;
+      ?child skos:broader enews:Renewable ;
              rdfs:label ?label .
     }
   expected_result: non_empty
-  required_classes: [EnergyTopic, Renewable]
+  required_classes: [EnergyTopic]
+  out_of_scope: "Returns only direct narrower topics, not transitive descendants"
+  required_axioms:
+    - "enews:Solar skos:broader enews:Renewable"
+    - "enews:Solar rdfs:label 'Solar'@en"
+  requires_reasoning: false
 
 - id: CQ-003
   source_use_case: UC-001
@@ -50,6 +66,7 @@
       topic: enews:EnergyStorage
   derivation_method: direct_lookup
   sparql: |
+    PREFIX enews: <http://example.org/ontology/energy-news#>
     SELECT ?article ?title WHERE {
       ?article a enews:Article ;
                enews:coversTopic enews:EnergyStorage ;
@@ -58,6 +75,10 @@
   expected_result: non_empty
   required_classes: [Article, EnergyTopic]
   required_properties: [coversTopic, title]
+  out_of_scope: "Does not traverse topic hierarchy; only returns exact topic matches"
+  required_axioms:
+    - "Article SubClassOf coversTopic some EnergyTopic"
+  requires_reasoning: false
 
 - id: CQ-004
   source_use_case: UC-002
@@ -70,6 +91,8 @@
       label: "Canary Media"
   derivation_method: direct_lookup
   sparql: |
+    PREFIX enews: <http://example.org/ontology/energy-news#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     SELECT ?article ?pub ?pubLabel WHERE {
       ?article a enews:Article ;
                enews:publishedBy ?pub .
@@ -78,6 +101,10 @@
   expected_result: non_empty
   required_classes: [Article, Publication]
   required_properties: [publishedBy]
+  out_of_scope: "Does not identify articles without a known publisher"
+  required_axioms:
+    - "publishedBy rdf:type owl:FunctionalProperty"
+  requires_reasoning: false
 
 - id: CQ-005
   source_use_case: UC-002
@@ -89,6 +116,8 @@
       topic: enews:Oil
   derivation_method: aggregation
   sparql: |
+    PREFIX enews: <http://example.org/ontology/energy-news#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     SELECT DISTINCT ?topic ?topicLabel WHERE {
       ?article enews:publishedBy enews:pub_bloomberg ;
                enews:coversTopic ?topic .
@@ -97,6 +126,9 @@
   expected_result: non_empty
   required_classes: [Article, Publication, EnergyTopic]
   required_properties: [publishedBy, coversTopic]
+  out_of_scope: "Does not rank topics by frequency or include hierarchy traversal"
+  required_axioms: []
+  requires_reasoning: false
 
 - id: CQ-006
   source_use_case: UC-002
@@ -108,6 +140,8 @@
       count: 339
   derivation_method: aggregation
   sparql: |
+    PREFIX enews: <http://example.org/ontology/energy-news#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     SELECT ?pub ?pubLabel (COUNT(?article) AS ?count) WHERE {
       ?article a enews:Article ;
                enews:publishedBy ?pub .
@@ -118,6 +152,9 @@
   expected_result: non_empty
   required_classes: [Article, Publication]
   required_properties: [publishedBy]
+  out_of_scope: "Does not filter by date range or topic"
+  required_axioms: []
+  requires_reasoning: false
 
 - id: CQ-007
   source_use_case: UC-003
@@ -130,6 +167,7 @@
       postCount: 300
   derivation_method: aggregation
   sparql: |
+    PREFIX enews: <http://example.org/ontology/energy-news#>
     SELECT ?author ?handle (COUNT(?post) AS ?postCount) WHERE {
       ?post a enews:Post ;
             enews:postedBy ?author .
@@ -138,8 +176,14 @@
     GROUP BY ?author ?handle
     ORDER BY DESC(?postCount)
   expected_result: non_empty
-  required_classes: [Post, Author]
+  required_classes: [Post, AuthorAccount]
   required_properties: [postedBy, handle]
+  out_of_scope: "Does not filter by topic or date range"
+  required_axioms:
+    - "Post SubClassOf postedBy some AuthorAccount"
+    - "postedBy rdf:type owl:FunctionalProperty"
+    - "HasKey(AuthorAccount, handle)"
+  requires_reasoning: false
 
 - id: CQ-008
   source_use_case: UC-003
@@ -151,6 +195,8 @@
       topic: enews:Solar
   derivation_method: aggregation
   sparql: |
+    PREFIX enews: <http://example.org/ontology/energy-news#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     SELECT ?topic ?topicLabel (COUNT(?post) AS ?count) WHERE {
       ?post enews:postedBy enews:author_torsolarfred ;
             enews:sharesArticle ?article .
@@ -160,8 +206,12 @@
     GROUP BY ?topic ?topicLabel
     ORDER BY DESC(?count)
   expected_result: non_empty
-  required_classes: [Post, Author, Article, EnergyTopic]
+  required_classes: [Post, AuthorAccount, Article, EnergyTopic]
   required_properties: [postedBy, sharesArticle, coversTopic]
+  out_of_scope: "Does not include posts without shared articles"
+  required_axioms:
+    - "sharesArticle rdf:type owl:FunctionalProperty"
+  requires_reasoning: false
 
 - id: CQ-009
   source_use_case: UC-003
@@ -173,12 +223,17 @@
       label: "EnergySky"
   derivation_method: direct_lookup
   sparql: |
+    PREFIX enews: <http://example.org/ontology/energy-news#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     SELECT ?feed ?label WHERE {
       ?feed a enews:Feed ;
             rdfs:label ?label .
     }
   expected_result: non_empty
   required_classes: [Feed]
+  out_of_scope: "Does not return feed metadata (creator, algorithm, post count)"
+  required_axioms: []
+  requires_reasoning: false
 
 - id: CQ-010
   source_use_case: UC-003
@@ -190,11 +245,17 @@
       category: enews:Renewable
   derivation_method: inference
   sparql: |
+    PREFIX enews: <http://example.org/ontology/energy-news#>
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
     ASK {
-      enews:Solar rdfs:subClassOf+ enews:Renewable .
+      enews:Solar skos:broader* enews:Renewable .
     }
   expected_result: "true"
-  required_classes: [EnergyTopic, Renewable, Fossil]
+  required_classes: [EnergyTopic]
+  out_of_scope: "Does not classify topics outside Renewable/Fossil (e.g., Nuclear, Hydrogen)"
+  required_axioms:
+    - "enews:Solar skos:broader enews:Renewable"
+  requires_reasoning: false
 
 # --- Should Have ---
 
@@ -208,12 +269,18 @@
       label: "CATL"
   derivation_method: direct_lookup
   sparql: |
-    SELECT ?org ?label WHERE {
-      ?org a enews:Organization ;
-           rdfs:label ?label .
+    PREFIX enews: <http://example.org/ontology/energy-news#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    SELECT DISTINCT ?org ?label WHERE {
+      ?article enews:mentionsOrganization ?org .
+      ?org rdfs:label ?label .
     }
   expected_result: non_empty
-  required_classes: [Organization]
+  required_classes: [Article, Organization]
+  required_properties: [mentionsOrganization]
+  out_of_scope: "Does not return organization type or sector; does not count mentions"
+  required_axioms: []
+  requires_reasoning: false
 
 - id: CQ-012
   source_use_case: UC-004
@@ -225,6 +292,8 @@
       topic: enews:EnergyStorage
   derivation_method: aggregation
   sparql: |
+    PREFIX enews: <http://example.org/ontology/energy-news#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     SELECT DISTINCT ?topic ?topicLabel WHERE {
       ?article enews:mentionsOrganization enews:org_catl ;
                enews:coversTopic ?topic .
@@ -233,6 +302,9 @@
   expected_result: non_empty
   required_classes: [Article, Organization, EnergyTopic]
   required_properties: [mentionsOrganization, coversTopic]
+  out_of_scope: "Does not rank topics by frequency of association"
+  required_axioms: []
+  requires_reasoning: false
 
 - id: CQ-013
   source_use_case: UC-005
@@ -244,12 +316,18 @@
       label: "United States"
   derivation_method: direct_lookup
   sparql: |
-    SELECT ?geo ?label WHERE {
-      ?geo a enews:GeographicEntity ;
-           rdfs:label ?label .
+    PREFIX enews: <http://example.org/ontology/energy-news#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    SELECT DISTINCT ?geo ?label WHERE {
+      ?article enews:hasGeographicFocus ?geo .
+      ?geo rdfs:label ?label .
     }
   expected_result: non_empty
-  required_classes: [GeographicEntity]
+  required_classes: [Article, GeographicEntity]
+  required_properties: [hasGeographicFocus]
+  out_of_scope: "Does not return geographic hierarchy (country > region > state)"
+  required_axioms: []
+  requires_reasoning: false
 
 - id: CQ-014
   source_use_case: UC-005
@@ -261,6 +339,8 @@
       topic: enews:Solar
   derivation_method: aggregation
   sparql: |
+    PREFIX enews: <http://example.org/ontology/energy-news#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     SELECT DISTINCT ?topic ?topicLabel WHERE {
       ?article enews:hasGeographicFocus enews:geo_australia ;
                enews:coversTopic ?topic .
@@ -269,3 +349,59 @@
   expected_result: non_empty
   required_classes: [Article, GeographicEntity, EnergyTopic]
   required_properties: [hasGeographicFocus, coversTopic]
+  out_of_scope: "Does not rank topics by frequency or compare across regions"
+  required_axioms: []
+  requires_reasoning: false
+
+- id: CQ-015
+  source_use_case: UC-004
+  natural_language: "What type or sector does a given organization belong to?"
+  type: relational
+  priority: should_have
+  sample_answer:
+    - org: enews:org_catl
+      sector: "Battery manufacturing"
+  derivation_method: direct_lookup
+  sparql: |
+    PREFIX enews: <http://example.org/ontology/energy-news#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    SELECT ?label ?definition WHERE {
+      enews:org_catl a enews:Organization ;
+                     rdfs:label ?label ;
+                     skos:definition ?definition .
+    }
+  expected_result: non_empty
+  required_classes: [Organization]
+  out_of_scope: "Sector classification is via annotations for v1; a formal sector taxonomy is deferred"
+  required_axioms: []
+  requires_reasoning: false
+
+- id: CQ-016
+  source_use_case: UC-005
+  natural_language: "How does energy news coverage volume compare across geographic regions?"
+  type: quantitative
+  priority: should_have
+  sample_answer:
+    - geo: enews:geo_us
+      label: "United States"
+      articleCount: 1200
+    - geo: enews:geo_australia
+      label: "Australia"
+      articleCount: 340
+  derivation_method: aggregation
+  sparql: |
+    PREFIX enews: <http://example.org/ontology/energy-news#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    SELECT ?geo ?label (COUNT(?article) AS ?articleCount) WHERE {
+      ?article enews:hasGeographicFocus ?geo .
+      ?geo rdfs:label ?label .
+    }
+    GROUP BY ?geo ?label
+    ORDER BY DESC(?articleCount)
+  expected_result: non_empty
+  required_classes: [Article, GeographicEntity]
+  required_properties: [hasGeographicFocus]
+  out_of_scope: "Does not break down by topic within each region"
+  required_axioms: []
+  requires_reasoning: false

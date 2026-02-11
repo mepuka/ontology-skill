@@ -1,5 +1,6 @@
 # Energy News Ontology — Property Design
 # Produced by: ontology-conceptualizer (Phase 3)
+# Updated: Codex review remediation — bfo_ro_relation, naming fixes, AuthorAccount
 
 # --- Object Properties ---
 
@@ -7,7 +8,7 @@ object_properties:
 
   - name: coversTopic
     type: ObjectProperty
-    definition: "Links an Article to an EnergyTopic it covers"
+    definition: "Links an Article to an EnergyTopic individual it covers"
     domain: Article
     range: EnergyTopic
     cardinality:
@@ -16,10 +17,12 @@ object_properties:
     characteristics: []
     inverse: null
     schema_alignment: "owl:equivalentProperty schema:about"
+    bfo_ro_relation: "rdfs:subPropertyOf IAO:0000136 (is_about)"
     notes: >
       An article must cover at least one topic. Multiple topics are common
-      (e.g., an article about solar tariffs covers both Solar and Tariffs).
-      No cardinality ceiling — articles can cover many topics.
+      (e.g., an article about solar tariffs covers both Solar and Tariff).
+      No cardinality ceiling — articles can cover many topics. Range is
+      EnergyTopic (instances are SKOS Concept individuals).
 
   - name: publishedBy
     type: ObjectProperty
@@ -32,6 +35,7 @@ object_properties:
     characteristics: [functional]
     inverse: null
     schema_alignment: "owl:equivalentProperty schema:publisher"
+    bfo_ro_relation: "none (social/institutional relation)"
     notes: >
       Functional — each article has at most one publisher. Min 0 because
       some articles may come from unidentified sources. The Publication is
@@ -39,15 +43,16 @@ object_properties:
 
   - name: postedBy
     type: ObjectProperty
-    definition: "Links a Post to the Author who created it"
+    definition: "Links a Post to the AuthorAccount who created it"
     domain: Post
-    range: Author
+    range: AuthorAccount
     cardinality:
       min: 1
       max: 1
     characteristics: [functional]
     inverse: null
     schema_alignment: "rdfs:subPropertyOf schema:author"
+    bfo_ro_relation: "none (social/institutional relation)"
     notes: >
       Functional — every post has exactly one author on Bluesky.
       SubPropertyOf (not equivalentProperty) because schema:author has a
@@ -64,6 +69,7 @@ object_properties:
     characteristics: [functional]
     inverse: null
     schema_alignment: "owl:equivalentProperty schema:sharedContent"
+    bfo_ro_relation: "none (social/institutional relation)"
     notes: >
       Functional — a post shares at most one article link. Min 0 because
       some posts may be text-only commentary without an embedded article.
@@ -79,6 +85,7 @@ object_properties:
     characteristics: []
     inverse: null
     schema_alignment: "rdfs:subPropertyOf schema:mentions"
+    bfo_ro_relation: "rdfs:subPropertyOf IAO:0000136 (is_about)"
     notes: >
       Should-have property (CQ-012). Articles may mention zero or many
       organizations. SubPropertyOf schema:mentions because our range is
@@ -95,6 +102,7 @@ object_properties:
     characteristics: []
     inverse: null
     schema_alignment: "owl:equivalentProperty schema:contentLocation"
+    bfo_ro_relation: "rdfs:subPropertyOf IAO:0000136 (is_about)"
     notes: >
       Should-have property (CQ-014). Articles may have zero geographic
       focus (abstract/global topics) or multiple (cross-border coverage).
@@ -105,16 +113,17 @@ datatype_properties:
 
   - name: handle
     type: DatatypeProperty
-    definition: "The Bluesky handle string for an Author"
-    domain: Author
+    definition: "The Bluesky handle string for an AuthorAccount"
+    domain: AuthorAccount
     range: xsd:string
     cardinality:
       min: 1
       max: 1
     characteristics: [functional]
+    bfo_ro_relation: "none (literal attribute)"
     notes: >
       Format: "username.bsky.social" or custom domain. Functional — each
-      Author has exactly one handle. Could serve as a key property (HasKey).
+      AuthorAccount has exactly one handle. Could serve as a key property (HasKey).
 
   - name: title
     type: DatatypeProperty
@@ -126,6 +135,7 @@ datatype_properties:
       max: 1
     characteristics: [functional]
     schema_alignment: "owl:equivalentProperty schema:headline"
+    bfo_ro_relation: "none (literal attribute)"
     notes: >
       Functional. Min 0 because some embedded links may lack title metadata.
 
@@ -139,6 +149,7 @@ datatype_properties:
       max: 1
     characteristics: [functional]
     schema_alignment: "owl:equivalentProperty schema:url"
+    bfo_ro_relation: "none (literal attribute)"
     notes: >
       Functional. Every article must have a URL — it is the primary
       identifier. Could serve as a key property (HasKey).
@@ -153,6 +164,7 @@ datatype_properties:
       max: 1
     characteristics: [functional]
     schema_alignment: "owl:equivalentProperty schema:description"
+    bfo_ro_relation: "none (literal attribute)"
     notes: >
       Functional. Optional — not all article embeds include description.
 
@@ -166,10 +178,11 @@ datatype_properties:
       max: 1
     characteristics: [functional]
     schema_alignment: "owl:equivalentProperty schema:datePublished"
+    bfo_ro_relation: "none (literal attribute)"
     notes: >
       Functional. Optional — publication date may not always be extractable.
 
-  - name: domain
+  - name: siteDomain
     type: DatatypeProperty
     definition: "The domain name string of a Publication"
     domain: Publication
@@ -178,10 +191,13 @@ datatype_properties:
       min: 1
       max: 1
     characteristics: [functional]
+    bfo_ro_relation: "none (literal attribute)"
     notes: >
       Functional. Every publication has exactly one domain (e.g.,
       "bloomberg.com", "canarymedia.com"). Serves as the primary identifier
-      for publications. Could serve as a key property (HasKey).
+      for publications. Could serve as a key property (HasKey). Renamed from
+      "domain" to "siteDomain" to avoid ambiguity with the OWL/RDFS keyword
+      "domain" and to follow ISO/IEC 11179 naming clarity guidance.
 
 # --- Key Properties (HasKey candidates) ---
 
@@ -190,10 +206,10 @@ key_properties:
     keys: [url]
     rationale: "URL uniquely identifies an article across the dataset"
 
-  - class: Author
+  - class: AuthorAccount
     keys: [handle]
     rationale: "Bluesky handle uniquely identifies an author account"
 
   - class: Publication
-    keys: [domain]
+    keys: [siteDomain]
     rationale: "Domain name uniquely identifies a publication"

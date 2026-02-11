@@ -1,0 +1,12 @@
+# CQ-015: What type or sector does a given organization belong to?
+# Expected: non_empty (at least one result row)
+
+PREFIX enews: <http://example.org/ontology/energy-news#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?label ?definition WHERE {
+  enews:org_catl a enews:Organization ;
+                 rdfs:label ?label ;
+                 skos:definition ?definition .
+}

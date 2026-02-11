@@ -1,5 +1,6 @@
 # Energy News Ontology — Axiom Plan
 # Produced by: ontology-conceptualizer (Phase 3)
+# Updated: Codex review remediation — SKOS conversion, naming fixes, AuthorAccount
 # Maps each CQ to the OWL axiom patterns required to answer it.
 
 cq_axiom_mappings:
@@ -8,39 +9,42 @@ cq_axiom_mappings:
   - cq: CQ-001
     question: "What energy topics exist in the ontology?"
     axiom_patterns:
-      - pattern: "Simple SubClassOf (#1)"
+      - pattern: "Individual Assertions (rdf:type)"
         description: >
-          All energy topic classes are declared as rdfs:subClassOf EnergyTopic
-          (directly or transitively). The SPARQL query traverses the
-          subClassOf+ chain from EnergyTopic to enumerate all topics.
+          All energy topic individuals are declared as instances of
+          enews:EnergyTopic (and skos:Concept). The SPARQL query uses
+          rdf:type to enumerate all topic individuals.
         axioms:
-          - "Solar SubClassOf Renewable"
-          - "Renewable SubClassOf EnergyTopic"
-          - "(... all 55 topic classes in hierarchy)"
+          - "enews:Solar rdf:type enews:EnergyTopic"
+          - "enews:Renewable rdf:type enews:EnergyTopic"
+          - "(... all ~55 topic individuals)"
       - pattern: "Annotations"
         description: >
-          Every topic class has rdfs:label and skos:definition annotations
+          Every topic individual has rdfs:label and skos:definition annotations
           so the SPARQL query can return human-readable results.
 
   - cq: CQ-002
     question: "What subtopics exist under a given energy topic?"
     axiom_patterns:
-      - pattern: "Simple SubClassOf (#1)"
+      - pattern: "SKOS Broader/Narrower"
         description: >
-          Direct rdfs:subClassOf assertions create the parent-child hierarchy.
-          SPARQL queries direct subClassOf (not transitive) for subtopics.
+          skos:broader assertions create the parent-child hierarchy among
+          topic individuals. SPARQL queries direct skos:broader for subtopics.
         axioms:
-          - "Solar SubClassOf Renewable"
-          - "Wind SubClassOf Renewable"
-          - "Coal SubClassOf Fossil"
-      - pattern: "Disjoint Classes (#5)"
+          - "enews:Solar skos:broader enews:Renewable"
+          - "enews:Wind skos:broader enews:Renewable"
+          - "enews:Coal skos:broader enews:Fossil"
+      - pattern: "owl:differentFrom (optional)"
         description: >
-          Siblings under the same parent are declared disjoint. This ensures
-          an article tagged as Solar cannot also be classified as Wind through
-          the same coversTopic relation.
+          Sibling topics under the same broader concept may be declared
+          owl:differentFrom to ensure they are distinct individuals. This
+          replaces the OWL DisjointClasses pattern that was used when
+          topics were modeled as classes. SKOS concepts cannot use
+          owl:disjointWith, but owl:differentFrom on individuals serves
+          the same purpose for SKOS integrity.
         axioms:
-          - "DisjointClasses: Solar, Wind, Hydro, Geothermal"
-          - "DisjointClasses: Coal, NaturalGas, Oil"
+          - "owl:AllDifferent(enews:Solar, enews:Wind, enews:Hydro, enews:Geothermal)"
+          - "owl:AllDifferent(enews:Coal, enews:NaturalGas, enews:Oil)"
           - "(... all sibling groups)"
 
   - cq: CQ-003
@@ -95,22 +99,22 @@ cq_axiom_mappings:
     axiom_patterns:
       - pattern: "Existential Restriction (#2)"
         description: >
-          Every post has exactly one author.
+          Every post has exactly one author account.
         axioms:
-          - "Post SubClassOf postedBy some Author"
+          - "Post SubClassOf postedBy some AuthorAccount"
           - "postedBy rdf:type owl:FunctionalProperty"
       - pattern: "HasKey (#11)"
         description: >
-          Author HasKey handle — unique identity per Bluesky account.
+          AuthorAccount HasKey handle — unique identity per Bluesky account.
         axioms:
-          - "HasKey(Author, handle)"
+          - "HasKey(AuthorAccount, handle)"
 
   - cq: CQ-008
     question: "What energy topics does a given author primarily share about?"
     axiom_patterns:
       - pattern: "No additional axioms beyond CQ-003 and CQ-007"
         description: >
-          This CQ traverses Post postedBy Author, Post sharesArticle
+          This CQ traverses Post postedBy AuthorAccount, Post sharesArticle
           Article, Article coversTopic EnergyTopic. Requires sharesArticle
           property (functional, optional).
         axioms:
@@ -126,16 +130,18 @@ cq_axiom_mappings:
   - cq: CQ-010
     question: "Is a given energy source classified as renewable or fossil?"
     axiom_patterns:
-      - pattern: "Simple SubClassOf (#1)"
+      - pattern: "SKOS Broader/Narrower"
         description: >
-          The taxonomy hierarchy answers this via rdfs:subClassOf+ inference.
-          Solar SubClassOf Renewable, so ASK { Solar rdfs:subClassOf+ Renewable }
-          returns true.
-      - pattern: "Disjoint Classes (#5)"
+          The topic hierarchy answers this via skos:broader* property path
+          inference. enews:Solar skos:broader enews:Renewable, so
+          ASK { enews:Solar skos:broader* enews:Renewable } returns true.
+      - pattern: "owl:differentFrom"
         description: >
-          Renewable and Fossil are disjoint — an energy source cannot be both.
+          Renewable and Fossil are distinct individuals (owl:differentFrom) —
+          a topic cannot be broader-of both simultaneously in a well-formed
+          SKOS scheme.
         axioms:
-          - "DisjointClasses: Renewable, Fossil, Nuclear, EnergyStorage, Hydrogen, CarbonCapture, ..."
+          - "owl:AllDifferent(enews:Renewable, enews:Fossil, enews:Nuclear, enews:EnergyStorage, enews:Hydrogen, enews:CarbonCapture, ...)"
 
   # --- Should Have CQs ---
 
@@ -149,11 +155,13 @@ cq_axiom_mappings:
   - cq: CQ-012
     question: "Which energy topics is a given organization associated with?"
     axiom_patterns:
-      - pattern: "No additional axioms beyond CQ-003"
+      - pattern: "Object Property Declaration"
         description: >
-          Traverses Article mentionsOrganization Organization and
-          Article coversTopic EnergyTopic. Requires mentionsOrganization
-          property.
+          Requires mentionsOrganization object property (domain: Article,
+          range: Organization). Traverses Article mentionsOrganization
+          Organization and Article coversTopic EnergyTopic. The coversTopic
+          property is introduced by CQ-003; mentionsOrganization is
+          introduced here.
 
   - cq: CQ-013
     question: "Which countries or regions are covered in energy news?"
@@ -170,34 +178,59 @@ cq_axiom_mappings:
   - cq: CQ-014
     question: "What energy topics are covered in a given country?"
     axiom_patterns:
-      - pattern: "No additional axioms beyond CQ-003 and CQ-013"
+      - pattern: "Object Property Declaration"
         description: >
-          Traverses Article hasGeographicFocus GeographicEntity and
-          Article coversTopic EnergyTopic. Requires hasGeographicFocus
-          property.
+          Requires hasGeographicFocus object property (domain: Article,
+          range: GeographicEntity). Traverses Article hasGeographicFocus
+          GeographicEntity and Article coversTopic EnergyTopic. The
+          coversTopic property is introduced by CQ-003; hasGeographicFocus
+          is introduced here.
+
+  - cq: CQ-015
+    question: "What type or sector does a given organization belong to?"
+    axiom_patterns:
+      - pattern: "Simple SubClassOf (#1)"
+        description: >
+          Organization is declared as a class. Sector/type classification
+          could be modeled as a data property or via a separate SKOS scheme
+          in a future version. For v1, this is answerable via rdfs:label
+          and skos:definition annotations on Organization instances.
+
+  - cq: CQ-016
+    question: "How does energy news coverage volume compare across geographic regions?"
+    axiom_patterns:
+      - pattern: "No additional axioms beyond CQ-013 and CQ-014"
+        description: >
+          Aggregation query counting articles per GeographicEntity.
+          Requires hasGeographicFocus property (covered by CQ-014).
 
 # --- Axiom Pattern Summary ---
 
 patterns_used:
   - id: 1
     name: "Simple SubClassOf"
-    count: "~67 axioms (all classes)"
-    notes: "Foundation of the taxonomy"
+    count: "~8 axioms (OWL classes only)"
+    notes: "Foundation of domain class declarations (Article, Publication, Post, AuthorAccount, Feed, Organization, GeographicEntity, EnergyTopic)"
 
   - id: 2
     name: "Existential Restriction"
     count: 2
-    notes: "Article coversTopic some EnergyTopic; Post postedBy some Author"
+    notes: "Article coversTopic some EnergyTopic; Post postedBy some AuthorAccount"
 
   - id: 5
-    name: "Disjoint Classes"
+    name: "owl:differentFrom / owl:AllDifferent"
     count: "~14 groups"
-    notes: "All sibling groups within EnergyTopic; top-level domain classes"
+    notes: "Sibling topic individuals within SKOS hierarchy; top-level domain classes remain owl:disjointWith"
 
   - id: 11
     name: "HasKey"
     count: 3
-    notes: "Article(url), Author(handle), Publication(domain)"
+    notes: "Article(url), AuthorAccount(handle), Publication(siteDomain)"
+
+  - id: "skos"
+    name: "SKOS Broader/Narrower + Individual Assertions"
+    count: "~55 rdf:type + ~35 skos:broader assertions"
+    notes: "Topic individuals typed as EnergyTopic and skos:Concept; hierarchy via skos:broader"
 
 patterns_not_needed:
   - id: 3
@@ -208,7 +241,7 @@ patterns_not_needed:
     reason: "No defined classes needed — taxonomy is asserted"
   - id: 6
     name: "Covering Axiom"
-    reason: "Topic taxonomy is not exhaustive — new topics may be added"
+    reason: "Topic scheme is not exhaustive — new topics may be added"
   - id: 7
     name: "Qualified Cardinality"
     reason: "No CQ requires exact cardinality"

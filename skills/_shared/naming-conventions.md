@@ -23,8 +23,12 @@ these conventions.
 
 - **Object properties**: `camelCase` verb phrases (e.g., `hasComponent`,
   `partOf`, `participatesIn`)
-- **Data properties**: `camelCase` with `has` prefix for attributes (e.g.,
-  `hasName`, `hasWeight`, `hasStartDate`)
+- **Data properties**: `camelCase`. Use `has` prefix for domain-specific or
+  ambiguous attributes (e.g., `hasWeight`, `hasStartDate`). Bare names are
+  acceptable when aligned to a well-known vocabulary (e.g., schema.org) and
+  unambiguous in context (e.g., `title`, `url`, `publishedDate`). Avoid bare
+  names that collide with OWL/RDFS keywords — e.g., use `siteDomain` instead
+  of `domain` to avoid confusion with `rdfs:domain`.
 - **Inverse naming**: Use symmetric pairs — `hasPart` / `partOf`,
   `produces` / `producedBy`
 

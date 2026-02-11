@@ -55,7 +55,7 @@
     - "Actor sees which topics the organization appears under"
   postconditions:
     - "Actor understands an organization's news footprint"
-  related_cqs: [CQ-011, CQ-012]
+  related_cqs: [CQ-011, CQ-012, CQ-015]
   priority: should_have
 
 - id: UC-005
@@ -67,7 +67,8 @@
   main_flow:
     - "Actor queries by country or region"
     - "System returns articles and topics for that geography"
+    - "Actor compares coverage volume across regions"
   postconditions:
     - "Actor sees coverage distribution by geography"
-  related_cqs: [CQ-013, CQ-014]
+  related_cqs: [CQ-013, CQ-014, CQ-016]
   priority: should_have

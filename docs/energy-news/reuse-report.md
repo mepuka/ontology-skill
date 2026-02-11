@@ -3,7 +3,7 @@
 ## Summary
 
 This report evaluates existing ontologies and vocabularies for potential reuse in
-the Energy News Media Ontology (~67 classes, OWL 2 DL). The ontology models the
+the Energy News Media Ontology (~8 classes, ~55 SKOS topic individuals, OWL 2 DL). The ontology models the
 intersection of energy topics and news media activity as observed through Bluesky
 social media, per the ORSD and scope documents.
 
@@ -151,7 +151,7 @@ ontology self-contained and lightweight while maintaining semantic interoperabil
   | `schema:Article`            | `Article`             | Parent type |
   | `schema:Organization`       | `Organization`        | Direct match |
   | `schema:NewsMediaOrganization` | `Publication`      | Close; subclass of Organization |
-  | `schema:Person`             | `Author`              | Partial; our Author is specifically a Bluesky account |
+  | `schema:Person`             | `AuthorAccount`       | Related match; our AuthorAccount is a Bluesky account, not a person |
   | `schema:SocialMediaPosting` | `Post`                | Good match; subclass of Article > CreativeWork |
   | `schema:WebSite`            | (no direct match)     | Could model Bluesky feeds |
   | `schema:Place`              | `GeographicEntity`    | Close; has subtypes Country, State, etc. |
@@ -256,7 +256,7 @@ ontology self-contained and lightweight while maintaining semantic interoperabil
   Location, Event, Product, etc. Designed to unify NER type systems across
   different tools.
 - **Relevance to our pre-glossary**: Minimal. We already model Organization,
-  Person (Author), and GeographicEntity. NERD's value was in NER tool integration,
+  Person (AuthorAccount), and GeographicEntity. NERD's value was in NER tool integration,
   which is out of scope for our ontology.
 - **Reuse recommendation**: **Skip**. Inactive, and schema.org covers entity types
   more comprehensively.
@@ -277,19 +277,19 @@ ontology self-contained and lightweight while maintaining semantic interoperabil
   | SIOC Term          | Our Term    | Fit |
   |--------------------|-------------|-----|
   | `sioc:Post`        | `Post`      | Good match for social media posts |
-  | `sioc:UserAccount` | `Author`    | Good match for Bluesky accounts |
+  | `sioc:UserAccount` | `AuthorAccount` | Good match for Bluesky accounts |
   | `sioc:Forum`       | `Feed`      | Partial (a Bluesky feed is like a forum) |
   | `sioc:Site`        | (no match)  | Could model Bluesky platform |
   | `sioc:has_creator` | `postedBy`  | Direct equivalent |
 
 - **Reuse recommendation**: **Reference / align via SSSOM**. SIOC is the most
-  semantically precise vocabulary for our social media layer (Post, Author, Feed).
+  semantically precise vocabulary for our social media layer (Post, AuthorAccount, Feed).
   However:
   - It is relatively niche and not as widely adopted as schema.org
   - schema.org `SocialMediaPosting` now covers similar ground
   - Importing SIOC would add a dependency for marginal benefit
   - Best approach: declare `owl:equivalentClass` from `enews:Post` to
-    `sioc:Post`, `enews:Author` to `sioc:UserAccount` in our ontology header.
+    `sioc:Post`, `enews:AuthorAccount` to `sioc:UserAccount` in our ontology header.
     This is lightweight and adds interoperability at zero import cost.
 
 ---
@@ -351,14 +351,16 @@ referenced by prefix) in our ontology.
 - **Reuse recommendation**: **Direct import (annotation properties)**. SKOS should
   be used throughout the ontology for labels, definitions, and cross-vocabulary
   mappings. Import `skos:` prefix and use annotation properties on all classes.
-  For the energy topic taxonomy itself, we have a design choice:
-  - **Option A**: Model topics as OWL classes (current pre-glossary approach) with
-    `rdfs:subClassOf` hierarchy, annotated with SKOS labels
-  - **Option B**: Model topics as `skos:Concept` instances in a `skos:ConceptScheme`
-  - **Recommendation**: Option A (OWL classes) for topics that articles are
-    classified under, since this integrates cleanly with OWL DL reasoning.
-    Use SKOS annotation properties (`skos:prefLabel`, `skos:definition`,
-    `skos:altLabel`) on the OWL classes.
+  For the energy topic taxonomy itself, the design choice was:
+  - ~~**Option A**: Model topics as OWL classes with `rdfs:subClassOf` hierarchy~~
+    (superseded)
+  - **Option B (adopted)**: Model topics as `skos:Concept` instances in a
+    `skos:ConceptScheme`, simultaneously typed as instances of `enews:EnergyTopic`
+  - **Decision**: Option B was adopted per DD-001 in `conceptual-model.yaml`.
+    Topics are named individuals with `skos:broader`/`skos:narrower` hierarchy.
+    SKOS annotation properties (`skos:prefLabel`, `skos:definition`,
+    `skos:altLabel`) are used on the topic individuals. This follows W3C SKOS
+    guidance, IPTC NewsCodes practice, and avoids class-as-instance punning.
 
 ### 3.3 RDFS / OWL Standard Vocabulary
 
@@ -378,7 +380,7 @@ referenced by prefix) in our ontology.
 - **License**: W3C (open)
 - **Maintained**: Yes (W3C Recommendation)
 - **Relevance**: Could model provenance chains: Article was published by
-  Publication, shared via Post by Author, collected from Feed. However, this
+  Publication, shared via Post by AuthorAccount, collected from Feed. However, this
   adds complexity beyond our lightweight scope.
 - **Reuse recommendation**: **Skip for v1; consider for future**. Our simple
   `publishedBy`, `postedBy`, `sharesArticle` properties handle the provenance
@@ -449,7 +451,7 @@ Data ecosystem. No energy-specific news vocabulary exists on LOV.
 | `schema:Organization`            | `enews:Organization`  | `owl:equivalentClass` |
 | `schema:NewsMediaOrganization`   | `enews:Publication`   | `rdfs:subClassOf` (our Publication is narrower) |
 | `schema:SocialMediaPosting`      | `enews:Post`          | `owl:equivalentClass` |
-| `schema:Person`                  | `enews:Author`        | `rdfs:subClassOf` (Author is narrower) |
+| `schema:Person`                  | `enews:AuthorAccount`  | `skos:relatedMatch` (account, not person) |
 | `schema:Place`                   | `enews:GeographicEntity` | `rdfs:subClassOf` |
 | `schema:about`                   | `enews:coversTopic`   | `owl:equivalentProperty` |
 | `schema:publisher`               | `enews:publishedBy`   | `owl:equivalentProperty` |
@@ -458,7 +460,7 @@ Data ecosystem. No energy-specific news vocabulary exists on LOV.
 | `schema:datePublished`           | `enews:publishedDate` | `owl:equivalentProperty` |
 | `schema:url`                     | `enews:url`           | `owl:equivalentProperty` |
 | `sioc:Post`                      | `enews:Post`          | `owl:equivalentClass` |
-| `sioc:UserAccount`               | `enews:Author`        | `owl:equivalentClass` |
+| `sioc:UserAccount`               | `enews:AuthorAccount`  | `owl:equivalentClass` |
 
 ### Tier 3: SSSOM Mapping File (external cross-references, not in OWL file)
 
@@ -524,11 +526,13 @@ Based on this analysis, the ontology should declare these prefixes:
 
 ### What we must build from scratch
 
-- **Energy topic taxonomy** (~55 classes): No existing ontology provides a curated,
-  news-oriented energy topic hierarchy at our granularity. This is the core
-  intellectual contribution of the ontology. Build it as an OWL class hierarchy
-  under `enews:EnergyTopic`, annotated richly with SKOS labels, definitions, and
-  altLabels (acronyms like SMR, PPA, CCUS, etc.).
+- **Energy topic taxonomy** (~55 SKOS concept individuals): No existing ontology
+  provides a curated, news-oriented energy topic hierarchy at our granularity.
+  This is the core intellectual contribution of the ontology. Built as named
+  individuals of `enews:EnergyTopic` within a `skos:ConceptScheme`, with
+  `skos:broader`/`skos:narrower` hierarchy and rich SKOS annotations
+  (`skos:prefLabel`, `skos:definition`, `skos:altLabel` for acronyms like
+  SMR, PPA, CCUS, etc.).
 - **Energy news-specific properties**: `coversTopic`, `sharesArticle`,
   `mentionsOrganization`, `hasGeographicFocus` -- these are domain-specific
   composites that no existing vocabulary provides at the right granularity.
@@ -559,6 +563,30 @@ Based on this analysis, the ontology should declare these prefixes:
 6. **Verify IPTC MediaTopic codes** -- confirm exact IPTC `medtop` URIs before
    committing SSSOM mappings (codes cited above are from training data and should
    be verified against the live IPTC NewsCodes CV at https://cv.iptc.org/newscodes/mediatopic/)
+
+---
+
+## 9. Scope Limitations
+
+The following scout outputs were intentionally omitted as they are not
+applicable to this lightweight ontology:
+
+- **ROBOT extract module**: Not needed. The ontology does not import any
+  external OWL modules. All reuse is via alignment axioms (owl:equivalentClass,
+  rdfs:subClassOf) declared in the ontology header, not via owl:imports.
+  ROBOT extract is designed for extracting subsets from large imported
+  ontologies, which does not apply here.
+
+- **Ontology Design Pattern (ODP) recommendations**: Not needed for this
+  ontology. The design uses standard OWL + SKOS patterns (concept scheme
+  for topic taxonomy, simple object/datatype properties for media entities).
+  No complex reification, n-ary relations, or role patterns are required
+  by the CQs.
+
+- **Weighted reuse scorecard**: Omitted because all reuse is at the alignment
+  level (Tier 2: equivalence axioms, Tier 3: SSSOM mappings). No modules
+  are imported, so there is nothing to score on coverage, maintenance,
+  license compatibility, or integration complexity dimensions.
 
 ---
 
