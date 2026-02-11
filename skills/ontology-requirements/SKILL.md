@@ -44,7 +44,7 @@ Gather from the user:
 - What is IN scope and what is OUT of scope
 - Known constraints (OWL profile, size, existing systems)
 
-Produce `docs/scope.md` documenting scope decisions.
+Produce `docs/{name}/scope.md` documenting scope decisions.
 
 ### Step 1.5: Use Case Development
 
@@ -72,7 +72,7 @@ Use this template for each use case:
 Guidance:
 - Each use case should generate 3-10 CQs.
 - Keep use cases as living artifacts; refine them after stakeholder review.
-- Store use cases in `docs/use-cases.yaml`.
+- Store use cases in `docs/{name}/use-cases.yaml`.
 
 Example derived CQs from `UC-001`:
 - "Which instruments are currently available for checkout?"
@@ -149,20 +149,20 @@ From all CQs, extract candidate terms:
 - **Candidate properties**: verbs and relationship phrases
 - **Candidate individuals**: proper nouns, specific instances
 
-Output as `docs/pre-glossary.csv` with columns:
+Output as `docs/{name}/pre-glossary.csv` with columns:
 `term, category (class|property|individual), source_cq, notes`
 
 ### Step 7: Test Suite Generation
 
 For each formalized CQ:
-- Generate a `.sparql` file in `tests/`
+- Generate a `.sparql` file in `tests/{name}/`
 - Enumerative CQs: SELECT query expecting non-empty results
 - Constraint CQs: SELECT query expecting zero rows (zero violations)
-- Generate `tests/cq-test-manifest.yaml` linking CQs to test files
+- Generate `tests/{name}/cq-test-manifest.yaml` linking CQs to test files
 
 ### Step 8: Traceability Matrix
 
-Maintain explicit requirement traceability in `docs/traceability-matrix.csv`.
+Maintain explicit requirement traceability in `docs/{name}/traceability-matrix.csv`.
 
 Required mapping chain:
 
@@ -174,7 +174,7 @@ CSV template:
 
 ```csv
 stakeholder_need,use_case_id,cq_id,ontology_terms,sparql_test
-"Track instrument availability",UC-001,CQ-001,"Instrument;hasAvailabilityStatus",tests/cq-001.sparql
+"Track instrument availability",UC-001,CQ-001,"Instrument;hasAvailabilityStatus",tests/{name}/cq-001.sparql
 ```
 
 Rules:
@@ -188,7 +188,7 @@ Rules:
 
 ```bash
 # Write individual test queries
-cat > tests/cq-001.sparql << 'EOF'
+cat > tests/{name}/cq-001.sparql << 'EOF'
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX : <http://example.org/ontology/>
@@ -207,7 +207,7 @@ EOF
 ```bash
 uv run python -c "
 from rdflib.plugins.sparql import prepareQuery
-prepareQuery(open('tests/cq-001.sparql').read())
+prepareQuery(open('tests/{name}/cq-001.sparql').read())
 print('Valid')
 "
 ```
@@ -218,23 +218,23 @@ This skill produces:
 
 | Artifact | Location | Format | Description |
 |----------|----------|--------|-------------|
-| Scope document | `docs/scope.md` | Markdown | In/out scope, constraints, stakeholders |
-| Use case catalog | `docs/use-cases.yaml` | YAML | Structured use cases driving CQ derivation |
-| ORSD | `docs/orsd.md` | Markdown | Full requirements specification |
-| CQ list | `docs/competency-questions.yaml` | YAML | Structured CQ definitions with SPARQL |
-| Pre-glossary | `docs/pre-glossary.csv` | CSV | Candidate terms extracted from CQs |
-| Test queries | `tests/cq-*.sparql` | SPARQL | One file per CQ |
-| Test manifest | `tests/cq-test-manifest.yaml` | YAML | Maps CQ IDs to test files and expectations |
-| Traceability matrix | `docs/traceability-matrix.csv` | CSV | End-to-end trace: need -> use case -> CQ -> term -> test |
+| Scope document | `docs/{name}/scope.md` | Markdown | In/out scope, constraints, stakeholders |
+| Use case catalog | `docs/{name}/use-cases.yaml` | YAML | Structured use cases driving CQ derivation |
+| ORSD | `docs/{name}/orsd.md` | Markdown | Full requirements specification |
+| CQ list | `docs/{name}/competency-questions.yaml` | YAML | Structured CQ definitions with SPARQL |
+| Pre-glossary | `docs/{name}/pre-glossary.csv` | CSV | Candidate terms extracted from CQs |
+| Test queries | `tests/{name}/cq-*.sparql` | SPARQL | One file per CQ |
+| Test manifest | `tests/{name}/cq-test-manifest.yaml` | YAML | Maps CQ IDs to test files and expectations |
+| Traceability matrix | `docs/{name}/traceability-matrix.csv` | CSV | End-to-end trace: need -> use case -> CQ -> term -> test |
 
 ## Handoff
 
 **Receives from**: User input (domain description, use cases, stakeholder needs)
 
 **Passes to**:
-- `ontology-scout` — `docs/pre-glossary.csv`, `docs/scope.md`
-- `ontology-conceptualizer` — `docs/competency-questions.yaml`,
-  `docs/pre-glossary.csv`, `docs/traceability-matrix.csv`
+- `ontology-scout` — `docs/{name}/pre-glossary.csv`, `docs/{name}/scope.md`
+- `ontology-conceptualizer` — `docs/{name}/competency-questions.yaml`,
+  `docs/{name}/pre-glossary.csv`, `docs/{name}/traceability-matrix.csv`
 
 **Handoff checklist**:
 - [ ] All Must-Have CQs have formalized SPARQL queries

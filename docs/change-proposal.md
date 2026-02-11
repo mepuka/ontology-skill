@@ -120,7 +120,7 @@ tests.
   CQ ID → Ontology Term(s) → SPARQL Test
 - Guidance that every stakeholder need must trace to at least one CQ, and
   every CQ must trace to at least one test
-- The matrix should be maintained as `docs/traceability-matrix.csv` and
+- The matrix should be maintained as `docs/{name}/traceability-matrix.csv` and
   updated as work proceeds through later skills
 - Add the traceability matrix to the Outputs table and Handoff checklist
 

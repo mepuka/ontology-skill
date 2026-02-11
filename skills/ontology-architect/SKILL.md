@@ -367,15 +367,15 @@ This skill produces:
 ## Handoff
 
 **Receives from**:
-- `ontology-conceptualizer` — `docs/glossary.csv`,
-  `docs/conceptual-model.yaml`, `docs/bfo-alignment.md`,
-  `docs/property-design.yaml`, `docs/axiom-plan.yaml`
-- `ontology-requirements` (indirect, via pipeline) — `tests/*.sparql`,
-  `tests/cq-test-manifest.yaml` (CQ test suite to forward to validator)
+- `ontology-conceptualizer` — `docs/{name}/glossary.csv`,
+  `docs/{name}/conceptual-model.yaml`, `docs/{name}/bfo-alignment.md`,
+  `docs/{name}/property-design.yaml`, `docs/{name}/axiom-plan.yaml`
+- `ontology-requirements` (indirect, via pipeline) — `tests/{name}/*.sparql`,
+  `tests/{name}/cq-test-manifest.yaml` (CQ test suite to forward to validator)
 
 **Passes to**: `ontology-validator` — `ontologies/{name}/{name}.ttl`,
-`ontologies/{name}/shapes/{name}-shapes.ttl`, `tests/*.sparql`,
-`tests/cq-test-manifest.yaml`
+`ontologies/{name}/shapes/{name}-shapes.ttl`, `tests/{name}/*.sparql`,
+`tests/{name}/cq-test-manifest.yaml`
 
 **Handoff checklist**:
 - [ ] Ontology passes `robot reason` with zero unsatisfiable classes

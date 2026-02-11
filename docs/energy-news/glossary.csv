@@ -79,6 +79,7 @@ postedBy,posted by;shared by,An ObjectProperty that links a Post to the AuthorAc
 sharesArticle,shares;links to,An ObjectProperty that links a Post to the Article it shares via embedded link,object_property,CQ-008,none
 mentionsOrganization,mentions,An ObjectProperty that links an Article to an Organization mentioned in its coverage,object_property,CQ-012,none
 hasGeographicFocus,geographic focus;covers region,An ObjectProperty that links an Article to a GeographicEntity representing its geographic focus,object_property,CQ-014,none
+hasSector,sector;industry type,An ObjectProperty that links an Organization to an EnergyTopic sector it operates in,object_property,CQ-015,none
 handle,bsky handle;bluesky handle,A DatatypeProperty that holds the Bluesky handle string for an AuthorAccount,data_property,CQ-007,none
 title,headline,A DatatypeProperty that holds the title string of an Article,data_property,CQ-003,none
 url,link;URI,A DatatypeProperty that holds the URL of an Article,data_property,CQ-003,none

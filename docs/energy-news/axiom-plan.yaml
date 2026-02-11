@@ -189,12 +189,15 @@ cq_axiom_mappings:
   - cq: CQ-015
     question: "What type or sector does a given organization belong to?"
     axiom_patterns:
-      - pattern: "Simple SubClassOf (#1)"
+      - pattern: "Object Property Declaration"
         description: >
-          Organization is declared as a class. Sector/type classification
-          could be modeled as a data property or via a separate SKOS scheme
-          in a future version. For v1, this is answerable via rdfs:label
-          and skos:definition annotations on Organization instances.
+          Requires hasSector object property (domain: Organization,
+          range: EnergyTopic). This provides explicit organization
+          sector classification for CQ-015.
+        axioms:
+          - "Organization SubClassOf hasSector only EnergyTopic (optional local closure)"
+          - "hasSector Domain Organization"
+          - "hasSector Range EnergyTopic"
 
   - cq: CQ-016
     question: "How does energy news coverage volume compare across geographic regions?"

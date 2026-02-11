@@ -107,6 +107,22 @@ object_properties:
       Should-have property (CQ-014). Articles may have zero geographic
       focus (abstract/global topics) or multiple (cross-border coverage).
 
+  - name: hasSector
+    type: ObjectProperty
+    definition: "Links an Organization to an EnergyTopic sector it operates in"
+    domain: Organization
+    range: EnergyTopic
+    cardinality:
+      min: 0
+      max: unbounded
+    characteristics: []
+    inverse: null
+    bfo_ro_relation: "rdfs:subPropertyOf IAO:0000136 (is_about)"
+    notes: >
+      Should-have property (CQ-015). This enables explicit sector typing
+      for organizations (for example CATL hasSector EnergyStorage and
+      hasSector Manufacturing). Multiple sectors are allowed.
+
 # --- Datatype Properties ---
 
 datatype_properties:

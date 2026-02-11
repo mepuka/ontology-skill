@@ -360,20 +360,20 @@
   priority: should_have
   sample_answer:
     - org: enews:org_catl
-      sector: "Battery manufacturing"
+      sector: enews:EnergyStorage
   derivation_method: direct_lookup
   sparql: |
     PREFIX enews: <http://example.org/ontology/energy-news#>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-    SELECT ?label ?definition WHERE {
+    SELECT ?sector ?sectorLabel WHERE {
       enews:org_catl a enews:Organization ;
-                     rdfs:label ?label ;
-                     skos:definition ?definition .
+                     enews:hasSector ?sector .
+      ?sector rdfs:label ?sectorLabel .
     }
   expected_result: non_empty
-  required_classes: [Organization]
-  out_of_scope: "Sector classification is via annotations for v1; a formal sector taxonomy is deferred"
+  required_classes: [Organization, EnergyTopic]
+  required_properties: [hasSector]
+  out_of_scope: "Does not infer sectors from article co-mentions; relies on explicit organization sector assertions"
   required_axioms: []
   requires_reasoning: false
 

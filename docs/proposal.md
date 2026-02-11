@@ -371,17 +371,17 @@ From all CQs, extract:
 Output as `pre-glossary.csv`
 
 ### 7. Test Suite Generation
-- Generate SPARQL files for each CQ in `tests/` directory
-- Generate `cq-test-manifest.yaml`
+- Generate SPARQL files for each CQ in `tests/{name}/` directory
+- Generate `tests/{name}/cq-test-manifest.yaml`
 - Constraint CQs become violation queries (expect 0 results)
 
 ## Outputs
-- `docs/orsd.md` -- Ontology Requirements Specification Document
-- `docs/competency-questions.yaml` -- structured CQ list
-- `tests/*.sparql` -- SPARQL test queries
-- `tests/cq-test-manifest.yaml` -- test manifest
-- `docs/pre-glossary.csv` -- extracted candidate terms
-- `docs/scope.md` -- scope definition (in/out)
+- `docs/{name}/orsd.md` -- Ontology Requirements Specification Document
+- `docs/{name}/competency-questions.yaml` -- structured CQ list
+- `tests/{name}/*.sparql` -- SPARQL test queries
+- `tests/{name}/cq-test-manifest.yaml` -- test manifest
+- `docs/{name}/pre-glossary.csv` -- extracted candidate terms
+- `docs/{name}/scope.md` -- scope definition (in/out)
 
 ## Anti-Patterns to Avoid
 - CQs that are too vague ("What is the meaning of X?")
@@ -573,11 +573,11 @@ Read `reference/anti-patterns.md`. Check for:
 - Information-physical conflation
 
 ## Outputs
-- `docs/glossary.csv` -- complete term glossary
-- `docs/conceptual-model.yaml` -- structured model
-- `docs/bfo-alignment.md` -- alignment rationale for each class
-- `docs/relation-design.yaml` -- property specifications
-- `docs/axiom-plan.yaml` -- planned axiom patterns per CQ
+- `docs/{name}/glossary.csv` -- complete term glossary
+- `docs/{name}/conceptual-model.yaml` -- structured model
+- `docs/{name}/bfo-alignment.md` -- alignment rationale for each class
+- `docs/{name}/property-design.yaml` -- property specifications
+- `docs/{name}/axiom-plan.yaml` -- planned axiom patterns per CQ
 ```
 
 ### 3.4 Skill: ontology-architect
@@ -916,13 +916,13 @@ deprecated term references, annotation whitespace issues.
 ```bash
 # Run all CQ test queries
 robot verify --input ontology.ttl \
-  --queries tests/ \
+  --queries tests/{name}/ \
   --output-dir test-results/
 
 # Or using Python test runner:
 python scripts/run_cq_tests.py \
   --ontology ontology.ttl \
-  --manifest tests/cq-test-manifest.yaml \
+  --manifest tests/{name}/cq-test-manifest.yaml \
   --test-data tests/test-abox.ttl
 ```
 
@@ -1290,18 +1290,21 @@ For any ontology modification:
 
 ### 6.2 Shared Scripts
 
-All complex operations are wrapped in standalone scripts that work
-regardless of the agent platform:
+Core repository automation scripts are:
 
 ```bash
-# scripts/add_class.py -- works with any agent
-python scripts/add_class.py --ontology music.owl --class Piano --parent Instrument
+# scripts/build_energy_news.py -- generate ontology artifacts from docs/energy-news/*
+python scripts/build_energy_news.py
 
-# scripts/validate_all.sh -- full validation pipeline
-bash scripts/validate_all.sh ontology.ttl shapes/
+# scripts/validate_turtle.py -- syntax validation for generated Turtle modules
+python scripts/validate_turtle.py \
+  ontologies/energy-news/energy-news.ttl \
+  ontologies/energy-news/energy-news-reference-individuals.ttl \
+  ontologies/energy-news/energy-news-data.ttl \
+  ontologies/energy-news/shapes/energy-news-shapes.ttl
 
-# scripts/run_mapping.sh -- mapping pipeline
-bash scripts/run_mapping.sh source.ttl target.ttl output.sssom.tsv
+# scripts/validate_sssom.py -- SSSOM structural validation
+python scripts/validate_sssom.py mappings/example.sssom.tsv
 ```
 
 ---

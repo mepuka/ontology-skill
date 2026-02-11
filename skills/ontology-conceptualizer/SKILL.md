@@ -51,7 +51,7 @@ From the pre-glossary, refine each term:
 | Source CQ | Which competency question requires this term |
 | BFO Category | Alignment to BFO (from Step 3) |
 
-Output as `docs/glossary.csv`.
+Output as `docs/{name}/glossary.csv`.
 
 ### Step 2: Taxonomy Design (Middle-Out Strategy)
 
@@ -75,7 +75,7 @@ Build the class hierarchy using the middle-out approach:
 - Split modules along clear criteria when needed:
   behavioral vs functional vs structural views, or lifecycle slices such as
   as-designed / as-built / as-configured / as-maintained.
-- Record module boundaries directly in `docs/conceptual-model.yaml`.
+- Record module boundaries directly in `docs/{name}/conceptual-model.yaml`.
 
 ### Step 2.5: Architecture Layering
 
@@ -99,7 +99,7 @@ For each top-level domain class, apply the BFO decision procedure from
 4. **If Dependent**: Quality, Role, Disposition, Function, or GDC?
 5. **If Occurrent**: Process, Process Boundary, or Temporal Region?
 
-Document each alignment decision with rationale in `docs/bfo-alignment.md`.
+Document each alignment decision with rationale in `docs/{name}/bfo-alignment.md`.
 
 ### Step 4: Property Design
 
@@ -151,7 +151,7 @@ Do you want to RESTRICT per-class usage?
 See anti-pattern #10 in `_shared/anti-patterns.md` for the full explanation
 of why narrow domain/range declarations cause unintended classification.
 
-Output as `docs/property-design.yaml`.
+Output as `docs/{name}/property-design.yaml`.
 
 ### Step 5: Axiom Pattern Selection
 
@@ -169,7 +169,7 @@ For each CQ, determine the needed axiom pattern from
 | "X has high/medium/low Z" | Value partition (#8) |
 | "X did Y to Z at time T" | N-ary relation (#9) |
 
-Output as `docs/axiom-plan.yaml`.
+Output as `docs/{name}/axiom-plan.yaml`.
 
 ### Step 6: Anti-Pattern Detection
 
@@ -211,16 +211,16 @@ This skill produces:
 
 | Artifact | Location | Format | Description |
 |----------|----------|--------|-------------|
-| Glossary | `docs/glossary.csv` | CSV | Complete term glossary with categories and BFO alignment |
-| Conceptual model | `docs/conceptual-model.yaml` | YAML | Structured model: classes, hierarchy, module boundaries, layer assignments |
-| BFO alignment | `docs/bfo-alignment.md` | Markdown | Alignment rationale for each top-level class |
-| Property design | `docs/property-design.yaml` | YAML | Property specifications with domain/range/characteristics |
-| Axiom plan | `docs/axiom-plan.yaml` | YAML | Planned axiom patterns per CQ |
+| Glossary | `docs/{name}/glossary.csv` | CSV | Complete term glossary with categories and BFO alignment |
+| Conceptual model | `docs/{name}/conceptual-model.yaml` | YAML | Structured model: classes, hierarchy, module boundaries, layer assignments |
+| BFO alignment | `docs/{name}/bfo-alignment.md` | Markdown | Alignment rationale for each top-level class |
+| Property design | `docs/{name}/property-design.yaml` | YAML | Property specifications with domain/range/characteristics |
+| Axiom plan | `docs/{name}/axiom-plan.yaml` | YAML | Planned axiom patterns per CQ |
 
 ## Handoff
 
 **Receives from**:
-- `ontology-requirements` — `docs/competency-questions.yaml`, `docs/pre-glossary.csv`
+- `ontology-requirements` — `docs/{name}/competency-questions.yaml`, `docs/{name}/pre-glossary.csv`
 - `ontology-scout` — reuse report, import term lists, ODP recommendations
 
 **Passes to**: `ontology-architect` — all five output artifacts listed above

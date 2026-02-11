@@ -95,11 +95,11 @@ requirements ──→ scout ──→ conceptualizer ──→ architect ──
 
 | From | To | Artifacts Passed |
 |------|----|-----------------|
-| requirements | scout | `docs/pre-glossary.csv`, `docs/scope.md` |
-| requirements | conceptualizer | `docs/competency-questions.yaml`, `docs/pre-glossary.csv` |
+| requirements | scout | `docs/{name}/pre-glossary.csv`, `docs/{name}/scope.md` |
+| requirements | conceptualizer | `docs/{name}/competency-questions.yaml`, `docs/{name}/pre-glossary.csv` |
 | scout | conceptualizer | reuse report, import term lists, ODP recommendations |
-| conceptualizer | architect | `docs/glossary.csv`, `docs/conceptual-model.yaml`, `docs/bfo-alignment.md`, `docs/axiom-plan.yaml`, `docs/property-design.yaml` |
-| architect | validator | `ontologies/{name}/{name}.ttl`, `ontologies/{name}/shapes/{name}-shapes.ttl`, `tests/*.sparql`, `tests/cq-test-manifest.yaml` |
+| conceptualizer | architect | `docs/{name}/glossary.csv`, `docs/{name}/conceptual-model.yaml`, `docs/{name}/bfo-alignment.md`, `docs/{name}/axiom-plan.yaml`, `docs/{name}/property-design.yaml` |
+| architect | validator | `ontologies/{name}/{name}.ttl`, `ontologies/{name}/shapes/{name}-shapes.ttl`, `tests/{name}/*.sparql`, `tests/{name}/cq-test-manifest.yaml` |
 
 ### Pipeline B — Mapping
 

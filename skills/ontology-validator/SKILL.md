@@ -101,7 +101,7 @@ Standard shapes:
 ```bash
 # Run all CQ test queries
 robot verify --input ontology.ttl \
-  --queries tests/ \
+  --queries tests/{name}/ \
   --output-dir test-results/
 ```
 
@@ -177,18 +177,18 @@ This skill produces:
 
 | Artifact | Location | Format | Description |
 |----------|----------|--------|-------------|
-| Validation report | `docs/validation-report.md` | Markdown | Summary: pass/fail per check, metrics |
+| Validation report | `docs/{name}/validation-report.md` | Markdown | Summary: pass/fail per check, metrics |
 | ROBOT report | `{name}-report.tsv` | TSV | Detailed quality report |
 | Test results | `test-results/` | Directory | Per-CQ test outputs |
-| Diff report | `docs/diff.md` | Markdown | Changes between versions |
+| Diff report | `docs/{name}/diff.md` | Markdown | Changes between versions |
 | Unsatisfiable list | `unsatisfiable.txt` | Text | List of unsatisfiable classes (if any) |
 
 ## Handoff
 
 **Receives from**:
 - `ontology-architect` — `ontologies/{name}/{name}.ttl`,
-  `ontologies/{name}/shapes/{name}-shapes.ttl`, `tests/*.sparql`,
-  `tests/cq-test-manifest.yaml` (CQ tests originate from
+  `ontologies/{name}/shapes/{name}-shapes.ttl`, `tests/{name}/*.sparql`,
+  `tests/{name}/cq-test-manifest.yaml` (CQ tests originate from
   `ontology-requirements` and are forwarded through `ontology-architect`)
 - `ontology-mapper` — `mappings/*.sssom.tsv`
 - `ontology-curator` — modified `ontology.ttl`, KGCL change log
@@ -204,7 +204,7 @@ This skill produces:
 ## Quality Report Format
 
 ```markdown
-# Validation Report: {ontology-name}
+# Validation Report: {name}
 Date: {date}
 
 ## Summary
@@ -268,5 +268,5 @@ Date: {date}
 |-------|-------------|----------|
 | Reasoner timeout | Ontology too large or complex for HermiT | Switch to ELK; profile the ontology for complexity hotspots |
 | SHACL shapes file missing | Architect didn't generate shapes | Create minimal shapes or defer SHACL check |
-| CQ test files missing | Requirements skill output not available | Generate tests from `docs/competency-questions.yaml` if available |
+| CQ test files missing | Requirements skill output not available | Generate tests from `docs/{name}/competency-questions.yaml` if available |
 | ROBOT report fails to parse | Corrupt or malformed Turtle | Run `robot validate --input ontology.ttl` to find syntax errors |

@@ -11,7 +11,7 @@ stakeholder_need,use_case_id,cq_id,ontology_terms,sparql_test
 "Map the energy news landscape",UC-003,CQ-010,"EnergyTopic;Renewable;Fossil",tests/energy-news/cq-010.sparql
 "Track organizations in energy news",UC-004,CQ-011,"Organization",tests/energy-news/cq-011.sparql
 "Track organizations in energy news",UC-004,CQ-012,"Article;Organization;EnergyTopic;mentionsOrganization;coversTopic",tests/energy-news/cq-012.sparql
-"Track organizations in energy news",UC-004,CQ-015,"Organization",tests/energy-news/cq-015.sparql
+"Track organizations in energy news",UC-004,CQ-015,"Organization;EnergyTopic;hasSector",tests/energy-news/cq-015.sparql
 "Explore geographic energy coverage",UC-005,CQ-013,"GeographicEntity",tests/energy-news/cq-013.sparql
 "Explore geographic energy coverage",UC-005,CQ-014,"Article;GeographicEntity;EnergyTopic;hasGeographicFocus;coversTopic",tests/energy-news/cq-014.sparql
 "Explore geographic energy coverage",UC-005,CQ-016,"Article;GeographicEntity;hasGeographicFocus",tests/energy-news/cq-016.sparql

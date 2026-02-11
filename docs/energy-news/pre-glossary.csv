@@ -79,6 +79,7 @@ postedBy,property,CQ-007,Links a Post to an AuthorAccount
 sharesArticle,property,CQ-008,Links a Post to an Article
 mentionsOrganization,property,CQ-012,Links an Article to an Organization
 hasGeographicFocus,property,CQ-014,Links an Article to a GeographicEntity
+hasSector,property,CQ-015,Links an Organization to an EnergyTopic sector
 handle,property,CQ-007,Bluesky handle string for an AuthorAccount
 title,property,CQ-003,Title string for an Article
 url,property,CQ-003,URL string for an Article

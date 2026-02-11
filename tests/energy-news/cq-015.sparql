@@ -3,10 +3,9 @@
 
 PREFIX enews: <http://example.org/ontology/energy-news#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
-SELECT ?label ?definition WHERE {
+SELECT ?sector ?sectorLabel WHERE {
   enews:org_catl a enews:Organization ;
-                 rdfs:label ?label ;
-                 skos:definition ?definition .
+                 enews:hasSector ?sector .
+  ?sector rdfs:label ?sectorLabel .
 }
