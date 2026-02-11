@@ -5,21 +5,21 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 enews:ArticleShape a sh:NodeShape ;
-    sh:property [ sh:maxCount 1 ;
-            sh:path enews:publishedBy ],
-        [ sh:maxCount 1 ;
-            sh:path enews:title ],
-        [ sh:maxCount 1 ;
-            sh:path enews:description ],
-        [ sh:class enews:EnergyTopic ;
-            sh:minCount 1 ;
-            sh:path enews:coversTopic ],
-        [ sh:datatype xsd:anyURI ;
+    sh:property [ sh:datatype xsd:anyURI ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path enews:url ],
         [ sh:maxCount 1 ;
-            sh:path enews:publishedDate ] ;
+            sh:path enews:publishedDate ],
+        [ sh:maxCount 1 ;
+            sh:path enews:title ],
+        [ sh:maxCount 1 ;
+            sh:path enews:description ],
+        [ sh:maxCount 1 ;
+            sh:path enews:publishedBy ],
+        [ sh:class enews:EnergyTopic ;
+            sh:minCount 1 ;
+            sh:path enews:coversTopic ] ;
     sh:targetClass enews:Article .
 
 enews:AuthorAccountShape a sh:NodeShape ;
@@ -31,9 +31,9 @@ enews:AuthorAccountShape a sh:NodeShape ;
 
 enews:EnergyTopicInstanceShape a sh:NodeShape ;
     sh:property [ sh:minCount 1 ;
-            sh:path skos:inScheme ],
-        [ sh:minCount 1 ;
             sh:path rdfs:label ],
+        [ sh:minCount 1 ;
+            sh:path skos:inScheme ],
         [ sh:minCount 1 ;
             sh:path skos:definition ] ;
     sh:targetClass enews:EnergyTopic .

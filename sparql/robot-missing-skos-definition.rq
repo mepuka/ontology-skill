@@ -28,5 +28,8 @@ SELECT DISTINCT ?entity ?property ?value WHERE {
 
   # Exclude blank nodes (restrictions, anonymous classes)
   FILTER (!isBlank(?entity))
+
+  # Only flag entities in the project namespace (exclude external vocabularies)
+  FILTER (STRSTARTS(STR(?entity), "http://example.org/ontology/energy-news"))
 }
 ORDER BY ?entity

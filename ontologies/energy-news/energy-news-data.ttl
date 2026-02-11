@@ -28,6 +28,7 @@ enews:post_003 a enews:Post ;
     dcterms:creator "ontology-architect skill" ;
     dcterms:description "Representative ABox individuals for CQ/SPARQL tests: articles, posts, authors, publications, feeds, organizations, and geographies."@en ;
     dcterms:license <https://spdx.org/licenses/MIT> ;
+    dcterms:modified "2026-02-11" ;
     dcterms:title "Energy News Ontology — Sample Data"@en ;
     owl:imports <http://example.org/ontology/energy-news> ;
     owl:versionIRI <http://example.org/ontology/energy-news/data/0.1.0> ;

@@ -4,10 +4,11 @@
 
 Per scope constraint: **"Minimal BFO alignment where natural; not forced."**
 
-BFO (ISO 21838-2) is used as a reference frame for documenting ontological
-commitments, not as an imported dependency. BFO categories are recorded in the
-glossary for each class but no `owl:imports` of BFO is declared. This keeps the
-ontology lightweight while maintaining interoperability documentation.
+BFO (ISO 21838-2) is used as a reference frame. Starting with v0.1.0, all 8
+domain classes have explicit `rdfs:subClassOf` axioms to their respective BFO
+categories via MIREOT-style declarations (`imports/bfo-declarations.ttl`). This
+declares only the 3 BFO classes directly referenced (Site, Object, GDC) without
+importing all of BFO, keeping the ontology lightweight.
 
 ## Top-Level Class Alignment
 

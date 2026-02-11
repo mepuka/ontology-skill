@@ -32,12 +32,14 @@ ENEWS = Namespace("http://example.org/ontology/energy-news#")
 SCHEMA = Namespace("https://schema.org/")
 SIOC = Namespace("http://rdfs.org/sioc/ns#")
 SH = Namespace("http://www.w3.org/ns/shacl#")
+OBO = Namespace("http://purl.obolibrary.org/obo/")
 
 # Ontology IRIs
 TBOX_IRI = URIRef("http://example.org/ontology/energy-news")
 REF_IRI = URIRef("http://example.org/ontology/energy-news/reference-individuals")
 DATA_IRI = URIRef("http://example.org/ontology/energy-news/data")
 SCHEMA_DECL_IRI = URIRef("http://example.org/ontology/energy-news/schema-declarations")
+BFO_DECL_IRI = URIRef("http://example.org/ontology/energy-news/bfo-declarations")
 TBOX_VERSION_IRI = URIRef("http://example.org/ontology/energy-news/0.1.0")
 REF_VERSION_IRI = URIRef("http://example.org/ontology/energy-news/reference-individuals/0.1.0")
 DATA_VERSION_IRI = URIRef("http://example.org/ontology/energy-news/data/0.1.0")
@@ -64,6 +66,7 @@ def bind_common_prefixes(g: Graph) -> None:
     g.bind("dcterms", DCTERMS)
     g.bind("schema", SCHEMA)
     g.bind("sioc", SIOC)
+    g.bind("obo", OBO)
 
 
 def load_glossary() -> list[dict[str, str]]:
@@ -113,6 +116,7 @@ def build_tbox(glossary: list[dict[str, str]], props: dict) -> Graph:
     g.add((TBOX_IRI, OWL.versionIRI, TBOX_VERSION_IRI))
     g.add((TBOX_IRI, OWL.imports, REF_IRI))
     g.add((TBOX_IRI, OWL.imports, SCHEMA_DECL_IRI))
+    g.add((TBOX_IRI, OWL.imports, BFO_DECL_IRI))
     g.add((TBOX_IRI, DCTERMS.title, Literal("Energy News Ontology", lang="en")))
     g.add(
         (
@@ -127,6 +131,7 @@ def build_tbox(glossary: list[dict[str, str]], props: dict) -> Graph:
     )
     g.add((TBOX_IRI, OWL.versionInfo, Literal("0.1.0")))
     g.add((TBOX_IRI, DCTERMS.created, Literal("2026-02-11")))
+    g.add((TBOX_IRI, DCTERMS.modified, Literal("2026-02-11")))
     g.add((TBOX_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((TBOX_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
 
@@ -169,6 +174,22 @@ def build_tbox(glossary: list[dict[str, str]], props: dict) -> Graph:
         cls_uri = ENEWS[cls_name]
         for pred, obj in axioms:
             g.add((cls_uri, pred, obj))
+
+    # --- BFO upper ontology alignment ---
+    # MIREOT-style: rdfs:subClassOf to BFO categories per bfo-alignment.md
+    bfo_map: dict[str, URIRef] = {
+        "EnergyTopic": OBO.BFO_0000031,  # GDC (instances are ICE via IAO)
+        "Article": OBO.BFO_0000031,  # GDC
+        "Post": OBO.BFO_0000031,  # GDC
+        "AuthorAccount": OBO.BFO_0000031,  # GDC
+        "Feed": OBO.BFO_0000031,  # GDC
+        "Publication": OBO.BFO_0000030,  # Object
+        "Organization": OBO.BFO_0000030,  # Object
+        "GeographicEntity": OBO.BFO_0000029,  # Site
+    }
+
+    for cls_name, bfo_cls in bfo_map.items():
+        g.add((ENEWS[cls_name], RDFS.subClassOf, bfo_cls))
 
     # --- AllDisjointClasses ---
     disjoint_node = BNode()
@@ -316,6 +337,7 @@ def build_reference_individuals(glossary: list[dict[str, str]], model: dict) -> 
     )
     g.add((REF_IRI, OWL.versionInfo, Literal("0.1.0")))
     g.add((REF_IRI, DCTERMS.created, Literal("2026-02-11")))
+    g.add((REF_IRI, DCTERMS.modified, Literal("2026-02-11")))
     g.add((REF_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((REF_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
 
@@ -436,6 +458,7 @@ def _add_data_header(g: Graph) -> None:
     )
     g.add((DATA_IRI, OWL.versionInfo, Literal("0.1.0")))
     g.add((DATA_IRI, DCTERMS.created, Literal("2026-02-11")))
+    g.add((DATA_IRI, DCTERMS.modified, Literal("2026-02-11")))
     g.add((DATA_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((DATA_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
 
