@@ -1,0 +1,168 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix enews: <http://example.org/ontology/energy-news#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix sioc: <http://rdfs.org/sioc/ns#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.org/ontology/energy-news> a owl:Ontology ;
+    dcterms:created "2026-02-11" ;
+    dcterms:creator "ontology-architect skill" ;
+    dcterms:description "A lightweight OWL 2 DL ontology modeling the energy news media landscape as observed through Bluesky social media posts."@en ;
+    dcterms:license <https://spdx.org/licenses/MIT> ;
+    dcterms:title "Energy News Ontology"@en ;
+    owl:imports <http://example.org/ontology/energy-news/reference-individuals>,
+        <http://example.org/ontology/energy-news/schema-declarations> ;
+    owl:versionIRI <http://example.org/ontology/energy-news/0.1.0> ;
+    owl:versionInfo "0.1.0" .
+
+enews:description a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "description"@en ;
+    rdfs:domain enews:Article ;
+    rdfs:range xsd:string ;
+    owl:equivalentProperty schema:description ;
+    skos:definition "The description or summary text of an Article"@en .
+
+enews:hasGeographicFocus a owl:ObjectProperty ;
+    rdfs:label "has geographic focus"@en ;
+    rdfs:domain enews:Article ;
+    rdfs:range enews:GeographicEntity ;
+    owl:equivalentProperty schema:contentLocation ;
+    skos:definition "Links an Article to a GeographicEntity representing its geographic focus"@en .
+
+enews:hasSector a owl:ObjectProperty ;
+    rdfs:label "has sector"@en ;
+    rdfs:domain enews:Organization ;
+    rdfs:range enews:EnergyTopic ;
+    skos:definition "Links an Organization to an EnergyTopic sector it operates in"@en .
+
+enews:mentionsOrganization a owl:ObjectProperty ;
+    rdfs:label "mentions organization"@en ;
+    rdfs:domain enews:Article ;
+    rdfs:range enews:Organization ;
+    rdfs:subPropertyOf schema:mentions ;
+    skos:definition "Links an Article to an Organization mentioned in its coverage"@en .
+
+enews:publishedBy a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "published by"@en ;
+    rdfs:domain enews:Article ;
+    rdfs:range enews:Publication ;
+    owl:equivalentProperty schema:publisher ;
+    skos:definition "Links an Article to the Publication that published it"@en .
+
+enews:publishedDate a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "published date"@en ;
+    rdfs:domain enews:Article ;
+    rdfs:range xsd:dateTime ;
+    owl:equivalentProperty schema:datePublished ;
+    skos:definition "The publication date of an Article"@en .
+
+enews:sharesArticle a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "shares article"@en ;
+    rdfs:domain enews:Post ;
+    rdfs:range enews:Article ;
+    owl:equivalentProperty schema:sharedContent ;
+    skos:definition "Links a Post to the Article it shares via embedded link"@en .
+
+enews:title a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "title"@en ;
+    rdfs:domain enews:Article ;
+    rdfs:range xsd:string ;
+    owl:equivalentProperty schema:headline ;
+    skos:definition "The headline or title string of an Article"@en .
+
+enews:Feed a owl:Class ;
+    rdfs:label "feed"@en ;
+    skos:definition "A GenericallyDependentContinuant that represents a curated Bluesky feed for energy content"@en .
+
+enews:coversTopic a owl:ObjectProperty ;
+    rdfs:label "covers topic"@en ;
+    rdfs:domain enews:Article ;
+    rdfs:range enews:EnergyTopic ;
+    owl:equivalentProperty schema:about ;
+    skos:definition "Links an Article to an EnergyTopic individual it covers"@en .
+
+enews:handle a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "handle"@en ;
+    rdfs:domain enews:AuthorAccount ;
+    rdfs:range xsd:string ;
+    skos:definition "The Bluesky handle string for an AuthorAccount"@en .
+
+enews:postedBy a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "posted by"@en ;
+    rdfs:domain enews:Post ;
+    rdfs:range enews:AuthorAccount ;
+    rdfs:subPropertyOf schema:author ;
+    skos:definition "Links a Post to the AuthorAccount who created it"@en .
+
+enews:siteDomain a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "site domain"@en ;
+    rdfs:domain enews:Publication ;
+    rdfs:range xsd:string ;
+    skos:definition "The domain name string of a Publication"@en .
+
+enews:url a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "url"@en ;
+    rdfs:domain enews:Article ;
+    rdfs:range xsd:anyURI ;
+    owl:equivalentProperty schema:url ;
+    skos:definition "The URL of an Article"@en .
+
+enews:GeographicEntity a owl:Class ;
+    rdfs:label "geographic entity"@en ;
+    rdfs:subClassOf schema:Place ;
+    skos:definition "A Site that represents a country region or subnational area relevant to energy news coverage"@en .
+
+enews:Organization a owl:Class ;
+    rdfs:label "organization"@en ;
+    owl:equivalentClass schema:Organization ;
+    skos:definition "An Object that represents a company agency or institutional body mentioned in energy news"@en .
+
+enews:Post a owl:Class ;
+    rdfs:label "post"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty enews:postedBy ;
+            owl:someValuesFrom enews:AuthorAccount ] ;
+    owl:equivalentClass schema:SocialMediaPosting ;
+    skos:definition "A GenericallyDependentContinuant that represents a Bluesky post sharing energy content"@en .
+
+enews:Publication a owl:Class ;
+    rdfs:label "publication"@en ;
+    rdfs:subClassOf schema:NewsMediaOrganization ;
+    owl:hasKey ( enews:siteDomain ) ;
+    skos:definition "An Object that represents a news media outlet or website that publishes articles"@en .
+
+enews:AuthorAccount a owl:Class ;
+    rdfs:label "author account"@en ;
+    owl:equivalentClass sioc:UserAccount ;
+    owl:hasKey ( enews:handle ) ;
+    skos:definition "A GenericallyDependentContinuant that represents a Bluesky account that shares energy news"@en ;
+    skos:relatedMatch schema:Person .
+
+enews:EnergyTopic a owl:Class ;
+    rdfs:label "energy topic"@en ;
+    skos:definition "An owl:Class whose instances are skos:Concept individuals representing subject areas within the energy sector used to classify news articles"@en .
+
+enews:Article a owl:Class ;
+    rdfs:label "article"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty enews:coversTopic ;
+            owl:someValuesFrom enews:EnergyTopic ],
+        schema:NewsArticle ;
+    owl:hasKey ( enews:url ) ;
+    skos:definition "A GenericallyDependentContinuant that represents a news article referenced by an embedded link in a social media post"@en .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( enews:EnergyTopic enews:Article enews:Publication enews:Post enews:AuthorAccount enews:Feed enews:Organization enews:GeographicEntity ) .

@@ -1,0 +1,114 @@
+# Energy News Ontology — KGCL Change Log
+# Initial creation — Architect Phase (Pipeline A, Step 4)
+# Date: 2026-02-11
+# Author: ontology-architect skill
+
+# --- Classes (8) ---
+create class enews:EnergyTopic
+create class enews:Article
+create class enews:Publication
+create class enews:Post
+create class enews:AuthorAccount
+create class enews:Feed
+create class enews:Organization
+create class enews:GeographicEntity
+
+# --- Object Properties (6) ---
+create object property enews:coversTopic
+create object property enews:publishedBy
+create object property enews:postedBy
+create object property enews:sharesArticle
+create object property enews:mentionsOrganization
+create object property enews:hasGeographicFocus
+
+# --- Datatype Properties (6) ---
+create datatype property enews:handle
+create datatype property enews:title
+create datatype property enews:url
+create datatype property enews:description
+create datatype property enews:publishedDate
+create datatype property enews:siteDomain
+
+# --- SKOS Concept Scheme ---
+create individual enews:EnergyTopicScheme
+
+# --- Topic Individuals (66) ---
+# Top-level topics (19)
+create individual enews:Renewable
+create individual enews:Fossil
+create individual enews:Nuclear
+create individual enews:EnergyStorage
+create individual enews:Hydrogen
+create individual enews:CarbonCapture
+create individual enews:GridAndInfrastructure
+create individual enews:EnergyPolicy
+create individual enews:EnergyMarkets
+create individual enews:EnergyFinance
+create individual enews:ClimateAndEmissions
+create individual enews:Electrification
+create individual enews:DataCenterDemand
+create individual enews:EnergyGeopolitics
+create individual enews:EnergyJustice
+create individual enews:WorkforceAndManufacturing
+create individual enews:ResearchAndInnovation
+create individual enews:BuildingsAndEfficiency
+create individual enews:EnvironmentAndLandUse
+
+# Narrower topics (47)
+create individual enews:Solar
+create individual enews:Wind
+create individual enews:Hydro
+create individual enews:Geothermal
+create individual enews:Coal
+create individual enews:NaturalGas
+create individual enews:Oil
+create individual enews:SMR
+create individual enews:Fusion
+create individual enews:Transmission
+create individual enews:Distribution
+create individual enews:Interconnection
+create individual enews:GridOperator
+create individual enews:Regulation
+create individual enews:Legislation
+create individual enews:Tariff
+create individual enews:Permitting
+create individual enews:WholesaleMarkets
+create individual enews:Commodity
+create individual enews:PowerPurchaseAgreement
+create individual enews:ProjectFinance
+create individual enews:CorporateDeals
+create individual enews:PublicFunding
+create individual enews:EmissionsTracking
+create individual enews:Decarbonization
+create individual enews:NetZero
+create individual enews:ElectricVehicles
+create individual enews:EVCharging
+create individual enews:HeatPumps
+create individual enews:ElectricTransport
+create individual enews:TradeAndSanctions
+create individual enews:SupplyChain
+create individual enews:CriticalMinerals
+create individual enews:Affordability
+create individual enews:CommunityEnergy
+create individual enews:EnergyAccess
+create individual enews:EnergyJobs
+create individual enews:Manufacturing
+create individual enews:LaborRelations
+create individual enews:EfficiencyRecords
+create individual enews:Patent
+create individual enews:BuildingElectrification
+create individual enews:Retrofits
+create individual enews:RooftopSolar
+create individual enews:WaterUse
+create individual enews:Agrivoltaics
+create individual enews:WasteAndPollution
+
+# --- Axioms ---
+# AllDisjointClasses: 8 domain classes
+# Existential restrictions: Article coversTopic some EnergyTopic, Post postedBy some AuthorAccount
+# HasKey: Article(url), AuthorAccount(handle), Publication(siteDomain)
+# Functional properties: publishedBy, postedBy, sharesArticle, handle, title, url, description, publishedDate, siteDomain
+# Schema.org alignment: 10 equivalence/subclass axioms
+# SIOC alignment: AuthorAccount equivalentClass sioc:UserAccount
+# SKOS hierarchy: 47 broader relations, 19 topConceptOf relations
+# AllDifferent: 20 sibling groups (19 child groups + 1 top-level group)

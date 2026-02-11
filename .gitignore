@@ -34,6 +34,9 @@ htmlcov/
 .pytest_cache/
 .mypy_cache/
 
+# Local tools (ROBOT CLI, etc.)
+.local/
+
 # Ontology build artifacts
 *.owx
 *.ofn

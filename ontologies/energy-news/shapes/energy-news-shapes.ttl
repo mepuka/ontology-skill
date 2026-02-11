@@ -1,0 +1,55 @@
+@prefix enews: <http://example.org/ontology/energy-news#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+enews:ArticleShape a sh:NodeShape ;
+    sh:property [ sh:maxCount 1 ;
+            sh:path enews:publishedBy ],
+        [ sh:maxCount 1 ;
+            sh:path enews:title ],
+        [ sh:maxCount 1 ;
+            sh:path enews:description ],
+        [ sh:class enews:EnergyTopic ;
+            sh:minCount 1 ;
+            sh:path enews:coversTopic ],
+        [ sh:datatype xsd:anyURI ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path enews:url ],
+        [ sh:maxCount 1 ;
+            sh:path enews:publishedDate ] ;
+    sh:targetClass enews:Article .
+
+enews:AuthorAccountShape a sh:NodeShape ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path enews:handle ] ;
+    sh:targetClass enews:AuthorAccount .
+
+enews:EnergyTopicInstanceShape a sh:NodeShape ;
+    sh:property [ sh:minCount 1 ;
+            sh:path skos:inScheme ],
+        [ sh:minCount 1 ;
+            sh:path rdfs:label ],
+        [ sh:minCount 1 ;
+            sh:path skos:definition ] ;
+    sh:targetClass enews:EnergyTopic .
+
+enews:PostShape a sh:NodeShape ;
+    sh:property [ sh:maxCount 1 ;
+            sh:path enews:sharesArticle ],
+        [ sh:class enews:AuthorAccount ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path enews:postedBy ] ;
+    sh:targetClass enews:Post .
+
+enews:PublicationShape a sh:NodeShape ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path enews:siteDomain ] ;
+    sh:targetClass enews:Publication .

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+  <uri id="reference-individuals"
+       name="http://example.org/ontology/energy-news/reference-individuals"
+       uri="energy-news-reference-individuals.ttl"/>
+  <uri id="schema-declarations"
+       name="http://example.org/ontology/energy-news/schema-declarations"
+       uri="imports/schema-declarations.ttl"/>
+</catalog>

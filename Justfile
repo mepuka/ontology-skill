@@ -25,8 +25,8 @@ update:
 # Quality
 # ---------------------------------------------------------------------------
 
-# Run all checks (lint, typecheck, test)
-check: lint typecheck test
+# Run all checks (lint, typecheck, test, ontology validation)
+check: lint typecheck test validate-energy-news
 
 # Lint with ruff
 lint:
@@ -85,11 +85,14 @@ hooks-run:
 # Ontology Tools
 # ---------------------------------------------------------------------------
 
+# Local ROBOT CLI path (project-local, not global)
+robot_bin := justfile_directory() / ".local/bin/robot"
+
 # Check ROBOT is available
 robot-check:
-    @which robot > /dev/null 2>&1 && robot --version || echo "ROBOT not installed. Run: just robot-install"
+    @test -x {{robot_bin}} && {{robot_bin}} --version || echo "ROBOT not installed. Run: just robot-install"
 
-# Install ROBOT CLI
+# Install ROBOT CLI (project-local, no global pollution)
 robot-install:
     mkdir -p {{justfile_directory()}}/.local/bin {{justfile_directory()}}/.local/share
     curl -sL https://github.com/ontodev/robot/releases/latest/download/robot.jar \
@@ -97,14 +100,34 @@ robot-install:
     curl -sL https://raw.githubusercontent.com/ontodev/robot/master/bin/robot \
         -o {{justfile_directory()}}/.local/bin/robot
     chmod +x {{justfile_directory()}}/.local/bin/robot
+    ln -sf {{justfile_directory()}}/.local/share/robot.jar {{justfile_directory()}}/.local/bin/robot.jar
     @echo "ROBOT installed to .local/bin/robot"
-    @echo "Add to PATH: export PATH=\"{{justfile_directory()}}/.local/bin:\$PATH\""
 
-# Validate an ontology file
-validate ONTOLOGY:
-    uv run python -c "from pyshacl import validate; print('pySHACL available')"
-    robot reason --reasoner ELK --input {{ONTOLOGY}}
-    robot report --input {{ONTOLOGY}} --fail-on ERROR
+# Build Energy News Ontology from conceptual model artifacts
+build-energy-news:
+    uv run python scripts/build_energy_news.py
+
+# Validate Energy News Ontology (full pipeline: build + syntax + ROBOT + SHACL + CQ tests)
+validate-energy-news: build-energy-news
+    @test -x {{robot_bin}} || just robot-install
+    uv run python scripts/validate_turtle.py \
+        ontologies/energy-news/energy-news.ttl \
+        ontologies/energy-news/energy-news-reference-individuals.ttl \
+        ontologies/energy-news/energy-news-data.ttl \
+        ontologies/energy-news/shapes/energy-news-shapes.ttl
+    cd {{justfile_directory()}} && {{robot_bin}} merge \
+        --catalog ontologies/energy-news/catalog-v001.xml \
+        --input ontologies/energy-news/energy-news.ttl \
+        --output /tmp/energy-news-merged.ttl
+    {{robot_bin}} reason --reasoner HermiT \
+        --input /tmp/energy-news-merged.ttl
+    cd {{justfile_directory()}} && {{robot_bin}} report \
+        --input /tmp/energy-news-merged.ttl \
+        --profile ontologies/energy-news/robot-report-profile.txt \
+        --base-iri "http://example.org/ontology/energy-news" \
+        --fail-on ERROR \
+        --output ontologies/energy-news/energy-news-report.tsv
+    uv run pytest tests/unit/test_energy_news_ontology.py -v
 
 # ---------------------------------------------------------------------------
 # Cleanup
