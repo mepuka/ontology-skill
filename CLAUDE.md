@@ -57,11 +57,33 @@ src/ontology_skill/    # Library code (importable package)
 scripts/               # Standalone CLI scripts
 tests/unit/            # Fast unit tests
 tests/integration/     # Tests requiring external services
-skills/                # Claude Code skill definitions
 ontologies/            # Ontology project files
 mappings/              # SSSOM mapping files
 sparql/                # Stored SPARQL queries
+.claude/skills/        # Ontology engineering skills (8 slash commands)
+.claude/rules/         # Path-specific rules (auto-loaded by file context)
+.claude/hooks/         # Safety hooks (ontology file protection)
 ```
+
+## Ontology Engineering Skills
+
+Eight skills map to the ontology engineering lifecycle. Invoke with
+`/skill-name` or let Claude activate them automatically based on context:
+
+| Skill | Phase | Use When |
+|-------|-------|----------|
+| `/ontology-requirements` | 1. Specification | Eliciting CQs, writing ORSD, generating test suites |
+| `/ontology-scout` | 2. Acquisition | Finding reusable ontologies, ODPs, imports |
+| `/ontology-conceptualizer` | 3. Conceptualization | Designing taxonomy, BFO alignment, anti-pattern review |
+| `/ontology-architect` | 4. Formalization | Creating OWL axioms, ROBOT templates, KGCL patches |
+| `/ontology-mapper` | 5. Integration | SSSOM mappings, lexmatch, cross-ontology alignment |
+| `/ontology-validator` | 6. Evaluation | Reasoner, SHACL, CQ tests, ROBOT report |
+| `/sparql-expert` | Cross-cutting | Query generation, validation, execution |
+| `/ontology-curator` | Maintenance | Deprecation, versioning, releases |
+
+Skills reference shared materials in `.claude/skills/_shared/` (methodology,
+axiom patterns, anti-patterns, naming conventions, BFO categories, tool
+decision tree). See `.claude/skills/CONVENTIONS.md` for the full standard.
 
 ## Quality Gates (run before committing)
 
