@@ -1,38 +1,62 @@
 # Validation Report: Energy News Ontology
 
-Date: 2026-02-11
+Date: 2026-02-12
 Ontology: `ontologies/energy-news/energy-news.ttl`
-Version: 0.1.0
-Validator: ontology-validator skill (Phase 5/6)
+Version: 0.2.0-dev (URL-Publication Linking + Multi-Platform Extension)
+Validator: ontology-validator skill (Phase 6)
+Prior report: 2026-02-11 (v0.1.0)
 
 ## Summary
 
 - **Overall: PASS**
-- Blocking issues: 0
-- Warnings: 0
-- Observations: 0
+- Blocking issues: 0 (B-001 resolved)
+- Warnings: 1 (W-002 accepted by design)
+- Observations: 4
 
 ## Level 1: Logical Consistency
 
 - **Status: PASS**
 - Reasoner: HermiT (OWL 2 DL, complete)
-- Consistency: PASS
-- Unsatisfiable classes: 0
-- Command: `robot reason --reasoner HermiT --input energy-news-merged.ttl`
+- TBox only: **CONSISTENT** (0 unsatisfiable classes)
+- TBox + reference individuals: **CONSISTENT**
+- TBox + ABox data: **CONSISTENT**
+- Command: `.local/bin/robot reason --reasoner HermiT`
 
-No logical contradictions detected. The ontology is consistent under full
-DL reasoning.
+### Resolved: B-001 (datatype range mismatch)
+
+Previously, `description` declared `rdfs:range xsd:string` but the build
+script created `Literal(desc, lang="en")` producing `rdf:langString`. In
+OWL 2, these are disjoint datatypes — HermiT correctly flagged
+inconsistency. **Fixed** by removing `lang="en"` from description literals
+in the build script (Option B), keeping them as plain `xsd:string`.
 
 ## Level 2: ROBOT Report
 
 - **Status: PASS**
-- Profile: custom (`ontologies/energy-news/robot-report-profile.txt`)
-- Errors: 0
-- Warnings: 0
-- Info: 0
+- Profile: default + custom (`ontologies/energy-news/robot-report-profile.txt`)
+- Full merge (default profile): **0 ERRORs**, 29 WARNs, 3 INFOs
+- TBox + ref individuals (custom profile): **0 violations**
 
-The custom `robot-missing-skos-definition` query filters by project namespace,
-so external terms (schema.org, SIOC, SKOS, BFO) are excluded from checks.
+### Default Profile Violations (full merge)
+
+| Level | Rule | Count | Notes |
+|-------|------|-------|-------|
+| ERROR | — | 0 | All resolved |
+| WARN | equivalent_pair | 3 | Intentional schema.org/SIOC alignments |
+| WARN | missing_definition (IAO) | 23 | Project uses `skos:definition`, not `IAO:0000115` |
+| WARN | missing_definition (BFO stubs) | 3 | BFO MIREOT stubs (expected) |
+| INFO | missing_superclass | 3 | BFO MIREOT stubs (expected) |
+
+### Resolved: W-001 (missing labels on ABox individuals)
+
+Previously, 10 sample individuals lacked `rdfs:label`. **Fixed** by adding
+labels in the build script: articles use their title, authors use their
+handle, posts use "Post by {author} sharing {article}".
+
+### Custom Profile (TBox + ref individuals)
+
+0 violations. The custom profile uses `skos:definition` instead of
+`IAO:0000115` and excludes external term stubs from checks.
 
 ## Level 3: SHACL Validation
 
@@ -45,17 +69,27 @@ so external terms (schema.org, SIOC, SKOS, BFO) are excluded from checks.
 Shapes validated:
 - `EnergyTopicInstanceShape`: rdfs:label min 1, skos:definition min 1, skos:inScheme min 1
 - `ArticleShape`: coversTopic min 1, url exactly 1, publishedBy max 1, title max 1,
-  publishedDate max 1, description max 1
+  publishedDate max 1, description max 1, **SPARQL constraint (URL domain matches siteDomain)**
 - `PostShape`: postedBy exactly 1, sharesArticle max 1
 - `AuthorAccountShape`: handle exactly 1
 - `PublicationShape`: siteDomain exactly 1
+
+### New: SPARQL Constraint (v0.2.0-dev)
+
+The ArticleShape now includes a `sh:SPARQLConstraint` validating that if an
+Article has both `url` and `publishedBy`, the URL domain must match the
+Publication's `siteDomain`. This is the first SPARQL-based SHACL constraint
+in the shapes graph.
+
+Negative test (`test_shacl_catches_url_domain_mismatch`) confirms the
+constraint correctly rejects mismatched articles.
 
 ## Level 4: CQ Tests
 
 - **Status: PASS**
 - Test runner: pytest (`tests/unit/test_energy_news_ontology.py`)
-- Total tests: 85
-- Passed: 85
+- Total tests: 99
+- Passed: 99
 - Failed: 0
 
 ### CQ Test Breakdown
@@ -63,28 +97,21 @@ Shapes validated:
 | Category | Count | Passed | Notes |
 |----------|-------|--------|-------|
 | CQ tests (TBox-only: cq-001, cq-002, cq-010) | 3 | 3 | Enumerative + ASK queries |
-| CQ tests (ABox-dependent: cq-003 through cq-016) | 13 | 13 | Require sample data |
+| CQ tests (ABox-dependent: cq-003 through cq-019) | 16 | 16 | Require sample data |
 | TBox structure (tbox-001, tbox-002, tbox-003) | 3 | 3 | Class declaration checks |
 | Non-entailment (neg-001, neg-002) | 2 | 2 | Solar not broader Fossil; Nuclear not under Renewable |
-| Structural tests (classes, properties, axioms) | 30+ | 30+ | owl:Class declarations, functional properties, HasKey, etc. |
-| SHACL conformance (in-process) | 1 | 1 | pyshacl validate |
-| SPARQL CQ tests (rdflib) | 21 | 21 | All manifest queries |
+| Structural tests (classes, properties, axioms) | 40+ | 40+ | owl:Class, functional, HasKey, alignment, etc. |
+| SHACL conformance (positive) | 1 | 1 | pyshacl validate |
+| SHACL constraint (negative) | 1 | 1 | URL domain mismatch detection |
+| SPARQL CQ tests (rdflib) | 22 | 22 | All manifest queries |
 
-### ROBOT verify Constraint Queries
+### New in v0.2.0-dev
 
-6 constraint queries are available for ROBOT verify (zero-result = pass):
-
-| Query | Checks | Status |
-|-------|--------|--------|
-| `verify-missing-label.sparql` | All domain classes have rdfs:label | PASS |
-| `verify-missing-definition.sparql` | All domain classes have skos:definition | PASS |
-| `verify-missing-parent.sparql` | All domain classes have named parent | PASS |
-| `verify-missing-domain-range.sparql` | All properties have domain + range | PASS |
-| `verify-topic-completeness.sparql` | All topics have label, definition, scheme | PASS |
-| `verify-class-individual-mixing.sparql` | No class/individual confusion | PASS |
-
-For enumerative CQ tests (expecting non-empty results) and ASK queries, the
-pytest harness is the authoritative test runner.
+- **CQ-019**: "Which publication published an article based on its URL domain?"
+  — SPARQL derives publication via URL domain extraction and siteDomain join.
+  Returns 3 rows (all sample articles match their publications).
+- **Negative SHACL test**: Validates that the SPARQL constraint catches
+  mismatched URL domains.
 
 ## Level 5: Metrics
 
@@ -92,67 +119,42 @@ pytest harness is the authoritative test runner.
 
 | Metric | Value | Target | Status |
 |--------|-------|--------|--------|
-| Class label coverage | 8/8 = 100% | 100% | PASS |
-| Class definition coverage | 8/8 = 100% | >= 80% | PASS |
-| Property label coverage | 13/13 = 100% | 100% | PASS |
-| Property definition coverage | 13/13 = 100% | >= 80% | PASS |
-| Topic label coverage | 66/66 = 100% | 100% | PASS |
-| Topic definition coverage | 66/66 = 100% | >= 80% | PASS |
-| Topic in-scheme coverage | 66/66 = 100% | 100% | PASS |
+| Class label coverage | 9/9 = 100% | 100% | PASS |
+| Class definition coverage | 9/9 = 100% | >= 80% | PASS |
 | Orphan classes | 0 | 0 | PASS |
-| Disjointness coverage | 8/8 = 100% | 100% | PASS |
-| Singleton hierarchies | 0 | 0 | PASS |
-| Domain/range completeness | 13/13 = 100% | 100% | PASS |
-| Duplicate labels | 0 | 0 | PASS |
+| Disjointness coverage | 9/9 = 100% | 100% | PASS |
+| Singleton hierarchies (domain) | 0 | 0 | PASS |
+| Domain/range completeness | 13/14 | 100% | NOTE |
+| Naming conventions (classes) | 9/9 CamelCase | 100% | PASS |
+| Naming conventions (properties) | 14/14 camelCase | 100% | PASS |
 | Class/individual mixing | 0 | 0 | PASS |
 | Individuals in TBox | 0 | 0 | PASS |
-| CQ test pass rate (Must-Have) | 100% | 100% | PASS |
+| CQ test pass rate | 99/99 = 100% | 100% | PASS |
 | SHACL conformance | true | true | PASS |
 
-### Orphan Classes — Resolved
+### Domain/Range Note
 
-All 8 domain classes now have named `rdfs:subClassOf` parents via BFO
-MIREOT-style alignment (`imports/bfo-declarations.ttl`):
-
-| Class | BFO Parent | Schema.org Parent |
-|-------|-----------|-------------------|
-| EnergyTopic | BFO:0000031 (GDC) | — |
-| Article | BFO:0000031 (GDC) | schema:NewsArticle |
-| Post | BFO:0000031 (GDC) | schema:SocialMediaPosting (equiv) |
-| AuthorAccount | BFO:0000031 (GDC) | sioc:UserAccount (equiv) |
-| Feed | BFO:0000031 (GDC) | — |
-| Publication | BFO:0000030 (Object) | schema:NewsMediaOrganization |
-| Organization | BFO:0000030 (Object) | schema:Organization (equiv) |
-| GeographicEntity | BFO:0000029 (Site) | schema:Place |
-
-ROBOT verify `verify-missing-parent.sparql` confirms 0 orphan classes.
+`onPlatform` intentionally omits `rdfs:domain` to avoid incorrect type
+inference on Feed instances (both AuthorAccount and Feed use `onPlatform`,
+and they are declared disjoint via AllDisjointClasses). Range is set to
+`SocialMediaPlatform`. This is documented in the KGCL change log.
 
 ### Ontology Size
 
-| Metric | Value |
-|--------|-------|
-| Domain classes | 8 |
-| Object properties | 7 |
-| Data properties | 6 |
-| EnergyTopic individuals | 66 |
-| AllDisjointClasses axioms | 1 (covering all 8 classes) |
-| AllDifferent axioms | 16 (sibling topic groups) |
-| HasKey axioms | 3 (Article, AuthorAccount, Publication) |
-| Functional properties | 9 |
-| TBox triples | 170 |
-| Reference individuals triples | 740 |
-| Total triples (merged) | 910+ |
-
-### Naming Convention Compliance
-
-| Check | Status |
-|-------|--------|
-| Class names CamelCase | PASS (8/8) |
-| Property names camelCase | PASS (13/13) |
-| Labels lowercase | PASS (8/8) |
-| Definitions genus-differentia | PASS (8/8) |
-| Labels have `@en` tag | PASS (8/8) |
-| Definitions have `@en` tag | PASS (8/8) |
+| Metric | Value | Change from v0.1.0 |
+|--------|-------|--------------------|
+| Domain classes | 9 | +1 (SocialMediaPlatform) |
+| Object properties | 8 | +1 (onPlatform) |
+| Data properties | 6 | — |
+| EnergyTopic individuals | 66 | — |
+| AllDisjointClasses axioms | 1 (9 classes) | updated |
+| AllDifferent axioms | 21 | +1 (platform individuals) |
+| HasKey axioms | 3 | updated (AuthorAccount composite) |
+| Functional properties | 10 | +1 (onPlatform) |
+| TBox triples | 191 | +21 |
+| Reference individuals triples | 756 | +16 |
+| ABox data triples | 98 | +10 (labels) |
+| Total triples (merged) | 1045 | +47 |
 
 ## Level 6: Evaluation Dimensions
 
@@ -162,147 +164,111 @@ ROBOT verify `verify-missing-parent.sparql` confirms 0 orphan classes.
   functional properties, HasKey, AllDisjointClasses, equivalentClass,
   equivalentProperty, subPropertyOf. No qualified cardinality, role chains,
   or class complements. ELK-compatible for development; HermiT for release.
-- **Complexity**: Low-moderate. 8 classes with clear separation of concerns.
-  Conceptual model is accessible to domain experts.
+- **Complexity**: Low-moderate. 9 classes with clear separation of concerns.
+  Multi-platform extension adds one class and one property cleanly.
 - **Granularity**: Appropriate for scope. 66 energy topics provide
-  fine-grained coverage. 8 core classes capture the article-topic-author
-  domain without over-modeling.
-- **Epistemological adequacy**: Definitions follow BFO categories
-  (GenericallyDependentContinuant for information entities, Object for
-  physical/institutional entities, Site for geographic). Topic vocabulary
-  covers renewable, fossil, nuclear, grid, policy, finance, climate,
-  workforce, and emerging technology domains.
+  fine-grained coverage. 9 core classes capture the article-topic-author
+  domain with platform support.
+- **Epistemological adequacy**: BFO-aligned categories (GDC for information
+  entities, Object for institutional entities, Site for geographic).
 
 ### Functional
 
-- **CQ relevance**: All 16 competency questions are answerable. 3 are
-  TBox-only (answerable without instance data), 13 require ABox population.
-- **Rigor**: Every CQ has a formalized SPARQL test with expected results.
-  Non-entailment tests verify correct classification boundaries.
-- **Traceability**: Full chain from stakeholder needs through use cases,
-  CQs, ontology terms, to SPARQL tests documented in
-  `docs/energy-news/traceability-matrix.csv`.
-- **Automation**: pytest test suite runs in < 1 second. ROBOT pipeline
+- **CQ relevance**: All 19 competency questions are answerable. 3 are
+  TBox-only, 16 require ABox population. CQ-019 adds URL-based publication
+  derivation capability.
+- **Rigor**: Every CQ has a formalized SPARQL test. Non-entailment tests
+  verify classification boundaries. SHACL SPARQL constraint validates
+  cross-property consistency.
+- **Automation**: pytest runs 99 tests in < 0.4 seconds. ROBOT pipeline
   (merge + reason + report) runs in ~15 seconds.
 
 ### Model-centric
 
-- **Authoritativeness**: Aligned to schema.org (6 classes, 10 properties)
-  and SIOC (1 class). Uses SKOS for topic vocabulary. Definitions cite
-  BFO categories.
-- **Structural coherence**: Single inheritance in asserted hierarchy.
-  Clean T-box/A-box separation (reference individuals in separate file).
-  Disjointness declared for all 8 domain classes. HasKey axioms for
-  identity-bearing classes.
-- **Formality level**: Semi-formal to formal. OWL 2 DL with SHACL
-  structural constraints. SKOS vocabulary for controlled topic terms.
-  Schema.org alignment for web interoperability.
+- **Authoritativeness**: Aligned to schema.org (7 classes, 10 properties)
+  and SIOC (1 class). Uses SKOS for topic vocabulary.
+- **Structural coherence**: Single inheritance in asserted hierarchy. Clean
+  TBox/ABox separation. AllDisjointClasses for all 9 domain classes.
+  AllDifferent for topic sibling groups and platform individuals.
+- **Formality level**: Semi-formal to formal. OWL 2 DL with SHACL structural
+  constraints (including SPARQL-based). SKOS vocabulary for controlled terms.
 
 ## Level 7: Diff Review
 
-- **Status: N/A** (first version)
-- No prior version exists for comparison.
-- `robot diff` will be used starting from version 0.2.0.
+- **Status: APPLICABLE** (changes since v0.1.0)
+
+### Key Changes (v0.1.0 → v0.2.0-dev)
+
+| Area | Change |
+|------|--------|
+| Classes | +1 (SocialMediaPlatform) |
+| Properties | +1 (onPlatform) |
+| Individuals | +2 (Bluesky, Twitter) |
+| CQs | +3 (CQ-017, CQ-018, CQ-019) |
+| SHACL | +1 SPARQL constraint (URL domain validation) |
+| Build script | publishedBy now derived from URL domain (was hardcoded) |
+| Tests | +14 (85 → 99) |
 
 ## Anti-Pattern Detection
 
-All 16 anti-patterns from `_shared/anti-patterns.md` were checked:
+All 16 anti-patterns from `_shared/anti-patterns.md` checked:
 
 | # | Anti-Pattern | Status | Notes |
 |---|-------------|--------|-------|
-| 1 | Singleton hierarchy | PASS | 0 found |
+| 1 | Singleton hierarchy | PASS | 0 in domain (4 in external stubs — expected) |
 | 2 | Role-type confusion | PASS | No role patterns in domain |
 | 3 | Process-object confusion | PASS | All classes correctly categorized per BFO |
-| 4 | Missing disjointness | PASS | AllDisjointClasses covers all 8 |
+| 4 | Missing disjointness | PASS | AllDisjointClasses covers all 9 |
 | 5 | Circular definition | PASS | No EquivalentTo chains |
 | 6 | Quality-as-class | N/A | No quality values in domain |
-| 7 | Information-physical conflation | PASS | Article/Post are GDC; Organization/Publication are Objects |
-| 8 | Orphan class | PASS | 0 (all classes have BFO parent) |
+| 7 | Info-physical conflation | PASS | Article/Post are GDC; Organization/Publication are Objects |
+| 8 | Orphan class | PASS | 0 (all have BFO parent) |
 | 9 | Polysemy | PASS | No overloaded terms |
-| 10 | Domain/range overcommitment | PASS | All domain/range appropriate and complete |
-| 11 | Individuals in TBox | PASS | 0 in TBox; 66 in separate reference file |
-| 12 | Negative universals | PASS | No complement classes used |
-| 13 | False is-a (OO inheritance) | PASS | Domain-grounded hierarchy |
+| 10 | Domain/range overcommitment | PASS | Appropriate; onPlatform domain omitted by design |
+| 11 | Individuals in TBox | PASS | 0 in TBox |
+| 12 | Negative universals | PASS | No complement classes |
+| 13 | False is-a (OO) | PASS | Domain-grounded hierarchy |
 | 14 | System blueprint | PASS | Domain model, not system artifacts |
 | 15 | Technical perspective | PASS | CQ-driven design |
 | 16 | Class/individual mixing | PASS | 0 found |
 
-## OOPS! Pitfall Evaluation
+## Resolved Issues
 
-- **Status: PASS** (0 genuine issues)
-- Scanner: [OOPS!](http://oops.linkeddata.es/) (OntOlogy Pitfall Scanner)
-- Input: RDF/XML merged ontology (TBox + reference individuals + schema/BFO stubs)
-- Pitfalls detected: 7
-- Genuine issues: 0
-- False positives / expected: 7
+### B-001: `description` range vs lang-tagged literals (RESOLVED)
 
-OOPS! scans the merged ontology without distinguishing domain terms from
-external MIREOT-style stubs. All flagged pitfalls trace to external vocabulary
-declarations (schema.org, SIOC, BFO, SKOS) rather than domain modeling errors.
+- **Was**: BLOCKING — HermiT inconsistency on merged TBox + ABox
+- **Root cause**: `rdfs:range xsd:string` vs `Literal(text, lang="en")` →
+  disjoint `rdf:langString` in OWL 2
+- **Fix applied**: Removed `lang="en"` from description literals in build
+  script (`scripts/build_energy_news.py`)
+- **Verified**: HermiT EXIT: 0 on full merged graph
 
-### Pitfall Triage
+### W-001: ABox sample individuals missing `rdfs:label` (RESOLVED)
 
-| Code | Name | Level | Count | Verdict | Rationale |
-|------|------|-------|-------|---------|-----------|
-| P31 | Wrong equivalent classes | Critical | 1 | False positive | `AuthorAccount ≡ sioc:UserAccount` is intentional — both model social media accounts |
-| P30 | Equivalent classes not declared | Important | 1 | False positive | Suggests `Post ≡ schema:Place` — nonsensical; heuristic misfire |
-| P11 | Missing domain/range | Important | 10 | Expected | All 10 are schema.org property stubs; domain/range lives in schema.org itself |
-| P04 | Unconnected elements | Minor | 9 | False positive | All 9 external classes (BFO, schema, SKOS) are connected as alignment targets via rdfs:subClassOf or owl:equivalentClass |
-| P08 | Missing annotations | Minor | 22 | Expected | External term stubs have minimal annotations by design; labels/definitions live in source ontologies |
-| P13 | Inverse relationships | Minor | 13 | By design | Not every property requires an explicit inverse; our CQ query patterns don't need them |
-| P22 | Different naming conventions | Minor | 1 | Expected | BFO uses OBO numeric IDs; SKOS uses CamelCase — different external vocabulary conventions |
+- **Was**: WARNING — 10 ROBOT report `missing_label` ERRORs
+- **Fix applied**: Added `rdfs:label` to articles (title), authors (handle),
+  and posts ("Post by {author} sharing {article}") in build script
+- **Verified**: ROBOT report 0 ERRORs on merged graph
 
-### Domain-Only Assessment
+## Accepted Warnings
 
-Filtering to only `enews:` namespace terms:
+### W-002: `onPlatform` missing `rdfs:domain`
 
-- **P31**: AuthorAccount ≡ sioc:UserAccount — correct by design, documented in
-  `docs/energy-news/bfo-alignment.md`
-- **P11**: All 13 domain properties have explicit domain + range — 0 violations
-- **P04**: All 8 domain classes are connected via subClassOf, restrictions,
-  AllDisjointClasses — 0 unconnected
-- **P08**: All 8 domain classes + 13 properties have rdfs:label + skos:definition — 0 missing
-- **P13**: Inverse properties are a design choice, not a requirement per OWL 2 spec
-- **P22**: Domain terms consistently use CamelCase for classes, camelCase for properties
-
-**Conclusion**: The ontology has zero genuine OOPS! pitfalls. All findings are
-artifacts of the MIREOT-style alignment approach where external term stubs are
-included for OWL API compatibility without full vocabulary import.
-
-## Resolved Recommendations
-
-All 4 recommendations from the initial validation pass have been implemented:
-
-1. **Filter external terms from ROBOT report** — DONE. Namespace filter added
-   to `sparql/robot-missing-skos-definition.rq`. ROBOT report now shows 0 warnings.
-
-2. **BFO alignment** — DONE. MIREOT-style declarations in
-   `imports/bfo-declarations.ttl` (3 BFO classes: Site, Object, GDC). All 8
-   domain classes have explicit `rdfs:subClassOf` to BFO categories. Zero
-   orphan classes.
-
-3. **ROBOT verify constraint queries** — DONE. 6 constraint queries in
-   `tests/energy-news/verify-*.sparql`. All pass with zero violations.
-
-4. **Metadata completeness** — DONE. `dcterms:modified` added to all 3
-   ontology headers (TBox, reference individuals, data).
-
-### For Next Version (0.2.0)
-
-- Add `owl:priorVersion` when releasing 0.2.0
-- Consider importing full BFO if downstream consumers expect it
-- Add population completeness checks once production ABox data exists
+- **Severity**: WARNING (by design)
+- **Rationale**: Omitted to avoid incorrect Feed → AuthorAccount inference
+  given AllDisjointClasses. Documented in KGCL change log.
+- **Status**: Accepted (no action needed)
 
 ## Handoff Checklist
 
-- [x] All Level 1-6 checks have been executed
-- [x] Validation report is generated and accessible
-- [x] Level 7 (diff) documented as N/A for first version
-- [x] No blocking failures detected
-- [x] Observations and recommendations documented with rationale
+- [x] All Level 1-7 checks have been executed
+- [x] Validation report generated and accessible
+- [x] ROBOT reason (HermiT) run on TBox, TBox+ref, TBox+ABox — all CONSISTENT
+- [x] ROBOT report: 0 ERRORs (default profile), 0 violations (custom profile)
+- [x] SHACL validation passed (including SPARQL constraint)
+- [x] 99 pytest tests pass
 - [x] Anti-pattern detection complete (16/16 checked)
-- [x] Coverage metrics computed and documented
+- [x] Coverage metrics computed
 - [x] Naming convention compliance verified
-- [x] Recommendations reference appropriate upstream actions
-- [x] OOPS! pitfall scan executed and triaged (0 genuine issues)
-- [x] pyLODE HTML documentation generated (`docs/energy-news/energy-news.html`)
+- [x] All blocking issues resolved
+- [x] 1 accepted warning documented

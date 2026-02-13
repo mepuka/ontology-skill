@@ -1,0 +1,1846 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://example.org/ontology/energy-news#"
+     xml:base="http://example.org/ontology/energy-news"
+     xmlns:obo="http://purl.obolibrary.org/obo/"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:sioc="http://rdfs.org/sioc/ns#"
+     xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+     xmlns:enews="http://example.org/ontology/energy-news#"
+     xmlns:schema="https://schema.org/"
+     xmlns:dcterms="http://purl.org/dc/terms/">
+    <owl:Ontology rdf:about="http://example.org/ontology/energy-news">
+        <owl:versionIRI rdf:resource="http://example.org/ontology/energy-news/0.2.0"/>
+        <dcterms:created>2026-02-11</dcterms:created>
+        <dcterms:creator>ontology-architect skill</dcterms:creator>
+        <dcterms:description xml:lang="en">A lightweight OWL 2 DL ontology modeling the energy news media landscape as observed through social media posts.</dcterms:description>
+        <dcterms:license rdf:resource="https://spdx.org/licenses/MIT"/>
+        <dcterms:modified>2026-02-12</dcterms:modified>
+        <dcterms:title xml:lang="en">Energy News Ontology</dcterms:title>
+        <owl:priorVersion rdf:resource="http://example.org/ontology/energy-news/0.1.0"/>
+        <owl:versionInfo>0.2.0</owl:versionInfo>
+    </owl:Ontology>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+
+
+    <!-- http://purl.org/dc/terms/created -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/created"/>
+
+
+
+    <!-- http://purl.org/dc/terms/creator -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/creator"/>
+
+
+
+    <!-- http://purl.org/dc/terms/description -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/description"/>
+
+
+
+    <!-- http://purl.org/dc/terms/license -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/license"/>
+
+
+
+    <!-- http://purl.org/dc/terms/modified -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/modified"/>
+
+
+
+    <!-- http://purl.org/dc/terms/title -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/title"/>
+
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#altLabel -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#altLabel"/>
+
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#broader -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#broader"/>
+
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#definition -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#definition"/>
+
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#hasTopConcept -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#hasTopConcept"/>
+
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#inScheme -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#inScheme"/>
+
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#relatedMatch -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#relatedMatch"/>
+
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#topConceptOf -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#topConceptOf"/>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+
+
+    <!-- http://example.org/ontology/energy-news#coversTopic -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/ontology/energy-news#coversTopic">
+        <owl:equivalentProperty rdf:resource="https://schema.org/about"/>
+        <rdfs:domain rdf:resource="http://example.org/ontology/energy-news#Article"/>
+        <rdfs:range rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdfs:label xml:lang="en">covers topic</rdfs:label>
+        <skos:definition xml:lang="en">Links an Article to an EnergyTopic individual it covers</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- http://example.org/ontology/energy-news#hasGeographicFocus -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/ontology/energy-news#hasGeographicFocus">
+        <owl:equivalentProperty rdf:resource="https://schema.org/contentLocation"/>
+        <rdfs:domain rdf:resource="http://example.org/ontology/energy-news#Article"/>
+        <rdfs:range rdf:resource="http://example.org/ontology/energy-news#GeographicEntity"/>
+        <rdfs:label xml:lang="en">has geographic focus</rdfs:label>
+        <skos:definition xml:lang="en">Links an Article to a GeographicEntity representing its geographic focus</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- http://example.org/ontology/energy-news#hasSector -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/ontology/energy-news#hasSector">
+        <rdfs:domain rdf:resource="http://example.org/ontology/energy-news#Organization"/>
+        <rdfs:range rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdfs:label xml:lang="en">has sector</rdfs:label>
+        <skos:definition xml:lang="en">Links an Organization to an EnergyTopic sector it operates in</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- http://example.org/ontology/energy-news#mentionsOrganization -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/ontology/energy-news#mentionsOrganization">
+        <rdfs:subPropertyOf rdf:resource="https://schema.org/mentions"/>
+        <rdfs:domain rdf:resource="http://example.org/ontology/energy-news#Article"/>
+        <rdfs:range rdf:resource="http://example.org/ontology/energy-news#Organization"/>
+        <rdfs:label xml:lang="en">mentions organization</rdfs:label>
+        <skos:definition xml:lang="en">Links an Article to an Organization mentioned in its coverage</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- http://example.org/ontology/energy-news#onPlatform -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/ontology/energy-news#onPlatform">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:range rdf:resource="http://example.org/ontology/energy-news#SocialMediaPlatform"/>
+        <rdfs:label xml:lang="en">on platform</rdfs:label>
+        <skos:definition xml:lang="en">Links an AuthorAccount or Feed to the SocialMediaPlatform it belongs to</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- http://example.org/ontology/energy-news#postedBy -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/ontology/energy-news#postedBy">
+        <rdfs:subPropertyOf rdf:resource="https://schema.org/author"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.org/ontology/energy-news#Post"/>
+        <rdfs:range rdf:resource="http://example.org/ontology/energy-news#AuthorAccount"/>
+        <rdfs:label xml:lang="en">posted by</rdfs:label>
+        <skos:definition xml:lang="en">Links a Post to the AuthorAccount who created it</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- http://example.org/ontology/energy-news#publishedBy -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/ontology/energy-news#publishedBy">
+        <owl:equivalentProperty rdf:resource="https://schema.org/publisher"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.org/ontology/energy-news#Article"/>
+        <rdfs:range rdf:resource="http://example.org/ontology/energy-news#Publication"/>
+        <rdfs:label xml:lang="en">published by</rdfs:label>
+        <skos:definition xml:lang="en">Links an Article to the Publication that published it</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- http://example.org/ontology/energy-news#sharesArticle -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/ontology/energy-news#sharesArticle">
+        <owl:equivalentProperty rdf:resource="https://schema.org/sharedContent"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.org/ontology/energy-news#Post"/>
+        <rdfs:range rdf:resource="http://example.org/ontology/energy-news#Article"/>
+        <rdfs:label xml:lang="en">shares article</rdfs:label>
+        <skos:definition xml:lang="en">Links a Post to the Article it shares via embedded link</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://schema.org/about -->
+
+    <owl:ObjectProperty rdf:about="https://schema.org/about"/>
+
+
+
+    <!-- https://schema.org/author -->
+
+    <owl:ObjectProperty rdf:about="https://schema.org/author"/>
+
+
+
+    <!-- https://schema.org/contentLocation -->
+
+    <owl:ObjectProperty rdf:about="https://schema.org/contentLocation"/>
+
+
+
+    <!-- https://schema.org/mentions -->
+
+    <owl:ObjectProperty rdf:about="https://schema.org/mentions"/>
+
+
+
+    <!-- https://schema.org/publisher -->
+
+    <owl:ObjectProperty rdf:about="https://schema.org/publisher"/>
+
+
+
+    <!-- https://schema.org/sharedContent -->
+
+    <owl:ObjectProperty rdf:about="https://schema.org/sharedContent"/>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+
+
+    <!-- http://example.org/ontology/energy-news#description -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/ontology/energy-news#description">
+        <owl:equivalentProperty rdf:resource="https://schema.org/description"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.org/ontology/energy-news#Article"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="en">description</rdfs:label>
+        <skos:definition xml:lang="en">The description or summary text of an Article</skos:definition>
+    </owl:DatatypeProperty>
+
+
+
+    <!-- http://example.org/ontology/energy-news#handle -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/ontology/energy-news#handle">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.org/ontology/energy-news#AuthorAccount"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="en">handle</rdfs:label>
+        <skos:definition xml:lang="en">The handle or username string for an AuthorAccount</skos:definition>
+    </owl:DatatypeProperty>
+
+
+
+    <!-- http://example.org/ontology/energy-news#publishedDate -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/ontology/energy-news#publishedDate">
+        <owl:equivalentProperty rdf:resource="https://schema.org/datePublished"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.org/ontology/energy-news#Article"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label xml:lang="en">published date</rdfs:label>
+        <skos:definition xml:lang="en">The publication date of an Article</skos:definition>
+    </owl:DatatypeProperty>
+
+
+
+    <!-- http://example.org/ontology/energy-news#siteDomain -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/ontology/energy-news#siteDomain">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.org/ontology/energy-news#Publication"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="en">site domain</rdfs:label>
+        <skos:definition xml:lang="en">The domain name string of a Publication</skos:definition>
+    </owl:DatatypeProperty>
+
+
+
+    <!-- http://example.org/ontology/energy-news#title -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/ontology/energy-news#title">
+        <owl:equivalentProperty rdf:resource="https://schema.org/headline"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.org/ontology/energy-news#Article"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label xml:lang="en">title</rdfs:label>
+        <skos:definition xml:lang="en">The headline or title string of an Article</skos:definition>
+    </owl:DatatypeProperty>
+
+
+
+    <!-- http://example.org/ontology/energy-news#url -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/ontology/energy-news#url">
+        <owl:equivalentProperty rdf:resource="https://schema.org/url"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://example.org/ontology/energy-news#Article"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+        <rdfs:label xml:lang="en">url</rdfs:label>
+        <skos:definition xml:lang="en">The URL of an Article</skos:definition>
+    </owl:DatatypeProperty>
+
+
+
+    <!-- https://schema.org/datePublished -->
+
+    <owl:DatatypeProperty rdf:about="https://schema.org/datePublished"/>
+
+
+
+    <!-- https://schema.org/description -->
+
+    <owl:DatatypeProperty rdf:about="https://schema.org/description"/>
+
+
+
+    <!-- https://schema.org/headline -->
+
+    <owl:DatatypeProperty rdf:about="https://schema.org/headline"/>
+
+
+
+    <!-- https://schema.org/url -->
+
+    <owl:DatatypeProperty rdf:about="https://schema.org/url"/>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+
+
+    <!-- http://example.org/ontology/energy-news#Article -->
+
+    <owl:Class rdf:about="http://example.org/ontology/energy-news#Article">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000031"/>
+        <rdfs:subClassOf rdf:resource="https://schema.org/NewsArticle"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://example.org/ontology/energy-news#coversTopic"/>
+                <owl:someValuesFrom rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:hasKey rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#url"/>
+        </owl:hasKey>
+        <rdfs:label xml:lang="en">article</rdfs:label>
+        <skos:definition xml:lang="en">A GenericallyDependentContinuant that represents a news article referenced by an embedded link in a social media post</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- http://example.org/ontology/energy-news#AuthorAccount -->
+
+    <owl:Class rdf:about="http://example.org/ontology/energy-news#AuthorAccount">
+        <owl:equivalentClass rdf:resource="http://rdfs.org/sioc/ns#UserAccount"/>
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000031"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://example.org/ontology/energy-news#onPlatform"/>
+                <owl:someValuesFrom rdf:resource="http://example.org/ontology/energy-news#SocialMediaPlatform"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:hasKey rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#onPlatform"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#handle"/>
+        </owl:hasKey>
+        <rdfs:label xml:lang="en">author account</rdfs:label>
+        <skos:definition xml:lang="en">A GenericallyDependentContinuant that represents a social media account that shares energy news</skos:definition>
+        <skos:relatedMatch rdf:resource="https://schema.org/Person"/>
+    </owl:Class>
+
+
+
+    <!-- http://example.org/ontology/energy-news#EnergyTopic -->
+
+    <owl:Class rdf:about="http://example.org/ontology/energy-news#EnergyTopic">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000031"/>
+        <rdfs:label xml:lang="en">energy topic</rdfs:label>
+        <skos:definition xml:lang="en">An owl:Class whose instances are skos:Concept individuals representing subject areas within the energy sector used to classify news articles</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Feed -->
+
+    <owl:Class rdf:about="http://example.org/ontology/energy-news#Feed">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000031"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://example.org/ontology/energy-news#onPlatform"/>
+                <owl:someValuesFrom rdf:resource="http://example.org/ontology/energy-news#SocialMediaPlatform"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label xml:lang="en">feed</rdfs:label>
+        <skos:definition xml:lang="en">A GenericallyDependentContinuant that represents a curated social media feed for energy content</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- http://example.org/ontology/energy-news#GeographicEntity -->
+
+    <owl:Class rdf:about="http://example.org/ontology/energy-news#GeographicEntity">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000029"/>
+        <rdfs:subClassOf rdf:resource="https://schema.org/Place"/>
+        <rdfs:label xml:lang="en">geographic entity</rdfs:label>
+        <skos:definition xml:lang="en">A Site that represents a country region or subnational area relevant to energy news coverage</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Organization -->
+
+    <owl:Class rdf:about="http://example.org/ontology/energy-news#Organization">
+        <owl:equivalentClass rdf:resource="https://schema.org/Organization"/>
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000030"/>
+        <rdfs:label xml:lang="en">organization</rdfs:label>
+        <skos:definition xml:lang="en">An Object that represents a company agency or institutional body mentioned in energy news</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Post -->
+
+    <owl:Class rdf:about="http://example.org/ontology/energy-news#Post">
+        <owl:equivalentClass rdf:resource="https://schema.org/SocialMediaPosting"/>
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000031"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://example.org/ontology/energy-news#postedBy"/>
+                <owl:someValuesFrom rdf:resource="http://example.org/ontology/energy-news#AuthorAccount"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:label xml:lang="en">post</rdfs:label>
+        <skos:definition xml:lang="en">A GenericallyDependentContinuant that represents a social media post sharing energy content</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Publication -->
+
+    <owl:Class rdf:about="http://example.org/ontology/energy-news#Publication">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000030"/>
+        <rdfs:subClassOf rdf:resource="https://schema.org/NewsMediaOrganization"/>
+        <owl:hasKey rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#siteDomain"/>
+        </owl:hasKey>
+        <rdfs:label xml:lang="en">publication</rdfs:label>
+        <skos:definition xml:lang="en">An Object that represents a news media outlet or website that publishes articles</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- http://example.org/ontology/energy-news#SocialMediaPlatform -->
+
+    <owl:Class rdf:about="http://example.org/ontology/energy-news#SocialMediaPlatform">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000031"/>
+        <rdfs:label xml:lang="en">social media platform</rdfs:label>
+        <skos:definition xml:lang="en">An owl:Class whose instances are named individuals representing social media platforms</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- http://purl.obolibrary.org/obo/BFO_0000029 -->
+
+    <owl:Class rdf:about="http://purl.obolibrary.org/obo/BFO_0000029">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:label xml:lang="en">site</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- http://purl.obolibrary.org/obo/BFO_0000030 -->
+
+    <owl:Class rdf:about="http://purl.obolibrary.org/obo/BFO_0000030">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:label xml:lang="en">object</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- http://purl.obolibrary.org/obo/BFO_0000031 -->
+
+    <owl:Class rdf:about="http://purl.obolibrary.org/obo/BFO_0000031">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:label xml:lang="en">generically dependent continuant</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- http://rdfs.org/sioc/ns#UserAccount -->
+
+    <owl:Class rdf:about="http://rdfs.org/sioc/ns#UserAccount">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000031"/>
+    </owl:Class>
+
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#Concept -->
+
+    <owl:Class rdf:about="http://www.w3.org/2004/02/skos/core#Concept">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:Class>
+
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#ConceptScheme -->
+
+    <owl:Class rdf:about="http://www.w3.org/2004/02/skos/core#ConceptScheme">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:Class>
+
+
+
+    <!-- https://schema.org/NewsArticle -->
+
+    <owl:Class rdf:about="https://schema.org/NewsArticle">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:Class>
+
+
+
+    <!-- https://schema.org/NewsMediaOrganization -->
+
+    <owl:Class rdf:about="https://schema.org/NewsMediaOrganization">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:Class>
+
+
+
+    <!-- https://schema.org/Organization -->
+
+    <owl:Class rdf:about="https://schema.org/Organization">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000030"/>
+    </owl:Class>
+
+
+
+    <!-- https://schema.org/Person -->
+
+    <owl:Class rdf:about="https://schema.org/Person">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:Class>
+
+
+
+    <!-- https://schema.org/Place -->
+
+    <owl:Class rdf:about="https://schema.org/Place">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:Class>
+
+
+
+    <!-- https://schema.org/SocialMediaPosting -->
+
+    <owl:Class rdf:about="https://schema.org/SocialMediaPosting">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000031"/>
+    </owl:Class>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+
+
+    <!-- http://example.org/ontology/energy-news#Affordability -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Affordability">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">affordability</rdfs:label>
+        <skos:altLabel xml:lang="en">energy bills</skos:altLabel>
+        <skos:altLabel xml:lang="en">energy poverty</skos:altLabel>
+        <skos:altLabel xml:lang="en">rate hike</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#EnergyJustice"/>
+        <skos:definition xml:lang="en">A skos:Concept representing energy affordability bills rate increases and energy poverty</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Agrivoltaics -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Agrivoltaics">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">agrivoltaics</rdfs:label>
+        <skos:altLabel xml:lang="en">agrivoltaic</skos:altLabel>
+        <skos:altLabel xml:lang="en">solar farming</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#EnvironmentAndLandUse"/>
+        <skos:definition xml:lang="en">A skos:Concept representing co-location of solar panels and agriculture</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Bluesky -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Bluesky">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#SocialMediaPlatform"/>
+        <owl:differentFrom rdf:resource="http://example.org/ontology/energy-news#Twitter"/>
+        <rdfs:label xml:lang="en">Bluesky</rdfs:label>
+        <skos:altLabel xml:lang="en">Bluesky Social</skos:altLabel>
+        <skos:altLabel xml:lang="en">bsky</skos:altLabel>
+        <skos:definition xml:lang="en">A SocialMediaPlatform individual representing the Bluesky social network</skos:definition>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#BuildingElectrification -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#BuildingElectrification">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">building electrification</rdfs:label>
+        <skos:altLabel xml:lang="en">building electrification</skos:altLabel>
+        <skos:altLabel xml:lang="en">gas-to-electric</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#BuildingsAndEfficiency"/>
+        <skos:definition xml:lang="en">A skos:Concept representing switching buildings from gas to electric systems</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#BuildingsAndEfficiency -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#BuildingsAndEfficiency">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">buildings and efficiency</rdfs:label>
+        <skos:altLabel xml:lang="en">building energy</skos:altLabel>
+        <skos:altLabel xml:lang="en">energy efficiency</skos:altLabel>
+        <skos:definition xml:lang="en">A skos:Concept representing building energy performance retrofits and distributed generation</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+        <skos:topConceptOf rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#CarbonCapture -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#CarbonCapture">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">carbon capture</rdfs:label>
+        <skos:altLabel xml:lang="en">CCS</skos:altLabel>
+        <skos:altLabel xml:lang="en">CCUS</skos:altLabel>
+        <skos:altLabel xml:lang="en">carbon capture</skos:altLabel>
+        <skos:definition xml:lang="en">A skos:Concept representing carbon capture utilization and storage technologies</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+        <skos:topConceptOf rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#ClimateAndEmissions -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#ClimateAndEmissions">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">climate and emissions</rdfs:label>
+        <skos:altLabel xml:lang="en">GHG</skos:altLabel>
+        <skos:altLabel xml:lang="en">climate</skos:altLabel>
+        <skos:altLabel xml:lang="en">emissions</skos:altLabel>
+        <skos:definition xml:lang="en">A skos:Concept representing climate change and greenhouse gas emissions in the energy context</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+        <skos:topConceptOf rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Coal -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Coal">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">coal</rdfs:label>
+        <skos:altLabel xml:lang="en">coal power</skos:altLabel>
+        <skos:altLabel xml:lang="en">coal-fired</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#Fossil"/>
+        <skos:definition xml:lang="en">A skos:Concept representing coal extraction and coal-fired power generation</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Commodity -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Commodity">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">commodity</rdfs:label>
+        <skos:altLabel xml:lang="en">commodity trading</skos:altLabel>
+        <skos:altLabel xml:lang="en">gas prices</skos:altLabel>
+        <skos:altLabel xml:lang="en">oil futures</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#EnergyMarkets"/>
+        <skos:definition xml:lang="en">A skos:Concept representing oil futures gas spot prices and energy commodity trading</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#CommunityEnergy -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#CommunityEnergy">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">community energy</rdfs:label>
+        <skos:altLabel xml:lang="en">community solar</skos:altLabel>
+        <skos:altLabel xml:lang="en">cooperative energy</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#EnergyJustice"/>
+        <skos:definition xml:lang="en">A skos:Concept representing community-owned energy projects and cooperatives</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#CorporateDeals -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#CorporateDeals">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">corporate deals</rdfs:label>
+        <skos:altLabel xml:lang="en">M&amp;A</skos:altLabel>
+        <skos:altLabel xml:lang="en">acquisition</skos:altLabel>
+        <skos:altLabel xml:lang="en">merger</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#EnergyFinance"/>
+        <skos:definition xml:lang="en">A skos:Concept representing acquisitions mergers and corporate stakes in energy companies</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#CriticalMinerals -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#CriticalMinerals">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">critical minerals</rdfs:label>
+        <skos:altLabel xml:lang="en">cobalt</skos:altLabel>
+        <skos:altLabel xml:lang="en">lithium</skos:altLabel>
+        <skos:altLabel xml:lang="en">rare earth</skos:altLabel>
+        <skos:altLabel xml:lang="en">silicon</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#EnergyGeopolitics"/>
+        <skos:definition xml:lang="en">A skos:Concept representing critical minerals required for energy technologies</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#DataCenterDemand -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#DataCenterDemand">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">data center demand</rdfs:label>
+        <skos:altLabel xml:lang="en">AI energy demand</skos:altLabel>
+        <skos:altLabel xml:lang="en">data center energy</skos:altLabel>
+        <skos:definition xml:lang="en">A skos:Concept representing electricity demand from data centers and artificial intelligence workloads</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+        <skos:topConceptOf rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Decarbonization -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Decarbonization">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">decarbonization</rdfs:label>
+        <skos:altLabel xml:lang="en">carbon reduction</skos:altLabel>
+        <skos:altLabel xml:lang="en">decarbonisation</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#ClimateAndEmissions"/>
+        <skos:definition xml:lang="en">A skos:Concept representing strategies and progress toward reducing carbon emissions</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Distribution -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Distribution">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">distribution</rdfs:label>
+        <skos:altLabel xml:lang="en">local grid</skos:altLabel>
+        <skos:altLabel xml:lang="en">power distribution</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#GridAndInfrastructure"/>
+        <skos:definition xml:lang="en">A skos:Concept representing local electricity distribution networks</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#EVCharging -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#EVCharging">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">ev charging</rdfs:label>
+        <skos:altLabel xml:lang="en">EV charger</skos:altLabel>
+        <skos:altLabel xml:lang="en">EVSE</skos:altLabel>
+        <skos:altLabel xml:lang="en">charging station</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#Electrification"/>
+        <skos:definition xml:lang="en">A skos:Concept representing electric vehicle charging infrastructure and networks</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#EfficiencyRecords -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#EfficiencyRecords">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <owl:differentFrom rdf:resource="http://example.org/ontology/energy-news#Patent"/>
+        <rdfs:label xml:lang="en">efficiency records</rdfs:label>
+        <skos:altLabel xml:lang="en">solar efficiency</skos:altLabel>
+        <skos:altLabel xml:lang="en">technology record</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#ResearchAndInnovation"/>
+        <skos:definition xml:lang="en">A skos:Concept representing technology efficiency records and breakthrough achievements</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#ElectricTransport -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#ElectricTransport">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">electric transport</rdfs:label>
+        <skos:altLabel xml:lang="en">e-mobility</skos:altLabel>
+        <skos:altLabel xml:lang="en">electric bus</skos:altLabel>
+        <skos:altLabel xml:lang="en">electric ferry</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#Electrification"/>
+        <skos:definition xml:lang="en">A skos:Concept representing electrification of ships ferries buses and other transport</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#ElectricVehicles -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#ElectricVehicles">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">electric vehicles</rdfs:label>
+        <skos:altLabel xml:lang="en">BEV</skos:altLabel>
+        <skos:altLabel xml:lang="en">EV</skos:altLabel>
+        <skos:altLabel xml:lang="en">electric car</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#Electrification"/>
+        <skos:definition xml:lang="en">A skos:Concept representing battery and plug-in electric vehicles</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Electrification -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Electrification">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">electrification</rdfs:label>
+        <skos:altLabel xml:lang="en">electric transition</skos:altLabel>
+        <skos:altLabel xml:lang="en">electrification</skos:altLabel>
+        <skos:definition xml:lang="en">A skos:Concept representing the electrification of transport buildings and industry</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+        <skos:topConceptOf rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#EmissionsTracking -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#EmissionsTracking">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">emissions tracking</rdfs:label>
+        <skos:altLabel xml:lang="en">GHG monitoring</skos:altLabel>
+        <skos:altLabel xml:lang="en">emissions reporting</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#ClimateAndEmissions"/>
+        <skos:definition xml:lang="en">A skos:Concept representing monitoring and reporting of greenhouse gas emissions</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#EnergyAccess -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#EnergyAccess">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">energy access</rdfs:label>
+        <skos:altLabel xml:lang="en">energy access</skos:altLabel>
+        <skos:altLabel xml:lang="en">modern energy</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#EnergyJustice"/>
+        <skos:definition xml:lang="en">A skos:Concept representing access to modern energy services</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#EnergyFinance -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#EnergyFinance">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">energy finance</rdfs:label>
+        <skos:altLabel xml:lang="en">energy funding</skos:altLabel>
+        <skos:altLabel xml:lang="en">energy investment</skos:altLabel>
+        <skos:definition xml:lang="en">A skos:Concept representing investment funding and financial deals in the energy sector</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+        <skos:topConceptOf rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#EnergyGeopolitics -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#EnergyGeopolitics">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">energy geopolitics</rdfs:label>
+        <skos:altLabel xml:lang="en">energy geopolitics</skos:altLabel>
+        <skos:altLabel xml:lang="en">energy security</skos:altLabel>
+        <skos:definition xml:lang="en">A skos:Concept representing geopolitical dimensions of energy supply trade and security</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+        <skos:topConceptOf rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#EnergyJobs -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#EnergyJobs">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">energy jobs</rdfs:label>
+        <skos:altLabel xml:lang="en">clean energy jobs</skos:altLabel>
+        <skos:altLabel xml:lang="en">energy employment</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#WorkforceAndManufacturing"/>
+        <skos:definition xml:lang="en">A skos:Concept representing employment in the energy sector</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#EnergyJustice -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#EnergyJustice">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">energy justice</rdfs:label>
+        <skos:altLabel xml:lang="en">energy equity</skos:altLabel>
+        <skos:altLabel xml:lang="en">just transition</skos:altLabel>
+        <skos:definition xml:lang="en">A skos:Concept representing equity access and justice dimensions of energy systems</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+        <skos:topConceptOf rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#EnergyMarkets -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#EnergyMarkets">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">energy markets</rdfs:label>
+        <skos:altLabel xml:lang="en">energy markets</skos:altLabel>
+        <skos:altLabel xml:lang="en">power markets</skos:altLabel>
+        <skos:definition xml:lang="en">A skos:Concept representing pricing trading and wholesale electricity and commodity markets</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+        <skos:topConceptOf rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#EnergyPolicy -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#EnergyPolicy">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">energy policy</rdfs:label>
+        <skos:altLabel xml:lang="en">energy policy</skos:altLabel>
+        <skos:definition xml:lang="en">A skos:Concept representing government policy affecting the energy sector</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+        <skos:topConceptOf rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#EnergyStorage -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#EnergyStorage">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">energy storage</rdfs:label>
+        <skos:altLabel xml:lang="en">BESS</skos:altLabel>
+        <skos:altLabel xml:lang="en">battery storage</skos:altLabel>
+        <skos:altLabel xml:lang="en">storage</skos:altLabel>
+        <skos:definition xml:lang="en">A skos:Concept representing battery storage and other energy storage technologies</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+        <skos:topConceptOf rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#EnergyTopicScheme -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#EnergyTopicScheme">
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+        <rdfs:label xml:lang="en">Energy News Topic Scheme</rdfs:label>
+        <skos:definition xml:lang="en">A SKOS concept scheme organizing energy topic individuals into a broader/narrower hierarchy for classifying energy news articles.</skos:definition>
+        <skos:hasTopConcept rdf:resource="http://example.org/ontology/energy-news#BuildingsAndEfficiency"/>
+        <skos:hasTopConcept rdf:resource="http://example.org/ontology/energy-news#CarbonCapture"/>
+        <skos:hasTopConcept rdf:resource="http://example.org/ontology/energy-news#ClimateAndEmissions"/>
+        <skos:hasTopConcept rdf:resource="http://example.org/ontology/energy-news#DataCenterDemand"/>
+        <skos:hasTopConcept rdf:resource="http://example.org/ontology/energy-news#Electrification"/>
+        <skos:hasTopConcept rdf:resource="http://example.org/ontology/energy-news#EnergyFinance"/>
+        <skos:hasTopConcept rdf:resource="http://example.org/ontology/energy-news#EnergyGeopolitics"/>
+        <skos:hasTopConcept rdf:resource="http://example.org/ontology/energy-news#EnergyJustice"/>
+        <skos:hasTopConcept rdf:resource="http://example.org/ontology/energy-news#EnergyMarkets"/>
+        <skos:hasTopConcept rdf:resource="http://example.org/ontology/energy-news#EnergyPolicy"/>
+        <skos:hasTopConcept rdf:resource="http://example.org/ontology/energy-news#EnergyStorage"/>
+        <skos:hasTopConcept rdf:resource="http://example.org/ontology/energy-news#EnvironmentAndLandUse"/>
+        <skos:hasTopConcept rdf:resource="http://example.org/ontology/energy-news#Fossil"/>
+        <skos:hasTopConcept rdf:resource="http://example.org/ontology/energy-news#GridAndInfrastructure"/>
+        <skos:hasTopConcept rdf:resource="http://example.org/ontology/energy-news#Hydrogen"/>
+        <skos:hasTopConcept rdf:resource="http://example.org/ontology/energy-news#Nuclear"/>
+        <skos:hasTopConcept rdf:resource="http://example.org/ontology/energy-news#Renewable"/>
+        <skos:hasTopConcept rdf:resource="http://example.org/ontology/energy-news#ResearchAndInnovation"/>
+        <skos:hasTopConcept rdf:resource="http://example.org/ontology/energy-news#WorkforceAndManufacturing"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#EnvironmentAndLandUse -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#EnvironmentAndLandUse">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">environment and land use</rdfs:label>
+        <skos:altLabel xml:lang="en">environmental impact</skos:altLabel>
+        <skos:altLabel xml:lang="en">land use</skos:altLabel>
+        <skos:definition xml:lang="en">A skos:Concept representing environmental impacts and land use of energy projects</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+        <skos:topConceptOf rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Fossil -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Fossil">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">fossil</rdfs:label>
+        <skos:altLabel xml:lang="en">conventional energy</skos:altLabel>
+        <skos:altLabel xml:lang="en">fossil fuel</skos:altLabel>
+        <skos:definition xml:lang="en">A skos:Concept representing energy derived from geological carbon deposits including coal oil and natural gas</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+        <skos:topConceptOf rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Fusion -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Fusion">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <owl:differentFrom rdf:resource="http://example.org/ontology/energy-news#SMR"/>
+        <rdfs:label xml:lang="en">fusion</rdfs:label>
+        <skos:altLabel xml:lang="en">fusion energy</skos:altLabel>
+        <skos:altLabel xml:lang="en">nuclear fusion</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#Nuclear"/>
+        <skos:definition xml:lang="en">A skos:Concept representing nuclear fusion energy research and development</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Geothermal -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Geothermal">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">geothermal</rdfs:label>
+        <skos:altLabel xml:lang="en">geothermal energy</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#Renewable"/>
+        <skos:definition xml:lang="en">A skos:Concept representing heat energy extracted from the earth</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#GridAndInfrastructure -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#GridAndInfrastructure">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">grid and infrastructure</rdfs:label>
+        <skos:altLabel xml:lang="en">electricity infrastructure</skos:altLabel>
+        <skos:altLabel xml:lang="en">grid</skos:altLabel>
+        <skos:altLabel xml:lang="en">power grid</skos:altLabel>
+        <skos:definition xml:lang="en">A skos:Concept representing power grid and electricity delivery infrastructure</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+        <skos:topConceptOf rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#GridOperator -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#GridOperator">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">grid operator</rdfs:label>
+        <skos:altLabel xml:lang="en">ISO</skos:altLabel>
+        <skos:altLabel xml:lang="en">RTO</skos:altLabel>
+        <skos:altLabel xml:lang="en">grid operator</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#GridAndInfrastructure"/>
+        <skos:definition xml:lang="en">A skos:Concept representing independent system operators and regional transmission organizations</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#HeatPumps -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#HeatPumps">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">heat pumps</rdfs:label>
+        <skos:altLabel xml:lang="en">heat pump</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#Electrification"/>
+        <skos:definition xml:lang="en">A skos:Concept representing heat pump technology for building heating and cooling</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Hydro -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Hydro">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">hydro</rdfs:label>
+        <skos:altLabel xml:lang="en">hydroelectric</skos:altLabel>
+        <skos:altLabel xml:lang="en">hydropower</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#Renewable"/>
+        <skos:definition xml:lang="en">A skos:Concept representing conventional and pumped-storage hydroelectric power</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Hydrogen -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Hydrogen">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">hydrogen</rdfs:label>
+        <skos:altLabel xml:lang="en">H2</skos:altLabel>
+        <skos:altLabel xml:lang="en">blue hydrogen</skos:altLabel>
+        <skos:altLabel xml:lang="en">green hydrogen</skos:altLabel>
+        <skos:definition xml:lang="en">A skos:Concept representing hydrogen as an energy carrier across production methods</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+        <skos:topConceptOf rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Interconnection -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Interconnection">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">interconnection</rdfs:label>
+        <skos:altLabel xml:lang="en">grid connection</skos:altLabel>
+        <skos:altLabel xml:lang="en">interconnection queue</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#GridAndInfrastructure"/>
+        <skos:definition xml:lang="en">A skos:Concept representing generator interconnection queues and processes</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#LaborRelations -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#LaborRelations">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">labor relations</rdfs:label>
+        <skos:altLabel xml:lang="en">energy unions</skos:altLabel>
+        <skos:altLabel xml:lang="en">worker organizing</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#WorkforceAndManufacturing"/>
+        <skos:definition xml:lang="en">A skos:Concept representing unions and worker organizing in the energy sector</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Legislation -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Legislation">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">legislation</rdfs:label>
+        <skos:altLabel xml:lang="en">IRA</skos:altLabel>
+        <skos:altLabel xml:lang="en">clean energy standard</skos:altLabel>
+        <skos:altLabel xml:lang="en">energy law</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#EnergyPolicy"/>
+        <skos:definition xml:lang="en">A skos:Concept representing laws and legislative acts affecting energy</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Manufacturing -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Manufacturing">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">manufacturing</rdfs:label>
+        <skos:altLabel xml:lang="en">energy manufacturing</skos:altLabel>
+        <skos:altLabel xml:lang="en">factory</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#WorkforceAndManufacturing"/>
+        <skos:definition xml:lang="en">A skos:Concept representing energy equipment manufacturing and factories</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#NaturalGas -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#NaturalGas">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">natural gas</rdfs:label>
+        <skos:altLabel xml:lang="en">LNG</skos:altLabel>
+        <skos:altLabel xml:lang="en">gas</skos:altLabel>
+        <skos:altLabel xml:lang="en">natural gas</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#Fossil"/>
+        <skos:definition xml:lang="en">A skos:Concept representing natural gas including liquefied natural gas and pipeline gas</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#NetZero -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#NetZero">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">net zero</rdfs:label>
+        <skos:altLabel xml:lang="en">net zero target</skos:altLabel>
+        <skos:altLabel xml:lang="en">net-zero</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#ClimateAndEmissions"/>
+        <skos:definition xml:lang="en">A skos:Concept representing net-zero emissions targets and commitments</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Nuclear -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Nuclear">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">nuclear</rdfs:label>
+        <skos:altLabel xml:lang="en">atomic energy</skos:altLabel>
+        <skos:altLabel xml:lang="en">nuclear energy</skos:altLabel>
+        <skos:altLabel xml:lang="en">nuclear power</skos:altLabel>
+        <skos:definition xml:lang="en">A skos:Concept representing energy from nuclear fission and fusion reactions</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+        <skos:topConceptOf rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Oil -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Oil">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">oil</rdfs:label>
+        <skos:altLabel xml:lang="en">crude oil</skos:altLabel>
+        <skos:altLabel xml:lang="en">petroleum</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#Fossil"/>
+        <skos:definition xml:lang="en">A skos:Concept representing crude oil extraction refining and petroleum products</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Patent -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Patent">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">patent</rdfs:label>
+        <skos:altLabel xml:lang="en">IP</skos:altLabel>
+        <skos:altLabel xml:lang="en">energy patent</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#ResearchAndInnovation"/>
+        <skos:definition xml:lang="en">A skos:Concept representing intellectual property and patents in energy technology</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Permitting -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Permitting">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">permitting</rdfs:label>
+        <skos:altLabel xml:lang="en">permitting process</skos:altLabel>
+        <skos:altLabel xml:lang="en">siting</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#EnergyPolicy"/>
+        <skos:definition xml:lang="en">A skos:Concept representing permitting and siting processes for energy projects</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#PowerPurchaseAgreement -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#PowerPurchaseAgreement">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">power purchase agreement</rdfs:label>
+        <skos:altLabel xml:lang="en">PPA</skos:altLabel>
+        <skos:altLabel xml:lang="en">offtake agreement</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#EnergyMarkets"/>
+        <skos:definition xml:lang="en">A skos:Concept representing power purchase agreements between generators and offtakers</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#ProjectFinance -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#ProjectFinance">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">project finance</rdfs:label>
+        <skos:altLabel xml:lang="en">project funding</skos:altLabel>
+        <skos:altLabel xml:lang="en">project investment</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#EnergyFinance"/>
+        <skos:definition xml:lang="en">A skos:Concept representing financing of specific energy projects</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#PublicFunding -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#PublicFunding">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">public funding</rdfs:label>
+        <skos:altLabel xml:lang="en">grant</skos:altLabel>
+        <skos:altLabel xml:lang="en">subsidy</skos:altLabel>
+        <skos:altLabel xml:lang="en">tax credit</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#EnergyFinance"/>
+        <skos:definition xml:lang="en">A skos:Concept representing government subsidies tax credits and grants for energy</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Regulation -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Regulation">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">regulation</rdfs:label>
+        <skos:altLabel xml:lang="en">FERC</skos:altLabel>
+        <skos:altLabel xml:lang="en">NERC</skos:altLabel>
+        <skos:altLabel xml:lang="en">PUC</skos:altLabel>
+        <skos:altLabel xml:lang="en">energy regulation</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#EnergyPolicy"/>
+        <skos:definition xml:lang="en">A skos:Concept representing regulatory actions by energy regulatory bodies</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Renewable -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Renewable">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">renewable</rdfs:label>
+        <skos:altLabel xml:lang="en">clean energy</skos:altLabel>
+        <skos:altLabel xml:lang="en">renewables</skos:altLabel>
+        <skos:definition xml:lang="en">A skos:Concept representing energy generated from naturally replenishing sources such as solar wind and hydro</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+        <skos:topConceptOf rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#ResearchAndInnovation -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#ResearchAndInnovation">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">research and innovation</rdfs:label>
+        <skos:altLabel xml:lang="en">energy R&amp;D</skos:altLabel>
+        <skos:altLabel xml:lang="en">energy innovation</skos:altLabel>
+        <skos:definition xml:lang="en">A skos:Concept representing research development breakthroughs and patents in energy technology</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+        <skos:topConceptOf rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Retrofits -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Retrofits">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">retrofits</rdfs:label>
+        <skos:altLabel xml:lang="en">building retrofit</skos:altLabel>
+        <skos:altLabel xml:lang="en">energy retrofit</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#BuildingsAndEfficiency"/>
+        <skos:definition xml:lang="en">A skos:Concept representing energy efficiency retrofits of existing buildings</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#RooftopSolar -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#RooftopSolar">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">rooftop solar</rdfs:label>
+        <skos:altLabel xml:lang="en">distributed solar</skos:altLabel>
+        <skos:altLabel xml:lang="en">rooftop PV</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#BuildingsAndEfficiency"/>
+        <skos:definition xml:lang="en">A skos:Concept representing rooftop and distributed solar installations on buildings</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#SMR -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#SMR">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">smr</rdfs:label>
+        <skos:altLabel xml:lang="en">small modular reactor</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#Nuclear"/>
+        <skos:definition xml:lang="en">A skos:Concept representing small modular reactor technology designs</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Solar -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Solar">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">solar</rdfs:label>
+        <skos:altLabel xml:lang="en">PV</skos:altLabel>
+        <skos:altLabel xml:lang="en">photovoltaic</skos:altLabel>
+        <skos:altLabel xml:lang="en">solar energy</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#Renewable"/>
+        <skos:definition xml:lang="en">A skos:Concept representing solar photovoltaic and concentrated solar power generation</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#SupplyChain -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#SupplyChain">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">supply chain</rdfs:label>
+        <skos:altLabel xml:lang="en">energy supply chain</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#EnergyGeopolitics"/>
+        <skos:definition xml:lang="en">A skos:Concept representing energy equipment and fuel supply chains</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Tariff -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Tariff">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">tariff</rdfs:label>
+        <skos:altLabel xml:lang="en">energy tariffs</skos:altLabel>
+        <skos:altLabel xml:lang="en">trade tariffs</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#EnergyPolicy"/>
+        <skos:definition xml:lang="en">A skos:Concept representing trade tariffs on energy equipment and materials</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#TradeAndSanctions -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#TradeAndSanctions">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">trade and sanctions</rdfs:label>
+        <skos:altLabel xml:lang="en">energy sanctions</skos:altLabel>
+        <skos:altLabel xml:lang="en">trade dispute</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#EnergyGeopolitics"/>
+        <skos:definition xml:lang="en">A skos:Concept representing energy trade disputes and sanctions regimes</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Transmission -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Transmission">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">transmission</rdfs:label>
+        <skos:altLabel xml:lang="en">high-voltage lines</skos:altLabel>
+        <skos:altLabel xml:lang="en">power transmission</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#GridAndInfrastructure"/>
+        <skos:definition xml:lang="en">A skos:Concept representing high-voltage transmission lines and transmission planning</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Twitter -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Twitter">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#SocialMediaPlatform"/>
+        <rdfs:label xml:lang="en">Twitter</rdfs:label>
+        <skos:altLabel xml:lang="en">Twitter/X</skos:altLabel>
+        <skos:altLabel xml:lang="en">X</skos:altLabel>
+        <skos:definition xml:lang="en">A SocialMediaPlatform individual representing the Twitter/X social network</skos:definition>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#WasteAndPollution -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#WasteAndPollution">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">waste and pollution</rdfs:label>
+        <skos:altLabel xml:lang="en">energy waste</skos:altLabel>
+        <skos:altLabel xml:lang="en">pollution</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#EnvironmentAndLandUse"/>
+        <skos:definition xml:lang="en">A skos:Concept representing waste disposal and pollution from energy production</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#WaterUse -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#WaterUse">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">water use</rdfs:label>
+        <skos:altLabel xml:lang="en">cooling water</skos:altLabel>
+        <skos:altLabel xml:lang="en">water consumption</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#EnvironmentAndLandUse"/>
+        <skos:definition xml:lang="en">A skos:Concept representing water consumption by energy facilities</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#WholesaleMarkets -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#WholesaleMarkets">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">wholesale markets</rdfs:label>
+        <skos:altLabel xml:lang="en">auction</skos:altLabel>
+        <skos:altLabel xml:lang="en">capacity market</skos:altLabel>
+        <skos:altLabel xml:lang="en">wholesale electricity</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#EnergyMarkets"/>
+        <skos:definition xml:lang="en">A skos:Concept representing wholesale electricity markets and capacity auctions</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#Wind -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#Wind">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">wind</rdfs:label>
+        <skos:altLabel xml:lang="en">wind energy</skos:altLabel>
+        <skos:altLabel xml:lang="en">wind power</skos:altLabel>
+        <skos:broader rdf:resource="http://example.org/ontology/energy-news#Renewable"/>
+        <skos:definition xml:lang="en">A skos:Concept representing onshore and offshore wind power generation</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!-- http://example.org/ontology/energy-news#WorkforceAndManufacturing -->
+
+    <owl:NamedIndividual rdf:about="http://example.org/ontology/energy-news#WorkforceAndManufacturing">
+        <rdf:type rdf:resource="http://example.org/ontology/energy-news#EnergyTopic"/>
+        <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <rdfs:label xml:lang="en">workforce and manufacturing</rdfs:label>
+        <skos:altLabel xml:lang="en">energy manufacturing</skos:altLabel>
+        <skos:altLabel xml:lang="en">energy workforce</skos:altLabel>
+        <skos:definition xml:lang="en">A skos:Concept representing jobs labor and manufacturing in the energy sector</skos:definition>
+        <skos:inScheme rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+        <skos:topConceptOf rdf:resource="http://example.org/ontology/energy-news#EnergyTopicScheme"/>
+    </owl:NamedIndividual>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Article"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#AuthorAccount"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#EnergyTopic"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Feed"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#GeographicEntity"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Organization"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Post"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Publication"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#SocialMediaPlatform"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Affordability"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#CommunityEnergy"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#EnergyAccess"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Agrivoltaics"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#WasteAndPollution"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#WaterUse"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#BuildingElectrification"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Retrofits"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#RooftopSolar"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#BuildingsAndEfficiency"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#CarbonCapture"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#ClimateAndEmissions"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#DataCenterDemand"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Electrification"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#EnergyFinance"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#EnergyGeopolitics"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#EnergyJustice"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#EnergyMarkets"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#EnergyPolicy"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#EnergyStorage"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#EnvironmentAndLandUse"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Fossil"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#GridAndInfrastructure"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Hydrogen"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Nuclear"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Renewable"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#ResearchAndInnovation"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#WorkforceAndManufacturing"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Coal"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#NaturalGas"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Oil"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Commodity"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#PowerPurchaseAgreement"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#WholesaleMarkets"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#CorporateDeals"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#ProjectFinance"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#PublicFunding"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#CriticalMinerals"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#SupplyChain"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#TradeAndSanctions"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Decarbonization"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#EmissionsTracking"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#NetZero"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Distribution"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#GridOperator"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Interconnection"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Transmission"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#EVCharging"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#ElectricTransport"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#ElectricVehicles"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#HeatPumps"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#EnergyJobs"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#LaborRelations"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Manufacturing"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Geothermal"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Hydro"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Solar"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Wind"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Legislation"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Permitting"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Regulation"/>
+            <rdf:Description rdf:about="http://example.org/ontology/energy-news#Tariff"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.29) https://github.com/owlcs/owlapi -->

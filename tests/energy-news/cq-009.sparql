@@ -1,4 +1,4 @@
-# CQ-009: Which Bluesky feeds exist for energy content?
+# CQ-009: Which feeds exist for energy content?
 # Expected: non_empty (at least one result row)
 
 PREFIX enews: <http://example.org/ontology/energy-news#>

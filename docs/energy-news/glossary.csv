@@ -68,11 +68,15 @@ Agrivoltaics,agrivoltaic;solar farming,A skos:Concept representing co-location o
 WasteAndPollution,energy waste;pollution,A skos:Concept representing waste disposal and pollution from energy production,individual,CQ-002,ICE (IAO:0000030)
 Article,news article,A GenericallyDependentContinuant that represents a news article referenced by an embedded link in a social media post,class,"CQ-003,CQ-004",GDC (BFO:0000031)
 Publication,news outlet;media outlet;publisher,An Object that represents a news media outlet or website that publishes articles,class,"CQ-004,CQ-005,CQ-006",Object (BFO:0000030)
-Post,social media post;bsky post,A GenericallyDependentContinuant that represents a Bluesky post sharing energy content,class,"CQ-007,CQ-008",GDC (BFO:0000031)
-AuthorAccount,bsky author;bluesky account,A GenericallyDependentContinuant that represents a Bluesky account that shares energy news,class,"CQ-007,CQ-008",GDC (BFO:0000031)
-Feed,bluesky feed;curated feed,A GenericallyDependentContinuant that represents a curated Bluesky feed for energy content,class,CQ-009,GDC (BFO:0000031)
+Post,social media post,A GenericallyDependentContinuant that represents a social media post sharing energy content,class,"CQ-007,CQ-008",GDC (BFO:0000031)
+AuthorAccount,social media author;social account,A GenericallyDependentContinuant that represents a social media account that shares energy news,class,"CQ-007,CQ-008",GDC (BFO:0000031)
+Feed,curated feed;social feed,A GenericallyDependentContinuant that represents a curated social media feed for energy content,class,CQ-009,GDC (BFO:0000031)
 Organization,company;agency;body,An Object that represents a company agency or institutional body mentioned in energy news,class,"CQ-011,CQ-012",Object (BFO:0000030)
 GeographicEntity,country;region;geography,A Site that represents a country region or subnational area relevant to energy news coverage,class,"CQ-013,CQ-014",Site (BFO:0000029)
+SocialMediaPlatform,platform;social network,An owl:Class whose instances are named individuals representing social media platforms,class,"CQ-017,CQ-018",GDC (BFO:0000031)
+Bluesky,bsky;Bluesky Social,A SocialMediaPlatform individual representing the Bluesky social network,individual,"CQ-017,CQ-018",GDC (BFO:0000031)
+Twitter,X;Twitter/X,A SocialMediaPlatform individual representing the Twitter/X social network,individual,"CQ-017,CQ-018",GDC (BFO:0000031)
+onPlatform,platform;on platform,An ObjectProperty that links an AuthorAccount or Feed to the SocialMediaPlatform it belongs to,object_property,"CQ-017,CQ-018",none
 coversTopic,covers;about,An ObjectProperty that links an Article to the EnergyTopic it covers,object_property,"CQ-003,CQ-005",none
 publishedBy,published by;from,An ObjectProperty that links an Article to the Publication that published it,object_property,"CQ-004,CQ-006",none
 postedBy,posted by;shared by,An ObjectProperty that links a Post to the AuthorAccount who created it,object_property,CQ-007,none
@@ -80,7 +84,7 @@ sharesArticle,shares;links to,An ObjectProperty that links a Post to the Article
 mentionsOrganization,mentions,An ObjectProperty that links an Article to an Organization mentioned in its coverage,object_property,CQ-012,none
 hasGeographicFocus,geographic focus;covers region,An ObjectProperty that links an Article to a GeographicEntity representing its geographic focus,object_property,CQ-014,none
 hasSector,sector;industry type,An ObjectProperty that links an Organization to an EnergyTopic sector it operates in,object_property,CQ-015,none
-handle,bsky handle;bluesky handle,A DatatypeProperty that holds the Bluesky handle string for an AuthorAccount,data_property,CQ-007,none
+handle,username;screen name,A DatatypeProperty that holds the handle or username string for an AuthorAccount,data_property,CQ-007,none
 title,headline,A DatatypeProperty that holds the title string of an Article,data_property,CQ-003,none
 url,link;URI,A DatatypeProperty that holds the URL of an Article,data_property,CQ-003,none
 description,summary;abstract,A DatatypeProperty that holds the description or summary text of an Article,data_property,CQ-003,none

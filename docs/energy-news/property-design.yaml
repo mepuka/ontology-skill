@@ -54,7 +54,7 @@ object_properties:
     schema_alignment: "rdfs:subPropertyOf schema:author"
     bfo_ro_relation: "none (social/institutional relation)"
     notes: >
-      Functional — every post has exactly one author on Bluesky.
+      Functional — every post has exactly one author account.
       SubPropertyOf (not equivalentProperty) because schema:author has a
       broader range (Person or Organization).
 
@@ -123,13 +123,32 @@ object_properties:
       for organizations (for example CATL hasSector EnergyStorage and
       hasSector Manufacturing). Multiple sectors are allowed.
 
+  - name: onPlatform
+    type: ObjectProperty
+    definition: "Links an AuthorAccount or Feed to the SocialMediaPlatform it belongs to"
+    domain: null
+    range: SocialMediaPlatform
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    bfo_ro_relation: "none (social/institutional relation)"
+    notes: >
+      Functional — every author account and feed belongs to exactly one
+      platform. No rdfs:domain declared because the property is used by both
+      AuthorAccount and Feed, which are disjoint classes; an rdfs:domain on
+      either would cause incorrect type inference on the other. Structural
+      validation is enforced via SHACL shapes instead. Combined with handle
+      to form a composite HasKey for AuthorAccount.
+
 # --- Datatype Properties ---
 
 datatype_properties:
 
   - name: handle
     type: DatatypeProperty
-    definition: "The Bluesky handle string for an AuthorAccount"
+    definition: "The handle or username string for an AuthorAccount"
     domain: AuthorAccount
     range: xsd:string
     cardinality:
@@ -138,8 +157,9 @@ datatype_properties:
     characteristics: [functional]
     bfo_ro_relation: "none (literal attribute)"
     notes: >
-      Format: "username.bsky.social" or custom domain. Functional — each
-      AuthorAccount has exactly one handle. Could serve as a key property (HasKey).
+      Format varies by platform (e.g. "user.bsky.social" for Bluesky,
+      "@user" for Twitter). Functional — each AuthorAccount has exactly one
+      handle. Part of composite HasKey with onPlatform.
 
   - name: title
     type: DatatypeProperty
@@ -223,8 +243,8 @@ key_properties:
     rationale: "URL uniquely identifies an article across the dataset"
 
   - class: AuthorAccount
-    keys: [handle]
-    rationale: "Bluesky handle uniquely identifies an author account"
+    keys: [handle, onPlatform]
+    rationale: "Handle + platform composite key uniquely identifies an author account across platforms"
 
   - class: Publication
     keys: [siteDomain]

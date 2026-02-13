@@ -215,7 +215,7 @@
 
 - id: CQ-009
   source_use_case: UC-003
-  natural_language: "Which Bluesky feeds exist for energy content?"
+  natural_language: "Which feeds exist for energy content?"
   type: enumerative
   priority: must_have
   sample_answer:
@@ -403,5 +403,92 @@
   required_classes: [Article, GeographicEntity]
   required_properties: [hasGeographicFocus]
   out_of_scope: "Does not break down by topic within each region"
+  required_axioms: []
+  requires_reasoning: false
+
+- id: CQ-017
+  source_use_case: UC-003
+  natural_language: "Which platforms have the most energy news posts?"
+  type: quantitative
+  priority: should_have
+  sample_answer:
+    - platform: enews:Bluesky
+      label: "Bluesky"
+      postCount: 3
+    - platform: enews:Twitter
+      label: "Twitter"
+      postCount: 1
+  derivation_method: aggregation
+  sparql: |
+    PREFIX enews: <http://example.org/ontology/energy-news#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    SELECT ?platform ?platformLabel (COUNT(?post) AS ?postCount) WHERE {
+      ?post a enews:Post ;
+            enews:postedBy ?author .
+      ?author enews:onPlatform ?platform .
+      ?platform rdfs:label ?platformLabel .
+    }
+    GROUP BY ?platform ?platformLabel
+    ORDER BY DESC(?postCount)
+  expected_result: non_empty
+  required_classes: [Post, AuthorAccount, SocialMediaPlatform]
+  required_properties: [postedBy, onPlatform]
+  out_of_scope: "Does not filter by date range or topic"
+  required_axioms:
+    - "AuthorAccount SubClassOf onPlatform some SocialMediaPlatform"
+  requires_reasoning: false
+
+- id: CQ-018
+  source_use_case: UC-003
+  natural_language: "Which authors share energy news on a given platform?"
+  type: relational
+  priority: should_have
+  sample_answer:
+    - author: enews:author_energytweets
+      handle: "@energytweets"
+  derivation_method: direct_lookup
+  sparql: |
+    PREFIX enews: <http://example.org/ontology/energy-news#>
+    SELECT ?author ?handle WHERE {
+      ?author a enews:AuthorAccount ;
+              enews:onPlatform enews:Twitter ;
+              enews:handle ?handle .
+    }
+  expected_result: non_empty
+  required_classes: [AuthorAccount, SocialMediaPlatform]
+  required_properties: [onPlatform, handle]
+  out_of_scope: "Does not return post counts or topic specializations"
+  required_axioms:
+    - "AuthorAccount SubClassOf onPlatform some SocialMediaPlatform"
+  requires_reasoning: false
+
+- id: CQ-019
+  source_use_case: UC-002
+  natural_language: "Which publication published an article based on its URL domain?"
+  type: relational
+  priority: should_have
+  sample_answer:
+    - article: enews:article_001
+      url: "https://bloomberg.com/example/storage"
+      domain: "bloomberg.com"
+      pub: enews:pub_bloomberg
+      pubLabel: "Bloomberg"
+  derivation_method: derivation
+  sparql: |
+    PREFIX enews: <http://example.org/ontology/energy-news#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    SELECT ?article ?url ?domain ?pub ?pubLabel WHERE {
+      ?article a enews:Article ; enews:url ?url .
+      BIND(REPLACE(STR(?url), "^https?://([^/]+).*$", "$1") AS ?urlDomainRaw)
+      BIND(IF(STRSTARTS(?urlDomainRaw, "www."),
+              SUBSTR(?urlDomainRaw, 5), ?urlDomainRaw) AS ?domain)
+      ?pub a enews:Publication ;
+           enews:siteDomain ?domain ;
+           rdfs:label ?pubLabel .
+    }
+  expected_result: non_empty
+  required_classes: [Article, Publication]
+  required_properties: [url, siteDomain]
+  out_of_scope: "Does not handle subdomain mismatches (e.g. news.bloomberg.com vs bloomberg.com)"
   required_axioms: []
   requires_reasoning: false

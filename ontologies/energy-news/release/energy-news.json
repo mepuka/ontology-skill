@@ -1,0 +1,2717 @@
+{
+  "graphs" : [ {
+    "id" : "http://example.org/ontology/energy-news",
+    "meta" : {
+      "basicPropertyValues" : [ {
+        "pred" : "http://purl.org/dc/terms/created",
+        "val" : "2026-02-11"
+      }, {
+        "pred" : "http://purl.org/dc/terms/creator",
+        "val" : "ontology-architect skill"
+      }, {
+        "pred" : "http://purl.org/dc/terms/description",
+        "val" : "A lightweight OWL 2 DL ontology modeling the energy news media landscape as observed through social media posts."
+      }, {
+        "pred" : "http://purl.org/dc/terms/license",
+        "val" : "https://spdx.org/licenses/MIT"
+      }, {
+        "pred" : "http://purl.org/dc/terms/modified",
+        "val" : "2026-02-12"
+      }, {
+        "pred" : "http://purl.org/dc/terms/title",
+        "val" : "Energy News Ontology"
+      }, {
+        "pred" : "http://www.w3.org/2002/07/owl#priorVersion",
+        "val" : "http://example.org/ontology/energy-news/0.1.0"
+      }, {
+        "pred" : "http://www.w3.org/2002/07/owl#versionInfo",
+        "val" : "0.2.0"
+      } ],
+      "version" : "http://example.org/ontology/energy-news/0.2.0"
+    },
+    "nodes" : [ {
+      "id" : "http://example.org/ontology/energy-news#Article",
+      "lbl" : "article",
+      "type" : "CLASS",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A GenericallyDependentContinuant that represents a news article referenced by an embedded link in a social media post"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#AuthorAccount",
+      "lbl" : "author account",
+      "type" : "CLASS",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A GenericallyDependentContinuant that represents a social media account that shares energy news"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#relatedMatch",
+          "val" : "https://schema.org/Person"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#EnergyTopic",
+      "lbl" : "energy topic",
+      "type" : "CLASS",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "An owl:Class whose instances are skos:Concept individuals representing subject areas within the energy sector used to classify news articles"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Feed",
+      "lbl" : "feed",
+      "type" : "CLASS",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A GenericallyDependentContinuant that represents a curated social media feed for energy content"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#GeographicEntity",
+      "lbl" : "geographic entity",
+      "type" : "CLASS",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A Site that represents a country region or subnational area relevant to energy news coverage"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Organization",
+      "lbl" : "organization",
+      "type" : "CLASS",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "An Object that represents a company agency or institutional body mentioned in energy news"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Post",
+      "lbl" : "post",
+      "type" : "CLASS",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A GenericallyDependentContinuant that represents a social media post sharing energy content"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Publication",
+      "lbl" : "publication",
+      "type" : "CLASS",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "An Object that represents a news media outlet or website that publishes articles"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#SocialMediaPlatform",
+      "lbl" : "social media platform",
+      "type" : "CLASS",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "An owl:Class whose instances are named individuals representing social media platforms"
+        } ]
+      }
+    }, {
+      "id" : "http://purl.obolibrary.org/obo/BFO_0000029",
+      "lbl" : "site",
+      "type" : "CLASS"
+    }, {
+      "id" : "http://purl.obolibrary.org/obo/BFO_0000030",
+      "lbl" : "object",
+      "type" : "CLASS"
+    }, {
+      "id" : "http://purl.obolibrary.org/obo/BFO_0000031",
+      "lbl" : "generically dependent continuant",
+      "type" : "CLASS"
+    }, {
+      "id" : "http://rdfs.org/sioc/ns#UserAccount",
+      "type" : "CLASS"
+    }, {
+      "id" : "http://www.w3.org/2004/02/skos/core#Concept",
+      "type" : "CLASS"
+    }, {
+      "id" : "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+      "type" : "CLASS"
+    }, {
+      "id" : "https://schema.org/NewsArticle",
+      "type" : "CLASS"
+    }, {
+      "id" : "https://schema.org/NewsMediaOrganization",
+      "type" : "CLASS"
+    }, {
+      "id" : "https://schema.org/Organization",
+      "type" : "CLASS"
+    }, {
+      "id" : "https://schema.org/Person",
+      "type" : "CLASS"
+    }, {
+      "id" : "https://schema.org/Place",
+      "type" : "CLASS"
+    }, {
+      "id" : "https://schema.org/SocialMediaPosting",
+      "type" : "CLASS"
+    }, {
+      "id" : "http://example.org/ontology/energy-news#coversTopic",
+      "lbl" : "covers topic",
+      "type" : "PROPERTY",
+      "propertyType" : "OBJECT",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "Links an Article to an EnergyTopic individual it covers"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#hasGeographicFocus",
+      "lbl" : "has geographic focus",
+      "type" : "PROPERTY",
+      "propertyType" : "OBJECT",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "Links an Article to a GeographicEntity representing its geographic focus"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#hasSector",
+      "lbl" : "has sector",
+      "type" : "PROPERTY",
+      "propertyType" : "OBJECT",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "Links an Organization to an EnergyTopic sector it operates in"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#mentionsOrganization",
+      "lbl" : "mentions organization",
+      "type" : "PROPERTY",
+      "propertyType" : "OBJECT",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "Links an Article to an Organization mentioned in its coverage"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#onPlatform",
+      "lbl" : "on platform",
+      "type" : "PROPERTY",
+      "propertyType" : "OBJECT",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "Links an AuthorAccount or Feed to the SocialMediaPlatform it belongs to"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#postedBy",
+      "lbl" : "posted by",
+      "type" : "PROPERTY",
+      "propertyType" : "OBJECT",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "Links a Post to the AuthorAccount who created it"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#publishedBy",
+      "lbl" : "published by",
+      "type" : "PROPERTY",
+      "propertyType" : "OBJECT",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "Links an Article to the Publication that published it"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#sharesArticle",
+      "lbl" : "shares article",
+      "type" : "PROPERTY",
+      "propertyType" : "OBJECT",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "Links a Post to the Article it shares via embedded link"
+        } ]
+      }
+    }, {
+      "id" : "https://schema.org/about",
+      "type" : "PROPERTY",
+      "propertyType" : "OBJECT"
+    }, {
+      "id" : "https://schema.org/author",
+      "type" : "PROPERTY",
+      "propertyType" : "OBJECT"
+    }, {
+      "id" : "https://schema.org/contentLocation",
+      "type" : "PROPERTY",
+      "propertyType" : "OBJECT"
+    }, {
+      "id" : "https://schema.org/mentions",
+      "type" : "PROPERTY",
+      "propertyType" : "OBJECT"
+    }, {
+      "id" : "https://schema.org/publisher",
+      "type" : "PROPERTY",
+      "propertyType" : "OBJECT"
+    }, {
+      "id" : "https://schema.org/sharedContent",
+      "type" : "PROPERTY",
+      "propertyType" : "OBJECT"
+    }, {
+      "id" : "http://example.org/ontology/energy-news#description",
+      "lbl" : "description",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "The description or summary text of an Article"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#handle",
+      "lbl" : "handle",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "The handle or username string for an AuthorAccount"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#publishedDate",
+      "lbl" : "published date",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "The publication date of an Article"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#siteDomain",
+      "lbl" : "site domain",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "The domain name string of a Publication"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#title",
+      "lbl" : "title",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "The headline or title string of an Article"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#url",
+      "lbl" : "url",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "The URL of an Article"
+        } ]
+      }
+    }, {
+      "id" : "https://schema.org/datePublished",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA"
+    }, {
+      "id" : "https://schema.org/description",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA"
+    }, {
+      "id" : "https://schema.org/headline",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA"
+    }, {
+      "id" : "https://schema.org/url",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA"
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Affordability",
+      "lbl" : "affordability",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy bills"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy poverty"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "rate hike"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#EnergyJustice"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing energy affordability bills rate increases and energy poverty"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Agrivoltaics",
+      "lbl" : "agrivoltaics",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "agrivoltaic"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "solar farming"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#EnvironmentAndLandUse"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing co-location of solar panels and agriculture"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Bluesky",
+      "lbl" : "Bluesky",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "Bluesky Social"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "bsky"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A SocialMediaPlatform individual representing the Bluesky social network"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#BuildingElectrification",
+      "lbl" : "building electrification",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "building electrification"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "gas-to-electric"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#BuildingsAndEfficiency"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing switching buildings from gas to electric systems"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#BuildingsAndEfficiency",
+      "lbl" : "buildings and efficiency",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "building energy"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy efficiency"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing building energy performance retrofits and distributed generation"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#topConceptOf",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#CarbonCapture",
+      "lbl" : "carbon capture",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "CCS"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "CCUS"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "carbon capture"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing carbon capture utilization and storage technologies"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#topConceptOf",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#ClimateAndEmissions",
+      "lbl" : "climate and emissions",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "GHG"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "climate"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "emissions"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing climate change and greenhouse gas emissions in the energy context"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#topConceptOf",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Coal",
+      "lbl" : "coal",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "coal power"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "coal-fired"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#Fossil"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing coal extraction and coal-fired power generation"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Commodity",
+      "lbl" : "commodity",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "commodity trading"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "gas prices"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "oil futures"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#EnergyMarkets"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing oil futures gas spot prices and energy commodity trading"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#CommunityEnergy",
+      "lbl" : "community energy",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "community solar"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "cooperative energy"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#EnergyJustice"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing community-owned energy projects and cooperatives"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#CorporateDeals",
+      "lbl" : "corporate deals",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "M&A"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "acquisition"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "merger"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#EnergyFinance"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing acquisitions mergers and corporate stakes in energy companies"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#CriticalMinerals",
+      "lbl" : "critical minerals",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "cobalt"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "lithium"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "rare earth"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "silicon"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#EnergyGeopolitics"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing critical minerals required for energy technologies"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#DataCenterDemand",
+      "lbl" : "data center demand",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "AI energy demand"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "data center energy"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing electricity demand from data centers and artificial intelligence workloads"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#topConceptOf",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Decarbonization",
+      "lbl" : "decarbonization",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "carbon reduction"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "decarbonisation"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#ClimateAndEmissions"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing strategies and progress toward reducing carbon emissions"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Distribution",
+      "lbl" : "distribution",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "local grid"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "power distribution"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#GridAndInfrastructure"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing local electricity distribution networks"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#EVCharging",
+      "lbl" : "ev charging",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "EV charger"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "EVSE"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "charging station"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#Electrification"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing electric vehicle charging infrastructure and networks"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#EfficiencyRecords",
+      "lbl" : "efficiency records",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "solar efficiency"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "technology record"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#ResearchAndInnovation"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing technology efficiency records and breakthrough achievements"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#ElectricTransport",
+      "lbl" : "electric transport",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "e-mobility"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "electric bus"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "electric ferry"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#Electrification"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing electrification of ships ferries buses and other transport"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#ElectricVehicles",
+      "lbl" : "electric vehicles",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "BEV"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "EV"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "electric car"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#Electrification"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing battery and plug-in electric vehicles"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Electrification",
+      "lbl" : "electrification",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "electric transition"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "electrification"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing the electrification of transport buildings and industry"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#topConceptOf",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#EmissionsTracking",
+      "lbl" : "emissions tracking",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "GHG monitoring"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "emissions reporting"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#ClimateAndEmissions"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing monitoring and reporting of greenhouse gas emissions"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#EnergyAccess",
+      "lbl" : "energy access",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy access"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "modern energy"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#EnergyJustice"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing access to modern energy services"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#EnergyFinance",
+      "lbl" : "energy finance",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy funding"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy investment"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing investment funding and financial deals in the energy sector"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#topConceptOf",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#EnergyGeopolitics",
+      "lbl" : "energy geopolitics",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy geopolitics"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy security"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing geopolitical dimensions of energy supply trade and security"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#topConceptOf",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#EnergyJobs",
+      "lbl" : "energy jobs",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "clean energy jobs"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy employment"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#WorkforceAndManufacturing"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing employment in the energy sector"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#EnergyJustice",
+      "lbl" : "energy justice",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy equity"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "just transition"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing equity access and justice dimensions of energy systems"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#topConceptOf",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#EnergyMarkets",
+      "lbl" : "energy markets",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy markets"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "power markets"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing pricing trading and wholesale electricity and commodity markets"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#topConceptOf",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#EnergyPolicy",
+      "lbl" : "energy policy",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy policy"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing government policy affecting the energy sector"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#topConceptOf",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#EnergyStorage",
+      "lbl" : "energy storage",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "BESS"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "battery storage"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "storage"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing battery storage and other energy storage technologies"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#topConceptOf",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#EnergyTopicScheme",
+      "lbl" : "Energy News Topic Scheme",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A SKOS concept scheme organizing energy topic individuals into a broader/narrower hierarchy for classifying energy news articles."
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+          "val" : "http://example.org/ontology/energy-news#BuildingsAndEfficiency"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+          "val" : "http://example.org/ontology/energy-news#CarbonCapture"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+          "val" : "http://example.org/ontology/energy-news#ClimateAndEmissions"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+          "val" : "http://example.org/ontology/energy-news#DataCenterDemand"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+          "val" : "http://example.org/ontology/energy-news#Electrification"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+          "val" : "http://example.org/ontology/energy-news#EnergyFinance"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+          "val" : "http://example.org/ontology/energy-news#EnergyGeopolitics"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+          "val" : "http://example.org/ontology/energy-news#EnergyJustice"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+          "val" : "http://example.org/ontology/energy-news#EnergyMarkets"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+          "val" : "http://example.org/ontology/energy-news#EnergyPolicy"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+          "val" : "http://example.org/ontology/energy-news#EnergyStorage"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+          "val" : "http://example.org/ontology/energy-news#EnvironmentAndLandUse"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+          "val" : "http://example.org/ontology/energy-news#Fossil"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+          "val" : "http://example.org/ontology/energy-news#GridAndInfrastructure"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+          "val" : "http://example.org/ontology/energy-news#Hydrogen"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+          "val" : "http://example.org/ontology/energy-news#Nuclear"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+          "val" : "http://example.org/ontology/energy-news#Renewable"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+          "val" : "http://example.org/ontology/energy-news#ResearchAndInnovation"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+          "val" : "http://example.org/ontology/energy-news#WorkforceAndManufacturing"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#EnvironmentAndLandUse",
+      "lbl" : "environment and land use",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "environmental impact"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "land use"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing environmental impacts and land use of energy projects"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#topConceptOf",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Fossil",
+      "lbl" : "fossil",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "conventional energy"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "fossil fuel"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing energy derived from geological carbon deposits including coal oil and natural gas"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#topConceptOf",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Fusion",
+      "lbl" : "fusion",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "fusion energy"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "nuclear fusion"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#Nuclear"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing nuclear fusion energy research and development"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Geothermal",
+      "lbl" : "geothermal",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "geothermal energy"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#Renewable"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing heat energy extracted from the earth"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#GridAndInfrastructure",
+      "lbl" : "grid and infrastructure",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "electricity infrastructure"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "grid"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "power grid"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing power grid and electricity delivery infrastructure"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#topConceptOf",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#GridOperator",
+      "lbl" : "grid operator",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "ISO"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "RTO"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "grid operator"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#GridAndInfrastructure"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing independent system operators and regional transmission organizations"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#HeatPumps",
+      "lbl" : "heat pumps",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "heat pump"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#Electrification"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing heat pump technology for building heating and cooling"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Hydro",
+      "lbl" : "hydro",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "hydroelectric"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "hydropower"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#Renewable"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing conventional and pumped-storage hydroelectric power"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Hydrogen",
+      "lbl" : "hydrogen",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "H2"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "blue hydrogen"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "green hydrogen"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing hydrogen as an energy carrier across production methods"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#topConceptOf",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Interconnection",
+      "lbl" : "interconnection",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "grid connection"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "interconnection queue"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#GridAndInfrastructure"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing generator interconnection queues and processes"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#LaborRelations",
+      "lbl" : "labor relations",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy unions"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "worker organizing"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#WorkforceAndManufacturing"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing unions and worker organizing in the energy sector"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Legislation",
+      "lbl" : "legislation",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "IRA"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "clean energy standard"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy law"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#EnergyPolicy"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing laws and legislative acts affecting energy"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Manufacturing",
+      "lbl" : "manufacturing",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy manufacturing"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "factory"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#WorkforceAndManufacturing"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing energy equipment manufacturing and factories"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#NaturalGas",
+      "lbl" : "natural gas",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "LNG"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "gas"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "natural gas"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#Fossil"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing natural gas including liquefied natural gas and pipeline gas"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#NetZero",
+      "lbl" : "net zero",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "net zero target"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "net-zero"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#ClimateAndEmissions"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing net-zero emissions targets and commitments"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Nuclear",
+      "lbl" : "nuclear",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "atomic energy"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "nuclear energy"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "nuclear power"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing energy from nuclear fission and fusion reactions"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#topConceptOf",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Oil",
+      "lbl" : "oil",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "crude oil"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "petroleum"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#Fossil"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing crude oil extraction refining and petroleum products"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Patent",
+      "lbl" : "patent",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "IP"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy patent"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#ResearchAndInnovation"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing intellectual property and patents in energy technology"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Permitting",
+      "lbl" : "permitting",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "permitting process"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "siting"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#EnergyPolicy"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing permitting and siting processes for energy projects"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#PowerPurchaseAgreement",
+      "lbl" : "power purchase agreement",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "PPA"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "offtake agreement"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#EnergyMarkets"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing power purchase agreements between generators and offtakers"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#ProjectFinance",
+      "lbl" : "project finance",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "project funding"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "project investment"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#EnergyFinance"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing financing of specific energy projects"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#PublicFunding",
+      "lbl" : "public funding",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "grant"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "subsidy"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "tax credit"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#EnergyFinance"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing government subsidies tax credits and grants for energy"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Regulation",
+      "lbl" : "regulation",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "FERC"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "NERC"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "PUC"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy regulation"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#EnergyPolicy"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing regulatory actions by energy regulatory bodies"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Renewable",
+      "lbl" : "renewable",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "clean energy"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "renewables"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing energy generated from naturally replenishing sources such as solar wind and hydro"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#topConceptOf",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#ResearchAndInnovation",
+      "lbl" : "research and innovation",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy R&D"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy innovation"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing research development breakthroughs and patents in energy technology"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#topConceptOf",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Retrofits",
+      "lbl" : "retrofits",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "building retrofit"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy retrofit"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#BuildingsAndEfficiency"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing energy efficiency retrofits of existing buildings"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#RooftopSolar",
+      "lbl" : "rooftop solar",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "distributed solar"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "rooftop PV"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#BuildingsAndEfficiency"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing rooftop and distributed solar installations on buildings"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#SMR",
+      "lbl" : "smr",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "small modular reactor"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#Nuclear"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing small modular reactor technology designs"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Solar",
+      "lbl" : "solar",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "PV"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "photovoltaic"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "solar energy"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#Renewable"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing solar photovoltaic and concentrated solar power generation"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#SupplyChain",
+      "lbl" : "supply chain",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy supply chain"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#EnergyGeopolitics"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing energy equipment and fuel supply chains"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Tariff",
+      "lbl" : "tariff",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy tariffs"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "trade tariffs"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#EnergyPolicy"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing trade tariffs on energy equipment and materials"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#TradeAndSanctions",
+      "lbl" : "trade and sanctions",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy sanctions"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "trade dispute"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#EnergyGeopolitics"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing energy trade disputes and sanctions regimes"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Transmission",
+      "lbl" : "transmission",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "high-voltage lines"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "power transmission"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#GridAndInfrastructure"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing high-voltage transmission lines and transmission planning"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Twitter",
+      "lbl" : "Twitter",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "Twitter/X"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "X"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A SocialMediaPlatform individual representing the Twitter/X social network"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#WasteAndPollution",
+      "lbl" : "waste and pollution",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy waste"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "pollution"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#EnvironmentAndLandUse"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing waste disposal and pollution from energy production"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#WaterUse",
+      "lbl" : "water use",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "cooling water"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "water consumption"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#EnvironmentAndLandUse"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing water consumption by energy facilities"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#WholesaleMarkets",
+      "lbl" : "wholesale markets",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "auction"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "capacity market"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "wholesale electricity"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#EnergyMarkets"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing wholesale electricity markets and capacity auctions"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#Wind",
+      "lbl" : "wind",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "wind energy"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "wind power"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#broader",
+          "val" : "http://example.org/ontology/energy-news#Renewable"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing onshore and offshore wind power generation"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#WorkforceAndManufacturing",
+      "lbl" : "workforce and manufacturing",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy manufacturing"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#altLabel",
+          "val" : "energy workforce"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A skos:Concept representing jobs labor and manufacturing in the energy sector"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#inScheme",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        }, {
+          "pred" : "http://www.w3.org/2004/02/skos/core#topConceptOf",
+          "val" : "http://example.org/ontology/energy-news#EnergyTopicScheme"
+        } ]
+      }
+    }, {
+      "id" : "http://purl.org/dc/terms/created",
+      "type" : "PROPERTY",
+      "propertyType" : "ANNOTATION"
+    }, {
+      "id" : "http://purl.org/dc/terms/creator",
+      "type" : "PROPERTY",
+      "propertyType" : "ANNOTATION"
+    }, {
+      "id" : "http://purl.org/dc/terms/description",
+      "type" : "PROPERTY",
+      "propertyType" : "ANNOTATION"
+    }, {
+      "id" : "http://purl.org/dc/terms/license",
+      "type" : "PROPERTY",
+      "propertyType" : "ANNOTATION"
+    }, {
+      "id" : "http://purl.org/dc/terms/modified",
+      "type" : "PROPERTY",
+      "propertyType" : "ANNOTATION"
+    }, {
+      "id" : "http://purl.org/dc/terms/title",
+      "type" : "PROPERTY",
+      "propertyType" : "ANNOTATION"
+    }, {
+      "id" : "http://www.w3.org/2004/02/skos/core#altLabel",
+      "type" : "PROPERTY",
+      "propertyType" : "ANNOTATION"
+    }, {
+      "id" : "http://www.w3.org/2004/02/skos/core#broader",
+      "type" : "PROPERTY",
+      "propertyType" : "ANNOTATION"
+    }, {
+      "id" : "http://www.w3.org/2004/02/skos/core#definition",
+      "type" : "PROPERTY",
+      "propertyType" : "ANNOTATION"
+    }, {
+      "id" : "http://www.w3.org/2004/02/skos/core#hasTopConcept",
+      "type" : "PROPERTY",
+      "propertyType" : "ANNOTATION"
+    }, {
+      "id" : "http://www.w3.org/2004/02/skos/core#inScheme",
+      "type" : "PROPERTY",
+      "propertyType" : "ANNOTATION"
+    }, {
+      "id" : "http://www.w3.org/2004/02/skos/core#relatedMatch",
+      "type" : "PROPERTY",
+      "propertyType" : "ANNOTATION"
+    }, {
+      "id" : "http://www.w3.org/2004/02/skos/core#topConceptOf",
+      "type" : "PROPERTY",
+      "propertyType" : "ANNOTATION"
+    } ],
+    "edges" : [ {
+      "sub" : "http://example.org/ontology/energy-news#Article",
+      "pred" : "is_a",
+      "obj" : "http://purl.obolibrary.org/obo/BFO_0000031"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Article",
+      "pred" : "is_a",
+      "obj" : "https://schema.org/NewsArticle"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Article",
+      "pred" : "http://example.org/ontology/energy-news#coversTopic",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#AuthorAccount",
+      "pred" : "is_a",
+      "obj" : "http://purl.obolibrary.org/obo/BFO_0000031"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#AuthorAccount",
+      "pred" : "http://example.org/ontology/energy-news#onPlatform",
+      "obj" : "http://example.org/ontology/energy-news#SocialMediaPlatform"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EnergyTopic",
+      "pred" : "is_a",
+      "obj" : "http://purl.obolibrary.org/obo/BFO_0000031"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Feed",
+      "pred" : "is_a",
+      "obj" : "http://purl.obolibrary.org/obo/BFO_0000031"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Feed",
+      "pred" : "http://example.org/ontology/energy-news#onPlatform",
+      "obj" : "http://example.org/ontology/energy-news#SocialMediaPlatform"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#GeographicEntity",
+      "pred" : "is_a",
+      "obj" : "http://purl.obolibrary.org/obo/BFO_0000029"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#GeographicEntity",
+      "pred" : "is_a",
+      "obj" : "https://schema.org/Place"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Organization",
+      "pred" : "is_a",
+      "obj" : "http://purl.obolibrary.org/obo/BFO_0000030"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Post",
+      "pred" : "is_a",
+      "obj" : "http://purl.obolibrary.org/obo/BFO_0000031"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Post",
+      "pred" : "http://example.org/ontology/energy-news#postedBy",
+      "obj" : "http://example.org/ontology/energy-news#AuthorAccount"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Publication",
+      "pred" : "is_a",
+      "obj" : "http://purl.obolibrary.org/obo/BFO_0000030"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Publication",
+      "pred" : "is_a",
+      "obj" : "https://schema.org/NewsMediaOrganization"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#SocialMediaPlatform",
+      "pred" : "is_a",
+      "obj" : "http://purl.obolibrary.org/obo/BFO_0000031"
+    }, {
+      "sub" : "http://purl.obolibrary.org/obo/BFO_0000029",
+      "pred" : "is_a",
+      "obj" : "http://www.w3.org/2002/07/owl#Thing"
+    }, {
+      "sub" : "http://purl.obolibrary.org/obo/BFO_0000030",
+      "pred" : "is_a",
+      "obj" : "http://www.w3.org/2002/07/owl#Thing"
+    }, {
+      "sub" : "http://purl.obolibrary.org/obo/BFO_0000031",
+      "pred" : "is_a",
+      "obj" : "http://www.w3.org/2002/07/owl#Thing"
+    }, {
+      "sub" : "http://rdfs.org/sioc/ns#UserAccount",
+      "pred" : "is_a",
+      "obj" : "http://purl.obolibrary.org/obo/BFO_0000031"
+    }, {
+      "sub" : "http://www.w3.org/2004/02/skos/core#Concept",
+      "pred" : "is_a",
+      "obj" : "http://www.w3.org/2002/07/owl#Thing"
+    }, {
+      "sub" : "http://www.w3.org/2004/02/skos/core#ConceptScheme",
+      "pred" : "is_a",
+      "obj" : "http://www.w3.org/2002/07/owl#Thing"
+    }, {
+      "sub" : "https://schema.org/NewsArticle",
+      "pred" : "is_a",
+      "obj" : "http://www.w3.org/2002/07/owl#Thing"
+    }, {
+      "sub" : "https://schema.org/NewsMediaOrganization",
+      "pred" : "is_a",
+      "obj" : "http://www.w3.org/2002/07/owl#Thing"
+    }, {
+      "sub" : "https://schema.org/Organization",
+      "pred" : "is_a",
+      "obj" : "http://purl.obolibrary.org/obo/BFO_0000030"
+    }, {
+      "sub" : "https://schema.org/Person",
+      "pred" : "is_a",
+      "obj" : "http://www.w3.org/2002/07/owl#Thing"
+    }, {
+      "sub" : "https://schema.org/Place",
+      "pred" : "is_a",
+      "obj" : "http://www.w3.org/2002/07/owl#Thing"
+    }, {
+      "sub" : "https://schema.org/SocialMediaPosting",
+      "pred" : "is_a",
+      "obj" : "http://purl.obolibrary.org/obo/BFO_0000031"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Affordability",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Affordability",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Agrivoltaics",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Agrivoltaics",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Bluesky",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#SocialMediaPlatform"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#BuildingElectrification",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#BuildingElectrification",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#BuildingsAndEfficiency",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#BuildingsAndEfficiency",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#CarbonCapture",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#CarbonCapture",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#ClimateAndEmissions",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#ClimateAndEmissions",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Coal",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Coal",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Commodity",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Commodity",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#CommunityEnergy",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#CommunityEnergy",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#CorporateDeals",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#CorporateDeals",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#CriticalMinerals",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#CriticalMinerals",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#DataCenterDemand",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#DataCenterDemand",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Decarbonization",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Decarbonization",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Distribution",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Distribution",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EVCharging",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EVCharging",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EfficiencyRecords",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EfficiencyRecords",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#ElectricTransport",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#ElectricTransport",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#ElectricVehicles",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#ElectricVehicles",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Electrification",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Electrification",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EmissionsTracking",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EmissionsTracking",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EnergyAccess",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EnergyAccess",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EnergyFinance",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EnergyFinance",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EnergyGeopolitics",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EnergyGeopolitics",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EnergyJobs",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EnergyJobs",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EnergyJustice",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EnergyJustice",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EnergyMarkets",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EnergyMarkets",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EnergyPolicy",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EnergyPolicy",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EnergyStorage",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EnergyStorage",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EnergyTopicScheme",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#ConceptScheme"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EnvironmentAndLandUse",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#EnvironmentAndLandUse",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Fossil",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Fossil",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Fusion",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Fusion",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Geothermal",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Geothermal",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#GridAndInfrastructure",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#GridAndInfrastructure",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#GridOperator",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#GridOperator",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#HeatPumps",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#HeatPumps",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Hydro",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Hydro",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Hydrogen",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Hydrogen",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Interconnection",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Interconnection",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#LaborRelations",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#LaborRelations",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Legislation",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Legislation",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Manufacturing",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Manufacturing",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#NaturalGas",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#NaturalGas",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#NetZero",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#NetZero",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Nuclear",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Nuclear",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Oil",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Oil",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Patent",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Patent",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Permitting",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Permitting",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#PowerPurchaseAgreement",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#PowerPurchaseAgreement",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#ProjectFinance",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#ProjectFinance",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#PublicFunding",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#PublicFunding",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Regulation",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Regulation",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Renewable",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Renewable",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#ResearchAndInnovation",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#ResearchAndInnovation",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Retrofits",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Retrofits",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#RooftopSolar",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#RooftopSolar",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#SMR",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#SMR",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Solar",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Solar",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#SupplyChain",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#SupplyChain",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Tariff",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Tariff",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#TradeAndSanctions",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#TradeAndSanctions",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Transmission",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Transmission",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Twitter",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#SocialMediaPlatform"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#WasteAndPollution",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#WasteAndPollution",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#WaterUse",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#WaterUse",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#WholesaleMarkets",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#WholesaleMarkets",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Wind",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#Wind",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#WorkforceAndManufacturing",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#EnergyTopic"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#WorkforceAndManufacturing",
+      "pred" : "type",
+      "obj" : "http://www.w3.org/2004/02/skos/core#Concept"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#mentionsOrganization",
+      "pred" : "subPropertyOf",
+      "obj" : "https://schema.org/mentions"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#postedBy",
+      "pred" : "subPropertyOf",
+      "obj" : "https://schema.org/author"
+    } ],
+    "equivalentNodesSets" : [ {
+      "representativeNodeId" : "http://example.org/ontology/energy-news#AuthorAccount",
+      "nodeIds" : [ "http://example.org/ontology/energy-news#AuthorAccount", "http://rdfs.org/sioc/ns#UserAccount" ]
+    }, {
+      "representativeNodeId" : "http://example.org/ontology/energy-news#Organization",
+      "nodeIds" : [ "http://example.org/ontology/energy-news#Organization", "https://schema.org/Organization" ]
+    }, {
+      "representativeNodeId" : "http://example.org/ontology/energy-news#Post",
+      "nodeIds" : [ "http://example.org/ontology/energy-news#Post", "https://schema.org/SocialMediaPosting" ]
+    } ],
+    "domainRangeAxioms" : [ {
+      "predicateId" : "http://example.org/ontology/energy-news#coversTopic",
+      "domainClassIds" : [ "http://example.org/ontology/energy-news#Article" ],
+      "rangeClassIds" : [ "http://example.org/ontology/energy-news#EnergyTopic" ]
+    }, {
+      "predicateId" : "http://example.org/ontology/energy-news#hasGeographicFocus",
+      "domainClassIds" : [ "http://example.org/ontology/energy-news#Article" ],
+      "rangeClassIds" : [ "http://example.org/ontology/energy-news#GeographicEntity" ]
+    }, {
+      "predicateId" : "http://example.org/ontology/energy-news#hasSector",
+      "domainClassIds" : [ "http://example.org/ontology/energy-news#Organization" ],
+      "rangeClassIds" : [ "http://example.org/ontology/energy-news#EnergyTopic" ]
+    }, {
+      "predicateId" : "http://example.org/ontology/energy-news#mentionsOrganization",
+      "domainClassIds" : [ "http://example.org/ontology/energy-news#Article" ],
+      "rangeClassIds" : [ "http://example.org/ontology/energy-news#Organization" ]
+    }, {
+      "predicateId" : "http://example.org/ontology/energy-news#postedBy",
+      "domainClassIds" : [ "http://example.org/ontology/energy-news#Post" ],
+      "rangeClassIds" : [ "http://example.org/ontology/energy-news#AuthorAccount" ]
+    }, {
+      "predicateId" : "http://example.org/ontology/energy-news#publishedBy",
+      "domainClassIds" : [ "http://example.org/ontology/energy-news#Article" ],
+      "rangeClassIds" : [ "http://example.org/ontology/energy-news#Publication" ]
+    }, {
+      "predicateId" : "http://example.org/ontology/energy-news#sharesArticle",
+      "domainClassIds" : [ "http://example.org/ontology/energy-news#Post" ],
+      "rangeClassIds" : [ "http://example.org/ontology/energy-news#Article" ]
+    }, {
+      "predicateId" : "http://example.org/ontology/energy-news#onPlatform",
+      "rangeClassIds" : [ "http://example.org/ontology/energy-news#SocialMediaPlatform" ]
+    } ]
+  } ]
+}

@@ -15,6 +15,7 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
+from urllib.parse import urlparse
 
 import yaml
 from rdflib import BNode, Graph, Literal, Namespace, URIRef
@@ -40,9 +41,9 @@ REF_IRI = URIRef("http://example.org/ontology/energy-news/reference-individuals"
 DATA_IRI = URIRef("http://example.org/ontology/energy-news/data")
 SCHEMA_DECL_IRI = URIRef("http://example.org/ontology/energy-news/schema-declarations")
 BFO_DECL_IRI = URIRef("http://example.org/ontology/energy-news/bfo-declarations")
-TBOX_VERSION_IRI = URIRef("http://example.org/ontology/energy-news/0.1.0")
-REF_VERSION_IRI = URIRef("http://example.org/ontology/energy-news/reference-individuals/0.1.0")
-DATA_VERSION_IRI = URIRef("http://example.org/ontology/energy-news/data/0.1.0")
+TBOX_VERSION_IRI = URIRef("http://example.org/ontology/energy-news/0.2.0")
+REF_VERSION_IRI = URIRef("http://example.org/ontology/energy-news/reference-individuals/0.2.0")
+DATA_VERSION_IRI = URIRef("http://example.org/ontology/energy-news/data/0.2.0")
 
 # Project root
 ROOT = Path(__file__).resolve().parent.parent
@@ -85,6 +86,15 @@ def load_yaml(name: str) -> dict[str, Any]:
     return result
 
 
+def _extract_domain(url: str) -> str | None:
+    """Extract domain from URL, stripping www. prefix."""
+    parsed = urlparse(url)
+    domain = parsed.netloc
+    if domain.startswith("www."):
+        domain = domain[4:]
+    return domain if domain else None
+
+
 def to_label(term: str) -> str:
     """Convert CamelCase term to lowercase label with spaces.
 
@@ -124,14 +134,15 @@ def build_tbox(glossary: list[dict[str, str]], props: dict) -> Graph:
             DCTERMS.description,
             Literal(
                 "A lightweight OWL 2 DL ontology modeling the energy news media landscape "
-                "as observed through Bluesky social media posts.",
+                "as observed through social media posts.",
                 lang="en",
             ),
         )
     )
-    g.add((TBOX_IRI, OWL.versionInfo, Literal("0.1.0")))
+    g.add((TBOX_IRI, OWL.versionInfo, Literal("0.2.0")))
+    g.add((TBOX_IRI, OWL.priorVersion, URIRef("http://example.org/ontology/energy-news/0.1.0")))
     g.add((TBOX_IRI, DCTERMS.created, Literal("2026-02-11")))
-    g.add((TBOX_IRI, DCTERMS.modified, Literal("2026-02-11")))
+    g.add((TBOX_IRI, DCTERMS.modified, Literal("2026-02-12")))
     g.add((TBOX_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((TBOX_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
 
@@ -147,6 +158,7 @@ def build_tbox(glossary: list[dict[str, str]], props: dict) -> Graph:
         "Feed",
         "Organization",
         "GeographicEntity",
+        "SocialMediaPlatform",
     ]
 
     for cls_name in class_names:
@@ -183,6 +195,7 @@ def build_tbox(glossary: list[dict[str, str]], props: dict) -> Graph:
         "Post": OBO.BFO_0000031,  # GDC
         "AuthorAccount": OBO.BFO_0000031,  # GDC
         "Feed": OBO.BFO_0000031,  # GDC
+        "SocialMediaPlatform": OBO.BFO_0000031,  # GDC
         "Publication": OBO.BFO_0000030,  # Object
         "Organization": OBO.BFO_0000030,  # Object
         "GeographicEntity": OBO.BFO_0000029,  # Site
@@ -213,8 +226,10 @@ def _add_properties_and_axioms(g: Graph, props: dict) -> None:
         g.add((prop_uri, RDF.type, OWL.ObjectProperty))
         g.add((prop_uri, RDFS.label, Literal(to_label(prop["name"]), lang="en")))
         g.add((prop_uri, SKOS.definition, Literal(prop["definition"], lang="en")))
-        g.add((prop_uri, RDFS.domain, ENEWS[prop["domain"]]))
-        g.add((prop_uri, RDFS.range, ENEWS[prop["range"]]))
+        if prop.get("domain"):
+            g.add((prop_uri, RDFS.domain, ENEWS[prop["domain"]]))
+        if prop.get("range"):
+            g.add((prop_uri, RDFS.range, ENEWS[prop["range"]]))
 
         if "functional" in prop.get("characteristics", []):
             g.add((prop_uri, RDF.type, OWL.FunctionalProperty))
@@ -244,6 +259,8 @@ def _add_properties_and_axioms(g: Graph, props: dict) -> None:
     # --- Existential Restrictions ---
     _add_existential(g, ENEWS.Article, ENEWS.coversTopic, ENEWS.EnergyTopic)
     _add_existential(g, ENEWS.Post, ENEWS.postedBy, ENEWS.AuthorAccount)
+    _add_existential(g, ENEWS.AuthorAccount, ENEWS.onPlatform, ENEWS.SocialMediaPlatform)
+    _add_existential(g, ENEWS.Feed, ENEWS.onPlatform, ENEWS.SocialMediaPlatform)
 
     # --- HasKey Axioms ---
     for key_spec in props["key_properties"]:
@@ -335,9 +352,16 @@ def build_reference_individuals(glossary: list[dict[str, str]], model: dict) -> 
             ),
         )
     )
-    g.add((REF_IRI, OWL.versionInfo, Literal("0.1.0")))
+    g.add((REF_IRI, OWL.versionInfo, Literal("0.2.0")))
+    g.add(
+        (
+            REF_IRI,
+            OWL.priorVersion,
+            URIRef("http://example.org/ontology/energy-news/reference-individuals/0.1.0"),
+        )
+    )
     g.add((REF_IRI, DCTERMS.created, Literal("2026-02-11")))
-    g.add((REF_IRI, DCTERMS.modified, Literal("2026-02-11")))
+    g.add((REF_IRI, DCTERMS.modified, Literal("2026-02-12")))
     g.add((REF_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((REF_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
 
@@ -399,6 +423,9 @@ def build_reference_individuals(glossary: list[dict[str, str]], model: dict) -> 
             Collection(g, member_list, members)
             g.add((diff_node, OWL.distinctMembers, member_list))
 
+    # --- Social Media Platform Individuals ---
+    _add_platform_individuals(g, glossary)
+
     return g
 
 
@@ -434,6 +461,40 @@ def _add_topic_individual(
         g.add((scheme, SKOS.hasTopConcept, uri))
 
 
+def _add_platform_individuals(g: Graph, glossary: list[dict[str, str]]) -> None:
+    """Add SocialMediaPlatform named individuals and AllDifferent axiom."""
+    ind_lookup: dict[str, dict[str, str]] = {}
+    for row in glossary:
+        if row["category"] == "individual" and row["term"] in ("Bluesky", "Twitter"):
+            ind_lookup[row["term"]] = row
+
+    platform_names = ["Bluesky", "Twitter"]
+
+    platform_uris: list[Node] = []
+    for name in platform_names:
+        uri = ENEWS[name]
+        platform_uris.append(uri)
+        g.add((uri, RDF.type, ENEWS.SocialMediaPlatform))
+        # Use proper-case labels for brand names (not to_label which lowercases)
+        g.add((uri, RDFS.label, Literal(name, lang="en")))
+        if name in ind_lookup:
+            row = ind_lookup[name]
+            if row.get("definition"):
+                g.add((uri, SKOS.definition, Literal(row["definition"], lang="en")))
+            if row.get("synonyms"):
+                for raw_syn in row["synonyms"].split(";"):
+                    syn = raw_syn.strip()
+                    if syn:
+                        g.add((uri, SKOS.altLabel, Literal(syn, lang="en")))
+
+    # AllDifferent for platform individuals
+    diff_node = BNode()
+    g.add((diff_node, RDF.type, OWL.AllDifferent))
+    member_list = BNode()
+    Collection(g, member_list, platform_uris)
+    g.add((diff_node, OWL.distinctMembers, member_list))
+
+
 # ---------------------------------------------------------------------------
 # ABox Builder
 # ---------------------------------------------------------------------------
@@ -456,9 +517,16 @@ def _add_data_header(g: Graph) -> None:
             ),
         )
     )
-    g.add((DATA_IRI, OWL.versionInfo, Literal("0.1.0")))
+    g.add((DATA_IRI, OWL.versionInfo, Literal("0.2.0")))
+    g.add(
+        (
+            DATA_IRI,
+            OWL.priorVersion,
+            URIRef("http://example.org/ontology/energy-news/data/0.1.0"),
+        )
+    )
     g.add((DATA_IRI, DCTERMS.created, Literal("2026-02-11")))
-    g.add((DATA_IRI, DCTERMS.modified, Literal("2026-02-11")))
+    g.add((DATA_IRI, DCTERMS.modified, Literal("2026-02-12")))
     g.add((DATA_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((DATA_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
 
@@ -521,17 +589,29 @@ def _add_sample_geographies(g: Graph) -> None:
 def _add_sample_authors(g: Graph) -> None:
     """Add social author accounts."""
     authors = [
-        ("author_torsolarfred", "torsolarfred.bsky.social"),
-        ("author_gridwatch", "gridwatch.bsky.social"),
+        ("author_torsolarfred", "torsolarfred.bsky.social", "Bluesky"),
+        ("author_gridwatch", "gridwatch.bsky.social", "Bluesky"),
+        ("author_energytweets", "@energytweets", "Twitter"),
     ]
-    for name, handle in authors:
+    for name, handle, platform in authors:
         uri = ENEWS[name]
         g.add((uri, RDF.type, ENEWS.AuthorAccount))
+        g.add((uri, RDFS.label, Literal(handle, lang="en")))
         g.add((uri, ENEWS.handle, Literal(handle)))
+        g.add((uri, ENEWS.onPlatform, ENEWS[platform]))
 
 
 def _add_sample_articles(g: Graph) -> None:
-    """Add news articles with publication, topic, and entity links."""
+    """Add news articles with publication derived from URL domain, topic, and entity links."""
+    # Build domain→publication URI lookup from existing Publication triples
+    domain_to_pub: dict[str, URIRef] = {}
+    for pub in g.subjects(RDF.type, ENEWS.Publication):
+        if not isinstance(pub, URIRef):
+            continue
+        site_domain = g.value(pub, ENEWS.siteDomain)
+        if site_domain:
+            domain_to_pub[str(site_domain)] = pub
+
     articles: list[dict[str, Any]] = [
         {
             "name": "article_001",
@@ -541,7 +621,6 @@ def _add_sample_articles(g: Graph) -> None:
                 "Coverage of large-scale battery procurement and manufacturing expansion."
             ),
             "published_date": "2026-02-01T09:00:00Z",
-            "publication": "pub_bloomberg",
             "topics": ["EnergyStorage", "Manufacturing"],
             "organizations": ["org_catl"],
             "geography": "geo_australia",
@@ -554,7 +633,6 @@ def _add_sample_articles(g: Graph) -> None:
                 "Analysis of distributed rooftop solar growth and policy implications in Australia."
             ),
             "published_date": "2026-02-03T10:30:00Z",
-            "publication": "pub_canary_media",
             "topics": ["RooftopSolar", "Solar"],
             "organizations": [],
             "geography": "geo_australia",
@@ -567,7 +645,6 @@ def _add_sample_articles(g: Graph) -> None:
                 "U.S. grid interconnection reform with implications for transmission expansion."
             ),
             "published_date": "2026-02-05T14:00:00Z",
-            "publication": "pub_bloomberg",
             "topics": ["Interconnection", "Regulation"],
             "organizations": ["org_ferc"],
             "geography": "geo_us",
@@ -576,11 +653,17 @@ def _add_sample_articles(g: Graph) -> None:
     for article in articles:
         uri = ENEWS[article["name"]]
         g.add((uri, RDF.type, ENEWS.Article))
+        g.add((uri, RDFS.label, Literal(article["title"], lang="en")))
         g.add((uri, ENEWS.title, Literal(article["title"])))
         g.add((uri, ENEWS.url, Literal(article["url"], datatype=XSD.anyURI)))
-        g.add((uri, ENEWS.description, Literal(article["description"], lang="en")))
+        g.add((uri, ENEWS.description, Literal(article["description"])))
         g.add((uri, ENEWS.publishedDate, Literal(article["published_date"], datatype=XSD.dateTime)))
-        g.add((uri, ENEWS.publishedBy, ENEWS[article["publication"]]))
+
+        # Derive publishedBy from URL domain
+        domain = _extract_domain(article["url"])
+        if domain and domain in domain_to_pub:
+            g.add((uri, ENEWS.publishedBy, domain_to_pub[domain]))
+
         g.add((uri, ENEWS.hasGeographicFocus, ENEWS[article["geography"]]))
         for topic in article["topics"]:
             g.add((uri, ENEWS.coversTopic, ENEWS[topic]))
@@ -594,10 +677,15 @@ def _add_sample_posts(g: Graph) -> None:
         ("post_001", "author_torsolarfred", "article_001"),
         ("post_002", "author_torsolarfred", "article_002"),
         ("post_003", "author_gridwatch", "article_003"),
+        ("post_004", "author_energytweets", "article_001"),
     ]
     for name, author, article in posts:
         uri = ENEWS[name]
         g.add((uri, RDF.type, ENEWS.Post))
+        author_label = author.replace("_", " ").replace("author ", "")
+        article_label = article.replace("_", " ")
+        label = f"Post by {author_label} sharing {article_label}"
+        g.add((uri, RDFS.label, Literal(label, lang="en")))
         g.add((uri, ENEWS.postedBy, ENEWS[author]))
         g.add((uri, ENEWS.sharesArticle, ENEWS[article]))
 
@@ -605,13 +693,15 @@ def _add_sample_posts(g: Graph) -> None:
 def _add_sample_feeds(g: Graph) -> None:
     """Add sample feeds."""
     feeds = [
-        ("feed_energysky", "EnergySky"),
-        ("feed_gridpulse", "GridPulse"),
+        ("feed_energysky", "EnergySky", "Bluesky"),
+        ("feed_gridpulse", "GridPulse", "Bluesky"),
+        ("feed_energyx", "EnergyX", "Twitter"),
     ]
-    for name, label in feeds:
+    for name, label, platform in feeds:
         uri = ENEWS[name]
         g.add((uri, RDF.type, ENEWS.Feed))
         g.add((uri, RDFS.label, Literal(label, lang="en")))
+        g.add((uri, ENEWS.onPlatform, ENEWS[platform]))
 
 
 def build_abox_data() -> Graph:
@@ -687,6 +777,40 @@ def build_shacl_shapes() -> Graph:
         ENEWS.AuthorAccount,
         [
             _property_shape(g, ENEWS.handle, min_count=1, max_count=1, datatype=XSD.string),
+            _property_shape(
+                g,
+                ENEWS.onPlatform,
+                min_count=1,
+                max_count=1,
+                class_constraint=ENEWS.SocialMediaPlatform,
+            ),
+        ],
+    )
+
+    # --- FeedShape ---
+    _add_shape(
+        g,
+        ENEWS.FeedShape,
+        ENEWS.Feed,
+        [
+            _min_count_property(g, RDFS.label, 1),
+            _property_shape(
+                g,
+                ENEWS.onPlatform,
+                min_count=1,
+                max_count=1,
+                class_constraint=ENEWS.SocialMediaPlatform,
+            ),
+        ],
+    )
+
+    # --- SocialMediaPlatformShape ---
+    _add_shape(
+        g,
+        ENEWS.SocialMediaPlatformShape,
+        ENEWS.SocialMediaPlatform,
+        [
+            _min_count_property(g, RDFS.label, 1),
         ],
     )
 
@@ -698,6 +822,26 @@ def build_shacl_shapes() -> Graph:
         [
             _property_shape(g, ENEWS.siteDomain, min_count=1, max_count=1, datatype=XSD.string),
         ],
+    )
+
+    # --- SPARQL constraint: Article URL domain must match Publication siteDomain ---
+    _add_sparql_constraint(
+        g,
+        ENEWS.ArticleShape,
+        message="Article URL domain does not match its Publication siteDomain",
+        select_query=(
+            "PREFIX enews: <http://example.org/ontology/energy-news#>\n"
+            "SELECT $this WHERE {\n"
+            "  $this enews:url ?url ;\n"
+            "        enews:publishedBy ?pub .\n"
+            "  ?pub enews:siteDomain ?siteDomain .\n"
+            '  BIND(REPLACE(STR(?url), "^https?://([^/]+).*$", "$1") AS ?urlDomain)\n'
+            '  BIND(IF(STRSTARTS(?urlDomain, "www."),\n'
+            "          SUBSTR(?urlDomain, 5),\n"
+            "          ?urlDomain) AS ?canonicalDomain)\n"
+            "  FILTER(?canonicalDomain != ?siteDomain)\n"
+            "}"
+        ),
     )
 
     return g
@@ -739,6 +883,21 @@ def _property_shape(
     if class_constraint is not None:
         g.add((ps, SH["class"], class_constraint))
     return ps
+
+
+def _add_sparql_constraint(
+    g: Graph,
+    shape_uri: URIRef,
+    *,
+    message: str,
+    select_query: str,
+) -> None:
+    """Attach a sh:SPARQLConstraint to an existing NodeShape."""
+    constraint = BNode()
+    g.add((constraint, RDF.type, SH.SPARQLConstraint))
+    g.add((constraint, SH.message, Literal(message)))
+    g.add((constraint, SH.select, Literal(select_query)))
+    g.add((shape_uri, SH.sparql, constraint))
 
 
 # ---------------------------------------------------------------------------

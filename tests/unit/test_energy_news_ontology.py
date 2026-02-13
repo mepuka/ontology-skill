@@ -9,7 +9,7 @@ from __future__ import annotations
 from pathlib import Path
 
 import pytest
-from rdflib import Graph, Namespace, URIRef
+from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.collection import Collection
 from rdflib.namespace import OWL, RDF, RDFS, SKOS, XSD
 
@@ -88,6 +88,7 @@ EXPECTED_CLASSES = [
     "Feed",
     "Organization",
     "GeographicEntity",
+    "SocialMediaPlatform",
 ]
 
 
@@ -98,7 +99,7 @@ def test_class_declared(tbox: Graph, cls_name: str) -> None:
 
 
 def test_all_disjoint_classes(tbox: Graph) -> None:
-    """An AllDisjointClasses axiom exists with all 8 classes."""
+    """An AllDisjointClasses axiom exists with all 9 classes."""
     disjoint_nodes = list(tbox.subjects(RDF.type, OWL.AllDisjointClasses))
     assert len(disjoint_nodes) >= 1
 
@@ -180,6 +181,7 @@ EXPECTED_OBJ_PROPS = [
     "mentionsOrganization",
     "hasGeographicFocus",
     "hasSector",
+    "onPlatform",
 ]
 
 EXPECTED_DATA_PROPS = [
@@ -208,6 +210,7 @@ EXPECTED_FUNCTIONAL = [
     "publishedBy",
     "postedBy",
     "sharesArticle",
+    "onPlatform",
     "handle",
     "title",
     "url",
@@ -242,10 +245,11 @@ def test_article_haskey_url(tbox: Graph) -> None:
     assert ENEWS.url in keys
 
 
-def test_author_account_haskey_handle(tbox: Graph) -> None:
-    """AuthorAccount has HasKey on handle."""
+def test_author_account_haskey_handle_and_platform(tbox: Graph) -> None:
+    """AuthorAccount has composite HasKey on handle and onPlatform."""
     keys = _get_haskey_props(tbox, ENEWS.AuthorAccount)
     assert ENEWS.handle in keys
+    assert ENEWS.onPlatform in keys
 
 
 def test_publication_haskey_sitedomain(tbox: Graph) -> None:
@@ -278,6 +282,60 @@ def test_article_covers_topic_restriction(tbox: Graph) -> None:
 def test_post_posted_by_restriction(tbox: Graph) -> None:
     """Post SubClassOf postedBy some AuthorAccount."""
     assert _has_existential(tbox, ENEWS.Post, ENEWS.postedBy, ENEWS.AuthorAccount)
+
+
+def test_author_account_on_platform_restriction(tbox: Graph) -> None:
+    """AuthorAccount SubClassOf onPlatform some SocialMediaPlatform."""
+    assert _has_existential(tbox, ENEWS.AuthorAccount, ENEWS.onPlatform, ENEWS.SocialMediaPlatform)
+
+
+def test_feed_on_platform_restriction(tbox: Graph) -> None:
+    """Feed SubClassOf onPlatform some SocialMediaPlatform."""
+    assert _has_existential(tbox, ENEWS.Feed, ENEWS.onPlatform, ENEWS.SocialMediaPlatform)
+
+
+def test_on_platform_no_domain(tbox: Graph) -> None:
+    """onPlatform has no rdfs:domain (avoids Feed->AuthorAccount inference)."""
+    domains = list(tbox.objects(ENEWS.onPlatform, RDFS.domain))
+    assert not domains, f"onPlatform should have no domain, found: {domains}"
+
+
+# ---------------------------------------------------------------------------
+# Social Media Platform tests
+# ---------------------------------------------------------------------------
+
+
+def test_social_media_platform_individuals(ref: Graph) -> None:
+    """Bluesky and Twitter are typed as SocialMediaPlatform."""
+    assert (ENEWS.Bluesky, RDF.type, ENEWS.SocialMediaPlatform) in ref
+    assert (ENEWS.Twitter, RDF.type, ENEWS.SocialMediaPlatform) in ref
+
+
+def test_platform_individuals_have_labels(ref: Graph) -> None:
+    """Platform individuals have rdfs:label."""
+    for platform in [ENEWS.Bluesky, ENEWS.Twitter]:
+        labels = list(ref.objects(platform, RDFS.label))
+        assert labels, f"{platform} missing rdfs:label"
+
+
+def test_platform_all_different(ref: Graph) -> None:
+    """AllDifferent axiom exists for platform individuals."""
+    diff_nodes = list(ref.subjects(RDF.type, OWL.AllDifferent))
+    platform_pair_found = False
+    for node in diff_nodes:
+        members_list = ref.value(node, OWL.distinctMembers)
+        if members_list:
+            members = set(Collection(ref, members_list))
+            if ENEWS.Bluesky in members and ENEWS.Twitter in members:
+                platform_pair_found = True
+                break
+    assert platform_pair_found, "No AllDifferent axiom found for Bluesky and Twitter"
+
+
+def test_twitter_alt_label(ref: Graph) -> None:
+    """Twitter individual has altLabel 'X'."""
+    alt_labels = {str(label) for label in ref.objects(ENEWS.Twitter, SKOS.altLabel)}
+    assert "X" in alt_labels
 
 
 # ---------------------------------------------------------------------------
@@ -424,6 +482,9 @@ def test_tbox_003_author_account_is_class(merged: Graph) -> None:
         "cq-014.sparql",
         "cq-015.sparql",
         "cq-016.sparql",
+        "cq-017.sparql",
+        "cq-018.sparql",
+        "cq-019.sparql",
     ],
 )
 def test_abox_cq_queries_return_results(full_graph: Graph, query_file: str) -> None:
@@ -454,6 +515,32 @@ def test_shacl_conformance_reference_individuals_and_data(shapes: Graph) -> None
         inference="none",
     )
     assert conforms, f"SHACL validation failed:\n{results_text}"
+
+
+def test_shacl_catches_url_domain_mismatch(shapes: Graph) -> None:
+    """SHACL SPARQL constraint rejects an article whose URL domain doesn't match its publication."""
+    from pyshacl import validate
+
+    data = Graph()
+    data.parse(str(TBOX_PATH), format="turtle")
+    data.parse(str(REF_PATH), format="turtle")
+    data.parse(str(DATA_PATH), format="turtle")
+
+    # Inject a bad article: URL says "badsite.com" but publishedBy points to Bloomberg
+    bad_article = ENEWS["article_bad"]
+    data.add((bad_article, RDF.type, ENEWS.Article))
+    data.add((bad_article, ENEWS.title, Literal("Bad domain test")))
+    data.add((bad_article, ENEWS.url, Literal("https://badsite.com/fake", datatype=XSD.anyURI)))
+    data.add((bad_article, ENEWS.coversTopic, ENEWS.Solar))
+    data.add((bad_article, ENEWS.publishedBy, ENEWS.pub_bloomberg))
+
+    conforms, _results_graph, results_text = validate(
+        data_graph=data,
+        shacl_graph=shapes,
+        inference="none",
+    )
+    assert not conforms, "SHACL should reject article with mismatched URL domain"
+    assert "domain" in results_text.lower(), f"Expected domain mismatch message:\n{results_text}"
 
 
 # ---------------------------------------------------------------------------

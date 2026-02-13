@@ -112,3 +112,90 @@ create individual enews:WasteAndPollution
 # SIOC alignment: AuthorAccount equivalentClass sioc:UserAccount
 # SKOS hierarchy: 47 broader relations, 19 topConceptOf relations
 # AllDifferent: 20 sibling groups (19 child groups + 1 top-level group)
+
+# ===========================================================================
+# Multi-Platform Extension (v0.2.0)
+# Date: 2026-02-11
+# Author: ontology-architect skill
+# Design Decision: DD-008 — platforms as named individuals, not subclasses
+# ===========================================================================
+
+# --- New Class ---
+create class enews:SocialMediaPlatform
+
+# --- New Object Property ---
+create object property enews:onPlatform
+
+# --- New Individuals ---
+create individual enews:Bluesky
+create individual enews:Twitter
+
+# --- New Edges (subclass / type assertions) ---
+create edge enews:SocialMediaPlatform rdfs:subClassOf obo:BFO_0000031
+create edge enews:Bluesky rdf:type enews:SocialMediaPlatform
+create edge enews:Twitter rdf:type enews:SocialMediaPlatform
+
+# --- New Axioms (OWL-specific, no KGCL grammar) ---
+# AllDisjointClasses: 9 domain classes (added SocialMediaPlatform)
+# Existential: AuthorAccount SubClassOf onPlatform some SocialMediaPlatform
+# Existential: Feed SubClassOf onPlatform some SocialMediaPlatform
+# HasKey(AuthorAccount): changed from (handle) to (handle, onPlatform)
+# Functional property: onPlatform
+# AllDifferent: (Bluesky, Twitter)
+# Removed: rdfs:domain on onPlatform (was AuthorAccount; omitted to avoid
+#   incorrect type inference on Feed instances given AllDisjointClasses)
+
+# --- Definition Updates (Bluesky -> platform-agnostic) ---
+change definition of enews:AuthorAccount from "a Bluesky account that shares energy news" to "a social media account that shares energy news"
+change definition of enews:Post from "a Bluesky post sharing energy content" to "a social media post sharing energy content"
+change definition of enews:Feed from "a curated Bluesky feed for energy content" to "a curated social media feed for energy content"
+change definition of enews:handle from "The Bluesky handle string for an AuthorAccount" to "The handle or username string for an AuthorAccount"
+change definition of <http://example.org/ontology/energy-news> from "as observed through Bluesky social media posts" to "as observed through social media posts"
+
+# --- New Competency Questions ---
+# CQ-017: Which platforms have the most energy news posts?
+# CQ-018: Which authors share energy news on a given platform?
+
+# ===========================================================================
+# URL-Publication Linking Implementation (v0.2.0)
+# Date: 2026-02-12
+# Author: ontology-architect skill
+# Design Decision: Derive publishedBy from article URL domain matching
+#   Publication siteDomain (as specified in property-design.yaml notes)
+# ===========================================================================
+
+# --- Build Script Changes ---
+# Added _extract_domain() helper: extracts domain from URL, strips www. prefix
+# Modified _add_sample_articles(): publishedBy now derived from URL domain
+#   lookup against Publication siteDomain values (no more hardcoded publication keys)
+# If domain unrecognized or URL unparseable, publishedBy is omitted (valid per min=0)
+
+# --- SHACL SPARQL Constraint (ArticleShape) ---
+# New sh:SPARQLConstraint on ArticleShape validates: if an Article has both
+#   url and publishedBy, the URL domain must match the Publication's siteDomain
+# First SPARQL-based SHACL constraint in the shapes graph
+
+# --- New Competency Question ---
+# CQ-019: Which publication published an article based on its URL domain?
+
+# --- Validator Fixes (B-001, W-001) ---
+# B-001: Fixed description literal datatype conflict. Removed lang="en" from
+#   description literals to match xsd:string range (rdf:langString and xsd:string
+#   are disjoint in OWL 2 — HermiT correctly flagged inconsistency).
+# W-001: Added rdfs:label to all ABox sample individuals (articles, authors,
+#   posts) to satisfy ROBOT report missing_label check.
+# W-001b: Made post labels unique by including article reference
+#   ("Post by {author} sharing {article}") to resolve duplicate_label ERROR.
+
+# ===========================================================================
+# Release v0.2.0
+# Date: 2026-02-12
+# Author: ontology-curator skill
+# ===========================================================================
+
+# --- Version Metadata ---
+# Added owl:priorVersion pointing to v0.1.0 IRIs on all three modules
+# Updated dcterms:modified to 2026-02-12
+# Generated release artifacts: TTL (merged + reasoned), OWL/XML,
+#   Manchester Syntax, JSON, plus modular source files and SHACL shapes
+# FAIR assessment documented in release/energy-news-fair.md

@@ -1,0 +1,1419 @@
+@prefix : <http://example.org/ontology/energy-news#> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sioc: <http://rdfs.org/sioc/ns#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix enews: <http://example.org/ontology/energy-news#> .
+@prefix schema: <https://schema.org/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@base <http://example.org/ontology/energy-news> .
+
+<http://example.org/ontology/energy-news> rdf:type owl:Ontology ;
+                                           owl:versionIRI <http://example.org/ontology/energy-news/0.2.0> ;
+                                           dcterms:created "2026-02-11" ;
+                                           dcterms:creator "ontology-architect skill" ;
+                                           dcterms:description "A lightweight OWL 2 DL ontology modeling the energy news media landscape as observed through social media posts."@en ;
+                                           dcterms:license <https://spdx.org/licenses/MIT> ;
+                                           dcterms:modified "2026-02-12" ;
+                                           dcterms:title "Energy News Ontology"@en ;
+                                           owl:priorVersion <http://example.org/ontology/energy-news/0.1.0> ;
+                                           owl:versionInfo "0.2.0" .
+
+#################################################################
+#    Annotation properties
+#################################################################
+
+###  http://purl.org/dc/terms/created
+dcterms:created rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/creator
+dcterms:creator rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/description
+dcterms:description rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/license
+dcterms:license rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/modified
+dcterms:modified rdf:type owl:AnnotationProperty .
+
+
+###  http://purl.org/dc/terms/title
+dcterms:title rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#altLabel
+skos:altLabel rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#broader
+skos:broader rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#definition
+skos:definition rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#hasTopConcept
+skos:hasTopConcept rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#inScheme
+skos:inScheme rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#relatedMatch
+skos:relatedMatch rdf:type owl:AnnotationProperty .
+
+
+###  http://www.w3.org/2004/02/skos/core#topConceptOf
+skos:topConceptOf rdf:type owl:AnnotationProperty .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://example.org/ontology/energy-news#coversTopic
+enews:coversTopic rdf:type owl:ObjectProperty ;
+                  owl:equivalentProperty schema:about ;
+                  rdfs:domain enews:Article ;
+                  rdfs:range enews:EnergyTopic ;
+                  rdfs:label "covers topic"@en ;
+                  skos:definition "Links an Article to an EnergyTopic individual it covers"@en .
+
+
+###  http://example.org/ontology/energy-news#hasGeographicFocus
+enews:hasGeographicFocus rdf:type owl:ObjectProperty ;
+                         owl:equivalentProperty schema:contentLocation ;
+                         rdfs:domain enews:Article ;
+                         rdfs:range enews:GeographicEntity ;
+                         rdfs:label "has geographic focus"@en ;
+                         skos:definition "Links an Article to a GeographicEntity representing its geographic focus"@en .
+
+
+###  http://example.org/ontology/energy-news#hasSector
+enews:hasSector rdf:type owl:ObjectProperty ;
+                rdfs:domain enews:Organization ;
+                rdfs:range enews:EnergyTopic ;
+                rdfs:label "has sector"@en ;
+                skos:definition "Links an Organization to an EnergyTopic sector it operates in"@en .
+
+
+###  http://example.org/ontology/energy-news#mentionsOrganization
+enews:mentionsOrganization rdf:type owl:ObjectProperty ;
+                           rdfs:subPropertyOf schema:mentions ;
+                           rdfs:domain enews:Article ;
+                           rdfs:range enews:Organization ;
+                           rdfs:label "mentions organization"@en ;
+                           skos:definition "Links an Article to an Organization mentioned in its coverage"@en .
+
+
+###  http://example.org/ontology/energy-news#onPlatform
+enews:onPlatform rdf:type owl:ObjectProperty ,
+                          owl:FunctionalProperty ;
+                 rdfs:range enews:SocialMediaPlatform ;
+                 rdfs:label "on platform"@en ;
+                 skos:definition "Links an AuthorAccount or Feed to the SocialMediaPlatform it belongs to"@en .
+
+
+###  http://example.org/ontology/energy-news#postedBy
+enews:postedBy rdf:type owl:ObjectProperty ;
+               rdfs:subPropertyOf schema:author ;
+               rdf:type owl:FunctionalProperty ;
+               rdfs:domain enews:Post ;
+               rdfs:range enews:AuthorAccount ;
+               rdfs:label "posted by"@en ;
+               skos:definition "Links a Post to the AuthorAccount who created it"@en .
+
+
+###  http://example.org/ontology/energy-news#publishedBy
+enews:publishedBy rdf:type owl:ObjectProperty ;
+                  owl:equivalentProperty schema:publisher ;
+                  rdf:type owl:FunctionalProperty ;
+                  rdfs:domain enews:Article ;
+                  rdfs:range enews:Publication ;
+                  rdfs:label "published by"@en ;
+                  skos:definition "Links an Article to the Publication that published it"@en .
+
+
+###  http://example.org/ontology/energy-news#sharesArticle
+enews:sharesArticle rdf:type owl:ObjectProperty ;
+                    owl:equivalentProperty schema:sharedContent ;
+                    rdf:type owl:FunctionalProperty ;
+                    rdfs:domain enews:Post ;
+                    rdfs:range enews:Article ;
+                    rdfs:label "shares article"@en ;
+                    skos:definition "Links a Post to the Article it shares via embedded link"@en .
+
+
+###  https://schema.org/about
+schema:about rdf:type owl:ObjectProperty .
+
+
+###  https://schema.org/author
+schema:author rdf:type owl:ObjectProperty .
+
+
+###  https://schema.org/contentLocation
+schema:contentLocation rdf:type owl:ObjectProperty .
+
+
+###  https://schema.org/mentions
+schema:mentions rdf:type owl:ObjectProperty .
+
+
+###  https://schema.org/publisher
+schema:publisher rdf:type owl:ObjectProperty .
+
+
+###  https://schema.org/sharedContent
+schema:sharedContent rdf:type owl:ObjectProperty .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://example.org/ontology/energy-news#description
+enews:description rdf:type owl:DatatypeProperty ;
+                  owl:equivalentProperty schema:description ;
+                  rdf:type owl:FunctionalProperty ;
+                  rdfs:domain enews:Article ;
+                  rdfs:range xsd:string ;
+                  rdfs:label "description"@en ;
+                  skos:definition "The description or summary text of an Article"@en .
+
+
+###  http://example.org/ontology/energy-news#handle
+enews:handle rdf:type owl:DatatypeProperty ,
+                      owl:FunctionalProperty ;
+             rdfs:domain enews:AuthorAccount ;
+             rdfs:range xsd:string ;
+             rdfs:label "handle"@en ;
+             skos:definition "The handle or username string for an AuthorAccount"@en .
+
+
+###  http://example.org/ontology/energy-news#publishedDate
+enews:publishedDate rdf:type owl:DatatypeProperty ;
+                    owl:equivalentProperty schema:datePublished ;
+                    rdf:type owl:FunctionalProperty ;
+                    rdfs:domain enews:Article ;
+                    rdfs:range xsd:dateTime ;
+                    rdfs:label "published date"@en ;
+                    skos:definition "The publication date of an Article"@en .
+
+
+###  http://example.org/ontology/energy-news#siteDomain
+enews:siteDomain rdf:type owl:DatatypeProperty ,
+                          owl:FunctionalProperty ;
+                 rdfs:domain enews:Publication ;
+                 rdfs:range xsd:string ;
+                 rdfs:label "site domain"@en ;
+                 skos:definition "The domain name string of a Publication"@en .
+
+
+###  http://example.org/ontology/energy-news#title
+enews:title rdf:type owl:DatatypeProperty ;
+            owl:equivalentProperty schema:headline ;
+            rdf:type owl:FunctionalProperty ;
+            rdfs:domain enews:Article ;
+            rdfs:range xsd:string ;
+            rdfs:label "title"@en ;
+            skos:definition "The headline or title string of an Article"@en .
+
+
+###  http://example.org/ontology/energy-news#url
+enews:url rdf:type owl:DatatypeProperty ;
+          owl:equivalentProperty schema:url ;
+          rdf:type owl:FunctionalProperty ;
+          rdfs:domain enews:Article ;
+          rdfs:range xsd:anyURI ;
+          rdfs:label "url"@en ;
+          skos:definition "The URL of an Article"@en .
+
+
+###  https://schema.org/datePublished
+schema:datePublished rdf:type owl:DatatypeProperty .
+
+
+###  https://schema.org/description
+schema:description rdf:type owl:DatatypeProperty .
+
+
+###  https://schema.org/headline
+schema:headline rdf:type owl:DatatypeProperty .
+
+
+###  https://schema.org/url
+schema:url rdf:type owl:DatatypeProperty .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://example.org/ontology/energy-news#Article
+enews:Article rdf:type owl:Class ;
+              rdfs:subClassOf obo:BFO_0000031 ,
+                              schema:NewsArticle ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty enews:coversTopic ;
+                                owl:someValuesFrom enews:EnergyTopic
+                              ] ;
+              owl:hasKey ( enews:url
+                         ) ;
+              rdfs:label "article"@en ;
+              skos:definition "A GenericallyDependentContinuant that represents a news article referenced by an embedded link in a social media post"@en .
+
+
+###  http://example.org/ontology/energy-news#AuthorAccount
+enews:AuthorAccount rdf:type owl:Class ;
+                    owl:equivalentClass sioc:UserAccount ;
+                    rdfs:subClassOf obo:BFO_0000031 ,
+                                    [ rdf:type owl:Restriction ;
+                                      owl:onProperty enews:onPlatform ;
+                                      owl:someValuesFrom enews:SocialMediaPlatform
+                                    ] ;
+                    owl:hasKey ( enews:onPlatform
+                                 enews:handle
+                               ) ;
+                    rdfs:label "author account"@en ;
+                    skos:definition "A GenericallyDependentContinuant that represents a social media account that shares energy news"@en ;
+                    skos:relatedMatch schema:Person .
+
+
+###  http://example.org/ontology/energy-news#EnergyTopic
+enews:EnergyTopic rdf:type owl:Class ;
+                  rdfs:subClassOf obo:BFO_0000031 ;
+                  rdfs:label "energy topic"@en ;
+                  skos:definition "An owl:Class whose instances are skos:Concept individuals representing subject areas within the energy sector used to classify news articles"@en .
+
+
+###  http://example.org/ontology/energy-news#Feed
+enews:Feed rdf:type owl:Class ;
+           rdfs:subClassOf obo:BFO_0000031 ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty enews:onPlatform ;
+                             owl:someValuesFrom enews:SocialMediaPlatform
+                           ] ;
+           rdfs:label "feed"@en ;
+           skos:definition "A GenericallyDependentContinuant that represents a curated social media feed for energy content"@en .
+
+
+###  http://example.org/ontology/energy-news#GeographicEntity
+enews:GeographicEntity rdf:type owl:Class ;
+                       rdfs:subClassOf obo:BFO_0000029 ,
+                                       schema:Place ;
+                       rdfs:label "geographic entity"@en ;
+                       skos:definition "A Site that represents a country region or subnational area relevant to energy news coverage"@en .
+
+
+###  http://example.org/ontology/energy-news#Organization
+enews:Organization rdf:type owl:Class ;
+                   owl:equivalentClass schema:Organization ;
+                   rdfs:subClassOf obo:BFO_0000030 ;
+                   rdfs:label "organization"@en ;
+                   skos:definition "An Object that represents a company agency or institutional body mentioned in energy news"@en .
+
+
+###  http://example.org/ontology/energy-news#Post
+enews:Post rdf:type owl:Class ;
+           owl:equivalentClass schema:SocialMediaPosting ;
+           rdfs:subClassOf obo:BFO_0000031 ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty enews:postedBy ;
+                             owl:someValuesFrom enews:AuthorAccount
+                           ] ;
+           rdfs:label "post"@en ;
+           skos:definition "A GenericallyDependentContinuant that represents a social media post sharing energy content"@en .
+
+
+###  http://example.org/ontology/energy-news#Publication
+enews:Publication rdf:type owl:Class ;
+                  rdfs:subClassOf obo:BFO_0000030 ,
+                                  schema:NewsMediaOrganization ;
+                  owl:hasKey ( enews:siteDomain
+                             ) ;
+                  rdfs:label "publication"@en ;
+                  skos:definition "An Object that represents a news media outlet or website that publishes articles"@en .
+
+
+###  http://example.org/ontology/energy-news#SocialMediaPlatform
+enews:SocialMediaPlatform rdf:type owl:Class ;
+                          rdfs:subClassOf obo:BFO_0000031 ;
+                          rdfs:label "social media platform"@en ;
+                          skos:definition "An owl:Class whose instances are named individuals representing social media platforms"@en .
+
+
+###  http://purl.obolibrary.org/obo/BFO_0000029
+obo:BFO_0000029 rdf:type owl:Class ;
+                rdfs:label "site"@en .
+
+
+###  http://purl.obolibrary.org/obo/BFO_0000030
+obo:BFO_0000030 rdf:type owl:Class ;
+                rdfs:label "object"@en .
+
+
+###  http://purl.obolibrary.org/obo/BFO_0000031
+obo:BFO_0000031 rdf:type owl:Class ;
+                rdfs:label "generically dependent continuant"@en .
+
+
+###  http://rdfs.org/sioc/ns#UserAccount
+sioc:UserAccount rdf:type owl:Class .
+
+
+###  http://www.w3.org/2004/02/skos/core#Concept
+skos:Concept rdf:type owl:Class .
+
+
+###  http://www.w3.org/2004/02/skos/core#ConceptScheme
+skos:ConceptScheme rdf:type owl:Class .
+
+
+###  https://schema.org/NewsArticle
+schema:NewsArticle rdf:type owl:Class .
+
+
+###  https://schema.org/NewsMediaOrganization
+schema:NewsMediaOrganization rdf:type owl:Class .
+
+
+###  https://schema.org/Organization
+schema:Organization rdf:type owl:Class .
+
+
+###  https://schema.org/Person
+schema:Person rdf:type owl:Class .
+
+
+###  https://schema.org/Place
+schema:Place rdf:type owl:Class .
+
+
+###  https://schema.org/SocialMediaPosting
+schema:SocialMediaPosting rdf:type owl:Class .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://example.org/ontology/energy-news#Affordability
+enews:Affordability rdf:type owl:NamedIndividual ,
+                             enews:EnergyTopic ,
+                             skos:Concept ;
+                    rdfs:label "affordability"@en ;
+                    skos:altLabel "energy bills"@en ,
+                                  "energy poverty"@en ,
+                                  "rate hike"@en ;
+                    skos:broader enews:EnergyJustice ;
+                    skos:definition "A skos:Concept representing energy affordability bills rate increases and energy poverty"@en ;
+                    skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Agrivoltaics
+enews:Agrivoltaics rdf:type owl:NamedIndividual ,
+                            enews:EnergyTopic ,
+                            skos:Concept ;
+                   rdfs:label "agrivoltaics"@en ;
+                   skos:altLabel "agrivoltaic"@en ,
+                                 "solar farming"@en ;
+                   skos:broader enews:EnvironmentAndLandUse ;
+                   skos:definition "A skos:Concept representing co-location of solar panels and agriculture"@en ;
+                   skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Bluesky
+enews:Bluesky rdf:type owl:NamedIndividual ,
+                       enews:SocialMediaPlatform ;
+              owl:differentFrom enews:Twitter ;
+              rdfs:label "Bluesky"@en ;
+              skos:altLabel "Bluesky Social"@en ,
+                            "bsky"@en ;
+              skos:definition "A SocialMediaPlatform individual representing the Bluesky social network"@en .
+
+
+###  http://example.org/ontology/energy-news#BuildingElectrification
+enews:BuildingElectrification rdf:type owl:NamedIndividual ,
+                                       enews:EnergyTopic ,
+                                       skos:Concept ;
+                              rdfs:label "building electrification"@en ;
+                              skos:altLabel "building electrification"@en ,
+                                            "gas-to-electric"@en ;
+                              skos:broader enews:BuildingsAndEfficiency ;
+                              skos:definition "A skos:Concept representing switching buildings from gas to electric systems"@en ;
+                              skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#BuildingsAndEfficiency
+enews:BuildingsAndEfficiency rdf:type owl:NamedIndividual ,
+                                      enews:EnergyTopic ,
+                                      skos:Concept ;
+                             rdfs:label "buildings and efficiency"@en ;
+                             skos:altLabel "building energy"@en ,
+                                           "energy efficiency"@en ;
+                             skos:definition "A skos:Concept representing building energy performance retrofits and distributed generation"@en ;
+                             skos:inScheme enews:EnergyTopicScheme ;
+                             skos:topConceptOf enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#CarbonCapture
+enews:CarbonCapture rdf:type owl:NamedIndividual ,
+                             enews:EnergyTopic ,
+                             skos:Concept ;
+                    rdfs:label "carbon capture"@en ;
+                    skos:altLabel "CCS"@en ,
+                                  "CCUS"@en ,
+                                  "carbon capture"@en ;
+                    skos:definition "A skos:Concept representing carbon capture utilization and storage technologies"@en ;
+                    skos:inScheme enews:EnergyTopicScheme ;
+                    skos:topConceptOf enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#ClimateAndEmissions
+enews:ClimateAndEmissions rdf:type owl:NamedIndividual ,
+                                   enews:EnergyTopic ,
+                                   skos:Concept ;
+                          rdfs:label "climate and emissions"@en ;
+                          skos:altLabel "GHG"@en ,
+                                        "climate"@en ,
+                                        "emissions"@en ;
+                          skos:definition "A skos:Concept representing climate change and greenhouse gas emissions in the energy context"@en ;
+                          skos:inScheme enews:EnergyTopicScheme ;
+                          skos:topConceptOf enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Coal
+enews:Coal rdf:type owl:NamedIndividual ,
+                    enews:EnergyTopic ,
+                    skos:Concept ;
+           rdfs:label "coal"@en ;
+           skos:altLabel "coal power"@en ,
+                         "coal-fired"@en ;
+           skos:broader enews:Fossil ;
+           skos:definition "A skos:Concept representing coal extraction and coal-fired power generation"@en ;
+           skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Commodity
+enews:Commodity rdf:type owl:NamedIndividual ,
+                         enews:EnergyTopic ,
+                         skos:Concept ;
+                rdfs:label "commodity"@en ;
+                skos:altLabel "commodity trading"@en ,
+                              "gas prices"@en ,
+                              "oil futures"@en ;
+                skos:broader enews:EnergyMarkets ;
+                skos:definition "A skos:Concept representing oil futures gas spot prices and energy commodity trading"@en ;
+                skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#CommunityEnergy
+enews:CommunityEnergy rdf:type owl:NamedIndividual ,
+                               enews:EnergyTopic ,
+                               skos:Concept ;
+                      rdfs:label "community energy"@en ;
+                      skos:altLabel "community solar"@en ,
+                                    "cooperative energy"@en ;
+                      skos:broader enews:EnergyJustice ;
+                      skos:definition "A skos:Concept representing community-owned energy projects and cooperatives"@en ;
+                      skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#CorporateDeals
+enews:CorporateDeals rdf:type owl:NamedIndividual ,
+                              enews:EnergyTopic ,
+                              skos:Concept ;
+                     rdfs:label "corporate deals"@en ;
+                     skos:altLabel "M&A"@en ,
+                                   "acquisition"@en ,
+                                   "merger"@en ;
+                     skos:broader enews:EnergyFinance ;
+                     skos:definition "A skos:Concept representing acquisitions mergers and corporate stakes in energy companies"@en ;
+                     skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#CriticalMinerals
+enews:CriticalMinerals rdf:type owl:NamedIndividual ,
+                                enews:EnergyTopic ,
+                                skos:Concept ;
+                       rdfs:label "critical minerals"@en ;
+                       skos:altLabel "cobalt"@en ,
+                                     "lithium"@en ,
+                                     "rare earth"@en ,
+                                     "silicon"@en ;
+                       skos:broader enews:EnergyGeopolitics ;
+                       skos:definition "A skos:Concept representing critical minerals required for energy technologies"@en ;
+                       skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#DataCenterDemand
+enews:DataCenterDemand rdf:type owl:NamedIndividual ,
+                                enews:EnergyTopic ,
+                                skos:Concept ;
+                       rdfs:label "data center demand"@en ;
+                       skos:altLabel "AI energy demand"@en ,
+                                     "data center energy"@en ;
+                       skos:definition "A skos:Concept representing electricity demand from data centers and artificial intelligence workloads"@en ;
+                       skos:inScheme enews:EnergyTopicScheme ;
+                       skos:topConceptOf enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Decarbonization
+enews:Decarbonization rdf:type owl:NamedIndividual ,
+                               enews:EnergyTopic ,
+                               skos:Concept ;
+                      rdfs:label "decarbonization"@en ;
+                      skos:altLabel "carbon reduction"@en ,
+                                    "decarbonisation"@en ;
+                      skos:broader enews:ClimateAndEmissions ;
+                      skos:definition "A skos:Concept representing strategies and progress toward reducing carbon emissions"@en ;
+                      skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Distribution
+enews:Distribution rdf:type owl:NamedIndividual ,
+                            enews:EnergyTopic ,
+                            skos:Concept ;
+                   rdfs:label "distribution"@en ;
+                   skos:altLabel "local grid"@en ,
+                                 "power distribution"@en ;
+                   skos:broader enews:GridAndInfrastructure ;
+                   skos:definition "A skos:Concept representing local electricity distribution networks"@en ;
+                   skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#EVCharging
+enews:EVCharging rdf:type owl:NamedIndividual ,
+                          enews:EnergyTopic ,
+                          skos:Concept ;
+                 rdfs:label "ev charging"@en ;
+                 skos:altLabel "EV charger"@en ,
+                               "EVSE"@en ,
+                               "charging station"@en ;
+                 skos:broader enews:Electrification ;
+                 skos:definition "A skos:Concept representing electric vehicle charging infrastructure and networks"@en ;
+                 skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#EfficiencyRecords
+enews:EfficiencyRecords rdf:type owl:NamedIndividual ,
+                                 enews:EnergyTopic ,
+                                 skos:Concept ;
+                        owl:differentFrom enews:Patent ;
+                        rdfs:label "efficiency records"@en ;
+                        skos:altLabel "solar efficiency"@en ,
+                                      "technology record"@en ;
+                        skos:broader enews:ResearchAndInnovation ;
+                        skos:definition "A skos:Concept representing technology efficiency records and breakthrough achievements"@en ;
+                        skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#ElectricTransport
+enews:ElectricTransport rdf:type owl:NamedIndividual ,
+                                 enews:EnergyTopic ,
+                                 skos:Concept ;
+                        rdfs:label "electric transport"@en ;
+                        skos:altLabel "e-mobility"@en ,
+                                      "electric bus"@en ,
+                                      "electric ferry"@en ;
+                        skos:broader enews:Electrification ;
+                        skos:definition "A skos:Concept representing electrification of ships ferries buses and other transport"@en ;
+                        skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#ElectricVehicles
+enews:ElectricVehicles rdf:type owl:NamedIndividual ,
+                                enews:EnergyTopic ,
+                                skos:Concept ;
+                       rdfs:label "electric vehicles"@en ;
+                       skos:altLabel "BEV"@en ,
+                                     "EV"@en ,
+                                     "electric car"@en ;
+                       skos:broader enews:Electrification ;
+                       skos:definition "A skos:Concept representing battery and plug-in electric vehicles"@en ;
+                       skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Electrification
+enews:Electrification rdf:type owl:NamedIndividual ,
+                               enews:EnergyTopic ,
+                               skos:Concept ;
+                      rdfs:label "electrification"@en ;
+                      skos:altLabel "electric transition"@en ,
+                                    "electrification"@en ;
+                      skos:definition "A skos:Concept representing the electrification of transport buildings and industry"@en ;
+                      skos:inScheme enews:EnergyTopicScheme ;
+                      skos:topConceptOf enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#EmissionsTracking
+enews:EmissionsTracking rdf:type owl:NamedIndividual ,
+                                 enews:EnergyTopic ,
+                                 skos:Concept ;
+                        rdfs:label "emissions tracking"@en ;
+                        skos:altLabel "GHG monitoring"@en ,
+                                      "emissions reporting"@en ;
+                        skos:broader enews:ClimateAndEmissions ;
+                        skos:definition "A skos:Concept representing monitoring and reporting of greenhouse gas emissions"@en ;
+                        skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#EnergyAccess
+enews:EnergyAccess rdf:type owl:NamedIndividual ,
+                            enews:EnergyTopic ,
+                            skos:Concept ;
+                   rdfs:label "energy access"@en ;
+                   skos:altLabel "energy access"@en ,
+                                 "modern energy"@en ;
+                   skos:broader enews:EnergyJustice ;
+                   skos:definition "A skos:Concept representing access to modern energy services"@en ;
+                   skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#EnergyFinance
+enews:EnergyFinance rdf:type owl:NamedIndividual ,
+                             enews:EnergyTopic ,
+                             skos:Concept ;
+                    rdfs:label "energy finance"@en ;
+                    skos:altLabel "energy funding"@en ,
+                                  "energy investment"@en ;
+                    skos:definition "A skos:Concept representing investment funding and financial deals in the energy sector"@en ;
+                    skos:inScheme enews:EnergyTopicScheme ;
+                    skos:topConceptOf enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#EnergyGeopolitics
+enews:EnergyGeopolitics rdf:type owl:NamedIndividual ,
+                                 enews:EnergyTopic ,
+                                 skos:Concept ;
+                        rdfs:label "energy geopolitics"@en ;
+                        skos:altLabel "energy geopolitics"@en ,
+                                      "energy security"@en ;
+                        skos:definition "A skos:Concept representing geopolitical dimensions of energy supply trade and security"@en ;
+                        skos:inScheme enews:EnergyTopicScheme ;
+                        skos:topConceptOf enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#EnergyJobs
+enews:EnergyJobs rdf:type owl:NamedIndividual ,
+                          enews:EnergyTopic ,
+                          skos:Concept ;
+                 rdfs:label "energy jobs"@en ;
+                 skos:altLabel "clean energy jobs"@en ,
+                               "energy employment"@en ;
+                 skos:broader enews:WorkforceAndManufacturing ;
+                 skos:definition "A skos:Concept representing employment in the energy sector"@en ;
+                 skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#EnergyJustice
+enews:EnergyJustice rdf:type owl:NamedIndividual ,
+                             enews:EnergyTopic ,
+                             skos:Concept ;
+                    rdfs:label "energy justice"@en ;
+                    skos:altLabel "energy equity"@en ,
+                                  "just transition"@en ;
+                    skos:definition "A skos:Concept representing equity access and justice dimensions of energy systems"@en ;
+                    skos:inScheme enews:EnergyTopicScheme ;
+                    skos:topConceptOf enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#EnergyMarkets
+enews:EnergyMarkets rdf:type owl:NamedIndividual ,
+                             enews:EnergyTopic ,
+                             skos:Concept ;
+                    rdfs:label "energy markets"@en ;
+                    skos:altLabel "energy markets"@en ,
+                                  "power markets"@en ;
+                    skos:definition "A skos:Concept representing pricing trading and wholesale electricity and commodity markets"@en ;
+                    skos:inScheme enews:EnergyTopicScheme ;
+                    skos:topConceptOf enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#EnergyPolicy
+enews:EnergyPolicy rdf:type owl:NamedIndividual ,
+                            enews:EnergyTopic ,
+                            skos:Concept ;
+                   rdfs:label "energy policy"@en ;
+                   skos:altLabel "energy policy"@en ;
+                   skos:definition "A skos:Concept representing government policy affecting the energy sector"@en ;
+                   skos:inScheme enews:EnergyTopicScheme ;
+                   skos:topConceptOf enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#EnergyStorage
+enews:EnergyStorage rdf:type owl:NamedIndividual ,
+                             enews:EnergyTopic ,
+                             skos:Concept ;
+                    rdfs:label "energy storage"@en ;
+                    skos:altLabel "BESS"@en ,
+                                  "battery storage"@en ,
+                                  "storage"@en ;
+                    skos:definition "A skos:Concept representing battery storage and other energy storage technologies"@en ;
+                    skos:inScheme enews:EnergyTopicScheme ;
+                    skos:topConceptOf enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#EnergyTopicScheme
+enews:EnergyTopicScheme rdf:type owl:NamedIndividual ,
+                                 skos:ConceptScheme ;
+                        rdfs:label "Energy News Topic Scheme"@en ;
+                        skos:definition "A SKOS concept scheme organizing energy topic individuals into a broader/narrower hierarchy for classifying energy news articles."@en ;
+                        skos:hasTopConcept enews:BuildingsAndEfficiency ,
+                                           enews:CarbonCapture ,
+                                           enews:ClimateAndEmissions ,
+                                           enews:DataCenterDemand ,
+                                           enews:Electrification ,
+                                           enews:EnergyFinance ,
+                                           enews:EnergyGeopolitics ,
+                                           enews:EnergyJustice ,
+                                           enews:EnergyMarkets ,
+                                           enews:EnergyPolicy ,
+                                           enews:EnergyStorage ,
+                                           enews:EnvironmentAndLandUse ,
+                                           enews:Fossil ,
+                                           enews:GridAndInfrastructure ,
+                                           enews:Hydrogen ,
+                                           enews:Nuclear ,
+                                           enews:Renewable ,
+                                           enews:ResearchAndInnovation ,
+                                           enews:WorkforceAndManufacturing .
+
+
+###  http://example.org/ontology/energy-news#EnvironmentAndLandUse
+enews:EnvironmentAndLandUse rdf:type owl:NamedIndividual ,
+                                     enews:EnergyTopic ,
+                                     skos:Concept ;
+                            rdfs:label "environment and land use"@en ;
+                            skos:altLabel "environmental impact"@en ,
+                                          "land use"@en ;
+                            skos:definition "A skos:Concept representing environmental impacts and land use of energy projects"@en ;
+                            skos:inScheme enews:EnergyTopicScheme ;
+                            skos:topConceptOf enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Fossil
+enews:Fossil rdf:type owl:NamedIndividual ,
+                      enews:EnergyTopic ,
+                      skos:Concept ;
+             rdfs:label "fossil"@en ;
+             skos:altLabel "conventional energy"@en ,
+                           "fossil fuel"@en ;
+             skos:definition "A skos:Concept representing energy derived from geological carbon deposits including coal oil and natural gas"@en ;
+             skos:inScheme enews:EnergyTopicScheme ;
+             skos:topConceptOf enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Fusion
+enews:Fusion rdf:type owl:NamedIndividual ,
+                      enews:EnergyTopic ,
+                      skos:Concept ;
+             owl:differentFrom enews:SMR ;
+             rdfs:label "fusion"@en ;
+             skos:altLabel "fusion energy"@en ,
+                           "nuclear fusion"@en ;
+             skos:broader enews:Nuclear ;
+             skos:definition "A skos:Concept representing nuclear fusion energy research and development"@en ;
+             skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Geothermal
+enews:Geothermal rdf:type owl:NamedIndividual ,
+                          enews:EnergyTopic ,
+                          skos:Concept ;
+                 rdfs:label "geothermal"@en ;
+                 skos:altLabel "geothermal energy"@en ;
+                 skos:broader enews:Renewable ;
+                 skos:definition "A skos:Concept representing heat energy extracted from the earth"@en ;
+                 skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#GridAndInfrastructure
+enews:GridAndInfrastructure rdf:type owl:NamedIndividual ,
+                                     enews:EnergyTopic ,
+                                     skos:Concept ;
+                            rdfs:label "grid and infrastructure"@en ;
+                            skos:altLabel "electricity infrastructure"@en ,
+                                          "grid"@en ,
+                                          "power grid"@en ;
+                            skos:definition "A skos:Concept representing power grid and electricity delivery infrastructure"@en ;
+                            skos:inScheme enews:EnergyTopicScheme ;
+                            skos:topConceptOf enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#GridOperator
+enews:GridOperator rdf:type owl:NamedIndividual ,
+                            enews:EnergyTopic ,
+                            skos:Concept ;
+                   rdfs:label "grid operator"@en ;
+                   skos:altLabel "ISO"@en ,
+                                 "RTO"@en ,
+                                 "grid operator"@en ;
+                   skos:broader enews:GridAndInfrastructure ;
+                   skos:definition "A skos:Concept representing independent system operators and regional transmission organizations"@en ;
+                   skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#HeatPumps
+enews:HeatPumps rdf:type owl:NamedIndividual ,
+                         enews:EnergyTopic ,
+                         skos:Concept ;
+                rdfs:label "heat pumps"@en ;
+                skos:altLabel "heat pump"@en ;
+                skos:broader enews:Electrification ;
+                skos:definition "A skos:Concept representing heat pump technology for building heating and cooling"@en ;
+                skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Hydro
+enews:Hydro rdf:type owl:NamedIndividual ,
+                     enews:EnergyTopic ,
+                     skos:Concept ;
+            rdfs:label "hydro"@en ;
+            skos:altLabel "hydroelectric"@en ,
+                          "hydropower"@en ;
+            skos:broader enews:Renewable ;
+            skos:definition "A skos:Concept representing conventional and pumped-storage hydroelectric power"@en ;
+            skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Hydrogen
+enews:Hydrogen rdf:type owl:NamedIndividual ,
+                        enews:EnergyTopic ,
+                        skos:Concept ;
+               rdfs:label "hydrogen"@en ;
+               skos:altLabel "H2"@en ,
+                             "blue hydrogen"@en ,
+                             "green hydrogen"@en ;
+               skos:definition "A skos:Concept representing hydrogen as an energy carrier across production methods"@en ;
+               skos:inScheme enews:EnergyTopicScheme ;
+               skos:topConceptOf enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Interconnection
+enews:Interconnection rdf:type owl:NamedIndividual ,
+                               enews:EnergyTopic ,
+                               skos:Concept ;
+                      rdfs:label "interconnection"@en ;
+                      skos:altLabel "grid connection"@en ,
+                                    "interconnection queue"@en ;
+                      skos:broader enews:GridAndInfrastructure ;
+                      skos:definition "A skos:Concept representing generator interconnection queues and processes"@en ;
+                      skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#LaborRelations
+enews:LaborRelations rdf:type owl:NamedIndividual ,
+                              enews:EnergyTopic ,
+                              skos:Concept ;
+                     rdfs:label "labor relations"@en ;
+                     skos:altLabel "energy unions"@en ,
+                                   "worker organizing"@en ;
+                     skos:broader enews:WorkforceAndManufacturing ;
+                     skos:definition "A skos:Concept representing unions and worker organizing in the energy sector"@en ;
+                     skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Legislation
+enews:Legislation rdf:type owl:NamedIndividual ,
+                           enews:EnergyTopic ,
+                           skos:Concept ;
+                  rdfs:label "legislation"@en ;
+                  skos:altLabel "IRA"@en ,
+                                "clean energy standard"@en ,
+                                "energy law"@en ;
+                  skos:broader enews:EnergyPolicy ;
+                  skos:definition "A skos:Concept representing laws and legislative acts affecting energy"@en ;
+                  skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Manufacturing
+enews:Manufacturing rdf:type owl:NamedIndividual ,
+                             enews:EnergyTopic ,
+                             skos:Concept ;
+                    rdfs:label "manufacturing"@en ;
+                    skos:altLabel "energy manufacturing"@en ,
+                                  "factory"@en ;
+                    skos:broader enews:WorkforceAndManufacturing ;
+                    skos:definition "A skos:Concept representing energy equipment manufacturing and factories"@en ;
+                    skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#NaturalGas
+enews:NaturalGas rdf:type owl:NamedIndividual ,
+                          enews:EnergyTopic ,
+                          skos:Concept ;
+                 rdfs:label "natural gas"@en ;
+                 skos:altLabel "LNG"@en ,
+                               "gas"@en ,
+                               "natural gas"@en ;
+                 skos:broader enews:Fossil ;
+                 skos:definition "A skos:Concept representing natural gas including liquefied natural gas and pipeline gas"@en ;
+                 skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#NetZero
+enews:NetZero rdf:type owl:NamedIndividual ,
+                       enews:EnergyTopic ,
+                       skos:Concept ;
+              rdfs:label "net zero"@en ;
+              skos:altLabel "net zero target"@en ,
+                            "net-zero"@en ;
+              skos:broader enews:ClimateAndEmissions ;
+              skos:definition "A skos:Concept representing net-zero emissions targets and commitments"@en ;
+              skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Nuclear
+enews:Nuclear rdf:type owl:NamedIndividual ,
+                       enews:EnergyTopic ,
+                       skos:Concept ;
+              rdfs:label "nuclear"@en ;
+              skos:altLabel "atomic energy"@en ,
+                            "nuclear energy"@en ,
+                            "nuclear power"@en ;
+              skos:definition "A skos:Concept representing energy from nuclear fission and fusion reactions"@en ;
+              skos:inScheme enews:EnergyTopicScheme ;
+              skos:topConceptOf enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Oil
+enews:Oil rdf:type owl:NamedIndividual ,
+                   enews:EnergyTopic ,
+                   skos:Concept ;
+          rdfs:label "oil"@en ;
+          skos:altLabel "crude oil"@en ,
+                        "petroleum"@en ;
+          skos:broader enews:Fossil ;
+          skos:definition "A skos:Concept representing crude oil extraction refining and petroleum products"@en ;
+          skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Patent
+enews:Patent rdf:type owl:NamedIndividual ,
+                      enews:EnergyTopic ,
+                      skos:Concept ;
+             rdfs:label "patent"@en ;
+             skos:altLabel "IP"@en ,
+                           "energy patent"@en ;
+             skos:broader enews:ResearchAndInnovation ;
+             skos:definition "A skos:Concept representing intellectual property and patents in energy technology"@en ;
+             skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Permitting
+enews:Permitting rdf:type owl:NamedIndividual ,
+                          enews:EnergyTopic ,
+                          skos:Concept ;
+                 rdfs:label "permitting"@en ;
+                 skos:altLabel "permitting process"@en ,
+                               "siting"@en ;
+                 skos:broader enews:EnergyPolicy ;
+                 skos:definition "A skos:Concept representing permitting and siting processes for energy projects"@en ;
+                 skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#PowerPurchaseAgreement
+enews:PowerPurchaseAgreement rdf:type owl:NamedIndividual ,
+                                      enews:EnergyTopic ,
+                                      skos:Concept ;
+                             rdfs:label "power purchase agreement"@en ;
+                             skos:altLabel "PPA"@en ,
+                                           "offtake agreement"@en ;
+                             skos:broader enews:EnergyMarkets ;
+                             skos:definition "A skos:Concept representing power purchase agreements between generators and offtakers"@en ;
+                             skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#ProjectFinance
+enews:ProjectFinance rdf:type owl:NamedIndividual ,
+                              enews:EnergyTopic ,
+                              skos:Concept ;
+                     rdfs:label "project finance"@en ;
+                     skos:altLabel "project funding"@en ,
+                                   "project investment"@en ;
+                     skos:broader enews:EnergyFinance ;
+                     skos:definition "A skos:Concept representing financing of specific energy projects"@en ;
+                     skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#PublicFunding
+enews:PublicFunding rdf:type owl:NamedIndividual ,
+                             enews:EnergyTopic ,
+                             skos:Concept ;
+                    rdfs:label "public funding"@en ;
+                    skos:altLabel "grant"@en ,
+                                  "subsidy"@en ,
+                                  "tax credit"@en ;
+                    skos:broader enews:EnergyFinance ;
+                    skos:definition "A skos:Concept representing government subsidies tax credits and grants for energy"@en ;
+                    skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Regulation
+enews:Regulation rdf:type owl:NamedIndividual ,
+                          enews:EnergyTopic ,
+                          skos:Concept ;
+                 rdfs:label "regulation"@en ;
+                 skos:altLabel "FERC"@en ,
+                               "NERC"@en ,
+                               "PUC"@en ,
+                               "energy regulation"@en ;
+                 skos:broader enews:EnergyPolicy ;
+                 skos:definition "A skos:Concept representing regulatory actions by energy regulatory bodies"@en ;
+                 skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Renewable
+enews:Renewable rdf:type owl:NamedIndividual ,
+                         enews:EnergyTopic ,
+                         skos:Concept ;
+                rdfs:label "renewable"@en ;
+                skos:altLabel "clean energy"@en ,
+                              "renewables"@en ;
+                skos:definition "A skos:Concept representing energy generated from naturally replenishing sources such as solar wind and hydro"@en ;
+                skos:inScheme enews:EnergyTopicScheme ;
+                skos:topConceptOf enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#ResearchAndInnovation
+enews:ResearchAndInnovation rdf:type owl:NamedIndividual ,
+                                     enews:EnergyTopic ,
+                                     skos:Concept ;
+                            rdfs:label "research and innovation"@en ;
+                            skos:altLabel "energy R&D"@en ,
+                                          "energy innovation"@en ;
+                            skos:definition "A skos:Concept representing research development breakthroughs and patents in energy technology"@en ;
+                            skos:inScheme enews:EnergyTopicScheme ;
+                            skos:topConceptOf enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Retrofits
+enews:Retrofits rdf:type owl:NamedIndividual ,
+                         enews:EnergyTopic ,
+                         skos:Concept ;
+                rdfs:label "retrofits"@en ;
+                skos:altLabel "building retrofit"@en ,
+                              "energy retrofit"@en ;
+                skos:broader enews:BuildingsAndEfficiency ;
+                skos:definition "A skos:Concept representing energy efficiency retrofits of existing buildings"@en ;
+                skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#RooftopSolar
+enews:RooftopSolar rdf:type owl:NamedIndividual ,
+                            enews:EnergyTopic ,
+                            skos:Concept ;
+                   rdfs:label "rooftop solar"@en ;
+                   skos:altLabel "distributed solar"@en ,
+                                 "rooftop PV"@en ;
+                   skos:broader enews:BuildingsAndEfficiency ;
+                   skos:definition "A skos:Concept representing rooftop and distributed solar installations on buildings"@en ;
+                   skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#SMR
+enews:SMR rdf:type owl:NamedIndividual ,
+                   enews:EnergyTopic ,
+                   skos:Concept ;
+          rdfs:label "smr"@en ;
+          skos:altLabel "small modular reactor"@en ;
+          skos:broader enews:Nuclear ;
+          skos:definition "A skos:Concept representing small modular reactor technology designs"@en ;
+          skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Solar
+enews:Solar rdf:type owl:NamedIndividual ,
+                     enews:EnergyTopic ,
+                     skos:Concept ;
+            rdfs:label "solar"@en ;
+            skos:altLabel "PV"@en ,
+                          "photovoltaic"@en ,
+                          "solar energy"@en ;
+            skos:broader enews:Renewable ;
+            skos:definition "A skos:Concept representing solar photovoltaic and concentrated solar power generation"@en ;
+            skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#SupplyChain
+enews:SupplyChain rdf:type owl:NamedIndividual ,
+                           enews:EnergyTopic ,
+                           skos:Concept ;
+                  rdfs:label "supply chain"@en ;
+                  skos:altLabel "energy supply chain"@en ;
+                  skos:broader enews:EnergyGeopolitics ;
+                  skos:definition "A skos:Concept representing energy equipment and fuel supply chains"@en ;
+                  skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Tariff
+enews:Tariff rdf:type owl:NamedIndividual ,
+                      enews:EnergyTopic ,
+                      skos:Concept ;
+             rdfs:label "tariff"@en ;
+             skos:altLabel "energy tariffs"@en ,
+                           "trade tariffs"@en ;
+             skos:broader enews:EnergyPolicy ;
+             skos:definition "A skos:Concept representing trade tariffs on energy equipment and materials"@en ;
+             skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#TradeAndSanctions
+enews:TradeAndSanctions rdf:type owl:NamedIndividual ,
+                                 enews:EnergyTopic ,
+                                 skos:Concept ;
+                        rdfs:label "trade and sanctions"@en ;
+                        skos:altLabel "energy sanctions"@en ,
+                                      "trade dispute"@en ;
+                        skos:broader enews:EnergyGeopolitics ;
+                        skos:definition "A skos:Concept representing energy trade disputes and sanctions regimes"@en ;
+                        skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Transmission
+enews:Transmission rdf:type owl:NamedIndividual ,
+                            enews:EnergyTopic ,
+                            skos:Concept ;
+                   rdfs:label "transmission"@en ;
+                   skos:altLabel "high-voltage lines"@en ,
+                                 "power transmission"@en ;
+                   skos:broader enews:GridAndInfrastructure ;
+                   skos:definition "A skos:Concept representing high-voltage transmission lines and transmission planning"@en ;
+                   skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Twitter
+enews:Twitter rdf:type owl:NamedIndividual ,
+                       enews:SocialMediaPlatform ;
+              rdfs:label "Twitter"@en ;
+              skos:altLabel "Twitter/X"@en ,
+                            "X"@en ;
+              skos:definition "A SocialMediaPlatform individual representing the Twitter/X social network"@en .
+
+
+###  http://example.org/ontology/energy-news#WasteAndPollution
+enews:WasteAndPollution rdf:type owl:NamedIndividual ,
+                                 enews:EnergyTopic ,
+                                 skos:Concept ;
+                        rdfs:label "waste and pollution"@en ;
+                        skos:altLabel "energy waste"@en ,
+                                      "pollution"@en ;
+                        skos:broader enews:EnvironmentAndLandUse ;
+                        skos:definition "A skos:Concept representing waste disposal and pollution from energy production"@en ;
+                        skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#WaterUse
+enews:WaterUse rdf:type owl:NamedIndividual ,
+                        enews:EnergyTopic ,
+                        skos:Concept ;
+               rdfs:label "water use"@en ;
+               skos:altLabel "cooling water"@en ,
+                             "water consumption"@en ;
+               skos:broader enews:EnvironmentAndLandUse ;
+               skos:definition "A skos:Concept representing water consumption by energy facilities"@en ;
+               skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#WholesaleMarkets
+enews:WholesaleMarkets rdf:type owl:NamedIndividual ,
+                                enews:EnergyTopic ,
+                                skos:Concept ;
+                       rdfs:label "wholesale markets"@en ;
+                       skos:altLabel "auction"@en ,
+                                     "capacity market"@en ,
+                                     "wholesale electricity"@en ;
+                       skos:broader enews:EnergyMarkets ;
+                       skos:definition "A skos:Concept representing wholesale electricity markets and capacity auctions"@en ;
+                       skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#Wind
+enews:Wind rdf:type owl:NamedIndividual ,
+                    enews:EnergyTopic ,
+                    skos:Concept ;
+           rdfs:label "wind"@en ;
+           skos:altLabel "wind energy"@en ,
+                         "wind power"@en ;
+           skos:broader enews:Renewable ;
+           skos:definition "A skos:Concept representing onshore and offshore wind power generation"@en ;
+           skos:inScheme enews:EnergyTopicScheme .
+
+
+###  http://example.org/ontology/energy-news#WorkforceAndManufacturing
+enews:WorkforceAndManufacturing rdf:type owl:NamedIndividual ,
+                                         enews:EnergyTopic ,
+                                         skos:Concept ;
+                                rdfs:label "workforce and manufacturing"@en ;
+                                skos:altLabel "energy manufacturing"@en ,
+                                              "energy workforce"@en ;
+                                skos:definition "A skos:Concept representing jobs labor and manufacturing in the energy sector"@en ;
+                                skos:inScheme enews:EnergyTopicScheme ;
+                                skos:topConceptOf enews:EnergyTopicScheme .
+
+
+#################################################################
+#    General axioms
+#################################################################
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( enews:Article
+                enews:AuthorAccount
+                enews:EnergyTopic
+                enews:Feed
+                enews:GeographicEntity
+                enews:Organization
+                enews:Post
+                enews:Publication
+                enews:SocialMediaPlatform
+              )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( enews:Affordability
+                        enews:CommunityEnergy
+                        enews:EnergyAccess
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( enews:Agrivoltaics
+                        enews:WasteAndPollution
+                        enews:WaterUse
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( enews:BuildingElectrification
+                        enews:Retrofits
+                        enews:RooftopSolar
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( enews:BuildingsAndEfficiency
+                        enews:CarbonCapture
+                        enews:ClimateAndEmissions
+                        enews:DataCenterDemand
+                        enews:Electrification
+                        enews:EnergyFinance
+                        enews:EnergyGeopolitics
+                        enews:EnergyJustice
+                        enews:EnergyMarkets
+                        enews:EnergyPolicy
+                        enews:EnergyStorage
+                        enews:EnvironmentAndLandUse
+                        enews:Fossil
+                        enews:GridAndInfrastructure
+                        enews:Hydrogen
+                        enews:Nuclear
+                        enews:Renewable
+                        enews:ResearchAndInnovation
+                        enews:WorkforceAndManufacturing
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( enews:Coal
+                        enews:NaturalGas
+                        enews:Oil
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( enews:Commodity
+                        enews:PowerPurchaseAgreement
+                        enews:WholesaleMarkets
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( enews:CorporateDeals
+                        enews:ProjectFinance
+                        enews:PublicFunding
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( enews:CriticalMinerals
+                        enews:SupplyChain
+                        enews:TradeAndSanctions
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( enews:Decarbonization
+                        enews:EmissionsTracking
+                        enews:NetZero
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( enews:Distribution
+                        enews:GridOperator
+                        enews:Interconnection
+                        enews:Transmission
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( enews:EVCharging
+                        enews:ElectricTransport
+                        enews:ElectricVehicles
+                        enews:HeatPumps
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( enews:EnergyJobs
+                        enews:LaborRelations
+                        enews:Manufacturing
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( enews:Geothermal
+                        enews:Hydro
+                        enews:Solar
+                        enews:Wind
+                      )
+] .
+
+
+[ rdf:type owl:AllDifferent ;
+  owl:distinctMembers ( enews:Legislation
+                        enews:Permitting
+                        enews:Regulation
+                        enews:Tariff
+                      )
+] .
+
+
+###  Generated by the OWL API (version 4.5.29) https://github.com/owlcs/owlapi

@@ -242,8 +242,10 @@ class_hierarchy:
     schema_alignment: "skos:relatedMatch schema:Person"
     notes: >
       Renamed from Author to AuthorAccount to clarify that this represents
-      a Bluesky social media account, not a natural person. Aligned to
+      a social media account, not a natural person. Aligned to
       sioc:UserAccount (equivalence) and schema:Person (related match only).
+      Platform identity is captured via onPlatform property linking to a
+      SocialMediaPlatform individual.
 
   - class: Feed
     parent: owl:Thing
@@ -259,6 +261,16 @@ class_hierarchy:
     bfo: "Site (BFO:0000029)"
     schema_alignment: "rdfs:subClassOf schema:Place"
 
+  - class: SocialMediaPlatform
+    parent: owl:Thing
+    bfo: "GDC (BFO:0000031)"
+    notes: >
+      Instances are named individuals representing social media platforms
+      (e.g. Bluesky, Twitter). Platform identity is modeled as individuals
+      rather than subclasses because all accounts have identical structural
+      properties — the only differentiator is which platform they belong to.
+      This mirrors DD-001 (topics as individuals, not subclasses).
+
 # --- Disjointness Declarations ---
 
 top_level_disjoint_groups:
@@ -272,6 +284,7 @@ top_level_disjoint_groups:
       - Feed
       - Organization
       - GeographicEntity
+      - SocialMediaPlatform
 
 # --- Design Decisions ---
 
@@ -332,11 +345,23 @@ design_decisions:
       schema.org types and properties. Per reuse-report.md Tier 2 strategy.
 
   - id: DD-007
-    decision: "AuthorAccount represents a Bluesky account, not a natural person"
+    decision: "AuthorAccount represents a social media account, not a natural person"
     rationale: >
-      Our data source is Bluesky handles. An AuthorAccount is a social media
+      Our data sources are social media handles. An AuthorAccount is a social media
       account (information entity / GDC), not a Person. One person may have
       multiple accounts. We align to sioc:UserAccount (equivalence) and declare
       skos:relatedMatch to schema:Person. The rdfs:subClassOf schema:Person
       axiom was removed because a social media account is not a subclass of
       Person — it is an information artifact about/operated by a person.
+
+  - id: DD-008
+    decision: "Model social media platforms as named individuals, not subclasses"
+    rationale: >
+      BlueskyAccount and TwitterAccount would have identical structural properties
+      (handle, posts). The only differentiator is which platform — that is a
+      classification facet, not a structural subtype. This mirrors DD-001
+      (EnergyTopic instances as SKOS Concepts rather than OWL subclasses).
+      Named individuals (Bluesky, Twitter) with an onPlatform object property
+      provide identity semantics, metadata extensibility, and data quality
+      guarantees that a string property cannot. An AllDifferent axiom ensures
+      platform individuals are distinct.

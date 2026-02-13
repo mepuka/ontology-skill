@@ -79,7 +79,7 @@ cq_tests:
   - id: cq-009
     file: cq-009.sparql
     cq: CQ-009
-    question: "Which Bluesky feeds exist for energy content?"
+    question: "Which feeds exist for energy content?"
     type: SELECT
     expected: non_empty
     requires_abox: true
@@ -136,6 +136,30 @@ cq_tests:
     file: cq-016.sparql
     cq: CQ-016
     question: "How does energy news coverage volume compare across geographic regions?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-017
+    file: cq-017.sparql
+    cq: CQ-017
+    question: "Which platforms have the most energy news posts?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-018
+    file: cq-018.sparql
+    cq: CQ-018
+    question: "Which authors share energy news on a given platform?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-019
+    file: cq-019.sparql
+    cq: CQ-019
+    question: "Which publication published an article based on its URL domain?"
     type: SELECT
     expected: non_empty
     requires_abox: true
