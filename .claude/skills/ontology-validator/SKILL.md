@@ -101,7 +101,7 @@ Standard shapes:
 ```bash
 # Run all CQ test queries
 robot verify --input ontology.ttl \
-  --queries tests/{name}/ \
+  --queries ontologies/{name}/tests/ \
   --output-dir test-results/
 ```
 
@@ -161,7 +161,7 @@ robot query --input ontology.ttl --query disjoint-check.sparql --output missing-
 ### SSSOM validation (when applicable)
 
 ```bash
-uv run sssom validate mappings/source-to-target.sssom.tsv
+uv run sssom validate ontologies/{name}/mappings/source-to-target.sssom.tsv
 ```
 
 ### Naming convention compliance
@@ -177,20 +177,20 @@ This skill produces:
 
 | Artifact | Location | Format | Description |
 |----------|----------|--------|-------------|
-| Validation report | `docs/{name}/validation-report.md` | Markdown | Summary: pass/fail per check, metrics |
+| Validation report | `ontologies/{name}/docs/validation-report.md` | Markdown | Summary: pass/fail per check, metrics |
 | ROBOT report | `{name}-report.tsv` | TSV | Detailed quality report |
 | Test results | `test-results/` | Directory | Per-CQ test outputs |
-| Diff report | `docs/{name}/diff.md` | Markdown | Changes between versions |
+| Diff report | `ontologies/{name}/docs/diff.md` | Markdown | Changes between versions |
 | Unsatisfiable list | `unsatisfiable.txt` | Text | List of unsatisfiable classes (if any) |
 
 ## Handoff
 
 **Receives from**:
 - `ontology-architect` — `ontologies/{name}/{name}.ttl`,
-  `ontologies/{name}/shapes/{name}-shapes.ttl`, `tests/{name}/*.sparql`,
-  `tests/{name}/cq-test-manifest.yaml` (CQ tests originate from
+  `ontologies/{name}/shapes/{name}-shapes.ttl`, `ontologies/{name}/tests/*.sparql`,
+  `ontologies/{name}/tests/cq-test-manifest.yaml` (CQ tests originate from
   `ontology-requirements` and are forwarded through `ontology-architect`)
-- `ontology-mapper` — `mappings/*.sssom.tsv`
+- `ontology-mapper` — `ontologies/{name}/mappings/*.sssom.tsv`
 - `ontology-curator` — modified `ontology.ttl`, KGCL change log
 
 **Passes to**: User (validation report) or back to upstream skill for fixes
@@ -268,5 +268,5 @@ Date: {date}
 |-------|-------------|----------|
 | Reasoner timeout | Ontology too large or complex for HermiT | Switch to ELK; profile the ontology for complexity hotspots |
 | SHACL shapes file missing | Architect didn't generate shapes | Create minimal shapes or defer SHACL check |
-| CQ test files missing | Requirements skill output not available | Generate tests from `docs/{name}/competency-questions.yaml` if available |
+| CQ test files missing | Requirements skill output not available | Generate tests from `ontologies/{name}/docs/competency-questions.yaml` if available |
 | ROBOT report fails to parse | Corrupt or malformed Turtle | Run `robot validate --input ontology.ttl` to find syntax errors |

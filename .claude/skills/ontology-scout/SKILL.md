@@ -217,7 +217,7 @@ robot report --input candidate.owl --output candidate-report.tsv
 uv run runoak -i candidate.owl statistics
 
 # Run representative CQ probes (if available)
-robot verify --input candidate.owl --queries tests/{name}/candidate-probes/
+robot verify --input candidate.owl --queries ontologies/{name}/tests/candidate-probes/
 ```
 
 ## Outputs
@@ -226,14 +226,14 @@ This skill produces:
 
 | Artifact | Location | Format | Description |
 |----------|----------|--------|-------------|
-| Reuse report | `docs/{name}/reuse-report.md` | Markdown | Scored candidate ontologies with recommendations |
+| Reuse report | `ontologies/{name}/docs/reuse-report.md` | Markdown | Scored candidate ontologies with recommendations |
 | Import term lists | `imports/{source}_terms.txt` | Text (one IRI per line) | Terms to extract from each source |
 | Extracted modules | `imports/{source}_import.owl` | OWL/XML | ROBOT-extracted modules |
-| ODP recommendations | `docs/{name}/odp-recommendations.md` | Markdown | Applicable design patterns with instantiation guidance |
+| ODP recommendations | `ontologies/{name}/docs/odp-recommendations.md` | Markdown | Applicable design patterns with instantiation guidance |
 
 ## Handoff
 
-**Receives from**: `ontology-requirements` — `docs/{name}/pre-glossary.csv`, `docs/{name}/scope.md`
+**Receives from**: `ontology-requirements` — `ontologies/{name}/docs/pre-glossary.csv`, `ontologies/{name}/docs/scope.md`
 
 **Passes to**:
 - `ontology-conceptualizer` — reuse report, import term lists, ODP recommendations

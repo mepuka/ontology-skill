@@ -41,7 +41,7 @@ Read these files from `_shared/` before beginning work:
 # Using oaklib lexmatch
 uv run runoak -i sqlite:obo:{source} lexmatch \
   --add sqlite:obo:{target} \
-  -o mappings/{source}-to-{target}.sssom.tsv
+  -o ontologies/{name}/mappings/{source}-to-{target}.sssom.tsv
 ```
 
 With custom match rules:
@@ -61,7 +61,7 @@ rules:
 uv run runoak -i sqlite:obo:{source} lexmatch \
   --add sqlite:obo:{target} \
   --rules-file lexmatch-rules.yaml \
-  -o mappings/{source}-to-{target}.sssom.tsv
+  -o ontologies/{name}/mappings/{source}-to-{target}.sssom.tsv
 ```
 
 ### Step 2: Confidence Triage
@@ -122,7 +122,7 @@ merges across multiple graphs and collapse distinct entities.
 
 ```bash
 # Validate SSSOM schema conformance
-uv run sssom validate mappings/{source}-to-{target}.sssom.tsv
+uv run sssom validate ontologies/{name}/mappings/{source}-to-{target}.sssom.tsv
 ```
 
 Check:
@@ -152,7 +152,7 @@ SELECT ?start ?mid ?end WHERE {
 
 ```bash
 # Run against the mapping file (convert SSSOM to RDF first if needed)
-robot query --input mappings/{source}-to-{target}.sssom.ttl \
+robot query --input ontologies/{name}/mappings/{source}-to-{target}.sssom.ttl \
   --query sparql/clique-check.sparql --output clique-report.csv
 ```
 
@@ -177,7 +177,7 @@ Generate a quality assessment:
 
 ```bash
 # Validate
-uv run sssom validate mappings/file.sssom.tsv
+uv run sssom validate ontologies/{name}/mappings/file.sssom.tsv
 
 # Merge mapping sets
 uv run sssom merge \
@@ -188,7 +188,7 @@ uv run sssom merge \
 uv run sssom dedupe merged.sssom.tsv -o final.sssom.tsv
 
 # Convert to OWL (bridge ontology)
-uv run sssom convert mappings/file.sssom.tsv -o bridge.owl -O owl
+uv run sssom convert ontologies/{name}/mappings/file.sssom.tsv -o bridge.owl -O owl
 ```
 
 Before publishing bridge ontologies, review any generated identity axioms:
@@ -214,18 +214,18 @@ This skill produces:
 
 | Artifact | Location | Format | Description |
 |----------|----------|--------|-------------|
-| Mapping file | `mappings/{source}-to-{target}.sssom.tsv` | SSSOM TSV | Complete mapping set with metadata |
-| Quality report | `mappings/{source}-to-{target}-qa.md` | Markdown | Quality assessment with statistics |
-| Human review queue | `mappings/{source}-to-{target}-review.tsv` | TSV | Low-confidence pairs for expert review |
-| KGCL changes | `mappings/{source}-to-{target}-changes.kgcl` | KGCL | Mapping update changes |
-| Bridge ontology | `mappings/{source}-to-{target}-bridge.owl` | OWL/XML | OWL axioms from mappings (optional) |
+| Mapping file | `ontologies/{name}/mappings/{source}-to-{target}.sssom.tsv` | SSSOM TSV | Complete mapping set with metadata |
+| Quality report | `ontologies/{name}/mappings/{source}-to-{target}-qa.md` | Markdown | Quality assessment with statistics |
+| Human review queue | `ontologies/{name}/mappings/{source}-to-{target}-review.tsv` | TSV | Low-confidence pairs for expert review |
+| KGCL changes | `ontologies/{name}/mappings/{source}-to-{target}-changes.kgcl` | KGCL | Mapping update changes |
+| Bridge ontology | `ontologies/{name}/mappings/{source}-to-{target}-bridge.owl` | OWL/XML | OWL axioms from mappings (optional) |
 
 ## Handoff
 
 **Receives from**: `ontology-scout` — target ontology identifiers,
 reuse recommendations
 
-**Passes to**: `ontology-validator` — `mappings/*.sssom.tsv`
+**Passes to**: `ontology-validator` — `ontologies/{name}/mappings/*.sssom.tsv`
 
 **Handoff checklist**:
 - [ ] SSSOM file passes `sssom validate`
