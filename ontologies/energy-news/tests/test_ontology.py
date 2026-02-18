@@ -18,13 +18,12 @@ SCHEMA = Namespace("https://schema.org/")
 SIOC = Namespace("http://rdfs.org/sioc/ns#")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 
-ROOT = Path(__file__).resolve().parent.parent.parent
-ONTOLOGY_DIR = ROOT / "ontologies" / "energy-news"
-TBOX_PATH = ONTOLOGY_DIR / "energy-news.ttl"
-REF_PATH = ONTOLOGY_DIR / "energy-news-reference-individuals.ttl"
-DATA_PATH = ONTOLOGY_DIR / "energy-news-data.ttl"
-SHAPES_PATH = ONTOLOGY_DIR / "shapes" / "energy-news-shapes.ttl"
-SPARQL_DIR = ROOT / "tests" / "energy-news"
+PROJECT = Path(__file__).resolve().parent.parent
+TBOX_PATH = PROJECT / "energy-news.ttl"
+REF_PATH = PROJECT / "energy-news-reference-individuals.ttl"
+DATA_PATH = PROJECT / "energy-news-data.ttl"
+SHAPES_PATH = PROJECT / "shapes" / "energy-news-shapes.ttl"
+SPARQL_DIR = PROJECT / "tests"
 
 
 # ---------------------------------------------------------------------------

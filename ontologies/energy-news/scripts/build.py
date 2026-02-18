@@ -1,13 +1,13 @@
 """Build the Energy News Ontology from conceptual model artifacts.
 
 Reads glossary.csv, conceptual-model.yaml, and property-design.yaml to produce:
-  - ontologies/energy-news/energy-news.ttl (TBox: classes, properties, axioms)
-  - ontologies/energy-news/energy-news-reference-individuals.ttl (SKOS topic individuals)
-  - ontologies/energy-news/energy-news-data.ttl (Representative ABox sample data)
-  - ontologies/energy-news/shapes/energy-news-shapes.ttl (SHACL structural shapes)
+  - energy-news.ttl (TBox: classes, properties, axioms)
+  - energy-news-reference-individuals.ttl (SKOS topic individuals)
+  - energy-news-data.ttl (Representative ABox sample data)
+  - shapes/energy-news-shapes.ttl (SHACL structural shapes)
 
 Usage:
-    uv run python scripts/build_energy_news.py
+    uv run python ontologies/energy-news/scripts/build.py
 """
 
 from __future__ import annotations
@@ -45,10 +45,10 @@ TBOX_VERSION_IRI = URIRef("http://example.org/ontology/energy-news/0.2.0")
 REF_VERSION_IRI = URIRef("http://example.org/ontology/energy-news/reference-individuals/0.2.0")
 DATA_VERSION_IRI = URIRef("http://example.org/ontology/energy-news/data/0.2.0")
 
-# Project root
-ROOT = Path(__file__).resolve().parent.parent
-DOCS = ROOT / "docs" / "energy-news"
-OUT = ROOT / "ontologies" / "energy-news"
+# Ontology project root (ontologies/energy-news/)
+PROJECT = Path(__file__).resolve().parent.parent
+DOCS = PROJECT / "docs"
+OUT = PROJECT
 
 
 # ---------------------------------------------------------------------------
@@ -79,7 +79,7 @@ def load_glossary() -> list[dict[str, str]]:
 
 
 def load_yaml(name: str) -> dict[str, Any]:
-    """Load a YAML file from docs/energy-news/."""
+    """Load a YAML file from the project docs/ directory."""
     path = DOCS / name
     with path.open(encoding="utf-8") as f:
         result: dict[str, Any] = yaml.safe_load(f)
