@@ -663,52 +663,52 @@ enews:EnergyTopicScheme a skos:ConceptScheme ;
         enews:WorkforceAndManufacturing .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( enews:EnergyJobs enews:Manufacturing enews:LaborRelations ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( enews:SMR enews:Fusion ) .
+    owl:distinctMembers ( enews:WaterUse enews:Agrivoltaics enews:WasteAndPollution ) .
 
 [] a owl:AllDifferent ;
     owl:distinctMembers ( enews:Transmission enews:Distribution enews:Interconnection enews:GridOperator ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( enews:Bluesky enews:Twitter ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( enews:Solar enews:Wind enews:Hydro enews:Geothermal ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( enews:Coal enews:NaturalGas enews:Oil ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( enews:BuildingElectrification enews:Retrofits enews:RooftopSolar ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( enews:ElectricVehicles enews:EVCharging enews:HeatPumps enews:ElectricTransport ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( enews:WaterUse enews:Agrivoltaics enews:WasteAndPollution ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( enews:ProjectFinance enews:CorporateDeals enews:PublicFunding ) .
-
-[] a owl:AllDifferent ;
     owl:distinctMembers ( enews:EmissionsTracking enews:Decarbonization enews:NetZero ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( enews:WholesaleMarkets enews:Commodity enews:PowerPurchaseAgreement ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( enews:Regulation enews:Legislation enews:Tariff enews:Permitting ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( enews:Renewable enews:Fossil enews:Nuclear enews:EnergyStorage enews:Hydrogen enews:CarbonCapture enews:GridAndInfrastructure enews:EnergyPolicy enews:EnergyMarkets enews:EnergyFinance enews:ClimateAndEmissions enews:Electrification enews:DataCenterDemand enews:EnergyGeopolitics enews:EnergyJustice enews:WorkforceAndManufacturing enews:ResearchAndInnovation enews:BuildingsAndEfficiency enews:EnvironmentAndLandUse ) .
 
 [] a owl:AllDifferent ;
     owl:distinctMembers ( enews:Affordability enews:CommunityEnergy enews:EnergyAccess ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( enews:TradeAndSanctions enews:SupplyChain enews:CriticalMinerals ) .
+    owl:distinctMembers ( enews:ElectricVehicles enews:EVCharging enews:HeatPumps enews:ElectricTransport ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( enews:Solar enews:Wind enews:Hydro enews:Geothermal ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( enews:EnergyJobs enews:Manufacturing enews:LaborRelations ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( enews:Renewable enews:Fossil enews:Nuclear enews:EnergyStorage enews:Hydrogen enews:CarbonCapture enews:GridAndInfrastructure enews:EnergyPolicy enews:EnergyMarkets enews:EnergyFinance enews:ClimateAndEmissions enews:Electrification enews:DataCenterDemand enews:EnergyGeopolitics enews:EnergyJustice enews:WorkforceAndManufacturing enews:ResearchAndInnovation enews:BuildingsAndEfficiency enews:EnvironmentAndLandUse ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( enews:Coal enews:NaturalGas enews:Oil ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( enews:Bluesky enews:Twitter ) .
 
 [] a owl:AllDifferent ;
     owl:distinctMembers ( enews:EfficiencyRecords enews:Patent ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( enews:SMR enews:Fusion ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( enews:ProjectFinance enews:CorporateDeals enews:PublicFunding ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( enews:Regulation enews:Legislation enews:Tariff enews:Permitting ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( enews:WholesaleMarkets enews:Commodity enews:PowerPurchaseAgreement ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( enews:TradeAndSanctions enews:SupplyChain enews:CriticalMinerals ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( enews:BuildingElectrification enews:Retrofits enews:RooftopSolar ) .

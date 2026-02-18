@@ -110,6 +110,12 @@ ignore = [
     "PLR2004", # magic values in assertions
     "PLC0415", # imports inside test functions are intentional
 ]
+"ontologies/**/tests/**/*.py" = [
+    "ARG",     # unused arguments common in fixtures
+    "SLF001",  # private member access in tests is fine
+    "PLR2004", # magic values in assertions
+    "PLC0415", # imports inside test functions are intentional
+]
 "scripts/**/*.py" = [
     "T201",    # print statements OK in scripts
 ]
