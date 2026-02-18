@@ -1,0 +1,40 @@
+stakeholder_need,use_case_id,cq_id,ontology_terms,sparql_test
+"Know what agents exist and their types",UC-001,CQ-001,"Agent;AIAgent;HumanUser",ontologies/personal_agent_ontology/tests/cq-001.sparql
+"Know what tools an agent can use",UC-001,CQ-002,"Agent;ToolDefinition;hasAvailableTool",ontologies/personal_agent_ontology/tests/cq-002.sparql
+"Track sub-agent delegation",UC-002,CQ-003,"Agent;SubAgent;Task;spawnedBy;delegatedTask",ontologies/personal_agent_ontology/tests/cq-003.sparql
+"Know agent roles in conversations",UC-001,CQ-004,"ConversationParticipation;AgentRole;hasParticipant;hasRole",ontologies/personal_agent_ontology/tests/cq-004.sparql
+"Track sessions within conversations",UC-003,CQ-005,"Conversation;Session;partOfConversation;hasTemporalExtent",ontologies/personal_agent_ontology/tests/cq-005.sparql
+"Reconstruct conversation turn sequence",UC-004,CQ-006,"Turn;Conversation;partOfConversation;hasTurnIndex;hasTimestamp",ontologies/personal_agent_ontology/tests/cq-006.sparql
+"Audit tool invocations in sessions",UC-005,CQ-007,"ToolInvocation;ToolDefinition;Session;invokesTool;invokedBy;inSession",ontologies/personal_agent_ontology/tests/cq-007.sparql
+"Examine tool input and output",UC-005,CQ-008,"ToolInvocation;hasInput;hasOutput",ontologies/personal_agent_ontology/tests/cq-008.sparql
+"Find most recent session for user",UC-003,CQ-009,"Session;HumanUser;hasParticipant;hasTemporalExtent",ontologies/personal_agent_ontology/tests/cq-009.sparql
+"Monitor context compaction",UC-006,CQ-010,"CompactionEvent;Conversation;producedSummary",ontologies/personal_agent_ontology/tests/cq-010.sparql
+"Know memory items and their tiers",UC-007,CQ-011,"MemoryItem;MemoryTier;storedIn",ontologies/personal_agent_ontology/tests/cq-011.sparql
+"Retrieve stored episodes",UC-007,CQ-012,"Episode;EpisodicMemory;hasTopic;hasTemporalExtent",ontologies/personal_agent_ontology/tests/cq-012.sparql
+"Examine semantic memory claims",UC-008,CQ-013,"Claim;SemanticMemory;hasContent;hasConfidence",ontologies/personal_agent_ontology/tests/cq-013.sparql
+"Trace memory item provenance",UC-010,CQ-014,"MemoryItem;prov:wasGeneratedBy;prov:wasDerivedFrom;prov:wasAttributedTo",ontologies/personal_agent_ontology/tests/cq-014.sparql
+"Retrieve user preferences",UC-009,CQ-015,"Claim;UserPreference;aboutAgent;hasContent",ontologies/personal_agent_ontology/tests/cq-015.sparql
+"Trace claim to source episodes",UC-008,CQ-016,"Claim;Episode;prov:wasDerivedFrom",ontologies/personal_agent_ontology/tests/cq-016.sparql
+"Track belief revision history",UC-012,CQ-017,"Claim;prov:wasRevisionOf",ontologies/personal_agent_ontology/tests/cq-017.sparql
+"Identify memory tier for item",UC-011,CQ-018,"MemoryItem;MemoryTier;storedIn",ontologies/personal_agent_ontology/tests/cq-018.sparql
+"Track memory operations",UC-011,CQ-019,"MemoryOperation;Encoding;Retrieval;Consolidation;Forgetting;operatesOn",ontologies/personal_agent_ontology/tests/cq-019.sparql
+"Order events in session",UC-013,CQ-020,"Event;Session;inSession;hasTimestamp",ontologies/personal_agent_ontology/tests/cq-020.sparql
+"Determine temporal ordering of events",UC-014,CQ-021,"Event;hasTemporalExtent;time:Interval",ontologies/personal_agent_ontology/tests/cq-021.sparql
+"Find actions by agent in time period",UC-013,CQ-023,"Action;Agent;performedBy;hasTimestamp",ontologies/personal_agent_ontology/tests/cq-023.sparql
+"Classify events by type",UC-013,CQ-024,"Event;Turn;ToolInvocation;MemoryOperation",ontologies/personal_agent_ontology/tests/cq-024.sparql
+"List events in an episode",UC-007,CQ-025,"Episode;Event;partOfEpisode",ontologies/personal_agent_ontology/tests/cq-025.sparql
+"Track agent goals",UC-015,CQ-026,"Goal;Agent;pursuedBy;hasStatus",ontologies/personal_agent_ontology/tests/cq-026.sparql
+"Examine plan tasks and dependencies",UC-015,CQ-027,"Plan;Task;partOfPlan;blockedBy;hasStatus",ontologies/personal_agent_ontology/tests/cq-027.sparql
+"Link plans to goals",UC-015,CQ-028,"Plan;Goal;achievesGoal",ontologies/personal_agent_ontology/tests/cq-028.sparql
+"Track task status in plans",UC-016,CQ-029,"Task;Plan;partOfPlan;hasStatus",ontologies/personal_agent_ontology/tests/cq-029.sparql
+"Know permission policies for agents",UC-017,CQ-030,"PermissionPolicy;Agent;appliesTo;grantsPermission",ontologies/personal_agent_ontology/tests/cq-030.sparql
+"Verify tool invocation compliance",UC-017,CQ-031,"ToolInvocation;hasComplianceStatus;Compliant",ontologies/personal_agent_ontology/tests/cq-031.sparql
+"Find derived memory items for deletion",UC-018,CQ-032,"MemoryItem;prov:wasDerivedFrom",ontologies/personal_agent_ontology/tests/cq-032.sparql
+"Check sensitivity classification",UC-019,CQ-033,"MemoryItem;hasSensitivityLevel",ontologies/personal_agent_ontology/tests/cq-033.sparql
+"Audit erasure events",UC-018,CQ-034,"ErasureEvent;requestedBy;hasTimestamp",ontologies/personal_agent_ontology/tests/cq-034.sparql
+"Know safety constraints",UC-017,CQ-035,"SafetyConstraint;appliesTo",ontologies/personal_agent_ontology/tests/cq-035.sparql
+"Identify memory item generator",UC-010,CQ-036,"MemoryItem;prov:wasGeneratedBy;prov:wasAssociatedWith",ontologies/personal_agent_ontology/tests/cq-036.sparql
+"Count tool invocations per session",UC-005,CQ-037,"ToolInvocation;invokedBy;inSession",ontologies/personal_agent_ontology/tests/cq-037.sparql
+"Check session active status",UC-003,CQ-038,"Session;hasStatus;Active",ontologies/personal_agent_ontology/tests/cq-038.sparql
+"Detect policy violations",UC-017,CQ-039,"ToolInvocation;PermissionPolicy;hasComplianceStatus;NonCompliant",ontologies/personal_agent_ontology/tests/cq-039.sparql
+"Detect unattributed memory items",UC-010,CQ-040,"MemoryItem;prov:wasAttributedTo",ontologies/personal_agent_ontology/tests/cq-040.sparql

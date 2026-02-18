@@ -1,0 +1,366 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix odrl: <http://www.w3.org/ns/odrl/2/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pao: <https://purl.org/pao/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+pao:action_001 a owl:NamedIndividual,
+        pao:Action ;
+    rdfs:label "action 001"@en ;
+    pao:hasTimestamp "2026-02-18T10:05:00"^^xsd:dateTime ;
+    pao:inSession pao:session_001 ;
+    pao:performedBy pao:claude_agent .
+
+pao:claim_002 a owl:NamedIndividual,
+        pao:Claim,
+        pao:MemoryItem ;
+    rdfs:label "user preference: dark mode (revised)"@en ;
+    prov:wasAttributedTo pao:claude_agent ;
+    prov:wasDerivedFrom pao:claim_001 ;
+    prov:wasGeneratedBy pao:conv_001 ;
+    prov:wasRevisionOf pao:claim_001 ;
+    pao:aboutAgent pao:alice_user ;
+    pao:claimType "UserPreference" ;
+    pao:hasConfidence 0.95 ;
+    pao:hasContent "User strongly prefers dark mode with high contrast" ;
+    pao:hasSensitivityLevel "PersonalData" ;
+    pao:hasTimestamp "2026-02-18T11:00:00"^^xsd:dateTime ;
+    pao:storedIn pao:semantic_memory_instance .
+
+pao:consolidation_001 a owl:NamedIndividual,
+        pao:Consolidation,
+        pao:MemoryOperation ;
+    rdfs:label "consolidation 001"@en ;
+    pao:hasTimestamp "2026-02-18T10:35:00"^^xsd:dateTime ;
+    pao:operatesOn pao:episode_001 .
+
+pao:data a owl:Ontology ;
+    dcterms:created "2026-02-18" ;
+    dcterms:creator "ontology-architect skill" ;
+    dcterms:description "Representative ABox individuals for CQ/SPARQL test execution."@en ;
+    dcterms:license <https://spdx.org/licenses/MIT> ;
+    dcterms:title "Personal Agent Ontology — Sample Data"@en ;
+    owl:imports pao: ;
+    owl:versionIRI <https://purl.org/pao/data/0.1.0> ;
+    owl:versionInfo "0.1.0" .
+
+pao:encoding_001 a owl:NamedIndividual,
+        pao:Encoding,
+        pao:MemoryOperation ;
+    rdfs:label "encoding 001"@en ;
+    pao:hasTimestamp "2026-02-18T10:15:00"^^xsd:dateTime ;
+    pao:operatesOn pao:claim_001 .
+
+pao:erasure_001 a owl:NamedIndividual,
+        pao:ErasureEvent ;
+    rdfs:label "erasure event 001"@en ;
+    pao:hasTimestamp "2026-02-18T14:00:00"^^xsd:dateTime ;
+    pao:requestedBy pao:alice_user .
+
+pao:invocation_001 a owl:NamedIndividual,
+        pao:ToolInvocation ;
+    rdfs:label "tool invocation 001"@en ;
+    pao:hasComplianceStatus pao:Compliant ;
+    pao:hasInput pao:invocation_001_input ;
+    pao:hasOutput pao:invocation_001_output ;
+    pao:hasTimestamp "2026-02-18T10:02:30"^^xsd:dateTime ;
+    pao:inSession pao:session_001 ;
+    pao:invokedBy pao:claude_agent ;
+    pao:invokesTool pao:read_tool ;
+    pao:performedBy pao:claude_agent .
+
+pao:invocation_002 a owl:NamedIndividual,
+        pao:ToolInvocation ;
+    rdfs:label "tool invocation 002"@en ;
+    pao:hasComplianceStatus pao:Compliant ;
+    pao:hasTimestamp "2026-02-18T10:03:00"^^xsd:dateTime ;
+    pao:inSession pao:session_001 ;
+    pao:invokedBy pao:claude_agent ;
+    pao:invokesTool pao:bash_tool ;
+    pao:performedBy pao:claude_agent .
+
+pao:msg_002 a owl:NamedIndividual,
+        pao:Message ;
+    rdfs:label "message 002"@en ;
+    prov:wasAttributedTo pao:claude_agent ;
+    prov:wasGeneratedBy pao:turn_002 ;
+    pao:hasContent "Of course! What do you need?" ;
+    pao:storedIn pao:working_memory_instance .
+
+pao:policy_001 a owl:NamedIndividual,
+        pao:PermissionPolicy ;
+    rdfs:label "file read policy"@en ;
+    prov:wasAttributedTo pao:alice_user ;
+    prov:wasGeneratedBy pao:conv_001 ;
+    pao:appliesTo pao:claude_agent ;
+    pao:grantsPermission pao:permission_001 ;
+    pao:restrictsToolUse pao:bash_tool ;
+    pao:storedIn pao:procedural_memory_instance .
+
+pao:retrieval_001 a owl:NamedIndividual,
+        pao:MemoryOperation,
+        pao:Retrieval ;
+    rdfs:label "retrieval 001"@en ;
+    pao:hasTimestamp "2026-02-18T10:20:00"^^xsd:dateTime ;
+    pao:operatesOn pao:claim_001 .
+
+pao:safety_001 a owl:NamedIndividual,
+        pao:SafetyConstraint ;
+    rdfs:label "no destructive commands"@en ;
+    prov:wasAttributedTo pao:alice_user ;
+    prov:wasGeneratedBy pao:conv_001 ;
+    pao:appliesTo pao:claude_agent ;
+    pao:hasContent "Never run rm -rf or similar destructive commands" ;
+    pao:storedIn pao:procedural_memory_instance .
+
+pao:search_subagent a owl:NamedIndividual,
+        pao:SubAgent ;
+    rdfs:label "search subagent"@en ;
+    pao:delegatedTask pao:task_001 ;
+    pao:hasAvailableTool pao:read_tool ;
+    pao:spawnedBy pao:claude_agent .
+
+pao:session_002 a owl:NamedIndividual,
+        pao:Session ;
+    rdfs:label "session 002"@en ;
+    pao:hasParticipant pao:alice_user ;
+    pao:hasStatus pao:Ended ;
+    pao:hasTemporalExtent pao:session_002_interval ;
+    pao:hasTimestamp "2026-02-18T12:00:00"^^xsd:dateTime ;
+    pao:partOfConversation pao:conv_001 .
+
+pao:task_003 a owl:NamedIndividual,
+        pao:Task ;
+    rdfs:label "write tests"@en ;
+    prov:wasAttributedTo pao:claude_agent ;
+    prov:wasGeneratedBy pao:conv_001 ;
+    pao:blockedBy pao:task_002 ;
+    pao:hasStatus pao:Blocked ;
+    pao:partOfPlan pao:plan_001 ;
+    pao:storedIn pao:semantic_memory_instance .
+
+pao:compaction_001 a owl:NamedIndividual,
+        pao:CompactionEvent ;
+    rdfs:label "compaction event 001"@en ;
+    pao:hasTimestamp "2026-02-18T10:30:00"^^xsd:dateTime ;
+    pao:inConversation pao:conv_001 ;
+    pao:producedSummary pao:summary_001 .
+
+pao:episode_001_begin a time:Instant ;
+    time:inXSDDateTime "2026-02-18T10:00:00+00:00"^^xsd:dateTime .
+
+pao:episode_001_end a time:Instant ;
+    time:inXSDDateTime "2026-02-18T10:30:00+00:00"^^xsd:dateTime .
+
+pao:episode_001_interval a time:Interval ;
+    time:hasBeginning pao:episode_001_begin ;
+    time:hasEnd pao:episode_001_end .
+
+pao:episodic_memory_instance a owl:NamedIndividual,
+        pao:EpisodicMemory,
+        pao:MemoryTier ;
+    rdfs:label "episodic memory instance"@en .
+
+pao:goal_001 a owl:NamedIndividual,
+        pao:Goal ;
+    rdfs:label "implement dark mode"@en ;
+    prov:wasAttributedTo pao:alice_user ;
+    prov:wasGeneratedBy pao:conv_001 ;
+    pao:hasStatus pao:InProgress ;
+    pao:pursuedBy pao:claude_agent ;
+    pao:storedIn pao:semantic_memory_instance .
+
+pao:invocation_001_input a owl:NamedIndividual,
+        prov:Entity ;
+    rdfs:label "invocation 001 input"@en ;
+    pao:hasContent "{\"path\": \"/tmp/test.txt\"}" .
+
+pao:invocation_001_output a owl:NamedIndividual,
+        prov:Entity ;
+    rdfs:label "invocation 001 output"@en ;
+    pao:hasContent "file contents here" .
+
+pao:msg_001 a owl:NamedIndividual,
+        pao:Message ;
+    rdfs:label "message 001"@en ;
+    prov:wasAttributedTo pao:alice_user ;
+    prov:wasGeneratedBy pao:turn_001 ;
+    pao:hasContent "Hello, can you help me?" ;
+    pao:storedIn pao:working_memory_instance .
+
+pao:permission_001 a owl:NamedIndividual,
+        odrl:Permission ;
+    rdfs:label "allow file reading"@en .
+
+pao:session_001_begin a time:Instant ;
+    time:inXSDDateTime "2026-02-18T10:00:00+00:00"^^xsd:dateTime .
+
+pao:session_001_end a time:Instant ;
+    time:inXSDDateTime "2026-02-18T11:00:00+00:00"^^xsd:dateTime .
+
+pao:session_001_interval a time:Interval ;
+    time:hasBeginning pao:session_001_begin ;
+    time:hasEnd pao:session_001_end .
+
+pao:session_002_begin a time:Instant ;
+    time:inXSDDateTime "2026-02-18T12:00:00+00:00"^^xsd:dateTime .
+
+pao:session_002_end a time:Instant ;
+    time:inXSDDateTime "2026-02-18T13:00:00+00:00"^^xsd:dateTime .
+
+pao:session_002_interval a time:Interval ;
+    time:hasBeginning pao:session_002_begin ;
+    time:hasEnd pao:session_002_end .
+
+pao:summary_001 a owl:NamedIndividual,
+        pao:MemoryItem ;
+    rdfs:label "compaction summary"@en ;
+    prov:wasAttributedTo pao:claude_agent ;
+    prov:wasGeneratedBy pao:compaction_001 ;
+    pao:hasContent "Summary of first 10 turns..." ;
+    pao:storedIn pao:working_memory_instance .
+
+pao:task_002 a owl:NamedIndividual,
+        pao:Task ;
+    rdfs:label "add toggle button"@en ;
+    prov:wasAttributedTo pao:claude_agent ;
+    prov:wasGeneratedBy pao:conv_001 ;
+    pao:blockedBy pao:task_001 ;
+    pao:hasStatus pao:InProgress ;
+    pao:partOfPlan pao:plan_001 ;
+    pao:storedIn pao:semantic_memory_instance .
+
+pao:topic_dark_mode a skos:Concept ;
+    rdfs:label "dark mode implementation"@en .
+
+pao:turn_001 a owl:NamedIndividual,
+        pao:Turn ;
+    rdfs:label "turn 001"@en ;
+    pao:hasParticipant pao:alice_user ;
+    pao:hasTimestamp "2026-02-18T10:01:00"^^xsd:dateTime ;
+    pao:hasTurnIndex "0"^^xsd:nonNegativeInteger ;
+    pao:inSession pao:session_001 ;
+    pao:partOfConversation pao:conv_001 ;
+    pao:partOfSession pao:session_001 ;
+    pao:recordedInEpisode pao:episode_001 .
+
+pao:turn_002 a owl:NamedIndividual,
+        pao:Turn ;
+    rdfs:label "turn 002"@en ;
+    pao:hasParticipant pao:claude_agent ;
+    pao:hasTimestamp "2026-02-18T10:02:00"^^xsd:dateTime ;
+    pao:hasTurnIndex "1"^^xsd:nonNegativeInteger ;
+    pao:inSession pao:session_001 ;
+    pao:partOfConversation pao:conv_001 ;
+    pao:partOfSession pao:session_001 ;
+    pao:recordedInEpisode pao:episode_001 .
+
+pao:procedural_memory_instance a owl:NamedIndividual,
+        pao:MemoryTier,
+        pao:ProceduralMemory ;
+    rdfs:label "procedural memory instance"@en .
+
+pao:task_001 a owl:NamedIndividual,
+        pao:Task ;
+    rdfs:label "update CSS theme"@en ;
+    prov:wasAttributedTo pao:claude_agent ;
+    prov:wasGeneratedBy pao:conv_001 ;
+    pao:hasStatus pao:Completed ;
+    pao:partOfPlan pao:plan_001 ;
+    pao:storedIn pao:semantic_memory_instance .
+
+pao:bash_tool a owl:NamedIndividual,
+        pao:ToolDefinition ;
+    rdfs:label "Bash Tool"@en ;
+    pao:hasContent "Execute shell commands" .
+
+pao:plan_001 a owl:NamedIndividual,
+        pao:Plan ;
+    rdfs:label "dark mode implementation plan"@en ;
+    prov:wasAttributedTo pao:claude_agent ;
+    prov:wasGeneratedBy pao:conv_001 ;
+    pao:achievesGoal pao:goal_001 ;
+    pao:storedIn pao:semantic_memory_instance .
+
+pao:read_tool a owl:NamedIndividual,
+        pao:ToolDefinition ;
+    rdfs:label "Read Tool"@en ;
+    pao:hasContent "Read file contents" .
+
+pao:working_memory_instance a owl:NamedIndividual,
+        pao:MemoryTier,
+        pao:WorkingMemory ;
+    rdfs:label "working memory instance"@en .
+
+pao:claim_001 a owl:NamedIndividual,
+        pao:Claim,
+        pao:MemoryItem ;
+    rdfs:label "user preference: dark mode"@en ;
+    prov:wasAttributedTo pao:claude_agent ;
+    prov:wasDerivedFrom pao:episode_001,
+        pao:msg_001 ;
+    prov:wasGeneratedBy pao:conv_001 ;
+    pao:aboutAgent pao:alice_user ;
+    pao:claimType "UserPreference" ;
+    pao:hasConfidence 0.9 ;
+    pao:hasContent "User prefers dark mode" ;
+    pao:hasEvidence pao:episode_001 ;
+    pao:hasSensitivityLevel "PersonalData" ;
+    pao:hasTimestamp "2026-02-18T10:10:00"^^xsd:dateTime ;
+    pao:storedIn pao:semantic_memory_instance .
+
+pao:episode_001 a owl:NamedIndividual,
+        pao:Episode,
+        pao:MemoryItem ;
+    rdfs:label "episode 001"@en ;
+    prov:wasAttributedTo pao:claude_agent ;
+    prov:wasGeneratedBy pao:conv_001 ;
+    pao:hasTemporalExtent pao:episode_001_interval ;
+    pao:hasTopic pao:topic_dark_mode ;
+    pao:storedIn pao:episodic_memory_instance .
+
+pao:semantic_memory_instance a owl:NamedIndividual,
+        pao:MemoryTier,
+        pao:SemanticMemory ;
+    rdfs:label "semantic memory instance"@en .
+
+pao:session_001 a owl:NamedIndividual,
+        pao:Session ;
+    rdfs:label "session 001"@en ;
+    pao:hasParticipant pao:alice_user,
+        pao:claude_agent ;
+    pao:hasStatus pao:Active ;
+    pao:hasTemporalExtent pao:session_001_interval ;
+    pao:hasTimestamp "2026-02-18T10:00:00"^^xsd:dateTime ;
+    pao:partOfConversation pao:conv_001 .
+
+pao:alice_user a owl:NamedIndividual,
+        pao:HumanUser ;
+    rdfs:label "Alice"@en ;
+    pao:hasRole pao:UserRole .
+
+pao:conv_001 a owl:NamedIndividual,
+        pao:Conversation ;
+    rdfs:label "conversation 001"@en ;
+    prov:qualifiedAssociation [ a prov:Association ;
+            prov:agent pao:claude_agent ;
+            prov:hadRole pao:AssistantRole ],
+        [ a prov:Association ;
+            prov:agent pao:alice_user ;
+            prov:hadRole pao:UserRole ] ;
+    prov:wasAssociatedWith pao:claude_agent ;
+    pao:hasParticipant pao:alice_user,
+        pao:claude_agent ;
+    pao:hasTimestamp "2026-02-18T10:00:00"^^xsd:dateTime .
+
+pao:claude_agent a owl:NamedIndividual,
+        pao:AIAgent ;
+    rdfs:label "Claude"@en ;
+    prov:wasAttributedTo pao:claude_agent ;
+    pao:hasAvailableTool pao:bash_tool,
+        pao:read_tool ;
+    pao:hasRole pao:AssistantRole .

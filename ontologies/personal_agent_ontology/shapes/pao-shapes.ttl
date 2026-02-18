@@ -1,0 +1,105 @@
+@prefix pao: <https://purl.org/pao/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+pao:AIAgentShape a sh:NodeShape ;
+    sh:property [ sh:class pao:ToolDefinition ;
+            sh:minCount 1 ;
+            sh:path pao:hasAvailableTool ] ;
+    sh:targetClass pao:AIAgent .
+
+pao:ActionShape a sh:NodeShape ;
+    sh:property [ sh:class pao:Agent ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:performedBy ] ;
+    sh:targetClass pao:Action .
+
+pao:ClaimShape a sh:NodeShape ;
+    sh:property [ sh:datatype xsd:decimal ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 1.0 ;
+            sh:minCount 0 ;
+            sh:minInclusive 0.0 ;
+            sh:path pao:hasConfidence ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:hasContent ] ;
+    sh:targetClass pao:Claim .
+
+pao:ConversationShape a sh:NodeShape ;
+    sh:property [ sh:class pao:Agent ;
+            sh:minCount 1 ;
+            sh:path pao:hasParticipant ] ;
+    sh:targetClass pao:Conversation .
+
+pao:ErasureEventShape a sh:NodeShape ;
+    sh:property [ sh:class pao:Agent ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:requestedBy ] ;
+    sh:targetClass pao:ErasureEvent .
+
+pao:MemoryOperationShape a sh:NodeShape ;
+    sh:property [ sh:class pao:MemoryItem ;
+            sh:minCount 1 ;
+            sh:path pao:operatesOn ] ;
+    sh:targetClass pao:MemoryOperation .
+
+pao:PlanShape a sh:NodeShape ;
+    sh:property [ sh:class pao:Goal ;
+            sh:minCount 1 ;
+            sh:path pao:achievesGoal ] ;
+    sh:targetClass pao:Plan .
+
+pao:SessionShape a sh:NodeShape ;
+    sh:property [ sh:class pao:SessionStatus ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:hasStatus ],
+        [ sh:class pao:Conversation ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:partOfConversation ] ;
+    sh:targetClass pao:Session .
+
+pao:SubAgentShape a sh:NodeShape ;
+    sh:property [ sh:class pao:Agent ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:spawnedBy ] ;
+    sh:targetClass pao:SubAgent .
+
+pao:TaskShape a sh:NodeShape ;
+    sh:property [ sh:class pao:Plan ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:partOfPlan ],
+        [ sh:class pao:TaskStatus ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:hasStatus ] ;
+    sh:targetClass pao:Task .
+
+pao:ToolInvocationShape a sh:NodeShape ;
+    sh:property [ sh:class pao:ToolDefinition ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:invokesTool ],
+        [ sh:class pao:Agent ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:invokedBy ] ;
+    sh:targetClass pao:ToolInvocation .
+
+pao:TurnShape a sh:NodeShape ;
+    sh:property [ sh:datatype xsd:nonNegativeInteger ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:hasTurnIndex ],
+        [ sh:class pao:Session ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:partOfSession ] ;
+    sh:targetClass pao:Turn .

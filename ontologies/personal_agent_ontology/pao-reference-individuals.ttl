@@ -1,0 +1,98 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pao: <https://purl.org/pao/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+pao:PersonalData a owl:NamedIndividual ;
+    rdfs:label "personal data"@en ;
+    skos:definition "A sensitivity level indicating the memory item contains personal data."@en .
+
+pao:UserPreference a owl:NamedIndividual ;
+    rdfs:label "user preference"@en ;
+    skos:definition "A claim type indicating the claim records a user preference."@en .
+
+pao:reference-individuals a owl:Ontology ;
+    dcterms:created "2026-02-18" ;
+    dcterms:creator "ontology-architect skill" ;
+    dcterms:description "Named individuals for status values, agent roles, and classifiers."@en ;
+    dcterms:license <https://spdx.org/licenses/MIT> ;
+    dcterms:title "Personal Agent Ontology — Reference Individuals"@en ;
+    owl:versionIRI <https://purl.org/pao/reference-individuals/0.1.0> ;
+    owl:versionInfo "0.1.0" .
+
+pao:Active a owl:NamedIndividual,
+        pao:SessionStatus ;
+    rdfs:label "active"@en ;
+    skos:definition "Status value: an entity is currently active."@en .
+
+pao:AgentRole owl:equivalentClass [ owl:oneOf ( pao:AssistantRole pao:UserRole ) ] .
+
+pao:AssistantRole a owl:NamedIndividual,
+        pao:AgentRole ;
+    rdfs:label "assistant role"@en ;
+    skos:definition "The role of the AI assistant in a conversation."@en .
+
+pao:Blocked a owl:NamedIndividual,
+        pao:TaskStatus ;
+    rdfs:label "blocked"@en ;
+    skos:definition "Status value: a task cannot proceed because of unresolved dependencies."@en .
+
+pao:Completed a owl:NamedIndividual,
+        pao:TaskStatus ;
+    rdfs:label "completed"@en ;
+    skos:definition "Status value: a task or process has finished successfully."@en .
+
+pao:ComplianceStatus owl:equivalentClass [ owl:oneOf ( pao:Compliant pao:NonCompliant ) ] .
+
+pao:Compliant a owl:NamedIndividual,
+        pao:ComplianceStatus ;
+    rdfs:label "compliant"@en ;
+    skos:definition "Compliance status: a tool invocation followed all applicable policies."@en .
+
+pao:Ended a owl:NamedIndividual,
+        pao:SessionStatus ;
+    rdfs:label "ended"@en ;
+    skos:definition "Status value: a session has ended normally."@en .
+
+pao:InProgress a owl:NamedIndividual,
+        pao:TaskStatus ;
+    rdfs:label "in progress"@en ;
+    skos:definition "Status value: a task is currently being worked on."@en .
+
+pao:Interrupted a owl:NamedIndividual,
+        pao:SessionStatus ;
+    rdfs:label "interrupted"@en ;
+    skos:definition "Status value: a session ended abnormally."@en .
+
+pao:NonCompliant a owl:NamedIndividual,
+        pao:ComplianceStatus ;
+    rdfs:label "non compliant"@en ;
+    skos:definition "Compliance status: a tool invocation violated one or more policies."@en .
+
+pao:Pending a owl:NamedIndividual,
+        pao:TaskStatus ;
+    rdfs:label "pending"@en ;
+    skos:definition "Status value: a task has not yet started."@en .
+
+pao:UserRole a owl:NamedIndividual,
+        pao:AgentRole ;
+    rdfs:label "user role"@en ;
+    skos:definition "The role of the human user in a conversation."@en .
+
+pao:SessionStatus owl:equivalentClass [ owl:oneOf ( pao:Active pao:Ended pao:Interrupted ) ] .
+
+pao:TaskStatus owl:equivalentClass [ owl:oneOf ( pao:Pending pao:InProgress pao:Completed pao:Blocked ) ] .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Pending pao:InProgress pao:Completed pao:Blocked ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Compliant pao:NonCompliant ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:AssistantRole pao:UserRole ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Active pao:Ended pao:Interrupted ) .

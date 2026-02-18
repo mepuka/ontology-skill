@@ -1,0 +1,314 @@
+# Personal Agent Ontology -- Use Case Catalog
+# Each use case drives 3-10 competency questions.
+# Aligns with motivating scenarios in scope.md (S1-S7).
+
+use_cases:
+
+  # ── Module 1: Identity & Actors ──────────────────────────────────
+
+  - id: UC-001
+    name: "Identify agent capabilities and configuration"
+    actor: "Agent Developer"
+    goal: "Determine what tools, permissions, and persona an agent has"
+    preconditions:
+      - "Agent is registered in the system with configuration metadata"
+    main_flow:
+      - "Developer queries the ontology for an agent's tool set"
+      - "System returns tool definitions, permission policies, and persona description"
+    postconditions:
+      - "Developer has a complete picture of agent capabilities"
+    related_scenarios: [S3, S7]
+    related_cqs: []
+    priority: must_have
+
+  - id: UC-002
+    name: "Model sub-agent delegation relationships"
+    actor: "System Architect"
+    goal: "Track parent-child agent relationships and delegated tasks"
+    preconditions:
+      - "Parent agent has spawned one or more sub-agents"
+    main_flow:
+      - "Architect queries which sub-agents were spawned by a given agent"
+      - "System returns sub-agent identifiers, delegated tasks, and results"
+    postconditions:
+      - "Full delegation chain is visible with task assignments and outcomes"
+    related_scenarios: [S7]
+    related_cqs: []
+    priority: should_have
+
+  # ── Module 2: Conversation & Interaction ─────────────────────────
+
+  - id: UC-003
+    name: "Resume interrupted conversation"
+    actor: "AI Agent"
+    goal: "Restore conversational context after session interruption"
+    preconditions:
+      - "A prior session exists with turns and active context"
+      - "Session was interrupted (timeout, error, or user departure)"
+    main_flow:
+      - "Agent identifies the most recent session for the user"
+      - "Agent loads session state: last N turns, active goals, tool results"
+      - "Agent resumes interaction with restored context"
+    postconditions:
+      - "User experiences continuity; no information is lost"
+    related_scenarios: [S1]
+    related_cqs: []
+    priority: must_have
+
+  - id: UC-004
+    name: "Trace complete conversation history"
+    actor: "Compliance/Governance"
+    goal: "Reconstruct the full sequence of turns in a conversation"
+    preconditions:
+      - "Conversation has occurred with multiple turns"
+    main_flow:
+      - "Reviewer queries all turns in a conversation ordered by time"
+      - "System returns turns with participants, timestamps, and content types"
+    postconditions:
+      - "Complete audit trail of the conversation is available"
+    related_scenarios: [S1, S3]
+    related_cqs: []
+    priority: must_have
+
+  - id: UC-005
+    name: "Audit tool invocations in a session"
+    actor: "Compliance/Governance"
+    goal: "Examine all tool uses, their inputs, outputs, and policy compliance"
+    preconditions:
+      - "Agent has invoked one or more tools during a session"
+    main_flow:
+      - "Reviewer queries tool invocations for a given session"
+      - "System returns tool name, input parameters, output, timestamp, and permission status"
+      - "Reviewer checks each invocation against applicable policies"
+    postconditions:
+      - "All tool invocations are accounted for with compliance status"
+    related_scenarios: [S3]
+    related_cqs: []
+    priority: must_have
+
+  - id: UC-006
+    name: "Track context window and compaction events"
+    actor: "System Architect"
+    goal: "Monitor when and how context was compacted during long conversations"
+    preconditions:
+      - "A conversation exceeded the context window limit"
+    main_flow:
+      - "Architect queries compaction events for a conversation"
+      - "System returns when compaction occurred, what was summarized, what was preserved"
+    postconditions:
+      - "Architect understands information loss/preservation during compaction"
+    related_scenarios: [S1, S2]
+    related_cqs: []
+    priority: should_have
+
+  # ── Module 3: Memory ─────────────────────────────────────────────
+
+  - id: UC-007
+    name: "Store and retrieve episodic memories"
+    actor: "AI Agent"
+    goal: "Persist conversation episodes and retrieve relevant ones later"
+    preconditions:
+      - "Agent has completed a conversation that should be remembered"
+    main_flow:
+      - "Agent encodes key events from the conversation as an episode"
+      - "Episode is stored with temporal bounds, participants, and topic metadata"
+      - "In a future session, agent retrieves episodes relevant to current context"
+    postconditions:
+      - "Relevant past episodes are available for grounding current responses"
+    related_scenarios: [S2, S4]
+    related_cqs: []
+    priority: must_have
+
+  - id: UC-008
+    name: "Consolidate episodic memories into semantic knowledge"
+    actor: "AI Agent"
+    goal: "Extract stable facts from repeated experiences"
+    preconditions:
+      - "Multiple episodes contain consistent information about a topic"
+    main_flow:
+      - "Agent identifies recurring facts across episodes"
+      - "Agent creates semantic memory entries (claims) with provenance"
+      - "Claims link back to source episodes and confidence levels"
+    postconditions:
+      - "Semantic memory contains verified, provenance-tracked claims"
+    related_scenarios: [S2, S4]
+    related_cqs: []
+    priority: must_have
+
+  - id: UC-009
+    name: "Retrieve cross-session user preferences"
+    actor: "AI Agent"
+    goal: "Apply user preferences stated in prior sessions"
+    preconditions:
+      - "User has expressed a preference in a previous session"
+      - "Preference was extracted and stored as semantic memory"
+    main_flow:
+      - "Agent retrieves user preferences relevant to current task"
+      - "Agent applies preferences to current response or action"
+    postconditions:
+      - "User's preferences are respected without re-asking"
+    related_scenarios: [S4]
+    related_cqs: []
+    priority: must_have
+
+  - id: UC-010
+    name: "Track memory provenance chain"
+    actor: "Ontology Engineer"
+    goal: "Trace a memory item back to its originating conversation and participants"
+    preconditions:
+      - "A memory item exists in semantic or episodic memory"
+    main_flow:
+      - "Engineer queries the provenance chain of a memory item"
+      - "System returns: generating activity, source entities, contributing agents, timestamps"
+    postconditions:
+      - "Full derivation chain from raw interaction to stored memory is visible"
+    related_scenarios: [S2, S5]
+    related_cqs: []
+    priority: must_have
+
+  - id: UC-011
+    name: "Manage memory tiers and eviction"
+    actor: "System Architect"
+    goal: "Understand what memory resides in which tier and how eviction works"
+    preconditions:
+      - "Agent has memory distributed across working, episodic, and semantic stores"
+    main_flow:
+      - "Architect queries memory items by tier"
+      - "System returns items with their tier, last access time, and eviction eligibility"
+    postconditions:
+      - "Architect can optimize memory tier configuration"
+    related_scenarios: [S1, S2]
+    related_cqs: []
+    priority: should_have
+
+  - id: UC-012
+    name: "Update and version beliefs over time"
+    actor: "AI Agent"
+    goal: "Revise stored beliefs when new evidence contradicts them"
+    preconditions:
+      - "Agent holds a belief (claim) that is contradicted by new information"
+    main_flow:
+      - "Agent identifies the conflicting claim"
+      - "Agent creates a revised claim with updated confidence"
+      - "Old claim is marked as superseded with provenance linking to revision"
+    postconditions:
+      - "Belief history is preserved; current belief reflects latest evidence"
+    related_scenarios: [S2, S4]
+    related_cqs: []
+    priority: should_have
+
+  # ── Module 4: Actions, Events, and Time ──────────────────────────
+
+  - id: UC-013
+    name: "Reconstruct temporal sequence of events in a session"
+    actor: "Compliance/Governance"
+    goal: "Order all events (turns, tool calls, memory operations) by time"
+    preconditions:
+      - "A session has occurred with mixed event types"
+    main_flow:
+      - "Reviewer queries all events in a session"
+      - "System returns events ordered by timestamp with type and actor"
+    postconditions:
+      - "Complete temporal event log is available for audit"
+    related_scenarios: [S1, S3]
+    related_cqs: []
+    priority: must_have
+
+  - id: UC-014
+    name: "Identify temporal relationships between events"
+    actor: "Ontology Engineer"
+    goal: "Determine how events relate temporally (before, during, overlaps)"
+    preconditions:
+      - "Two or more events have recorded time intervals"
+    main_flow:
+      - "Engineer queries temporal relations between events"
+      - "System returns Allen interval relations (before, during, overlaps, etc.)"
+    postconditions:
+      - "Temporal structure of agent behavior is queryable"
+    related_scenarios: [S1, S3]
+    related_cqs: []
+    priority: should_have
+
+  # ── Module 5: Goals, Plans, and Tasks ────────────────────────────
+
+  - id: UC-015
+    name: "Decompose complex request into task plan"
+    actor: "AI Agent"
+    goal: "Break a user request into sub-tasks with dependencies"
+    preconditions:
+      - "User has made a complex, multi-step request"
+    main_flow:
+      - "Agent creates a goal from the user request"
+      - "Agent decomposes goal into sub-tasks with ordering constraints"
+      - "Agent executes tasks, tracking status and results"
+    postconditions:
+      - "Goal is achieved; task execution history is recorded"
+    related_scenarios: [S6]
+    related_cqs: []
+    priority: must_have
+
+  - id: UC-016
+    name: "Track goal and task status across sessions"
+    actor: "End User (implicit)"
+    goal: "Resume work on a multi-session goal"
+    preconditions:
+      - "A goal with incomplete tasks exists from a prior session"
+    main_flow:
+      - "Agent identifies pending goals and their task status"
+      - "Agent presents status and continues execution"
+    postconditions:
+      - "User sees progress and remaining work"
+    related_scenarios: [S1, S6]
+    related_cqs: []
+    priority: should_have
+
+  # ── Module 6: Governance & Safety ────────────────────────────────
+
+  - id: UC-017
+    name: "Enforce permission policies on tool use"
+    actor: "Compliance/Governance"
+    goal: "Verify that tool invocations comply with permission constraints"
+    preconditions:
+      - "Agent has permission policies defined"
+      - "Agent has invoked tools"
+    main_flow:
+      - "System checks each tool invocation against applicable permission policies"
+      - "Non-compliant invocations are flagged"
+    postconditions:
+      - "All tool uses are verified against policy"
+    related_scenarios: [S3]
+    related_cqs: []
+    priority: must_have
+
+  - id: UC-018
+    name: "Execute privacy-aware memory deletion"
+    actor: "End User (implicit)"
+    goal: "Delete personal information and all derived memory items"
+    preconditions:
+      - "User requests deletion of specific personal information"
+      - "Memory items derived from that information exist"
+    main_flow:
+      - "System identifies all memory items linked to the target via provenance"
+      - "System marks items for deletion following the provenance chain"
+      - "System records the erasure event for audit"
+    postconditions:
+      - "Target data and all derivatives are deleted; audit trail preserved"
+    related_scenarios: [S5]
+    related_cqs: []
+    priority: must_have
+
+  - id: UC-019
+    name: "Classify memory items by sensitivity level"
+    actor: "Compliance/Governance"
+    goal: "Apply privacy metadata to memory items for governance"
+    preconditions:
+      - "Memory items exist that may contain personal or sensitive data"
+    main_flow:
+      - "System classifies memory items by sensitivity level"
+      - "Reviewer queries items by sensitivity category"
+      - "Policies are enforced based on classification"
+    postconditions:
+      - "All memory items have privacy metadata; policies are enforceable"
+    related_scenarios: [S5]
+    related_cqs: []
+    priority: should_have

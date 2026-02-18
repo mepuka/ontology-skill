@@ -1,0 +1,586 @@
+# Personal Agent Ontology -- Conceptual Model
+# Phase: Conceptualization (Pipeline A, Step 3)
+# Date: 2026-02-18
+# Strategy: Middle-out taxonomy with BFO 2020 alignment
+
+ontology:
+  name: Personal Agent Ontology
+  prefix: pao
+  namespace: "https://purl.org/pao/"
+  version: "0.1.0"
+  owl_profile: OWL 2 DL
+  upper_ontology: BFO 2020 (ISO 21838-2)
+
+# ═══════════════════════════════════════════════════════════════════════
+# IMPORTS
+# ═══════════════════════════════════════════════════════════════════════
+
+imports:
+  - prefix: prov
+    namespace: "http://www.w3.org/ns/prov#"
+    strategy: direct_import
+    layer: foundational
+    used_classes:
+      - "prov:Agent"
+      - "prov:SoftwareAgent"
+      - "prov:Person"
+      - "prov:Entity"
+      - "prov:Activity"
+      - "prov:Plan"
+      - "prov:Role"
+      - "prov:Association"
+    used_properties:
+      - "prov:wasGeneratedBy"
+      - "prov:wasDerivedFrom"
+      - "prov:wasAttributedTo"
+      - "prov:wasAssociatedWith"
+      - "prov:wasRevisionOf"
+      - "prov:used"
+      - "prov:qualifiedAssociation"
+      - "prov:agent"
+      - "prov:hadRole"
+      - "prov:hadPlan"
+
+  - prefix: time
+    namespace: "http://www.w3.org/2006/time#"
+    strategy: direct_import
+    layer: domain_independent
+    used_classes:
+      - "time:TemporalEntity"
+      - "time:Instant"
+      - "time:Interval"
+    used_properties:
+      - "time:hasBeginning"
+      - "time:hasEnd"
+      - "time:inXSDDateTimeStamp"
+      - "time:before"
+      - "time:after"
+
+  - prefix: foaf
+    namespace: "http://xmlns.com/foaf/0.1/"
+    strategy: selective_import
+    layer: foundational
+    used_classes:
+      - "foaf:Person"
+      - "foaf:Agent"
+
+  - prefix: odrl
+    namespace: "http://www.w3.org/ns/odrl/2/"
+    strategy: direct_import
+    layer: domain_dependent
+    used_classes:
+      - "odrl:Policy"
+      - "odrl:Permission"
+      - "odrl:Prohibition"
+
+# ═══════════════════════════════════════════════════════════════════════
+# MODULES
+# ═══════════════════════════════════════════════════════════════════════
+
+modules:
+
+  - id: pao-core
+    name: "Core: Identity & Actors"
+    layer: problem_specific
+    description: >
+      Foundation module defining agent types, roles, and the base
+      Event class. All other PAO modules depend on this module.
+    depends_on:
+      - prov
+      - foaf
+    classes:
+      - Agent
+      - AIAgent
+      - HumanUser
+      - SubAgent
+      - AgentRole
+
+  - id: pao-event
+    name: "Actions, Events & Time"
+    layer: problem_specific
+    description: >
+      Event hierarchy and temporal modeling. Provides the base classes
+      for all occurrences in the agent system. Status value partitions
+      are defined here as cross-cutting vocabulary.
+    depends_on:
+      - pao-core
+      - time
+    classes:
+      - Event
+      - Action
+      - Status
+      - SessionStatus
+      - TaskStatus
+      - ComplianceStatus
+
+  - id: pao-conversation
+    name: "Conversation & Interaction"
+    layer: problem_specific
+    description: >
+      Models the structure of agent-user dialogue including sessions,
+      turns, messages, tool use, and context compaction.
+    depends_on:
+      - pao-core
+      - pao-event
+    classes:
+      - Conversation
+      - Session
+      - Turn
+      - Message
+      - ToolDefinition
+      - ToolInvocation
+      - CompactionEvent
+
+  - id: pao-memory
+    name: Memory
+    layer: problem_specific
+    description: >
+      Multi-tier memory architecture modeling. Covers memory items,
+      storage tiers, claims with evidence, and memory lifecycle
+      operations (encoding, retrieval, consolidation, forgetting).
+    depends_on:
+      - pao-core
+      - pao-event
+    classes:
+      - MemoryItem
+      - MemoryTier
+      - WorkingMemory
+      - EpisodicMemory
+      - SemanticMemory
+      - ProceduralMemory
+      - Episode
+      - Claim
+      - MemoryOperation
+      - Encoding
+      - Retrieval
+      - Consolidation
+      - Forgetting
+
+  - id: pao-planning
+    name: "Goals, Plans & Tasks"
+    layer: problem_specific
+    description: >
+      BDI-inspired goal-directed behavior modeling. Goals decompose
+      into plans, plans contain tasks with dependencies and status.
+    depends_on:
+      - pao-core
+      - pao-event
+    classes:
+      - Goal
+      - Plan
+      - Task
+
+  - id: pao-governance
+    name: "Governance & Safety"
+    layer: problem_specific
+    description: >
+      Permission policies, safety constraints, privacy metadata,
+      and erasure events for compliance and audit.
+    depends_on:
+      - pao-core
+      - pao-event
+      - odrl
+    classes:
+      - PermissionPolicy
+      - SafetyConstraint
+      - ErasureEvent
+
+# ═══════════════════════════════════════════════════════════════════════
+# ARCHITECTURE LAYERS
+# ═══════════════════════════════════════════════════════════════════════
+
+architecture_layers:
+
+  - layer: foundational
+    description: "Metadata, provenance, and upper-level support"
+    ontologies:
+      - {prefix: prov, role: "Provenance and activity modeling"}
+      - {prefix: skos, role: "Concept labeling and definitions"}
+      - {prefix: dcterms, role: "Common metadata fields"}
+      - {prefix: foaf, role: "Person/Agent basics"}
+
+  - layer: domain_independent
+    description: "Reusable cross-domain modules"
+    ontologies:
+      - {prefix: time, role: "Temporal reasoning (OWL-Time)"}
+
+  - layer: domain_dependent
+    description: "Domain standards and reference models"
+    ontologies:
+      - {prefix: odrl, role: "Policy and permission framework"}
+
+  - layer: problem_specific
+    description: "PAO modules tailored to agent architecture CQs"
+    ontologies:
+      - {prefix: pao, modules: [pao-core, pao-event, pao-conversation, pao-memory, pao-planning, pao-governance]}
+
+# ═══════════════════════════════════════════════════════════════════════
+# TAXONOMY (asserted class hierarchy)
+# ═══════════════════════════════════════════════════════════════════════
+#
+# Design strategy: middle-out
+# - Start: Agent, Event, MemoryItem, Goal, Plan, Task, PermissionPolicy
+# - Generalize upward: Connect to PROV-O / BFO superclasses
+# - Specialize downward: Add subclasses required by CQs
+# - Single inheritance: One named parent per class in asserted hierarchy
+
+taxonomy:
+
+  # --- Agent Hierarchy (pao-core) ---
+  - class: Agent
+    parent: "prov:Agent"
+    bfo: "cross-cutting (see bfo-alignment.md)"
+    module: pao-core
+    disjoint_siblings: false
+    children:
+      - class: AIAgent
+        parent: Agent
+        bfo: "GDC (BFO:0000031)"
+        module: pao-core
+        additional_parents: ["prov:SoftwareAgent"]
+        children:
+          - class: SubAgent
+            parent: AIAgent
+            bfo: "GDC (BFO:0000031)"
+            module: pao-core
+      - class: HumanUser
+        parent: Agent
+        bfo: "Object (BFO:0000030)"
+        module: pao-core
+        additional_parents: ["prov:Person", "foaf:Person"]
+
+  # Disjointness: AIAgent and HumanUser are disjoint with each other,
+  # but Agent is not a disjoint union because future agent types may
+  # be added. See axiom-plan.yaml for all 8 AllDisjointClasses axioms.
+
+  # --- Role (pao-core) ---
+  - class: AgentRole
+    parent: "prov:Role"
+    bfo: "Role (BFO:0000023)"
+    module: pao-core
+    individuals:
+      - AssistantRole
+      - UserRole
+    enumeration: true
+    note: "owl:oneOf closed set; extensible by adding new individuals"
+
+  # --- Event Hierarchy (pao-event + pao-conversation + pao-memory + pao-governance) ---
+  - class: Event
+    parent: "prov:Activity"
+    bfo: "Process (BFO:0000015)"
+    module: pao-event
+    note: "Top-level for all occurrences in the agent system"
+    children:
+      - class: Action
+        parent: Event
+        bfo: "Process (BFO:0000015)"
+        module: pao-event
+        note: "Intentional event caused by an agent"
+        children:
+          - class: ToolInvocation
+            parent: Action
+            bfo: "Process (BFO:0000015)"
+            module: pao-conversation
+            note: "N-ary: links to ToolDefinition, Agent, input, output, status"
+      - class: Conversation
+        parent: Event
+        bfo: "Process (BFO:0000015)"
+        module: pao-conversation
+      - class: Session
+        parent: Event
+        bfo: "Process (BFO:0000015)"
+        module: pao-conversation
+        note: "Temporal part of a Conversation (via partOfConversation)"
+      - class: Turn
+        parent: Event
+        bfo: "Process (BFO:0000015)"
+        module: pao-conversation
+        note: "Temporal part of a Session"
+      - class: CompactionEvent
+        parent: Event
+        bfo: "Process (BFO:0000015)"
+        module: pao-conversation
+      - class: ErasureEvent
+        parent: Event
+        bfo: "Process (BFO:0000015)"
+        module: pao-governance
+      - class: MemoryOperation
+        parent: Event
+        bfo: "Process (BFO:0000015)"
+        module: pao-memory
+        children:
+          - class: Encoding
+            parent: MemoryOperation
+            bfo: "Process (BFO:0000015)"
+            module: pao-memory
+          - class: Retrieval
+            parent: MemoryOperation
+            bfo: "Process (BFO:0000015)"
+            module: pao-memory
+          - class: Consolidation
+            parent: MemoryOperation
+            bfo: "Process (BFO:0000015)"
+            module: pao-memory
+          - class: Forgetting
+            parent: MemoryOperation
+            bfo: "Process (BFO:0000015)"
+            module: pao-memory
+
+  # Disjointness (events):
+  # - [Action, Conversation, Session, Turn, CompactionEvent, ErasureEvent, MemoryOperation] pairwise disjoint under Event
+  # - [Encoding, Retrieval, Consolidation, Forgetting] DisjointUnion under MemoryOperation
+
+  # --- Information Artifacts (prov:Entity / BFO:GDC) ---
+  # These classes are subclasses of prov:Entity. No PAO intermediate
+  # grouping class is introduced (each is directly under prov:Entity
+  # or another PAO class).
+
+  - class: MemoryItem
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-memory
+    note: "Top-level for all persisted information in agent memory"
+    children:
+      - class: Episode
+        parent: MemoryItem
+        bfo: "GDC (BFO:0000031)"
+        module: pao-memory
+        note: "Records a temporal cluster of events (NOT dual-natured)"
+      - class: Claim
+        parent: MemoryItem
+        bfo: "GDC (BFO:0000031)"
+        module: pao-memory
+        note: "N-ary: has confidence, evidence, provenance, content"
+
+  # Disjointness (memory items): [Episode, Claim] pairwise disjoint under MemoryItem (not exhaustive)
+
+  - class: Message
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-conversation
+    note: "Content of a Turn; distinct from the Turn (Process)"
+
+  - class: ToolDefinition
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-conversation
+    note: "Tool interface specification (name, schema, capabilities)"
+
+  - class: Goal
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-planning
+    note: "Desired state specification; BDI goal concept"
+
+  - class: Plan
+    parent: "prov:Plan"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-planning
+    note: "Subclass of prov:Plan. Contains Tasks as parts."
+
+  - class: Task
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-planning
+    note: "Concrete work item within a Plan"
+
+  - class: PermissionPolicy
+    parent: "odrl:Policy"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-governance
+    note: "Subclass of odrl:Policy"
+
+  - class: SafetyConstraint
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-governance
+    note: "Non-negotiable behavioral limit; stronger than PermissionPolicy"
+
+  # Disjointness (governance): [PermissionPolicy, SafetyConstraint] pairwise disjoint
+
+  # --- Memory Tiers ---
+  - class: MemoryTier
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-memory
+    note: "Layer in the agent's memory architecture"
+    children:
+      - class: WorkingMemory
+        parent: MemoryTier
+        bfo: "GDC (BFO:0000031)"
+        module: pao-memory
+      - class: EpisodicMemory
+        parent: MemoryTier
+        bfo: "GDC (BFO:0000031)"
+        module: pao-memory
+      - class: SemanticMemory
+        parent: MemoryTier
+        bfo: "GDC (BFO:0000031)"
+        module: pao-memory
+      - class: ProceduralMemory
+        parent: MemoryTier
+        bfo: "GDC (BFO:0000031)"
+        module: pao-memory
+
+  # Disjointness (tiers): [WorkingMemory, EpisodicMemory, SemanticMemory, ProceduralMemory] DisjointUnion under MemoryTier
+
+  # --- Status Value Partitions (pao-event) ---
+  - class: Status
+    parent: null
+    bfo: "Value Partition (no BFO parent)"
+    module: pao-event
+    note: "ODP-6 pattern; parent for all status types"
+    children:
+      - class: SessionStatus
+        parent: Status
+        bfo: "Value Partition"
+        module: pao-event
+        individuals: [Active, Ended, Interrupted]
+        enumeration: true
+      - class: TaskStatus
+        parent: Status
+        bfo: "Value Partition"
+        module: pao-event
+        individuals: [Pending, InProgress, Completed, Blocked]
+        enumeration: true
+      - class: ComplianceStatus
+        parent: Status
+        bfo: "Value Partition"
+        module: pao-event
+        individuals: [Compliant, NonCompliant]
+        enumeration: true
+
+  # Disjointness (status): [SessionStatus, TaskStatus, ComplianceStatus] pairwise disjoint under Status (not exhaustive)
+
+# ═══════════════════════════════════════════════════════════════════════
+# DESIGN PATTERNS APPLIED
+# ═══════════════════════════════════════════════════════════════════════
+
+design_patterns:
+  - id: ODP-1
+    name: "N-ary Relation"
+    applied_to: [Claim, ToolInvocation]
+    description: >
+      Claim reifies the relation between agent, proposition, confidence,
+      and evidence. ToolInvocation reifies the relation between agent,
+      tool, input, output, and status.
+
+  - id: ODP-2
+    name: "Participation (PROV-O qualified)"
+    applied_to: ["Agent participation in Conversation, Session, Action"]
+    description: >
+      Uses prov:qualifiedAssociation to link activities to agents with
+      roles. Replaces the previously proposed ConversationParticipation
+      class.
+
+  - id: ODP-3
+    name: "Part-Whole"
+    applied_to: ["Session/Conversation", "Turn/Session", "Task/Plan", "Event/Episode"]
+    description: >
+      Consistent partOf/hasPart property pairs with domain/range. Generic
+      pao:partOf is transitive. Specialized sub-properties for each
+      composition. Note: Event/Episode uses recordedInEpisode (not
+      mereological partOf) due to BFO category crossing.
+
+  - id: ODP-4
+    name: "Information Realization"
+    applied_to: [MemoryItem, Episode, Claim, Message]
+    description: >
+      Information artifacts (GDCs) linked to their storage tier (bearer)
+      via storedIn. Simplified from full IAO concretization chain.
+
+  - id: ODP-5
+    name: "Temporal Extent"
+    applied_to: ["All Event subclasses"]
+    description: >
+      Events linked to time:TemporalEntity via hasTemporalExtent.
+      Convenience hasTimestamp for point-in-time events.
+
+  - id: ODP-6
+    name: "Value Partition (Status)"
+    applied_to: [SessionStatus, TaskStatus, ComplianceStatus]
+    description: >
+      Status hierarchies with owl:oneOf enumeration of named individuals.
+      Closed value spaces for reasoning.
+
+# ═══════════════════════════════════════════════════════════════════════
+# DESIGN DECISIONS
+# ═══════════════════════════════════════════════════════════════════════
+
+design_decisions:
+
+  - id: DD-01
+    title: "Agent cross-cuts BFO categories"
+    decision: >
+      pao:Agent is aligned with prov:Agent but not mapped to a single
+      BFO leaf category. HumanUser -> BFO:Object, AIAgent -> BFO:GDC.
+    rationale: >
+      BFO has no native agent category. The unified Agent concept is
+      essential for CQ usability. The alternative (Agent-as-Role) would
+      require indirect querying.
+
+  - id: DD-02
+    title: "Episode is GDC only, not dual-natured"
+    decision: >
+      Episode is a subclass of MemoryItem (GDC) only, not of Event
+      (Process). Events are linked to episodes via recordedInEpisode.
+    rationale: >
+      BFO Continuant and Occurrent are disjoint. A class cannot be both.
+      Episode-as-memory-record is the primary use in PAO.
+
+  - id: DD-03
+    title: "ConversationParticipation removed"
+    decision: >
+      Replaced by PROV-O qualified associations (prov:qualifiedAssociation
+      with prov:Association nodes carrying prov:agent and prov:hadRole).
+    rationale: >
+      Avoids custom reification class. Leverages existing PROV-O
+      infrastructure. CQ-004 remains answerable.
+
+  - id: DD-04
+    title: "Goal and Plan as GDC, not Realizable Entity"
+    decision: >
+      Goal and Plan are classified as GDC (information content entities),
+      not as BFO Realizable Entities.
+    rationale: >
+      Realizable Entities inhere in Independent Continuants. Software
+      agents are GDCs. The SDC-in-GDC pattern would violate BFO category
+      constraints. Goals/Plans as information specifications is cleaner.
+
+  - id: DD-05
+    title: "Status uses Value Partition with individuals"
+    decision: >
+      Status values are named individuals within owl:oneOf enumerated
+      classes, not subclasses of a quality type.
+    rationale: >
+      Simpler than the class-based value partition. Adequate for closed,
+      stable value sets. Does not force BFO Quality alignment.
+
+  - id: DD-06
+    title: "Event/Episode link is recordedInEpisode, not partOf"
+    decision: >
+      The property linking Events to Episodes is recordedInEpisode, not
+      partOfEpisode. This is a semantic link, not mereological parthood.
+    rationale: >
+      BFO partOf relates entities within the same category. Events
+      (Process) and Episodes (GDC) are in different BFO categories.
+      The property name reflects the actual semantics: the episode
+      records/describes the events.
+
+# ═══════════════════════════════════════════════════════════════════════
+# CLASS COUNT SUMMARY
+# ═══════════════════════════════════════════════════════════════════════
+
+summary:
+  total_classes: 37
+  by_module:
+    pao-core: 5
+    pao-event: 6
+    pao-conversation: 7
+    pao-memory: 13
+    pao-planning: 3
+    pao-governance: 3
+  named_individuals: 13
+  imported_classes: "~15 (from PROV-O, OWL-Time, FOAF, ODRL)"
+  disjoint_sets: 8
+  covering_axioms: 2

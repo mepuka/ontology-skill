@@ -1,0 +1,1062 @@
+# Personal Agent Ontology -- Axiom Plan
+# Phase: Conceptualization (Pipeline A, Step 5)
+# Date: 2026-02-18
+#
+# For each competency question, this file identifies the axiom patterns
+# needed to make the CQ answerable. Patterns reference the catalog in
+# .claude/skills/_shared/axiom-patterns.md (16 patterns).
+#
+# Design decisions incorporated:
+#   DD-02: Episode is GDC only; Event/Episode link is recordedInEpisode
+#   DD-03: ConversationParticipation removed; PROV-O qualified associations
+#   DD-04: Goal and Plan as GDC, not Realizable Entity
+#   DD-05: Status uses Value Partition with named individuals (owl:oneOf)
+#   DD-06: recordedInEpisode (not mereological partOf) for Event->Episode
+#
+# Namespace: pao: <https://purl.org/pao/>
+
+axiom_plan:
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # MODULE 1: Identity & Actors (pao-core)
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - cq_id: CQ-001
+    natural_language: "What agents exist in the system and what type is each?"
+    priority: must_have
+    module: pao-core
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: |
+          Agent SubClassOf prov:Agent
+          AIAgent SubClassOf Agent
+          HumanUser SubClassOf Agent
+          SubAgent SubClassOf AIAgent
+        note: "Establishes the agent type hierarchy rooted at prov:Agent"
+      - pattern: "1. Simple SubClassOf (additional parents)"
+        axiom_sketch: |
+          AIAgent SubClassOf prov:SoftwareAgent
+          HumanUser SubClassOf prov:Person
+          HumanUser SubClassOf foaf:Person
+        note: "Multiple inheritance for alignment with PROV-O and FOAF"
+      - pattern: "5. Disjoint Classes"
+        axiom_sketch: "DisjointClasses: AIAgent, HumanUser"
+        note: "Agent subtypes are pairwise disjoint but not exhaustive (future types possible)"
+    tbox_requirements:
+      - "Agent, AIAgent, HumanUser, SubAgent class declarations with rdfs:label and skos:definition"
+      - "rdfs:subClassOf axioms linking to prov:Agent, prov:SoftwareAgent, prov:Person, foaf:Person"
+    abox_requirements:
+      - "At least one named individual of each agent type for testing"
+
+  - cq_id: CQ-002
+    natural_language: "What tools are available to a given agent?"
+    priority: must_have
+    module: pao-core
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "AIAgent SubClassOf hasAvailableTool some ToolDefinition"
+        note: "Every AI agent has at least one available tool"
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "ToolDefinition SubClassOf prov:Entity"
+        note: "ToolDefinition is a GDC (information content entity)"
+    tbox_requirements:
+      - "ToolDefinition class declaration with rdfs:label and skos:definition"
+      - "hasAvailableTool ObjectProperty with domain Agent, range ToolDefinition"
+    abox_requirements:
+      - "Named individuals for tools (ReadTool, BashTool, etc.) with rdfs:label"
+
+  - cq_id: CQ-003
+    natural_language: "Which sub-agents were spawned by a given parent agent?"
+    priority: should_have
+    module: pao-core
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "SubAgent SubClassOf AIAgent"
+        note: "SubAgent is a specialization of AIAgent"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          SubAgent SubClassOf spawnedBy some AIAgent
+          SubAgent SubClassOf delegatedTask some Task
+        note: "Every sub-agent has a parent spawner and a delegated task"
+    tbox_requirements:
+      - "SubAgent class declaration"
+      - "spawnedBy ObjectProperty with domain SubAgent, range AIAgent"
+      - "delegatedTask ObjectProperty with domain SubAgent, range Task"
+    abox_requirements:
+      - "At least one SubAgent individual linked to a parent AIAgent"
+
+  - cq_id: CQ-004
+    natural_language: "What role does an agent play in a given conversation?"
+    priority: should_have
+    module: pao-core
+    axiom_patterns:
+      - pattern: "9. N-ary Relation (PROV-O qualified association)"
+        axiom_sketch: |
+          Conversation SubClassOf prov:qualifiedAssociation some prov:Association
+          prov:Association SubClassOf prov:agent some Agent
+          prov:Association SubClassOf prov:hadRole some AgentRole
+        note: >
+          DD-03: ConversationParticipation removed. Uses PROV-O qualified
+          associations (prov:qualifiedAssociation -> prov:Association with
+          prov:agent and prov:hadRole). The CQ SPARQL still references
+          ConversationParticipation; it should be updated to use the PROV-O
+          pattern in a future pass.
+      - pattern: "15. Enumeration (owl:oneOf)"
+        axiom_sketch: "AgentRole EquivalentTo {AssistantRole, UserRole}"
+        note: "Closed set of agent roles; extensible by adding new individuals"
+    tbox_requirements:
+      - "AgentRole class declaration as subclass of prov:Role"
+      - "Import prov:qualifiedAssociation, prov:Association, prov:agent, prov:hadRole"
+    abox_requirements:
+      - "AssistantRole and UserRole named individuals of type AgentRole"
+      - "At least one prov:Association linking agent to conversation with role"
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # MODULE 2: Conversation & Interaction (pao-conversation)
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - cq_id: CQ-005
+    natural_language: "What sessions belong to a given conversation?"
+    priority: must_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: |
+          Conversation SubClassOf Event
+          Session SubClassOf Event
+        note: "Both are BFO:Process subclasses via Event"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          Session SubClassOf partOfConversation some Conversation
+          Session SubClassOf hasTemporalExtent some time:Interval
+        note: "ODP-3 (part-whole) for Session/Conversation; ODP-5 (temporal extent)"
+    tbox_requirements:
+      - "Conversation, Session class declarations"
+      - "partOfConversation ObjectProperty with domain Session, range Conversation"
+      - "hasTemporalExtent ObjectProperty linking to time:TemporalEntity"
+      - "Import time:Interval, time:hasBeginning, time:hasEnd, time:inXSDDateTimeStamp"
+    abox_requirements:
+      - "At least one Session linked to a Conversation with temporal data"
+
+  - cq_id: CQ-006
+    natural_language: "What turns occurred in a given conversation, in temporal order?"
+    priority: must_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "Turn SubClassOf Event"
+        note: "Turn is a BFO:Process"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          Turn SubClassOf partOfConversation some Conversation
+          Turn SubClassOf hasParticipant some Agent
+          Turn SubClassOf hasTimestamp some xsd:dateTimeStamp
+        note: "Every turn belongs to a conversation and has a participant and timestamp"
+      - pattern: "7. Qualified Cardinality"
+        axiom_sketch: "Turn SubClassOf hasTurnIndex exactly 1 xsd:nonNegativeInteger"
+        note: "Each turn has exactly one sequential index within its conversation"
+      - pattern: "7. Qualified Cardinality"
+        axiom_sketch: "Turn SubClassOf hasParticipant exactly 1 Agent"
+        note: "Each turn has exactly one contributing agent"
+    tbox_requirements:
+      - "Turn class declaration"
+      - "partOfConversation ObjectProperty (reused from CQ-005)"
+      - "hasParticipant ObjectProperty with range Agent"
+      - "hasTurnIndex DataProperty with range xsd:nonNegativeInteger"
+      - "hasTimestamp DataProperty with range xsd:dateTimeStamp"
+    abox_requirements:
+      - "Ordered Turn individuals with turnIndex and timestamp"
+
+  - cq_id: CQ-007
+    natural_language: "What tool invocations occurred in a given session?"
+    priority: must_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "9. N-ary Relation"
+        axiom_sketch: |
+          ToolInvocation SubClassOf Action
+          ToolInvocation SubClassOf invokesTool some ToolDefinition
+          ToolInvocation SubClassOf invokedBy some Agent
+          ToolInvocation SubClassOf hasTimestamp some xsd:dateTimeStamp
+          ToolInvocation SubClassOf hasStatus some ComplianceStatus
+          ToolInvocation SubClassOf inSession some Session
+        note: >
+          ODP-1: ToolInvocation is an n-ary reification linking agent, tool,
+          input, output, status, and session. Also uses ODP-6 (value partition)
+          for status.
+      - pattern: "8. Value Partition"
+        axiom_sketch: |
+          ComplianceStatus EquivalentTo {Compliant, NonCompliant}
+        note: "ODP-6: Closed set of compliance status values via owl:oneOf"
+    tbox_requirements:
+      - "ToolInvocation class as subclass of Action"
+      - "invokesTool ObjectProperty with domain ToolInvocation, range ToolDefinition"
+      - "invokedBy ObjectProperty with domain ToolInvocation, range Agent"
+      - "inSession ObjectProperty with domain ToolInvocation, range Session"
+      - "hasStatus ObjectProperty with range Status"
+      - "ComplianceStatus class with owl:oneOf enumeration"
+    abox_requirements:
+      - "Compliant and NonCompliant named individuals"
+      - "ToolInvocation individuals linked to sessions"
+
+  - cq_id: CQ-008
+    natural_language: "What input was provided to a tool invocation and what output was returned?"
+    priority: must_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          ToolInvocation SubClassOf hasInput some xsd:string
+          ToolInvocation SubClassOf hasOutput some xsd:string
+        note: "Every tool invocation has input and output data (as serialized strings)"
+      - pattern: "9. N-ary Relation"
+        axiom_sketch: "(extends ToolInvocation n-ary from CQ-007)"
+        note: "Input and output are additional facets of the ToolInvocation n-ary"
+    tbox_requirements:
+      - "hasInput DataProperty with domain ToolInvocation, range xsd:string"
+      - "hasOutput DataProperty with domain ToolInvocation, range xsd:string"
+    abox_requirements:
+      - "ToolInvocation individuals with hasInput and hasOutput values"
+
+  - cq_id: CQ-009
+    natural_language: "What was the most recent session for a given user?"
+    priority: must_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          Session SubClassOf hasParticipant some Agent
+          Session SubClassOf hasTemporalExtent some time:Interval
+        note: "Reuses patterns from CQ-005; query ordering handles 'most recent'"
+    tbox_requirements:
+      - "hasParticipant ObjectProperty on Session (reused from Turn, broadened)"
+      - "Temporal extent from CQ-005"
+    abox_requirements:
+      - "Multiple Session individuals with different timestamps for ordering"
+    note: >
+      The 'most recent' aspect is handled by SPARQL ORDER BY DESC / LIMIT 1,
+      not by axioms. The TBox just needs to ensure sessions have participants
+      and temporal extents.
+
+  - cq_id: CQ-010
+    natural_language: "When did context compaction events occur in a conversation and what was preserved?"
+    priority: should_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "CompactionEvent SubClassOf Event"
+        note: "CompactionEvent is a BFO:Process subclass"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          CompactionEvent SubClassOf inConversation some Conversation
+          CompactionEvent SubClassOf hasTimestamp some xsd:dateTimeStamp
+          CompactionEvent SubClassOf producedSummary some xsd:string
+        note: "Every compaction occurs in a conversation and produces a summary"
+    tbox_requirements:
+      - "CompactionEvent class declaration"
+      - "inConversation ObjectProperty with domain CompactionEvent, range Conversation"
+      - "producedSummary DataProperty with domain CompactionEvent, range xsd:string"
+    abox_requirements:
+      - "CompactionEvent individuals with conversation links and summaries"
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # MODULE 3: Memory (pao-memory)
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - cq_id: CQ-011
+    natural_language: "What memory items does an agent currently hold, and in which memory tier?"
+    priority: must_have
+    module: pao-memory
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: |
+          MemoryItem SubClassOf prov:Entity
+          MemoryTier SubClassOf prov:Entity
+        note: "Both are GDCs (information content entities)"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "MemoryItem SubClassOf storedIn some MemoryTier"
+        note: "ODP-4: Every memory item resides in exactly one tier"
+      - pattern: "6. Covering Axiom (DisjointUnion)"
+        axiom_sketch: "MemoryTier DisjointUnionOf WorkingMemory, EpisodicMemory, SemanticMemory, ProceduralMemory"
+        note: "Exhaustive partition of memory tier types; every tier is exactly one kind"
+    tbox_requirements:
+      - "MemoryItem, MemoryTier class declarations"
+      - "WorkingMemory, EpisodicMemory, SemanticMemory, ProceduralMemory subclasses"
+      - "storedIn ObjectProperty with domain MemoryItem, range MemoryTier"
+      - "DisjointUnion axiom on MemoryTier"
+    abox_requirements:
+      - "MemoryItem individuals in different tiers"
+      - "Named individuals or instances for each MemoryTier subclass"
+
+  - cq_id: CQ-012
+    natural_language: "What episodes are stored in episodic memory for a given agent?"
+    priority: must_have
+    module: pao-memory
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "Episode SubClassOf MemoryItem"
+        note: "DD-02: Episode is GDC only, not dual-natured with Event"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          Episode SubClassOf storedIn some MemoryTier
+          Episode SubClassOf hasTopic some xsd:string
+          Episode SubClassOf hasTemporalExtent some time:Interval
+        note: "Episodes have topic, temporal extent (ODP-5), and storage tier"
+      - pattern: "3. Universal Restriction"
+        axiom_sketch: "Episode SubClassOf storedIn only EpisodicMemory"
+        note: "Episodes can only be stored in episodic memory (closure axiom with existential)"
+    tbox_requirements:
+      - "Episode class as subclass of MemoryItem"
+      - "hasTopic DataProperty with range xsd:string"
+      - "hasTemporalExtent ObjectProperty (reused from events)"
+    abox_requirements:
+      - "Episode individuals with temporal data and topics, stored in EpisodicMemory"
+
+  - cq_id: CQ-013
+    natural_language: "What claims are stored in semantic memory and what is their confidence level?"
+    priority: must_have
+    module: pao-memory
+    axiom_patterns:
+      - pattern: "9. N-ary Relation"
+        axiom_sketch: |
+          Claim SubClassOf MemoryItem
+          Claim SubClassOf hasContent some xsd:string
+          Claim SubClassOf hasConfidence some xsd:decimal
+          Claim SubClassOf storedIn some MemoryTier
+        note: >
+          ODP-1: Claim reifies the relation between agent, proposition,
+          confidence, and evidence. N-ary pattern with multiple facets.
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          Claim SubClassOf hasContent some xsd:string
+          Claim SubClassOf hasConfidence some xsd:decimal
+        note: "Every claim must have content and confidence"
+      - pattern: "5. Disjoint Classes"
+        axiom_sketch: "DisjointClasses: Episode, Claim"
+        note: "Memory item subtypes are pairwise disjoint (not exhaustive)"
+    tbox_requirements:
+      - "Claim class as subclass of MemoryItem"
+      - "hasContent DataProperty with domain Claim, range xsd:string"
+      - "hasConfidence DataProperty with domain Claim, range xsd:decimal"
+      - "DisjointClasses axiom for Episode and Claim"
+    abox_requirements:
+      - "Claim individuals with content, confidence, stored in SemanticMemory"
+
+  - cq_id: CQ-014
+    natural_language: "What is the provenance chain of a given memory item?"
+    priority: must_have
+    module: pao-memory
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "MemoryItem SubClassOf prov:Entity"
+        note: "Inherits prov:wasGeneratedBy, prov:wasDerivedFrom, prov:wasAttributedTo"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          MemoryItem SubClassOf prov:wasAttributedTo some Agent
+          MemoryItem SubClassOf prov:wasGeneratedBy some prov:Activity
+        note: "Every memory item has provenance attribution and generation activity"
+    tbox_requirements:
+      - "MemoryItem rdfs:subClassOf prov:Entity (enables PROV-O property inheritance)"
+      - "Import prov:wasGeneratedBy, prov:wasDerivedFrom, prov:wasAttributedTo"
+    abox_requirements:
+      - "MemoryItem individuals with full PROV-O provenance chains"
+    note: >
+      The transitive derivation chain (prov:wasDerivedFrom+) is handled by
+      SPARQL property paths, not by TBox axioms. The TBox ensures every
+      memory item participates in PROV-O patterns.
+
+  - cq_id: CQ-015
+    natural_language: "What are the stored preferences for a given user?"
+    priority: must_have
+    module: pao-memory
+    axiom_patterns:
+      - pattern: "9. N-ary Relation"
+        axiom_sketch: |
+          Claim SubClassOf claimType some ClaimType
+          Claim SubClassOf aboutAgent some Agent
+        note: >
+          ODP-1: Claim used as n-ary to hold preference data. The claimType
+          property distinguishes UserPreference claims from other claim types.
+      - pattern: "15. Enumeration (owl:oneOf)"
+        axiom_sketch: "(UserPreference as a named individual of claim type)"
+        note: >
+          UserPreference is a named individual used as a controlled vocabulary
+          value for claimType. Could be expanded to a ClaimType enumeration
+          if additional types emerge.
+    tbox_requirements:
+      - "claimType ObjectProperty with domain Claim"
+      - "aboutAgent ObjectProperty with domain Claim, range Agent"
+      - "UserPreference named individual (used as claimType value)"
+    abox_requirements:
+      - "Claim individuals with claimType=UserPreference, aboutAgent=user, hasContent"
+
+  - cq_id: CQ-016
+    natural_language: "From which episodes was a given semantic memory claim derived?"
+    priority: must_have
+    module: pao-memory
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: |
+          Claim SubClassOf prov:Entity
+          Episode SubClassOf prov:Entity
+        note: "Both participate in PROV-O derivation chains"
+      - pattern: "12. Property Chain"
+        axiom_sketch: "(prov:wasDerivedFrom+ handled by SPARQL property paths)"
+        note: >
+          Transitive derivation from Claim to Episode is not modeled as an
+          OWL property chain because prov:wasDerivedFrom is already usable
+          in SPARQL property paths. If OWL-level inference is needed, a
+          transitive super-property could be introduced.
+    tbox_requirements:
+      - "Claim rdfs:subClassOf prov:Entity"
+      - "Episode rdfs:subClassOf prov:Entity"
+      - "Import prov:wasDerivedFrom"
+    abox_requirements:
+      - "Claim individuals with prov:wasDerivedFrom chains leading to Episode individuals"
+
+  - cq_id: CQ-017
+    natural_language: "What is the revision history of a given claim?"
+    priority: should_have
+    module: pao-memory
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "Claim SubClassOf prov:Entity"
+        note: "Inherits prov:wasRevisionOf from PROV-O"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "(not enforced: not all claims are revisions)"
+        note: >
+          prov:wasRevisionOf is optional on Claim. Only revised claims have
+          this property. No existential restriction is appropriate here.
+    tbox_requirements:
+      - "Import prov:wasRevisionOf"
+      - "hasTimestamp DataProperty on Claim (reused)"
+    abox_requirements:
+      - "Claim version chains linked by prov:wasRevisionOf with timestamps"
+
+  - cq_id: CQ-018
+    natural_language: "What memory tier does a given memory item reside in?"
+    priority: must_have
+    module: pao-memory
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "MemoryItem SubClassOf storedIn some MemoryTier"
+        note: "Reuses the storedIn pattern from CQ-011"
+      - pattern: "7. Qualified Cardinality"
+        axiom_sketch: "MemoryItem SubClassOf storedIn exactly 1 MemoryTier"
+        note: "Each memory item resides in exactly one tier (functional constraint)"
+    tbox_requirements:
+      - "storedIn ObjectProperty (reused)"
+      - "Functional characteristic or cardinality restriction"
+    abox_requirements:
+      - "MemoryItem individuals each linked to exactly one MemoryTier"
+
+  - cq_id: CQ-019
+    natural_language: "What memory operations (encoding, retrieval, consolidation, forgetting) have been performed on a memory item?"
+    priority: should_have
+    module: pao-memory
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: |
+          MemoryOperation SubClassOf Event
+          Encoding SubClassOf MemoryOperation
+          Retrieval SubClassOf MemoryOperation
+          Consolidation SubClassOf MemoryOperation
+          Forgetting SubClassOf MemoryOperation
+        note: "Memory operation type hierarchy"
+      - pattern: "6. Covering Axiom (DisjointUnion)"
+        axiom_sketch: "MemoryOperation DisjointUnionOf Encoding, Retrieval, Consolidation, Forgetting"
+        note: "Exhaustive partition: every memory operation is exactly one of these four types"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          MemoryOperation SubClassOf operatesOn some MemoryItem
+          MemoryOperation SubClassOf hasTimestamp some xsd:dateTimeStamp
+        note: "Every memory operation targets a memory item and has a timestamp"
+    tbox_requirements:
+      - "MemoryOperation class and four subclasses"
+      - "DisjointUnion axiom on MemoryOperation"
+      - "operatesOn ObjectProperty with domain MemoryOperation, range MemoryItem"
+    abox_requirements:
+      - "Memory operation individuals of each subtype linked to memory items"
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # MODULE 4: Actions, Events, and Time (pao-event)
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - cq_id: CQ-020
+    natural_language: "What events occurred in a given session, in temporal order?"
+    priority: must_have
+    module: pao-event
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: |
+          Event SubClassOf prov:Activity
+          Action SubClassOf Event
+        note: "Event hierarchy rooted at prov:Activity (BFO:Process)"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          Event SubClassOf hasTimestamp some xsd:dateTimeStamp
+        note: "ODP-5: Every event has a timestamp for temporal ordering"
+      - pattern: "5. Disjoint Classes"
+        axiom_sketch: "DisjointClasses: Action, Conversation, Session, Turn, CompactionEvent, ErasureEvent, MemoryOperation"
+        note: "Pairwise disjoint event subtypes (not exhaustive)"
+    tbox_requirements:
+      - "Event class as subclass of prov:Activity"
+      - "inSession ObjectProperty with range Session"
+      - "hasTimestamp DataProperty with range xsd:dateTimeStamp"
+      - "Disjoint axiom across Event subtypes"
+    abox_requirements:
+      - "Multiple event individuals in a session with timestamps"
+
+  - cq_id: CQ-021
+    natural_language: "Does event A occur before event B?"
+    priority: should_have
+    module: pao-event
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          Event SubClassOf hasTemporalExtent some time:TemporalEntity
+        note: "ODP-5: All events have temporal extent for comparison"
+    tbox_requirements:
+      - "hasTemporalExtent ObjectProperty with range time:TemporalEntity"
+      - "Import time:hasBeginning, time:hasEnd, time:inXSDDateTimeStamp"
+      - "Import time:before (optional; SPARQL FILTER handles comparison)"
+    abox_requirements:
+      - "Event individuals with full temporal interval data (begin + end instants)"
+    note: >
+      Temporal ordering is primarily handled by SPARQL FILTER on
+      xsd:dateTimeStamp values. OWL-Time's time:before could provide
+      OWL-level inference but is not strictly required for SPARQL queries.
+
+  - cq_id: CQ-022
+    natural_language: "What events overlap temporally with a given event?"
+    priority: could_have
+    module: pao-event
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "Event SubClassOf hasTemporalExtent some time:Interval"
+        note: "Reuses ODP-5 temporal extent pattern from CQ-021"
+    tbox_requirements:
+      - "Same as CQ-021 (temporal extent infrastructure)"
+    abox_requirements:
+      - "Events with overlapping time intervals for testing"
+    note: >
+      DEFERRED (could-have priority). Temporal overlap is computed in SPARQL
+      via FILTER on interval start/end times. No additional TBox axioms
+      beyond CQ-021 infrastructure. Full Allen interval algebra is out of
+      scope per CQ-022 definition.
+
+  - cq_id: CQ-023
+    natural_language: "What actions did a specific agent perform in a given time period?"
+    priority: must_have
+    module: pao-event
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "Action SubClassOf Event"
+        note: "Action is an intentional event caused by an agent"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          Action SubClassOf performedBy some Agent
+          Action SubClassOf hasTimestamp some xsd:dateTimeStamp
+        note: "Every action has a performing agent and timestamp"
+      - pattern: "9. N-ary Relation (PROV-O qualified association)"
+        axiom_sketch: |
+          Action SubClassOf prov:wasAssociatedWith some Agent
+        note: >
+          ODP-2: PROV-O association links activities to agents. performedBy
+          is a PAO shortcut; prov:wasAssociatedWith is the PROV-O equivalent.
+    tbox_requirements:
+      - "Action class declaration"
+      - "performedBy ObjectProperty with domain Action, range Agent"
+      - "prov:wasAssociatedWith imported for PROV-O compatibility"
+    abox_requirements:
+      - "Action individuals with agent attribution and timestamps"
+
+  - cq_id: CQ-024
+    natural_language: "What is the type of a given event (turn, tool invocation, memory operation, compaction)?"
+    priority: must_have
+    module: pao-event
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: |
+          Turn SubClassOf Event
+          ToolInvocation SubClassOf Action
+          Action SubClassOf Event
+          MemoryOperation SubClassOf Event
+          CompactionEvent SubClassOf Event
+          ErasureEvent SubClassOf Event
+        note: "The complete event type hierarchy enables rdf:type queries"
+      - pattern: "5. Disjoint Classes"
+        axiom_sketch: "DisjointClasses: Action, Conversation, Session, Turn, CompactionEvent, ErasureEvent, MemoryOperation"
+        note: "Disjointness ensures each event is classified as exactly one leaf type"
+    tbox_requirements:
+      - "Complete SubClassOf hierarchy for all Event subtypes"
+      - "Disjoint axiom ensuring non-overlapping event types"
+    abox_requirements:
+      - "Individuals of each event subtype for type query testing"
+
+  - cq_id: CQ-025
+    natural_language: "What events are part of a given episode?"
+    priority: must_have
+    module: pao-memory
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "(recordedInEpisode is optional on Event; not all events belong to episodes)"
+        note: >
+          DD-02/DD-06: The property is recordedInEpisode (not partOfEpisode)
+          because Events are Processes and Episodes are GDCs -- they are in
+          different BFO categories. Not every event is recorded in an episode,
+          so no existential restriction on Event.
+    tbox_requirements:
+      - "recordedInEpisode ObjectProperty with domain Event, range Episode"
+      - "No existential restriction (events may exist outside episodes)"
+    abox_requirements:
+      - "Event individuals linked to Episode individuals via recordedInEpisode"
+    note: >
+      DD-06: recordedInEpisode is semantically correct (event is recorded/described
+      by the episode) rather than mereological partOf (which would violate BFO
+      category disjointness between Process and GDC).
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # MODULE 5: Goals, Plans, and Tasks (pao-planning)
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - cq_id: CQ-026
+    natural_language: "What goals is an agent currently pursuing?"
+    priority: must_have
+    module: pao-planning
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "Goal SubClassOf prov:Entity"
+        note: "DD-04: Goal is GDC, not Realizable Entity"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          Goal SubClassOf pursuedBy some Agent
+          Goal SubClassOf hasStatus some TaskStatus
+        note: "Every goal has a pursuing agent and a status"
+      - pattern: "8. Value Partition"
+        axiom_sketch: |
+          TaskStatus EquivalentTo {Pending, InProgress, Completed, Blocked}
+        note: >
+          ODP-6: TaskStatus is reused for Goal status. The SPARQL filters
+          on Active/InProgress -- note that Active is a SessionStatus value;
+          Goal may need its own GoalStatus or reuse TaskStatus values.
+          This is a design refinement to resolve in formalization.
+      - pattern: "15. Enumeration (owl:oneOf)"
+        axiom_sketch: "TaskStatus EquivalentTo {Pending, InProgress, Completed, Blocked}"
+        note: "Closed set of status values"
+    tbox_requirements:
+      - "Goal class declaration"
+      - "pursuedBy ObjectProperty with domain Goal, range Agent"
+      - "hasStatus ObjectProperty with range Status"
+      - "TaskStatus owl:oneOf enumeration"
+    abox_requirements:
+      - "Goal individuals with agent links and Active/InProgress status"
+      - "Pending, InProgress, Completed, Blocked named individuals"
+
+  - cq_id: CQ-027
+    natural_language: "What tasks compose a given plan, and what are their dependencies?"
+    priority: must_have
+    module: pao-planning
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: |
+          Plan SubClassOf prov:Plan
+          Task SubClassOf prov:Entity
+        note: "DD-04: Plan and Task are GDCs"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          Task SubClassOf partOfPlan some Plan
+          Task SubClassOf hasStatus some TaskStatus
+        note: "ODP-3: Part-whole for Task/Plan; every task has a status"
+    tbox_requirements:
+      - "Plan class as subclass of prov:Plan"
+      - "Task class declaration"
+      - "partOfPlan ObjectProperty with domain Task, range Plan"
+      - "blockedBy ObjectProperty with domain Task, range Task"
+      - "hasStatus ObjectProperty (reused)"
+    abox_requirements:
+      - "Plan with multiple Task individuals, some with blockedBy dependencies"
+
+  - cq_id: CQ-028
+    natural_language: "What plan was created to achieve a given goal?"
+    priority: must_have
+    module: pao-planning
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "Plan SubClassOf achievesGoal some Goal"
+        note: "Every plan is created for at least one goal"
+    tbox_requirements:
+      - "achievesGoal ObjectProperty with domain Plan, range Goal"
+    abox_requirements:
+      - "Plan individuals linked to Goal individuals via achievesGoal"
+
+  - cq_id: CQ-029
+    natural_language: "What is the current status of each task in a given plan?"
+    priority: should_have
+    module: pao-planning
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "Task SubClassOf hasStatus some TaskStatus"
+        note: "Reuses pattern from CQ-027"
+      - pattern: "8. Value Partition"
+        axiom_sketch: "TaskStatus EquivalentTo {Pending, InProgress, Completed, Blocked}"
+        note: "ODP-6: Closed set of task status values"
+      - pattern: "15. Enumeration (owl:oneOf)"
+        axiom_sketch: "TaskStatus EquivalentTo {Pending, InProgress, Completed, Blocked}"
+        note: "Named individuals for each status value"
+    tbox_requirements:
+      - "TaskStatus class with owl:oneOf enumeration (reused from CQ-026)"
+      - "hasStatus ObjectProperty (reused)"
+    abox_requirements:
+      - "Task individuals with different status values within the same plan"
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # MODULE 6: Governance & Safety (pao-governance)
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - cq_id: CQ-030
+    natural_language: "What permission policies apply to a given agent?"
+    priority: must_have
+    module: pao-governance
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "PermissionPolicy SubClassOf odrl:Policy"
+        note: "Aligns with ODRL framework"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          PermissionPolicy SubClassOf appliesTo some Agent
+          PermissionPolicy SubClassOf grantsPermission some odrl:Permission
+        note: "Every policy targets an agent and grants/restricts permissions"
+    tbox_requirements:
+      - "PermissionPolicy class as subclass of odrl:Policy"
+      - "appliesTo ObjectProperty with domain PermissionPolicy, range Agent"
+      - "grantsPermission ObjectProperty with range odrl:Permission"
+      - "Import odrl:Policy, odrl:Permission"
+    abox_requirements:
+      - "PermissionPolicy individuals linked to agents with specific permissions"
+
+  - cq_id: CQ-031
+    natural_language: "Did a given tool invocation comply with its applicable permission policies?"
+    priority: must_have
+    module: pao-governance
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "ToolInvocation SubClassOf hasComplianceStatus some ComplianceStatus"
+        note: "Every tool invocation has a compliance status"
+      - pattern: "8. Value Partition"
+        axiom_sketch: "ComplianceStatus EquivalentTo {Compliant, NonCompliant}"
+        note: "ODP-6: Binary compliance status"
+      - pattern: "15. Enumeration (owl:oneOf)"
+        axiom_sketch: "ComplianceStatus EquivalentTo {Compliant, NonCompliant}"
+        note: "Closed set: every invocation is either compliant or not"
+    tbox_requirements:
+      - "hasComplianceStatus ObjectProperty with domain ToolInvocation, range ComplianceStatus"
+      - "ComplianceStatus owl:oneOf enumeration (reused from CQ-007)"
+    abox_requirements:
+      - "ToolInvocation individuals with Compliant and NonCompliant status values"
+
+  - cq_id: CQ-032
+    natural_language: "What memory items are derived from a given source item (for deletion cascading)?"
+    priority: must_have
+    module: pao-governance
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "MemoryItem SubClassOf prov:Entity"
+        note: "Inherits prov:wasDerivedFrom for derivation tracking"
+    tbox_requirements:
+      - "MemoryItem rdfs:subClassOf prov:Entity"
+      - "Import prov:wasDerivedFrom"
+    abox_requirements:
+      - "Derivation chains: MemoryItem -> prov:wasDerivedFrom -> MemoryItem"
+    note: >
+      Transitive derivation (prov:wasDerivedFrom+) is handled by SPARQL
+      property paths. No additional TBox axioms needed beyond CQ-014.
+      This CQ exercises the same provenance infrastructure for the
+      specific use case of deletion cascading.
+
+  - cq_id: CQ-033
+    natural_language: "What sensitivity level is assigned to a given memory item?"
+    priority: should_have
+    module: pao-governance
+    axiom_patterns:
+      - pattern: "8. Value Partition"
+        axiom_sketch: |
+          SensitivityLevel EquivalentTo {PersonalData, SystemData, PublicData}
+        note: >
+          ODP-6: Sensitivity levels as named individuals. The exact set
+          should be refined during formalization. PersonalData is referenced
+          in the BFO alignment as a named individual.
+      - pattern: "15. Enumeration (owl:oneOf)"
+        axiom_sketch: "SensitivityLevel EquivalentTo {PersonalData, SystemData, PublicData}"
+        note: "Closed set of sensitivity classifications"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "MemoryItem SubClassOf hasSensitivityLevel some SensitivityLevel"
+        note: "Every memory item should have a sensitivity classification"
+    tbox_requirements:
+      - "SensitivityLevel class with owl:oneOf enumeration"
+      - "hasSensitivityLevel ObjectProperty with domain MemoryItem, range SensitivityLevel"
+      - "PersonalData, SystemData, PublicData named individuals"
+    abox_requirements:
+      - "MemoryItem individuals with sensitivity level assignments"
+
+  - cq_id: CQ-034
+    natural_language: "What erasure events have been recorded for compliance auditing?"
+    priority: must_have
+    module: pao-governance
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "ErasureEvent SubClassOf Event"
+        note: "ErasureEvent is a BFO:Process subclass"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          ErasureEvent SubClassOf requestedBy some Agent
+          ErasureEvent SubClassOf hasTimestamp some xsd:dateTimeStamp
+        note: "Every erasure event has a requesting agent and timestamp"
+    tbox_requirements:
+      - "ErasureEvent class declaration"
+      - "requestedBy ObjectProperty with domain ErasureEvent, range Agent"
+      - "hasTimestamp DataProperty (reused)"
+    abox_requirements:
+      - "ErasureEvent individuals with requesting agents and timestamps"
+
+  - cq_id: CQ-035
+    natural_language: "What safety constraints are defined for a given agent?"
+    priority: should_have
+    module: pao-governance
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "SafetyConstraint SubClassOf prov:Entity"
+        note: "SafetyConstraint is a GDC (information artifact)"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "SafetyConstraint SubClassOf appliesTo some Agent"
+        note: "Every safety constraint targets at least one agent"
+      - pattern: "5. Disjoint Classes"
+        axiom_sketch: "DisjointClasses: PermissionPolicy, SafetyConstraint"
+        note: "Governance artifact types are disjoint"
+    tbox_requirements:
+      - "SafetyConstraint class declaration"
+      - "appliesTo ObjectProperty (reused from PermissionPolicy, broadened domain)"
+    abox_requirements:
+      - "SafetyConstraint individuals linked to agents with rdfs:label descriptions"
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # CROSS-MODULE QUESTIONS
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - cq_id: CQ-036
+    natural_language: "What agent generated a given memory item, and through what activity?"
+    priority: must_have
+    module: pao-memory
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "MemoryItem SubClassOf prov:Entity"
+        note: "Inherits prov:wasGeneratedBy from PROV-O"
+      - pattern: "9. N-ary Relation (PROV-O qualified association)"
+        axiom_sketch: |
+          MemoryItem SubClassOf prov:wasGeneratedBy some prov:Activity
+          prov:Activity SubClassOf prov:wasAssociatedWith some Agent
+        note: >
+          ODP-2: PROV-O qualified association pattern. The activity that
+          generated the memory item is associated with the agent. This
+          enables two-hop queries: item -> activity -> agent.
+    tbox_requirements:
+      - "Import prov:wasGeneratedBy, prov:wasAssociatedWith"
+      - "MemoryItem rdfs:subClassOf prov:Entity"
+    abox_requirements:
+      - "MemoryItem -> prov:wasGeneratedBy -> Activity -> prov:wasAssociatedWith -> Agent"
+
+  - cq_id: CQ-037
+    natural_language: "How many tool invocations did a given agent perform in a session?"
+    priority: should_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          ToolInvocation SubClassOf invokedBy some Agent
+          ToolInvocation SubClassOf inSession some Session
+        note: "Reuses patterns from CQ-007; COUNT is a SPARQL aggregation"
+    tbox_requirements:
+      - "invokedBy and inSession ObjectProperties (reused from CQ-007)"
+    abox_requirements:
+      - "Multiple ToolInvocation individuals per session for count testing"
+    note: >
+      The COUNT aggregation is entirely a SPARQL concern. The TBox just
+      needs to ensure tool invocations are linked to agents and sessions.
+
+  - cq_id: CQ-038
+    natural_language: "Is a given session still active or has it ended?"
+    priority: must_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "Session SubClassOf hasStatus some SessionStatus"
+        note: "Every session has a session status"
+      - pattern: "8. Value Partition"
+        axiom_sketch: "SessionStatus EquivalentTo {Active, Ended, Interrupted}"
+        note: "ODP-6: Closed set of session status values"
+      - pattern: "15. Enumeration (owl:oneOf)"
+        axiom_sketch: "SessionStatus EquivalentTo {Active, Ended, Interrupted}"
+        note: "Named individuals for each session status"
+    tbox_requirements:
+      - "SessionStatus class with owl:oneOf enumeration"
+      - "Active, Ended, Interrupted named individuals of type SessionStatus"
+      - "hasStatus ObjectProperty on Session (reused, range broadened to Status)"
+    abox_requirements:
+      - "Session individuals with Active and Ended status values"
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # CONSTRAINT / NEGATIVE QUESTIONS
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - cq_id: CQ-039
+    natural_language: "Are there any tool invocations that violate their permission policies?"
+    priority: must_have
+    module: pao-governance
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          ToolInvocation SubClassOf hasComplianceStatus some ComplianceStatus
+        note: "Reuses compliance status from CQ-031"
+      - pattern: "8. Value Partition"
+        axiom_sketch: "ComplianceStatus EquivalentTo {Compliant, NonCompliant}"
+        note: "ODP-6: Binary compliance (reused from CQ-031)"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "PermissionPolicy SubClassOf restrictsToolUse some ToolDefinition"
+        note: "Policies restrict specific tools; needed for violation detection query"
+    tbox_requirements:
+      - "hasComplianceStatus ObjectProperty (reused from CQ-031)"
+      - "restrictsToolUse ObjectProperty with domain PermissionPolicy, range ToolDefinition"
+      - "ComplianceStatus enumeration (reused)"
+    abox_requirements:
+      - "Expected: zero rows. Test with compliant invocations only."
+      - "Negative test: NonCompliant invocation to verify detection"
+    note: >
+      This is a constraint query (expected_result: zero_rows). It verifies
+      the absence of violations. SHACL shapes may additionally enforce this
+      constraint at validation time.
+
+  - cq_id: CQ-040
+    natural_language: "Are there any memory items without provenance attribution?"
+    priority: must_have
+    module: pao-memory
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "MemoryItem SubClassOf prov:wasAttributedTo some Agent"
+        note: >
+          This existential restriction is the key axiom: it declares that
+          every MemoryItem MUST have provenance attribution. The SPARQL
+          query uses FILTER NOT EXISTS to find violations; the OWL axiom
+          makes it a logical entailment.
+    tbox_requirements:
+      - "MemoryItem rdfs:subClassOf prov:Entity"
+      - "Existential restriction: MemoryItem SubClassOf prov:wasAttributedTo some Agent"
+    abox_requirements:
+      - "Expected: zero rows. All memory items must have prov:wasAttributedTo."
+      - "Negative test: MemoryItem without attribution to verify detection"
+    note: >
+      This is a constraint query (expected_result: zero_rows). The OWL
+      existential restriction and the SPARQL FILTER NOT EXISTS are
+      complementary enforcement mechanisms. A SHACL shape (sh:minCount 1
+      on prov:wasAttributedTo) can also enforce this at validation time.
+
+# ═══════════════════════════════════════════════════════════════════════
+# AXIOM PATTERN SUMMARY
+# ═══════════════════════════════════════════════════════════════════════
+
+summary:
+  total_cqs: 40
+  by_priority:
+    must_have: 29
+    should_have: 10
+    could_have: 1  # CQ-022 (deferred)
+
+  patterns_used:
+    - pattern: "1. Simple SubClassOf"
+      count: 28
+      note: "Foundation of the taxonomy; used by nearly every CQ"
+    - pattern: "2. Existential Restriction"
+      count: 30
+      note: "Most common pattern; expresses necessary conditions on classes"
+    - pattern: "3. Universal Restriction"
+      count: 1
+      note: "Used for Episode storedIn only EpisodicMemory (CQ-012)"
+    - pattern: "5. Disjoint Classes"
+      count: 6
+      note: "Agent types, Event types, MemoryItem types, Governance types"
+    - pattern: "6. Covering Axiom (DisjointUnion)"
+      count: 2
+      note: "MemoryTier (CQ-011), MemoryOperation (CQ-019)"
+    - pattern: "7. Qualified Cardinality"
+      count: 3
+      note: "Turn index (CQ-006), Turn participant (CQ-006), storedIn (CQ-018)"
+    - pattern: "8. Value Partition"
+      count: 7
+      note: "SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel"
+    - pattern: "9. N-ary Relation"
+      count: 6
+      note: "ToolInvocation, Claim, PROV-O qualified associations"
+    - pattern: "12. Property Chain"
+      count: 1
+      note: "Considered for CQ-016 (deferred to SPARQL property paths)"
+    - pattern: "15. Enumeration (owl:oneOf)"
+      count: 7
+      note: "AgentRole, SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel"
+
+  patterns_not_used:
+    - "4. Equivalent Class: No defined classes needed yet; all classes are primitive"
+    - "10. Self-Restriction: Not applicable to PAO domain"
+    - "11. HasKey: Could be added for agent/session identifiers in future"
+    - "13. Negation: Not needed; constraints handled by SPARQL/SHACL"
+    - "14. Identity Links: Not needed in v0.1; relevant for multi-source integration"
+    - "16. Complement: Not needed; no complement-based class definitions"
+
+  cross_cutting_patterns:
+    - name: "ODP-1: N-ary Relation"
+      applied_to: ["Claim (CQ-013, CQ-015, CQ-017)", "ToolInvocation (CQ-007, CQ-008)"]
+    - name: "ODP-2: PROV-O Qualified Association"
+      applied_to: ["Agent participation (CQ-004, CQ-023, CQ-036)"]
+    - name: "ODP-3: Part-Whole"
+      applied_to: ["Session/Conversation (CQ-005)", "Turn/Conversation (CQ-006)", "Task/Plan (CQ-027)"]
+    - name: "ODP-4: Information Realization"
+      applied_to: ["MemoryItem/MemoryTier (CQ-011, CQ-018)"]
+    - name: "ODP-5: Temporal Extent"
+      applied_to: ["All Event subclasses (CQ-005, CQ-006, CQ-012, CQ-020, CQ-021, CQ-022)"]
+    - name: "ODP-6: Value Partition (Status)"
+      applied_to: ["SessionStatus (CQ-038)", "TaskStatus (CQ-026, CQ-029)", "ComplianceStatus (CQ-007, CQ-031, CQ-039)", "SensitivityLevel (CQ-033)"]
+
+  design_notes:
+    - id: DN-01
+      title: "CQ-004 SPARQL needs update"
+      note: >
+        The SPARQL for CQ-004 still references ConversationParticipation,
+        but DD-03 removed this class in favor of PROV-O qualified
+        associations. The SPARQL should be updated to use
+        prov:qualifiedAssociation / prov:Association pattern in a future
+        competency-questions.yaml revision.
+    - id: DN-02
+      title: "Goal status overlap with TaskStatus"
+      note: >
+        CQ-026 SPARQL filters on pao:Active and pao:InProgress, but Active
+        is defined as a SessionStatus individual, not TaskStatus. Either
+        introduce a GoalStatus value partition or reuse TaskStatus for goals
+        (mapping InProgress to 'currently pursued'). Resolve during
+        formalization.
+    - id: DN-03
+      title: "CQ-025 uses partOfEpisode in SPARQL despite DD-06"
+      note: >
+        The SPARQL for CQ-025 uses pao:partOfEpisode but DD-06 established
+        recordedInEpisode as the correct property name. The axiom plan uses
+        recordedInEpisode; the CQ SPARQL should be updated accordingly.
+    - id: DN-04
+      title: "Equivalent classes deferred"
+      note: >
+        No equivalent class axioms (pattern 4) are proposed for v0.1. All
+        PAO classes are primitive (necessary conditions only). Defined
+        classes may be introduced in v0.2 once the domain is better
+        understood and reasoner testing validates the hierarchy.
+    - id: DN-05
+      title: "HasKey candidates for future"
+      note: >
+        Pattern 11 (HasKey) could be applied to Agent (by agentId), Session
+        (by sessionId), and Conversation (by conversationId) for instance
+        matching in data integration scenarios. Deferred to v0.2.

@@ -1,0 +1,1020 @@
+"""Tests for the Personal Agent Ontology structural integrity and SPARQL validation.
+
+Validates the generated TBox, reference individuals, sample ABox data,
+and SHACL shapes against the conceptual model specification.
+"""
+
+from __future__ import annotations
+
+from pathlib import Path
+
+import pytest
+from rdflib import Graph, Namespace, URIRef
+from rdflib.collection import Collection
+from rdflib.namespace import OWL, RDF, RDFS, SKOS, XSD
+
+PAO = Namespace("https://purl.org/pao/")
+PROV = Namespace("http://www.w3.org/ns/prov#")
+TIME = Namespace("http://www.w3.org/2006/time#")
+FOAF = Namespace("http://xmlns.com/foaf/0.1/")
+ODRL = Namespace("http://www.w3.org/ns/odrl/2/")
+OBO = Namespace("http://purl.obolibrary.org/obo/")
+SH = Namespace("http://www.w3.org/ns/shacl#")
+
+PROJECT = Path(__file__).resolve().parent.parent
+TBOX_PATH = PROJECT / "personal_agent_ontology.ttl"
+REF_PATH = PROJECT / "pao-reference-individuals.ttl"
+DATA_PATH = PROJECT / "pao-data.ttl"
+SHAPES_PATH = PROJECT / "shapes" / "pao-shapes.ttl"
+SPARQL_DIR = PROJECT / "tests"
+
+
+# ---------------------------------------------------------------------------
+# Fixtures
+# ---------------------------------------------------------------------------
+
+
+@pytest.fixture(scope="module")
+def tbox() -> Graph:
+    """Load the TBox graph."""
+    g = Graph()
+    g.parse(str(TBOX_PATH), format="turtle")
+    return g
+
+
+@pytest.fixture(scope="module")
+def ref() -> Graph:
+    """Load the reference individuals graph."""
+    g = Graph()
+    g.parse(str(REF_PATH), format="turtle")
+    return g
+
+
+@pytest.fixture(scope="module")
+def merged() -> Graph:
+    """Load merged TBox + reference individuals."""
+    g = Graph()
+    g.parse(str(TBOX_PATH), format="turtle")
+    g.parse(str(REF_PATH), format="turtle")
+    return g
+
+
+@pytest.fixture(scope="module")
+def full_graph() -> Graph:
+    """Load merged TBox + reference individuals + sample ABox data."""
+    g = Graph()
+    g.parse(str(TBOX_PATH), format="turtle")
+    g.parse(str(REF_PATH), format="turtle")
+    g.parse(str(DATA_PATH), format="turtle")
+    return g
+
+
+@pytest.fixture(scope="module")
+def shapes() -> Graph:
+    """Load the SHACL shapes graph."""
+    g = Graph()
+    g.parse(str(SHAPES_PATH), format="turtle")
+    return g
+
+
+# ---------------------------------------------------------------------------
+# Class declarations (37 classes)
+# ---------------------------------------------------------------------------
+
+EXPECTED_CLASSES = [
+    # pao-core: Agent hierarchy
+    "Agent",
+    "AIAgent",
+    "HumanUser",
+    "SubAgent",
+    # pao-conversation: Interaction
+    "Event",
+    "Action",
+    "Conversation",
+    "Session",
+    "Turn",
+    "CompactionEvent",
+    "ErasureEvent",
+    # pao-memory: Memory system
+    "MemoryItem",
+    "Episode",
+    "Claim",
+    "Message",
+    "MemoryTier",
+    "WorkingMemory",
+    "EpisodicMemory",
+    "SemanticMemory",
+    "ProceduralMemory",
+    "MemoryOperation",
+    "Encoding",
+    "Retrieval",
+    "Consolidation",
+    "Forgetting",
+    # pao-tools: Tool infrastructure
+    "ToolDefinition",
+    "ToolInvocation",
+    # pao-planning: Goals, plans, tasks
+    "Goal",
+    "Plan",
+    "Task",
+    # pao-governance: Safety and permissions
+    "PermissionPolicy",
+    "SafetyConstraint",
+    # Status types
+    "Status",
+    "SessionStatus",
+    "TaskStatus",
+    "ComplianceStatus",
+    # Roles
+    "AgentRole",
+]
+
+
+@pytest.mark.parametrize("cls_name", EXPECTED_CLASSES)
+def test_class_declared(tbox: Graph, cls_name: str) -> None:
+    """Each expected class is declared as owl:Class."""
+    assert (PAO[cls_name], RDF.type, OWL.Class) in tbox
+
+
+def test_class_count(tbox: Graph) -> None:
+    """Exactly 37 PAO classes are declared."""
+    pao_classes = {s for s in tbox.subjects(RDF.type, OWL.Class) if str(s).startswith(str(PAO))}
+    assert len(pao_classes) == 37, (
+        f"Expected 37 PAO classes, found {len(pao_classes)}: {pao_classes}"
+    )
+
+
+# ---------------------------------------------------------------------------
+# Labels and definitions
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("cls_name", EXPECTED_CLASSES)
+def test_class_has_label(tbox: Graph, cls_name: str) -> None:
+    """Each class has an rdfs:label."""
+    labels = list(tbox.objects(PAO[cls_name], RDFS.label))
+    assert labels, f"{cls_name} missing rdfs:label"
+
+
+@pytest.mark.parametrize("cls_name", EXPECTED_CLASSES)
+def test_class_has_definition(tbox: Graph, cls_name: str) -> None:
+    """Each class has a skos:definition."""
+    defs = list(tbox.objects(PAO[cls_name], SKOS.definition))
+    assert defs, f"{cls_name} missing skos:definition"
+
+
+# ---------------------------------------------------------------------------
+# Class hierarchy (SubClassOf)
+# ---------------------------------------------------------------------------
+
+HIERARCHY_CHECKS = [
+    # Agent hierarchy
+    ("Agent", PROV.Agent),
+    ("AIAgent", PAO.Agent),
+    ("HumanUser", PAO.Agent),
+    ("SubAgent", PAO.AIAgent),
+    # Event hierarchy
+    ("Action", PAO.Event),
+    ("Conversation", PAO.Event),
+    ("Session", PAO.Event),
+    ("Turn", PAO.Event),
+    ("CompactionEvent", PAO.Event),
+    ("ErasureEvent", PAO.Event),
+    ("MemoryOperation", PAO.Event),
+    # MemoryOperation subtypes
+    ("Encoding", PAO.MemoryOperation),
+    ("Retrieval", PAO.MemoryOperation),
+    ("Consolidation", PAO.MemoryOperation),
+    ("Forgetting", PAO.MemoryOperation),
+    # MemoryItem hierarchy
+    ("Episode", PAO.MemoryItem),
+    ("Claim", PAO.MemoryItem),
+    # MemoryTier subtypes
+    ("WorkingMemory", PAO.MemoryTier),
+    ("EpisodicMemory", PAO.MemoryTier),
+    ("SemanticMemory", PAO.MemoryTier),
+    ("ProceduralMemory", PAO.MemoryTier),
+    # Status hierarchy
+    ("SessionStatus", PAO.Status),
+    ("TaskStatus", PAO.Status),
+    ("ComplianceStatus", PAO.Status),
+    # ToolInvocation -> Action
+    ("ToolInvocation", PAO.Action),
+]
+
+
+@pytest.mark.parametrize(
+    ("cls_name", "parent"),
+    HIERARCHY_CHECKS,
+    ids=[f"{c}-subClassOf-{str(p).split('/')[-1].split('#')[-1]}" for c, p in HIERARCHY_CHECKS],
+)
+def test_class_hierarchy(tbox: Graph, cls_name: str, parent: URIRef) -> None:
+    """Class has the expected direct superclass."""
+    assert (PAO[cls_name], RDFS.subClassOf, parent) in tbox
+
+
+# ---------------------------------------------------------------------------
+# BFO alignment
+# ---------------------------------------------------------------------------
+
+BFO_ALIGNMENT = [
+    ("Event", OBO["BFO_0000015"]),  # process
+    ("AgentRole", OBO["BFO_0000023"]),  # role
+    ("HumanUser", OBO["BFO_0000030"]),  # object
+    ("AIAgent", OBO["BFO_0000031"]),  # GDC
+    ("MemoryItem", OBO["BFO_0000031"]),
+    ("MemoryTier", OBO["BFO_0000031"]),
+    ("ToolDefinition", OBO["BFO_0000031"]),
+    ("Goal", OBO["BFO_0000031"]),
+    ("Task", OBO["BFO_0000031"]),
+    ("PermissionPolicy", OBO["BFO_0000031"]),
+    ("SafetyConstraint", OBO["BFO_0000031"]),
+    ("Message", OBO["BFO_0000031"]),
+]
+
+
+@pytest.mark.parametrize(
+    ("cls_name", "bfo_class"),
+    BFO_ALIGNMENT,
+    ids=[f"{c}-BFO-{str(b).split('/')[-1]}" for c, b in BFO_ALIGNMENT],
+)
+def test_bfo_alignment(tbox: Graph, cls_name: str, bfo_class: URIRef) -> None:
+    """Class is aligned to BFO via rdfs:subClassOf."""
+    assert (PAO[cls_name], RDFS.subClassOf, bfo_class) in tbox
+
+
+# ---------------------------------------------------------------------------
+# Object property declarations (42 properties)
+# ---------------------------------------------------------------------------
+
+EXPECTED_OBJ_PROPS = [
+    "aboutAgent",
+    "achievesGoal",
+    "appliesTo",
+    "availableToAgent",
+    "blockedBy",
+    "blocks",
+    "delegatedTask",
+    "grantsPermission",
+    "hasAvailableTool",
+    "hasComplianceStatus",
+    "hasEvidence",
+    "hasInput",
+    "hasOutput",
+    "hasPart",
+    "hasParticipant",
+    "hasRole",
+    "hasStatus",
+    "hasTask",
+    "hasTemporalExtent",
+    "hasTopic",
+    "inConversation",
+    "inSession",
+    "invokedBy",
+    "invokedIn",
+    "invokesTool",
+    "operatesOn",
+    "participatesIn",
+    "partOf",
+    "partOfConversation",
+    "partOfPlan",
+    "partOfSession",
+    "performedBy",
+    "producedSummary",
+    "pursuedBy",
+    "pursuesGoal",
+    "recordedInEpisode",
+    "recordsEvent",
+    "requestedBy",
+    "restrictsToolUse",
+    "spawnedBy",
+    "storedIn",
+    "stores",
+]
+
+
+@pytest.mark.parametrize("prop_name", EXPECTED_OBJ_PROPS)
+def test_object_property_declared(tbox: Graph, prop_name: str) -> None:
+    """Each expected object property is declared."""
+    assert (PAO[prop_name], RDF.type, OWL.ObjectProperty) in tbox
+
+
+# ---------------------------------------------------------------------------
+# Datatype property declarations (6 properties)
+# ---------------------------------------------------------------------------
+
+EXPECTED_DATA_PROPS = [
+    "claimType",
+    "hasConfidence",
+    "hasContent",
+    "hasSensitivityLevel",
+    "hasTimestamp",
+    "hasTurnIndex",
+]
+
+
+@pytest.mark.parametrize("prop_name", EXPECTED_DATA_PROPS)
+def test_datatype_property_declared(tbox: Graph, prop_name: str) -> None:
+    """Each expected datatype property is declared."""
+    assert (PAO[prop_name], RDF.type, OWL.DatatypeProperty) in tbox
+
+
+# ---------------------------------------------------------------------------
+# Functional properties
+# ---------------------------------------------------------------------------
+
+EXPECTED_FUNCTIONAL = [
+    "claimType",
+    "hasConfidence",
+    "hasContent",
+    "hasSensitivityLevel",
+    "hasTimestamp",
+    "hasTurnIndex",
+    "hasComplianceStatus",
+    "hasStatus",
+    "hasTemporalExtent",
+    "inConversation",
+    "inSession",
+    "invokedBy",
+    "invokesTool",
+    "partOfConversation",
+    "partOfPlan",
+    "partOfSession",
+    "performedBy",
+    "producedSummary",
+    "requestedBy",
+    "spawnedBy",
+]
+
+
+@pytest.mark.parametrize("prop_name", EXPECTED_FUNCTIONAL)
+def test_functional_properties(tbox: Graph, prop_name: str) -> None:
+    """Expected properties are declared as functional."""
+    assert (PAO[prop_name], RDF.type, OWL.FunctionalProperty) in tbox
+
+
+# ---------------------------------------------------------------------------
+# Transitive properties
+# ---------------------------------------------------------------------------
+
+
+def test_part_of_transitive(tbox: Graph) -> None:
+    """partOf is declared as transitive."""
+    assert (PAO.partOf, RDF.type, OWL.TransitiveProperty) in tbox
+
+
+def test_has_part_transitive(tbox: Graph) -> None:
+    """hasPart is declared as transitive."""
+    assert (PAO.hasPart, RDF.type, OWL.TransitiveProperty) in tbox
+
+
+# ---------------------------------------------------------------------------
+# Inverse pairs (9 pairs)
+# ---------------------------------------------------------------------------
+
+INVERSE_PAIRS = [
+    ("partOf", "hasPart"),
+    ("hasAvailableTool", "availableToAgent"),
+    ("hasParticipant", "participatesIn"),
+    ("invokesTool", "invokedIn"),
+    ("storedIn", "stores"),
+    ("recordedInEpisode", "recordsEvent"),
+    ("pursuedBy", "pursuesGoal"),
+    ("partOfPlan", "hasTask"),
+    ("blockedBy", "blocks"),
+]
+
+
+@pytest.mark.parametrize(
+    ("prop_a", "prop_b"),
+    INVERSE_PAIRS,
+    ids=[f"{a}-inverseOf-{b}" for a, b in INVERSE_PAIRS],
+)
+def test_inverse_pairs(tbox: Graph, prop_a: str, prop_b: str) -> None:
+    """Inverse property pairs are declared."""
+    has_forward = (PAO[prop_a], OWL.inverseOf, PAO[prop_b]) in tbox
+    has_reverse = (PAO[prop_b], OWL.inverseOf, PAO[prop_a]) in tbox
+    assert has_forward or has_reverse, f"Missing inverseOf between {prop_a} and {prop_b}"
+
+
+# ---------------------------------------------------------------------------
+# Property hierarchy (subPropertyOf)
+# ---------------------------------------------------------------------------
+
+SUBPROPERTY_CHECKS = [
+    ("partOfConversation", "partOf"),
+    ("partOfSession", "partOf"),
+    ("partOfPlan", "partOf"),
+    ("hasTask", "hasPart"),
+    ("performedBy", "hasParticipant"),
+    ("invokedBy", "performedBy"),
+    ("hasComplianceStatus", "hasStatus"),
+]
+
+
+@pytest.mark.parametrize(
+    ("sub", "super_"),
+    SUBPROPERTY_CHECKS,
+    ids=[f"{s}-subPropertyOf-{p}" for s, p in SUBPROPERTY_CHECKS],
+)
+def test_property_hierarchy(tbox: Graph, sub: str, super_: str) -> None:
+    """Sub-property relationships are declared."""
+    assert (PAO[sub], RDFS.subPropertyOf, PAO[super_]) in tbox
+
+
+# ---------------------------------------------------------------------------
+# Domain and range checks (selected important properties)
+# ---------------------------------------------------------------------------
+
+DOMAIN_RANGE_CHECKS: list[tuple[str, URIRef | None, URIRef]] = [
+    ("storedIn", None, PAO.MemoryTier),
+    ("operatesOn", PAO.MemoryOperation, PAO.MemoryItem),
+    ("recordedInEpisode", PAO.Event, PAO.Episode),
+    ("hasTimestamp", None, XSD.dateTime),
+    ("hasTurnIndex", PAO.Turn, XSD.nonNegativeInteger),
+    ("hasConfidence", PAO.Claim, XSD.decimal),
+    ("claimType", PAO.Claim, XSD.string),
+    ("invokesTool", PAO.ToolInvocation, PAO.ToolDefinition),
+    ("invokedBy", PAO.ToolInvocation, PAO.Agent),
+    ("partOfPlan", PAO.Task, PAO.Plan),
+    ("achievesGoal", PAO.Plan, PAO.Goal),
+    ("spawnedBy", PAO.SubAgent, PAO.Agent),
+    ("requestedBy", PAO.ErasureEvent, PAO.Agent),
+    ("hasRole", PAO.Agent, PAO.AgentRole),
+]
+
+
+@pytest.mark.parametrize(
+    ("prop_name", "domain", "range_"),
+    DOMAIN_RANGE_CHECKS,
+    ids=[
+        f"{p}-D:{str(d).split('/')[-1] if d else 'none'}-R:{str(r).split('/')[-1]}"
+        for p, d, r in DOMAIN_RANGE_CHECKS
+    ],
+)
+def test_domain_range(tbox: Graph, prop_name: str, domain: URIRef | None, range_: URIRef) -> None:
+    """Property has correct domain and range."""
+    if domain is not None:
+        assert (PAO[prop_name], RDFS.domain, domain) in tbox
+    else:
+        domains = list(tbox.objects(PAO[prop_name], RDFS.domain))
+        assert not domains, f"{prop_name} should have no domain, found {domains}"
+    assert (PAO[prop_name], RDFS.range, range_) in tbox
+
+
+# ---------------------------------------------------------------------------
+# Existential restrictions
+# ---------------------------------------------------------------------------
+
+
+def _has_existential(g: Graph, cls: URIRef, prop: URIRef, filler: URIRef) -> bool:
+    """Check if cls SubClassOf prop some filler."""
+    for superclass in g.objects(cls, RDFS.subClassOf):
+        if (superclass, RDF.type, OWL.Restriction) in g:
+            on_prop = g.value(superclass, OWL.onProperty)
+            some_values = g.value(superclass, OWL.someValuesFrom)
+            if on_prop == prop and some_values == filler:
+                return True
+    return False
+
+
+EXISTENTIAL_CHECKS = [
+    ("AIAgent", "hasAvailableTool", "ToolDefinition"),
+    ("SubAgent", "spawnedBy", "AIAgent"),
+    ("SubAgent", "delegatedTask", "Task"),
+    ("Action", "performedBy", "Agent"),
+    ("Session", "partOfConversation", "Conversation"),
+    ("Session", "hasTemporalExtent", None),  # time:Interval
+    ("Session", "hasStatus", "SessionStatus"),
+    ("Turn", "partOfSession", "Session"),
+    ("Turn", "hasParticipant", "Agent"),
+    ("Turn", "partOfConversation", "Conversation"),
+    ("Session", "hasParticipant", "Agent"),
+    ("CompactionEvent", "inConversation", "Conversation"),
+    ("CompactionEvent", "producedSummary", "MemoryItem"),
+    ("ErasureEvent", "requestedBy", "Agent"),
+    ("ToolInvocation", "invokesTool", "ToolDefinition"),
+    ("ToolInvocation", "invokedBy", "Agent"),
+    ("ToolInvocation", "inSession", "Session"),
+    ("ToolInvocation", "hasInput", None),  # prov:Entity
+    ("ToolInvocation", "hasOutput", None),  # prov:Entity
+    ("ToolInvocation", "hasComplianceStatus", "ComplianceStatus"),
+    ("MemoryItem", "storedIn", "MemoryTier"),
+    ("Episode", "storedIn", "MemoryTier"),
+    ("Episode", "hasTopic", None),  # skos:Concept
+    ("Episode", "hasTemporalExtent", None),  # time:Interval
+    ("Claim", "storedIn", "MemoryTier"),
+    ("Claim", "aboutAgent", "Agent"),
+    ("Event", "hasTemporalExtent", None),  # time:TemporalEntity
+    ("MemoryOperation", "operatesOn", "MemoryItem"),
+    ("Goal", "pursuedBy", "Agent"),
+    ("Goal", "hasStatus", "TaskStatus"),
+    ("Plan", "achievesGoal", "Goal"),
+    ("Task", "partOfPlan", "Plan"),
+    ("Task", "hasStatus", "TaskStatus"),
+    ("PermissionPolicy", "appliesTo", "Agent"),
+    ("PermissionPolicy", "grantsPermission", None),  # odrl:Permission
+    ("PermissionPolicy", "restrictsToolUse", "ToolDefinition"),
+    ("SafetyConstraint", "appliesTo", "Agent"),
+]
+
+
+@pytest.mark.parametrize(
+    ("cls_name", "prop_name", "filler_name"),
+    EXISTENTIAL_CHECKS,
+    ids=[f"{c}-{p}-some-{f or 'ext'}" for c, p, f in EXISTENTIAL_CHECKS],
+)
+def test_existential_restrictions(
+    tbox: Graph, cls_name: str, prop_name: str, filler_name: str | None
+) -> None:
+    """Class has the expected existential restriction."""
+    cls = PAO[cls_name]
+    prop = PAO[prop_name]
+
+    # Handle external fillers
+    if filler_name is None:
+        # Check that *some* someValuesFrom restriction exists on this prop
+        found = False
+        for sc in tbox.objects(cls, RDFS.subClassOf):
+            if (
+                (sc, RDF.type, OWL.Restriction) in tbox
+                and tbox.value(sc, OWL.onProperty) == prop
+                and tbox.value(sc, OWL.someValuesFrom) is not None
+            ):
+                found = True
+                break
+        assert found, f"{cls_name} missing existential on {prop_name}"
+    else:
+        filler = PAO[filler_name]
+        assert _has_existential(tbox, cls, prop, filler), (
+            f"{cls_name} SubClassOf {prop_name} some {filler_name} not found"
+        )
+
+
+# ---------------------------------------------------------------------------
+# Universal restriction
+# ---------------------------------------------------------------------------
+
+
+def test_episode_stored_in_only_episodic_memory(tbox: Graph) -> None:
+    """Episode SubClassOf storedIn only EpisodicMemory."""
+    found = False
+    for sc in tbox.objects(PAO.Episode, RDFS.subClassOf):
+        if (sc, RDF.type, OWL.Restriction) in tbox:
+            on_prop = tbox.value(sc, OWL.onProperty)
+            all_values = tbox.value(sc, OWL.allValuesFrom)
+            if on_prop == PAO.storedIn and all_values == PAO.EpisodicMemory:
+                found = True
+                break
+    assert found, "Episode storedIn only EpisodicMemory not found"
+
+
+# ---------------------------------------------------------------------------
+# Qualified cardinality restrictions
+# ---------------------------------------------------------------------------
+
+
+def test_turn_has_participant_exactly_1_agent(tbox: Graph) -> None:
+    """Turn SubClassOf hasParticipant exactly 1 Agent."""
+    found = False
+    for sc in tbox.objects(PAO.Turn, RDFS.subClassOf):
+        if (sc, RDF.type, OWL.Restriction) in tbox:
+            on_prop = tbox.value(sc, OWL.onProperty)
+            qcard = tbox.value(sc, OWL.qualifiedCardinality)
+            on_class = tbox.value(sc, OWL.onClass)
+            if on_prop == PAO.hasParticipant and on_class == PAO.Agent and str(qcard) == "1":
+                found = True
+                break
+    assert found, "Turn hasParticipant exactly 1 Agent not found"
+
+
+def test_memory_item_stored_in_exactly_1_memory_tier(tbox: Graph) -> None:
+    """MemoryItem SubClassOf storedIn exactly 1 MemoryTier."""
+    found = False
+    for sc in tbox.objects(PAO.MemoryItem, RDFS.subClassOf):
+        if (sc, RDF.type, OWL.Restriction) in tbox:
+            on_prop = tbox.value(sc, OWL.onProperty)
+            qcard = tbox.value(sc, OWL.qualifiedCardinality)
+            on_class = tbox.value(sc, OWL.onClass)
+            if on_prop == PAO.storedIn and on_class == PAO.MemoryTier and str(qcard) == "1":
+                found = True
+                break
+    assert found, "MemoryItem storedIn exactly 1 MemoryTier not found"
+
+
+def test_turn_has_turn_index_exactly_1(tbox: Graph) -> None:
+    """Turn SubClassOf hasTurnIndex exactly 1 xsd:nonNegativeInteger."""
+    found = False
+    for sc in tbox.objects(PAO.Turn, RDFS.subClassOf):
+        if (sc, RDF.type, OWL.Restriction) in tbox:
+            on_prop = tbox.value(sc, OWL.onProperty)
+            qcard = tbox.value(sc, OWL.qualifiedCardinality)
+            on_dr = tbox.value(sc, OWL.onDataRange)
+            if (
+                on_prop == PAO.hasTurnIndex
+                and on_dr == XSD.nonNegativeInteger
+                and str(qcard) == "1"
+            ):
+                found = True
+                break
+    assert found, "Turn hasTurnIndex exactly 1 xsd:nonNegativeInteger not found"
+
+
+# ---------------------------------------------------------------------------
+# DisjointUnion axioms
+# ---------------------------------------------------------------------------
+
+
+def _get_disjoint_union_members(g: Graph, cls: URIRef) -> set[URIRef]:
+    """Get members of a DisjointUnion axiom for a class."""
+    members_list = g.value(cls, OWL.disjointUnionOf)
+    if members_list is None:
+        return set()
+    return set(Collection(g, members_list))
+
+
+def test_memory_tier_disjoint_union(tbox: Graph) -> None:
+    """MemoryTier disjointUnionOf the four memory subtypes."""
+    members = _get_disjoint_union_members(tbox, PAO.MemoryTier)
+    expected = {PAO.WorkingMemory, PAO.EpisodicMemory, PAO.SemanticMemory, PAO.ProceduralMemory}
+    assert members == expected, f"MemoryTier DisjointUnion: expected {expected}, got {members}"
+
+
+def test_memory_operation_disjoint_union(tbox: Graph) -> None:
+    """MemoryOperation owl:disjointUnionOf (Encoding, Retrieval, Consolidation, Forgetting)."""
+    members = _get_disjoint_union_members(tbox, PAO.MemoryOperation)
+    expected = {PAO.Encoding, PAO.Retrieval, PAO.Consolidation, PAO.Forgetting}
+    assert members == expected, f"MemoryOperation DisjointUnion: expected {expected}, got {members}"
+
+
+# ---------------------------------------------------------------------------
+# AllDisjointClasses axioms (8 axioms)
+# ---------------------------------------------------------------------------
+
+
+def _collect_all_disjoint_groups(g: Graph) -> list[set[URIRef]]:
+    """Collect all AllDisjointClasses member groups."""
+    groups = []
+    for node in g.subjects(RDF.type, OWL.AllDisjointClasses):
+        members_list = g.value(node, OWL.members)
+        if members_list:
+            groups.append(set(Collection(g, members_list)))
+    return groups
+
+
+def test_all_disjoint_classes_count(tbox: Graph) -> None:
+    """At least 8 AllDisjointClasses axioms exist."""
+    groups = _collect_all_disjoint_groups(tbox)
+    assert len(groups) >= 8, f"Expected >=8 AllDisjointClasses, got {len(groups)}"
+
+
+DISJOINT_GROUP_CHECKS = [
+    ({PAO.AIAgent, PAO.HumanUser}, "Agent subtypes"),
+    (
+        {
+            PAO.Action,
+            PAO.Conversation,
+            PAO.Session,
+            PAO.Turn,
+            PAO.CompactionEvent,
+            PAO.ErasureEvent,
+            PAO.MemoryOperation,
+        },
+        "Event subtypes",
+    ),
+    ({PAO.Episode, PAO.Claim}, "MemoryItem subtypes"),
+    ({PAO.SessionStatus, PAO.TaskStatus, PAO.ComplianceStatus}, "Status subtypes"),
+    ({PAO.PermissionPolicy, PAO.SafetyConstraint}, "Governance types"),
+    (
+        {PAO.WorkingMemory, PAO.EpisodicMemory, PAO.SemanticMemory, PAO.ProceduralMemory},
+        "MemoryTier subtypes",
+    ),
+    (
+        {PAO.Encoding, PAO.Retrieval, PAO.Consolidation, PAO.Forgetting},
+        "MemoryOperation subtypes",
+    ),
+]
+
+
+@pytest.mark.parametrize(
+    ("expected_members", "description"),
+    DISJOINT_GROUP_CHECKS,
+    ids=[d for _, d in DISJOINT_GROUP_CHECKS],
+)
+def test_disjoint_group_exists(
+    tbox: Graph, expected_members: set[URIRef], description: str
+) -> None:
+    """An AllDisjointClasses axiom exists containing the expected members."""
+    groups = _collect_all_disjoint_groups(tbox)
+    found = any(expected_members <= group for group in groups)
+    assert found, f"Missing AllDisjointClasses for {description}: {expected_members}"
+
+
+# ---------------------------------------------------------------------------
+# Reference individuals: status values, roles, classifiers
+# ---------------------------------------------------------------------------
+
+
+def test_session_status_individuals(ref: Graph) -> None:
+    """Active, Ended, Interrupted are SessionStatus individuals."""
+    for name in ["Active", "Ended", "Interrupted"]:
+        assert (PAO[name], RDF.type, PAO.SessionStatus) in ref
+
+
+def test_task_status_individuals(ref: Graph) -> None:
+    """Pending, InProgress, Completed, Blocked are TaskStatus individuals."""
+    for name in ["Pending", "InProgress", "Completed", "Blocked"]:
+        assert (PAO[name], RDF.type, PAO.TaskStatus) in ref
+
+
+def test_compliance_status_individuals(ref: Graph) -> None:
+    """Compliant, NonCompliant are ComplianceStatus individuals."""
+    for name in ["Compliant", "NonCompliant"]:
+        assert (PAO[name], RDF.type, PAO.ComplianceStatus) in ref
+
+
+def test_agent_role_individuals(ref: Graph) -> None:
+    """AssistantRole, UserRole are AgentRole individuals."""
+    for name in ["AssistantRole", "UserRole"]:
+        assert (PAO[name], RDF.type, PAO.AgentRole) in ref
+
+
+def test_classifier_individuals(ref: Graph) -> None:
+    """UserPreference and PersonalData are named individuals."""
+    assert (PAO.UserPreference, RDF.type, OWL.NamedIndividual) in ref
+    assert (PAO.PersonalData, RDF.type, OWL.NamedIndividual) in ref
+
+
+# ---------------------------------------------------------------------------
+# owl:oneOf enumerations
+# ---------------------------------------------------------------------------
+
+
+def _get_one_of_members(g: Graph, cls: URIRef) -> set[URIRef]:
+    """Get members of an owl:equivalentClass / owl:oneOf enumeration."""
+    for eq in g.objects(cls, OWL.equivalentClass):
+        list_node = g.value(eq, OWL.oneOf)
+        if list_node:
+            return set(Collection(g, list_node))
+    return set()
+
+
+def test_session_status_enumeration(ref: Graph) -> None:
+    """SessionStatus owl:equivalentClass owl:oneOf (Active, Ended, Interrupted)."""
+    members = _get_one_of_members(ref, PAO.SessionStatus)
+    assert members == {PAO.Active, PAO.Ended, PAO.Interrupted}
+
+
+def test_task_status_enumeration(ref: Graph) -> None:
+    """TaskStatus owl:equivalentClass owl:oneOf (Pending, InProgress, Completed, Blocked)."""
+    members = _get_one_of_members(ref, PAO.TaskStatus)
+    assert members == {PAO.Pending, PAO.InProgress, PAO.Completed, PAO.Blocked}
+
+
+def test_compliance_status_enumeration(ref: Graph) -> None:
+    """ComplianceStatus owl:equivalentClass owl:oneOf (Compliant, NonCompliant)."""
+    members = _get_one_of_members(ref, PAO.ComplianceStatus)
+    assert members == {PAO.Compliant, PAO.NonCompliant}
+
+
+def test_agent_role_enumeration(ref: Graph) -> None:
+    """AgentRole owl:equivalentClass owl:oneOf (AssistantRole, UserRole)."""
+    members = _get_one_of_members(ref, PAO.AgentRole)
+    assert members == {PAO.AssistantRole, PAO.UserRole}
+
+
+# ---------------------------------------------------------------------------
+# AllDifferent axioms for status groups
+# ---------------------------------------------------------------------------
+
+
+def _find_all_different_containing(g: Graph, individuals: set[URIRef]) -> bool:
+    """Check if an AllDifferent axiom exists containing all given individuals."""
+    for node in g.subjects(RDF.type, OWL.AllDifferent):
+        members_list = g.value(node, OWL.distinctMembers)
+        if members_list:
+            members = set(Collection(g, members_list))
+            if individuals <= members:
+                return True
+    return False
+
+
+def test_all_different_task_status(ref: Graph) -> None:
+    """AllDifferent for TaskStatus individuals."""
+    assert _find_all_different_containing(
+        ref, {PAO.Pending, PAO.InProgress, PAO.Completed, PAO.Blocked}
+    )
+
+
+def test_all_different_session_status(ref: Graph) -> None:
+    """AllDifferent for SessionStatus individuals."""
+    assert _find_all_different_containing(ref, {PAO.Active, PAO.Ended, PAO.Interrupted})
+
+
+def test_all_different_compliance_status(ref: Graph) -> None:
+    """AllDifferent for ComplianceStatus individuals."""
+    assert _find_all_different_containing(ref, {PAO.Compliant, PAO.NonCompliant})
+
+
+def test_all_different_agent_roles(ref: Graph) -> None:
+    """AllDifferent for AgentRole individuals."""
+    assert _find_all_different_containing(ref, {PAO.AssistantRole, PAO.UserRole})
+
+
+# ---------------------------------------------------------------------------
+# PROV-O alignment
+# ---------------------------------------------------------------------------
+
+
+def test_event_subclass_prov_activity(tbox: Graph) -> None:
+    """Event is subClassOf prov:Activity."""
+    assert (PAO.Event, RDFS.subClassOf, PROV.Activity) in tbox
+
+
+def test_ai_agent_subclass_prov_software_agent(tbox: Graph) -> None:
+    """AIAgent is subClassOf prov:SoftwareAgent."""
+    assert (PAO.AIAgent, RDFS.subClassOf, PROV.SoftwareAgent) in tbox
+
+
+def test_human_user_subclass_prov_person(tbox: Graph) -> None:
+    """HumanUser is subClassOf prov:Person."""
+    assert (PAO.HumanUser, RDFS.subClassOf, PROV.Person) in tbox
+
+
+def test_plan_subclass_prov_plan(tbox: Graph) -> None:
+    """Plan is subClassOf prov:Plan."""
+    assert (PAO.Plan, RDFS.subClassOf, PROV.Plan) in tbox
+
+
+def test_agent_role_subclass_prov_role(tbox: Graph) -> None:
+    """AgentRole is subClassOf prov:Role."""
+    assert (PAO.AgentRole, RDFS.subClassOf, PROV.Role) in tbox
+
+
+# ---------------------------------------------------------------------------
+# Ontology header
+# ---------------------------------------------------------------------------
+
+
+def test_ontology_declaration(tbox: Graph) -> None:
+    """The ontology IRI is declared."""
+    assert (PAO[""], RDF.type, OWL.Ontology) in tbox
+
+
+def test_ontology_imports_reference_individuals(tbox: Graph) -> None:
+    """TBox imports the reference individuals module."""
+    assert (PAO[""], OWL.imports, PAO["reference-individuals"]) in tbox
+
+
+def test_ontology_version_info(tbox: Graph) -> None:
+    """Ontology has owl:versionInfo."""
+    versions = list(tbox.objects(PAO[""], OWL.versionInfo))
+    assert versions
+
+
+# ---------------------------------------------------------------------------
+# CQ SPARQL tests -- SELECT queries (non_empty expected)
+# ---------------------------------------------------------------------------
+
+CQ_SELECT_NON_EMPTY = [
+    "cq-001.sparql",
+    "cq-002.sparql",
+    "cq-003.sparql",
+    "cq-004.sparql",
+    "cq-005.sparql",
+    "cq-006.sparql",
+    "cq-007.sparql",
+    "cq-008.sparql",
+    "cq-009.sparql",
+    "cq-010.sparql",
+    "cq-011.sparql",
+    "cq-012.sparql",
+    "cq-013.sparql",
+    "cq-014.sparql",
+    "cq-015.sparql",
+    "cq-016.sparql",
+    "cq-017.sparql",
+    "cq-018.sparql",
+    "cq-019.sparql",
+    "cq-020.sparql",
+    "cq-023.sparql",
+    "cq-024.sparql",
+    "cq-025.sparql",
+    "cq-026.sparql",
+    "cq-027.sparql",
+    "cq-028.sparql",
+    "cq-029.sparql",
+    "cq-030.sparql",
+    "cq-032.sparql",
+    "cq-033.sparql",
+    "cq-034.sparql",
+    "cq-035.sparql",
+    "cq-036.sparql",
+    "cq-037.sparql",
+]
+
+
+@pytest.mark.parametrize("query_file", CQ_SELECT_NON_EMPTY)
+def test_cq_select_non_empty(full_graph: Graph, query_file: str) -> None:
+    """CQ SELECT queries return non-empty result sets on sample data."""
+    query = (SPARQL_DIR / query_file).read_text()
+    results = list(full_graph.query(query))
+    assert results, f"{query_file} returned no rows"
+
+
+# ---------------------------------------------------------------------------
+# CQ SPARQL tests -- ASK queries (expected true)
+# ---------------------------------------------------------------------------
+
+CQ_ASK_TRUE = [
+    "cq-021.sparql",  # Does event A occur before event B?
+    "cq-031.sparql",  # Did a tool invocation comply?
+    "cq-038.sparql",  # Is a session active?
+]
+
+
+@pytest.mark.parametrize("query_file", CQ_ASK_TRUE)
+def test_cq_ask_true(full_graph: Graph, query_file: str) -> None:
+    """CQ ASK queries return true on sample data."""
+    query = (SPARQL_DIR / query_file).read_text()
+    result = full_graph.query(query)
+    assert bool(result.askAnswer), f"{query_file} returned false"
+
+
+# ---------------------------------------------------------------------------
+# CQ SPARQL tests -- constraint tests (expected zero rows)
+# ---------------------------------------------------------------------------
+
+CQ_ZERO_ROWS = [
+    "cq-039.sparql",  # No policy-violating tool invocations
+    "cq-040.sparql",  # No memory items without provenance
+]
+
+
+@pytest.mark.parametrize("query_file", CQ_ZERO_ROWS)
+def test_cq_constraint_zero_rows(full_graph: Graph, query_file: str) -> None:
+    """CQ constraint queries return zero rows on well-formed sample data."""
+    query = (SPARQL_DIR / query_file).read_text()
+    results = list(full_graph.query(query))
+    assert not results, f"{query_file} returned {len(results)} rows (expected 0)"
+
+
+# ---------------------------------------------------------------------------
+# SHACL conformance
+# ---------------------------------------------------------------------------
+
+
+def test_shacl_conformance(shapes: Graph) -> None:
+    """Reference individuals and sample ABox data conform to SHACL shapes."""
+    from pyshacl import validate
+
+    data = Graph()
+    data.parse(str(TBOX_PATH), format="turtle")
+    data.parse(str(REF_PATH), format="turtle")
+    data.parse(str(DATA_PATH), format="turtle")
+
+    conforms, _results_graph, results_text = validate(
+        data_graph=data,
+        shacl_graph=shapes,
+        inference="none",
+    )
+    assert conforms, f"SHACL validation failed:\n{results_text}"
+
+
+# ---------------------------------------------------------------------------
+# SHACL shapes structural checks
+# ---------------------------------------------------------------------------
+
+
+def test_shacl_shape_count(shapes: Graph) -> None:
+    """At least 12 NodeShapes exist."""
+    node_shapes = set(shapes.subjects(RDF.type, SH.NodeShape))
+    assert len(node_shapes) >= 12, f"Expected >=12 NodeShapes, got {len(node_shapes)}"
+
+
+EXPECTED_SHAPE_TARGETS = [
+    "AIAgent",
+    "Action",
+    "Claim",
+    "Conversation",
+    "ErasureEvent",
+    "MemoryOperation",
+    "Plan",
+    "Session",
+    "SubAgent",
+    "Task",
+    "ToolInvocation",
+    "Turn",
+]
+
+
+@pytest.mark.parametrize("cls_name", EXPECTED_SHAPE_TARGETS)
+def test_shacl_shape_targets_class(shapes: Graph, cls_name: str) -> None:
+    """A NodeShape targets each expected class."""
+    found = False
+    for shape in shapes.subjects(RDF.type, SH.NodeShape):
+        target = shapes.value(shape, SH.targetClass)
+        if target == PAO[cls_name]:
+            found = True
+            break
+    assert found, f"No NodeShape targeting {cls_name}"

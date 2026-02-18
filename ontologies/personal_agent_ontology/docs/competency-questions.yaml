@@ -1,0 +1,1238 @@
+# Personal Agent Ontology -- Competency Questions
+# Generated from use cases in use-cases.yaml
+# Each CQ has a unique ID, SPARQL formalization, and MoSCoW priority.
+#
+# Namespace: pao: <https://purl.org/pao/>
+# Imports: prov: <http://www.w3.org/ns/prov#>
+#          time: <http://www.w3.org/2006/time#>
+#          foaf: <http://xmlns.com/foaf/0.1/>
+
+competency_questions:
+
+  # ═══════════════════════════════════════════════════════════════════
+  # MODULE 1: Identity & Actors
+  # ═══════════════════════════════════════════════════════════════════
+
+  - id: CQ-001
+    source_use_case: UC-001
+    natural_language: "What agents exist in the system and what type is each?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - agent: pao:ClaudeCodeAgent_01
+        type: pao:AIAgent
+        label: "Claude Code main agent"
+      - agent: pao:User_Alice
+        type: pao:HumanUser
+        label: "Alice"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Agent internal architecture (weights, layers)"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?agent ?type ?label WHERE {
+        ?agent rdf:type/rdfs:subClassOf* pao:Agent ;
+               rdf:type ?type ;
+               rdfs:label ?label .
+        ?type rdfs:subClassOf* pao:Agent .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Agent
+      - AIAgent
+      - HumanUser
+    required_properties: []
+    required_axioms: []
+
+  - id: CQ-002
+    source_use_case: UC-001
+    natural_language: "What tools are available to a given agent?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - agent: pao:ClaudeCodeAgent_01
+        tool: pao:ReadTool
+        label: "Read"
+      - agent: pao:ClaudeCodeAgent_01
+        tool: pao:BashTool
+        label: "Bash"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Tool implementation details"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?agent ?tool ?toolLabel WHERE {
+        ?agent pao:hasAvailableTool ?tool .
+        ?tool rdfs:label ?toolLabel .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Agent
+      - ToolDefinition
+    required_properties:
+      - hasAvailableTool
+    required_axioms: []
+
+  - id: CQ-003
+    source_use_case: UC-002
+    natural_language: "Which sub-agents were spawned by a given parent agent?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - parent: pao:ClaudeCodeAgent_01
+        child: pao:ExploreSubAgent_01
+        task: "Search for authentication patterns"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Multi-hop delegation chains (agent of agent of agent)"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?parent ?child ?taskLabel WHERE {
+        ?child pao:spawnedBy ?parent ;
+               rdfs:label ?childLabel .
+        OPTIONAL { ?child pao:delegatedTask ?task .
+                   ?task rdfs:label ?taskLabel . }
+      }
+    expected_result: non_empty
+    required_classes:
+      - Agent
+      - SubAgent
+      - Task
+    required_properties:
+      - spawnedBy
+      - delegatedTask
+    required_axioms: []
+
+  - id: CQ-004
+    source_use_case: UC-001
+    natural_language: "What role does an agent play in a given conversation?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - agent: pao:ClaudeCodeAgent_01
+        conversation: pao:Conv_2026_001
+        role: pao:AssistantRole
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Dynamic role changes within a single turn"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?agent ?conversation ?role WHERE {
+        ?participation a pao:ConversationParticipation ;
+                       pao:hasParticipant ?agent ;
+                       pao:inConversation ?conversation ;
+                       pao:hasRole ?role .
+      }
+    expected_result: non_empty
+    required_classes:
+      - ConversationParticipation
+      - AgentRole
+    required_properties:
+      - hasParticipant
+      - inConversation
+      - hasRole
+    required_axioms: []
+
+  # ═══════════════════════════════════════════════════════════════════
+  # MODULE 2: Conversation & Interaction
+  # ═══════════════════════════════════════════════════════════════════
+
+  - id: CQ-005
+    source_use_case: UC-003
+    natural_language: "What sessions belong to a given conversation?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - conversation: pao:Conv_2026_001
+        session: pao:Session_abc123
+        startTime: "2026-02-18T10:00:00Z"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Session infrastructure details (server, connection)"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      PREFIX time: <http://www.w3.org/2006/time#>
+      SELECT ?conversation ?session ?startTime WHERE {
+        ?session pao:partOfConversation ?conversation ;
+                 pao:hasTemporalExtent ?interval .
+        ?interval time:hasBeginning ?begin .
+        ?begin time:inXSDDateTimeStamp ?startTime .
+      }
+      ORDER BY ?startTime
+    expected_result: non_empty
+    required_classes:
+      - Conversation
+      - Session
+    required_properties:
+      - partOfConversation
+      - hasTemporalExtent
+    required_axioms: []
+
+  - id: CQ-006
+    source_use_case: UC-004
+    natural_language: "What turns occurred in a given conversation, in temporal order?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - turn: pao:Turn_001
+        participant: pao:User_Alice
+        timestamp: "2026-02-18T10:01:00Z"
+        turnIndex: 1
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Turn content analysis or sentiment"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?turn ?participant ?timestamp ?turnIndex WHERE {
+        ?turn pao:partOfConversation ?conversation ;
+              pao:hasParticipant ?participant ;
+              pao:hasTurnIndex ?turnIndex ;
+              pao:hasTimestamp ?timestamp .
+      }
+      ORDER BY ?turnIndex
+    expected_result: non_empty
+    required_classes:
+      - Turn
+      - Conversation
+    required_properties:
+      - partOfConversation
+      - hasParticipant
+      - hasTurnIndex
+      - hasTimestamp
+    required_axioms: []
+
+  - id: CQ-007
+    source_use_case: UC-005
+    natural_language: "What tool invocations occurred in a given session?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - invocation: pao:ToolInv_001
+        tool: pao:ReadTool
+        agent: pao:ClaudeCodeAgent_01
+        timestamp: "2026-02-18T10:02:30Z"
+        status: pao:Completed
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Tool execution internals"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?invocation ?tool ?agent ?timestamp ?status WHERE {
+        ?invocation a pao:ToolInvocation ;
+                    pao:invokesTool ?tool ;
+                    pao:invokedBy ?agent ;
+                    pao:hasTimestamp ?timestamp ;
+                    pao:hasStatus ?status ;
+                    pao:inSession ?session .
+      }
+      ORDER BY ?timestamp
+    expected_result: non_empty
+    required_classes:
+      - ToolInvocation
+      - ToolDefinition
+      - Session
+    required_properties:
+      - invokesTool
+      - invokedBy
+      - hasTimestamp
+      - hasStatus
+      - inSession
+    required_axioms: []
+
+  - id: CQ-008
+    source_use_case: UC-005
+    natural_language: "What input was provided to a tool invocation and what output was returned?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - invocation: pao:ToolInv_001
+        input: "{\"file_path\": \"/src/main.py\"}"
+        output: "# Main module..."
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Binary/large file content (referenced by URI)"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?invocation ?input ?output WHERE {
+        ?invocation a pao:ToolInvocation ;
+                    pao:hasInput ?input ;
+                    pao:hasOutput ?output .
+      }
+    expected_result: non_empty
+    required_classes:
+      - ToolInvocation
+    required_properties:
+      - hasInput
+      - hasOutput
+    required_axioms: []
+
+  - id: CQ-009
+    source_use_case: UC-003
+    natural_language: "What was the most recent session for a given user?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - user: pao:User_Alice
+        session: pao:Session_xyz789
+        startTime: "2026-02-18T14:00:00Z"
+    derivation_method: aggregation
+    out_of_scope:
+      - "Session resumption mechanics"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      PREFIX time: <http://www.w3.org/2006/time#>
+      SELECT ?user ?session ?startTime WHERE {
+        ?session pao:hasParticipant ?user ;
+                 pao:hasTemporalExtent ?interval .
+        ?interval time:hasBeginning ?begin .
+        ?begin time:inXSDDateTimeStamp ?startTime .
+        ?user a pao:HumanUser .
+      }
+      ORDER BY DESC(?startTime)
+      LIMIT 1
+    expected_result: non_empty
+    required_classes:
+      - Session
+      - HumanUser
+    required_properties:
+      - hasParticipant
+      - hasTemporalExtent
+    required_axioms: []
+
+  - id: CQ-010
+    source_use_case: UC-006
+    natural_language: "When did context compaction events occur in a conversation and what was preserved?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - compaction: pao:Compaction_001
+        conversation: pao:Conv_2026_001
+        timestamp: "2026-02-18T11:30:00Z"
+        summaryLength: 2048
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Compaction algorithm details"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?compaction ?conversation ?timestamp ?summary WHERE {
+        ?compaction a pao:CompactionEvent ;
+                    pao:inConversation ?conversation ;
+                    pao:hasTimestamp ?timestamp ;
+                    pao:producedSummary ?summary .
+      }
+      ORDER BY ?timestamp
+    expected_result: non_empty
+    required_classes:
+      - CompactionEvent
+    required_properties:
+      - inConversation
+      - producedSummary
+    required_axioms: []
+
+  # ═══════════════════════════════════════════════════════════════════
+  # MODULE 3: Memory
+  # ═══════════════════════════════════════════════════════════════════
+
+  - id: CQ-011
+    source_use_case: UC-007
+    natural_language: "What memory items does an agent currently hold, and in which memory tier?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - item: pao:Memory_001
+        tier: pao:SemanticMemory
+        label: "User prefers dark mode"
+      - item: pao:Memory_002
+        tier: pao:EpisodicMemory
+        label: "Debugging session 2026-02-17"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Memory item content (just metadata)"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?item ?tier ?label WHERE {
+        ?item a pao:MemoryItem ;
+              pao:storedIn ?tier ;
+              rdfs:label ?label .
+        ?tier a pao:MemoryTier .
+      }
+    expected_result: non_empty
+    required_classes:
+      - MemoryItem
+      - MemoryTier
+    required_properties:
+      - storedIn
+    required_axioms: []
+
+  - id: CQ-012
+    source_use_case: UC-007
+    natural_language: "What episodes are stored in episodic memory for a given agent?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - episode: pao:Episode_001
+        startTime: "2026-02-17T09:00:00Z"
+        endTime: "2026-02-17T10:30:00Z"
+        topic: "API integration debugging"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Episode internal event structure (see CQ-025)"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      PREFIX time: <http://www.w3.org/2006/time#>
+      SELECT ?episode ?startTime ?endTime ?topic WHERE {
+        ?episode a pao:Episode ;
+                 pao:storedIn ?tier ;
+                 pao:hasTopic ?topic ;
+                 pao:hasTemporalExtent ?interval .
+        ?tier a pao:EpisodicMemory .
+        ?interval time:hasBeginning/time:inXSDDateTimeStamp ?startTime ;
+                  time:hasEnd/time:inXSDDateTimeStamp ?endTime .
+      }
+      ORDER BY DESC(?startTime)
+    expected_result: non_empty
+    required_classes:
+      - Episode
+      - EpisodicMemory
+    required_properties:
+      - storedIn
+      - hasTopic
+      - hasTemporalExtent
+    required_axioms: []
+
+  - id: CQ-013
+    source_use_case: UC-008
+    natural_language: "What claims are stored in semantic memory and what is their confidence level?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - claim: pao:Claim_001
+        content: "User prefers functional programming style"
+        confidence: 0.85
+        source: pao:Episode_003
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Claim truth evaluation"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?claim ?content ?confidence WHERE {
+        ?claim a pao:Claim ;
+               pao:storedIn ?tier ;
+               pao:hasContent ?content ;
+               pao:hasConfidence ?confidence .
+        ?tier a pao:SemanticMemory .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Claim
+      - SemanticMemory
+    required_properties:
+      - hasContent
+      - hasConfidence
+      - storedIn
+    required_axioms: []
+
+  - id: CQ-014
+    source_use_case: UC-010
+    natural_language: "What is the provenance chain of a given memory item?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - item: pao:Claim_001
+        generatedBy: pao:ConsolidationActivity_001
+        derivedFrom: pao:Episode_003
+        attributedTo: pao:ClaudeCodeAgent_01
+    derivation_method: inference
+    out_of_scope:
+      - "Infinite provenance chains (limited to 3 hops)"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      PREFIX prov: <http://www.w3.org/ns/prov#>
+      SELECT ?item ?generatedBy ?derivedFrom ?attributedTo WHERE {
+        ?item prov:wasGeneratedBy ?generatedBy ;
+              prov:wasDerivedFrom ?derivedFrom ;
+              prov:wasAttributedTo ?attributedTo .
+      }
+    expected_result: non_empty
+    required_classes:
+      - MemoryItem
+    required_properties: []
+    required_axioms:
+      - "MemoryItem rdfs:subClassOf prov:Entity"
+
+  - id: CQ-015
+    source_use_case: UC-009
+    natural_language: "What are the stored preferences for a given user?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - preference: pao:Claim_002
+        user: pao:User_Alice
+        content: "Prefers dark mode"
+        firstStated: "2026-01-15T09:00:00Z"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Preference strength ranking"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?preference ?content ?firstStated WHERE {
+        ?preference a pao:Claim ;
+                    pao:claimType pao:UserPreference ;
+                    pao:aboutAgent ?user ;
+                    pao:hasContent ?content ;
+                    pao:hasTimestamp ?firstStated .
+        ?user a pao:HumanUser .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Claim
+    required_properties:
+      - claimType
+      - aboutAgent
+      - hasContent
+    required_axioms: []
+
+  - id: CQ-016
+    source_use_case: UC-008
+    natural_language: "From which episodes was a given semantic memory claim derived?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - claim: pao:Claim_001
+        sourceEpisode: pao:Episode_003
+        sourceEpisode2: pao:Episode_007
+    derivation_method: inference
+    out_of_scope:
+      - "Confidence aggregation logic"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      PREFIX prov: <http://www.w3.org/ns/prov#>
+      SELECT ?claim ?sourceEpisode WHERE {
+        ?claim a pao:Claim ;
+               prov:wasDerivedFrom+ ?sourceEpisode .
+        ?sourceEpisode a pao:Episode .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Claim
+      - Episode
+    required_properties: []
+    required_axioms:
+      - "Claim rdfs:subClassOf prov:Entity"
+      - "Episode rdfs:subClassOf prov:Entity"
+
+  - id: CQ-017
+    source_use_case: UC-012
+    natural_language: "What is the revision history of a given claim?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - currentClaim: pao:Claim_001_v2
+        priorVersion: pao:Claim_001_v1
+        revisionTime: "2026-02-18T12:00:00Z"
+    derivation_method: inference
+    out_of_scope:
+      - "Diff computation between versions"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      PREFIX prov: <http://www.w3.org/ns/prov#>
+      SELECT ?current ?prior ?revisionTime WHERE {
+        ?current prov:wasRevisionOf ?prior ;
+                 pao:hasTimestamp ?revisionTime .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Claim
+    required_properties: []
+    required_axioms:
+      - "Claim rdfs:subClassOf prov:Entity"
+
+  - id: CQ-018
+    source_use_case: UC-011
+    natural_language: "What memory tier does a given memory item reside in?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - item: pao:Memory_001
+        tier: pao:SemanticMemory
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Physical storage location"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?item ?tier WHERE {
+        ?item pao:storedIn ?tier .
+        ?tier a pao:MemoryTier .
+      }
+    expected_result: non_empty
+    required_classes:
+      - MemoryItem
+      - MemoryTier
+    required_properties:
+      - storedIn
+    required_axioms: []
+
+  - id: CQ-019
+    source_use_case: UC-011
+    natural_language: "What memory operations (encoding, retrieval, consolidation, forgetting) have been performed on a memory item?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - item: pao:Memory_001
+        operation: pao:EncodingOp_001
+        operationType: pao:Encoding
+        timestamp: "2026-02-17T09:15:00Z"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Operation implementation details"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?item ?operation ?opType ?timestamp WHERE {
+        ?operation a pao:MemoryOperation ;
+                   rdf:type ?opType ;
+                   pao:operatesOn ?item ;
+                   pao:hasTimestamp ?timestamp .
+        ?opType rdfs:subClassOf pao:MemoryOperation .
+      }
+      ORDER BY ?timestamp
+    expected_result: non_empty
+    required_classes:
+      - MemoryOperation
+      - Encoding
+      - Retrieval
+      - Consolidation
+      - Forgetting
+    required_properties:
+      - operatesOn
+    required_axioms: []
+
+  # ═══════════════════════════════════════════════════════════════════
+  # MODULE 4: Actions, Events, and Time
+  # ═══════════════════════════════════════════════════════════════════
+
+  - id: CQ-020
+    source_use_case: UC-013
+    natural_language: "What events occurred in a given session, in temporal order?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - event: pao:Turn_001
+        type: pao:Turn
+        timestamp: "2026-02-18T10:01:00Z"
+      - event: pao:ToolInv_001
+        type: pao:ToolInvocation
+        timestamp: "2026-02-18T10:02:30Z"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Sub-millisecond ordering"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?event ?type ?timestamp WHERE {
+        ?event pao:inSession ?session ;
+               rdf:type ?type ;
+               pao:hasTimestamp ?timestamp .
+        ?type rdfs:subClassOf* pao:Event .
+      }
+      ORDER BY ?timestamp
+    expected_result: non_empty
+    required_classes:
+      - Event
+      - Session
+    required_properties:
+      - inSession
+      - hasTimestamp
+    required_axioms: []
+
+  - id: CQ-021
+    source_use_case: UC-014
+    natural_language: "Does event A occur before event B?"
+    type: boolean
+    priority: should_have
+    sample_answer:
+      - eventA: pao:Turn_001
+        eventB: pao:ToolInv_001
+        isBefore: true
+    derivation_method: inference
+    out_of_scope:
+      - "Allen relations beyond before/after (overlaps, during, etc.) -- see CQ-022"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      PREFIX time: <http://www.w3.org/2006/time#>
+      ASK {
+        ?eventA pao:hasTemporalExtent ?intervalA .
+        ?eventB pao:hasTemporalExtent ?intervalB .
+        ?intervalA time:hasEnd ?endA .
+        ?intervalB time:hasBeginning ?beginB .
+        ?endA time:inXSDDateTimeStamp ?endTimeA .
+        ?beginB time:inXSDDateTimeStamp ?beginTimeB .
+        FILTER (?endTimeA <= ?beginTimeB)
+      }
+    expected_result: "true"
+    required_classes:
+      - Event
+    required_properties:
+      - hasTemporalExtent
+    required_axioms: []
+
+  - id: CQ-022
+    source_use_case: UC-014
+    natural_language: "What events overlap temporally with a given event?"
+    type: relational
+    priority: could_have
+    sample_answer:
+      - event: pao:ToolInv_001
+        overlapping: pao:ToolInv_002
+    derivation_method: inference
+    out_of_scope:
+      - "Full Allen interval algebra (13 relations)"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      PREFIX time: <http://www.w3.org/2006/time#>
+      SELECT ?event ?overlapping WHERE {
+        ?event pao:hasTemporalExtent ?i1 .
+        ?overlapping pao:hasTemporalExtent ?i2 .
+        ?i1 time:hasBeginning/time:inXSDDateTimeStamp ?s1 ;
+            time:hasEnd/time:inXSDDateTimeStamp ?e1 .
+        ?i2 time:hasBeginning/time:inXSDDateTimeStamp ?s2 ;
+            time:hasEnd/time:inXSDDateTimeStamp ?e2 .
+        FILTER (?s1 < ?e2 && ?s2 < ?e1 && ?event != ?overlapping)
+      }
+    expected_result: non_empty
+    required_classes:
+      - Event
+    required_properties:
+      - hasTemporalExtent
+    required_axioms: []
+
+  - id: CQ-023
+    source_use_case: UC-013
+    natural_language: "What actions did a specific agent perform in a given time period?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - action: pao:ToolInv_001
+        agent: pao:ClaudeCodeAgent_01
+        timestamp: "2026-02-18T10:02:30Z"
+        type: pao:ToolInvocation
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Action consequences/effects"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?action ?type ?timestamp WHERE {
+        ?action a ?type ;
+                pao:performedBy ?agent ;
+                pao:hasTimestamp ?timestamp .
+        ?type rdfs:subClassOf* pao:Action .
+        FILTER (?timestamp >= "2026-02-18T10:00:00Z"^^xsd:dateTime &&
+                ?timestamp <= "2026-02-18T11:00:00Z"^^xsd:dateTime)
+      }
+      ORDER BY ?timestamp
+    expected_result: non_empty
+    required_classes:
+      - Action
+    required_properties:
+      - performedBy
+      - hasTimestamp
+    required_axioms: []
+
+  - id: CQ-024
+    source_use_case: UC-013
+    natural_language: "What is the type of a given event (turn, tool invocation, memory operation, compaction)?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - event: pao:ToolInv_001
+        type: pao:ToolInvocation
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Custom event subtyping"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?event ?type WHERE {
+        ?event rdf:type ?type .
+        ?type rdfs:subClassOf* pao:Event .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Event
+    required_properties: []
+    required_axioms: []
+
+  - id: CQ-025
+    source_use_case: UC-007
+    natural_language: "What events are part of a given episode?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - episode: pao:Episode_001
+        event: pao:Turn_001
+        event2: pao:ToolInv_001
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Episode boundary detection algorithms"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?episode ?event WHERE {
+        ?event pao:partOfEpisode ?episode .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Episode
+      - Event
+    required_properties:
+      - partOfEpisode
+    required_axioms: []
+
+  # ═══════════════════════════════════════════════════════════════════
+  # MODULE 5: Goals, Plans, and Tasks
+  # ═══════════════════════════════════════════════════════════════════
+
+  - id: CQ-026
+    source_use_case: UC-015
+    natural_language: "What goals is an agent currently pursuing?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - agent: pao:ClaudeCodeAgent_01
+        goal: pao:Goal_001
+        description: "Build personal agent ontology"
+        status: pao:Active
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Goal priority ranking"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?goal ?description ?status WHERE {
+        ?goal a pao:Goal ;
+              pao:pursuedBy ?agent ;
+              rdfs:label ?description ;
+              pao:hasStatus ?status .
+        FILTER (?status IN (pao:Active, pao:InProgress))
+      }
+    expected_result: non_empty
+    required_classes:
+      - Goal
+    required_properties:
+      - pursuedBy
+      - hasStatus
+    required_axioms: []
+
+  - id: CQ-027
+    source_use_case: UC-015
+    natural_language: "What tasks compose a given plan, and what are their dependencies?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - plan: pao:Plan_001
+        task: pao:Task_001
+        blockedBy: pao:Task_000
+        status: pao:Pending
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Scheduling and resource allocation"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?task ?label ?status ?blockedBy WHERE {
+        ?task pao:partOfPlan ?plan ;
+              rdfs:label ?label ;
+              pao:hasStatus ?status .
+        OPTIONAL { ?task pao:blockedBy ?blockedBy . }
+      }
+    expected_result: non_empty
+    required_classes:
+      - Plan
+      - Task
+    required_properties:
+      - partOfPlan
+      - hasStatus
+      - blockedBy
+    required_axioms: []
+
+  - id: CQ-028
+    source_use_case: UC-015
+    natural_language: "What plan was created to achieve a given goal?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - goal: pao:Goal_001
+        plan: pao:Plan_001
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Plan evaluation or optimality"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?goal ?plan WHERE {
+        ?plan pao:achievesGoal ?goal .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Goal
+      - Plan
+    required_properties:
+      - achievesGoal
+    required_axioms: []
+
+  - id: CQ-029
+    source_use_case: UC-016
+    natural_language: "What is the current status of each task in a given plan?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - task: pao:Task_001
+        status: pao:Completed
+      - task: pao:Task_002
+        status: pao:InProgress
+      - task: pao:Task_003
+        status: pao:Pending
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Task progress percentage"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      SELECT ?task ?label ?status WHERE {
+        ?task pao:partOfPlan ?plan ;
+              rdfs:label ?label ;
+              pao:hasStatus ?status .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Task
+      - Plan
+    required_properties:
+      - partOfPlan
+      - hasStatus
+    required_axioms: []
+
+  # ═══════════════════════════════════════════════════════════════════
+  # MODULE 6: Governance & Safety
+  # ═══════════════════════════════════════════════════════════════════
+
+  - id: CQ-030
+    source_use_case: UC-017
+    natural_language: "What permission policies apply to a given agent?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - agent: pao:ClaudeCodeAgent_01
+        policy: pao:Policy_FileWrite
+        permission: pao:RequiresApproval
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Policy conflict resolution"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      SELECT ?agent ?policy ?policyLabel ?permission WHERE {
+        ?policy pao:appliesTo ?agent ;
+                rdfs:label ?policyLabel ;
+                pao:grantsPermission ?permission .
+      }
+    expected_result: non_empty
+    required_classes:
+      - PermissionPolicy
+    required_properties:
+      - appliesTo
+      - grantsPermission
+    required_axioms: []
+
+  - id: CQ-031
+    source_use_case: UC-017
+    natural_language: "Did a given tool invocation comply with its applicable permission policies?"
+    type: boolean
+    priority: must_have
+    sample_answer:
+      - invocation: pao:ToolInv_001
+        isCompliant: true
+    derivation_method: inference
+    out_of_scope:
+      - "Real-time policy enforcement"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      ASK {
+        ?invocation a pao:ToolInvocation ;
+                    pao:hasComplianceStatus pao:Compliant .
+      }
+    expected_result: "true"
+    required_classes:
+      - ToolInvocation
+    required_properties:
+      - hasComplianceStatus
+    required_axioms: []
+
+  - id: CQ-032
+    source_use_case: UC-018
+    natural_language: "What memory items are derived from a given source item (for deletion cascading)?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - source: pao:Memory_OriginalStatement
+        derived: pao:Claim_001
+        derived2: pao:Summary_005
+    derivation_method: inference
+    out_of_scope:
+      - "Deletion execution mechanics"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      PREFIX prov: <http://www.w3.org/ns/prov#>
+      SELECT ?derived WHERE {
+        ?derived prov:wasDerivedFrom+ ?source .
+      }
+    expected_result: non_empty
+    required_classes:
+      - MemoryItem
+    required_properties: []
+    required_axioms:
+      - "MemoryItem rdfs:subClassOf prov:Entity"
+
+  - id: CQ-033
+    source_use_case: UC-019
+    natural_language: "What sensitivity level is assigned to a given memory item?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - item: pao:Memory_001
+        sensitivity: pao:PersonalData
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Sensitivity classification algorithms"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?item ?sensitivity WHERE {
+        ?item pao:hasSensitivityLevel ?sensitivity .
+      }
+    expected_result: non_empty
+    required_classes:
+      - MemoryItem
+    required_properties:
+      - hasSensitivityLevel
+    required_axioms: []
+
+  - id: CQ-034
+    source_use_case: UC-018
+    natural_language: "What erasure events have been recorded for compliance auditing?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - erasure: pao:Erasure_001
+        requestedBy: pao:User_Alice
+        timestamp: "2026-02-18T15:00:00Z"
+        itemsDeleted: 3
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Erasure verification beyond audit record"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?erasure ?requestedBy ?timestamp WHERE {
+        ?erasure a pao:ErasureEvent ;
+                 pao:requestedBy ?requestedBy ;
+                 pao:hasTimestamp ?timestamp .
+      }
+      ORDER BY DESC(?timestamp)
+    expected_result: non_empty
+    required_classes:
+      - ErasureEvent
+    required_properties:
+      - requestedBy
+    required_axioms: []
+
+  - id: CQ-035
+    source_use_case: UC-017
+    natural_language: "What safety constraints are defined for a given agent?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - agent: pao:ClaudeCodeAgent_01
+        constraint: pao:SafetyConstraint_NoForceGitPush
+        description: "Never execute git push --force to main"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Constraint enforcement mechanisms"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?constraint ?description WHERE {
+        ?constraint a pao:SafetyConstraint ;
+                    pao:appliesTo ?agent ;
+                    rdfs:label ?description .
+      }
+    expected_result: non_empty
+    required_classes:
+      - SafetyConstraint
+    required_properties:
+      - appliesTo
+    required_axioms: []
+
+  # ═══════════════════════════════════════════════════════════════════
+  # CROSS-MODULE QUESTIONS
+  # ═══════════════════════════════════════════════════════════════════
+
+  - id: CQ-036
+    source_use_case: UC-010
+    natural_language: "What agent generated a given memory item, and through what activity?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - item: pao:Claim_001
+        agent: pao:ClaudeCodeAgent_01
+        activity: pao:ConsolidationActivity_001
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Activity implementation details"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      PREFIX prov: <http://www.w3.org/ns/prov#>
+      SELECT ?item ?agent ?activity WHERE {
+        ?item prov:wasGeneratedBy ?activity .
+        ?activity prov:wasAssociatedWith ?agent .
+      }
+    expected_result: non_empty
+    required_classes:
+      - MemoryItem
+    required_properties: []
+    required_axioms:
+      - "MemoryItem rdfs:subClassOf prov:Entity"
+
+  - id: CQ-037
+    source_use_case: UC-005
+    natural_language: "How many tool invocations did a given agent perform in a session?"
+    type: quantitative
+    priority: should_have
+    sample_answer:
+      - agent: pao:ClaudeCodeAgent_01
+        session: pao:Session_abc123
+        count: 15
+    derivation_method: aggregation
+    out_of_scope:
+      - "Tool invocation cost/billing"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?agent ?session (COUNT(?invocation) AS ?count) WHERE {
+        ?invocation a pao:ToolInvocation ;
+                    pao:invokedBy ?agent ;
+                    pao:inSession ?session .
+      }
+      GROUP BY ?agent ?session
+    expected_result: non_empty
+    required_classes:
+      - ToolInvocation
+    required_properties:
+      - invokedBy
+      - inSession
+    required_axioms: []
+
+  - id: CQ-038
+    source_use_case: UC-003
+    natural_language: "Is a given session still active or has it ended?"
+    type: boolean
+    priority: must_have
+    sample_answer:
+      - session: pao:Session_abc123
+        isActive: false
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Session timeout mechanics"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      ASK {
+        ?session a pao:Session ;
+                 pao:hasStatus pao:Active .
+      }
+    expected_result: "true"
+    required_classes:
+      - Session
+    required_properties:
+      - hasStatus
+    required_axioms: []
+
+  # ═══════════════════════════════════════════════════════════════════
+  # CONSTRAINT / NEGATIVE QUESTIONS
+  # ═══════════════════════════════════════════════════════════════════
+
+  - id: CQ-039
+    source_use_case: UC-017
+    natural_language: "Are there any tool invocations that violate their permission policies?"
+    type: constraint
+    priority: must_have
+    sample_answer:
+      - "(zero violations expected)"
+    derivation_method: inference
+    out_of_scope:
+      - "Policy violation remediation"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?invocation ?tool ?policy WHERE {
+        ?invocation a pao:ToolInvocation ;
+                    pao:hasComplianceStatus pao:NonCompliant ;
+                    pao:invokesTool ?tool .
+        ?policy pao:appliesTo ?agent ;
+                pao:restrictsToolUse ?tool .
+        ?invocation pao:invokedBy ?agent .
+      }
+    expected_result: zero_rows
+    required_classes:
+      - ToolInvocation
+      - PermissionPolicy
+    required_properties:
+      - hasComplianceStatus
+      - restrictsToolUse
+    required_axioms: []
+
+  - id: CQ-040
+    source_use_case: UC-010
+    natural_language: "Are there any memory items without provenance attribution?"
+    type: constraint
+    priority: must_have
+    sample_answer:
+      - "(zero violations expected -- all items must have provenance)"
+    derivation_method: inference
+    out_of_scope:
+      - "Provenance completeness beyond attribution"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      PREFIX prov: <http://www.w3.org/ns/prov#>
+      SELECT ?item WHERE {
+        ?item a pao:MemoryItem .
+        FILTER NOT EXISTS { ?item prov:wasAttributedTo ?agent . }
+      }
+    expected_result: zero_rows
+    required_classes:
+      - MemoryItem
+    required_properties: []
+    required_axioms:
+      - "MemoryItem rdfs:subClassOf prov:Entity"
