@@ -95,18 +95,18 @@ requirements ──→ scout ──→ conceptualizer ──→ architect ──
 
 | From | To | Artifacts Passed |
 |------|----|-----------------|
-| requirements | scout | `docs/{name}/pre-glossary.csv`, `docs/{name}/scope.md` |
-| requirements | conceptualizer | `docs/{name}/competency-questions.yaml`, `docs/{name}/pre-glossary.csv` |
+| requirements | scout | `ontologies/{name}/docs/pre-glossary.csv`, `ontologies/{name}/docs/scope.md` |
+| requirements | conceptualizer | `ontologies/{name}/docs/competency-questions.yaml`, `ontologies/{name}/docs/pre-glossary.csv` |
 | scout | conceptualizer | reuse report, import term lists, ODP recommendations |
-| conceptualizer | architect | `docs/{name}/glossary.csv`, `docs/{name}/conceptual-model.yaml`, `docs/{name}/bfo-alignment.md`, `docs/{name}/axiom-plan.yaml`, `docs/{name}/property-design.yaml` |
-| architect | validator | `ontologies/{name}/{name}.ttl`, `ontologies/{name}/shapes/{name}-shapes.ttl`, `tests/{name}/*.sparql`, `tests/{name}/cq-test-manifest.yaml` |
+| conceptualizer | architect | `ontologies/{name}/docs/glossary.csv`, `ontologies/{name}/docs/conceptual-model.yaml`, `ontologies/{name}/docs/bfo-alignment.md`, `ontologies/{name}/docs/axiom-plan.yaml`, `ontologies/{name}/docs/property-design.yaml` |
+| architect | validator | `ontologies/{name}/{name}.ttl`, `ontologies/{name}/shapes/{name}-shapes.ttl`, `ontologies/{name}/tests/*.sparql`, `ontologies/{name}/tests/cq-test-manifest.yaml` |
 
 ### Pipeline B — Mapping
 
 | From | To | Artifacts Passed |
 |------|----|-----------------|
 | scout | mapper | Target ontology identifiers, reuse recommendations |
-| mapper | validator | `mappings/*.sssom.tsv` |
+| mapper | validator | `ontologies/{name}/mappings/*.sssom.tsv` |
 
 ### Pipeline C — Evolution
 

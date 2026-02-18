@@ -53,16 +53,24 @@ pipenv, poetry, conda, or any other package manager.**
 ## Project Layout
 
 ```
-src/ontology_skill/    # Library code (importable package)
-scripts/               # Standalone CLI scripts
-tests/unit/            # Fast unit tests
-tests/integration/     # Tests requiring external services
-ontologies/            # Ontology project files
-mappings/              # SSSOM mapping files
-sparql/                # Stored SPARQL queries
-.claude/skills/        # Ontology engineering skills (8 slash commands)
-.claude/rules/         # Path-specific rules (auto-loaded by file context)
-.claude/hooks/         # Safety hooks (ontology file protection)
+ontologies/{name}/         # Self-contained ontology projects
+  ├── {name}.ttl           #   Main ontology (TBox)
+  ├── imports/             #   Imported declarations
+  ├── shapes/              #   SHACL shapes
+  ├── docs/                #   Specification, glossary, conceptual model
+  ├── tests/               #   SPARQL CQ tests + Python unit tests
+  ├── scripts/             #   Build scripts
+  ├── mappings/            #   SSSOM mapping files
+  └── release/             #   Frozen release artifacts
+src/ontology_skill/        # Shared library code (importable package)
+scripts/                   # General validation scripts
+tests/unit/                # General tests (not ontology-specific)
+tests/integration/         # Tests requiring external services
+docs/                      # General research and methodology docs
+sparql/                    # General shared SPARQL queries
+.claude/skills/            # Ontology engineering skills (8 slash commands)
+.claude/rules/             # Path-specific rules (auto-loaded by file context)
+.claude/hooks/             # Safety hooks (ontology file protection)
 ```
 
 ## Ontology Engineering Skills

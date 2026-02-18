@@ -27,8 +27,8 @@ When modifying Python scripts that generate or manipulate ontology files:
 
 After modifying build scripts, always run:
 ```bash
-uv run python ontologies/energy-news/scripts/build.py   # Rebuild artifacts
-uv run pytest ontologies/energy-news/tests/             # Run tests
+uv run python ontologies/{name}/scripts/build.py  # Rebuild artifacts
+uv run pytest ontologies/{name}/tests/             # Run tests
 uv run ruff check .                           # Lint
 uv run ruff format --check .                  # Format check
 ```
