@@ -161,7 +161,7 @@ ignore_missing_imports = true
 # pytest
 # ---------------------------------------------------------------------------
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "ontologies"]
 addopts = [
     "--strict-markers",
     "--strict-config",
