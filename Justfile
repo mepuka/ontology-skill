@@ -26,7 +26,7 @@ update:
 # ---------------------------------------------------------------------------
 
 # Run all checks (lint, typecheck, test, ontology validation)
-check: lint typecheck test validate-energy-news
+check: lint typecheck test validate-energy-news validate-pao
 
 # Lint with ruff
 lint:
@@ -128,6 +128,31 @@ validate-energy-news: build-energy-news
         --fail-on ERROR \
         --output ontologies/energy-news/energy-news-report.tsv
     uv run pytest ontologies/energy-news/tests/test_ontology.py -v
+
+# Build Personal Agent Ontology from conceptual model artifacts
+build-pao:
+    uv run python ontologies/personal_agent_ontology/scripts/build.py
+
+# Validate Personal Agent Ontology (full pipeline: build + syntax + ROBOT + SHACL + CQ tests)
+validate-pao: build-pao
+    @test -x {{robot_bin}} || just robot-install
+    uv run python scripts/validate_turtle.py \
+        ontologies/personal_agent_ontology/personal_agent_ontology.ttl \
+        ontologies/personal_agent_ontology/pao-reference-individuals.ttl \
+        ontologies/personal_agent_ontology/pao-data.ttl \
+        ontologies/personal_agent_ontology/shapes/pao-shapes.ttl
+    cd {{justfile_directory()}} && {{robot_bin}} merge \
+        --catalog ontologies/personal_agent_ontology/catalog-v001.xml \
+        --input ontologies/personal_agent_ontology/personal_agent_ontology.ttl \
+        --output /tmp/pao-merged.ttl
+    {{robot_bin}} reason --reasoner HermiT \
+        --input /tmp/pao-merged.ttl
+    cd {{justfile_directory()}} && {{robot_bin}} report \
+        --input /tmp/pao-merged.ttl \
+        --base-iri "https://purl.org/pao" \
+        --fail-on ERROR \
+        --output ontologies/personal_agent_ontology/pao-report.tsv
+    uv run pytest ontologies/personal_agent_ontology/tests/test_ontology.py -v
 
 # Generate pyLODE HTML documentation for Energy News Ontology
 doc-energy-news: build-energy-news

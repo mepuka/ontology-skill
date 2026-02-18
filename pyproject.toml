@@ -119,6 +119,10 @@ ignore = [
 "scripts/**/*.py" = [
     "T201",    # print statements OK in scripts
 ]
+"ontologies/**/scripts/**/*.py" = [
+    "T201",    # print statements OK in ontology build scripts
+    "PLR0915", # data-loading build functions have many statements by design
+]
 
 [tool.ruff.lint.isort]
 known-first-party = ["ontology_skill"]
