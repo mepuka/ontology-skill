@@ -1,6 +1,7 @@
 ---
 paths:
   - "scripts/**/*.py"
+  - "ontologies/*/scripts/**/*.py"
   - "src/ontology_skill/**/*.py"
 ---
 
@@ -26,8 +27,8 @@ When modifying Python scripts that generate or manipulate ontology files:
 
 After modifying build scripts, always run:
 ```bash
-uv run python scripts/build_energy_news.py   # Rebuild artifacts
-uv run pytest tests/unit/                     # Run tests
+uv run python ontologies/energy-news/scripts/build.py   # Rebuild artifacts
+uv run pytest ontologies/energy-news/tests/             # Run tests
 uv run ruff check .                           # Lint
 uv run ruff format --check .                  # Format check
 ```

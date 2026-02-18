@@ -1,9 +1,9 @@
 ---
 paths:
-  - "tests/**/*.sparql"
-  - "tests/**/*.py"
-  - "tests/**/*.yaml"
-  - "docs/**/competency-questions.yaml"
+  - "ontologies/*/tests/**/*.sparql"
+  - "ontologies/*/tests/**/*.py"
+  - "ontologies/*/tests/**/*.yaml"
+  - "ontologies/*/docs/competency-questions.yaml"
 ---
 
 # Ontology Testing Conventions (TDOD)
@@ -13,12 +13,12 @@ Follow Test-Driven Ontology Development (Keet & Lawrynowicz, 2016):
 ## Competency Questions
 
 - Every ontology capability must be expressed as a competency question (CQ)
-- CQs are formalized as SPARQL queries in `tests/{name}/cq-{NNN}.sparql`
+- CQs are formalized as SPARQL queries in `ontologies/{name}/tests/cq-{NNN}.sparql`
 - CQs must be registered in both:
-  - `docs/{name}/competency-questions.yaml` (full specification)
-  - `tests/{name}/cq-test-manifest.yaml` (test runner manifest)
+  - `ontologies/{name}/docs/competency-questions.yaml` (full specification)
+  - `ontologies/{name}/tests/cq-test-manifest.yaml` (test runner manifest)
 - CQ SPARQL tests must be added to the parametrized test list in
-  `tests/unit/test_{name}_ontology.py`
+  `ontologies/{name}/tests/test_ontology.py`
 
 ## SPARQL Query Standards
 

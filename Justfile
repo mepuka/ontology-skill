@@ -105,7 +105,7 @@ robot-install:
 
 # Build Energy News Ontology from conceptual model artifacts
 build-energy-news:
-    uv run python scripts/build_energy_news.py
+    uv run python ontologies/energy-news/scripts/build.py
 
 # Validate Energy News Ontology (full pipeline: build + syntax + ROBOT + SHACL + CQ tests)
 validate-energy-news: build-energy-news
@@ -127,7 +127,7 @@ validate-energy-news: build-energy-news
         --base-iri "http://example.org/ontology/energy-news" \
         --fail-on ERROR \
         --output ontologies/energy-news/energy-news-report.tsv
-    uv run pytest tests/unit/test_energy_news_ontology.py -v
+    uv run pytest ontologies/energy-news/tests/test_ontology.py -v
 
 # Generate pyLODE HTML documentation for Energy News Ontology
 doc-energy-news: build-energy-news
@@ -137,8 +137,8 @@ doc-energy-news: build-energy-news
         --input ontologies/energy-news/energy-news.ttl \
         --output /tmp/energy-news-pylode.ttl
     uv run pylode /tmp/energy-news-pylode.ttl \
-        -o docs/energy-news/energy-news.html -c true
-    @echo "Documentation generated: docs/energy-news/energy-news.html"
+        -o ontologies/energy-news/docs/energy-news.html -c true
+    @echo "Documentation generated: ontologies/energy-news/docs/energy-news.html"
 
 # ---------------------------------------------------------------------------
 # Cleanup
