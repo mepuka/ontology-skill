@@ -1,0 +1,4937 @@
+[
+  {
+    "@id": "https://purl.org/pao/hasOutput",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a tool invocation to the output data returned."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/ToolInvocation"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has output"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a tool invocation to the output data returned."
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/ns/prov#Role",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Role"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/hasInput",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a tool invocation to the input data provided."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/ToolInvocation"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has input"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a tool invocation to the input data provided."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Agent",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "An entity that bears responsibility for activities and can act on behalf of itself or others."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "agent"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Agent"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "An entity that bears responsibility for activities and can act on behalf of itself or others."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/EpisodicMemory",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A memory tier that stores time-situated experiences and interaction histories."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "episodic memory"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/MemoryTier"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A memory tier that stores time-situated experiences and interaction histories."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Ontology"
+    ],
+    "http://purl.org/dc/terms/created": [
+      {
+        "@value": "2026-02-18"
+      }
+    ],
+    "http://purl.org/dc/terms/creator": [
+      {
+        "@value": "ontology-architect skill"
+      }
+    ],
+    "http://purl.org/dc/terms/description": [
+      {
+        "@language": "en",
+        "@value": "An OWL 2 DL ontology modeling AI agent architecture including conversations, memory systems, goals, plans, and governance."
+      }
+    ],
+    "http://purl.org/dc/terms/license": [
+      {
+        "@id": "https://spdx.org/licenses/MIT"
+      }
+    ],
+    "http://purl.org/dc/terms/rights": [
+      {
+        "@value": "MIT License"
+      }
+    ],
+    "http://purl.org/dc/terms/title": [
+      {
+        "@language": "en",
+        "@value": "Personal Agent Ontology"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#versionIRI": [
+      {
+        "@id": "https://purl.org/pao/0.1.0"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#versionInfo": [
+      {
+        "@value": "0.1.0"
+      }
+    ],
+    "http://www.w3.org/ns/prov#generatedAtTime": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#dateTime",
+        "@value": "2026-02-18T00:00:00+00:00"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/TaskStatus",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A status applicable to tasks indicating progress from pending through completion."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "task status"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/Status"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#equivalentClass": [
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b51"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A status applicable to tasks indicating progress from pending through completion."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b51",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2002/07/owl#oneOf": [
+      {
+        "@list": [
+          {
+            "@id": "https://purl.org/pao/Blocked"
+          },
+          {
+            "@id": "https://purl.org/pao/Completed"
+          },
+          {
+            "@id": "https://purl.org/pao/InProgress"
+          },
+          {
+            "@id": "https://purl.org/pao/Pending"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b79",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AllDisjointClasses"
+    ],
+    "http://www.w3.org/2002/07/owl#members": [
+      {
+        "@list": [
+          {
+            "@id": "https://purl.org/pao/Consolidation"
+          },
+          {
+            "@id": "https://purl.org/pao/Encoding"
+          },
+          {
+            "@id": "https://purl.org/pao/Forgetting"
+          },
+          {
+            "@id": "https://purl.org/pao/Retrieval"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/grantsPermission",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a permission policy to the specific permission it grants."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/PermissionPolicy"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "grants permission"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/ns/odrl/2/Permission"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a permission policy to the specific permission it grants."
+      }
+    ]
+  },
+  {
+    "@id": "http://purl.org/dc/terms/description",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AnnotationProperty"
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Consolidation",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A memory operation that transforms episodic memories into semantic memories."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "consolidation"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/MemoryOperation"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A memory operation that transforms episodic memories into semantic memories."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/hasEvidence",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a claim to the evidence entities that support it."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Claim"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has evidence"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a claim to the evidence entities that support it."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/hasTask",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a plan to a task that is one of its component steps."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Plan"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has task"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Task"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subPropertyOf": [
+      {
+        "@id": "https://purl.org/pao/hasPart"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#inverseOf": [
+      {
+        "@id": "https://purl.org/pao/partOfPlan"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a plan to a task that is one of its component steps."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Turn",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A process that is a single contribution by one participant in a conversation."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "turn"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/Event"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b62"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b63"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b64"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b65"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b66"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A process that is a single contribution by one participant in a conversation."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b62",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/hasParticipant"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b63",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/partOfConversation"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/Conversation"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b64",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/partOfSession"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/Session"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b65",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onClass": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/hasParticipant"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#qualifiedCardinality": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "@value": "1"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b66",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onDataRange": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/hasTurnIndex"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#qualifiedCardinality": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "@value": "1"
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/ns/prov#qualifiedAssociation",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Activity"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "qualified association"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Association"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Blocked",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "https://purl.org/pao/TaskStatus"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "blocked"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Status value: a task cannot proceed because of unresolved dependencies."
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/2004/02/skos/core#definition",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AnnotationProperty"
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/SubAgent",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "An AI agent that was spawned by another agent to perform delegated work."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "sub agent"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/AIAgent"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b47"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b48"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "An AI agent that was spawned by another agent to perform delegated work."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b47",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/delegatedTask"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/Task"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b48",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/spawnedBy"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/AIAgent"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Active",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "https://purl.org/pao/SessionStatus"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "active"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Status value: an entity is currently active."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Session",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A process that is a bounded period of agent-user interaction within a conversation."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "session"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/Event"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b39"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b40"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b41"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b42"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A process that is a bounded period of agent-user interaction within a conversation."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b39",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/hasParticipant"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b40",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/hasStatus"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/SessionStatus"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b41",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/hasTemporalExtent"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "http://www.w3.org/2006/time#Interval"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b42",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/partOfConversation"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/Conversation"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/MemoryOperation",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A process that acts on memory items to encode, retrieve, consolidate, or remove them."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "memory operation"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/Event"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b25"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#disjointUnionOf": [
+      {
+        "@list": [
+          {
+            "@id": "https://purl.org/pao/Consolidation"
+          },
+          {
+            "@id": "https://purl.org/pao/Encoding"
+          },
+          {
+            "@id": "https://purl.org/pao/Forgetting"
+          },
+          {
+            "@id": "https://purl.org/pao/Retrieval"
+          }
+        ]
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A process that acts on memory items to encode, retrieve, consolidate, or remove them."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b25",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/operatesOn"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/MemoryItem"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Goal",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A generically dependent continuant that specifies a desired state an agent works toward."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "goal"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000031"
+      },
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b19"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b20"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A generically dependent continuant that specifies a desired state an agent works toward."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b19",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/hasStatus"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/TaskStatus"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b20",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/pursuedBy"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/invokedBy",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty",
+      "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a tool invocation to the agent that initiated it."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/ToolInvocation"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "invoked by"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subPropertyOf": [
+      {
+        "@id": "https://purl.org/pao/performedBy"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a tool invocation to the agent that initiated it."
+      }
+    ]
+  },
+  {
+    "@id": "http://xmlns.com/foaf/0.1/Person",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Person"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/PersonalData",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "personal data"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A sensitivity level indicating the memory item contains personal data."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Encoding",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A memory operation that writes new information into a memory tier."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "encoding"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/MemoryOperation"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A memory operation that writes new information into a memory tier."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/invokesTool",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty",
+      "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a tool invocation to the tool definition invoked."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/ToolInvocation"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "invokes tool"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/ToolDefinition"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a tool invocation to the tool definition invoked."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/hasPart",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty",
+      "http://www.w3.org/2002/07/owl#TransitiveProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A transitive relation linking a whole to one of its parts."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has part"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#inverseOf": [
+      {
+        "@id": "https://purl.org/pao/partOf"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A transitive relation linking a whole to one of its parts."
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/2006/time#Instant",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Instant"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2006/time#TemporalEntity"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Episode",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A memory item that records a temporally bounded cluster of related events."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "episode"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/MemoryItem"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b13"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b14"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b15"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b16"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A memory item that records a temporally bounded cluster of related events."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b13",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/hasTemporalExtent"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "http://www.w3.org/2006/time#Interval"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b14",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/hasTopic"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "http://www.w3.org/2004/02/skos/core#Concept"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b15",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/storedIn"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/MemoryTier"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b16",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#allValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/EpisodicMemory"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/storedIn"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/SessionStatus",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A status applicable to sessions indicating whether the session is active, ended, or interrupted."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "session status"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/Status"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#equivalentClass": [
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b43"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A status applicable to sessions indicating whether the session is active, ended, or interrupted."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b43",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2002/07/owl#oneOf": [
+      {
+        "@list": [
+          {
+            "@id": "https://purl.org/pao/Active"
+          },
+          {
+            "@id": "https://purl.org/pao/Ended"
+          },
+          {
+            "@id": "https://purl.org/pao/Interrupted"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/blockedBy",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a task to another task that must complete before it can proceed."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Task"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "blocked by"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Task"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#inverseOf": [
+      {
+        "@id": "https://purl.org/pao/blocks"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a task to another task that must complete before it can proceed."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/recordsEvent",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links an episode to an event it records."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Episode"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "records event"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Event"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links an episode to an event it records."
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/2004/02/skos/core#Concept",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/inConversation",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty",
+      "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links an event to its containing conversation."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Event"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "in conversation"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Conversation"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links an event to its containing conversation."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/ToolInvocation",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A process in which an agent requests execution of a tool by providing inputs and receiving outputs."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "tool invocation"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/Action"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b56"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b57"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b58"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b59"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b60"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b61"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A process in which an agent requests execution of a tool by providing inputs and receiving outputs."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b56",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/hasComplianceStatus"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/ComplianceStatus"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b57",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/hasInput"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b58",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/hasOutput"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b59",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/inSession"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/Session"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b60",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/invokedBy"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b61",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/invokesTool"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/ToolDefinition"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/hasTemporalExtent",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty",
+      "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links an event to its temporal extent."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has temporal extent"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2006/time#TemporalEntity"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links an event to its temporal extent."
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/ns/odrl/2/Permission",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Permission"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/WorkingMemory",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A memory tier that holds information currently active in the agent's context window."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "working memory"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/MemoryTier"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A memory tier that holds information currently active in the agent's context window."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Compliant",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "https://purl.org/pao/ComplianceStatus"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "compliant"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#differentFrom": [
+      {
+        "@id": "https://purl.org/pao/NonCompliant"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Compliance status: a tool invocation followed all applicable policies."
+      }
+    ]
+  },
+  {
+    "@id": "http://purl.org/dc/terms/rights",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AnnotationProperty"
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/ns/prov#wasDerivedFrom",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "was derived from"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/AssistantRole",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "https://purl.org/pao/AgentRole"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "assistant role"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#differentFrom": [
+      {
+        "@id": "https://purl.org/pao/UserRole"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "The role of the AI assistant in a conversation."
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/ns/prov#Plan",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Plan"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/2006/time#hasBeginning",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/2006/time#TemporalEntity"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has beginning"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2006/time#Instant"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/UserPreference",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "user preference"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A claim type indicating the claim records a user preference."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/hasContent",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#DatatypeProperty",
+      "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "The textual or structured content of an information artifact."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has content"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "The textual or structured content of an information artifact."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/producedSummary",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty",
+      "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a compaction event to the summary it generated."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/CompactionEvent"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "produced summary"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/MemoryItem"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a compaction event to the summary it generated."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/PermissionPolicy",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A generically dependent continuant that specifies rules governing what actions an agent is permitted or forbidden to perform."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "permission policy"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000031"
+      },
+      {
+        "@id": "http://www.w3.org/ns/odrl/2/Policy"
+      },
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b34"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b35"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b36"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#disjointWith": [
+      {
+        "@id": "https://purl.org/pao/SafetyConstraint"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A generically dependent continuant that specifies rules governing what actions an agent is permitted or forbidden to perform."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b34",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/appliesTo"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b35",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/grantsPermission"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "http://www.w3.org/ns/odrl/2/Permission"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b36",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/restrictsToolUse"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/ToolDefinition"
+      }
+    ]
+  },
+  {
+    "@id": "http://purl.obolibrary.org/obo/BFO_0000015",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "process"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/claimType",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#DatatypeProperty",
+      "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A classifier string indicating the kind of claim."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Claim"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "claim type"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A classifier string indicating the kind of claim."
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/ns/prov#generatedAtTime",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AnnotationProperty"
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/MemoryItem",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A generically dependent continuant that is an information artifact persisted in an agent's memory system."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "memory item"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000031"
+      },
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b21"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b22"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b23"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b24"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A generically dependent continuant that is an information artifact persisted in an agent's memory system."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b21",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "http://www.w3.org/ns/prov#wasAttributedTo"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b22",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "http://www.w3.org/ns/prov#wasGeneratedBy"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Activity"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b23",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/storedIn"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/MemoryTier"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b24",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onClass": [
+      {
+        "@id": "https://purl.org/pao/MemoryTier"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/storedIn"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#qualifiedCardinality": [
+      {
+        "@type": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+        "@value": "1"
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/ns/prov#wasAssociatedWith",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Activity"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "was associated with"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Agent"
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/ns/prov#Activity",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Activity"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/pursuesGoal",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links an agent to a goal it is actively pursuing."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "pursues goal"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Goal"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links an agent to a goal it is actively pursuing."
+      }
+    ]
+  },
+  {
+    "@id": "http://purl.obolibrary.org/obo/BFO_0000030",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "object"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/recordedInEpisode",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links an event to the episode that records it."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Event"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "recorded in episode"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Episode"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#inverseOf": [
+      {
+        "@id": "https://purl.org/pao/recordsEvent"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links an event to the episode that records it."
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/ns/prov#agent",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Association"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "prov agent"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Agent"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Status",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A class whose individuals represent the current state of an entity."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "status"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A class whose individuals represent the current state of an entity."
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/ns/prov#Agent",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Agent"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/partOfPlan",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty",
+      "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a task to the plan it belongs to as a component."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Task"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "part of plan"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Plan"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subPropertyOf": [
+      {
+        "@id": "https://purl.org/pao/partOf"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a task to the plan it belongs to as a component."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Ended",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "https://purl.org/pao/SessionStatus"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "ended"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Status value: a session has ended normally."
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/ns/prov#hadRole",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Association"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "had role"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Role"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/ComplianceStatus",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A status indicating whether a tool invocation complied with applicable permission policies."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "compliance status"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/Status"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#equivalentClass": [
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b10"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A status indicating whether a tool invocation complied with applicable permission policies."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b10",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2002/07/owl#oneOf": [
+      {
+        "@list": [
+          {
+            "@id": "https://purl.org/pao/Compliant"
+          },
+          {
+            "@id": "https://purl.org/pao/NonCompliant"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Action",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "An event that is intentionally caused by an agent to affect the environment or internal state."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "action"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/Event"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b2"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "An event that is intentionally caused by an agent to affect the environment or internal state."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b2",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/performedBy"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Conversation",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A process consisting of a coherent thread of dialogue between participants that may span multiple sessions."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "conversation"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/Event"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A process consisting of a coherent thread of dialogue between participants that may span multiple sessions."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/UserRole",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "https://purl.org/pao/AgentRole"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "user role"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "The role of the human user in a conversation."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/hasSensitivityLevel",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#DatatypeProperty",
+      "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "The privacy sensitivity classification of a memory item."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/MemoryItem"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has sensitivity level"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "The privacy sensitivity classification of a memory item."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/MemoryTier",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A generically dependent continuant that defines a layer in the agent's memory architecture with specific storage and access characteristics."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "memory tier"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000031"
+      },
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#disjointUnionOf": [
+      {
+        "@list": [
+          {
+            "@id": "https://purl.org/pao/EpisodicMemory"
+          },
+          {
+            "@id": "https://purl.org/pao/ProceduralMemory"
+          },
+          {
+            "@id": "https://purl.org/pao/SemanticMemory"
+          },
+          {
+            "@id": "https://purl.org/pao/WorkingMemory"
+          }
+        ]
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A generically dependent continuant that defines a layer in the agent's memory architecture with specific storage and access characteristics."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/blocks",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a task to another task that depends on its completion."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Task"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "blocks"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Task"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a task to another task that depends on its completion."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/pursuedBy",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a goal to the agent that is actively pursuing it."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Goal"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "pursued by"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#inverseOf": [
+      {
+        "@id": "https://purl.org/pao/pursuesGoal"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a goal to the agent that is actively pursuing it."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/AgentRole",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A role that an agent plays in the context of a conversation or activity."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "agent role"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000023"
+      },
+      {
+        "@id": "http://www.w3.org/ns/prov#Role"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#equivalentClass": [
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b3"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A role that an agent plays in the context of a conversation or activity."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b3",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2002/07/owl#oneOf": [
+      {
+        "@list": [
+          {
+            "@id": "https://purl.org/pao/AssistantRole"
+          },
+          {
+            "@id": "https://purl.org/pao/UserRole"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b84",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AllDisjointClasses"
+    ],
+    "http://www.w3.org/2002/07/owl#members": [
+      {
+        "@list": [
+          {
+            "@id": "https://purl.org/pao/EpisodicMemory"
+          },
+          {
+            "@id": "https://purl.org/pao/ProceduralMemory"
+          },
+          {
+            "@id": "https://purl.org/pao/SemanticMemory"
+          },
+          {
+            "@id": "https://purl.org/pao/WorkingMemory"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Claim",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A memory item that represents an agent-held proposition with associated confidence, evidence, and provenance metadata."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "claim"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/MemoryItem"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b6"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b7"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#disjointWith": [
+      {
+        "@id": "https://purl.org/pao/Episode"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A memory item that represents an agent-held proposition with associated confidence, evidence, and provenance metadata."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b6",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/aboutAgent"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b7",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/storedIn"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/MemoryTier"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/performedBy",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty",
+      "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links an action to the agent that intentionally performed it."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Action"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "performed by"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subPropertyOf": [
+      {
+        "@id": "https://purl.org/pao/hasParticipant"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links an action to the agent that intentionally performed it."
+      }
+    ]
+  },
+  {
+    "@id": "http://purl.org/dc/terms/license",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AnnotationProperty"
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/SemanticMemory",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A memory tier that stores generalized facts, knowledge, and beliefs extracted from experience."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "semantic memory"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/MemoryTier"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A memory tier that stores generalized facts, knowledge, and beliefs extracted from experience."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Retrieval",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A memory operation that reads information from a memory tier."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "retrieval"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/MemoryOperation"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A memory operation that reads information from a memory tier."
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/ns/prov#SoftwareAgent",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Software Agent"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Agent"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b75",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AllDisjointClasses"
+    ],
+    "http://www.w3.org/2002/07/owl#members": [
+      {
+        "@list": [
+          {
+            "@id": "https://purl.org/pao/ComplianceStatus"
+          },
+          {
+            "@id": "https://purl.org/pao/SessionStatus"
+          },
+          {
+            "@id": "https://purl.org/pao/TaskStatus"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/hasRole",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links an agent to a role it bears in some context."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has role"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/AgentRole"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links an agent to a role it bears in some context."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b103",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AllDifferent"
+    ],
+    "http://www.w3.org/2002/07/owl#distinctMembers": [
+      {
+        "@list": [
+          {
+            "@id": "https://purl.org/pao/Blocked"
+          },
+          {
+            "@id": "https://purl.org/pao/Completed"
+          },
+          {
+            "@id": "https://purl.org/pao/InProgress"
+          },
+          {
+            "@id": "https://purl.org/pao/Pending"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/HumanUser",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "An agent that is a human person who interacts with AI systems."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "human user"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000030"
+      },
+      {
+        "@id": "http://www.w3.org/ns/prov#Person"
+      },
+      {
+        "@id": "http://xmlns.com/foaf/0.1/Person"
+      },
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "An agent that is a human person who interacts with AI systems."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/hasComplianceStatus",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty",
+      "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a tool invocation to its compliance status."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/ToolInvocation"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has compliance status"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/ComplianceStatus"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subPropertyOf": [
+      {
+        "@id": "https://purl.org/pao/hasStatus"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a tool invocation to its compliance status."
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/2006/time#hasEnd",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/2006/time#TemporalEntity"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has end"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2006/time#Instant"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/storedIn",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a memory item to the memory tier where it is stored."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "stored in"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/MemoryTier"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#inverseOf": [
+      {
+        "@id": "https://purl.org/pao/stores"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a memory item to the memory tier where it is stored."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/availableToAgent",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a tool definition to an agent that may invoke it."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/ToolDefinition"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "available to agent"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#inverseOf": [
+      {
+        "@id": "https://purl.org/pao/hasAvailableTool"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a tool definition to an agent that may invoke it."
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/ns/prov#Person",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Person (PROV-O)"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Agent"
+      }
+    ]
+  },
+  {
+    "@id": "http://purl.org/dc/terms/creator",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AnnotationProperty"
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/ns/prov#Entity",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Entity"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/ns/prov#wasAttributedTo",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "was attributed to"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Agent"
+      }
+    ]
+  },
+  {
+    "@id": "http://purl.obolibrary.org/obo/BFO_0000023",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "role"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/ns/prov#wasRevisionOf",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "was revision of"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subPropertyOf": [
+      {
+        "@id": "http://www.w3.org/ns/prov#wasDerivedFrom"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/aboutAgent",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a memory item to the agent it describes."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/MemoryItem"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "about agent"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a memory item to the agent it describes."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b99",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AllDifferent"
+    ],
+    "http://www.w3.org/2002/07/owl#distinctMembers": [
+      {
+        "@list": [
+          {
+            "@id": "https://purl.org/pao/Active"
+          },
+          {
+            "@id": "https://purl.org/pao/Ended"
+          },
+          {
+            "@id": "https://purl.org/pao/Interrupted"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/participatesIn",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links an agent to an event it participates in."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "participates in"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Event"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links an agent to an event it participates in."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/restrictsToolUse",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a permission policy to a tool whose use it restricts."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/PermissionPolicy"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "restricts tool use"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/ToolDefinition"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a permission policy to a tool whose use it restricts."
+      }
+    ]
+  },
+  {
+    "@id": "http://purl.org/dc/terms/created",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AnnotationProperty"
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/ToolDefinition",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A generically dependent continuant that specifies the interface, capabilities, and constraints of an available tool."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "tool definition"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000031"
+      },
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A generically dependent continuant that specifies the interface, capabilities, and constraints of an available tool."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Interrupted",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "https://purl.org/pao/SessionStatus"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "interrupted"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Status value: a session ended abnormally."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/ProceduralMemory",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A memory tier that stores learned action policies, skills, and behavioral patterns."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "procedural memory"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/MemoryTier"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A memory tier that stores learned action policies, skills, and behavioral patterns."
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/2006/time#inXSDDateTime",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#DatatypeProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/2006/time#Instant"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "in XSD dateTime"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#dateTime"
+      }
+    ]
+  },
+  {
+    "@id": "http://purl.org/dc/terms/title",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AnnotationProperty"
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b89",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AllDisjointClasses"
+    ],
+    "http://www.w3.org/2002/07/owl#members": [
+      {
+        "@list": [
+          {
+            "@id": "https://purl.org/pao/Goal"
+          },
+          {
+            "@id": "https://purl.org/pao/MemoryItem"
+          },
+          {
+            "@id": "https://purl.org/pao/MemoryTier"
+          },
+          {
+            "@id": "https://purl.org/pao/Message"
+          },
+          {
+            "@id": "https://purl.org/pao/PermissionPolicy"
+          },
+          {
+            "@id": "https://purl.org/pao/Plan"
+          },
+          {
+            "@id": "https://purl.org/pao/SafetyConstraint"
+          },
+          {
+            "@id": "https://purl.org/pao/Task"
+          },
+          {
+            "@id": "https://purl.org/pao/ToolDefinition"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/hasTimestamp",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#DatatypeProperty",
+      "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A convenience timestamp for point-in-time events."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has timestamp"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#dateTime"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A convenience timestamp for point-in-time events."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Completed",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "https://purl.org/pao/TaskStatus"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "completed"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Status value: a task or process has finished successfully."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/requestedBy",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty",
+      "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links an erasure event to the agent who requested deletion."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/ErasureEvent"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "requested by"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links an erasure event to the agent who requested deletion."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Forgetting",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A memory operation that removes or decays memory items from a memory tier."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "forgetting"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/MemoryOperation"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A memory operation that removes or decays memory items from a memory tier."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/partOfSession",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty",
+      "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a turn to the session it is a temporal part of."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Event"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "part of session"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Session"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subPropertyOf": [
+      {
+        "@id": "https://purl.org/pao/partOf"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a turn to the session it is a temporal part of."
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/ns/odrl/2/Policy",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Policy"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/AIAgent",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "An agent that is a software system capable of autonomous decision-making and tool use."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "ai agent"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000031"
+      },
+      {
+        "@id": "http://www.w3.org/ns/prov#SoftwareAgent"
+      },
+      {
+        "@id": "https://purl.org/pao/Agent"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b1"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#disjointWith": [
+      {
+        "@id": "https://purl.org/pao/HumanUser"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "An agent that is a software system capable of autonomous decision-making and tool use."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b1",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/hasAvailableTool"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/ToolDefinition"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/NonCompliant",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "https://purl.org/pao/ComplianceStatus"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "non compliant"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Compliance status: a tool invocation violated one or more policies."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Plan",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A generically dependent continuant that specifies an ordered sequence of intended actions to achieve a goal."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "plan"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Plan"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b37"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A generically dependent continuant that specifies an ordered sequence of intended actions to achieve a goal."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b37",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/achievesGoal"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/Goal"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/CompactionEvent",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A process in which an agent's context window is compressed by summarizing prior turns."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "compaction event"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/Event"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b8"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b9"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A process in which an agent's context window is compressed by summarizing prior turns."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b8",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/inConversation"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/Conversation"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b9",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/producedSummary"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/MemoryItem"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/achievesGoal",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a plan to the goal it is designed to achieve."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Plan"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "achieves goal"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Goal"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a plan to the goal it is designed to achieve."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/operatesOn",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a memory operation to the memory item it acts upon."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/MemoryOperation"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "operates on"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/MemoryItem"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a memory operation to the memory item it acts upon."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/hasTurnIndex",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#DatatypeProperty",
+      "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "The zero-based ordinal position of a turn within its session."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Turn"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has turn index"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "The zero-based ordinal position of a turn within its session."
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/2006/time#TemporalEntity",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Temporal Entity"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/delegatedTask",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a sub-agent to the task it was spawned to perform."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/SubAgent"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "delegated task"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Task"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a sub-agent to the task it was spawned to perform."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/invokedIn",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a tool definition to invocations in which it was used."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/ToolDefinition"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "invoked in"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/ToolInvocation"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#inverseOf": [
+      {
+        "@id": "https://purl.org/pao/invokesTool"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a tool definition to invocations in which it was used."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/partOf",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty",
+      "http://www.w3.org/2002/07/owl#TransitiveProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A transitive relation linking an entity to a whole it is part of."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "part of"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A transitive relation linking an entity to a whole it is part of."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/hasParticipant",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links an event to an agent that participates in it."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Event"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has participant"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#inverseOf": [
+      {
+        "@id": "https://purl.org/pao/participatesIn"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links an event to an agent that participates in it."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/InProgress",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "https://purl.org/pao/TaskStatus"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "in progress"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Status value: a task is currently being worked on."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/hasConfidence",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#DatatypeProperty",
+      "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "The confidence level of a claim, between 0.0 and 1.0."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Claim"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has confidence"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2001/XMLSchema#decimal"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "The confidence level of a claim, between 0.0 and 1.0."
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/ns/prov#Association",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Association"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://purl.obolibrary.org/obo/IAO_0000115",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AnnotationProperty"
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/hasTopic",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a memory item to a topic concept describing its subject."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/MemoryItem"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has topic"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/2004/02/skos/core#Concept"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a memory item to a topic concept describing its subject."
+      }
+    ]
+  },
+  {
+    "@id": "http://purl.obolibrary.org/obo/BFO_0000031",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "generically dependent continuant"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/2006/time#Interval",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "Interval"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://www.w3.org/2006/time#TemporalEntity"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/appliesTo",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a policy or constraint to the agent it governs."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "applies to"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a policy or constraint to the agent it governs."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Task",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A generically dependent continuant that is a concrete actionable work item within a plan with status and dependencies."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "task"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000031"
+      },
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b49"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b50"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A generically dependent continuant that is a concrete actionable work item within a plan with status and dependencies."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b49",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/hasStatus"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/TaskStatus"
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b50",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/partOfPlan"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/Plan"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Message",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A generically dependent continuant that is the textual or structured content of a conversational turn."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "message"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000031"
+      },
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A generically dependent continuant that is the textual or structured content of a conversational turn."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/spawnedBy",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty",
+      "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a sub-agent to the parent agent that spawned it."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/SubAgent"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "spawned by"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a sub-agent to the parent agent that spawned it."
+      }
+    ]
+  },
+  {
+    "@id": "http://www.w3.org/ns/prov#wasGeneratedBy",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "was generated by"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "http://www.w3.org/ns/prov#Activity"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/inSession",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty",
+      "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links an event to its containing session."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Event"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "in session"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Session"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links an event to its containing session."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/ErasureEvent",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A process in which memory items are identified and deleted to comply with privacy requirements."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "erasure event"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "https://purl.org/pao/Event"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b17"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A process in which memory items are identified and deleted to comply with privacy requirements."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b17",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/requestedBy"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/partOfConversation",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty",
+      "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a session to the conversation it is a temporal part of."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Event"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "part of conversation"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Conversation"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subPropertyOf": [
+      {
+        "@id": "https://purl.org/pao/partOf"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a session to the conversation it is a temporal part of."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b67",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#AllDisjointClasses"
+    ],
+    "http://www.w3.org/2002/07/owl#members": [
+      {
+        "@list": [
+          {
+            "@id": "https://purl.org/pao/Action"
+          },
+          {
+            "@id": "https://purl.org/pao/CompactionEvent"
+          },
+          {
+            "@id": "https://purl.org/pao/Conversation"
+          },
+          {
+            "@id": "https://purl.org/pao/ErasureEvent"
+          },
+          {
+            "@id": "https://purl.org/pao/MemoryOperation"
+          },
+          {
+            "@id": "https://purl.org/pao/Session"
+          },
+          {
+            "@id": "https://purl.org/pao/Turn"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Pending",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#NamedIndividual",
+      "https://purl.org/pao/TaskStatus"
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "pending"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Status value: a task has not yet started."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/SafetyConstraint",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A generically dependent continuant that specifies a non-negotiable behavioral limit on an agent."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "safety constraint"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000031"
+      },
+      {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b38"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A generically dependent continuant that specifies a non-negotiable behavioral limit on an agent."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b38",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/appliesTo"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/hasAvailableTool",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links an agent to a tool definition available for invocation."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/Agent"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has available tool"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/ToolDefinition"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links an agent to a tool definition available for invocation."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/hasStatus",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty",
+      "http://www.w3.org/2002/07/owl#FunctionalProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links an entity to its current status value."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "has status"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#range": [
+      {
+        "@id": "https://purl.org/pao/Status"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links an entity to its current status value."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/stores",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#ObjectProperty"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "Links a memory tier to a memory item it currently holds."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#domain": [
+      {
+        "@id": "https://purl.org/pao/MemoryTier"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "stores"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "Links a memory tier to a memory item it currently holds."
+      }
+    ]
+  },
+  {
+    "@id": "https://purl.org/pao/Event",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Class"
+    ],
+    "http://purl.obolibrary.org/obo/IAO_0000115": [
+      {
+        "@language": "en",
+        "@value": "A process that is an occurrence situated in time within the agent system."
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#label": [
+      {
+        "@language": "en",
+        "@value": "event"
+      }
+    ],
+    "http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+      {
+        "@id": "http://purl.obolibrary.org/obo/BFO_0000015"
+      },
+      {
+        "@id": "http://www.w3.org/ns/prov#Activity"
+      },
+      {
+        "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b18"
+      }
+    ],
+    "http://www.w3.org/2004/02/skos/core#definition": [
+      {
+        "@language": "en",
+        "@value": "A process that is an occurrence situated in time within the agent system."
+      }
+    ]
+  },
+  {
+    "@id": "_:n921d259bba6d4f7bb7437698f0b4b860b18",
+    "@type": [
+      "http://www.w3.org/2002/07/owl#Restriction"
+    ],
+    "http://www.w3.org/2002/07/owl#onProperty": [
+      {
+        "@id": "https://purl.org/pao/hasTemporalExtent"
+      }
+    ],
+    "http://www.w3.org/2002/07/owl#someValuesFrom": [
+      {
+        "@id": "http://www.w3.org/2006/time#TemporalEntity"
+      }
+    ]
+  }
+]

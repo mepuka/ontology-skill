@@ -252,6 +252,14 @@ def build_tbox(glossary: list[dict[str, str]]) -> Graph:
     g.add((TBOX_IRI, DCTERMS.created, Literal("2026-02-18")))
     g.add((TBOX_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((TBOX_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
+    g.add((TBOX_IRI, DCTERMS.rights, Literal("MIT License")))
+    g.add(
+        (
+            TBOX_IRI,
+            PROV.generatedAtTime,
+            Literal("2026-02-18T00:00:00Z", datatype=XSD.dateTime),
+        )
+    )
 
     # Build glossary lookup
     class_glossary = {row["term"]: row for row in glossary if row["category"] == "class"}

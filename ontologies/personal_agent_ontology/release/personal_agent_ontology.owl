@@ -1,0 +1,1976 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="https://purl.org/pao/"
+     xml:base="https://purl.org/pao/"
+     xmlns:obo="http://purl.obolibrary.org/obo/"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:pao="https://purl.org/pao/"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:foaf="http://xmlns.com/foaf/0.1/"
+     xmlns:odrl="http://www.w3.org/ns/odrl/2/"
+     xmlns:prov="http://www.w3.org/ns/prov#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+     xmlns:time="http://www.w3.org/2006/time#"
+     xmlns:dcterms="http://purl.org/dc/terms/">
+    <owl:Ontology rdf:about="https://purl.org/pao/">
+        <owl:versionIRI rdf:resource="https://purl.org/pao/0.1.0"/>
+        <dcterms:created>2026-02-18</dcterms:created>
+        <dcterms:creator>ontology-architect skill</dcterms:creator>
+        <dcterms:description xml:lang="en">An OWL 2 DL ontology modeling AI agent architecture including conversations, memory systems, goals, plans, and governance.</dcterms:description>
+        <dcterms:license rdf:resource="https://spdx.org/licenses/MIT"/>
+        <dcterms:rights>MIT License</dcterms:rights>
+        <dcterms:title xml:lang="en">Personal Agent Ontology</dcterms:title>
+        <owl:versionInfo>0.1.0</owl:versionInfo>
+        <prov:generatedAtTime rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2026-02-18T00:00:00+00:00</prov:generatedAtTime>
+    </owl:Ontology>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+
+
+    <!-- http://purl.obolibrary.org/obo/IAO_0000115 -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.obolibrary.org/obo/IAO_0000115"/>
+
+
+
+    <!-- http://purl.org/dc/terms/created -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/created"/>
+
+
+
+    <!-- http://purl.org/dc/terms/creator -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/creator"/>
+
+
+
+    <!-- http://purl.org/dc/terms/description -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/description"/>
+
+
+
+    <!-- http://purl.org/dc/terms/license -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/license"/>
+
+
+
+    <!-- http://purl.org/dc/terms/rights -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/rights"/>
+
+
+
+    <!-- http://purl.org/dc/terms/title -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/title"/>
+
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#definition -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#definition"/>
+
+
+
+    <!-- http://www.w3.org/ns/prov#generatedAtTime -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/ns/prov#generatedAtTime"/>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+
+
+    <!-- http://www.w3.org/2006/time#hasBeginning -->
+
+    <owl:ObjectProperty rdf:about="http://www.w3.org/2006/time#hasBeginning">
+        <rdfs:domain rdf:resource="http://www.w3.org/2006/time#TemporalEntity"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2006/time#Instant"/>
+        <rdfs:label xml:lang="en">has beginning</rdfs:label>
+    </owl:ObjectProperty>
+
+
+
+    <!-- http://www.w3.org/2006/time#hasEnd -->
+
+    <owl:ObjectProperty rdf:about="http://www.w3.org/2006/time#hasEnd">
+        <rdfs:domain rdf:resource="http://www.w3.org/2006/time#TemporalEntity"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2006/time#Instant"/>
+        <rdfs:label xml:lang="en">has end</rdfs:label>
+    </owl:ObjectProperty>
+
+
+
+    <!-- http://www.w3.org/ns/prov#agent -->
+
+    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov#agent">
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/prov#Association"/>
+        <rdfs:range rdf:resource="http://www.w3.org/ns/prov#Agent"/>
+        <rdfs:label xml:lang="en">prov agent</rdfs:label>
+    </owl:ObjectProperty>
+
+
+
+    <!-- http://www.w3.org/ns/prov#hadRole -->
+
+    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov#hadRole">
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/prov#Association"/>
+        <rdfs:range rdf:resource="http://www.w3.org/ns/prov#Role"/>
+        <rdfs:label xml:lang="en">had role</rdfs:label>
+    </owl:ObjectProperty>
+
+
+
+    <!-- http://www.w3.org/ns/prov#qualifiedAssociation -->
+
+    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov#qualifiedAssociation">
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/prov#Activity"/>
+        <rdfs:range rdf:resource="http://www.w3.org/ns/prov#Association"/>
+        <rdfs:label xml:lang="en">qualified association</rdfs:label>
+    </owl:ObjectProperty>
+
+
+
+    <!-- http://www.w3.org/ns/prov#wasAssociatedWith -->
+
+    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov#wasAssociatedWith">
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/prov#Activity"/>
+        <rdfs:range rdf:resource="http://www.w3.org/ns/prov#Agent"/>
+        <rdfs:label xml:lang="en">was associated with</rdfs:label>
+    </owl:ObjectProperty>
+
+
+
+    <!-- http://www.w3.org/ns/prov#wasAttributedTo -->
+
+    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov#wasAttributedTo">
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <rdfs:range rdf:resource="http://www.w3.org/ns/prov#Agent"/>
+        <rdfs:label xml:lang="en">was attributed to</rdfs:label>
+    </owl:ObjectProperty>
+
+
+
+    <!-- http://www.w3.org/ns/prov#wasDerivedFrom -->
+
+    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov#wasDerivedFrom">
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <rdfs:range rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <rdfs:label xml:lang="en">was derived from</rdfs:label>
+    </owl:ObjectProperty>
+
+
+
+    <!-- http://www.w3.org/ns/prov#wasGeneratedBy -->
+
+    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov#wasGeneratedBy">
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <rdfs:range rdf:resource="http://www.w3.org/ns/prov#Activity"/>
+        <rdfs:label xml:lang="en">was generated by</rdfs:label>
+    </owl:ObjectProperty>
+
+
+
+    <!-- http://www.w3.org/ns/prov#wasRevisionOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.w3.org/ns/prov#wasRevisionOf">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/ns/prov#wasDerivedFrom"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <rdfs:range rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <rdfs:label xml:lang="en">was revision of</rdfs:label>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/aboutAgent -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/aboutAgent">
+        <rdfs:domain rdf:resource="https://purl.org/pao/MemoryItem"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Agent"/>
+        <obo:IAO_0000115 xml:lang="en">Links a memory item to the agent it describes.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">about agent</rdfs:label>
+        <skos:definition xml:lang="en">Links a memory item to the agent it describes.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/achievesGoal -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/achievesGoal">
+        <rdfs:domain rdf:resource="https://purl.org/pao/Plan"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Goal"/>
+        <obo:IAO_0000115 xml:lang="en">Links a plan to the goal it is designed to achieve.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">achieves goal</rdfs:label>
+        <skos:definition xml:lang="en">Links a plan to the goal it is designed to achieve.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/appliesTo -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/appliesTo">
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Agent"/>
+        <obo:IAO_0000115 xml:lang="en">Links a policy or constraint to the agent it governs.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">applies to</rdfs:label>
+        <skos:definition xml:lang="en">Links a policy or constraint to the agent it governs.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/availableToAgent -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/availableToAgent">
+        <owl:inverseOf rdf:resource="https://purl.org/pao/hasAvailableTool"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/ToolDefinition"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Agent"/>
+        <obo:IAO_0000115 xml:lang="en">Links a tool definition to an agent that may invoke it.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">available to agent</rdfs:label>
+        <skos:definition xml:lang="en">Links a tool definition to an agent that may invoke it.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/blockedBy -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/blockedBy">
+        <owl:inverseOf rdf:resource="https://purl.org/pao/blocks"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/Task"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Task"/>
+        <obo:IAO_0000115 xml:lang="en">Links a task to another task that must complete before it can proceed.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">blocked by</rdfs:label>
+        <skos:definition xml:lang="en">Links a task to another task that must complete before it can proceed.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/blocks -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/blocks">
+        <rdfs:domain rdf:resource="https://purl.org/pao/Task"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Task"/>
+        <obo:IAO_0000115 xml:lang="en">Links a task to another task that depends on its completion.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">blocks</rdfs:label>
+        <skos:definition xml:lang="en">Links a task to another task that depends on its completion.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/delegatedTask -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/delegatedTask">
+        <rdfs:domain rdf:resource="https://purl.org/pao/SubAgent"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Task"/>
+        <obo:IAO_0000115 xml:lang="en">Links a sub-agent to the task it was spawned to perform.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">delegated task</rdfs:label>
+        <skos:definition xml:lang="en">Links a sub-agent to the task it was spawned to perform.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/grantsPermission -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/grantsPermission">
+        <rdfs:domain rdf:resource="https://purl.org/pao/PermissionPolicy"/>
+        <rdfs:range rdf:resource="http://www.w3.org/ns/odrl/2/Permission"/>
+        <obo:IAO_0000115 xml:lang="en">Links a permission policy to the specific permission it grants.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">grants permission</rdfs:label>
+        <skos:definition xml:lang="en">Links a permission policy to the specific permission it grants.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/hasAvailableTool -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/hasAvailableTool">
+        <rdfs:domain rdf:resource="https://purl.org/pao/Agent"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/ToolDefinition"/>
+        <obo:IAO_0000115 xml:lang="en">Links an agent to a tool definition available for invocation.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">has available tool</rdfs:label>
+        <skos:definition xml:lang="en">Links an agent to a tool definition available for invocation.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/hasComplianceStatus -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/hasComplianceStatus">
+        <rdfs:subPropertyOf rdf:resource="https://purl.org/pao/hasStatus"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/ToolInvocation"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/ComplianceStatus"/>
+        <obo:IAO_0000115 xml:lang="en">Links a tool invocation to its compliance status.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">has compliance status</rdfs:label>
+        <skos:definition xml:lang="en">Links a tool invocation to its compliance status.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/hasEvidence -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/hasEvidence">
+        <rdfs:domain rdf:resource="https://purl.org/pao/Claim"/>
+        <rdfs:range rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <obo:IAO_0000115 xml:lang="en">Links a claim to the evidence entities that support it.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">has evidence</rdfs:label>
+        <skos:definition xml:lang="en">Links a claim to the evidence entities that support it.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/hasInput -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/hasInput">
+        <rdfs:domain rdf:resource="https://purl.org/pao/ToolInvocation"/>
+        <rdfs:range rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <obo:IAO_0000115 xml:lang="en">Links a tool invocation to the input data provided.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">has input</rdfs:label>
+        <skos:definition xml:lang="en">Links a tool invocation to the input data provided.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/hasOutput -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/hasOutput">
+        <rdfs:domain rdf:resource="https://purl.org/pao/ToolInvocation"/>
+        <rdfs:range rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <obo:IAO_0000115 xml:lang="en">Links a tool invocation to the output data returned.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">has output</rdfs:label>
+        <skos:definition xml:lang="en">Links a tool invocation to the output data returned.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/hasPart -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/hasPart">
+        <owl:inverseOf rdf:resource="https://purl.org/pao/partOf"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000115 xml:lang="en">A transitive relation linking a whole to one of its parts.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">has part</rdfs:label>
+        <skos:definition xml:lang="en">A transitive relation linking a whole to one of its parts.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/hasParticipant -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/hasParticipant">
+        <owl:inverseOf rdf:resource="https://purl.org/pao/participatesIn"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/Event"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Agent"/>
+        <obo:IAO_0000115 xml:lang="en">Links an event to an agent that participates in it.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">has participant</rdfs:label>
+        <skos:definition xml:lang="en">Links an event to an agent that participates in it.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/hasRole -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/hasRole">
+        <rdfs:domain rdf:resource="https://purl.org/pao/Agent"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/AgentRole"/>
+        <obo:IAO_0000115 xml:lang="en">Links an agent to a role it bears in some context.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">has role</rdfs:label>
+        <skos:definition xml:lang="en">Links an agent to a role it bears in some context.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/hasStatus -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/hasStatus">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Status"/>
+        <obo:IAO_0000115 xml:lang="en">Links an entity to its current status value.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">has status</rdfs:label>
+        <skos:definition xml:lang="en">Links an entity to its current status value.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/hasTask -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/hasTask">
+        <rdfs:subPropertyOf rdf:resource="https://purl.org/pao/hasPart"/>
+        <owl:inverseOf rdf:resource="https://purl.org/pao/partOfPlan"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/Plan"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Task"/>
+        <obo:IAO_0000115 xml:lang="en">Links a plan to a task that is one of its component steps.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">has task</rdfs:label>
+        <skos:definition xml:lang="en">Links a plan to a task that is one of its component steps.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/hasTemporalExtent -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/hasTemporalExtent">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2006/time#TemporalEntity"/>
+        <obo:IAO_0000115 xml:lang="en">Links an event to its temporal extent.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">has temporal extent</rdfs:label>
+        <skos:definition xml:lang="en">Links an event to its temporal extent.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/hasTopic -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/hasTopic">
+        <rdfs:domain rdf:resource="https://purl.org/pao/MemoryItem"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+        <obo:IAO_0000115 xml:lang="en">Links a memory item to a topic concept describing its subject.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">has topic</rdfs:label>
+        <skos:definition xml:lang="en">Links a memory item to a topic concept describing its subject.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/inConversation -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/inConversation">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/Event"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Conversation"/>
+        <obo:IAO_0000115 xml:lang="en">Links an event to its containing conversation.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">in conversation</rdfs:label>
+        <skos:definition xml:lang="en">Links an event to its containing conversation.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/inSession -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/inSession">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/Event"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Session"/>
+        <obo:IAO_0000115 xml:lang="en">Links an event to its containing session.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">in session</rdfs:label>
+        <skos:definition xml:lang="en">Links an event to its containing session.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/invokedBy -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/invokedBy">
+        <rdfs:subPropertyOf rdf:resource="https://purl.org/pao/performedBy"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/ToolInvocation"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Agent"/>
+        <obo:IAO_0000115 xml:lang="en">Links a tool invocation to the agent that initiated it.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">invoked by</rdfs:label>
+        <skos:definition xml:lang="en">Links a tool invocation to the agent that initiated it.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/invokedIn -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/invokedIn">
+        <owl:inverseOf rdf:resource="https://purl.org/pao/invokesTool"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/ToolDefinition"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/ToolInvocation"/>
+        <obo:IAO_0000115 xml:lang="en">Links a tool definition to invocations in which it was used.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">invoked in</rdfs:label>
+        <skos:definition xml:lang="en">Links a tool definition to invocations in which it was used.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/invokesTool -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/invokesTool">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/ToolInvocation"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/ToolDefinition"/>
+        <obo:IAO_0000115 xml:lang="en">Links a tool invocation to the tool definition invoked.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">invokes tool</rdfs:label>
+        <skos:definition xml:lang="en">Links a tool invocation to the tool definition invoked.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/operatesOn -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/operatesOn">
+        <rdfs:domain rdf:resource="https://purl.org/pao/MemoryOperation"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/MemoryItem"/>
+        <obo:IAO_0000115 xml:lang="en">Links a memory operation to the memory item it acts upon.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">operates on</rdfs:label>
+        <skos:definition xml:lang="en">Links a memory operation to the memory item it acts upon.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/partOf -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/partOf">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000115 xml:lang="en">A transitive relation linking an entity to a whole it is part of.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">part of</rdfs:label>
+        <skos:definition xml:lang="en">A transitive relation linking an entity to a whole it is part of.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/partOfConversation -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/partOfConversation">
+        <rdfs:subPropertyOf rdf:resource="https://purl.org/pao/partOf"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/Event"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Conversation"/>
+        <obo:IAO_0000115 xml:lang="en">Links a session to the conversation it is a temporal part of.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">part of conversation</rdfs:label>
+        <skos:definition xml:lang="en">Links a session to the conversation it is a temporal part of.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/partOfPlan -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/partOfPlan">
+        <rdfs:subPropertyOf rdf:resource="https://purl.org/pao/partOf"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/Task"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Plan"/>
+        <obo:IAO_0000115 xml:lang="en">Links a task to the plan it belongs to as a component.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">part of plan</rdfs:label>
+        <skos:definition xml:lang="en">Links a task to the plan it belongs to as a component.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/partOfSession -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/partOfSession">
+        <rdfs:subPropertyOf rdf:resource="https://purl.org/pao/partOf"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/Event"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Session"/>
+        <obo:IAO_0000115 xml:lang="en">Links a turn to the session it is a temporal part of.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">part of session</rdfs:label>
+        <skos:definition xml:lang="en">Links a turn to the session it is a temporal part of.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/participatesIn -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/participatesIn">
+        <rdfs:domain rdf:resource="https://purl.org/pao/Agent"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Event"/>
+        <obo:IAO_0000115 xml:lang="en">Links an agent to an event it participates in.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">participates in</rdfs:label>
+        <skos:definition xml:lang="en">Links an agent to an event it participates in.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/performedBy -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/performedBy">
+        <rdfs:subPropertyOf rdf:resource="https://purl.org/pao/hasParticipant"/>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/Action"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Agent"/>
+        <obo:IAO_0000115 xml:lang="en">Links an action to the agent that intentionally performed it.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">performed by</rdfs:label>
+        <skos:definition xml:lang="en">Links an action to the agent that intentionally performed it.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/producedSummary -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/producedSummary">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/CompactionEvent"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/MemoryItem"/>
+        <obo:IAO_0000115 xml:lang="en">Links a compaction event to the summary it generated.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">produced summary</rdfs:label>
+        <skos:definition xml:lang="en">Links a compaction event to the summary it generated.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/pursuedBy -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/pursuedBy">
+        <owl:inverseOf rdf:resource="https://purl.org/pao/pursuesGoal"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/Goal"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Agent"/>
+        <obo:IAO_0000115 xml:lang="en">Links a goal to the agent that is actively pursuing it.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">pursued by</rdfs:label>
+        <skos:definition xml:lang="en">Links a goal to the agent that is actively pursuing it.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/pursuesGoal -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/pursuesGoal">
+        <rdfs:domain rdf:resource="https://purl.org/pao/Agent"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Goal"/>
+        <obo:IAO_0000115 xml:lang="en">Links an agent to a goal it is actively pursuing.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">pursues goal</rdfs:label>
+        <skos:definition xml:lang="en">Links an agent to a goal it is actively pursuing.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/recordedInEpisode -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/recordedInEpisode">
+        <owl:inverseOf rdf:resource="https://purl.org/pao/recordsEvent"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/Event"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Episode"/>
+        <obo:IAO_0000115 xml:lang="en">Links an event to the episode that records it.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">recorded in episode</rdfs:label>
+        <skos:definition xml:lang="en">Links an event to the episode that records it.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/recordsEvent -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/recordsEvent">
+        <rdfs:domain rdf:resource="https://purl.org/pao/Episode"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Event"/>
+        <obo:IAO_0000115 xml:lang="en">Links an episode to an event it records.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">records event</rdfs:label>
+        <skos:definition xml:lang="en">Links an episode to an event it records.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/requestedBy -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/requestedBy">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/ErasureEvent"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Agent"/>
+        <obo:IAO_0000115 xml:lang="en">Links an erasure event to the agent who requested deletion.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">requested by</rdfs:label>
+        <skos:definition xml:lang="en">Links an erasure event to the agent who requested deletion.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/restrictsToolUse -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/restrictsToolUse">
+        <rdfs:domain rdf:resource="https://purl.org/pao/PermissionPolicy"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/ToolDefinition"/>
+        <obo:IAO_0000115 xml:lang="en">Links a permission policy to a tool whose use it restricts.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">restricts tool use</rdfs:label>
+        <skos:definition xml:lang="en">Links a permission policy to a tool whose use it restricts.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/spawnedBy -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/spawnedBy">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/SubAgent"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/Agent"/>
+        <obo:IAO_0000115 xml:lang="en">Links a sub-agent to the parent agent that spawned it.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">spawned by</rdfs:label>
+        <skos:definition xml:lang="en">Links a sub-agent to the parent agent that spawned it.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/storedIn -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/storedIn">
+        <owl:inverseOf rdf:resource="https://purl.org/pao/stores"/>
+        <rdfs:range rdf:resource="https://purl.org/pao/MemoryTier"/>
+        <obo:IAO_0000115 xml:lang="en">Links a memory item to the memory tier where it is stored.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">stored in</rdfs:label>
+        <skos:definition xml:lang="en">Links a memory item to the memory tier where it is stored.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!-- https://purl.org/pao/stores -->
+
+    <owl:ObjectProperty rdf:about="https://purl.org/pao/stores">
+        <rdfs:domain rdf:resource="https://purl.org/pao/MemoryTier"/>
+        <obo:IAO_0000115 xml:lang="en">Links a memory tier to a memory item it currently holds.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">stores</rdfs:label>
+        <skos:definition xml:lang="en">Links a memory tier to a memory item it currently holds.</skos:definition>
+    </owl:ObjectProperty>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+
+
+    <!-- http://www.w3.org/2006/time#inXSDDateTime -->
+
+    <owl:DatatypeProperty rdf:about="http://www.w3.org/2006/time#inXSDDateTime">
+        <rdfs:domain rdf:resource="http://www.w3.org/2006/time#Instant"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label xml:lang="en">in XSD dateTime</rdfs:label>
+    </owl:DatatypeProperty>
+
+
+
+    <!-- https://purl.org/pao/claimType -->
+
+    <owl:DatatypeProperty rdf:about="https://purl.org/pao/claimType">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/Claim"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <obo:IAO_0000115 xml:lang="en">A classifier string indicating the kind of claim.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">claim type</rdfs:label>
+        <skos:definition xml:lang="en">A classifier string indicating the kind of claim.</skos:definition>
+    </owl:DatatypeProperty>
+
+
+
+    <!-- https://purl.org/pao/hasConfidence -->
+
+    <owl:DatatypeProperty rdf:about="https://purl.org/pao/hasConfidence">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/Claim"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <obo:IAO_0000115 xml:lang="en">The confidence level of a claim, between 0.0 and 1.0.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">has confidence</rdfs:label>
+        <skos:definition xml:lang="en">The confidence level of a claim, between 0.0 and 1.0.</skos:definition>
+    </owl:DatatypeProperty>
+
+
+
+    <!-- https://purl.org/pao/hasContent -->
+
+    <owl:DatatypeProperty rdf:about="https://purl.org/pao/hasContent">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <obo:IAO_0000115 xml:lang="en">The textual or structured content of an information artifact.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">has content</rdfs:label>
+        <skos:definition xml:lang="en">The textual or structured content of an information artifact.</skos:definition>
+    </owl:DatatypeProperty>
+
+
+
+    <!-- https://purl.org/pao/hasSensitivityLevel -->
+
+    <owl:DatatypeProperty rdf:about="https://purl.org/pao/hasSensitivityLevel">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/MemoryItem"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <obo:IAO_0000115 xml:lang="en">The privacy sensitivity classification of a memory item.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">has sensitivity level</rdfs:label>
+        <skos:definition xml:lang="en">The privacy sensitivity classification of a memory item.</skos:definition>
+    </owl:DatatypeProperty>
+
+
+
+    <!-- https://purl.org/pao/hasTimestamp -->
+
+    <owl:DatatypeProperty rdf:about="https://purl.org/pao/hasTimestamp">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <obo:IAO_0000115 xml:lang="en">A convenience timestamp for point-in-time events.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">has timestamp</rdfs:label>
+        <skos:definition xml:lang="en">A convenience timestamp for point-in-time events.</skos:definition>
+    </owl:DatatypeProperty>
+
+
+
+    <!-- https://purl.org/pao/hasTurnIndex -->
+
+    <owl:DatatypeProperty rdf:about="https://purl.org/pao/hasTurnIndex">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://purl.org/pao/Turn"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"/>
+        <obo:IAO_0000115 xml:lang="en">The zero-based ordinal position of a turn within its session.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">has turn index</rdfs:label>
+        <skos:definition xml:lang="en">The zero-based ordinal position of a turn within its session.</skos:definition>
+    </owl:DatatypeProperty>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+
+
+    <!-- http://purl.obolibrary.org/obo/BFO_0000015 -->
+
+    <owl:Class rdf:about="http://purl.obolibrary.org/obo/BFO_0000015">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:label xml:lang="en">process</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- http://purl.obolibrary.org/obo/BFO_0000023 -->
+
+    <owl:Class rdf:about="http://purl.obolibrary.org/obo/BFO_0000023">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:label xml:lang="en">role</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- http://purl.obolibrary.org/obo/BFO_0000030 -->
+
+    <owl:Class rdf:about="http://purl.obolibrary.org/obo/BFO_0000030">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:label xml:lang="en">object</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- http://purl.obolibrary.org/obo/BFO_0000031 -->
+
+    <owl:Class rdf:about="http://purl.obolibrary.org/obo/BFO_0000031">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:label xml:lang="en">generically dependent continuant</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#Concept -->
+
+    <owl:Class rdf:about="http://www.w3.org/2004/02/skos/core#Concept">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    </owl:Class>
+
+
+
+    <!-- http://www.w3.org/2006/time#Instant -->
+
+    <owl:Class rdf:about="http://www.w3.org/2006/time#Instant">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2006/time#TemporalEntity"/>
+        <rdfs:label xml:lang="en">Instant</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- http://www.w3.org/2006/time#Interval -->
+
+    <owl:Class rdf:about="http://www.w3.org/2006/time#Interval">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2006/time#TemporalEntity"/>
+        <rdfs:label xml:lang="en">Interval</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- http://www.w3.org/2006/time#TemporalEntity -->
+
+    <owl:Class rdf:about="http://www.w3.org/2006/time#TemporalEntity">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:label xml:lang="en">Temporal Entity</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- http://www.w3.org/ns/odrl/2/Permission -->
+
+    <owl:Class rdf:about="http://www.w3.org/ns/odrl/2/Permission">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:label xml:lang="en">Permission</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- http://www.w3.org/ns/odrl/2/Policy -->
+
+    <owl:Class rdf:about="http://www.w3.org/ns/odrl/2/Policy">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:label xml:lang="en">Policy</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- http://www.w3.org/ns/prov#Activity -->
+
+    <owl:Class rdf:about="http://www.w3.org/ns/prov#Activity">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:label xml:lang="en">Activity</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- http://www.w3.org/ns/prov#Agent -->
+
+    <owl:Class rdf:about="http://www.w3.org/ns/prov#Agent">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:label xml:lang="en">Agent</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- http://www.w3.org/ns/prov#Association -->
+
+    <owl:Class rdf:about="http://www.w3.org/ns/prov#Association">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:label xml:lang="en">Association</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- http://www.w3.org/ns/prov#Entity -->
+
+    <owl:Class rdf:about="http://www.w3.org/ns/prov#Entity">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:label xml:lang="en">Entity</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- http://www.w3.org/ns/prov#Person -->
+
+    <owl:Class rdf:about="http://www.w3.org/ns/prov#Person">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Agent"/>
+        <rdfs:label xml:lang="en">Person (PROV-O)</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- http://www.w3.org/ns/prov#Plan -->
+
+    <owl:Class rdf:about="http://www.w3.org/ns/prov#Plan">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <rdfs:label xml:lang="en">Plan</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- http://www.w3.org/ns/prov#Role -->
+
+    <owl:Class rdf:about="http://www.w3.org/ns/prov#Role">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:label xml:lang="en">Role</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- http://www.w3.org/ns/prov#SoftwareAgent -->
+
+    <owl:Class rdf:about="http://www.w3.org/ns/prov#SoftwareAgent">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Agent"/>
+        <rdfs:label xml:lang="en">Software Agent</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- http://xmlns.com/foaf/0.1/Person -->
+
+    <owl:Class rdf:about="http://xmlns.com/foaf/0.1/Person">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdfs:label xml:lang="en">Person</rdfs:label>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/AIAgent -->
+
+    <owl:Class rdf:about="https://purl.org/pao/AIAgent">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000031"/>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#SoftwareAgent"/>
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/Agent"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/hasAvailableTool"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/ToolDefinition"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="https://purl.org/pao/HumanUser"/>
+        <obo:IAO_0000115 xml:lang="en">An agent that is a software system capable of autonomous decision-making and tool use.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">ai agent</rdfs:label>
+        <skos:definition xml:lang="en">An agent that is a software system capable of autonomous decision-making and tool use.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/Action -->
+
+    <owl:Class rdf:about="https://purl.org/pao/Action">
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/Event"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/performedBy"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/Agent"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <obo:IAO_0000115 xml:lang="en">An event that is intentionally caused by an agent to affect the environment or internal state.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">action</rdfs:label>
+        <skos:definition xml:lang="en">An event that is intentionally caused by an agent to affect the environment or internal state.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/Agent -->
+
+    <owl:Class rdf:about="https://purl.org/pao/Agent">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Agent"/>
+        <obo:IAO_0000115 xml:lang="en">An entity that bears responsibility for activities and can act on behalf of itself or others.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">agent</rdfs:label>
+        <skos:definition xml:lang="en">An entity that bears responsibility for activities and can act on behalf of itself or others.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/AgentRole -->
+
+    <owl:Class rdf:about="https://purl.org/pao/AgentRole">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:oneOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="https://purl.org/pao/AssistantRole"/>
+                    <rdf:Description rdf:about="https://purl.org/pao/UserRole"/>
+                </owl:oneOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000023"/>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Role"/>
+        <obo:IAO_0000115 xml:lang="en">A role that an agent plays in the context of a conversation or activity.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">agent role</rdfs:label>
+        <skos:definition xml:lang="en">A role that an agent plays in the context of a conversation or activity.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/Claim -->
+
+    <owl:Class rdf:about="https://purl.org/pao/Claim">
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/MemoryItem"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/aboutAgent"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/Agent"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/storedIn"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/MemoryTier"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="https://purl.org/pao/Episode"/>
+        <obo:IAO_0000115 xml:lang="en">A memory item that represents an agent-held proposition with associated confidence, evidence, and provenance metadata.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">claim</rdfs:label>
+        <skos:definition xml:lang="en">A memory item that represents an agent-held proposition with associated confidence, evidence, and provenance metadata.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/CompactionEvent -->
+
+    <owl:Class rdf:about="https://purl.org/pao/CompactionEvent">
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/Event"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/inConversation"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/Conversation"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/producedSummary"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/MemoryItem"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <obo:IAO_0000115 xml:lang="en">A process in which an agent&apos;s context window is compressed by summarizing prior turns.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">compaction event</rdfs:label>
+        <skos:definition xml:lang="en">A process in which an agent&apos;s context window is compressed by summarizing prior turns.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/ComplianceStatus -->
+
+    <owl:Class rdf:about="https://purl.org/pao/ComplianceStatus">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:oneOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="https://purl.org/pao/Compliant"/>
+                    <rdf:Description rdf:about="https://purl.org/pao/NonCompliant"/>
+                </owl:oneOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/Status"/>
+        <obo:IAO_0000115 xml:lang="en">A status indicating whether a tool invocation complied with applicable permission policies.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">compliance status</rdfs:label>
+        <skos:definition xml:lang="en">A status indicating whether a tool invocation complied with applicable permission policies.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/Consolidation -->
+
+    <owl:Class rdf:about="https://purl.org/pao/Consolidation">
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/MemoryOperation"/>
+        <obo:IAO_0000115 xml:lang="en">A memory operation that transforms episodic memories into semantic memories.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">consolidation</rdfs:label>
+        <skos:definition xml:lang="en">A memory operation that transforms episodic memories into semantic memories.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/Conversation -->
+
+    <owl:Class rdf:about="https://purl.org/pao/Conversation">
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/Event"/>
+        <obo:IAO_0000115 xml:lang="en">A process consisting of a coherent thread of dialogue between participants that may span multiple sessions.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">conversation</rdfs:label>
+        <skos:definition xml:lang="en">A process consisting of a coherent thread of dialogue between participants that may span multiple sessions.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/Encoding -->
+
+    <owl:Class rdf:about="https://purl.org/pao/Encoding">
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/MemoryOperation"/>
+        <obo:IAO_0000115 xml:lang="en">A memory operation that writes new information into a memory tier.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">encoding</rdfs:label>
+        <skos:definition xml:lang="en">A memory operation that writes new information into a memory tier.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/Episode -->
+
+    <owl:Class rdf:about="https://purl.org/pao/Episode">
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/MemoryItem"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/hasTemporalExtent"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2006/time#Interval"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/hasTopic"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/storedIn"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/MemoryTier"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/storedIn"/>
+                <owl:allValuesFrom rdf:resource="https://purl.org/pao/EpisodicMemory"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <obo:IAO_0000115 xml:lang="en">A memory item that records a temporally bounded cluster of related events.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">episode</rdfs:label>
+        <skos:definition xml:lang="en">A memory item that records a temporally bounded cluster of related events.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/EpisodicMemory -->
+
+    <owl:Class rdf:about="https://purl.org/pao/EpisodicMemory">
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/MemoryTier"/>
+        <obo:IAO_0000115 xml:lang="en">A memory tier that stores time-situated experiences and interaction histories.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">episodic memory</rdfs:label>
+        <skos:definition xml:lang="en">A memory tier that stores time-situated experiences and interaction histories.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/ErasureEvent -->
+
+    <owl:Class rdf:about="https://purl.org/pao/ErasureEvent">
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/Event"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/requestedBy"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/Agent"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <obo:IAO_0000115 xml:lang="en">A process in which memory items are identified and deleted to comply with privacy requirements.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">erasure event</rdfs:label>
+        <skos:definition xml:lang="en">A process in which memory items are identified and deleted to comply with privacy requirements.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/Event -->
+
+    <owl:Class rdf:about="https://purl.org/pao/Event">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000015"/>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Activity"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/hasTemporalExtent"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2006/time#TemporalEntity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <obo:IAO_0000115 xml:lang="en">A process that is an occurrence situated in time within the agent system.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">event</rdfs:label>
+        <skos:definition xml:lang="en">A process that is an occurrence situated in time within the agent system.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/Forgetting -->
+
+    <owl:Class rdf:about="https://purl.org/pao/Forgetting">
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/MemoryOperation"/>
+        <obo:IAO_0000115 xml:lang="en">A memory operation that removes or decays memory items from a memory tier.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">forgetting</rdfs:label>
+        <skos:definition xml:lang="en">A memory operation that removes or decays memory items from a memory tier.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/Goal -->
+
+    <owl:Class rdf:about="https://purl.org/pao/Goal">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000031"/>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/hasStatus"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/TaskStatus"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/pursuedBy"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/Agent"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <obo:IAO_0000115 xml:lang="en">A generically dependent continuant that specifies a desired state an agent works toward.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">goal</rdfs:label>
+        <skos:definition xml:lang="en">A generically dependent continuant that specifies a desired state an agent works toward.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/HumanUser -->
+
+    <owl:Class rdf:about="https://purl.org/pao/HumanUser">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000030"/>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Person"/>
+        <rdfs:subClassOf rdf:resource="http://xmlns.com/foaf/0.1/Person"/>
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/Agent"/>
+        <obo:IAO_0000115 xml:lang="en">An agent that is a human person who interacts with AI systems.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">human user</rdfs:label>
+        <skos:definition xml:lang="en">An agent that is a human person who interacts with AI systems.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/MemoryItem -->
+
+    <owl:Class rdf:about="https://purl.org/pao/MemoryItem">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000031"/>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov#wasAttributedTo"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/Agent"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.w3.org/ns/prov#wasGeneratedBy"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/ns/prov#Activity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/storedIn"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/MemoryTier"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/storedIn"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="https://purl.org/pao/MemoryTier"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <obo:IAO_0000115 xml:lang="en">A generically dependent continuant that is an information artifact persisted in an agent&apos;s memory system.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">memory item</rdfs:label>
+        <skos:definition xml:lang="en">A generically dependent continuant that is an information artifact persisted in an agent&apos;s memory system.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/MemoryOperation -->
+
+    <owl:Class rdf:about="https://purl.org/pao/MemoryOperation">
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/Event"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/operatesOn"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/MemoryItem"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointUnionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="https://purl.org/pao/Consolidation"/>
+            <rdf:Description rdf:about="https://purl.org/pao/Encoding"/>
+            <rdf:Description rdf:about="https://purl.org/pao/Forgetting"/>
+            <rdf:Description rdf:about="https://purl.org/pao/Retrieval"/>
+        </owl:disjointUnionOf>
+        <obo:IAO_0000115 xml:lang="en">A process that acts on memory items to encode, retrieve, consolidate, or remove them.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">memory operation</rdfs:label>
+        <skos:definition xml:lang="en">A process that acts on memory items to encode, retrieve, consolidate, or remove them.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/MemoryTier -->
+
+    <owl:Class rdf:about="https://purl.org/pao/MemoryTier">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000031"/>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <owl:disjointUnionOf rdf:parseType="Collection">
+            <rdf:Description rdf:about="https://purl.org/pao/EpisodicMemory"/>
+            <rdf:Description rdf:about="https://purl.org/pao/ProceduralMemory"/>
+            <rdf:Description rdf:about="https://purl.org/pao/SemanticMemory"/>
+            <rdf:Description rdf:about="https://purl.org/pao/WorkingMemory"/>
+        </owl:disjointUnionOf>
+        <obo:IAO_0000115 xml:lang="en">A generically dependent continuant that defines a layer in the agent&apos;s memory architecture with specific storage and access characteristics.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">memory tier</rdfs:label>
+        <skos:definition xml:lang="en">A generically dependent continuant that defines a layer in the agent&apos;s memory architecture with specific storage and access characteristics.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/Message -->
+
+    <owl:Class rdf:about="https://purl.org/pao/Message">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000031"/>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <obo:IAO_0000115 xml:lang="en">A generically dependent continuant that is the textual or structured content of a conversational turn.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">message</rdfs:label>
+        <skos:definition xml:lang="en">A generically dependent continuant that is the textual or structured content of a conversational turn.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/PermissionPolicy -->
+
+    <owl:Class rdf:about="https://purl.org/pao/PermissionPolicy">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000031"/>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/odrl/2/Policy"/>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/appliesTo"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/Agent"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/grantsPermission"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/ns/odrl/2/Permission"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/restrictsToolUse"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/ToolDefinition"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="https://purl.org/pao/SafetyConstraint"/>
+        <obo:IAO_0000115 xml:lang="en">A generically dependent continuant that specifies rules governing what actions an agent is permitted or forbidden to perform.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">permission policy</rdfs:label>
+        <skos:definition xml:lang="en">A generically dependent continuant that specifies rules governing what actions an agent is permitted or forbidden to perform.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/Plan -->
+
+    <owl:Class rdf:about="https://purl.org/pao/Plan">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Plan"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/achievesGoal"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/Goal"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <obo:IAO_0000115 xml:lang="en">A generically dependent continuant that specifies an ordered sequence of intended actions to achieve a goal.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">plan</rdfs:label>
+        <skos:definition xml:lang="en">A generically dependent continuant that specifies an ordered sequence of intended actions to achieve a goal.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/ProceduralMemory -->
+
+    <owl:Class rdf:about="https://purl.org/pao/ProceduralMemory">
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/MemoryTier"/>
+        <obo:IAO_0000115 xml:lang="en">A memory tier that stores learned action policies, skills, and behavioral patterns.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">procedural memory</rdfs:label>
+        <skos:definition xml:lang="en">A memory tier that stores learned action policies, skills, and behavioral patterns.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/Retrieval -->
+
+    <owl:Class rdf:about="https://purl.org/pao/Retrieval">
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/MemoryOperation"/>
+        <obo:IAO_0000115 xml:lang="en">A memory operation that reads information from a memory tier.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">retrieval</rdfs:label>
+        <skos:definition xml:lang="en">A memory operation that reads information from a memory tier.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/SafetyConstraint -->
+
+    <owl:Class rdf:about="https://purl.org/pao/SafetyConstraint">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000031"/>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/appliesTo"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/Agent"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <obo:IAO_0000115 xml:lang="en">A generically dependent continuant that specifies a non-negotiable behavioral limit on an agent.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">safety constraint</rdfs:label>
+        <skos:definition xml:lang="en">A generically dependent continuant that specifies a non-negotiable behavioral limit on an agent.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/SemanticMemory -->
+
+    <owl:Class rdf:about="https://purl.org/pao/SemanticMemory">
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/MemoryTier"/>
+        <obo:IAO_0000115 xml:lang="en">A memory tier that stores generalized facts, knowledge, and beliefs extracted from experience.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">semantic memory</rdfs:label>
+        <skos:definition xml:lang="en">A memory tier that stores generalized facts, knowledge, and beliefs extracted from experience.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/Session -->
+
+    <owl:Class rdf:about="https://purl.org/pao/Session">
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/Event"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/hasParticipant"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/Agent"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/hasStatus"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/SessionStatus"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/hasTemporalExtent"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/2006/time#Interval"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/partOfConversation"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/Conversation"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <obo:IAO_0000115 xml:lang="en">A process that is a bounded period of agent-user interaction within a conversation.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">session</rdfs:label>
+        <skos:definition xml:lang="en">A process that is a bounded period of agent-user interaction within a conversation.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/SessionStatus -->
+
+    <owl:Class rdf:about="https://purl.org/pao/SessionStatus">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:oneOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="https://purl.org/pao/Active"/>
+                    <rdf:Description rdf:about="https://purl.org/pao/Ended"/>
+                    <rdf:Description rdf:about="https://purl.org/pao/Interrupted"/>
+                </owl:oneOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/Status"/>
+        <obo:IAO_0000115 xml:lang="en">A status applicable to sessions indicating whether the session is active, ended, or interrupted.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">session status</rdfs:label>
+        <skos:definition xml:lang="en">A status applicable to sessions indicating whether the session is active, ended, or interrupted.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/Status -->
+
+    <owl:Class rdf:about="https://purl.org/pao/Status">
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <obo:IAO_0000115 xml:lang="en">A class whose individuals represent the current state of an entity.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">status</rdfs:label>
+        <skos:definition xml:lang="en">A class whose individuals represent the current state of an entity.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/SubAgent -->
+
+    <owl:Class rdf:about="https://purl.org/pao/SubAgent">
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/AIAgent"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/delegatedTask"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/Task"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/spawnedBy"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/AIAgent"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <obo:IAO_0000115 xml:lang="en">An AI agent that was spawned by another agent to perform delegated work.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">sub agent</rdfs:label>
+        <skos:definition xml:lang="en">An AI agent that was spawned by another agent to perform delegated work.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/Task -->
+
+    <owl:Class rdf:about="https://purl.org/pao/Task">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000031"/>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/hasStatus"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/TaskStatus"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/partOfPlan"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/Plan"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <obo:IAO_0000115 xml:lang="en">A generically dependent continuant that is a concrete actionable work item within a plan with status and dependencies.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">task</rdfs:label>
+        <skos:definition xml:lang="en">A generically dependent continuant that is a concrete actionable work item within a plan with status and dependencies.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/TaskStatus -->
+
+    <owl:Class rdf:about="https://purl.org/pao/TaskStatus">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:oneOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="https://purl.org/pao/Blocked"/>
+                    <rdf:Description rdf:about="https://purl.org/pao/Completed"/>
+                    <rdf:Description rdf:about="https://purl.org/pao/InProgress"/>
+                    <rdf:Description rdf:about="https://purl.org/pao/Pending"/>
+                </owl:oneOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/Status"/>
+        <obo:IAO_0000115 xml:lang="en">A status applicable to tasks indicating progress from pending through completion.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">task status</rdfs:label>
+        <skos:definition xml:lang="en">A status applicable to tasks indicating progress from pending through completion.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/ToolDefinition -->
+
+    <owl:Class rdf:about="https://purl.org/pao/ToolDefinition">
+        <rdfs:subClassOf rdf:resource="http://purl.obolibrary.org/obo/BFO_0000031"/>
+        <rdfs:subClassOf rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+        <obo:IAO_0000115 xml:lang="en">A generically dependent continuant that specifies the interface, capabilities, and constraints of an available tool.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">tool definition</rdfs:label>
+        <skos:definition xml:lang="en">A generically dependent continuant that specifies the interface, capabilities, and constraints of an available tool.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/ToolInvocation -->
+
+    <owl:Class rdf:about="https://purl.org/pao/ToolInvocation">
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/Action"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/hasComplianceStatus"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/ComplianceStatus"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/hasInput"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/hasOutput"/>
+                <owl:someValuesFrom rdf:resource="http://www.w3.org/ns/prov#Entity"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/inSession"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/Session"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/invokedBy"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/Agent"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/invokesTool"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/ToolDefinition"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <obo:IAO_0000115 xml:lang="en">A process in which an agent requests execution of a tool by providing inputs and receiving outputs.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">tool invocation</rdfs:label>
+        <skos:definition xml:lang="en">A process in which an agent requests execution of a tool by providing inputs and receiving outputs.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/Turn -->
+
+    <owl:Class rdf:about="https://purl.org/pao/Turn">
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/Event"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/hasParticipant"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/Agent"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/partOfConversation"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/Conversation"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/partOfSession"/>
+                <owl:someValuesFrom rdf:resource="https://purl.org/pao/Session"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/hasParticipant"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="https://purl.org/pao/Agent"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="https://purl.org/pao/hasTurnIndex"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onDataRange rdf:resource="http://www.w3.org/2001/XMLSchema#nonNegativeInteger"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <obo:IAO_0000115 xml:lang="en">A process that is a single contribution by one participant in a conversation.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">turn</rdfs:label>
+        <skos:definition xml:lang="en">A process that is a single contribution by one participant in a conversation.</skos:definition>
+    </owl:Class>
+
+
+
+    <!-- https://purl.org/pao/WorkingMemory -->
+
+    <owl:Class rdf:about="https://purl.org/pao/WorkingMemory">
+        <rdfs:subClassOf rdf:resource="https://purl.org/pao/MemoryTier"/>
+        <obo:IAO_0000115 xml:lang="en">A memory tier that holds information currently active in the agent&apos;s context window.</obo:IAO_0000115>
+        <rdfs:label xml:lang="en">working memory</rdfs:label>
+        <skos:definition xml:lang="en">A memory tier that holds information currently active in the agent&apos;s context window.</skos:definition>
+    </owl:Class>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+
+
+
+    <!-- https://purl.org/pao/Active -->
+
+    <owl:NamedIndividual rdf:about="https://purl.org/pao/Active">
+        <rdf:type rdf:resource="https://purl.org/pao/SessionStatus"/>
+        <rdfs:label xml:lang="en">active</rdfs:label>
+        <skos:definition xml:lang="en">Status value: an entity is currently active.</skos:definition>
+    </owl:NamedIndividual>
+
+
+
+    <!-- https://purl.org/pao/AssistantRole -->
+
+    <owl:NamedIndividual rdf:about="https://purl.org/pao/AssistantRole">
+        <rdf:type rdf:resource="https://purl.org/pao/AgentRole"/>
+        <owl:differentFrom rdf:resource="https://purl.org/pao/UserRole"/>
+        <rdfs:label xml:lang="en">assistant role</rdfs:label>
+        <skos:definition xml:lang="en">The role of the AI assistant in a conversation.</skos:definition>
+    </owl:NamedIndividual>
+
+
+
+    <!-- https://purl.org/pao/Blocked -->
+
+    <owl:NamedIndividual rdf:about="https://purl.org/pao/Blocked">
+        <rdf:type rdf:resource="https://purl.org/pao/TaskStatus"/>
+        <rdfs:label xml:lang="en">blocked</rdfs:label>
+        <skos:definition xml:lang="en">Status value: a task cannot proceed because of unresolved dependencies.</skos:definition>
+    </owl:NamedIndividual>
+
+
+
+    <!-- https://purl.org/pao/Completed -->
+
+    <owl:NamedIndividual rdf:about="https://purl.org/pao/Completed">
+        <rdf:type rdf:resource="https://purl.org/pao/TaskStatus"/>
+        <rdfs:label xml:lang="en">completed</rdfs:label>
+        <skos:definition xml:lang="en">Status value: a task or process has finished successfully.</skos:definition>
+    </owl:NamedIndividual>
+
+
+
+    <!-- https://purl.org/pao/Compliant -->
+
+    <owl:NamedIndividual rdf:about="https://purl.org/pao/Compliant">
+        <rdf:type rdf:resource="https://purl.org/pao/ComplianceStatus"/>
+        <owl:differentFrom rdf:resource="https://purl.org/pao/NonCompliant"/>
+        <rdfs:label xml:lang="en">compliant</rdfs:label>
+        <skos:definition xml:lang="en">Compliance status: a tool invocation followed all applicable policies.</skos:definition>
+    </owl:NamedIndividual>
+
+
+
+    <!-- https://purl.org/pao/Ended -->
+
+    <owl:NamedIndividual rdf:about="https://purl.org/pao/Ended">
+        <rdf:type rdf:resource="https://purl.org/pao/SessionStatus"/>
+        <rdfs:label xml:lang="en">ended</rdfs:label>
+        <skos:definition xml:lang="en">Status value: a session has ended normally.</skos:definition>
+    </owl:NamedIndividual>
+
+
+
+    <!-- https://purl.org/pao/InProgress -->
+
+    <owl:NamedIndividual rdf:about="https://purl.org/pao/InProgress">
+        <rdf:type rdf:resource="https://purl.org/pao/TaskStatus"/>
+        <rdfs:label xml:lang="en">in progress</rdfs:label>
+        <skos:definition xml:lang="en">Status value: a task is currently being worked on.</skos:definition>
+    </owl:NamedIndividual>
+
+
+
+    <!-- https://purl.org/pao/Interrupted -->
+
+    <owl:NamedIndividual rdf:about="https://purl.org/pao/Interrupted">
+        <rdf:type rdf:resource="https://purl.org/pao/SessionStatus"/>
+        <rdfs:label xml:lang="en">interrupted</rdfs:label>
+        <skos:definition xml:lang="en">Status value: a session ended abnormally.</skos:definition>
+    </owl:NamedIndividual>
+
+
+
+    <!-- https://purl.org/pao/NonCompliant -->
+
+    <owl:NamedIndividual rdf:about="https://purl.org/pao/NonCompliant">
+        <rdf:type rdf:resource="https://purl.org/pao/ComplianceStatus"/>
+        <rdfs:label xml:lang="en">non compliant</rdfs:label>
+        <skos:definition xml:lang="en">Compliance status: a tool invocation violated one or more policies.</skos:definition>
+    </owl:NamedIndividual>
+
+
+
+    <!-- https://purl.org/pao/Pending -->
+
+    <owl:NamedIndividual rdf:about="https://purl.org/pao/Pending">
+        <rdf:type rdf:resource="https://purl.org/pao/TaskStatus"/>
+        <rdfs:label xml:lang="en">pending</rdfs:label>
+        <skos:definition xml:lang="en">Status value: a task has not yet started.</skos:definition>
+    </owl:NamedIndividual>
+
+
+
+    <!-- https://purl.org/pao/PersonalData -->
+
+    <owl:NamedIndividual rdf:about="https://purl.org/pao/PersonalData">
+        <rdfs:label xml:lang="en">personal data</rdfs:label>
+        <skos:definition xml:lang="en">A sensitivity level indicating the memory item contains personal data.</skos:definition>
+    </owl:NamedIndividual>
+
+
+
+    <!-- https://purl.org/pao/UserPreference -->
+
+    <owl:NamedIndividual rdf:about="https://purl.org/pao/UserPreference">
+        <rdfs:label xml:lang="en">user preference</rdfs:label>
+        <skos:definition xml:lang="en">A claim type indicating the claim records a user preference.</skos:definition>
+    </owl:NamedIndividual>
+
+
+
+    <!-- https://purl.org/pao/UserRole -->
+
+    <owl:NamedIndividual rdf:about="https://purl.org/pao/UserRole">
+        <rdf:type rdf:resource="https://purl.org/pao/AgentRole"/>
+        <rdfs:label xml:lang="en">user role</rdfs:label>
+        <skos:definition xml:lang="en">The role of the human user in a conversation.</skos:definition>
+    </owl:NamedIndividual>
+
+
+
+    <!--
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // General axioms
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="https://purl.org/pao/Action"/>
+            <rdf:Description rdf:about="https://purl.org/pao/CompactionEvent"/>
+            <rdf:Description rdf:about="https://purl.org/pao/Conversation"/>
+            <rdf:Description rdf:about="https://purl.org/pao/ErasureEvent"/>
+            <rdf:Description rdf:about="https://purl.org/pao/MemoryOperation"/>
+            <rdf:Description rdf:about="https://purl.org/pao/Session"/>
+            <rdf:Description rdf:about="https://purl.org/pao/Turn"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="https://purl.org/pao/ComplianceStatus"/>
+            <rdf:Description rdf:about="https://purl.org/pao/SessionStatus"/>
+            <rdf:Description rdf:about="https://purl.org/pao/TaskStatus"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="https://purl.org/pao/Consolidation"/>
+            <rdf:Description rdf:about="https://purl.org/pao/Encoding"/>
+            <rdf:Description rdf:about="https://purl.org/pao/Forgetting"/>
+            <rdf:Description rdf:about="https://purl.org/pao/Retrieval"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="https://purl.org/pao/EpisodicMemory"/>
+            <rdf:Description rdf:about="https://purl.org/pao/ProceduralMemory"/>
+            <rdf:Description rdf:about="https://purl.org/pao/SemanticMemory"/>
+            <rdf:Description rdf:about="https://purl.org/pao/WorkingMemory"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDisjointClasses"/>
+        <owl:members rdf:parseType="Collection">
+            <rdf:Description rdf:about="https://purl.org/pao/Goal"/>
+            <rdf:Description rdf:about="https://purl.org/pao/MemoryItem"/>
+            <rdf:Description rdf:about="https://purl.org/pao/MemoryTier"/>
+            <rdf:Description rdf:about="https://purl.org/pao/Message"/>
+            <rdf:Description rdf:about="https://purl.org/pao/PermissionPolicy"/>
+            <rdf:Description rdf:about="https://purl.org/pao/Plan"/>
+            <rdf:Description rdf:about="https://purl.org/pao/SafetyConstraint"/>
+            <rdf:Description rdf:about="https://purl.org/pao/Task"/>
+            <rdf:Description rdf:about="https://purl.org/pao/ToolDefinition"/>
+        </owl:members>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="https://purl.org/pao/Active"/>
+            <rdf:Description rdf:about="https://purl.org/pao/Ended"/>
+            <rdf:Description rdf:about="https://purl.org/pao/Interrupted"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+    <rdf:Description>
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AllDifferent"/>
+        <owl:distinctMembers rdf:parseType="Collection">
+            <rdf:Description rdf:about="https://purl.org/pao/Blocked"/>
+            <rdf:Description rdf:about="https://purl.org/pao/Completed"/>
+            <rdf:Description rdf:about="https://purl.org/pao/InProgress"/>
+            <rdf:Description rdf:about="https://purl.org/pao/Pending"/>
+        </owl:distinctMembers>
+    </rdf:Description>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.29) https://github.com/owlcs/owlapi -->
