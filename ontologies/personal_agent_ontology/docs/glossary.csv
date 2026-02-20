@@ -62,3 +62,12 @@ Public,"unrestricted, open","Sensitivity level: unrestricted data.",individual,C
 Internal,"org-internal, internal-only","Sensitivity level: organization-internal data.",individual,CQ-048,SensitivityLevel instance,Named individual of SensitivityLevel.
 Confidential,"restricted, private","Sensitivity level: restricted personal data.",individual,CQ-048,SensitivityLevel instance,Named individual of SensitivityLevel.
 Restricted,"highly sensitive, classified","Sensitivity level: highly sensitive data requiring special controls.",individual,CQ-048,SensitivityLevel instance,Named individual of SensitivityLevel.
+StatusTransition,"state change, status change","A process in which an entity's status changes from one value to another.",class,CQ-058,Process (BFO:0000015),Subclass of Event. Reified transition with fromStatus/toStatus.
+SessionStatusTransition,"session state change","A status transition in which a session's status changes.",class,CQ-059,Process (BFO:0000015),Subclass of StatusTransition.
+TaskStatusTransition,"task state change","A status transition in which a task's status changes.",class,CQ-058,Process (BFO:0000015),Subclass of StatusTransition.
+CompactionDisposition,"compaction fate record, item disposition","An information artifact recording the fate of an individual item during a compaction event.",class,CQ-052,GDC (BFO:0000031),N-ary reification linking event to item and fate.
+ItemFate,"compaction outcome, item status","A status class whose individuals classify what happened to an item during compaction.",class,CQ-052,Value Partition,Closed set: Preserved/Dropped/Summarized/Archived.
+Preserved,"kept, retained","Item fate: content incorporated into summary.",individual,CQ-052,ItemFate instance,Named individual of ItemFate.
+Dropped,"excluded, removed","Item fate: excluded from summary.",individual,CQ-052,ItemFate instance,Named individual of ItemFate.
+Summarized,"condensed, abbreviated","Item fate: partially represented in summary.",individual,CQ-052,ItemFate instance,Named individual of ItemFate.
+Archived,"stored, cold-stored","Item fate: moved to long-term storage.",individual,CQ-052,ItemFate instance,Named individual of ItemFate.

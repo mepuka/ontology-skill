@@ -1072,6 +1072,318 @@ properties:
     definition: "The number of days a memory item should be retained."
     constraint_note: "Functional: each retention policy has at most one period."
 
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.3.0: Compaction trace
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: compactedItem
+    type: ObjectProperty
+    domain: CompactionEvent
+    range: "prov:Entity"
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: "prov:used"
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-052,CQ-053"
+    definition: "Links a compaction event to an item that was in scope for compaction."
+    constraint_note: "subPropertyOf prov:used. Broader range (prov:Entity) for flexibility."
+
+  - name: hasCompactionDisposition
+    type: ObjectProperty
+    domain: CompactionEvent
+    range: CompactionDisposition
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-052"
+    definition: "Links a compaction event to a disposition record for one of its items."
+    constraint_note: ""
+
+  - name: dispositionOf
+    type: ObjectProperty
+    domain: CompactionDisposition
+    range: "prov:Entity"
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-052"
+    definition: "Links a compaction disposition to the item it describes."
+    constraint_note: "Functional: each disposition describes exactly one item."
+
+  - name: hasItemFate
+    type: ObjectProperty
+    domain: CompactionDisposition
+    range: ItemFate
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-052"
+    definition: "Links a compaction disposition to the fate of the item."
+    constraint_note: "Functional: each disposition has exactly one fate. ODP-6 value partition."
+
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.3.0: Cross-session resume
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: continuedFrom
+    type: ObjectProperty
+    domain: Session
+    range: Session
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: continuedBy
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-056"
+    definition: "Links a session to the prior session it continues."
+    constraint_note: "Functional: a session can continue from at most one prior session."
+
+  - name: continuedBy
+    type: ObjectProperty
+    domain: Session
+    range: Session
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: continuedFrom
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-056"
+    definition: "Links a session to a subsequent session that continues its work."
+    constraint_note: "Inverse of continuedFrom. One-to-many: a session can be continued by multiple sessions."
+
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.3.0: Lifecycle transitions
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: fromStatus
+    type: ObjectProperty
+    domain: StatusTransition
+    range: Status
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-event
+    source_cq: "CQ-058,CQ-059"
+    definition: "The status value before the transition."
+    constraint_note: "Functional: each transition has exactly one source status."
+
+  - name: toStatus
+    type: ObjectProperty
+    domain: StatusTransition
+    range: Status
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-event
+    source_cq: "CQ-058,CQ-059"
+    definition: "The status value after the transition."
+    constraint_note: "Functional: each transition has exactly one target status."
+
+  - name: transitionSubject
+    type: ObjectProperty
+    domain: StatusTransition
+    range: owl:Thing
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-event
+    source_cq: "CQ-058"
+    definition: "The entity whose status changed in this transition."
+    constraint_note: "Functional: each transition applies to exactly one entity. Range is owl:Thing to support both Tasks and Sessions."
+
+  - name: triggeredBy
+    type: ObjectProperty
+    domain: StatusTransition
+    range: Event
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-event
+    source_cq: "CQ-060"
+    definition: "The event that caused this status transition."
+    constraint_note: ""
+
+  - name: previousTransition
+    type: ObjectProperty
+    domain: StatusTransition
+    range: StatusTransition
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: nextTransition
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-event
+    source_cq: "CQ-058"
+    definition: "Links to the preceding status transition for the same subject."
+    constraint_note: "Functional. NOT transitive -- use SPARQL property paths for chain queries."
+
+  - name: nextTransition
+    type: ObjectProperty
+    domain: StatusTransition
+    range: StatusTransition
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: previousTransition
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-event
+    source_cq: "CQ-058"
+    definition: "Links to the following status transition for the same subject."
+    constraint_note: "Functional. Inverse of previousTransition."
+
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.3.0: Compaction trace (data property)
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: fateReason
+    type: DataProperty
+    domain: CompactionDisposition
+    range: "xsd:string"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-052"
+    definition: "A textual reason for the compaction disposition decision."
+    constraint_note: ""
+
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.3.0: Eviction eligibility
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: hasLastAccessTime
+    type: DataProperty
+    domain: MemoryItem
+    range: "xsd:dateTime"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-memory
+    source_cq: "CQ-054"
+    definition: "The timestamp of the most recent access to this memory item."
+    constraint_note: "Functional: at most one last-access timestamp per item."
+
+  - name: isEvictionCandidate
+    type: DataProperty
+    domain: MemoryItem
+    range: "xsd:boolean"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-memory
+    source_cq: "CQ-055"
+    definition: "Whether this memory item is eligible for eviction from its tier."
+    constraint_note: "Functional: at most one boolean per item."
+
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.3.0: HasKey identity
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: hasAgentId
+    type: DataProperty
+    domain: AIAgent
+    range: "xsd:string"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-core
+    source_cq: "CQ-057"
+    definition: "The unique string identifier for this AI agent."
+    constraint_note: "Functional. Used in owl:hasKey axiom for identity."
+
+  - name: hasSessionId
+    type: DataProperty
+    domain: Session
+    range: "xsd:string"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-057"
+    definition: "The unique string identifier for this session."
+    constraint_note: "Functional. Used in owl:hasKey axiom for identity."
+
+  - name: hasConversationId
+    type: DataProperty
+    domain: Conversation
+    range: "xsd:string"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-057"
+    definition: "The unique string identifier for this conversation."
+    constraint_note: "Functional. Used in owl:hasKey axiom for identity."
+
 # ═══════════════════════════════════════════════════════════════════════
 # PROPERTY HIERARCHY SUMMARY
 # ═══════════════════════════════════════════════════════════════════════
@@ -1092,6 +1404,12 @@ properties:
 #   └── hasComplianceStatus  (ToolInvocation -> ComplianceStatus)
 #
 # belongsTo <-> hasMember (inverse pair)
+#
+# prov:used
+#   └── compactedItem          (CompactionEvent -> prov:Entity)
+#
+# continuedFrom <-> continuedBy (inverse pair)
+# previousTransition <-> nextTransition (inverse pair)
 #
 # Note: recordedInEpisode is NOT a sub-property of partOf (DD-06)
 
@@ -1149,19 +1467,20 @@ properties:
 # ═══════════════════════════════════════════════════════════════════════
 
 summary:
-  total_properties: 60
-  object_properties: 51
-  data_properties: 9
+  total_properties: 77
+  object_properties: 63
+  data_properties: 14
   by_module:
-    pao-core: 12      # partOf, hasPart, hasAvailableTool, availableToAgent, spawnedBy, hasParticipant, participatesIn, hasRole, performedBy, belongsTo, hasMember, hasPersona
-    pao-event: 3      # hasTemporalExtent, hasStatus, hasTimestamp
-    pao-conversation: 13  # partOfConversation, inConversation, partOfSession, inSession, hasTurnIndex, hasContent, invokesTool, invokedIn, invokedBy, hasInput, hasOutput, producedSummary, delegatedTask
-    pao-memory: 13    # storedIn, stores, hasTopic, aboutAgent, hasConfidence, claimType, hasEvidence, recordedInEpisode, recordsEvent, operatesOn, hasBlockKey, hasBlockValue, hasSensitivityLevel(moved to governance)
+    pao-core: 13      # partOf, hasPart, hasAvailableTool, availableToAgent, spawnedBy, hasParticipant, participatesIn, hasRole, performedBy, belongsTo, hasMember, hasPersona, hasAgentId
+    pao-event: 9      # hasTemporalExtent, hasStatus, hasTimestamp, fromStatus, toStatus, transitionSubject, triggeredBy, previousTransition, nextTransition
+    pao-conversation: 22  # partOfConversation, inConversation, partOfSession, inSession, hasTurnIndex, hasContent, invokesTool, invokedIn, invokedBy, hasInput, hasOutput, producedSummary, delegatedTask, compactedItem, hasCompactionDisposition, dispositionOf, hasItemFate, continuedFrom, continuedBy, fateReason, hasSessionId, hasConversationId
+    pao-memory: 14    # storedIn, stores, hasTopic, aboutAgent, hasConfidence, claimType, hasEvidence, recordedInEpisode, recordsEvent, operatesOn, hasBlockKey, hasBlockValue, hasLastAccessTime, isEvictionCandidate
     pao-planning: 9   # pursuedBy, pursuesGoal, achievesGoal, partOfPlan, hasTask, blockedBy, blocks, intendedBy, derivedFromGoal
     pao-governance: 10 # appliesTo, grantsPermission, hasComplianceStatus, restrictsToolUse, requestedBy, hasSensitivityLevel, consentSubject, consentPurpose, governedByRetention, retentionPeriodDays
-  imported_property_sets: 2  # PROV-O (10 properties), OWL-Time (5 properties)
+  imported_property_sets: 2  # PROV-O (14 properties), OWL-Time (5 properties)
   sub_property_chains:
     - "partOfConversation, partOfSession, partOfPlan -> partOf"
     - "hasTask -> hasPart"
     - "performedBy -> hasParticipant; invokedBy -> performedBy"
     - "hasComplianceStatus -> hasStatus"
+    - "compactedItem -> prov:used"

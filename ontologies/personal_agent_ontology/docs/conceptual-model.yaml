@@ -29,6 +29,7 @@ imports:
       - "prov:Plan"
       - "prov:Role"
       - "prov:Association"
+      - "prov:Derivation"
     used_properties:
       - "prov:wasGeneratedBy"
       - "prov:wasDerivedFrom"
@@ -40,6 +41,10 @@ imports:
       - "prov:agent"
       - "prov:hadRole"
       - "prov:hadPlan"
+      - "prov:wasInvalidatedBy"
+      - "prov:qualifiedDerivation"
+      - "prov:entity"
+      - "prov:hadActivity"
 
   - prefix: time
     namespace: "http://www.w3.org/2006/time#"
@@ -114,6 +119,10 @@ modules:
       - SessionStatus
       - TaskStatus
       - ComplianceStatus
+      - StatusTransition
+      - SessionStatusTransition
+      - TaskStatusTransition
+      - ItemFate
 
   - id: pao-conversation
     name: "Conversation & Interaction"
@@ -133,6 +142,7 @@ modules:
       - ToolInvocation
       - CompactionEvent
       - Observation
+      - CompactionDisposition
 
   - id: pao-memory
     name: Memory
@@ -327,6 +337,20 @@ taxonomy:
         bfo: "Process (BFO:0000015)"
         module: pao-conversation
         note: "Environmental feedback received by an agent during a session"
+      - class: StatusTransition
+        parent: Event
+        bfo: "Process (BFO:0000015)"
+        module: pao-event
+        note: "Reified status transition with fromStatus/toStatus/transitionSubject"
+        children:
+          - class: SessionStatusTransition
+            parent: StatusTransition
+            bfo: "Process (BFO:0000015)"
+            module: pao-event
+          - class: TaskStatusTransition
+            parent: StatusTransition
+            bfo: "Process (BFO:0000015)"
+            module: pao-event
       - class: MemoryOperation
         parent: Event
         bfo: "Process (BFO:0000015)"
@@ -354,8 +378,9 @@ taxonomy:
             module: pao-memory
 
   # Disjointness (events):
-  # - [Action, Conversation, Session, Turn, CompactionEvent, ErasureEvent, MemoryOperation] pairwise disjoint under Event
+  # - [Action, Conversation, Session, Turn, CompactionEvent, ErasureEvent, MemoryOperation, Observation, StatusTransition] pairwise disjoint under Event
   # - [Encoding, Retrieval, Consolidation, Forgetting, Rehearsal] DisjointUnion under MemoryOperation
+  # - [SessionStatusTransition, TaskStatusTransition] pairwise disjoint under StatusTransition
 
   # --- Information Artifacts (prov:Entity / BFO:GDC) ---
   # These classes are subclasses of prov:Entity. No PAO intermediate
@@ -440,6 +465,12 @@ taxonomy:
     module: pao-governance
     note: "Records a data subject's consent for a specific purpose"
 
+  - class: CompactionDisposition
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-conversation
+    note: "N-ary reification linking compaction event, item, and fate with optional rationale"
+
   - class: RetentionPolicy
     parent: "prov:Entity"
     bfo: "GDC (BFO:0000031)"
@@ -447,6 +478,7 @@ taxonomy:
     note: "Specifies how long memory items should be retained"
 
   # Disjointness (governance): [PermissionPolicy, SafetyConstraint, ConsentRecord, RetentionPolicy] pairwise disjoint
+  # Disjointness (cross-module GDC): CompactionDisposition disjoint with governance GDCs and other prov:Entity subclasses
 
   # --- Memory Tiers ---
   - class: MemoryTier
@@ -505,8 +537,14 @@ taxonomy:
         module: pao-governance
         individuals: [Public, Internal, Confidential, Restricted]
         enumeration: true
+      - class: ItemFate
+        parent: Status
+        bfo: "Value Partition"
+        module: pao-event
+        individuals: [Preserved, Dropped, Summarized, Archived]
+        enumeration: true
 
-  # Disjointness (status): [SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel] pairwise disjoint under Status (not exhaustive)
+  # Disjointness (status): [SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate] pairwise disjoint under Status (not exhaustive)
 
 # ═══════════════════════════════════════════════════════════════════════
 # DESIGN PATTERNS APPLIED
@@ -554,7 +592,7 @@ design_patterns:
 
   - id: ODP-6
     name: "Value Partition (Status)"
-    applied_to: [SessionStatus, TaskStatus, ComplianceStatus]
+    applied_to: [SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate]
     description: >
       Status hierarchies with owl:oneOf enumeration of named individuals.
       Closed value spaces for reasoning.
@@ -628,15 +666,15 @@ design_decisions:
 # ═══════════════════════════════════════════════════════════════════════
 
 summary:
-  total_classes: 46
+  total_classes: 51
   by_module:
     pao-core: 7
-    pao-event: 6
-    pao-conversation: 8
+    pao-event: 10     # was 6, +4 (StatusTransition, SessionStatusTransition, TaskStatusTransition, ItemFate)
+    pao-conversation: 9  # was 8, +1 (CompactionDisposition)
     pao-memory: 15
     pao-planning: 4
     pao-governance: 6
-  named_individuals: 17
-  imported_classes: "~15 (from PROV-O, OWL-Time, FOAF, ODRL)"
-  disjoint_sets: 8
+  named_individuals: 21  # was 17, +4 (Preserved, Dropped, Summarized, Archived)
+  imported_classes: "~16 (from PROV-O, OWL-Time, FOAF, ODRL)"
+  disjoint_sets: 10      # was 8, +2 (StatusTransition subtypes, extended others)
   covering_axioms: 2

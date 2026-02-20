@@ -24,12 +24,12 @@ independently and note the PROV-O relationship.
 | BFO Category | PAO Classes |
 |---|---|
 | Object (BFO:0000030) | HumanUser, Organization |
-| Generically Dependent Continuant (BFO:0000031) | AIAgent, SubAgent, ToolDefinition, Message, MemoryItem, MemoryTier, WorkingMemory, EpisodicMemory, SemanticMemory, ProceduralMemory, Episode, Claim, MemoryBlock, Goal, Plan, Task, Persona, Intention, PermissionPolicy, SafetyConstraint, ConsentRecord, RetentionPolicy |
+| Generically Dependent Continuant (BFO:0000031) | AIAgent, SubAgent, ToolDefinition, Message, MemoryItem, MemoryTier, WorkingMemory, EpisodicMemory, SemanticMemory, ProceduralMemory, Episode, Claim, MemoryBlock, Goal, Plan, Task, Persona, Intention, PermissionPolicy, SafetyConstraint, ConsentRecord, RetentionPolicy, CompactionDisposition |
 | Role (BFO:0000023) | AgentRole |
-| Process (BFO:0000015) | Conversation, Session, Turn, ToolInvocation, CompactionEvent, ErasureEvent, Event, Action, MemoryOperation, Encoding, Retrieval, Consolidation, Forgetting, Observation, Rehearsal |
+| Process (BFO:0000015) | Conversation, Session, Turn, ToolInvocation, CompactionEvent, ErasureEvent, Event, Action, MemoryOperation, Encoding, Retrieval, Consolidation, Forgetting, Observation, Rehearsal, StatusTransition, SessionStatusTransition, TaskStatusTransition |
 | Cross-cutting (documented) | Agent (umbrella for Object + GDC subtypes) |
-| Value Partition (no BFO parent) | Status, SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel |
-| Named Individuals | Active, Ended, Interrupted, Pending, InProgress, Completed, Blocked, Compliant, NonCompliant, AssistantRole, UserRole, UserPreference, PersonalData, Public, Internal, Confidential, Restricted |
+| Value Partition (no BFO parent) | Status, SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate |
+| Named Individuals | Active, Ended, Interrupted, Pending, InProgress, Completed, Blocked, Compliant, NonCompliant, AssistantRole, UserRole, UserPreference, PersonalData, Public, Internal, Confidential, Restricted, Preserved, Dropped, Summarized, Archived |
 
 ---
 
@@ -495,6 +495,43 @@ PermissionPolicy in nature.
 **Rationale**: A retention policy is an information artifact specifying how
 long memory items should be retained before deletion. Like PermissionPolicy
 and SafetyConstraint, it is a governance rule document.
+
+---
+
+### 36. StatusTransition -> Process (BFO:0000015)
+
+**Decision**: Process (subclass of Event)
+
+**Rationale**: A status transition is something that happens -- an entity's status
+changes from one value to another. It is a reified event in the State Transition
+ODP pattern, carrying fromStatus, toStatus, and transitionSubject. Like other
+Event subclasses, it inherits the BFO:Process classification.
+
+**Subclasses**: SessionStatusTransition, TaskStatusTransition -- both Processes,
+pairwise disjoint under StatusTransition.
+
+---
+
+### 37. CompactionDisposition -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A compaction disposition is an information artifact that records
+the fate of an individual item during a compaction event. It follows the N-ary
+Relation pattern (ODP-1), reifying the relationship between compaction event,
+item, and fate with optional rationale. As an information record, it is a GDC.
+
+---
+
+### 38. ItemFate -> Value Partition (no BFO parent)
+
+**Decision**: Value Partition with named individuals
+
+**Rationale**: Item fate values (Preserved, Dropped, Summarized, Archived) are a
+controlled vocabulary for compaction outcomes. Like other Status types
+(SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel), they follow the
+Value Partition pattern (ODP-6) with owl:oneOf enumeration. ItemFate is a subclass
+of Status.
 
 ---
 

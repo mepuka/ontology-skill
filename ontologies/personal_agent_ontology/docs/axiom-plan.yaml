@@ -1153,16 +1153,176 @@ axiom_plan:
     abox_requirements:
       - "MemoryItem with old timestamp and RetentionPolicy with short retention period"
 
+  # ═══════════════════════════════════════════════════════════════════════
+  # v0.3.0: Compaction Trace, Eviction, Resume, Identity, Transitions
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - cq_id: CQ-052
+    natural_language: "What items were dropped during a compaction event?"
+    priority: should_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          CompactionEvent SubClassOf compactedItem some prov:Entity
+        note: "Every compaction event operates on items"
+      - pattern: "9. N-ary Relation"
+        axiom_sketch: |
+          CompactionDisposition SubClassOf dispositionOf some prov:Entity
+          CompactionDisposition SubClassOf hasItemFate some ItemFate
+        note: "N-ary reification linking event, item, and fate"
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "CompactionDisposition SubClassOf prov:Entity"
+        note: "CompactionDisposition is a GDC"
+    tbox_requirements:
+      - "CompactionDisposition class declaration"
+      - "ItemFate class with owl:oneOf (Preserved, Dropped, Summarized, Archived)"
+      - "compactedItem ObjectProperty subPropertyOf prov:used"
+      - "hasCompactionDisposition ObjectProperty"
+      - "dispositionOf ObjectProperty (functional)"
+      - "hasItemFate ObjectProperty (functional)"
+      - "Import prov:used, prov:wasInvalidatedBy"
+    abox_requirements:
+      - "CompactionEvent with compactedItem links to items"
+      - "Items with prov:wasInvalidatedBy for dropped items"
+      - "CompactionDisposition individuals with fate and reason"
+
+  - cq_id: CQ-053
+    natural_language: "What fraction of items were preserved during compaction?"
+    priority: should_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "(reuses CQ-052 infrastructure)"
+        note: "COUNT/fraction is a SPARQL aggregation concern"
+    tbox_requirements:
+      - "Same as CQ-052 (compactedItem, prov:wasInvalidatedBy)"
+    abox_requirements:
+      - "Mix of preserved and dropped items for ratio testing"
+
+  - cq_id: CQ-054
+    natural_language: "When was a memory item last accessed?"
+    priority: should_have
+    module: pao-memory
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "(hasLastAccessTime is optional; no existential)"
+        note: "Not all memory items have last-access tracking"
+    tbox_requirements:
+      - "hasLastAccessTime DataProperty with domain MemoryItem, range xsd:dateTime, functional"
+    abox_requirements:
+      - "MemoryItem individuals with hasLastAccessTime values"
+
+  - cq_id: CQ-055
+    natural_language: "Which memory items in a given tier are eligible for eviction?"
+    priority: should_have
+    module: pao-memory
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "(isEvictionCandidate is optional; no existential)"
+        note: "Boolean flag on memory items; SPARQL filters on true"
+    tbox_requirements:
+      - "isEvictionCandidate DataProperty with domain MemoryItem, range xsd:boolean, functional"
+    abox_requirements:
+      - "MemoryItem individuals with isEvictionCandidate true/false"
+
+  - cq_id: CQ-056
+    natural_language: "Which session continued from a given prior session?"
+    priority: should_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "(continuedFrom is optional; no existential)"
+        note: "Not all sessions are continuations"
+    tbox_requirements:
+      - "continuedFrom ObjectProperty with domain Session, range Session, functional"
+      - "continuedBy ObjectProperty (inverse of continuedFrom)"
+    abox_requirements:
+      - "Session pair linked by continuedFrom"
+
+  - cq_id: CQ-057
+    natural_language: "What is the unique identifier for a given agent, session, or conversation?"
+    priority: should_have
+    module: pao-core
+    axiom_patterns:
+      - pattern: "11. HasKey"
+        axiom_sketch: |
+          AIAgent owl:hasKey (hasAgentId)
+          Session owl:hasKey (hasSessionId)
+          Conversation owl:hasKey (hasConversationId)
+        note: "Identity contracts for key entities (DN-05 resolved)"
+    tbox_requirements:
+      - "hasAgentId, hasSessionId, hasConversationId DataProperties (functional)"
+      - "owl:hasKey axioms on AIAgent, Session, Conversation"
+    abox_requirements:
+      - "Entities with unique ID string values"
+
+  - cq_id: CQ-058
+    natural_language: "What status transitions has a task undergone?"
+    priority: should_have
+    module: pao-event
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: |
+          StatusTransition SubClassOf Event
+          TaskStatusTransition SubClassOf StatusTransition
+          SessionStatusTransition SubClassOf StatusTransition
+        note: "Reified Event pattern for status transitions"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          StatusTransition SubClassOf fromStatus some Status
+          StatusTransition SubClassOf toStatus some Status
+          StatusTransition SubClassOf transitionSubject some owl:Thing
+        note: "Every transition has from, to, and subject"
+      - pattern: "5. Disjoint Classes"
+        axiom_sketch: |
+          DisjointClasses: SessionStatusTransition, TaskStatusTransition
+        note: "Transition subtypes are disjoint"
+    tbox_requirements:
+      - "StatusTransition, SessionStatusTransition, TaskStatusTransition classes"
+      - "fromStatus, toStatus, transitionSubject ObjectProperties (functional)"
+      - "previousTransition/nextTransition inverse pair (functional)"
+      - "triggeredBy ObjectProperty"
+    abox_requirements:
+      - "TaskStatusTransition chain: Pending -> InProgress -> Completed"
+      - "previousTransition/nextTransition links between transitions"
+
+  - cq_id: CQ-059
+    natural_language: "What was the previous status of a session before it ended?"
+    priority: should_have
+    module: pao-event
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "(reuses CQ-058 infrastructure)"
+        note: "SPARQL filters on SessionStatusTransition with toStatus=Ended"
+    tbox_requirements:
+      - "SessionStatusTransition class (reused from CQ-058)"
+    abox_requirements:
+      - "SessionStatusTransition with toStatus=Ended"
+
+  - cq_id: CQ-060
+    natural_language: "What event triggered a given status transition?"
+    priority: could_have
+    module: pao-event
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "(triggeredBy is optional; no existential)"
+        note: "Not all transitions have explicit triggers"
+    tbox_requirements:
+      - "triggeredBy ObjectProperty with domain StatusTransition, range Event"
+    abox_requirements:
+      - "StatusTransition with triggeredBy link to an Event"
+
 # ═══════════════════════════════════════════════════════════════════════
 # AXIOM PATTERN SUMMARY
 # ═══════════════════════════════════════════════════════════════════════
 
 summary:
-  total_cqs: 51
+  total_cqs: 60
   by_priority:
     must_have: 30
-    should_have: 19
-    could_have: 2
+    should_have: 27
+    could_have: 3
 
   patterns_used:
     - pattern: "1. Simple SubClassOf"
@@ -1192,6 +1352,9 @@ summary:
     - pattern: "12. Property Chain"
       count: 1
       note: "Considered for CQ-016 (deferred to SPARQL property paths)"
+    - pattern: "11. HasKey"
+      count: 1
+      note: "DN-05: Identity contracts for AIAgent, Session, Conversation"
     - pattern: "15. Enumeration (owl:oneOf)"
       count: 7
       note: "AgentRole, SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel"
@@ -1199,7 +1362,6 @@ summary:
   patterns_not_used:
     - "4. Equivalent Class: No defined classes needed yet; all classes are primitive"
     - "10. Self-Restriction: Not applicable to PAO domain"
-    - "11. HasKey: Could be added for agent/session identifiers in future"
     - "13. Negation: Not needed; constraints handled by SPARQL/SHACL"
     - "14. Identity Links: Not needed in v0.1; relevant for multi-source integration"
     - "16. Complement: Not needed; no complement-based class definitions"
@@ -1247,8 +1409,9 @@ summary:
         classes may be introduced in v0.2 once the domain is better
         understood and reasoner testing validates the hierarchy.
     - id: DN-05
-      title: "HasKey candidates for future"
+      title: "HasKey identity contracts"
+      status: resolved
       note: >
-        Pattern 11 (HasKey) could be applied to Agent (by agentId), Session
-        (by sessionId), and Conversation (by conversationId) for instance
-        matching in data integration scenarios. Deferred to v0.2.
+        Resolved in v0.3.0 -- owl:hasKey axioms added for AIAgent
+        (hasAgentId), Session (hasSessionId), and Conversation
+        (hasConversationId).
