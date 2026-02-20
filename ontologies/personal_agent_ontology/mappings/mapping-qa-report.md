@@ -1,7 +1,7 @@
 # PAO Mapping Quality Report
 
 Date: 2026-02-18
-Version: 0.1.0
+Version: 0.2.0
 Mapper: ontology-mapper skill
 
 ## Summary
@@ -10,8 +10,8 @@ Mapper: ontology-mapper skill
 |--------|-------|
 | Mapping files | 4 |
 | Total mappings | 44 |
-| PAO classes mapped | 20/37 (54%) |
-| PAO properties mapped | 5/48 (10%) |
+| PAO classes mapped | 20/46 (43%) |
+| PAO properties mapped | 5/60 (8%) |
 | exactMatch count | 2 |
 | Transitivity conflicts | 0 |
 | Validation errors | 0 |

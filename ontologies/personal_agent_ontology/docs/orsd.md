@@ -2,8 +2,8 @@
 
 ## Personal Agent Ontology (PAO)
 
-**Version**: 0.1.0
-**Date**: 2026-02-18
+**Version**: 0.2.0
+**Date**: 2026-02-19
 **Status**: Draft (Specification Phase)
 **Authors**: Ontology Engineering Workspace
 
@@ -63,33 +63,33 @@ protocols, probabilistic reasoning.
 
 ## 4. Use Cases
 
-19 use cases are defined in `use-cases.yaml`, covering all 6 modules
+26 use cases are defined in `use-cases.yaml`, covering all 6 modules
 and 7 motivating scenarios (S1-S7 from scope.md).
 
 ### Summary by Module
 
 | Module | Use Cases | Must-Have |
 |--------|-----------|-----------|
-| Identity & Actors | UC-001, UC-002 | UC-001 |
-| Conversation & Interaction | UC-003 to UC-006 | UC-003, UC-004, UC-005 |
-| Memory | UC-007 to UC-012 | UC-007, UC-008, UC-009, UC-010 |
+| Identity & Actors | UC-001, UC-002, UC-020, UC-021 | UC-001 |
+| Conversation & Interaction | UC-003 to UC-006, UC-022 | UC-003, UC-004, UC-005 |
+| Memory | UC-007 to UC-012, UC-023, UC-024 | UC-007, UC-008, UC-009, UC-010 |
 | Actions, Events, Time | UC-013, UC-014 | UC-013 |
-| Goals, Plans, Tasks | UC-015, UC-016 | UC-015 |
-| Governance & Safety | UC-017 to UC-019 | UC-017, UC-018 |
+| Goals, Plans, Tasks | UC-015, UC-016, UC-025 | UC-015 |
+| Governance & Safety | UC-017 to UC-019, UC-026 | UC-017, UC-018 |
 
 ---
 
 ## 5. Competency Questions
 
-40 competency questions are defined in `competency-questions.yaml`.
+51 competency questions are defined in `competency-questions.yaml`.
 
 ### Priority Distribution (MoSCoW)
 
 | Priority | Count | CQ IDs |
 |----------|-------|--------|
-| Must Have | 25 | CQ-001 to CQ-009, CQ-011 to CQ-016, CQ-018, CQ-020, CQ-023 to CQ-028, CQ-030 to CQ-032, CQ-034, CQ-036, CQ-038 to CQ-040 |
-| Should Have | 13 | CQ-003, CQ-004, CQ-010, CQ-017, CQ-019, CQ-021, CQ-029, CQ-033, CQ-035, CQ-037 |
-| Could Have | 1 | CQ-022 |
+| Must Have | 30 | CQ-001 to CQ-009, CQ-011 to CQ-016, CQ-018, CQ-020, CQ-023 to CQ-028, CQ-030 to CQ-032, CQ-034, CQ-036, CQ-038 to CQ-040 |
+| Should Have | 19 | CQ-003, CQ-004, CQ-010, CQ-017, CQ-019, CQ-021, CQ-029, CQ-033, CQ-035, CQ-037 |
+| Could Have | 2 | CQ-022 |
 | Won't Have | 0 | (none) |
 
 ### CQ Type Distribution
@@ -202,15 +202,15 @@ MemoryOperation, Encoding, Retrieval, Consolidation, Forgetting
 
 ## 9. Test Suite
 
-39 SPARQL test queries are generated in `tests/cq-*.sparql` (CQ-022 skipped
+50 SPARQL test queries are generated in `tests/cq-*.sparql` (CQ-022 skipped
 as could-have priority). The test manifest is at `tests/cq-test-manifest.yaml`.
 
 ### Test Categories
 
 | Category | Count | Expectations |
 |----------|-------|-------------|
-| SELECT (non-empty) | 34 | Result set must have >= 1 row |
-| ASK (boolean) | 3 | Must return true |
+| SELECT (non-empty) | 44 | Result set must have >= 1 row |
+| ASK (boolean) | 4 | Must return true |
 | SELECT (zero rows) | 2 | Result set must be empty (constraint tests) |
 
 ---

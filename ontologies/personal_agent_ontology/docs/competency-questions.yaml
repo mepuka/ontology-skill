@@ -1529,6 +1529,7 @@ competency_questions:
     derivation_method: inference
     out_of_scope:
       - "Automatic deletion mechanics"
+      - "Uses approximate day arithmetic (YEAR*365+MONTH*30+DAY) for rdflib compatibility; production SPARQL endpoints support standard xsd:duration arithmetic."
     sparql: |
       PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
       PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
@@ -1537,8 +1538,11 @@ competency_questions:
         ?item pao:governedByRetention ?policy ;
               pao:hasTimestamp ?ts .
         ?policy pao:retentionPeriodDays ?days .
-        BIND(NOW() AS ?now)
-        FILTER(?now > ?ts + ?days * "P1D"^^xsd:duration)
+        FILTER(
+          (YEAR(NOW()) * 365 + MONTH(NOW()) * 30 + DAY(NOW()))
+          - (YEAR(?ts) * 365 + MONTH(?ts) * 30 + DAY(?ts))
+          > ?days
+        )
       }
     expected_result: non_empty
     required_classes:

@@ -10,13 +10,13 @@ pao:UserPreference a owl:NamedIndividual ;
     skos:definition "A claim type indicating the claim records a user preference."@en .
 
 pao:reference-individuals a owl:Ontology ;
-    dcterms:created "2026-02-18" ;
+    dcterms:created "2026-02-19" ;
     dcterms:creator "ontology-architect skill" ;
     dcterms:description "Named individuals for status values, agent roles, and classifiers."@en ;
     dcterms:license <https://spdx.org/licenses/MIT> ;
     dcterms:title "Personal Agent Ontology — Reference Individuals"@en ;
-    owl:versionIRI <https://purl.org/pao/reference-individuals/0.1.0> ;
-    owl:versionInfo "0.1.0" .
+    owl:versionIRI <https://purl.org/pao/reference-individuals/0.2.0> ;
+    owl:versionInfo "0.2.0" .
 
 pao:Active a owl:NamedIndividual,
         pao:SessionStatus ;
@@ -104,7 +104,7 @@ pao:SensitivityLevel owl:equivalentClass [ owl:oneOf ( pao:Public pao:Internal p
 pao:TaskStatus owl:equivalentClass [ owl:oneOf ( pao:Pending pao:InProgress pao:Completed pao:Blocked ) ] .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:AssistantRole pao:UserRole ) .
+    owl:distinctMembers ( pao:Pending pao:InProgress pao:Completed pao:Blocked ) .
 
 [] a owl:AllDifferent ;
     owl:distinctMembers ( pao:Active pao:Ended pao:Interrupted ) .
@@ -113,7 +113,7 @@ pao:TaskStatus owl:equivalentClass [ owl:oneOf ( pao:Pending pao:InProgress pao:
     owl:distinctMembers ( pao:Public pao:Internal pao:Confidential pao:Restricted ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Pending pao:InProgress pao:Completed pao:Blocked ) .
+    owl:distinctMembers ( pao:Compliant pao:NonCompliant ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Compliant pao:NonCompliant ) .
+    owl:distinctMembers ( pao:AssistantRole pao:UserRole ) .

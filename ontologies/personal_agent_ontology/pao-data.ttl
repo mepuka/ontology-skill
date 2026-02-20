@@ -49,14 +49,14 @@ pao:consolidation_001 a owl:NamedIndividual,
     pao:operatesOn pao:episode_001 .
 
 pao:data a owl:Ontology ;
-    dcterms:created "2026-02-18" ;
+    dcterms:created "2026-02-19" ;
     dcterms:creator "ontology-architect skill" ;
     dcterms:description "Representative ABox individuals for CQ/SPARQL test execution."@en ;
     dcterms:license <https://spdx.org/licenses/MIT> ;
     dcterms:title "Personal Agent Ontology — Sample Data"@en ;
     owl:imports pao: ;
-    owl:versionIRI <https://purl.org/pao/data/0.1.0> ;
-    owl:versionInfo "0.1.0" .
+    owl:versionIRI <https://purl.org/pao/data/0.2.0> ;
+    owl:versionInfo "0.2.0" .
 
 pao:encoding_001 a owl:NamedIndividual,
         pao:Encoding,

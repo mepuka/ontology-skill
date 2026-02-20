@@ -1,4 +1,4 @@
-# FAIR Assessment: Personal Agent Ontology v0.1.0
+# FAIR Assessment: Personal Agent Ontology v0.2.0
 
 Date: 2026-02-18
 
@@ -6,7 +6,7 @@ Date: 2026-02-18
 
 | Principle | Status | Evidence |
 |-----------|--------|----------|
-| F1: Globally unique identifiers | PASS | Stable PURL namespace `https://purl.org/pao/`. Version IRI `https://purl.org/pao/0.1.0`. All terms have resolvable IRIs. |
+| F1: Globally unique identifiers | PASS | Stable PURL namespace `https://purl.org/pao/`. Version IRI `https://purl.org/pao/0.2.0`. All terms have resolvable IRIs. |
 | F2: Rich metadata | PASS | Ontology header includes dcterms:title, dcterms:description, dcterms:creator, dcterms:created, dcterms:license, dcterms:rights, prov:generatedAtTime, owl:versionInfo, owl:versionIRI. |
 | F3: Metadata references identifiers | PASS | Version IRI references the ontology IRI. owl:imports reference import module IRIs. |
 | F4: Registered in searchable resources | PARTIAL | Not yet registered in BioPortal, OLS, or LOV. Recommended for next release cycle. |

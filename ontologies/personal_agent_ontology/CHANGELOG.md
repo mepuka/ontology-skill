@@ -4,6 +4,54 @@ All notable changes to the Personal Agent Ontology will be documented here.
 
 This project uses [Semantic Versioning](https://semver.org/).
 
+## [0.2.0] - 2026-02-19
+
+### Added
+
+**9 New Classes**
+- Identity: Organization, Persona
+- Conversation: Observation
+- Memory: Rehearsal, MemoryBlock
+- Planning: Intention (BDI model)
+- Governance: SensitivityLevel (controlled vocabulary), ConsentRecord, RetentionPolicy
+
+**12 New Properties**
+- Object properties: belongsTo, hasMember, hasPersona, intendedBy, derivedFromGoal,
+  consentSubject, consentPurpose, governedByRetention
+- Data properties: hasBlockKey, hasBlockValue, retentionPeriodDays
+
+**11 New Competency Questions (CQ-041 through CQ-051)**
+- Identity: organizational affiliation (CQ-041), persona assignment (CQ-042)
+- Conversation: observations (CQ-043)
+- Memory: rehearsal tracking (CQ-044), memory blocks (CQ-045)
+- Planning: intentions (CQ-046, CQ-047)
+- Governance: sensitivity levels (CQ-048), consent (CQ-049), retention (CQ-050, CQ-051)
+
+**7 New Use Cases (UC-020 through UC-026)**
+
+### Changed
+
+- **hasSensitivityLevel migrated** from DatatypeProperty(xsd:string) to
+  ObjectProperty(SensitivityLevel) with controlled vocabulary enum
+  (Public, Internal, Confidential, Restricted)
+- SHACL shapes expanded from 12 to 24 NodeShapes
+- MemoryOperation DisjointUnion expanded to 5 subtypes (added Rehearsal)
+- AllDisjointClasses axioms expanded to 9 groups
+- Design notes DN-01, DN-02, DN-03 resolved
+
+### Metrics
+
+| Metric | v0.1.0 | v0.2.0 |
+|--------|--------|--------|
+| Classes | 37 | 46 |
+| Object properties | 43 | 52 |
+| Data properties | 6 | 8 |
+| SHACL shapes | 12 | 24 |
+| Named individuals | 13 | 17 |
+| CQ tests | 39 | 50 |
+| Total tests | 377 | 480 |
+| TBox triples | 810 | 999 |
+
 ## [0.1.0] - 2026-02-18
 
 ### Added
