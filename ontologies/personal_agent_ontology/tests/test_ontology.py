@@ -78,7 +78,7 @@ def shapes() -> Graph:
 
 
 # ---------------------------------------------------------------------------
-# Class declarations (52 classes)
+# Class declarations (56 classes)
 # ---------------------------------------------------------------------------
 
 EXPECTED_CLASSES = [
@@ -89,6 +89,7 @@ EXPECTED_CLASSES = [
     "SubAgent",
     "Organization",
     "Persona",
+    "Integration",
     # pao-conversation: Interaction
     "Event",
     "Action",
@@ -97,6 +98,7 @@ EXPECTED_CLASSES = [
     "Turn",
     "CompactionEvent",
     "ContextWindow",
+    "CommunicationChannel",
     "ErasureEvent",
     "Observation",
     "StatusTransition",
@@ -140,6 +142,8 @@ EXPECTED_CLASSES = [
     "ComplianceStatus",
     "SensitivityLevel",
     "ItemFate",
+    "ChannelType",
+    "IntegrationStatus",
     # Roles
     "AgentRole",
 ]
@@ -152,10 +156,10 @@ def test_class_declared(tbox: Graph, cls_name: str) -> None:
 
 
 def test_class_count(tbox: Graph) -> None:
-    """Exactly 52 PAO classes are declared."""
+    """Exactly 56 PAO classes are declared."""
     pao_classes = {s for s in tbox.subjects(RDF.type, OWL.Class) if str(s).startswith(str(PAO))}
-    assert len(pao_classes) == 52, (
-        f"Expected 52 PAO classes, found {len(pao_classes)}: {pao_classes}"
+    assert len(pao_classes) == 56, (
+        f"Expected 56 PAO classes, found {len(pao_classes)}: {pao_classes}"
     )
 
 
@@ -210,6 +214,7 @@ HIERARCHY_CHECKS = [
     ("SemanticMemory", PAO.MemoryTier),
     ("ProceduralMemory", PAO.MemoryTier),
     # Status hierarchy
+    ("Status", PROV.Entity),
     ("SessionStatus", PAO.Status),
     ("TaskStatus", PAO.Status),
     ("ComplianceStatus", PAO.Status),
@@ -232,6 +237,11 @@ HIERARCHY_CHECKS = [
     ("CompactionDisposition", PROV.Entity),
     ("ItemFate", PAO.Status),
     ("ContextWindow", PROV.Entity),
+    # v0.5.0 additions
+    ("CommunicationChannel", PROV.Entity),
+    ("ChannelType", PAO.Status),
+    ("Integration", PROV.Entity),
+    ("IntegrationStatus", PAO.Status),
 ]
 
 
@@ -271,6 +281,10 @@ BFO_ALIGNMENT = [
     # v0.3.0 additions
     ("CompactionDisposition", OBO["BFO_0000031"]),  # GDC
     ("ContextWindow", OBO["BFO_0000031"]),  # GDC
+    # v0.5.0 additions
+    ("CommunicationChannel", OBO["BFO_0000031"]),  # GDC
+    ("Integration", OBO["BFO_0000031"]),  # GDC
+    ("Status", OBO["BFO_0000031"]),  # GDC (value partition)
 ]
 
 
@@ -285,7 +299,7 @@ def test_bfo_alignment(tbox: Graph, cls_name: str, bfo_class: URIRef) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Object property declarations (66 properties)
+# Object property declarations (72 properties)
 # ---------------------------------------------------------------------------
 
 EXPECTED_OBJ_PROPS = [
@@ -310,10 +324,13 @@ EXPECTED_OBJ_PROPS = [
     "grantsPermission",
     "fromStatus",
     "hasAvailableTool",
+    "hasChannelType",
     "hasCompactionDisposition",
     "hasComplianceStatus",
     "hasContextWindow",
     "hasEvidence",
+    "hasIntegration",
+    "hasIntegrationStatus",
     "hasItemFate",
     "hasInput",
     "hasMember",
@@ -343,18 +360,21 @@ EXPECTED_OBJ_PROPS = [
     "performedBy",
     "previousTransition",
     "producedSummary",
+    "providesTool",
     "pursuedBy",
     "pursuesGoal",
     "recordedInEpisode",
     "recordsEvent",
     "requestedBy",
     "restrictsToolUse",
+    "sentViaChannel",
     "spawnedBy",
     "storedIn",
     "stores",
     "toStatus",
     "transitionSubject",
     "triggeredBy",
+    "viaChannel",
 ]
 
 
@@ -365,7 +385,7 @@ def test_object_property_declared(tbox: Graph, prop_name: str) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Datatype property declarations (16 properties)
+# Datatype property declarations (18 properties)
 # ---------------------------------------------------------------------------
 
 EXPECTED_DATA_PROPS = [
@@ -377,7 +397,9 @@ EXPECTED_DATA_PROPS = [
     "hasConfidence",
     "hasContent",
     "hasConversationId",
+    "hasEndpoint",
     "hasLastAccessTime",
+    "hasServiceName",
     "hasSessionId",
     "hasTimestamp",
     "hasTokenCapacity",
@@ -409,13 +431,17 @@ EXPECTED_FUNCTIONAL = [
     "hasAgentId",
     "hasComplianceStatus",
     "hasConfidence",
+    "hasChannelType",
     "hasContent",
     "hasContextWindow",
     "hasConversationId",
+    "hasEndpoint",
+    "hasIntegrationStatus",
     "hasItemFate",
     "hasLastAccessTime",
     "hasPersona",
     "hasSensitivityLevel",
+    "hasServiceName",
     "hasSessionId",
     "hasStatus",
     "hasTemporalExtent",
@@ -437,9 +463,11 @@ EXPECTED_FUNCTIONAL = [
     "producedSummary",
     "requestedBy",
     "retentionPeriodDays",
+    "sentViaChannel",
     "spawnedBy",
     "toStatus",
     "transitionSubject",
+    "viaChannel",
 ]
 
 
@@ -508,6 +536,7 @@ SUBPROPERTY_CHECKS = [
     ("performedBy", "hasParticipant"),
     ("invokedBy", "performedBy"),
     ("hasComplianceStatus", "hasStatus"),
+    ("hasIntegrationStatus", "hasStatus"),
 ]
 
 
@@ -543,7 +572,7 @@ DOMAIN_RANGE_CHECKS: list[tuple[str, URIRef | None, URIRef]] = [
     ("invokedBy", PAO.ToolInvocation, PAO.Agent),
     ("partOfPlan", PAO.Task, PAO.Plan),
     ("achievesGoal", PAO.Plan, PAO.Goal),
-    ("spawnedBy", PAO.SubAgent, PAO.Agent),
+    ("spawnedBy", PAO.Agent, PAO.Agent),
     ("requestedBy", PAO.ErasureEvent, PAO.Agent),
     ("hasRole", PAO.Agent, PAO.AgentRole),
     # v0.2.0 additions
@@ -582,6 +611,15 @@ DOMAIN_RANGE_CHECKS: list[tuple[str, URIRef | None, URIRef]] = [
     ("compactedContextOf", PAO.CompactionEvent, PAO.ContextWindow),
     ("hasTokenCapacity", PAO.ContextWindow, XSD.nonNegativeInteger),
     ("hasTokensUsed", PAO.ContextWindow, XSD.nonNegativeInteger),
+    # v0.5.0 additions - Communication Channels & Integrations
+    ("viaChannel", PAO.Session, PAO.CommunicationChannel),
+    ("hasChannelType", PAO.CommunicationChannel, PAO.ChannelType),
+    ("sentViaChannel", PAO.Message, PAO.CommunicationChannel),
+    ("hasIntegration", PAO.Agent, PAO.Integration),
+    ("providesTool", PAO.Integration, PAO.ToolDefinition),
+    ("hasIntegrationStatus", PAO.Integration, PAO.IntegrationStatus),
+    ("hasServiceName", PAO.Integration, XSD.string),
+    ("hasEndpoint", PAO.Integration, XSD.anyURI),
 ]
 
 
@@ -675,6 +713,12 @@ EXISTENTIAL_CHECKS = [
     ("CompactionDisposition", "dispositionOf", None),  # prov:Entity
     ("CompactionDisposition", "hasItemFate", "ItemFate"),
     # v0.4.0: hasContextWindow and compactedContextOf are optional (no existentials)
+    # v0.5.0 additions - Communication Channels & Integrations
+    # viaChannel and sentViaChannel are optional (min 0) — no existentials, SHACL caps max 1
+    ("CommunicationChannel", "hasChannelType", "ChannelType"),
+    ("AIAgent", "hasIntegration", "Integration"),
+    ("Integration", "providesTool", "ToolDefinition"),
+    ("Integration", "hasIntegrationStatus", "IntegrationStatus"),
 ]
 
 
@@ -851,6 +895,8 @@ DISJOINT_GROUP_CHECKS = [
             PAO.ComplianceStatus,
             PAO.SensitivityLevel,
             PAO.ItemFate,
+            PAO.ChannelType,
+            PAO.IntegrationStatus,
         },
         "Status subtypes",
     ),
@@ -883,6 +929,8 @@ DISJOINT_GROUP_CHECKS = [
             PAO.RetentionPolicy,
             PAO.CompactionDisposition,
             PAO.ContextWindow,
+            PAO.CommunicationChannel,
+            PAO.Integration,
         },
         "Cross-module GDC disjointness",
     ),
@@ -957,6 +1005,52 @@ def test_all_different_sensitivity_level(ref: Graph) -> None:
     """AllDifferent for SensitivityLevel individuals."""
     assert _find_all_different_containing(
         ref, {PAO.Public, PAO.Internal, PAO.Confidential, PAO.Restricted}
+    )
+
+
+def test_channel_type_individuals(ref: Graph) -> None:
+    """ChannelType individuals exist."""
+    for name in ["CLI", "Messaging", "WebChat", "APIChannel", "VoiceChannel", "EmailChannel"]:
+        assert (PAO[name], RDF.type, PAO.ChannelType) in ref
+
+
+def test_channel_type_enumeration(ref: Graph) -> None:
+    """ChannelType owl:oneOf (CLI, Messaging, WebChat, APIChannel, VoiceChannel, EmailChannel)."""
+    members = _get_one_of_members(ref, PAO.ChannelType)
+    assert members == {
+        PAO.CLI,
+        PAO.Messaging,
+        PAO.WebChat,
+        PAO.APIChannel,
+        PAO.VoiceChannel,
+        PAO.EmailChannel,
+    }
+
+
+def test_all_different_channel_type(ref: Graph) -> None:
+    """AllDifferent for ChannelType individuals."""
+    assert _find_all_different_containing(
+        ref,
+        {PAO.CLI, PAO.Messaging, PAO.WebChat, PAO.APIChannel, PAO.VoiceChannel, PAO.EmailChannel},
+    )
+
+
+def test_integration_status_individuals(ref: Graph) -> None:
+    """Connected, Disconnected, Error, Initializing are IntegrationStatus individuals."""
+    for name in ["Connected", "Disconnected", "Error", "Initializing"]:
+        assert (PAO[name], RDF.type, PAO.IntegrationStatus) in ref
+
+
+def test_integration_status_enumeration(ref: Graph) -> None:
+    """IntegrationStatus owl:oneOf (Connected, Disconnected, Error, Initializing)."""
+    members = _get_one_of_members(ref, PAO.IntegrationStatus)
+    assert members == {PAO.Connected, PAO.Disconnected, PAO.Error, PAO.Initializing}
+
+
+def test_all_different_integration_status(ref: Graph) -> None:
+    """AllDifferent for IntegrationStatus individuals."""
+    assert _find_all_different_containing(
+        ref, {PAO.Connected, PAO.Disconnected, PAO.Error, PAO.Initializing}
     )
 
 
@@ -1193,6 +1287,20 @@ CQ_SELECT_NON_EMPTY = [
     "cq-063.sparql",
     "cq-064.sparql",
     "cq-065.sparql",
+    # v0.5.0: Communication Channels & Integrations
+    "cq-066.sparql",
+    "cq-067.sparql",
+    "cq-068.sparql",
+    "cq-069.sparql",
+    "cq-070.sparql",
+    "cq-071.sparql",
+    "cq-072.sparql",
+    "cq-073.sparql",
+    "cq-074.sparql",
+    "cq-075.sparql",
+    "cq-076.sparql",
+    "cq-077.sparql",
+    "cq-078.sparql",
 ]
 
 
@@ -1270,15 +1378,16 @@ def test_shacl_conformance(shapes: Graph) -> None:
 
 
 def test_shacl_shape_count(shapes: Graph) -> None:
-    """At least 27 NodeShapes exist."""
+    """At least 29 NodeShapes exist."""
     node_shapes = set(shapes.subjects(RDF.type, SH.NodeShape))
-    assert len(node_shapes) >= 27, f"Expected >=27 NodeShapes, got {len(node_shapes)}"
+    assert len(node_shapes) >= 29, f"Expected >=29 NodeShapes, got {len(node_shapes)}"
 
 
 EXPECTED_SHAPE_TARGETS = [
     "AIAgent",
     "Action",
     "Claim",
+    "CommunicationChannel",
     "CompactionDisposition",
     "CompactionEvent",
     "ConsentRecord",
@@ -1287,6 +1396,7 @@ EXPECTED_SHAPE_TARGETS = [
     "Episode",
     "ErasureEvent",
     "Goal",
+    "Integration",
     "Intention",
     "MemoryBlock",
     "MemoryItem",

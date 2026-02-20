@@ -49,9 +49,9 @@ TIME_DECL_IRI = URIRef("https://purl.org/pao/time-declarations")
 FOAF_DECL_IRI = URIRef("https://purl.org/pao/foaf-declarations")
 ODRL_DECL_IRI = URIRef("https://purl.org/pao/odrl-declarations")
 BFO_DECL_IRI = URIRef("https://purl.org/pao/bfo-declarations")
-TBOX_VERSION_IRI = URIRef("https://purl.org/pao/0.3.0")
-REF_VERSION_IRI = URIRef("https://purl.org/pao/reference-individuals/0.3.0")
-DATA_VERSION_IRI = URIRef("https://purl.org/pao/data/0.3.0")
+TBOX_VERSION_IRI = URIRef("https://purl.org/pao/0.5.0")
+REF_VERSION_IRI = URIRef("https://purl.org/pao/reference-individuals/0.5.0")
+DATA_VERSION_IRI = URIRef("https://purl.org/pao/data/0.5.0")
 
 # Ontology project root (ontologies/personal_agent_ontology/)
 PROJECT = Path(__file__).resolve().parent.parent
@@ -248,8 +248,8 @@ def build_tbox(glossary: list[dict[str, str]]) -> Graph:
             ),
         )
     )
-    g.add((TBOX_IRI, OWL.versionInfo, Literal("0.3.0")))
-    g.add((TBOX_IRI, DCTERMS.created, Literal("2026-02-19")))
+    g.add((TBOX_IRI, OWL.versionInfo, Literal("0.5.0")))
+    g.add((TBOX_IRI, DCTERMS.created, Literal("2026-02-20")))
     g.add((TBOX_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((TBOX_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
     g.add((TBOX_IRI, DCTERMS.rights, Literal("MIT License")))
@@ -264,7 +264,7 @@ def build_tbox(glossary: list[dict[str, str]]) -> Graph:
     # Build glossary lookup
     class_glossary = {row["term"]: row for row in glossary if row["category"] == "class"}
 
-    # --- Declare all 51 classes ---
+    # --- Declare all 56 classes ---
     _add_classes(g, class_glossary)
 
     # --- Declare all properties ---
@@ -302,7 +302,7 @@ def build_tbox(glossary: list[dict[str, str]]) -> Graph:
 
 
 def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
-    """Declare all 51 PAO classes with labels, definitions, and subclass axioms."""
+    """Declare all 56 PAO classes with labels, definitions, and subclass axioms."""
     # Class hierarchy: (class_name, parent_uri, bfo_uri_or_none)
     class_defs: list[tuple[str, URIRef | None, URIRef | None]] = [
         # pao-core
@@ -316,7 +316,7 @@ def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
         # pao-event
         ("Event", PROV.Activity, OBO.BFO_0000015),
         ("Action", PAO.Event, None),
-        ("Status", None, None),  # Value partition, no BFO parent
+        ("Status", PROV.Entity, OBO.BFO_0000031),  # Value partition — GDC
         ("SessionStatus", PAO.Status, None),
         ("TaskStatus", PAO.Status, None),
         ("ComplianceStatus", PAO.Status, None),
@@ -364,6 +364,12 @@ def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
         ("RetentionPolicy", PROV.Entity, OBO.BFO_0000031),
         # pao-conversation (v0.4.0)
         ("ContextWindow", PROV.Entity, OBO.BFO_0000031),
+        # pao-conversation (v0.5.0)
+        ("CommunicationChannel", PROV.Entity, OBO.BFO_0000031),
+        ("ChannelType", PAO.Status, None),  # Value Partition
+        # pao-core (v0.5.0)
+        ("Integration", PROV.Entity, OBO.BFO_0000031),
+        ("IntegrationStatus", PAO.Status, None),  # Value Partition
     ]
 
     # Additional parent axioms (multiple inheritance)
@@ -392,7 +398,7 @@ def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
 
 
 def _add_object_properties(g: Graph) -> None:
-    """Declare all 66 object properties."""
+    """Declare all 72 object properties."""
     # Each tuple: (name, domain, range, characteristics, definition)
     obj_props: list[tuple[str, URIRef | None, URIRef | None, list[str], str]] = [
         # pao-core: generic part-whole
@@ -427,7 +433,7 @@ def _add_object_properties(g: Graph) -> None:
         ),
         (
             "spawnedBy",
-            PAO.SubAgent,
+            PAO.Agent,
             PAO.Agent,
             ["functional"],
             "Links a sub-agent to the parent agent that spawned it.",
@@ -548,7 +554,7 @@ def _add_object_properties(g: Graph) -> None:
         ),
         (
             "delegatedTask",
-            PAO.SubAgent,
+            PAO.Agent,
             PAO.Task,
             [],
             "Links a sub-agent to the task it was spawned to perform.",
@@ -866,6 +872,50 @@ def _add_object_properties(g: Graph) -> None:
             ["functional"],
             "Links a compaction event to the context window that triggered it.",
         ),
+        # v0.5.0: Communication Channels
+        (
+            "viaChannel",
+            PAO.Session,
+            PAO.CommunicationChannel,
+            ["functional"],
+            "Links a session to the communication channel it uses.",
+        ),
+        (
+            "hasChannelType",
+            PAO.CommunicationChannel,
+            PAO.ChannelType,
+            ["functional"],
+            "Links a communication channel to its type classification.",
+        ),
+        (
+            "sentViaChannel",
+            PAO.Message,
+            PAO.CommunicationChannel,
+            ["functional"],
+            "Links a message to the communication channel it was sent through.",
+        ),
+        # v0.5.0: Integrations
+        (
+            "hasIntegration",
+            PAO.Agent,
+            PAO.Integration,
+            [],
+            "Links an agent to an integration it has configured.",
+        ),
+        (
+            "providesTool",
+            PAO.Integration,
+            PAO.ToolDefinition,
+            [],
+            "Links an integration to a tool definition it provides.",
+        ),
+        (
+            "hasIntegrationStatus",
+            PAO.Integration,
+            PAO.IntegrationStatus,
+            ["functional"],
+            "Links an integration to its current operational status.",
+        ),
     ]
 
     for name, domain, range_, chars, defn in obj_props:
@@ -884,7 +934,7 @@ def _add_object_properties(g: Graph) -> None:
 
 
 def _add_data_properties(g: Graph) -> None:
-    """Declare all 16 data properties."""
+    """Declare all 18 data properties."""
     data_props: list[tuple[str, URIRef | None, URIRef, list[str], str]] = [
         (
             "hasTimestamp",
@@ -1004,6 +1054,21 @@ def _add_data_properties(g: Graph) -> None:
             ["functional"],
             "The number of tokens currently used in the context window.",
         ),
+        # v0.5.0: Integration metadata (CQ-078)
+        (
+            "hasServiceName",
+            PAO.Integration,
+            XSD.string,
+            ["functional"],
+            "The display name of the external service an integration connects to.",
+        ),
+        (
+            "hasEndpoint",
+            PAO.Integration,
+            XSD.anyURI,
+            ["functional"],
+            "The endpoint URI of the external service an integration connects to.",
+        ),
     ]
 
     for name, domain, range_, chars, defn in data_props:
@@ -1031,6 +1096,7 @@ def _add_property_hierarchy(g: Graph) -> None:
     g.add((PAO.invokedBy, RDFS.subPropertyOf, PAO.performedBy))
     # hasStatus hierarchy
     g.add((PAO.hasComplianceStatus, RDFS.subPropertyOf, PAO.hasStatus))
+    g.add((PAO.hasIntegrationStatus, RDFS.subPropertyOf, PAO.hasStatus))
     # compactedItem is subPropertyOf prov:used
     g.add((PAO.compactedItem, RDFS.subPropertyOf, PROV.used))
 
@@ -1154,6 +1220,16 @@ def _add_existential_restrictions(g: Graph) -> None:
         (PAO.CompactionDisposition, PAO.hasItemFate, PAO.ItemFate),
         # CQ-061/064: hasContextWindow and compactedContextOf are optional (min 0),
         # so no existential restrictions — SHACL enforces max 1 when present.
+        # CQ-066/069: viaChannel and sentViaChannel are optional (min 0 per property-design),
+        # so no existential restrictions — SHACL enforces max 1 when present.
+        # CQ-067: CommunicationChannel has a type
+        (PAO.CommunicationChannel, PAO.hasChannelType, PAO.ChannelType),
+        # CQ-071: AIAgent has integrations (not Agent — HumanUser may have none)
+        (PAO.AIAgent, PAO.hasIntegration, PAO.Integration),
+        # CQ-072: Integration provides tools
+        (PAO.Integration, PAO.providesTool, PAO.ToolDefinition),
+        # CQ-073: Integration has status
+        (PAO.Integration, PAO.hasIntegrationStatus, PAO.IntegrationStatus),
     ]
     for cls, prop, filler in restrictions:
         _add_existential(g, cls, prop, filler)
@@ -1234,6 +1310,8 @@ def _add_disjointness_axioms(g: Graph) -> None:
             PAO.ComplianceStatus,
             PAO.SensitivityLevel,
             PAO.ItemFate,
+            PAO.ChannelType,
+            PAO.IntegrationStatus,
         ],
     )
     # Governance types
@@ -1260,6 +1338,8 @@ def _add_disjointness_axioms(g: Graph) -> None:
             PAO.RetentionPolicy,
             PAO.CompactionDisposition,
             PAO.ContextWindow,
+            PAO.CommunicationChannel,
+            PAO.Integration,
         ],
     )
     # MemoryTier subtypes (covered by DisjointUnion, but explicit for clarity)
@@ -1337,8 +1417,8 @@ def build_reference_individuals(glossary: list[dict[str, str]]) -> Graph:
             ),
         )
     )
-    g.add((REF_IRI, OWL.versionInfo, Literal("0.3.0")))
-    g.add((REF_IRI, DCTERMS.created, Literal("2026-02-19")))
+    g.add((REF_IRI, OWL.versionInfo, Literal("0.5.0")))
+    g.add((REF_IRI, DCTERMS.created, Literal("2026-02-20")))
     g.add((REF_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((REF_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
 
@@ -1393,6 +1473,22 @@ def build_reference_individuals(glossary: list[dict[str, str]]) -> Graph:
     archived = _add_individual("Archived", PAO.ItemFate)
     _add_all_different(g, [preserved, dropped, summarized, archived])
 
+    # --- Channel type individuals (v0.5.0) ---
+    cli = _add_individual("CLI", PAO.ChannelType)
+    messaging = _add_individual("Messaging", PAO.ChannelType)
+    web_chat = _add_individual("WebChat", PAO.ChannelType)
+    api_channel = _add_individual("APIChannel", PAO.ChannelType)
+    voice_channel = _add_individual("VoiceChannel", PAO.ChannelType)
+    email_channel = _add_individual("EmailChannel", PAO.ChannelType)
+    _add_all_different(g, [cli, messaging, web_chat, api_channel, voice_channel, email_channel])
+
+    # --- Integration status individuals (v0.5.0) ---
+    connected = _add_individual("Connected", PAO.IntegrationStatus)
+    disconnected = _add_individual("Disconnected", PAO.IntegrationStatus)
+    error_status = _add_individual("Error", PAO.IntegrationStatus)
+    initializing = _add_individual("Initializing", PAO.IntegrationStatus)
+    _add_all_different(g, [connected, disconnected, error_status, initializing])
+
     # --- Classifier individuals (used as string property values) ---
     # UserPreference is a reference label, NOT an instance of a domain class.
     for cname in ("UserPreference",):
@@ -1414,6 +1510,14 @@ def build_reference_individuals(glossary: list[dict[str, str]]) -> Graph:
     _add_enumeration(g, PAO.AgentRole, [assistant_role, user_role])
     _add_enumeration(g, PAO.SensitivityLevel, [public, internal, confidential, restricted])
     _add_enumeration(g, PAO.ItemFate, [preserved, dropped, summarized, archived])
+    _add_enumeration(
+        g,
+        PAO.ChannelType,
+        [cli, messaging, web_chat, api_channel, voice_channel, email_channel],
+    )
+    _add_enumeration(
+        g, PAO.IntegrationStatus, [connected, disconnected, error_status, initializing]
+    )
 
     return g
 
@@ -1452,8 +1556,8 @@ def build_abox_data() -> Graph:
             ),
         )
     )
-    g.add((DATA_IRI, OWL.versionInfo, Literal("0.3.0")))
-    g.add((DATA_IRI, DCTERMS.created, Literal("2026-02-19")))
+    g.add((DATA_IRI, OWL.versionInfo, Literal("0.5.0")))
+    g.add((DATA_IRI, DCTERMS.created, Literal("2026-02-20")))
     g.add((DATA_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((DATA_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
 
@@ -1476,6 +1580,8 @@ def build_abox_data() -> Graph:
     _add_sample_identity(g)
     _add_sample_transitions(g)
     _add_sample_context_window(g)
+    _add_sample_channels(g)
+    _add_sample_integrations(g)
 
     return g
 
@@ -2201,6 +2307,64 @@ def _add_sample_context_window(g: Graph) -> None:
     g.add((PAO.session_002, PAO.hasContextWindow, cw2))
 
 
+def _add_sample_channels(g: Graph) -> None:
+    """Add sample communication channel individuals (CQ-066 through CQ-070)."""
+    # Channel 1: CLI channel for session_001
+    ch1 = PAO.channel_cli_001
+    g.add((ch1, RDF.type, PAO.CommunicationChannel))
+    g.add((ch1, RDF.type, OWL.NamedIndividual))
+    g.add((ch1, RDFS.label, Literal("CLI channel 001", lang="en")))
+    g.add((ch1, PAO.hasChannelType, PAO.CLI))
+    # Link session_001 to channel (CQ-066)
+    g.add((PAO.session_001, PAO.viaChannel, ch1))
+
+    # Channel 2: WebChat channel for session_002 (different channel type)
+    ch2 = PAO.channel_web_001
+    g.add((ch2, RDF.type, PAO.CommunicationChannel))
+    g.add((ch2, RDF.type, OWL.NamedIndividual))
+    g.add((ch2, RDFS.label, Literal("web chat channel 001", lang="en")))
+    g.add((ch2, PAO.hasChannelType, PAO.WebChat))
+    # Link session_002 to channel (CQ-068: find sessions by channel type)
+    g.add((PAO.session_002, PAO.viaChannel, ch2))
+
+    # Link messages to channels (CQ-069)
+    g.add((PAO.msg_001, PAO.sentViaChannel, ch1))
+    g.add((PAO.msg_002, PAO.sentViaChannel, ch1))
+
+
+def _add_sample_integrations(g: Graph) -> None:
+    """Add sample integration individuals (CQ-071 through CQ-077)."""
+    # Integration 1: GitHub MCP server (connected, provides read_tool + bash_tool)
+    int1 = PAO.integration_github_001
+    g.add((int1, RDF.type, PAO.Integration))
+    g.add((int1, RDF.type, OWL.NamedIndividual))
+    g.add((int1, RDFS.label, Literal("GitHub integration 001", lang="en")))
+    g.add((int1, PAO.hasIntegrationStatus, PAO.Connected))
+    g.add((int1, PAO.hasServiceName, Literal("GitHub")))
+    g.add((int1, PAO.hasEndpoint, Literal("https://api.github.com", datatype=XSD.anyURI)))
+    g.add((int1, PAO.providesTool, PAO.read_tool))
+    g.add((int1, PAO.providesTool, PAO.bash_tool))
+    # Link agent to integration (CQ-071)
+    g.add((PAO.claude_agent, PAO.hasIntegration, int1))
+
+    # Integration 2: Notion connector (error state, provides one tool)
+    notion_tool = PAO.notion_search_tool
+    g.add((notion_tool, RDF.type, PAO.ToolDefinition))
+    g.add((notion_tool, RDF.type, OWL.NamedIndividual))
+    g.add((notion_tool, RDFS.label, Literal("Notion Search Tool", lang="en")))
+    g.add((notion_tool, PAO.hasContent, Literal("Search Notion workspace")))
+
+    int2 = PAO.integration_notion_001
+    g.add((int2, RDF.type, PAO.Integration))
+    g.add((int2, RDF.type, OWL.NamedIndividual))
+    g.add((int2, RDFS.label, Literal("Notion integration 001", lang="en")))
+    g.add((int2, PAO.hasIntegrationStatus, PAO.Error))
+    g.add((int2, PAO.hasServiceName, Literal("Notion")))
+    g.add((int2, PAO.hasEndpoint, Literal("https://api.notion.com/v1", datatype=XSD.anyURI)))
+    g.add((int2, PAO.providesTool, notion_tool))
+    g.add((PAO.claude_agent, PAO.hasIntegration, int2))
+
+
 # ---------------------------------------------------------------------------
 # SHACL Shapes Builder
 # ---------------------------------------------------------------------------
@@ -2267,6 +2431,9 @@ def build_shacl_shapes() -> Graph:
             _property_shape(g, PAO.hasSessionId, min_count=1, max_count=1, datatype=XSD.string),
             _property_shape(
                 g, PAO.hasContextWindow, max_count=1, class_constraint=PAO.ContextWindow
+            ),
+            _property_shape(
+                g, PAO.viaChannel, max_count=1, class_constraint=PAO.CommunicationChannel
             ),
         ],
     )
@@ -2511,6 +2678,9 @@ def build_shacl_shapes() -> Graph:
         PAO.Message,
         [
             _property_shape(g, PAO.hasContent, min_count=1, max_count=1, datatype=XSD.string),
+            _property_shape(
+                g, PAO.sentViaChannel, max_count=1, class_constraint=PAO.CommunicationChannel
+            ),
         ],
     )
 
@@ -2582,6 +2752,41 @@ def build_shacl_shapes() -> Graph:
         ],
     )
     g.add((PAO.ContextWindowShape, SH.sparql, cw_sparql))
+
+    # --- CommunicationChannelShape (v0.5.0) ---
+    _add_shape(
+        g,
+        PAO.CommunicationChannelShape,
+        PAO.CommunicationChannel,
+        [
+            _property_shape(
+                g,
+                PAO.hasChannelType,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.ChannelType,
+            ),
+        ],
+    )
+
+    # --- IntegrationShape (v0.5.0) ---
+    _add_shape(
+        g,
+        PAO.IntegrationShape,
+        PAO.Integration,
+        [
+            _property_shape(g, PAO.providesTool, min_count=1, class_constraint=PAO.ToolDefinition),
+            _property_shape(
+                g,
+                PAO.hasIntegrationStatus,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.IntegrationStatus,
+            ),
+            _property_shape(g, PAO.hasServiceName, min_count=1, max_count=1, datatype=XSD.string),
+            _property_shape(g, PAO.hasEndpoint, max_count=1, datatype=XSD.anyURI),
+        ],
+    )
 
     return g
 

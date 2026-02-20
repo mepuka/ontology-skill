@@ -1030,7 +1030,7 @@ competency_questions:
     priority: should_have
     sample_answer:
       - item: pao:Memory_001
-        sensitivity: pao:PersonalData
+        sensitivity: pao:Confidential
     derivation_method: direct_lookup
     out_of_scope:
       - "Sensitivity classification algorithms"
@@ -1948,4 +1948,395 @@ competency_questions:
     required_properties:
       - hasTokenCapacity
       - hasTokensUsed
+    required_axioms: []
+
+  # ═══════════════════════════════════════════════════════════════════
+  # v0.5.0 ADDITIONS — Communication Channels & Integrations
+  # ═══════════════════════════════════════════════════════════════════
+
+  # ── Communication Channels ────────────────────────────────────────
+
+  - id: CQ-066
+    source_use_case: UC-031
+    natural_language: "What communication channel was used for a given session?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - session: pao:Session_abc123
+        channel: pao:Channel_WhatsApp_01
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Channel configuration or authentication details"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?session ?channel WHERE {
+        ?session a pao:Session ;
+                 pao:viaChannel ?channel .
+        ?channel a pao:CommunicationChannel .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Session
+      - CommunicationChannel
+    required_properties:
+      - viaChannel
+    required_axioms: []
+
+  - id: CQ-067
+    source_use_case: UC-031
+    natural_language: "What type of communication channel is a given channel?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - channel: pao:Channel_WhatsApp_01
+        channelType: pao:Messaging
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Channel type hierarchy or sub-classification"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?channel ?channelType WHERE {
+        ?channel a pao:CommunicationChannel ;
+                 pao:hasChannelType ?channelType .
+        ?channelType a pao:ChannelType .
+      }
+    expected_result: non_empty
+    required_classes:
+      - CommunicationChannel
+      - ChannelType
+    required_properties:
+      - hasChannelType
+    required_axioms: []
+
+  - id: CQ-068
+    source_use_case: UC-031
+    natural_language: "Which sessions used a specific type of communication channel?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - session: pao:Session_abc123
+        channelType: pao:CLI
+      - session: pao:Session_def456
+        channelType: pao:CLI
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Session content or quality metrics per channel type"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?session ?channel ?channelType WHERE {
+        ?session a pao:Session ;
+                 pao:viaChannel ?channel .
+        ?channel pao:hasChannelType ?channelType .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Session
+      - CommunicationChannel
+      - ChannelType
+    required_properties:
+      - viaChannel
+      - hasChannelType
+    required_axioms: []
+
+  - id: CQ-069
+    source_use_case: UC-032
+    natural_language: "What messages were exchanged on a given communication channel?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - message: pao:Message_001
+        channel: pao:Channel_WhatsApp_01
+    derivation_method: inference
+    out_of_scope:
+      - "Message content analysis or sentiment"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?message ?channel WHERE {
+        ?message a pao:Message ;
+                 pao:sentViaChannel ?channel .
+        ?channel a pao:CommunicationChannel .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Message
+      - CommunicationChannel
+    required_properties:
+      - sentViaChannel
+    required_axioms: []
+
+  - id: CQ-070
+    source_use_case: UC-032
+    natural_language: "Which communication channels are associated with a given conversation?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - conversation: pao:Conv_2026_001
+        channel: pao:Channel_CLI_01
+        channelType: pao:CLI
+    derivation_method: inference
+    out_of_scope:
+      - "Channel switching mid-conversation mechanics"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT DISTINCT ?conversation ?channel ?channelType WHERE {
+        ?session pao:partOfConversation ?conversation ;
+                 pao:viaChannel ?channel .
+        ?channel pao:hasChannelType ?channelType .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Conversation
+      - Session
+      - CommunicationChannel
+    required_properties:
+      - partOfConversation
+      - viaChannel
+      - hasChannelType
+    required_axioms: []
+
+  # ── Integrations ──────────────────────────────────────────────────
+
+  - id: CQ-071
+    source_use_case: UC-033
+    natural_language: "What integrations does a given agent have configured?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - agent: pao:ClaudeCodeAgent_01
+        integration: pao:Integration_Gmail_01
+        label: "Gmail"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Integration configuration details (API keys, OAuth tokens)"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?agent ?integration ?label WHERE {
+        ?agent pao:hasIntegration ?integration .
+        ?integration a pao:Integration ;
+                     rdfs:label ?label .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Agent
+      - Integration
+    required_properties:
+      - hasIntegration
+    required_axioms: []
+
+  - id: CQ-072
+    source_use_case: UC-034
+    natural_language: "What tools are provided by a given integration?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - integration: pao:Integration_Gmail_01
+        tool: pao:GmailSendTool
+        toolLabel: "Send Email"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Tool configuration or parameter schemas"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?integration ?tool ?toolLabel WHERE {
+        ?integration a pao:Integration ;
+                     pao:providesTool ?tool .
+        ?tool a pao:ToolDefinition ;
+              rdfs:label ?toolLabel .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Integration
+      - ToolDefinition
+    required_properties:
+      - providesTool
+    required_axioms: []
+
+  - id: CQ-073
+    source_use_case: UC-033
+    natural_language: "What is the connection status of an agent's integrations?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - agent: pao:ClaudeCodeAgent_01
+        integration: pao:Integration_Gmail_01
+        status: pao:Connected
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Status change history or transition events"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?agent ?integration ?label ?status WHERE {
+        ?agent pao:hasIntegration ?integration .
+        ?integration a pao:Integration ;
+                     rdfs:label ?label ;
+                     pao:hasIntegrationStatus ?status .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Agent
+      - Integration
+      - IntegrationStatus
+    required_properties:
+      - hasIntegration
+      - hasIntegrationStatus
+    required_axioms: []
+
+  - id: CQ-074
+    source_use_case: UC-034
+    natural_language: "Which integration provides a given tool?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - tool: pao:GmailSendTool
+        integration: pao:Integration_Gmail_01
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Tools provided by multiple integrations simultaneously"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?tool ?toolLabel ?integration ?integrationLabel WHERE {
+        ?integration a pao:Integration ;
+                     rdfs:label ?integrationLabel ;
+                     pao:providesTool ?tool .
+        ?tool rdfs:label ?toolLabel .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Integration
+      - ToolDefinition
+    required_properties:
+      - providesTool
+    required_axioms: []
+
+  - id: CQ-075
+    source_use_case: UC-034
+    natural_language: "How many tools does each integration provide?"
+    type: quantitative
+    priority: could_have
+    sample_answer:
+      - integration: pao:Integration_Gmail_01
+        toolCount: 3
+    derivation_method: aggregation
+    out_of_scope:
+      - "Tool usage frequency or popularity"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?integration ?label (COUNT(?tool) AS ?toolCount) WHERE {
+        ?integration a pao:Integration ;
+                     rdfs:label ?label ;
+                     pao:providesTool ?tool .
+      }
+      GROUP BY ?integration ?label
+    expected_result: non_empty
+    required_classes:
+      - Integration
+      - ToolDefinition
+    required_properties:
+      - providesTool
+    required_axioms: []
+
+  - id: CQ-076
+    source_use_case: UC-033
+    natural_language: "Are there any integrations currently in error status?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - integration: pao:Integration_Notion_01
+        label: "Notion integration 001"
+        agent: pao:ClaudeCodeAgent_01
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Error diagnosis or recovery procedures"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?integration ?label ?agent WHERE {
+        ?integration a pao:Integration ;
+                     rdfs:label ?label ;
+                     pao:hasIntegrationStatus pao:Error .
+        ?agent pao:hasIntegration ?integration .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Integration
+      - IntegrationStatus
+    required_properties:
+      - hasIntegrationStatus
+      - hasIntegration
+    required_axioms: []
+
+  - id: CQ-077
+    source_use_case: UC-034
+    natural_language: "Which tool invocations used tools from a specific integration?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - invocation: pao:ToolInv_042
+        tool: pao:GmailSendTool
+        integration: pao:Integration_Gmail_01
+    derivation_method: inference
+    out_of_scope:
+      - "Integration-level billing or quotas"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?invocation ?tool ?integration WHERE {
+        ?invocation a pao:ToolInvocation ;
+                    pao:invokesTool ?tool .
+        ?integration a pao:Integration ;
+                     pao:providesTool ?tool .
+      }
+    expected_result: non_empty
+    required_classes:
+      - ToolInvocation
+      - ToolDefinition
+      - Integration
+    required_properties:
+      - invokesTool
+      - providesTool
+    required_axioms: []
+
+  - id: CQ-078
+    source_use_case: UC-033
+    natural_language: "What service name and endpoint are configured for an agent's integrations?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - integration: pao:Integration_GitHub_01
+        serviceName: "GitHub"
+        endpoint: "https://api.github.com"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Authentication credentials or secrets"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?integration ?serviceName ?endpoint WHERE {
+        ?integration a pao:Integration ;
+                     pao:hasServiceName ?serviceName .
+        OPTIONAL { ?integration pao:hasEndpoint ?endpoint . }
+      }
+    expected_result: non_empty
+    required_classes:
+      - Integration
+    required_properties:
+      - hasServiceName
+      - hasEndpoint
     required_axioms: []

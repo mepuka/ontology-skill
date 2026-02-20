@@ -49,14 +49,14 @@ pao:consolidation_001 a owl:NamedIndividual,
     pao:operatesOn pao:episode_001 .
 
 pao:data a owl:Ontology ;
-    dcterms:created "2026-02-19" ;
+    dcterms:created "2026-02-20" ;
     dcterms:creator "ontology-architect skill" ;
     dcterms:description "Representative ABox individuals for CQ/SPARQL test execution."@en ;
     dcterms:license <https://spdx.org/licenses/MIT> ;
     dcterms:title "Personal Agent Ontology — Sample Data"@en ;
     owl:imports pao: ;
-    owl:versionIRI <https://purl.org/pao/data/0.3.0> ;
-    owl:versionInfo "0.3.0" .
+    owl:versionIRI <https://purl.org/pao/data/0.5.0> ;
+    owl:versionInfo "0.5.0" .
 
 pao:encoding_001 a owl:NamedIndividual,
         pao:Encoding,
@@ -132,6 +132,7 @@ pao:msg_002 a owl:NamedIndividual,
     prov:wasAttributedTo pao:claude_agent ;
     prov:wasGeneratedBy pao:turn_002 ;
     pao:hasContent "Of course! What do you need?" ;
+    pao:sentViaChannel pao:channel_cli_001 ;
     pao:storedIn pao:working_memory_instance .
 
 pao:observation_001 a owl:NamedIndividual,
@@ -198,6 +199,11 @@ pao:task_003 a owl:NamedIndividual,
     pao:partOfPlan pao:plan_001 ;
     pao:storedIn pao:semantic_memory_instance .
 
+pao:channel_web_001 a owl:NamedIndividual,
+        pao:CommunicationChannel ;
+    rdfs:label "web chat channel 001"@en ;
+    pao:hasChannelType pao:WebChat .
+
 pao:context_window_002 a owl:NamedIndividual,
         pao:ContextWindow ;
     rdfs:label "context window 002"@en ;
@@ -233,6 +239,23 @@ pao:episodic_memory_instance a owl:NamedIndividual,
         pao:MemoryTier ;
     rdfs:label "episodic memory instance"@en .
 
+pao:integration_github_001 a owl:NamedIndividual,
+        pao:Integration ;
+    rdfs:label "GitHub integration 001"@en ;
+    pao:hasEndpoint "https://api.github.com"^^xsd:anyURI ;
+    pao:hasIntegrationStatus pao:Connected ;
+    pao:hasServiceName "GitHub" ;
+    pao:providesTool pao:bash_tool,
+        pao:read_tool .
+
+pao:integration_notion_001 a owl:NamedIndividual,
+        pao:Integration ;
+    rdfs:label "Notion integration 001"@en ;
+    pao:hasEndpoint "https://api.notion.com/v1"^^xsd:anyURI ;
+    pao:hasIntegrationStatus pao:Error ;
+    pao:hasServiceName "Notion" ;
+    pao:providesTool pao:notion_search_tool .
+
 pao:invocation_001_input a owl:NamedIndividual,
         prov:Entity ;
     rdfs:label "invocation 001 input"@en ;
@@ -249,7 +272,13 @@ pao:msg_001 a owl:NamedIndividual,
     prov:wasAttributedTo pao:alice_user ;
     prov:wasGeneratedBy pao:turn_001 ;
     pao:hasContent "Hello, can you help me?" ;
+    pao:sentViaChannel pao:channel_cli_001 ;
     pao:storedIn pao:working_memory_instance .
+
+pao:notion_search_tool a owl:NamedIndividual,
+        pao:ToolDefinition ;
+    rdfs:label "Notion Search Tool"@en ;
+    pao:hasContent "Search Notion workspace" .
 
 pao:permission_001 a owl:NamedIndividual,
         odrl:Permission ;
@@ -287,7 +316,8 @@ pao:session_002 a owl:NamedIndividual,
     pao:hasStatus pao:Ended ;
     pao:hasTemporalExtent pao:session_002_interval ;
     pao:hasTimestamp "2026-02-18T12:00:00"^^xsd:dateTime ;
-    pao:partOfConversation pao:conv_001 .
+    pao:partOfConversation pao:conv_001 ;
+    pao:viaChannel pao:channel_web_001 .
 
 pao:session_002_begin a time:Instant ;
     time:inXSDDateTime "2026-02-18T12:00:00+00:00"^^xsd:dateTime .
@@ -383,10 +413,10 @@ pao:turn_002 a owl:NamedIndividual,
     pao:partOfSession pao:session_001 ;
     pao:recordedInEpisode pao:episode_001 .
 
-pao:bash_tool a owl:NamedIndividual,
-        pao:ToolDefinition ;
-    rdfs:label "Bash Tool"@en ;
-    pao:hasContent "Execute shell commands" .
+pao:channel_cli_001 a owl:NamedIndividual,
+        pao:CommunicationChannel ;
+    rdfs:label "CLI channel 001"@en ;
+    pao:hasChannelType pao:CLI .
 
 pao:plan_001 a owl:NamedIndividual,
         pao:Plan ;
@@ -395,11 +425,6 @@ pao:plan_001 a owl:NamedIndividual,
     prov:wasGeneratedBy pao:conv_001 ;
     pao:achievesGoal pao:goal_001 ;
     pao:storedIn pao:semantic_memory_instance .
-
-pao:read_tool a owl:NamedIndividual,
-        pao:ToolDefinition ;
-    rdfs:label "Read Tool"@en ;
-    pao:hasContent "Read file contents" .
 
 pao:retention_policy_30day a owl:NamedIndividual,
         pao:RetentionPolicy ;
@@ -421,6 +446,11 @@ pao:turn_001 a owl:NamedIndividual,
     pao:partOfSession pao:session_001 ;
     pao:recordedInEpisode pao:episode_001 .
 
+pao:bash_tool a owl:NamedIndividual,
+        pao:ToolDefinition ;
+    rdfs:label "Bash Tool"@en ;
+    pao:hasContent "Execute shell commands" .
+
 pao:compaction_001 a owl:NamedIndividual,
         pao:CompactionEvent ;
     rdfs:label "compaction event 001"@en ;
@@ -433,6 +463,11 @@ pao:compaction_001 a owl:NamedIndividual,
     pao:hasTimestamp "2026-02-18T10:30:00"^^xsd:dateTime ;
     pao:inConversation pao:conv_001 ;
     pao:producedSummary pao:summary_001 .
+
+pao:read_tool a owl:NamedIndividual,
+        pao:ToolDefinition ;
+    rdfs:label "Read Tool"@en ;
+    pao:hasContent "Read file contents" .
 
 pao:task_001 a owl:NamedIndividual,
         pao:Task ;
@@ -501,7 +536,8 @@ pao:session_001 a owl:NamedIndividual,
     pao:hasStatus pao:Active ;
     pao:hasTemporalExtent pao:session_001_interval ;
     pao:hasTimestamp "2026-02-18T10:00:00"^^xsd:dateTime ;
-    pao:partOfConversation pao:conv_001 .
+    pao:partOfConversation pao:conv_001 ;
+    pao:viaChannel pao:channel_cli_001 .
 
 pao:alice_user a owl:NamedIndividual,
         pao:HumanUser ;
@@ -513,11 +549,11 @@ pao:conv_001 a owl:NamedIndividual,
         pao:Conversation ;
     rdfs:label "conversation 001"@en ;
     prov:qualifiedAssociation [ a prov:Association ;
-            prov:agent pao:alice_user ;
-            prov:hadRole pao:UserRole ],
-        [ a prov:Association ;
             prov:agent pao:claude_agent ;
-            prov:hadRole pao:AssistantRole ] ;
+            prov:hadRole pao:AssistantRole ],
+        [ a prov:Association ;
+            prov:agent pao:alice_user ;
+            prov:hadRole pao:UserRole ] ;
     prov:wasAssociatedWith pao:claude_agent ;
     pao:hasConversationId "conv-001" ;
     pao:hasParticipant pao:alice_user,
@@ -532,5 +568,7 @@ pao:claude_agent a owl:NamedIndividual,
     pao:hasAgentId "agent-claude-001" ;
     pao:hasAvailableTool pao:bash_tool,
         pao:read_tool ;
+    pao:hasIntegration pao:integration_github_001,
+        pao:integration_notion_001 ;
     pao:hasPersona pao:persona_claude ;
     pao:hasRole pao:AssistantRole .

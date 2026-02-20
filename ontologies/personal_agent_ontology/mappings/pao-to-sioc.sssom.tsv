@@ -9,7 +9,7 @@
 #mapping_set_description: "Cross-ontology mappings between the Personal Agent Ontology and the Semantically-Interlinked Online Communities (SIOC) ontology for conversation threading interoperability."
 #license: "https://creativecommons.org/licenses/by/4.0/"
 #subject_source: "https://purl.org/pao/"
-#subject_source_version: "0.1.0"
+#subject_source_version: "0.5.0"
 #object_source: "http://rdfs.org/sioc/ns#"
 #mapping_set_version: "0.1.0"
 subject_id	subject_label	predicate_id	object_id	object_label	mapping_justification	confidence	comment
@@ -23,3 +23,4 @@ pao:HumanUser	human user	skos:closeMatch	sioc:UserAccount	UserAccount	semapv:Sem
 pao:hasTopic	has topic	skos:closeMatch	sioc:topic	topic	semapv:SemanticSimilarityThresholdMatching	0.88	Both link content to topics/subjects via SKOS concepts.
 pao:hasContent	has content	skos:closeMatch	sioc:content	content	semapv:SemanticSimilarityThresholdMatching	0.90	Both represent the textual body of a communication item.
 pao:partOfConversation	part of conversation	skos:closeMatch	sioc:has_container	has_container	semapv:SemanticSimilarityThresholdMatching	0.75	PAO partOfConversation links turns to conversations; SIOC has_container links posts to threads.
+pao:CommunicationChannel	communication channel	skos:closeMatch	sioc:Site	Site	semapv:SemanticSimilarityThresholdMatching	0.60	PAO CommunicationChannel is a medium for agent interaction; SIOC Site hosts online communities. Both are interaction venues, but PAO is medium-focused while SIOC is platform-focused.

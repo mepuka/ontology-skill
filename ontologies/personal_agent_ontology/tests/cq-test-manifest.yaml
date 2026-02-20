@@ -609,3 +609,122 @@ cq_tests:
     type: SELECT
     expected: non_empty
     requires_abox: true
+
+  # --- v0.5.0 Additions: Communication Channels & Integrations ---
+
+  - id: cq-066
+    file: cq-066.sparql
+    cq: CQ-066
+    module: conversation_interaction
+    question: "What communication channel was used for a given session?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-067
+    file: cq-067.sparql
+    cq: CQ-067
+    module: conversation_interaction
+    question: "What type of communication channel is a given channel?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-068
+    file: cq-068.sparql
+    cq: CQ-068
+    module: conversation_interaction
+    question: "Which sessions used a specific type of communication channel?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-069
+    file: cq-069.sparql
+    cq: CQ-069
+    module: conversation_interaction
+    question: "What messages were exchanged on a given communication channel?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-070
+    file: cq-070.sparql
+    cq: CQ-070
+    module: conversation_interaction
+    question: "Which communication channels are associated with a given conversation?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-071
+    file: cq-071.sparql
+    cq: CQ-071
+    module: identity_actors
+    question: "What integrations does a given agent have configured?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-072
+    file: cq-072.sparql
+    cq: CQ-072
+    module: identity_actors
+    question: "What tools are provided by a given integration?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-073
+    file: cq-073.sparql
+    cq: CQ-073
+    module: identity_actors
+    question: "What is the connection status of an agent's integrations?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-074
+    file: cq-074.sparql
+    cq: CQ-074
+    module: identity_actors
+    question: "Which integration provides a given tool?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-075
+    file: cq-075.sparql
+    cq: CQ-075
+    module: identity_actors
+    question: "How many tools does each integration provide?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-076
+    file: cq-076.sparql
+    cq: CQ-076
+    module: governance_safety
+    question: "Are there any integrations currently in error status?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-077
+    file: cq-077.sparql
+    cq: CQ-077
+    module: cross_module
+    question: "Which tool invocations used tools from a specific integration?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-078
+    file: cq-078.sparql
+    cq: CQ-078
+    module: cross_module
+    question: "What service name and endpoint are configured for an agent's integrations?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true

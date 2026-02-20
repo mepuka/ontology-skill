@@ -10,13 +10,18 @@ pao:UserPreference a owl:NamedIndividual ;
     skos:definition "A claim type indicating the claim records a user preference."@en .
 
 pao:reference-individuals a owl:Ontology ;
-    dcterms:created "2026-02-19" ;
+    dcterms:created "2026-02-20" ;
     dcterms:creator "ontology-architect skill" ;
     dcterms:description "Named individuals for status values, agent roles, and classifiers."@en ;
     dcterms:license <https://spdx.org/licenses/MIT> ;
     dcterms:title "Personal Agent Ontology — Reference Individuals"@en ;
-    owl:versionIRI <https://purl.org/pao/reference-individuals/0.3.0> ;
-    owl:versionInfo "0.3.0" .
+    owl:versionIRI <https://purl.org/pao/reference-individuals/0.5.0> ;
+    owl:versionInfo "0.5.0" .
+
+pao:APIChannel a owl:NamedIndividual,
+        pao:ChannelType ;
+    rdfs:label "api channel"@en ;
+    skos:definition "Channel type: programmatic API access."@en .
 
 pao:Active a owl:NamedIndividual,
         pao:SessionStatus ;
@@ -40,6 +45,11 @@ pao:Blocked a owl:NamedIndividual,
     rdfs:label "blocked"@en ;
     skos:definition "Status value: a task cannot proceed because of unresolved dependencies."@en .
 
+pao:CLI a owl:NamedIndividual,
+        pao:ChannelType ;
+    rdfs:label "cli"@en ;
+    skos:definition "Channel type: command-line interface interaction."@en .
+
 pao:Completed a owl:NamedIndividual,
         pao:TaskStatus ;
     rdfs:label "completed"@en ;
@@ -57,20 +67,45 @@ pao:Confidential a owl:NamedIndividual,
     rdfs:label "confidential"@en ;
     skos:definition "Sensitivity level: restricted personal data."@en .
 
+pao:Connected a owl:NamedIndividual,
+        pao:IntegrationStatus ;
+    rdfs:label "connected"@en ;
+    skos:definition "Integration status: the integration is connected and operational."@en .
+
+pao:Disconnected a owl:NamedIndividual,
+        pao:IntegrationStatus ;
+    rdfs:label "disconnected"@en ;
+    skos:definition "Integration status: the integration is not currently connected."@en .
+
 pao:Dropped a owl:NamedIndividual,
         pao:ItemFate ;
     rdfs:label "dropped"@en ;
     skos:definition "Item fate: excluded from summary."@en .
+
+pao:EmailChannel a owl:NamedIndividual,
+        pao:ChannelType ;
+    rdfs:label "email channel"@en ;
+    skos:definition "Channel type: email-based interaction."@en .
 
 pao:Ended a owl:NamedIndividual,
         pao:SessionStatus ;
     rdfs:label "ended"@en ;
     skos:definition "Status value: a session has ended normally."@en .
 
+pao:Error a owl:NamedIndividual,
+        pao:IntegrationStatus ;
+    rdfs:label "error"@en ;
+    skos:definition "Integration status: the integration has encountered an error."@en .
+
 pao:InProgress a owl:NamedIndividual,
         pao:TaskStatus ;
     rdfs:label "in progress"@en ;
     skos:definition "Status value: a task is currently being worked on."@en .
+
+pao:Initializing a owl:NamedIndividual,
+        pao:IntegrationStatus ;
+    rdfs:label "initializing"@en ;
+    skos:definition "Integration status: the integration is being set up."@en .
 
 pao:Internal a owl:NamedIndividual,
         pao:SensitivityLevel ;
@@ -81,6 +116,11 @@ pao:Interrupted a owl:NamedIndividual,
         pao:SessionStatus ;
     rdfs:label "interrupted"@en ;
     skos:definition "Status value: a session ended abnormally."@en .
+
+pao:Messaging a owl:NamedIndividual,
+        pao:ChannelType ;
+    rdfs:label "messaging"@en ;
+    skos:definition "Channel type: messaging platform interaction."@en .
 
 pao:NonCompliant a owl:NamedIndividual,
         pao:ComplianceStatus ;
@@ -117,7 +157,19 @@ pao:UserRole a owl:NamedIndividual,
     rdfs:label "user role"@en ;
     skos:definition "The role of the human user in a conversation."@en .
 
+pao:VoiceChannel a owl:NamedIndividual,
+        pao:ChannelType ;
+    rdfs:label "voice channel"@en ;
+    skos:definition "Channel type: voice-based interaction."@en .
+
+pao:WebChat a owl:NamedIndividual,
+        pao:ChannelType ;
+    rdfs:label "web chat"@en ;
+    skos:definition "Channel type: web-based chat interface."@en .
+
 pao:SessionStatus owl:equivalentClass [ owl:oneOf ( pao:Active pao:Ended pao:Interrupted ) ] .
+
+pao:IntegrationStatus owl:equivalentClass [ owl:oneOf ( pao:Connected pao:Disconnected pao:Error pao:Initializing ) ] .
 
 pao:ItemFate owl:equivalentClass [ owl:oneOf ( pao:Preserved pao:Dropped pao:Summarized pao:Archived ) ] .
 
@@ -125,11 +177,13 @@ pao:SensitivityLevel owl:equivalentClass [ owl:oneOf ( pao:Public pao:Internal p
 
 pao:TaskStatus owl:equivalentClass [ owl:oneOf ( pao:Pending pao:InProgress pao:Completed pao:Blocked ) ] .
 
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Preserved pao:Dropped pao:Summarized pao:Archived ) .
+pao:ChannelType owl:equivalentClass [ owl:oneOf ( pao:CLI pao:Messaging pao:WebChat pao:APIChannel pao:VoiceChannel pao:EmailChannel ) ] .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:AssistantRole pao:UserRole ) .
+    owl:distinctMembers ( pao:CLI pao:Messaging pao:WebChat pao:APIChannel pao:VoiceChannel pao:EmailChannel ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Preserved pao:Dropped pao:Summarized pao:Archived ) .
 
 [] a owl:AllDifferent ;
     owl:distinctMembers ( pao:Active pao:Ended pao:Interrupted ) .
@@ -138,7 +192,13 @@ pao:TaskStatus owl:equivalentClass [ owl:oneOf ( pao:Pending pao:InProgress pao:
     owl:distinctMembers ( pao:Pending pao:InProgress pao:Completed pao:Blocked ) .
 
 [] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Compliant pao:NonCompliant ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:AssistantRole pao:UserRole ) .
+
+[] a owl:AllDifferent ;
     owl:distinctMembers ( pao:Public pao:Internal pao:Confidential pao:Restricted ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Compliant pao:NonCompliant ) .
+    owl:distinctMembers ( pao:Connected pao:Disconnected pao:Error pao:Initializing ) .

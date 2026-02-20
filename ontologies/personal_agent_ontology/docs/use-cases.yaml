@@ -488,6 +488,74 @@ use_cases:
     related_cqs: [CQ-056, CQ-057, CQ-058, CQ-059, CQ-060]
     priority: should_have
 
+  # ── v0.5.0 Use Cases (Communication Channels & Integrations) ──────
+
+  - id: UC-031
+    name: "Track session communication channel"
+    actor: "AI Agent / Session Manager"
+    goal: "Record and query which communication channel (CLI, WhatsApp, Discord, web chat, etc.) a session operates on"
+    preconditions:
+      - "Sessions exist with associated communication channels"
+      - "Channel types are defined as a controlled vocabulary"
+    main_flow:
+      - "System records a CommunicationChannel for each session via viaChannel"
+      - "Each channel has a ChannelType (CLI, Messaging, WebChat, API, Voice, Email)"
+      - "Agent or reviewer queries which channel a session used"
+    postconditions:
+      - "Every session's communication medium is queryable"
+    related_scenarios: [S1, S3]
+    related_cqs: [CQ-066, CQ-067, CQ-068]
+    priority: should_have
+
+  - id: UC-032
+    name: "Query interactions across channel types"
+    actor: "Compliance/Governance"
+    goal: "Find and compare agent interactions across different communication channels"
+    preconditions:
+      - "Multiple sessions exist across different channel types"
+    main_flow:
+      - "Reviewer queries sessions by channel type"
+      - "Reviewer identifies which conversations span multiple channel types"
+      - "Reviewer traces messages to their originating channel"
+    postconditions:
+      - "Cross-channel interaction patterns are visible for audit"
+    related_scenarios: [S1, S3]
+    related_cqs: [CQ-069, CQ-070]
+    priority: should_have
+
+  - id: UC-033
+    name: "Manage agent integrations with external services"
+    actor: "Agent Developer / System Architect"
+    goal: "Configure, query, and monitor an agent's connections to external services (MCP servers, APIs, etc.)"
+    preconditions:
+      - "Agent has configured integrations with external services"
+      - "Integration status values are defined as a controlled vocabulary"
+    main_flow:
+      - "Developer registers an integration for an agent (e.g., Gmail, Notion, GitHub)"
+      - "System records the integration with service name, endpoint, and status"
+      - "Developer queries which integrations an agent has and their connection status"
+    postconditions:
+      - "All agent integrations are queryable with status metadata"
+    related_scenarios: [S3, S7]
+    related_cqs: [CQ-071, CQ-073, CQ-076]
+    priority: should_have
+
+  - id: UC-034
+    name: "Track tool provenance via integrations"
+    actor: "Agent Developer / Compliance"
+    goal: "Determine which external integration provides a given tool and trace tool invocations back to their integration source"
+    preconditions:
+      - "Tools are linked to integrations that provide them"
+    main_flow:
+      - "Developer queries which tools come from a specific integration"
+      - "Developer traces a tool invocation back to its providing integration"
+      - "Compliance reviews tool usage grouped by integration"
+    postconditions:
+      - "Tool-to-integration provenance chain is fully queryable"
+    related_scenarios: [S3, S7]
+    related_cqs: [CQ-072, CQ-074, CQ-075, CQ-077]
+    priority: should_have
+
   # ── v0.4.0 Use Cases ──────────────────────────────────────────────
 
   - id: UC-030

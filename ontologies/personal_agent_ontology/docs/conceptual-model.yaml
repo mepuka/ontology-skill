@@ -7,7 +7,7 @@ ontology:
   name: Personal Agent Ontology
   prefix: pao
   namespace: "https://purl.org/pao/"
-  version: "0.1.0"
+  version: "0.5.0"
   owl_profile: OWL 2 DL
   upper_ontology: BFO 2020 (ISO 21838-2)
 
@@ -101,6 +101,7 @@ modules:
       - AgentRole
       - Organization
       - Persona
+      - Integration
 
   - id: pao-event
     name: "Actions, Events & Time"
@@ -144,6 +145,7 @@ modules:
       - Observation
       - CompactionDisposition
       - ContextWindow
+      - CommunicationChannel
 
   - id: pao-memory
     name: Memory
@@ -478,6 +480,18 @@ taxonomy:
     module: pao-conversation
     note: "Finite attention resource of an AI agent session with token capacity and usage tracking"
 
+  - class: CommunicationChannel
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-conversation
+    note: "Configured communication endpoint through which agent-user dialogue occurs. Linked to Session via viaChannel."
+
+  - class: Integration
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-core
+    note: "Configured connection to an external service (e.g., MCP server) that provides tools. Linked to Agent via hasIntegration."
+
   - class: RetentionPolicy
     parent: "prov:Entity"
     bfo: "GDC (BFO:0000031)"
@@ -515,10 +529,10 @@ taxonomy:
 
   # --- Status Value Partitions (pao-event) ---
   - class: Status
-    parent: null
-    bfo: "Value Partition (no BFO parent)"
+    parent: prov:Entity
+    bfo: "GDC (BFO:0000031) — Value Partition"
     module: pao-event
-    note: "ODP-6 pattern; parent for all status types"
+    note: "ODP-6 pattern; parent for all status types. Aligned to GDC since status values are information content entities."
     children:
       - class: SessionStatus
         parent: Status
@@ -550,8 +564,22 @@ taxonomy:
         module: pao-event
         individuals: [Preserved, Dropped, Summarized, Archived]
         enumeration: true
+      - class: ChannelType
+        parent: Status
+        bfo: "Value Partition"
+        module: pao-conversation
+        individuals: [CLI, Messaging, WebChat, APIChannel, VoiceChannel, EmailChannel]
+        enumeration: true
+        note: "Classifies the communication medium of a channel"
+      - class: IntegrationStatus
+        parent: Status
+        bfo: "Value Partition"
+        module: pao-core
+        individuals: [Connected, Disconnected, Error, Initializing]
+        enumeration: true
+        note: "Operational state of an integration connection"
 
-  # Disjointness (status): [SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate] pairwise disjoint under Status (not exhaustive)
+  # Disjointness (status): [SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate, ChannelType, IntegrationStatus] pairwise disjoint under Status (not exhaustive)
 
 # ═══════════════════════════════════════════════════════════════════════
 # DESIGN PATTERNS APPLIED
@@ -599,7 +627,7 @@ design_patterns:
 
   - id: ODP-6
     name: "Value Partition (Status)"
-    applied_to: [SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate]
+    applied_to: [SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate, ChannelType, IntegrationStatus]
     description: >
       Status hierarchies with owl:oneOf enumeration of named individuals.
       Closed value spaces for reasoning.
@@ -673,15 +701,16 @@ design_decisions:
 # ═══════════════════════════════════════════════════════════════════════
 
 summary:
-  total_classes: 52
+  total_classes: 56       # was 52, +4 (CommunicationChannel, ChannelType, Integration, IntegrationStatus)
   by_module:
-    pao-core: 7
-    pao-event: 10     # was 6, +4 (StatusTransition, SessionStatusTransition, TaskStatusTransition, ItemFate)
-    pao-conversation: 10  # was 9, +1 (ContextWindow)
+    pao-core: 9           # was 7, +2 (Integration, IntegrationStatus)
+    pao-event: 10
+    pao-conversation: 12  # was 10, +2 (CommunicationChannel, ChannelType)
     pao-memory: 15
     pao-planning: 4
     pao-governance: 6
-  named_individuals: 21  # was 17, +4 (Preserved, Dropped, Summarized, Archived)
+  data_properties: 18     # was 16, +2 (hasServiceName, hasEndpoint for Integration metadata CQ-078)
+  named_individuals: 30   # was 21, +10 (6 ChannelType + 4 IntegrationStatus), -1 (PersonalData deprecated in v0.2.0)
   imported_classes: "~16 (from PROV-O, OWL-Time, FOAF, ODRL)"
-  disjoint_sets: 10      # was 8, +2 (StatusTransition subtypes, extended others)
+  disjoint_sets: 12       # was 10, +2 (ChannelType, IntegrationStatus added to Status disjoint set)
   covering_axioms: 2

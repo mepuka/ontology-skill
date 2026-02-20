@@ -158,7 +158,7 @@ properties:
 
   - name: spawnedBy
     type: ObjectProperty
-    domain: SubAgent
+    domain: Agent  # broadened from SubAgent to avoid domain/range overcommitment; SHACL enforces SubAgent constraint
     range: Agent
     cardinality:
       min: 1
@@ -486,7 +486,7 @@ properties:
 
   - name: delegatedTask
     type: ObjectProperty
-    domain: SubAgent
+    domain: Agent  # broadened from SubAgent to avoid domain/range overcommitment; SHACL enforces SubAgent constraint
     range: Task
     cardinality:
       min: 0
@@ -1452,6 +1452,142 @@ properties:
     definition: "The number of tokens currently used in the context window."
     constraint_note: "Functional, required: every context window has exactly one usage count."
 
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.5.0: Communication Channels
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: viaChannel
+    type: ObjectProperty
+    domain: Session
+    range: CommunicationChannel
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-066,CQ-068,CQ-070"
+    definition: "Links a session to the communication channel through which it occurs."
+    constraint_note: "Functional: each session occurs through at most one channel. Conversations span channels via multiple sessions."
+
+  - name: hasChannelType
+    type: ObjectProperty
+    domain: CommunicationChannel
+    range: ChannelType
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-067,CQ-068"
+    definition: "Links a communication channel to its type classification."
+    constraint_note: "Functional: each channel has exactly one type. ODP-6 value partition."
+
+  - name: sentViaChannel
+    type: ObjectProperty
+    domain: Message
+    range: CommunicationChannel
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-069"
+    definition: "Links a message to the communication channel through which it was sent."
+    constraint_note: "Functional: each message is sent through at most one channel. Allows message-level channel attribution independent of session."
+
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.5.0: Integrations
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: hasIntegration
+    type: ObjectProperty
+    domain: Agent
+    range: Integration
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-core
+    source_cq: "CQ-071,CQ-073,CQ-076"
+    definition: "Links an agent to an integration (external service connection) it has configured."
+    constraint_note: "Not functional: an agent may have multiple integrations."
+
+  - name: providesTool
+    type: ObjectProperty
+    domain: Integration
+    range: ToolDefinition
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-core
+    source_cq: "CQ-072,CQ-074,CQ-075,CQ-077"
+    definition: "Links an integration to a tool definition that it provides."
+    constraint_note: "Not functional: an integration may provide multiple tools. Models the MCP server pattern."
+
+  - name: hasIntegrationStatus
+    type: ObjectProperty
+    domain: Integration
+    range: IntegrationStatus
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: hasStatus
+    bfo_ro_relation: null
+    module: pao-core
+    source_cq: "CQ-073,CQ-076"
+    definition: "Links an integration to its current operational status."
+    constraint_note: "Functional: each integration has at most one current status. Sub-property of hasStatus. ODP-6 value partition."
+
+  - name: hasServiceName
+    type: DataProperty
+    domain: Integration
+    range: xsd:string
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-core
+    source_cq: "CQ-078"
+    definition: "The display name of the external service an integration connects to."
+    constraint_note: "Functional: each integration connects to exactly one named service."
+
+  - name: hasEndpoint
+    type: DataProperty
+    domain: Integration
+    range: xsd:anyURI
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-core
+    source_cq: "CQ-078"
+    definition: "The endpoint URI of the external service an integration connects to."
+    constraint_note: "Functional: each integration has at most one endpoint. Optional since some integrations (local MCP) may not have a network endpoint."
+
 # ═══════════════════════════════════════════════════════════════════════
 # PROPERTY HIERARCHY SUMMARY
 # ═══════════════════════════════════════════════════════════════════════
@@ -1469,7 +1605,8 @@ properties:
 #       └── invokedBy        (ToolInvocation -> Agent)
 #
 # hasStatus
-#   └── hasComplianceStatus  (ToolInvocation -> ComplianceStatus)
+#   ├── hasComplianceStatus  (ToolInvocation -> ComplianceStatus)
+#   └── hasIntegrationStatus (Integration -> IntegrationStatus)
 #
 # belongsTo <-> hasMember (inverse pair)
 #
@@ -1529,19 +1666,26 @@ properties:
 #
 # ErasureEvent:
 #   - sh:class Agent on requestedBy (exactly 1)
+#
+# CommunicationChannel:
+#   - sh:class ChannelType on hasChannelType (exactly 1)
+#
+# Integration:
+#   - sh:class IntegrationStatus on hasIntegrationStatus (max 1)
+#   - sh:minCount 1 on providesTool
 
 # ═══════════════════════════════════════════════════════════════════════
 # PROPERTY COUNT SUMMARY
 # ═══════════════════════════════════════════════════════════════════════
 
 summary:
-  total_properties: 81
-  object_properties: 65
+  total_properties: 87    # was 81, +6 (viaChannel, hasChannelType, sentViaChannel, hasIntegration, providesTool, hasIntegrationStatus)
+  object_properties: 71   # was 65, +6 new object properties
   data_properties: 16
   by_module:
-    pao-core: 13      # partOf, hasPart, hasAvailableTool, availableToAgent, spawnedBy, hasParticipant, participatesIn, hasRole, performedBy, belongsTo, hasMember, hasPersona, hasAgentId
+    pao-core: 16      # was 13, +3 (hasIntegration, providesTool, hasIntegrationStatus)
     pao-event: 9      # hasTemporalExtent, hasStatus, hasTimestamp, fromStatus, toStatus, transitionSubject, triggeredBy, previousTransition, nextTransition
-    pao-conversation: 26  # partOfConversation, inConversation, partOfSession, inSession, hasTurnIndex, hasContent, invokesTool, invokedIn, invokedBy, hasInput, hasOutput, producedSummary, delegatedTask, compactedItem, hasCompactionDisposition, dispositionOf, hasItemFate, continuedFrom, continuedBy, fateReason, hasSessionId, hasConversationId, hasContextWindow, compactedContextOf, hasTokenCapacity, hasTokensUsed
+    pao-conversation: 29  # was 26, +3 (viaChannel, hasChannelType, sentViaChannel)
     pao-memory: 14    # storedIn, stores, hasTopic, aboutAgent, hasConfidence, claimType, hasEvidence, recordedInEpisode, recordsEvent, operatesOn, hasBlockKey, hasBlockValue, hasLastAccessTime, isEvictionCandidate
     pao-planning: 9   # pursuedBy, pursuesGoal, achievesGoal, partOfPlan, hasTask, blockedBy, blocks, intendedBy, derivedFromGoal
     pao-governance: 10 # appliesTo, grantsPermission, hasComplianceStatus, restrictsToolUse, requestedBy, hasSensitivityLevel, consentSubject, consentPurpose, governedByRetention, retentionPeriodDays
@@ -1550,5 +1694,5 @@ summary:
     - "partOfConversation, partOfSession, partOfPlan -> partOf"
     - "hasTask -> hasPart"
     - "performedBy -> hasParticipant; invokedBy -> performedBy"
-    - "hasComplianceStatus -> hasStatus"
+    - "hasComplianceStatus, hasIntegrationStatus -> hasStatus"
     - "compactedItem -> prov:used"

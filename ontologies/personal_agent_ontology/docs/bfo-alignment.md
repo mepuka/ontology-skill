@@ -24,12 +24,12 @@ independently and note the PROV-O relationship.
 | BFO Category | PAO Classes |
 |---|---|
 | Object (BFO:0000030) | HumanUser, Organization |
-| Generically Dependent Continuant (BFO:0000031) | AIAgent, SubAgent, ToolDefinition, Message, MemoryItem, MemoryTier, WorkingMemory, EpisodicMemory, SemanticMemory, ProceduralMemory, Episode, Claim, MemoryBlock, Goal, Plan, Task, Persona, Intention, PermissionPolicy, SafetyConstraint, ConsentRecord, RetentionPolicy, CompactionDisposition, ContextWindow |
+| Generically Dependent Continuant (BFO:0000031) | AIAgent, SubAgent, ToolDefinition, Message, MemoryItem, MemoryTier, WorkingMemory, EpisodicMemory, SemanticMemory, ProceduralMemory, Episode, Claim, MemoryBlock, Goal, Plan, Task, Persona, Intention, PermissionPolicy, SafetyConstraint, ConsentRecord, RetentionPolicy, CompactionDisposition, ContextWindow, CommunicationChannel, Integration, Status, SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate, ChannelType, IntegrationStatus |
 | Role (BFO:0000023) | AgentRole |
 | Process (BFO:0000015) | Conversation, Session, Turn, ToolInvocation, CompactionEvent, ErasureEvent, Event, Action, MemoryOperation, Encoding, Retrieval, Consolidation, Forgetting, Observation, Rehearsal, StatusTransition, SessionStatusTransition, TaskStatusTransition |
 | Cross-cutting (documented) | Agent (umbrella for Object + GDC subtypes) |
-| Value Partition (no BFO parent) | Status, SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate |
-| Named Individuals | Active, Ended, Interrupted, Pending, InProgress, Completed, Blocked, Compliant, NonCompliant, AssistantRole, UserRole, UserPreference, PersonalData, Public, Internal, Confidential, Restricted, Preserved, Dropped, Summarized, Archived |
+| *(Status subtypes listed under GDC above — Value Partition ODP-6)* | |
+| Named Individuals | Active, Ended, Interrupted, Pending, InProgress, Completed, Blocked, Compliant, NonCompliant, AssistantRole, UserRole, UserPreference, Public, Internal, Confidential, Restricted, Preserved, Dropped, Summarized, Archived, CLI, Messaging, WebChat, APIChannel, VoiceChannel, EmailChannel, Connected, Disconnected, Error, Initializing |
 
 ---
 
@@ -360,21 +360,23 @@ are identified and deleted. It has temporal extent and participants
 
 ---
 
-### 26. Status (Value Partition) -> No direct BFO parent
+### 26. Status (Value Partition) -> GDC (BFO:0000031)
 
 **Decision**: Modeled using the Value Partition pattern (ODP-6) with
-named individuals. Not directly aligned to a single BFO category.
+named individuals. Aligned to GDC (BFO:0000031) via prov:Entity.
 
-**Rationale**: BFO Quality (BFO:0000019) is a specifically dependent
-continuant -- each quality instance inheres in one specific bearer. But
-PAO status values (Active, Completed, etc.) are shared reference values
-used across multiple entities. This does not fit BFO's particular-quality
-model. The Value Partition pattern is the standard OWL solution for
-controlled vocabularies that don't need BFO quality alignment.
+**Rationale**: Status values (Active, Completed, etc.) are shared reference
+values — information content entities that classify the state of other
+entities. They are generically dependent continuants: they can be copied,
+transferred, and concretized in multiple bearers simultaneously. This fits
+GDC better than BFO Quality (BFO:0000019), which is a specifically dependent
+continuant that inheres in one particular bearer. The Value Partition pattern
+(ODP-6) provides the controlled vocabulary structure, while GDC alignment
+gives Status a proper place in the BFO hierarchy.
 
-**Note**: If future BFO alignment is needed, status values could be
-modeled as quality universals with the value partition interpreted as
-a classification of quality instances.
+**Note**: Status subtypes (SessionStatus, TaskStatus, etc.) inherit the
+GDC alignment through Status. Each has an owl:oneOf enumeration closing
+its individual space.
 
 ---
 
@@ -549,6 +551,72 @@ measured, and acted upon (compaction events respond to context window state).
 Continuant. The context window's content can be transferred between bearers
 (e.g., session continuation), making it generically rather than specifically
 dependent.
+
+---
+
+### 40. CommunicationChannel -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A communication channel is an information artifact that specifies
+a configured communication endpoint (e.g., a WhatsApp thread, a CLI terminal,
+a web chat widget). It can be described, shared, and referenced independently
+of any specific dialogue. The channel is not the physical medium itself but
+the configured access point through which dialogue occurs.
+
+**Decision path**: Continuant > Dependent Continuant > Generically Dependent
+Continuant. A channel configuration can be transferred between bearers (e.g.,
+session handoff across devices), making it generically rather than specifically
+dependent.
+
+**Note**: Closest existing ontological match is SIOC's `tsioc:ChatChannel`.
+Sessions are linked to channels via `viaChannel` (functional — one channel
+per session). Conversations may span multiple channels through multiple sessions.
+
+---
+
+### 41. ChannelType -> Value Partition (no BFO parent)
+
+**Decision**: Value Partition with named individuals
+
+**Rationale**: Channel types (CLI, Messaging, WebChat, API, Voice, Email)
+are a controlled vocabulary classifying communication mediums. Like other
+Status types (SessionStatus, TaskStatus), they follow the Value Partition
+pattern (ODP-6) with `owl:oneOf` enumeration.
+
+**Note**: The set is extensible by adding new named individuals (e.g.,
+VideoChannel in the future).
+
+---
+
+### 42. Integration -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: An integration is an information artifact representing a
+configured connection to an external service (e.g., an MCP server, a GitHub
+API connection, a Gmail connector). It specifies the connection parameters,
+authentication, and the tools it provides. Like ToolDefinition and Persona,
+it is a configuration entity that can be described, versioned, and shared.
+
+**Decision path**: Continuant > Dependent Continuant > Generically Dependent
+Continuant. An integration configuration can be transferred between agents or
+environments, making it generically dependent.
+
+**Note**: An integration groups related tools (via `providesTool`) and has
+an operational status (via `hasIntegrationStatus`). This models the MCP
+server pattern where a single server provides multiple tools.
+
+---
+
+### 43. IntegrationStatus -> Value Partition (no BFO parent)
+
+**Decision**: Value Partition with named individuals
+
+**Rationale**: Integration status values (Connected, Disconnected, Error,
+Initializing) are a controlled vocabulary classifying the operational state
+of an integration connection. Like other Status types, they follow the Value
+Partition pattern (ODP-6) with `owl:oneOf` enumeration.
 
 ---
 

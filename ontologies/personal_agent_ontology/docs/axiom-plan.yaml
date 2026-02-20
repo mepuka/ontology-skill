@@ -1384,30 +1384,268 @@ axiom_plan:
     abox_requirements:
       - "(Covered by CQ-062 sample data)"
 
+  # ─── v0.5.0 Additions: Communication Channels & Integrations ───
+
+  - cq_id: CQ-066
+    natural_language: "What communication channel was used for a given session?"
+    priority: should_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "CommunicationChannel rdfs:subClassOf prov:Entity"
+        note: "CommunicationChannel is a GDC (BFO:0000031) — configured endpoint specification"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "Session SubClassOf viaChannel some CommunicationChannel"
+        note: "Optional in practice (not all sessions have a channel), but existential enables reasoning about channel-linked sessions"
+      - pattern: "Functional property"
+        axiom_sketch: "viaChannel: Session -> CommunicationChannel [functional]"
+        note: "Each session uses at most one channel"
+    tbox_requirements:
+      - "CommunicationChannel class (subClassOf prov:Entity, BFO GDC)"
+      - "viaChannel ObjectProperty with domain Session, range CommunicationChannel, functional"
+    abox_requirements:
+      - "Session instance with viaChannel link to a CommunicationChannel instance"
+
+  - cq_id: CQ-067
+    natural_language: "What type of communication channel is it (CLI, Messaging, WebChat, etc.)?"
+    priority: should_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "8. Value Partition"
+        axiom_sketch: "ChannelType subClassOf Status; owl:oneOf (CLI, Messaging, WebChat, APIChannel, VoiceChannel, EmailChannel)"
+        note: "Controlled vocabulary for communication mediums — follows ODP-6 pattern"
+      - pattern: "15. Enumeration (owl:oneOf)"
+        axiom_sketch: "ChannelType owl:oneOf (pao:CLI, pao:Messaging, pao:WebChat, pao:APIChannel, pao:VoiceChannel, pao:EmailChannel)"
+        note: "Closed enumeration — 6 channel type individuals"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "CommunicationChannel SubClassOf hasChannelType some ChannelType"
+        note: "Every channel has a type"
+      - pattern: "Functional property"
+        axiom_sketch: "hasChannelType: CommunicationChannel -> ChannelType [functional]"
+        note: "Each channel has exactly one type"
+    tbox_requirements:
+      - "ChannelType class (subClassOf Status, Value Partition)"
+      - "hasChannelType ObjectProperty with domain CommunicationChannel, range ChannelType, functional"
+      - "6 ChannelType individuals with owl:oneOf and AllDifferent"
+    abox_requirements:
+      - "CommunicationChannel instance with hasChannelType link to a ChannelType individual"
+
+  - cq_id: CQ-068
+    natural_language: "Which sessions used a specific type of communication channel?"
+    priority: should_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "SPARQL two-hop join"
+        axiom_sketch: "?session viaChannel ?channel . ?channel hasChannelType ?type ."
+        note: "No additional axioms needed — uses CQ-066 viaChannel and CQ-067 hasChannelType"
+    tbox_requirements:
+      - "(Covered by CQ-066 and CQ-067)"
+    abox_requirements:
+      - "Session with viaChannel to a typed CommunicationChannel"
+
+  - cq_id: CQ-069
+    natural_language: "Which messages were sent via a specific communication channel?"
+    priority: should_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "Message SubClassOf sentViaChannel some CommunicationChannel"
+        note: "Optional — message-level channel attribution for multi-channel conversations"
+      - pattern: "Functional property"
+        axiom_sketch: "sentViaChannel: Message -> CommunicationChannel [functional]"
+        note: "Each message is sent via at most one channel"
+    tbox_requirements:
+      - "sentViaChannel ObjectProperty with domain Message, range CommunicationChannel, functional"
+    abox_requirements:
+      - "Message instance with sentViaChannel link to a CommunicationChannel"
+
+  - cq_id: CQ-070
+    natural_language: "What communication channels are used across a conversation?"
+    priority: could_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "SPARQL multi-hop join"
+        axiom_sketch: "?session partOfConversation ?conv . ?session viaChannel ?channel . ?channel hasChannelType ?type ."
+        note: "Three-hop join — no additional axioms beyond CQ-066 and CQ-067"
+    tbox_requirements:
+      - "(Covered by CQ-005 partOfConversation, CQ-066 viaChannel, CQ-067 hasChannelType)"
+    abox_requirements:
+      - "Conversation with multiple Sessions, each having distinct CommunicationChannels"
+
+  - cq_id: CQ-071
+    natural_language: "What integrations does an agent have?"
+    priority: should_have
+    module: pao-core
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "Integration rdfs:subClassOf prov:Entity"
+        note: "Integration is a GDC (BFO:0000031) — configured connection to an external service"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "Agent SubClassOf hasIntegration some Integration"
+        note: "Optional in practice — not all agents have integrations, but existential enables reasoning"
+    tbox_requirements:
+      - "Integration class (subClassOf prov:Entity, BFO GDC)"
+      - "hasIntegration ObjectProperty with domain Agent, range Integration"
+    abox_requirements:
+      - "Agent instance with hasIntegration link to an Integration instance"
+
+  - cq_id: CQ-072
+    natural_language: "What tools does an integration provide?"
+    priority: should_have
+    module: pao-core
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "Integration SubClassOf providesTool some ToolDefinition"
+        note: "Every integration provides at least one tool"
+    tbox_requirements:
+      - "providesTool ObjectProperty with domain Integration, range ToolDefinition"
+    abox_requirements:
+      - "Integration instance with providesTool links to ToolDefinition instances"
+
+  - cq_id: CQ-073
+    natural_language: "What is the status of an agent's integrations?"
+    priority: should_have
+    module: pao-core
+    axiom_patterns:
+      - pattern: "8. Value Partition"
+        axiom_sketch: "IntegrationStatus subClassOf Status; owl:oneOf (Connected, Disconnected, Error, Initializing)"
+        note: "Controlled vocabulary for integration operational states — follows ODP-6 pattern"
+      - pattern: "15. Enumeration (owl:oneOf)"
+        axiom_sketch: "IntegrationStatus owl:oneOf (pao:Connected, pao:Disconnected, pao:Error, pao:Initializing)"
+        note: "Closed enumeration — 4 integration status individuals"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "Integration SubClassOf hasIntegrationStatus some IntegrationStatus"
+        note: "Every integration has a status"
+      - pattern: "Functional property"
+        axiom_sketch: "hasIntegrationStatus: Integration -> IntegrationStatus [functional]"
+        note: "Each integration has exactly one status at a time"
+    tbox_requirements:
+      - "IntegrationStatus class (subClassOf Status, Value Partition)"
+      - "hasIntegrationStatus ObjectProperty with domain Integration, range IntegrationStatus, functional, subPropertyOf hasStatus"
+      - "4 IntegrationStatus individuals with owl:oneOf and AllDifferent"
+    abox_requirements:
+      - "Integration instance with hasIntegrationStatus link to an IntegrationStatus individual"
+
+  - cq_id: CQ-074
+    natural_language: "Which integration provides a specific tool?"
+    priority: should_have
+    module: pao-core
+    axiom_patterns:
+      - pattern: "SPARQL reverse lookup"
+        axiom_sketch: "?integration providesTool ?tool . FILTER(?tool = pao:SpecificTool)"
+        note: "No additional axioms — reverse lookup on CQ-072 providesTool"
+    tbox_requirements:
+      - "(Covered by CQ-072)"
+    abox_requirements:
+      - "(Covered by CQ-072)"
+
+  - cq_id: CQ-075
+    natural_language: "How many tools does each integration provide?"
+    priority: could_have
+    module: pao-core
+    axiom_patterns:
+      - pattern: "SPARQL aggregation"
+        axiom_sketch: "(COUNT(?tool) AS ?toolCount)"
+        note: "Aggregation query — no additional axioms beyond CQ-072"
+    tbox_requirements:
+      - "(Covered by CQ-072)"
+    abox_requirements:
+      - "Integration instances with multiple providesTool links"
+
+  - cq_id: CQ-076
+    natural_language: "Which integrations are in an error state?"
+    priority: should_have
+    module: pao-core
+    axiom_patterns:
+      - pattern: "SPARQL FILTER"
+        axiom_sketch: "FILTER(?status = pao:Error)"
+        note: "Status filter — no additional axioms beyond CQ-073"
+    tbox_requirements:
+      - "(Covered by CQ-073)"
+    abox_requirements:
+      - "Integration instance with hasIntegrationStatus pao:Error"
+
+  - cq_id: CQ-077
+    natural_language: "Trace tool invocations to their source integration."
+    priority: should_have
+    module: pao-core
+    axiom_patterns:
+      - pattern: "SPARQL multi-hop join"
+        axiom_sketch: "?invocation invokesTool ?tool . ?integration providesTool ?tool ."
+        note: "Two-hop join — links ToolInvocation to Integration via shared ToolDefinition. No additional axioms needed."
+    tbox_requirements:
+      - "(Covered by CQ-007 invokesTool and CQ-072 providesTool)"
+    abox_requirements:
+      - "ToolInvocation with invokesTool link to a ToolDefinition that is also linked via providesTool from an Integration"
+
+  - cq_id: CQ-078
+    natural_language: "Query service name and endpoint for agent integrations."
+    priority: should_have
+    module: pao-core
+    axiom_patterns:
+      - pattern: "Data property lookup"
+        axiom_sketch: "Integration hasServiceName xsd:string ; hasEndpoint xsd:anyURI"
+        note: "Functional data properties. hasServiceName is required (SHACL min 1), hasEndpoint is optional (some local integrations have no network endpoint)."
+    tbox_requirements:
+      - "DataProperty hasServiceName domain Integration range xsd:string [functional]"
+      - "DataProperty hasEndpoint domain Integration range xsd:anyURI [functional]"
+    abox_requirements:
+      - "Integration individuals with hasServiceName and optionally hasEndpoint"
+
+# ═══════════════════════════════════════════════════════════════════════
+# DESIGN NOTES (v0.5.0 review remediation)
+# ═══════════════════════════════════════════════════════════════════════
+#
+# DN-06: Agent hasIntegration cardinality decision
+#   Status: resolved
+#   Decision: Existential restriction moved from Agent to AIAgent. Not all
+#   agents (HumanUser, Organization) necessarily have integrations. SHACL
+#   enforces IntegrationShape constraints on Integration instances.
+#
+# DN-07: Session/Message channel optionality
+#   Status: resolved
+#   Decision: viaChannel and sentViaChannel are optional (min 0 per
+#   property-design). OWL existential restrictions removed; SHACL caps
+#   maxCount 1 when present. A session may not have a channel if the
+#   channel concept doesn't apply (e.g., internal system sessions).
+#
+# DN-08: CQ-076 reclassification
+#   Status: resolved
+#   Decision: Changed from constraint (zero_rows) to enumerative (non_empty).
+#   The query finds integrations in error status — useful for monitoring.
+#   ABox includes an error integration for test coverage.
+#
+# DN-09: Runtime lifecycle scope
+#   Status: deferred (v0.6+)
+#   Note: Integration status history, channel switching mechanics, and
+#   lifecycle governance attachment points are explicitly out of scope
+#   for v0.5.0. StatusTransition (v0.3.0) provides the pattern for
+#   adding IntegrationStatusTransition if needed in future versions.
+
 # ═══════════════════════════════════════════════════════════════════════
 # AXIOM PATTERN SUMMARY
 # ═══════════════════════════════════════════════════════════════════════
 
 summary:
-  total_cqs: 65
+  total_cqs: 78
   by_priority:
     must_have: 30
-    should_have: 31
-    could_have: 4
+    should_have: 42
+    could_have: 6
 
   patterns_used:
     - pattern: "1. Simple SubClassOf"
-      count: 28
+      count: 30
       note: "Foundation of the taxonomy; used by nearly every CQ"
     - pattern: "2. Existential Restriction"
-      count: 30
+      count: 36
       note: "Most common pattern; expresses necessary conditions on classes"
     - pattern: "3. Universal Restriction"
       count: 1
       note: "Used for Episode storedIn only EpisodicMemory (CQ-012)"
     - pattern: "5. Disjoint Classes"
       count: 6
-      note: "Agent types, Event types, MemoryItem types, Governance types"
+      note: "Agent types, Event types, MemoryItem types, Governance types, Status subtypes"
     - pattern: "6. Covering Axiom (DisjointUnion)"
       count: 2
       note: "MemoryTier (CQ-011), MemoryOperation (CQ-019)"
@@ -1415,8 +1653,8 @@ summary:
       count: 3
       note: "Turn index (CQ-006), Turn participant (CQ-006), storedIn (CQ-018)"
     - pattern: "8. Value Partition"
-      count: 7
-      note: "SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel"
+      count: 9
+      note: "SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ChannelType, IntegrationStatus"
     - pattern: "9. N-ary Relation"
       count: 6
       note: "ToolInvocation, Claim, PROV-O qualified associations"
@@ -1427,8 +1665,8 @@ summary:
       count: 1
       note: "DN-05: Identity contracts for AIAgent, Session, Conversation"
     - pattern: "15. Enumeration (owl:oneOf)"
-      count: 7
-      note: "AgentRole, SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel"
+      count: 9
+      note: "AgentRole, SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ChannelType, IntegrationStatus"
 
   patterns_not_used:
     - "4. Equivalent Class: No defined classes needed yet; all classes are primitive"
@@ -1449,7 +1687,7 @@ summary:
     - name: "ODP-5: Temporal Extent"
       applied_to: ["All Event subclasses (CQ-005, CQ-006, CQ-012, CQ-020, CQ-021, CQ-022)"]
     - name: "ODP-6: Value Partition (Status)"
-      applied_to: ["SessionStatus (CQ-038)", "TaskStatus (CQ-026, CQ-029)", "ComplianceStatus (CQ-007, CQ-031, CQ-039)", "SensitivityLevel (CQ-033)"]
+      applied_to: ["SessionStatus (CQ-038)", "TaskStatus (CQ-026, CQ-029)", "ComplianceStatus (CQ-007, CQ-031, CQ-039)", "SensitivityLevel (CQ-033)", "ChannelType (CQ-067)", "IntegrationStatus (CQ-073)"]
 
   design_notes:
     - id: DN-01

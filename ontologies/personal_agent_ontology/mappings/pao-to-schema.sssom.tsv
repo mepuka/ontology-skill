@@ -9,7 +9,7 @@
 #mapping_set_description: "Cross-ontology mappings between the Personal Agent Ontology and schema.org vocabulary for web interoperability."
 #license: "https://creativecommons.org/licenses/by/4.0/"
 #subject_source: "https://purl.org/pao/"
-#subject_source_version: "0.1.0"
+#subject_source_version: "0.5.0"
 #object_source: "http://schema.org/"
 #mapping_set_version: "0.1.0"
 subject_id	subject_label	predicate_id	object_id	object_label	mapping_justification	confidence	comment
@@ -27,3 +27,7 @@ pao:Agent	agent	skos:broadMatch	schema:Person	Person	semapv:SemanticSimilarityTh
 pao:HumanUser	human user	skos:closeMatch	schema:Person	Person	semapv:SemanticSimilarityThresholdMatching	0.88	Both represent human persons; PAO HumanUser adds AI-interaction context.
 pao:AIAgent	ai agent	skos:closeMatch	schema:SoftwareApplication	SoftwareApplication	semapv:SemanticSimilarityThresholdMatching	0.70	PAO AIAgent emphasizes autonomy and decision-making; schema:SoftwareApplication is broader.
 pao:Task	task	skos:closeMatch	schema:Action	Action	semapv:SemanticSimilarityThresholdMatching	0.60	PAO Task is a work item (GDC/information); schema:Action is a process. Different ontological categories.
+pao:CommunicationChannel	communication channel	skos:closeMatch	schema:ContactPoint	ContactPoint	semapv:SemanticSimilarityThresholdMatching	0.65	PAO CommunicationChannel is a medium/conduit for agent interaction; schema:ContactPoint is a reachable contact address. Both describe how to reach someone but at different abstraction levels.
+pao:Integration	integration	skos:closeMatch	schema:WebAPI	WebAPI	semapv:SemanticSimilarityThresholdMatching	0.72	PAO Integration is a configured connection to an external service providing tools; schema:WebAPI is an API service description. Both model external service access points.
+pao:Organization	organization	skos:exactMatch	schema:Organization	Organization	semapv:SemanticSimilarityThresholdMatching	0.92	Both represent formal organizations/groups. PAO Organization is BFO-aligned (Object); schema:Organization is broader but semantically equivalent.
+pao:viaChannel	via channel	skos:relatedMatch	schema:serviceUrl	serviceUrl	semapv:SemanticSimilarityThresholdMatching	0.45	PAO viaChannel links sessions to communication channels; schema:serviceUrl links services to URLs. Weak structural parallel.
