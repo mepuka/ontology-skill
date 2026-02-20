@@ -7,7 +7,7 @@ ontology:
   name: Personal Agent Ontology
   prefix: pao
   namespace: "https://purl.org/pao/"
-  version: "0.6.0-alpha"
+  version: "0.6.0"
   owl_profile: OWL 2 DL
   upper_ontology: BFO 2020 (ISO 21838-2)
 
@@ -962,18 +962,18 @@ design_decisions:
 # ═══════════════════════════════════════════════════════════════════════
 
 summary:
-  total_classes: 91       # was 77, +14 (v0.6.0 Phase B: 10 pao-conversation, 4 pao-memory)
+  total_classes: 92       # was 77, +15 (v0.6.0 Phase B: 10 pao-conversation, 4 pao-memory, 1 ClaimType VP)
   by_module:
     pao-core: 9
     pao-event: 10
     pao-conversation: 22  # was 12, +10 (ToolResult, ToolInvocationGroup, ContentBlock, ContentBlockType, DialogAct, CommunicativeFunction, CommonGround, GroundingAct, ClarificationRequest, AcceptanceEvidence)
-    pao-memory: 19        # was 15, +4 (MemorySource, MemoryScope, SharedMemoryArtifact, MemoryWriteConflict)
+    pao-memory: 20        # was 15, +5 (MemorySource, MemoryScope, SharedMemoryArtifact, MemoryWriteConflict, ClaimType)
     pao-planning: 4
     pao-governance: 14
     pao-services: 8
     pao-recovery: 5
-  object_properties: 109  # was 93, +16 Phase B
-  data_properties: 24     # was 23, +1 (blockSequenceIndex)
+  object_properties: 110  # was 93, +17 Phase B (includes writtenToAuditLog)
+  data_properties: 23     # was 23, unchanged (blockSequenceIndex added, hasSensitivityLevel migrated to obj prop in v0.2.0)
   named_individuals: 59   # was 43, +16 (4 ContentBlockType, 3 MemorySource, 3 MemoryScope, 6 CommunicativeFunction)
   imported_classes: "~16 (from PROV-O, OWL-Time, FOAF, ODRL)"
   disjoint_sets: 18       # was 16, +2 (Phase B event types + Phase B GDCs added to existing disjoint sets; 4 VP types added to Status disjoint set)

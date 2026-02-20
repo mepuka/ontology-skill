@@ -6,7 +6,7 @@ Date: 2026-02-20
 
 | Principle | Status | Evidence |
 |-----------|--------|----------|
-| F1: Globally unique identifiers | PASS | Stable PURL namespace `https://purl.org/pao/`. Version IRI `https://purl.org/pao/0.6.0`. All 92 classes and 132 properties have resolvable IRIs. |
+| F1: Globally unique identifiers | PASS | Stable PURL namespace `https://purl.org/pao/`. Version IRI `https://purl.org/pao/0.6.0`. All 92 classes and 133 properties have resolvable IRIs. |
 | F2: Rich metadata | PASS | Ontology header includes dcterms:title, dcterms:description, dcterms:creator, dcterms:created, dcterms:license, dcterms:rights, prov:generatedAtTime, owl:versionInfo, owl:versionIRI, owl:priorVersion. |
 | F3: Metadata references identifiers | PASS | Version IRI references the ontology IRI. owl:imports reference import module IRIs. owl:priorVersion links to v0.5.0. |
 | F4: Registered in searchable resources | PARTIAL | Not yet registered in BioPortal, OLS, or LOV. Recommended for next release cycle. |
@@ -60,10 +60,10 @@ Date: 2026-02-20
 ## v0.6.0 Highlights
 
 - **92 classes** across 14 modules (up from 57 in v0.5.0)
-- **132 properties** (109 object + 23 data)
-- **45 SHACL shapes** with RDFS-inference validation
+- **133 properties** (110 object + 23 data)
+- **46 SHACL shapes** with RDFS-inference validation
 - **98 competency questions** (97 tested as SPARQL)
-- **1,035 passing tests**
+- **1,037 passing tests**
 - **17 value partitions** with controlled vocabulary enumerations
 - New domains: External Services, Runtime Safety, Recovery/Resilience,
   Tool/Message Trace, Memory Control Plane, Dialog Pragmatics

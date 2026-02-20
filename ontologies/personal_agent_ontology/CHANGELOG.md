@@ -4,6 +4,128 @@ All notable changes to the Personal Agent Ontology will be documented here.
 
 This project uses [Semantic Versioning](https://semver.org/).
 
+## [0.6.0] - 2026-02-20
+
+### Added
+
+**36 New Classes (Phase A: 21, Phase B: 15)**
+
+Phase A — External Services, Runtime Safety, Recovery/Resilience:
+- ExternalService, ServiceConnection, ConnectionStatus, ServiceCapability,
+  ToolCapability, ResourceCapability, PromptCapability, ServiceFailureEvent
+- Hook, HookExecution, SandboxPolicy, PermissionMode, AuditLog, AuditEntry,
+  AuthorizationDecision
+- ErrorRecoveryEvent, RetryAttempt, ReplanEvent, RollbackEvent, Checkpoint,
+  CheckpointDecision
+
+Phase B — Tool/Message Trace, Memory Control Plane, Dialog Pragmatics:
+- ToolResult, ToolInvocationGroup, ContentBlock, ContentBlockType
+- MemorySource, MemoryScope, SharedMemoryArtifact, MemoryWriteConflict
+- DialogAct, CommunicativeFunction, CommonGround, GroundingAct,
+  ClarificationRequest, AcceptanceEvidence
+- ClaimType (value partition for controlled claim classification)
+
+**42 New Properties (Phase A: 25, Phase B: 17)**
+- 36 new object properties, 6 new data properties
+- See validation report for full property list
+
+**20 New Competency Questions (CQ-079 through CQ-098)**
+- External service capabilities and connection status
+- Runtime safety: hooks, audit, authorization
+- Recovery: error recovery, retry, checkpoint
+- Tool invocation grouping, typed results, content blocks
+- Memory provenance by source/scope, shared memory conflicts
+- Dialog acts, communicative functions, grounding, clarification
+
+**13 New Use Cases (UC-033 through UC-045)**
+
+**30 New Reference Individuals**
+- ConnectionStatus (4), PermissionMode (3), AuthorizationDecision (3),
+  CheckpointDecision (3), ContentBlockType (4), MemorySource (3),
+  MemoryScope (3), CommunicativeFunction (5), ClaimType (2)
+
+### Changed
+
+- claimType migrated from DatatypeProperty(xsd:string) to
+  ObjectProperty(ClaimType VP) with owl:oneOf enumeration
+- SHACL shapes expanded from 26 to 46 NodeShapes
+- AllDisjointClasses axioms expanded to 11 groups
+- Event DisjointUnion expanded to 15 subtypes
+- All 26 Event ABox instances now have hasTemporalExtent linked to
+  time:Instant objects
+- OWL minQualifiedCardinality 2 for SharedMemoryArtifact.sharedAcrossAgents
+  and MemoryWriteConflict.writesByAgent
+- SHACL shapes strengthened to mirror OWL existential restrictions
+  (AIAgent, ToolInvocation, MemoryItem, Episode, Event, Session)
+
+### Metrics
+
+| Metric | v0.5.0 | v0.6.0 |
+|--------|--------|--------|
+| Classes | 57 | 92 |
+| Object properties | 93 | 110 |
+| Data properties | 17 | 23 |
+| SHACL shapes | 31 | 46 |
+| Named individuals | 30 | 60 |
+| CQ tests | 78 | 97 |
+| Total tests | ~820 | 1,035+ |
+| TBox triples | ~1,500 | 2,010 |
+
+## [0.5.0] - 2026-02-19
+
+### Added
+
+**6 New Classes**
+- CommunicationChannel, ChannelType (channels module)
+- Integration, IntegrationStatus (integrations module)
+- CapabilityDiscoveryEvent, ContextWindow
+
+**29 New Properties**
+- Object properties for channel/integration modeling, context window
+  management, capability discovery
+- Data properties: hasEndpoint, hasServiceName, hasTokenCapacity,
+  hasTokensUsed
+
+**18 New Competency Questions (CQ-061 through CQ-078)**
+- Communication channels and routing
+- Integration lifecycle and status tracking
+- Context window management and token tracking
+- Capability discovery
+
+**4 New Use Cases (UC-030 through UC-033)**
+
+### Changed
+
+- SHACL shapes expanded from 26 to 31 NodeShapes
+- AllDisjointClasses expanded for new sibling groups
+- Event DisjointUnion expanded to include CapabilityDiscoveryEvent
+
+### Metrics
+
+| Metric | v0.4.0 | v0.5.0 |
+|--------|--------|--------|
+| Classes | 51 | 57 |
+| Object properties | 64 | 93 |
+| Data properties | 14 | 17 |
+| SHACL shapes | 26 | 31 |
+| Named individuals | 21 | 30 |
+| CQ tests | 59 | 78 |
+| Total tests | 577 | ~820 |
+| TBox triples | 1,194 | ~1,500 |
+
+## [0.4.0] - 2026-02-19
+
+### Added
+
+**ContextWindow class** modeling token capacity and usage tracking for
+AI agent sessions.
+
+### Metrics
+
+| Metric | v0.3.0 | v0.4.0 |
+|--------|--------|--------|
+| Classes | 51 | 51 |
+
 ## [0.3.0] - 2026-02-19
 
 ### Added

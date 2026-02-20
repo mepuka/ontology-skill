@@ -966,13 +966,6 @@ pao:restrictsToolUse a owl:ObjectProperty ;
     rdfs:range pao:ToolDefinition ;
     skos:definition "Links a permission policy to a tool whose use it restricts."@en .
 
-pao:sharedAcrossAgents a owl:ObjectProperty ;
-    rdfs:label "shared across agents"@en ;
-    obo:IAO_0000115 "Links a shared memory artifact to an agent that has access to it."@en ;
-    rdfs:domain pao:SharedMemoryArtifact ;
-    rdfs:range pao:Agent ;
-    skos:definition "Links a shared memory artifact to an agent that has access to it."@en .
-
 pao:spawnedBy a owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "spawned by"@en ;
@@ -1003,13 +996,6 @@ pao:transitionSubject a owl:FunctionalProperty,
     rdfs:domain pao:StatusTransition ;
     rdfs:range owl:Thing ;
     skos:definition "The entity whose status changed in this transition."@en .
-
-pao:writesByAgent a owl:ObjectProperty ;
-    rdfs:label "writes by agent"@en ;
-    obo:IAO_0000115 "Links a memory write conflict to an agent involved in the concurrent write."@en ;
-    rdfs:domain pao:MemoryWriteConflict ;
-    rdfs:range pao:Agent ;
-    skos:definition "Links a memory write conflict to an agent involved in the concurrent write."@en .
 
 pao:writtenToAuditLog a owl:FunctionalProperty,
         owl:ObjectProperty ;
@@ -1193,6 +1179,20 @@ pao:performedBy a owl:FunctionalProperty,
     rdfs:subPropertyOf pao:hasParticipant ;
     skos:definition "Links an action to the agent that intentionally performed it."@en .
 
+pao:sharedAcrossAgents a owl:ObjectProperty ;
+    rdfs:label "shared across agents"@en ;
+    obo:IAO_0000115 "Links a shared memory artifact to an agent that has access to it."@en ;
+    rdfs:domain pao:SharedMemoryArtifact ;
+    rdfs:range pao:Agent ;
+    skos:definition "Links a shared memory artifact to an agent that has access to it."@en .
+
+pao:writesByAgent a owl:ObjectProperty ;
+    rdfs:label "writes by agent"@en ;
+    obo:IAO_0000115 "Links a memory write conflict to an agent involved in the concurrent write."@en ;
+    rdfs:domain pao:MemoryWriteConflict ;
+    rdfs:range pao:Agent ;
+    skos:definition "Links a memory write conflict to an agent involved in the concurrent write."@en .
+
 pao:Action a owl:Class ;
     rdfs:label "action"@en ;
     obo:IAO_0000115 "An event that is intentionally caused by an agent to affect the environment or internal state."@en ;
@@ -1230,11 +1230,11 @@ pao:Checkpoint a owl:Class ;
     rdfs:label "checkpoint"@en ;
     obo:IAO_0000115 "A GDC marking a task decision point where human approval may be required."@en ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:onProperty pao:checkpointForTask ;
-            owl:someValuesFrom pao:Task ],
-        [ a owl:Restriction ;
             owl:onProperty pao:checkpointDecision ;
             owl:someValuesFrom pao:CheckpointDecision ],
+        [ a owl:Restriction ;
+            owl:onProperty pao:checkpointForTask ;
+            owl:someValuesFrom pao:Task ],
         obo:BFO_0000031,
         prov:Entity ;
     skos:definition "A GDC marking a task decision point where human approval may be required."@en .
@@ -1517,6 +1517,10 @@ pao:MemoryWriteConflict a owl:Class ;
         [ a owl:Restriction ;
             owl:onProperty pao:writesByAgent ;
             owl:someValuesFrom pao:Agent ],
+        [ a owl:Restriction ;
+            owl:minQualifiedCardinality "2"^^xsd:nonNegativeInteger ;
+            owl:onClass pao:Agent ;
+            owl:onProperty pao:writesByAgent ],
         pao:Event ;
     skos:definition "An event in which multiple agents attempt concurrent writes to the same shared memory artifact."@en .
 
@@ -1524,11 +1528,11 @@ pao:ServiceConnection a owl:Class ;
     rdfs:label "service connection"@en ;
     obo:IAO_0000115 "A GDC representing the runtime connection between an agent and an external service."@en ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:onProperty pao:connectsToService ;
-            owl:someValuesFrom pao:ExternalService ],
-        [ a owl:Restriction ;
             owl:onProperty pao:hasConnectionStatus ;
             owl:someValuesFrom pao:ConnectionStatus ],
+        [ a owl:Restriction ;
+            owl:onProperty pao:connectsToService ;
+            owl:someValuesFrom pao:ExternalService ],
         obo:BFO_0000031,
         prov:Entity ;
     skos:definition "A GDC representing the runtime connection between an agent and an external service."@en .
@@ -1539,6 +1543,10 @@ pao:SharedMemoryArtifact a owl:Class ;
     rdfs:subClassOf [ a owl:Restriction ;
             owl:onProperty pao:sharedAcrossAgents ;
             owl:someValuesFrom pao:Agent ],
+        [ a owl:Restriction ;
+            owl:minQualifiedCardinality "2"^^xsd:nonNegativeInteger ;
+            owl:onClass pao:Agent ;
+            owl:onProperty pao:sharedAcrossAgents ],
         obo:BFO_0000031,
         prov:Entity ;
     skos:definition "A prov:Entity that represents a memory artifact accessible to multiple agents for shared read/write."@en .
@@ -1555,11 +1563,11 @@ pao:AuditEntry a owl:Class ;
     rdfs:label "audit entry"@en ;
     obo:IAO_0000115 "A GDC recording an authorization decision for a tool invocation with rationale."@en ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:onProperty pao:auditForInvocation ;
-            owl:someValuesFrom pao:ToolInvocation ],
-        [ a owl:Restriction ;
             owl:onProperty pao:recordsDecision ;
             owl:someValuesFrom pao:AuthorizationDecision ],
+        [ a owl:Restriction ;
+            owl:onProperty pao:auditForInvocation ;
+            owl:someValuesFrom pao:ToolInvocation ],
         [ a owl:Restriction ;
             owl:onProperty pao:writtenToAuditLog ;
             owl:someValuesFrom pao:AuditLog ],
@@ -1571,11 +1579,11 @@ pao:CompactionDisposition a owl:Class ;
     rdfs:label "compaction disposition"@en ;
     obo:IAO_0000115 "An information artifact recording the fate of an individual item during a compaction event."@en ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:onProperty pao:dispositionOf ;
-            owl:someValuesFrom prov:Entity ],
-        [ a owl:Restriction ;
             owl:onProperty pao:hasItemFate ;
             owl:someValuesFrom pao:ItemFate ],
+        [ a owl:Restriction ;
+            owl:onProperty pao:dispositionOf ;
+            owl:someValuesFrom prov:Entity ],
         obo:BFO_0000031,
         prov:Entity ;
     skos:definition "An information artifact recording the fate of an individual item during a compaction event."@en .
@@ -1584,11 +1592,11 @@ pao:CompactionEvent a owl:Class ;
     rdfs:label "compaction event"@en ;
     obo:IAO_0000115 "A process in which an agent's context window is compressed by summarizing prior turns."@en ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:onProperty pao:producedSummary ;
-            owl:someValuesFrom pao:MemoryItem ],
-        [ a owl:Restriction ;
             owl:onProperty pao:inConversation ;
             owl:someValuesFrom pao:Conversation ],
+        [ a owl:Restriction ;
+            owl:onProperty pao:producedSummary ;
+            owl:someValuesFrom pao:MemoryItem ],
         [ a owl:Restriction ;
             owl:onProperty pao:compactedItem ;
             owl:someValuesFrom prov:Entity ],
@@ -1688,11 +1696,11 @@ pao:PermissionPolicy a owl:Class ;
     rdfs:label "permission policy"@en ;
     obo:IAO_0000115 "A generically dependent continuant that specifies rules governing what actions an agent is permitted or forbidden to perform."@en ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:onProperty pao:restrictsToolUse ;
-            owl:someValuesFrom pao:ToolDefinition ],
-        [ a owl:Restriction ;
             owl:onProperty pao:grantsPermission ;
             owl:someValuesFrom odrl:Permission ],
+        [ a owl:Restriction ;
+            owl:onProperty pao:restrictsToolUse ;
+            owl:someValuesFrom pao:ToolDefinition ],
         [ a owl:Restriction ;
             owl:onProperty pao:appliesTo ;
             owl:someValuesFrom pao:Agent ],
@@ -1704,21 +1712,21 @@ pao:Turn a owl:Class ;
     rdfs:label "turn"@en ;
     obo:IAO_0000115 "A process that is a single contribution by one participant in a conversation."@en ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:onProperty pao:hasParticipant ;
-            owl:someValuesFrom pao:Agent ],
-        [ a owl:Restriction ;
-            owl:onDataRange xsd:nonNegativeInteger ;
-            owl:onProperty pao:hasTurnIndex ;
-            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
-        [ a owl:Restriction ;
             owl:onProperty pao:partOfConversation ;
             owl:someValuesFrom pao:Conversation ],
         [ a owl:Restriction ;
             owl:onProperty pao:partOfSession ;
             owl:someValuesFrom pao:Session ],
         [ a owl:Restriction ;
+            owl:onProperty pao:hasParticipant ;
+            owl:someValuesFrom pao:Agent ],
+        [ a owl:Restriction ;
             owl:onClass pao:Agent ;
             owl:onProperty pao:hasParticipant ;
+            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
+        [ a owl:Restriction ;
+            owl:onDataRange xsd:nonNegativeInteger ;
+            owl:onProperty pao:hasTurnIndex ;
             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
         pao:Event ;
     skos:definition "A process that is a single contribution by one participant in a conversation."@en .
@@ -1735,23 +1743,23 @@ pao:AIAgent a owl:Class ;
     rdfs:label "ai agent"@en ;
     obo:IAO_0000115 "An agent that is a software system capable of autonomous decision-making and tool use."@en ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:onProperty pao:hasExternalService ;
-            owl:someValuesFrom pao:ExternalService ],
-        [ a owl:Restriction ;
             owl:onProperty pao:hasPersona ;
             owl:someValuesFrom pao:Persona ],
         [ a owl:Restriction ;
-            owl:onProperty pao:operatesInMode ;
-            owl:someValuesFrom pao:PermissionMode ],
+            owl:onProperty pao:hasExternalService ;
+            owl:someValuesFrom pao:ExternalService ],
         [ a owl:Restriction ;
             owl:onProperty pao:hasIntegration ;
             owl:someValuesFrom pao:Integration ],
         [ a owl:Restriction ;
-            owl:onProperty pao:hasHook ;
-            owl:someValuesFrom pao:Hook ],
-        [ a owl:Restriction ;
             owl:onProperty pao:hasAvailableTool ;
             owl:someValuesFrom pao:ToolDefinition ],
+        [ a owl:Restriction ;
+            owl:onProperty pao:operatesInMode ;
+            owl:someValuesFrom pao:PermissionMode ],
+        [ a owl:Restriction ;
+            owl:onProperty pao:hasHook ;
+            owl:someValuesFrom pao:Hook ],
         obo:BFO_0000031,
         prov:SoftwareAgent,
         pao:Agent ;
@@ -1791,11 +1799,11 @@ pao:StatusTransition a owl:Class ;
             owl:onProperty pao:toStatus ;
             owl:someValuesFrom pao:Status ],
         [ a owl:Restriction ;
-            owl:onProperty pao:fromStatus ;
-            owl:someValuesFrom pao:Status ],
-        [ a owl:Restriction ;
             owl:onProperty pao:transitionSubject ;
             owl:someValuesFrom owl:Thing ],
+        [ a owl:Restriction ;
+            owl:onProperty pao:fromStatus ;
+            owl:someValuesFrom pao:Status ],
         pao:Event ;
     skos:definition "A process in which an entity's status changes from one value to another."@en .
 
@@ -1823,17 +1831,17 @@ pao:Session a owl:Class ;
     rdfs:label "session"@en ;
     obo:IAO_0000115 "A process that is a bounded period of agent-user interaction within a conversation."@en ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:onProperty pao:hasParticipant ;
-            owl:someValuesFrom pao:Agent ],
-        [ a owl:Restriction ;
             owl:onProperty pao:hasTemporalExtent ;
             owl:someValuesFrom time:Interval ],
+        [ a owl:Restriction ;
+            owl:onProperty pao:hasStatus ;
+            owl:someValuesFrom pao:SessionStatus ],
         [ a owl:Restriction ;
             owl:onProperty pao:partOfConversation ;
             owl:someValuesFrom pao:Conversation ],
         [ a owl:Restriction ;
-            owl:onProperty pao:hasStatus ;
-            owl:someValuesFrom pao:SessionStatus ],
+            owl:onProperty pao:hasParticipant ;
+            owl:someValuesFrom pao:Agent ],
         pao:Event ;
     owl:hasKey ( pao:hasSessionId ) ;
     skos:definition "A process that is a bounded period of agent-user interaction within a conversation."@en .
@@ -1842,29 +1850,29 @@ pao:ToolInvocation a owl:Class ;
     rdfs:label "tool invocation"@en ;
     obo:IAO_0000115 "A process in which an agent requests execution of a tool by providing inputs and receiving outputs."@en ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:onProperty pao:hasComplianceStatus ;
-            owl:someValuesFrom pao:ComplianceStatus ],
+            owl:onProperty pao:hasInput ;
+            owl:someValuesFrom prov:Entity ],
         [ a owl:Restriction ;
             owl:onProperty pao:invokedBy ;
             owl:someValuesFrom pao:Agent ],
         [ a owl:Restriction ;
-            owl:onProperty pao:producedToolResult ;
-            owl:someValuesFrom pao:ToolResult ],
-        [ a owl:Restriction ;
-            owl:onProperty pao:hasInput ;
-            owl:someValuesFrom prov:Entity ],
-        [ a owl:Restriction ;
             owl:onProperty pao:governedByPolicy ;
             owl:someValuesFrom pao:PermissionPolicy ],
-        [ a owl:Restriction ;
-            owl:onProperty pao:invokesTool ;
-            owl:someValuesFrom pao:ToolDefinition ],
         [ a owl:Restriction ;
             owl:onProperty pao:hasOutput ;
             owl:someValuesFrom prov:Entity ],
         [ a owl:Restriction ;
+            owl:onProperty pao:producedToolResult ;
+            owl:someValuesFrom pao:ToolResult ],
+        [ a owl:Restriction ;
             owl:onProperty pao:inSession ;
             owl:someValuesFrom pao:Session ],
+        [ a owl:Restriction ;
+            owl:onProperty pao:hasComplianceStatus ;
+            owl:someValuesFrom pao:ComplianceStatus ],
+        [ a owl:Restriction ;
+            owl:onProperty pao:invokesTool ;
+            owl:someValuesFrom pao:ToolDefinition ],
         pao:Action ;
     skos:definition "A process in which an agent requests execution of a tool by providing inputs and receiving outputs."@en .
 
@@ -1872,21 +1880,21 @@ pao:MemoryItem a owl:Class ;
     rdfs:label "memory item"@en ;
     obo:IAO_0000115 "A generically dependent continuant that is an information artifact persisted in an agent's memory system."@en ;
     rdfs:subClassOf [ a owl:Restriction ;
+            owl:onClass pao:MemoryTier ;
+            owl:onProperty pao:storedIn ;
+            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
+        [ a owl:Restriction ;
+            owl:onProperty pao:storedIn ;
+            owl:someValuesFrom pao:MemoryTier ],
+        [ a owl:Restriction ;
+            owl:onProperty prov:wasAttributedTo ;
+            owl:someValuesFrom pao:Agent ],
+        [ a owl:Restriction ;
             owl:onProperty pao:hasSensitivityLevel ;
             owl:someValuesFrom pao:SensitivityLevel ],
         [ a owl:Restriction ;
             owl:onProperty pao:governedByRetention ;
             owl:someValuesFrom pao:RetentionPolicy ],
-        [ a owl:Restriction ;
-            owl:onProperty pao:storedIn ;
-            owl:someValuesFrom pao:MemoryTier ],
-        [ a owl:Restriction ;
-            owl:onClass pao:MemoryTier ;
-            owl:onProperty pao:storedIn ;
-            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
-        [ a owl:Restriction ;
-            owl:onProperty prov:wasAttributedTo ;
-            owl:someValuesFrom pao:Agent ],
         [ a owl:Restriction ;
             owl:onProperty prov:wasGeneratedBy ;
             owl:someValuesFrom prov:Activity ],
@@ -1918,34 +1926,34 @@ pao:Agent a owl:Class ;
     skos:definition "An entity that bears responsibility for activities and can act on behalf of itself or others."@en .
 
 [] a owl:AllDisjointClasses ;
-    owl:members ( pao:RetryAttempt pao:ReplanEvent pao:RollbackEvent ) .
-
-[] a owl:AllDisjointClasses ;
-    owl:members ( pao:Episode pao:Claim pao:MemoryBlock ) .
-
-[] a owl:AllDisjointClasses ;
-    owl:members ( pao:ServiceToolCapability pao:ServiceResourceCapability pao:ServicePromptCapability ) .
-
-[] a owl:AllDisjointClasses ;
     owl:members ( pao:Encoding pao:Retrieval pao:Consolidation pao:Forgetting pao:Rehearsal ) .
-
-[] a owl:AllDisjointClasses ;
-    owl:members ( pao:AIAgent pao:HumanUser pao:Organization ) .
-
-[] a owl:AllDisjointClasses ;
-    owl:members ( pao:SessionStatus pao:TaskStatus pao:ComplianceStatus pao:SensitivityLevel pao:ItemFate pao:ChannelType pao:IntegrationStatus pao:ConnectionStatus pao:PermissionMode pao:AuthorizationDecision pao:CheckpointDecision pao:ContentBlockType pao:MemorySource pao:MemoryScope pao:CommunicativeFunction pao:ClaimType ) .
 
 [] a owl:AllDisjointClasses ;
     owl:members ( pao:Action pao:Conversation pao:Session pao:Turn pao:CompactionEvent pao:ErasureEvent pao:MemoryOperation pao:Observation pao:StatusTransition pao:CapabilityDiscoveryEvent pao:HookExecution pao:ErrorRecoveryEvent pao:RetryAttempt pao:ReplanEvent pao:RollbackEvent pao:MemoryWriteConflict pao:GroundingAct ) .
 
 [] a owl:AllDisjointClasses ;
-    owl:members ( pao:WorkingMemory pao:EpisodicMemory pao:SemanticMemory pao:ProceduralMemory ) .
-
-[] a owl:AllDisjointClasses ;
-    owl:members ( pao:PermissionPolicy pao:SafetyConstraint pao:ConsentRecord pao:RetentionPolicy pao:SandboxPolicy pao:Hook pao:AuditLog ) .
+    owl:members ( pao:ServiceToolCapability pao:ServiceResourceCapability pao:ServicePromptCapability ) .
 
 [] a owl:AllDisjointClasses ;
     owl:members ( pao:Message pao:ToolDefinition pao:MemoryItem pao:MemoryTier pao:Goal pao:Plan pao:Task pao:PermissionPolicy pao:SafetyConstraint pao:Persona pao:Intention pao:ConsentRecord pao:RetentionPolicy pao:CompactionDisposition pao:ContextWindow pao:CommunicationChannel pao:Integration pao:ExternalService pao:ServiceConnection pao:ServiceCapability pao:SandboxPolicy pao:Hook pao:AuditLog pao:AuditEntry pao:Checkpoint pao:ToolResult pao:ToolInvocationGroup pao:ContentBlock pao:SharedMemoryArtifact pao:DialogAct pao:CommonGround pao:ClarificationRequest pao:AcceptanceEvidence ) .
 
 [] a owl:AllDisjointClasses ;
     owl:members ( pao:SessionStatusTransition pao:TaskStatusTransition ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( pao:PermissionPolicy pao:SafetyConstraint pao:ConsentRecord pao:RetentionPolicy pao:SandboxPolicy pao:Hook pao:AuditLog ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( pao:RetryAttempt pao:ReplanEvent pao:RollbackEvent ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( pao:WorkingMemory pao:EpisodicMemory pao:SemanticMemory pao:ProceduralMemory ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( pao:SessionStatus pao:TaskStatus pao:ComplianceStatus pao:SensitivityLevel pao:ItemFate pao:ChannelType pao:IntegrationStatus pao:ConnectionStatus pao:PermissionMode pao:AuthorizationDecision pao:CheckpointDecision pao:ContentBlockType pao:MemorySource pao:MemoryScope pao:CommunicativeFunction pao:ClaimType ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( pao:AIAgent pao:HumanUser pao:Organization ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( pao:Episode pao:Claim pao:MemoryBlock ) .

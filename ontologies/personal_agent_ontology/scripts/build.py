@@ -1648,6 +1648,14 @@ def _add_cardinality_restrictions(g: Graph) -> None:
     _add_data_exact_cardinality(g, PAO.Turn, PAO.hasTurnIndex, XSD.nonNegativeInteger, 1)
     # CQ-018: MemoryItem stored in exactly 1 tier
     _add_qualified_cardinality(g, PAO.MemoryItem, PAO.storedIn, PAO.MemoryTier, 1, kind="exact")
+    # CQ-094: SharedMemoryArtifact shared across at least 2 agents
+    _add_qualified_cardinality(
+        g, PAO.SharedMemoryArtifact, PAO.sharedAcrossAgents, PAO.Agent, 2, kind="min"
+    )
+    # CQ-095: MemoryWriteConflict involves at least 2 agents
+    _add_qualified_cardinality(
+        g, PAO.MemoryWriteConflict, PAO.writesByAgent, PAO.Agent, 2, kind="min"
+    )
 
 
 def _add_disjoint_unions(g: Graph) -> None:
@@ -2139,6 +2147,12 @@ def _add_sample_agents(g: Graph) -> None:
     g.add((sub, RDF.type, OWL.NamedIndividual))
     g.add((sub, RDFS.label, Literal("search subagent", lang="en")))
     g.add((sub, PAO.spawnedBy, claude))
+    # AIAgentShape-required properties (v0.6.0 review: SHACL parity)
+    g.add((sub, PAO.hasPersona, PAO.persona_claude))  # inherits parent persona
+    g.add((sub, PAO.operatesInMode, PAO.Permissive))
+    g.add((sub, PAO.hasIntegration, PAO.integration_github_001))
+    g.add((sub, PAO.hasExternalService, PAO.ext_svc_github))
+    g.add((sub, PAO.hasHook, PAO.hook_pre_tool))
 
     # Roles
     g.add((claude, PAO.hasRole, PAO.AssistantRole))
@@ -2305,6 +2319,8 @@ def _add_sample_conversation(g: Graph) -> None:
     g.add((inv1_output, PAO.hasContent, Literal("file contents here")))
     g.add((inv1, PAO.hasOutput, inv1_output))
 
+    # (ToolResult for invocation_001 is added in _add_sample_tool_trace via tool_result_01)
+
     # Second invocation for CQ-037 counting
     inv2 = PAO.invocation_002
     g.add((inv2, RDF.type, PAO.ToolInvocation))
@@ -2316,6 +2332,25 @@ def _add_sample_conversation(g: Graph) -> None:
     g.add((inv2, PAO.inSession, sess))
     g.add((inv2, PAO.hasTimestamp, Literal("2026-02-18T10:03:00", datatype=XSD.dateTime)))
     g.add((inv2, PAO.hasComplianceStatus, PAO.Compliant))
+
+    # Input/output/result for invocation_002 (v0.6.0 review: SHACL parity)
+    inv2_input = PAO.invocation_002_input
+    g.add((inv2_input, RDF.type, PROV.Entity))
+    g.add((inv2_input, RDF.type, OWL.NamedIndividual))
+    g.add((inv2_input, RDFS.label, Literal("invocation 002 input", lang="en")))
+    g.add((inv2_input, PAO.hasContent, Literal("echo hello")))
+    g.add((inv2, PAO.hasInput, inv2_input))
+    inv2_output = PAO.invocation_002_output
+    g.add((inv2_output, RDF.type, PROV.Entity))
+    g.add((inv2_output, RDF.type, OWL.NamedIndividual))
+    g.add((inv2_output, RDFS.label, Literal("invocation 002 output", lang="en")))
+    g.add((inv2_output, PAO.hasContent, Literal("hello")))
+    g.add((inv2, PAO.hasOutput, inv2_output))
+    result2 = PAO.tool_result_002
+    g.add((result2, RDF.type, PAO.ToolResult))
+    g.add((result2, RDF.type, OWL.NamedIndividual))
+    g.add((result2, RDFS.label, Literal("tool result 002", lang="en")))
+    g.add((inv2, PAO.producedToolResult, result2))
 
     # Governance links (CQ-031: governedByPolicy)
     g.add((inv1, PAO.governedByPolicy, PAO.policy_001))
@@ -2380,6 +2415,8 @@ def _add_sample_memory(g: Graph) -> None:
     g.add((ep, PAO.hasTopic, topic))
     g.add((ep, PROV.wasAttributedTo, PAO.claude_agent))
     g.add((ep, PROV.wasGeneratedBy, PAO.conv_001))
+    g.add((ep, PAO.hasSensitivityLevel, PAO.Internal))
+    g.add((ep, PAO.governedByRetention, PAO.retention_policy_30day))
 
     # Temporal extent for episode
     ep_interval = PAO.episode_001_interval
@@ -2647,6 +2684,7 @@ def _add_sample_memory_block(g: Graph) -> None:
     g.add((block, PROV.wasAttributedTo, PAO.claude_agent))
     g.add((block, PROV.wasGeneratedBy, PAO.conv_001))
     g.add((block, PAO.hasSensitivityLevel, PAO.Internal))
+    g.add((block, PAO.governedByRetention, PAO.retention_policy_30day))
 
 
 def _add_sample_intention(g: Graph) -> None:
@@ -2670,6 +2708,7 @@ def _add_sample_governance_v2(g: Graph) -> None:
     g.add((PAO.claim_001, PAO.hasSensitivityLevel, PAO.Confidential))
     g.add((PAO.claim_002, PAO.hasSensitivityLevel, PAO.Confidential))
     g.add((PAO.summary_001, PAO.hasSensitivityLevel, PAO.Public))
+    g.add((PAO.summary_001, PAO.governedByRetention, PAO.retention_policy_30day))
 
     # ConsentRecord (CQ-049)
     consent = PAO.consent_001
@@ -3001,9 +3040,27 @@ def _add_sample_runtime_safety(g: Graph) -> None:
     g.add((denied_inv, RDF.type, PAO.ToolInvocation))
     g.add((denied_inv, RDF.type, OWL.NamedIndividual))
     g.add((denied_inv, RDFS.label, Literal("Denied invocation 01", lang="en")))
-    g.add((denied_inv, PAO.invokesTool, PAO.bash_tool))
+    g.add((denied_inv, PAO.invokesTool, PAO.read_tool))
     g.add((denied_inv, PAO.invokedBy, PAO.claude_agent))
     g.add((denied_inv, PAO.performedBy, PAO.claude_agent))
+    g.add((denied_inv, PAO.inSession, PAO.session_001))
+    g.add((denied_inv, PAO.governedByPolicy, PAO.policy_001))
+    g.add((denied_inv, PAO.hasComplianceStatus, PAO.NonCompliant))
+    denied_input = PAO.invocation_denied_01_input
+    g.add((denied_input, RDF.type, PROV.Entity))
+    g.add((denied_input, RDF.type, OWL.NamedIndividual))
+    g.add((denied_input, RDFS.label, Literal("Denied invocation 01 input", lang="en")))
+    g.add((denied_inv, PAO.hasInput, denied_input))
+    denied_output = PAO.invocation_denied_01_output
+    g.add((denied_output, RDF.type, PROV.Entity))
+    g.add((denied_output, RDF.type, OWL.NamedIndividual))
+    g.add((denied_output, RDFS.label, Literal("Denied invocation 01 output", lang="en")))
+    g.add((denied_inv, PAO.hasOutput, denied_output))
+    denied_result = PAO.tool_result_denied_01
+    g.add((denied_result, RDF.type, PAO.ToolResult))
+    g.add((denied_result, RDF.type, OWL.NamedIndividual))
+    g.add((denied_result, RDFS.label, Literal("Denied tool result 01", lang="en")))
+    g.add((denied_inv, PAO.producedToolResult, denied_result))
 
     audit_entry2 = PAO.audit_entry_02
     g.add((audit_entry2, RDF.type, PAO.AuditEntry))
@@ -3026,6 +3083,24 @@ def _add_sample_recovery(g: Graph) -> None:
     g.add((failed_inv, PAO.invokesTool, PAO.bash_tool))
     g.add((failed_inv, PAO.invokedBy, PAO.claude_agent))
     g.add((failed_inv, PAO.performedBy, PAO.claude_agent))
+    g.add((failed_inv, PAO.inSession, PAO.session_001))
+    g.add((failed_inv, PAO.governedByPolicy, PAO.policy_001))
+    g.add((failed_inv, PAO.hasComplianceStatus, PAO.Compliant))
+    failed_input = PAO.invocation_failed_01_input
+    g.add((failed_input, RDF.type, PROV.Entity))
+    g.add((failed_input, RDF.type, OWL.NamedIndividual))
+    g.add((failed_input, RDFS.label, Literal("Failed invocation 01 input", lang="en")))
+    g.add((failed_inv, PAO.hasInput, failed_input))
+    failed_output = PAO.invocation_failed_01_output
+    g.add((failed_output, RDF.type, PROV.Entity))
+    g.add((failed_output, RDF.type, OWL.NamedIndividual))
+    g.add((failed_output, RDFS.label, Literal("Failed invocation 01 output", lang="en")))
+    g.add((failed_inv, PAO.hasOutput, failed_output))
+    failed_result = PAO.tool_result_failed_01
+    g.add((failed_result, RDF.type, PAO.ToolResult))
+    g.add((failed_result, RDF.type, OWL.NamedIndividual))
+    g.add((failed_result, RDFS.label, Literal("Failed tool result 01", lang="en")))
+    g.add((failed_inv, PAO.producedToolResult, failed_result))
 
     # Error recovery event (CQ-087)
     recovery = PAO.recovery_event_01
@@ -3243,7 +3318,9 @@ def build_shacl_shapes() -> Graph:
         PAO.EventShape,
         PAO.Event,
         [
-            _property_shape(g, PAO.hasTemporalExtent, min_count=1),
+            _property_shape(
+                g, PAO.hasTemporalExtent, min_count=1, class_constraint=TIME.TemporalEntity
+            ),
         ],
     )
 
@@ -3268,13 +3345,17 @@ def build_shacl_shapes() -> Graph:
                 g, PAO.hasAvailableTool, min_count=1, class_constraint=PAO.ToolDefinition
             ),
             _property_shape(g, PAO.hasAgentId, min_count=1, max_count=1, datatype=XSD.string),
-            _property_shape(g, PAO.hasPersona, max_count=1, class_constraint=PAO.Persona),
             _property_shape(
-                g, PAO.operatesInMode, max_count=1, class_constraint=PAO.PermissionMode
+                g, PAO.hasPersona, min_count=1, max_count=1, class_constraint=PAO.Persona
             ),
-            _property_shape(g, PAO.hasIntegration, class_constraint=PAO.Integration),
-            _property_shape(g, PAO.hasExternalService, class_constraint=PAO.ExternalService),
-            _property_shape(g, PAO.hasHook, class_constraint=PAO.Hook),
+            _property_shape(
+                g, PAO.operatesInMode, min_count=1, max_count=1, class_constraint=PAO.PermissionMode
+            ),
+            _property_shape(g, PAO.hasIntegration, min_count=1, class_constraint=PAO.Integration),
+            _property_shape(
+                g, PAO.hasExternalService, min_count=1, class_constraint=PAO.ExternalService
+            ),
+            _property_shape(g, PAO.hasHook, min_count=1, class_constraint=PAO.Hook),
         ],
     )
 
@@ -3309,7 +3390,7 @@ def build_shacl_shapes() -> Graph:
             ),
             _property_shape(g, PAO.hasSessionId, min_count=1, max_count=1, datatype=XSD.string),
             _property_shape(g, PAO.hasParticipant, min_count=1, class_constraint=PAO.Agent),
-            _property_shape(g, PAO.hasTemporalExtent, min_count=1),
+            _property_shape(g, PAO.hasTemporalExtent, min_count=1, class_constraint=TIME.Interval),
             _property_shape(
                 g, PAO.hasContextWindow, max_count=1, class_constraint=PAO.ContextWindow
             ),
@@ -3352,24 +3433,29 @@ def build_shacl_shapes() -> Graph:
                 g, PAO.invokesTool, min_count=1, max_count=1, class_constraint=PAO.ToolDefinition
             ),
             _property_shape(g, PAO.invokedBy, min_count=1, max_count=1, class_constraint=PAO.Agent),
-            _property_shape(g, PAO.inSession, max_count=1, class_constraint=PAO.Session),
+            _property_shape(
+                g, PAO.inSession, min_count=1, max_count=1, class_constraint=PAO.Session
+            ),
             _property_shape(
                 g,
                 PAO.governedByPolicy,
+                min_count=1,
                 max_count=1,
                 class_constraint=PAO.PermissionPolicy,
             ),
             _property_shape(
                 g,
                 PAO.hasComplianceStatus,
+                min_count=1,
                 max_count=1,
                 class_constraint=PAO.ComplianceStatus,
             ),
-            _property_shape(g, PAO.hasInput),
-            _property_shape(g, PAO.hasOutput),
+            _property_shape(g, PAO.hasInput, min_count=1),
+            _property_shape(g, PAO.hasOutput, min_count=1),
             _property_shape(
                 g,
                 PAO.producedToolResult,
+                min_count=1,
                 max_count=1,
                 class_constraint=PAO.ToolResult,
             ),
@@ -3544,7 +3630,7 @@ def build_shacl_shapes() -> Graph:
         ],
     )
 
-    # --- MemoryItemShape (v0.2.0) ---
+    # --- MemoryItemShape (v0.2.0, tightened v0.6.0 review) ---
     _add_shape(
         g,
         PAO.MemoryItemShape,
@@ -3558,15 +3644,21 @@ def build_shacl_shapes() -> Graph:
             _property_shape(
                 g,
                 PAO.hasSensitivityLevel,
-                min_count=0,
+                min_count=1,
                 max_count=1,
                 class_constraint=PAO.SensitivityLevel,
+            ),
+            _property_shape(
+                g,
+                PAO.governedByRetention,
+                min_count=1,
+                class_constraint=PAO.RetentionPolicy,
             ),
             _property_shape(g, PAO.hasLastAccessTime, max_count=1, datatype=XSD.dateTime),
         ],
     )
 
-    # --- EpisodeShape (v0.2.0) ---
+    # --- EpisodeShape (v0.2.0, tightened v0.6.0 review) ---
     _add_shape(
         g,
         PAO.EpisodeShape,
@@ -3574,6 +3666,9 @@ def build_shacl_shapes() -> Graph:
         [
             _property_shape(g, PAO.hasTemporalExtent, min_count=1, class_constraint=TIME.Interval),
             _property_shape(g, PAO.hasTopic, min_count=1, class_constraint=SKOS.Concept),
+            _property_shape(
+                g, PAO.storedIn, min_count=1, max_count=1, class_constraint=PAO.MemoryTier
+            ),
         ],
     )
 
@@ -3725,6 +3820,28 @@ def build_shacl_shapes() -> Graph:
             ),
             _property_shape(
                 g, PAO.hasServiceIdentifier, min_count=1, max_count=1, datatype=XSD.string
+            ),
+        ],
+    )
+
+    # --- CapabilityDiscoveryEventShape (v0.6.0 review) ---
+    _add_shape(
+        g,
+        PAO.CapabilityDiscoveryEventShape,
+        PAO.CapabilityDiscoveryEvent,
+        [
+            _property_shape(
+                g,
+                PAO.discoveredCapability,
+                min_count=1,
+                class_constraint=PAO.ServiceCapability,
+            ),
+            _property_shape(
+                g,
+                PAO.discoveryAgainstService,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.ExternalService,
             ),
         ],
     )

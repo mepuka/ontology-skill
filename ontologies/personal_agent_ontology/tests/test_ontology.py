@@ -402,7 +402,7 @@ def test_bfo_alignment(tbox: Graph, cls_name: str, bfo_class: URIRef) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Object property declarations (109 properties)
+# Object property declarations (110 properties)
 # ---------------------------------------------------------------------------
 
 EXPECTED_OBJ_PROPS = [
@@ -515,6 +515,7 @@ EXPECTED_OBJ_PROPS = [
     "triggeredRollback",
     "viaChannel",
     "writesByAgent",
+    "writtenToAuditLog",
 ]
 
 
@@ -1883,15 +1884,16 @@ def test_shacl_conformance(shapes: Graph) -> None:
 
 
 def test_shacl_shape_count(shapes: Graph) -> None:
-    """At least 45 NodeShapes exist."""
+    """At least 46 NodeShapes exist."""
     node_shapes = set(shapes.subjects(RDF.type, SH.NodeShape))
-    assert len(node_shapes) >= 45, f"Expected >=45 NodeShapes, got {len(node_shapes)}"
+    assert len(node_shapes) >= 46, f"Expected >=46 NodeShapes, got {len(node_shapes)}"
 
 
 EXPECTED_SHAPE_TARGETS = [
     "AIAgent",
     "Action",
     "AuditEntry",
+    "CapabilityDiscoveryEvent",
     "Checkpoint",
     "ClarificationRequest",
     "Claim",

@@ -150,12 +150,15 @@ pao:invocation_002 a owl:NamedIndividual,
     rdfs:label "tool invocation 002"@en ;
     pao:governedByPolicy pao:policy_001 ;
     pao:hasComplianceStatus pao:Compliant ;
+    pao:hasInput pao:invocation_002_input ;
+    pao:hasOutput pao:invocation_002_output ;
     pao:hasTemporalExtent pao:invocation_002_time ;
     pao:hasTimestamp "2026-02-18T10:03:00"^^xsd:dateTime ;
     pao:inSession pao:session_001 ;
     pao:invokedBy pao:claude_agent ;
     pao:invokesTool pao:bash_tool ;
-    pao:performedBy pao:claude_agent .
+    pao:performedBy pao:claude_agent ;
+    pao:producedToolResult pao:tool_result_002 .
 
 pao:memory_block_001 a owl:NamedIndividual,
         pao:MemoryBlock,
@@ -163,6 +166,7 @@ pao:memory_block_001 a owl:NamedIndividual,
     rdfs:label "core memory block"@en ;
     prov:wasAttributedTo pao:claude_agent ;
     prov:wasGeneratedBy pao:conv_001 ;
+    pao:governedByRetention pao:retention_policy_30day ;
     pao:hasBlockKey "user_name" ;
     pao:hasBlockValue "Alice" ;
     pao:hasSensitivityLevel pao:Internal ;
@@ -357,20 +361,6 @@ pao:hook_exec_01 a owl:NamedIndividual,
 pao:hook_exec_01_time a time:Instant ;
     time:inXSDDateTime "2026-02-20T10:30:00+00:00"^^xsd:dateTime .
 
-pao:hook_pre_tool a owl:NamedIndividual,
-        pao:Hook ;
-    rdfs:label "Pre-tool invocation hook"@en ;
-    pao:hookTriggeredExecution pao:hook_exec_01 .
-
-pao:integration_github_001 a owl:NamedIndividual,
-        pao:Integration ;
-    rdfs:label "GitHub integration 001"@en ;
-    pao:hasEndpoint "https://api.github.com"^^xsd:anyURI ;
-    pao:hasIntegrationStatus pao:Connected ;
-    pao:hasServiceName "GitHub" ;
-    pao:providesTool pao:bash_tool,
-        pao:read_tool .
-
 pao:integration_notion_001 a owl:NamedIndividual,
         pao:Integration ;
     rdfs:label "Notion integration 001"@en ;
@@ -392,16 +382,40 @@ pao:invocation_001_output a owl:NamedIndividual,
 pao:invocation_001_time a time:Instant ;
     time:inXSDDateTime "2026-02-18T10:02:30"^^xsd:dateTime .
 
+pao:invocation_002_input a owl:NamedIndividual,
+        prov:Entity ;
+    rdfs:label "invocation 002 input"@en ;
+    pao:hasContent "echo hello" .
+
+pao:invocation_002_output a owl:NamedIndividual,
+        prov:Entity ;
+    rdfs:label "invocation 002 output"@en ;
+    pao:hasContent "hello" .
+
 pao:invocation_002_time a time:Instant ;
     time:inXSDDateTime "2026-02-18T10:03:00"^^xsd:dateTime .
 
 pao:invocation_denied_01 a owl:NamedIndividual,
         pao:ToolInvocation ;
     rdfs:label "Denied invocation 01"@en ;
+    pao:governedByPolicy pao:policy_001 ;
+    pao:hasComplianceStatus pao:NonCompliant ;
+    pao:hasInput pao:invocation_denied_01_input ;
+    pao:hasOutput pao:invocation_denied_01_output ;
     pao:hasTemporalExtent pao:invocation_denied_01_time ;
+    pao:inSession pao:session_001 ;
     pao:invokedBy pao:claude_agent ;
-    pao:invokesTool pao:bash_tool ;
-    pao:performedBy pao:claude_agent .
+    pao:invokesTool pao:read_tool ;
+    pao:performedBy pao:claude_agent ;
+    pao:producedToolResult pao:tool_result_denied_01 .
+
+pao:invocation_denied_01_input a owl:NamedIndividual,
+        prov:Entity ;
+    rdfs:label "Denied invocation 01 input"@en .
+
+pao:invocation_denied_01_output a owl:NamedIndividual,
+        prov:Entity ;
+    rdfs:label "Denied invocation 01 output"@en .
 
 pao:invocation_denied_01_time a time:Instant ;
     time:inXSDDateTime "2026-02-18T10:00:00+00:00"^^xsd:dateTime .
@@ -409,10 +423,24 @@ pao:invocation_denied_01_time a time:Instant ;
 pao:invocation_failed_01 a owl:NamedIndividual,
         pao:ToolInvocation ;
     rdfs:label "Failed invocation 01"@en ;
+    pao:governedByPolicy pao:policy_001 ;
+    pao:hasComplianceStatus pao:Compliant ;
+    pao:hasInput pao:invocation_failed_01_input ;
+    pao:hasOutput pao:invocation_failed_01_output ;
     pao:hasTemporalExtent pao:invocation_failed_01_time ;
+    pao:inSession pao:session_001 ;
     pao:invokedBy pao:claude_agent ;
     pao:invokesTool pao:bash_tool ;
-    pao:performedBy pao:claude_agent .
+    pao:performedBy pao:claude_agent ;
+    pao:producedToolResult pao:tool_result_failed_01 .
+
+pao:invocation_failed_01_input a owl:NamedIndividual,
+        prov:Entity ;
+    rdfs:label "Failed invocation 01 input"@en .
+
+pao:invocation_failed_01_output a owl:NamedIndividual,
+        prov:Entity ;
+    rdfs:label "Failed invocation 01 output"@en .
 
 pao:invocation_failed_01_time a time:Instant ;
     time:inXSDDateTime "2026-02-18T10:00:00+00:00"^^xsd:dateTime .
@@ -444,14 +472,6 @@ pao:observation_001_time a time:Instant ;
 pao:permission_001 a owl:NamedIndividual,
         odrl:Permission ;
     rdfs:label "allow file reading"@en .
-
-pao:persona_claude a owl:NamedIndividual,
-        pao:Persona ;
-    rdfs:label "Claude coding assistant persona"@en ;
-    prov:wasAttributedTo pao:alice_user ;
-    prov:wasGeneratedBy pao:conv_001 ;
-    pao:hasContent "You are a helpful coding assistant." ;
-    pao:storedIn pao:procedural_memory_instance .
 
 pao:purpose_memory_storage a owl:NamedIndividual,
         prov:Entity ;
@@ -539,6 +559,7 @@ pao:summary_001 a owl:NamedIndividual,
     prov:wasAttributedTo pao:claude_agent ;
     prov:wasDerivedFrom pao:claim_001 ;
     prov:wasGeneratedBy pao:compaction_001 ;
+    pao:governedByRetention pao:retention_policy_30day ;
     pao:hasContent "Summary of first 10 turns..." ;
     pao:hasSensitivityLevel pao:Public ;
     pao:storedIn pao:working_memory_instance .
@@ -585,10 +606,22 @@ pao:task_transition_002 a owl:NamedIndividual,
 pao:task_transition_002_time a time:Instant ;
     time:inXSDDateTime "2026-02-19T11:30:00+00:00"^^xsd:dateTime .
 
+pao:tool_result_002 a owl:NamedIndividual,
+        pao:ToolResult ;
+    rdfs:label "tool result 002"@en .
+
 pao:tool_result_01 a owl:NamedIndividual,
         pao:ToolResult ;
     rdfs:label "Tool result 01"@en ;
     pao:hasContent "File contents returned"@en .
+
+pao:tool_result_denied_01 a owl:NamedIndividual,
+        pao:ToolResult ;
+    rdfs:label "Denied tool result 01"@en .
+
+pao:tool_result_failed_01 a owl:NamedIndividual,
+        pao:ToolResult ;
+    rdfs:label "Failed tool result 01"@en .
 
 pao:topic_dark_mode a skos:Concept ;
     rdfs:label "dark mode implementation"@en .
@@ -639,6 +672,20 @@ pao:goal_001 a owl:NamedIndividual,
     pao:pursuedBy pao:claude_agent ;
     pao:storedIn pao:semantic_memory_instance .
 
+pao:hook_pre_tool a owl:NamedIndividual,
+        pao:Hook ;
+    rdfs:label "Pre-tool invocation hook"@en ;
+    pao:hookTriggeredExecution pao:hook_exec_01 .
+
+pao:integration_github_001 a owl:NamedIndividual,
+        pao:Integration ;
+    rdfs:label "GitHub integration 001"@en ;
+    pao:hasEndpoint "https://api.github.com"^^xsd:anyURI ;
+    pao:hasIntegrationStatus pao:Connected ;
+    pao:hasServiceName "GitHub" ;
+    pao:providesTool pao:bash_tool,
+        pao:read_tool .
+
 pao:invocation_001 a owl:NamedIndividual,
         pao:ToolInvocation ;
     rdfs:label "tool invocation 001"@en ;
@@ -655,14 +702,12 @@ pao:invocation_001 a owl:NamedIndividual,
     pao:performedBy pao:claude_agent ;
     pao:producedToolResult pao:tool_result_01 .
 
-pao:policy_001 a owl:NamedIndividual,
-        pao:PermissionPolicy ;
-    rdfs:label "file read policy"@en ;
+pao:persona_claude a owl:NamedIndividual,
+        pao:Persona ;
+    rdfs:label "Claude coding assistant persona"@en ;
     prov:wasAttributedTo pao:alice_user ;
     prov:wasGeneratedBy pao:conv_001 ;
-    pao:appliesTo pao:claude_agent ;
-    pao:grantsPermission pao:permission_001 ;
-    pao:restrictsToolUse pao:bash_tool ;
+    pao:hasContent "You are a helpful coding assistant." ;
     pao:storedIn pao:procedural_memory_instance .
 
 pao:search_subagent a owl:NamedIndividual,
@@ -671,6 +716,11 @@ pao:search_subagent a owl:NamedIndividual,
     pao:delegatedTask pao:task_001 ;
     pao:hasAgentId "agent-search-sub-001" ;
     pao:hasAvailableTool pao:read_tool ;
+    pao:hasExternalService pao:ext_svc_github ;
+    pao:hasHook pao:hook_pre_tool ;
+    pao:hasIntegration pao:integration_github_001 ;
+    pao:hasPersona pao:persona_claude ;
+    pao:operatesInMode pao:Permissive ;
     pao:spawnedBy pao:claude_agent .
 
 pao:turn_002 a owl:NamedIndividual,
@@ -691,15 +741,6 @@ pao:channel_cli_001 a owl:NamedIndividual,
     rdfs:label "CLI channel 001"@en ;
     pao:hasChannelType pao:CLI .
 
-pao:ext_svc_github a owl:NamedIndividual,
-        pao:ExternalService ;
-    rdfs:label "GitHub MCP service"@en ;
-    pao:exposesCapability pao:cap_github_prompt,
-        pao:cap_github_read,
-        pao:cap_github_repo ;
-    pao:hasServiceIdentifier "github-mcp-server" ;
-    pao:hasServiceTransport "stdio" .
-
 pao:plan_001 a owl:NamedIndividual,
         pao:Plan ;
     rdfs:label "dark mode implementation plan"@en ;
@@ -707,14 +748,6 @@ pao:plan_001 a owl:NamedIndividual,
     prov:wasGeneratedBy pao:conv_001 ;
     pao:achievesGoal pao:goal_001 ;
     pao:storedIn pao:semantic_memory_instance .
-
-pao:retention_policy_30day a owl:NamedIndividual,
-        pao:RetentionPolicy ;
-    rdfs:label "30-day retention policy"@en ;
-    prov:wasAttributedTo pao:alice_user ;
-    prov:wasGeneratedBy pao:conv_001 ;
-    pao:retentionPeriodDays "30"^^xsd:nonNegativeInteger ;
-    pao:storedIn pao:procedural_memory_instance .
 
 pao:compaction_001 a owl:NamedIndividual,
         pao:CompactionEvent ;
@@ -730,15 +763,34 @@ pao:compaction_001 a owl:NamedIndividual,
     pao:inConversation pao:conv_001 ;
     pao:producedSummary pao:summary_001 .
 
-pao:read_tool a owl:NamedIndividual,
-        pao:ToolDefinition ;
-    rdfs:label "Read Tool"@en ;
-    pao:hasContent "Read file contents" .
+pao:ext_svc_github a owl:NamedIndividual,
+        pao:ExternalService ;
+    rdfs:label "GitHub MCP service"@en ;
+    pao:exposesCapability pao:cap_github_prompt,
+        pao:cap_github_read,
+        pao:cap_github_repo ;
+    pao:hasServiceIdentifier "github-mcp-server" ;
+    pao:hasServiceTransport "stdio" .
+
+pao:policy_001 a owl:NamedIndividual,
+        pao:PermissionPolicy ;
+    rdfs:label "file read policy"@en ;
+    prov:wasAttributedTo pao:alice_user ;
+    prov:wasGeneratedBy pao:conv_001 ;
+    pao:appliesTo pao:claude_agent ;
+    pao:grantsPermission pao:permission_001 ;
+    pao:restrictsToolUse pao:bash_tool ;
+    pao:storedIn pao:procedural_memory_instance .
 
 pao:working_memory_instance a owl:NamedIndividual,
         pao:MemoryTier,
         pao:WorkingMemory ;
     rdfs:label "working memory instance"@en .
+
+pao:bash_tool a owl:NamedIndividual,
+        pao:ToolDefinition ;
+    rdfs:label "Bash Tool"@en ;
+    pao:hasContent "Execute shell commands" .
 
 pao:episode_001 a owl:NamedIndividual,
         pao:Episode,
@@ -746,7 +798,9 @@ pao:episode_001 a owl:NamedIndividual,
     rdfs:label "episode 001"@en ;
     prov:wasAttributedTo pao:claude_agent ;
     prov:wasGeneratedBy pao:conv_001 ;
+    pao:governedByRetention pao:retention_policy_30day ;
     pao:hasLastAccessTime "2025-01-15T10:00:00+00:00"^^xsd:dateTime ;
+    pao:hasSensitivityLevel pao:Internal ;
     pao:hasTemporalExtent pao:episode_001_interval ;
     pao:hasTopic pao:topic_dark_mode ;
     pao:isEvictionCandidate true ;
@@ -756,6 +810,11 @@ pao:procedural_memory_instance a owl:NamedIndividual,
         pao:MemoryTier,
         pao:ProceduralMemory ;
     rdfs:label "procedural memory instance"@en .
+
+pao:read_tool a owl:NamedIndividual,
+        pao:ToolDefinition ;
+    rdfs:label "Read Tool"@en ;
+    pao:hasContent "Read file contents" .
 
 pao:task_001 a owl:NamedIndividual,
         pao:Task ;
@@ -780,10 +839,13 @@ pao:turn_001 a owl:NamedIndividual,
     pao:partOfSession pao:session_001 ;
     pao:recordedInEpisode pao:episode_001 .
 
-pao:bash_tool a owl:NamedIndividual,
-        pao:ToolDefinition ;
-    rdfs:label "Bash Tool"@en ;
-    pao:hasContent "Execute shell commands" .
+pao:retention_policy_30day a owl:NamedIndividual,
+        pao:RetentionPolicy ;
+    rdfs:label "30-day retention policy"@en ;
+    prov:wasAttributedTo pao:alice_user ;
+    prov:wasGeneratedBy pao:conv_001 ;
+    pao:retentionPeriodDays "30"^^xsd:nonNegativeInteger ;
+    pao:storedIn pao:procedural_memory_instance .
 
 pao:claim_001 a owl:NamedIndividual,
         pao:Claim,

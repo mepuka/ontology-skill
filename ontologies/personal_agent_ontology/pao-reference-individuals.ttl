@@ -344,31 +344,40 @@ pao:ChannelType owl:equivalentClass [ owl:oneOf ( pao:CLI pao:Messaging pao:WebC
 pao:CommunicativeFunction owl:equivalentClass [ owl:oneOf ( pao:Inform pao:Request pao:Confirm pao:Clarify pao:Accept pao:Reject ) ] .
 
 [] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Permissive pao:Standard pao:Restrictive ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Approved pao:Rejected pao:Deferred ) .
+
+[] a owl:AllDifferent ;
     owl:distinctMembers ( pao:TextBlock pao:ToolUseBlock pao:ToolResultBlock pao:ImageBlock ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Public pao:Internal pao:Confidential pao:Restricted ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Compliant pao:NonCompliant ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:UserPreference ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Preserved pao:Dropped pao:Summarized pao:Archived ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:CLI pao:Messaging pao:WebChat pao:APIChannel pao:VoiceChannel pao:EmailChannel ) .
 
 [] a owl:AllDifferent ;
     owl:distinctMembers ( pao:Inform pao:Request pao:Confirm pao:Clarify pao:Accept pao:Reject ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Open pao:Closed pao:Reconnecting pao:Failed ) .
+    owl:distinctMembers ( pao:Preserved pao:Dropped pao:Summarized pao:Archived ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Permissive pao:Standard pao:Restrictive ) .
+    owl:distinctMembers ( pao:UserPreference ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Public pao:Internal pao:Confidential pao:Restricted ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:AssistantRole pao:UserRole ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Active pao:Ended pao:Interrupted ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:SessionScope pao:ProjectScope pao:GlobalScope ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Allow pao:Deny pao:RequireApproval ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Connected pao:Disconnected pao:Error pao:Initializing ) .
 
 [] a owl:AllDifferent ;
     owl:distinctMembers ( pao:UserSource pao:SystemSource pao:AgentSource ) .
@@ -377,19 +386,10 @@ pao:CommunicativeFunction owl:equivalentClass [ owl:oneOf ( pao:Inform pao:Reque
     owl:distinctMembers ( pao:Pending pao:InProgress pao:Completed pao:Blocked ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:SessionScope pao:ProjectScope pao:GlobalScope ) .
+    owl:distinctMembers ( pao:Compliant pao:NonCompliant ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Active pao:Ended pao:Interrupted ) .
+    owl:distinctMembers ( pao:Open pao:Closed pao:Reconnecting pao:Failed ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:AssistantRole pao:UserRole ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Connected pao:Disconnected pao:Error pao:Initializing ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Approved pao:Rejected pao:Deferred ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Allow pao:Deny pao:RequireApproval ) .
+    owl:distinctMembers ( pao:CLI pao:Messaging pao:WebChat pao:APIChannel pao:VoiceChannel pao:EmailChannel ) .

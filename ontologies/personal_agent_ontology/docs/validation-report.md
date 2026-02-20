@@ -10,7 +10,7 @@ Validation method: pyshacl 0.29+, rdflib 7.1+, pytest 8.3+
 - **Overall: PASS**
 - Blocking issues: 0
 - SHACL violations: **0**
-- Pytest failures: **0** (1,035 tests)
+- Pytest failures: **0** (1,037 tests)
 
 ## Level 1: Logical Consistency
 
@@ -29,7 +29,7 @@ participates in contradictory disjoint sets.
 - **Status: PASS**
 - Label coverage: 92/92 classes (100%)
 - Definition coverage: 92/92 classes (100%)
-- All 132 properties have rdfs:label and skos:definition
+- All 133 properties have rdfs:label and skos:definition
 
 All PAO classes and properties have both `rdfs:label` and `skos:definition`.
 External imported terms (BFO, PROV-O, OWL-Time, FOAF, ODRL stubs) intentionally
@@ -41,7 +41,7 @@ lack `obo:IAO_0000115` annotations.
 - Violations: **0** (merged graph with RDFS inference)
 - Shapes validated: 45 NodeShapes
 
-All 45 SHACL shapes pass when the full graph (TBox + reference individuals +
+All 46 SHACL shapes pass when the full graph (TBox + reference individuals +
 ABox data) is validated with RDFS inference. Phase B remediation expanded SHACL
 coverage from 37 to 45 shapes, adding EventShape, and strengthening AIAgentShape,
 TurnShape, ToolInvocationShape, MemoryItemShape, EpisodeShape,
@@ -57,8 +57,8 @@ fixture.
 ## Level 4: CQ Test Suite
 
 - **Status: PASS**
-- Total tests: **1,035**
-- Passed: **1,035**
+- Total tests: **1,037**
+- Passed: **1,037**
 - Failed: **0**
 
 ### Breakdown
@@ -69,7 +69,7 @@ fixture.
 | Labels and definitions | 184 | PASS |
 | Class hierarchy (SubClassOf) | 81 | PASS |
 | BFO alignment | 38 | PASS |
-| Object property declarations | 109 | PASS |
+| Object property declarations | 110 | PASS |
 | Datatype property declarations | 23 | PASS |
 | Functional properties | 76 | PASS |
 | Transitive properties | 2 | PASS |
@@ -94,7 +94,7 @@ fixture.
 | CQ SPARQL (ASK true) | 4 | PASS |
 | CQ SPARQL (constraint zero-rows) | 2 | PASS |
 | SHACL conformance | 1 | PASS |
-| SHACL shape structure | 46 | PASS |
+| SHACL shape structure | 47 | PASS |
 
 ### CQ Coverage
 
@@ -110,8 +110,8 @@ fixture.
 |--------|-------|--------|--------|
 | Class label coverage | 92/92 (100%) | 100% | PASS |
 | Class definition coverage | 92/92 (100%) | >= 80% | PASS |
-| Property label coverage | 132/132 (100%) | 100% | PASS |
-| Property definition coverage | 132/132 (100%) | >= 80% | PASS |
+| Property label coverage | 133/133 (100%) | 100% | PASS |
+| Property definition coverage | 133/133 (100%) | >= 80% | PASS |
 | Orphan classes | 0 | 0 | PASS |
 | Unsatisfiable classes | 0 | 0 | PASS |
 | Naming convention issues | 0 | 0 | PASS |
@@ -133,11 +133,11 @@ fixture.
 | Entity Type | Count |
 |------------|-------|
 | PAO classes | 92 |
-| PAO object properties | 109 |
+| PAO object properties | 110 |
 | PAO data properties | 23 |
 | Functional properties | 76 |
 | Named individuals (ref) | 60 |
-| SHACL NodeShapes | 45 |
+| SHACL NodeShapes | 46 |
 | DisjointUnion axioms | 3 |
 | AllDisjointClasses axioms | 11 |
 
@@ -147,7 +147,7 @@ fixture.
 |-------------|----------|------------|
 | #1 Singleton hierarchy | 2 | Intentional: AIAgent->SubAgent, Action->ToolInvocation. Both have meaningful distinctions; more subtypes expected as domain grows. |
 | #4 Missing disjointness | None detected | 11 AllDisjointClasses axioms cover all sibling groups. |
-| #10 Leaf-class domain/range | 132 properties | Most are intentionally specific. Broad-domain properties (storedIn, hasTimestamp, hasTemporalExtent) corrected in v0.1.0. |
+| #10 Leaf-class domain/range | 133 properties | Most are intentionally specific. Broad-domain properties (storedIn, hasTimestamp, hasTemporalExtent) corrected in v0.1.0. |
 | #11 Individuals in TBox | 0 | Clean TBox/ABox separation. |
 | #16 Class/individual mixing | 0 | No punning detected. |
 
@@ -159,7 +159,7 @@ fixture.
   restrictions, qualified cardinality, value partitions (owl:oneOf),
   disjoint unions, property hierarchy, HasKey axioms, and subPropertyOf
   chains. Sufficient for all 98 CQs.
-- **Complexity**: Moderate (92 classes, 132 properties). Taxonomy depth is
+- **Complexity**: Moderate (92 classes, 133 properties). Taxonomy depth is
   shallow (max 4 levels), keeping the model navigable.
 - **Granularity**: Appropriate for the scope. Fourteen modules (core,
   conversation, memory, planning, governance, events, channels, integrations,
@@ -283,8 +283,8 @@ Phase B: CQ-090 through CQ-098
 ## Conclusion
 
 The Personal Agent Ontology v0.6.0 **passes all required validation
-levels**. It is logically consistent, structurally valid (45 SHACL shapes,
-0 violations), functionally complete (1,035/1,035 tests, 97/98 CQs), and
+levels**. It is logically consistent, structurally valid (46 SHACL shapes,
+0 violations), functionally complete (1,037/1,037 tests, 97/98 CQs), and
 follows established naming and modeling conventions. v0.6.0 spans two phases:
 Phase A adds external service modeling, runtime safety, and recovery/resilience;
 Phase B adds tool invocation grouping, memory control plane, and dialog
