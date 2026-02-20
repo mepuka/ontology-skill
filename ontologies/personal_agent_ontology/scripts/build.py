@@ -362,6 +362,8 @@ def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
         ("SensitivityLevel", PAO.Status, None),  # Value Partition
         ("ConsentRecord", PROV.Entity, OBO.BFO_0000031),
         ("RetentionPolicy", PROV.Entity, OBO.BFO_0000031),
+        # pao-conversation (v0.4.0)
+        ("ContextWindow", PROV.Entity, OBO.BFO_0000031),
     ]
 
     # Additional parent axioms (multiple inheritance)
@@ -390,7 +392,7 @@ def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
 
 
 def _add_object_properties(g: Graph) -> None:
-    """Declare all 64 object properties."""
+    """Declare all 66 object properties."""
     # Each tuple: (name, domain, range, characteristics, definition)
     obj_props: list[tuple[str, URIRef | None, URIRef | None, list[str], str]] = [
         # pao-core: generic part-whole
@@ -849,6 +851,21 @@ def _add_object_properties(g: Graph) -> None:
             ["functional"],
             "Links to the following status transition for the same subject.",
         ),
+        # v0.4.0: Context Window
+        (
+            "hasContextWindow",
+            PAO.Session,
+            PAO.ContextWindow,
+            ["functional"],
+            "Links a session to its context window resource.",
+        ),
+        (
+            "compactedContextOf",
+            PAO.CompactionEvent,
+            PAO.ContextWindow,
+            ["functional"],
+            "Links a compaction event to the context window that triggered it.",
+        ),
     ]
 
     for name, domain, range_, chars, defn in obj_props:
@@ -867,7 +884,7 @@ def _add_object_properties(g: Graph) -> None:
 
 
 def _add_data_properties(g: Graph) -> None:
-    """Declare all 14 data properties."""
+    """Declare all 16 data properties."""
     data_props: list[tuple[str, URIRef | None, URIRef, list[str], str]] = [
         (
             "hasTimestamp",
@@ -971,6 +988,21 @@ def _add_data_properties(g: Graph) -> None:
             XSD.string,
             ["functional"],
             "The unique string identifier for this conversation.",
+        ),
+        # v0.4.0: Context Window
+        (
+            "hasTokenCapacity",
+            PAO.ContextWindow,
+            XSD.nonNegativeInteger,
+            ["functional"],
+            "The maximum number of tokens the context window can hold.",
+        ),
+        (
+            "hasTokensUsed",
+            PAO.ContextWindow,
+            XSD.nonNegativeInteger,
+            ["functional"],
+            "The number of tokens currently used in the context window.",
         ),
     ]
 
@@ -1120,6 +1152,8 @@ def _add_existential_restrictions(g: Graph) -> None:
         # CQ-052: CompactionDisposition has item and fate
         (PAO.CompactionDisposition, PAO.dispositionOf, PROV.Entity),
         (PAO.CompactionDisposition, PAO.hasItemFate, PAO.ItemFate),
+        # CQ-061/064: hasContextWindow and compactedContextOf are optional (min 0),
+        # so no existential restrictions — SHACL enforces max 1 when present.
     ]
     for cls, prop, filler in restrictions:
         _add_existential(g, cls, prop, filler)
@@ -1225,6 +1259,7 @@ def _add_disjointness_axioms(g: Graph) -> None:
             PAO.ConsentRecord,
             PAO.RetentionPolicy,
             PAO.CompactionDisposition,
+            PAO.ContextWindow,
         ],
     )
     # MemoryTier subtypes (covered by DisjointUnion, but explicit for clarity)
@@ -1440,6 +1475,7 @@ def build_abox_data() -> Graph:
     _add_sample_session_continuation(g)
     _add_sample_identity(g)
     _add_sample_transitions(g)
+    _add_sample_context_window(g)
 
     return g
 
@@ -2141,6 +2177,30 @@ def _add_sample_transitions(g: Graph) -> None:
     g.add((st1, PAO.triggeredBy, PAO.compaction_001))
 
 
+def _add_sample_context_window(g: Graph) -> None:
+    """Add sample context window individuals (CQ-061 through CQ-065)."""
+    # Context window for session_001 — high usage (triggers compaction)
+    cw1 = PAO.context_window_001
+    g.add((cw1, RDF.type, PAO.ContextWindow))
+    g.add((cw1, RDF.type, OWL.NamedIndividual))
+    g.add((cw1, RDFS.label, Literal("context window 001", lang="en")))
+    g.add((cw1, PAO.hasTokenCapacity, Literal(200000, datatype=XSD.nonNegativeInteger)))
+    g.add((cw1, PAO.hasTokensUsed, Literal(165000, datatype=XSD.nonNegativeInteger)))
+    # Link session to context window (CQ-061)
+    g.add((PAO.session_001, PAO.hasContextWindow, cw1))
+    # Link compaction event to context window (CQ-064)
+    g.add((PAO.compaction_001, PAO.compactedContextOf, cw1))
+
+    # Context window for session_002 — low usage (no compaction)
+    cw2 = PAO.context_window_002
+    g.add((cw2, RDF.type, PAO.ContextWindow))
+    g.add((cw2, RDF.type, OWL.NamedIndividual))
+    g.add((cw2, RDFS.label, Literal("context window 002", lang="en")))
+    g.add((cw2, PAO.hasTokenCapacity, Literal(200000, datatype=XSD.nonNegativeInteger)))
+    g.add((cw2, PAO.hasTokensUsed, Literal(45000, datatype=XSD.nonNegativeInteger)))
+    g.add((PAO.session_002, PAO.hasContextWindow, cw2))
+
+
 # ---------------------------------------------------------------------------
 # SHACL Shapes Builder
 # ---------------------------------------------------------------------------
@@ -2205,6 +2265,9 @@ def build_shacl_shapes() -> Graph:
                 g, PAO.hasStatus, min_count=1, max_count=1, class_constraint=PAO.SessionStatus
             ),
             _property_shape(g, PAO.hasSessionId, min_count=1, max_count=1, datatype=XSD.string),
+            _property_shape(
+                g, PAO.hasContextWindow, max_count=1, class_constraint=PAO.ContextWindow
+            ),
         ],
     )
 
@@ -2435,6 +2498,9 @@ def build_shacl_shapes() -> Graph:
         PAO.CompactionEvent,
         [
             _property_shape(g, PAO.producedSummary, min_count=1, class_constraint=PAO.MemoryItem),
+            _property_shape(
+                g, PAO.compactedContextOf, max_count=1, class_constraint=PAO.ContextWindow
+            ),
         ],
     )
 
@@ -2485,6 +2551,38 @@ def build_shacl_shapes() -> Graph:
         ],
     )
 
+    # --- ContextWindowShape (v0.4.0) ---
+    cw_sparql = BNode()
+    g.add(
+        (
+            cw_sparql,
+            SH.select,
+            Literal(
+                "PREFIX pao: <https://purl.org/pao/>\n"
+                "SELECT $this WHERE {\n"
+                "  $this pao:hasTokensUsed ?used .\n"
+                "  $this pao:hasTokenCapacity ?cap .\n"
+                "  FILTER(?used > ?cap)\n"
+                "}"
+            ),
+        )
+    )
+    g.add((cw_sparql, SH.message, Literal("hasTokensUsed must not exceed hasTokenCapacity")))
+    _add_shape(
+        g,
+        PAO.ContextWindowShape,
+        PAO.ContextWindow,
+        [
+            _property_shape(
+                g, PAO.hasTokenCapacity, min_count=1, max_count=1, datatype=XSD.nonNegativeInteger
+            ),
+            _property_shape(
+                g, PAO.hasTokensUsed, min_count=1, max_count=1, datatype=XSD.nonNegativeInteger
+            ),
+        ],
+    )
+    g.add((PAO.ContextWindowShape, SH.sparql, cw_sparql))
+
     return g
 
 
@@ -2525,6 +2623,19 @@ def _property_shape(
 
 
 # ---------------------------------------------------------------------------
+# Serialization
+# ---------------------------------------------------------------------------
+
+
+def _serialize_turtle(g: Graph, path: Path) -> None:
+    """Serialize graph as Turtle, ensuring a trailing newline for pre-commit."""
+    g.serialize(destination=str(path), format="turtle")
+    content = path.read_bytes()
+    if content and not content.endswith(b"\n"):
+        path.write_bytes(content + b"\n")
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
@@ -2546,28 +2657,28 @@ def main() -> None:
     print("\nBuilding reference individuals (pao-reference-individuals.ttl)...")
     ref = build_reference_individuals(glossary)
     ref_path = OUT / "pao-reference-individuals.ttl"
-    ref.serialize(destination=str(ref_path), format="turtle")
+    _serialize_turtle(ref, ref_path)
     print(f"  Written: {ref_path} ({len(ref)} triples)")
 
     # Build TBox
     print("Building TBox (personal_agent_ontology.ttl)...")
     tbox = build_tbox(glossary)
     tbox_path = OUT / "personal_agent_ontology.ttl"
-    tbox.serialize(destination=str(tbox_path), format="turtle")
+    _serialize_turtle(tbox, tbox_path)
     print(f"  Written: {tbox_path} ({len(tbox)} triples)")
 
     # Build SHACL Shapes
     print("Building SHACL shapes (shapes/pao-shapes.ttl)...")
     shapes = build_shacl_shapes()
     shapes_path = OUT / "shapes" / "pao-shapes.ttl"
-    shapes.serialize(destination=str(shapes_path), format="turtle")
+    _serialize_turtle(shapes, shapes_path)
     print(f"  Written: {shapes_path} ({len(shapes)} triples)")
 
     # Build sample ABox data
     print("Building sample ABox data (pao-data.ttl)...")
     data = build_abox_data()
     data_path = OUT / "pao-data.ttl"
-    data.serialize(destination=str(data_path), format="turtle")
+    _serialize_turtle(data, data_path)
     print(f"  Written: {data_path} ({len(data)} triples)")
 
     print("\nBuild complete.")

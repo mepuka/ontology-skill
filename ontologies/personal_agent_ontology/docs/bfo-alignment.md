@@ -24,7 +24,7 @@ independently and note the PROV-O relationship.
 | BFO Category | PAO Classes |
 |---|---|
 | Object (BFO:0000030) | HumanUser, Organization |
-| Generically Dependent Continuant (BFO:0000031) | AIAgent, SubAgent, ToolDefinition, Message, MemoryItem, MemoryTier, WorkingMemory, EpisodicMemory, SemanticMemory, ProceduralMemory, Episode, Claim, MemoryBlock, Goal, Plan, Task, Persona, Intention, PermissionPolicy, SafetyConstraint, ConsentRecord, RetentionPolicy, CompactionDisposition |
+| Generically Dependent Continuant (BFO:0000031) | AIAgent, SubAgent, ToolDefinition, Message, MemoryItem, MemoryTier, WorkingMemory, EpisodicMemory, SemanticMemory, ProceduralMemory, Episode, Claim, MemoryBlock, Goal, Plan, Task, Persona, Intention, PermissionPolicy, SafetyConstraint, ConsentRecord, RetentionPolicy, CompactionDisposition, ContextWindow |
 | Role (BFO:0000023) | AgentRole |
 | Process (BFO:0000015) | Conversation, Session, Turn, ToolInvocation, CompactionEvent, ErasureEvent, Event, Action, MemoryOperation, Encoding, Retrieval, Consolidation, Forgetting, Observation, Rehearsal, StatusTransition, SessionStatusTransition, TaskStatusTransition |
 | Cross-cutting (documented) | Agent (umbrella for Object + GDC subtypes) |
@@ -532,6 +532,23 @@ controlled vocabulary for compaction outcomes. Like other Status types
 (SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel), they follow the
 Value Partition pattern (ODP-6) with owl:oneOf enumeration. ItemFate is a subclass
 of Status.
+
+---
+
+### 39. ContextWindow -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A context window is an information resource representing the
+finite attention buffer of an AI agent session. It has quantifiable properties
+(token capacity, tokens used) and exists as a dependent continuant of the
+session. Like MemoryItem, it is an information structure that can be described,
+measured, and acted upon (compaction events respond to context window state).
+
+**Decision path**: Continuant > Dependent Continuant > Generically Dependent
+Continuant. The context window's content can be transferred between bearers
+(e.g., session continuation), making it generically rather than specifically
+dependent.
 
 ---
 

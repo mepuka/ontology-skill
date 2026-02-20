@@ -129,16 +129,16 @@ pao:TaskStatus owl:equivalentClass [ owl:oneOf ( pao:Pending pao:InProgress pao:
     owl:distinctMembers ( pao:Preserved pao:Dropped pao:Summarized pao:Archived ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Public pao:Internal pao:Confidential pao:Restricted ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Pending pao:InProgress pao:Completed pao:Blocked ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Compliant pao:NonCompliant ) .
+    owl:distinctMembers ( pao:AssistantRole pao:UserRole ) .
 
 [] a owl:AllDifferent ;
     owl:distinctMembers ( pao:Active pao:Ended pao:Interrupted ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:AssistantRole pao:UserRole ) .
+    owl:distinctMembers ( pao:Pending pao:InProgress pao:Completed pao:Blocked ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Public pao:Internal pao:Confidential pao:Restricted ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Compliant pao:NonCompliant ) .

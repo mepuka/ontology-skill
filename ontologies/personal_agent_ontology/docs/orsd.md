@@ -63,7 +63,7 @@ protocols, probabilistic reasoning.
 
 ## 4. Use Cases
 
-26 use cases are defined in `use-cases.yaml`, covering all 6 modules
+30 use cases are defined in `use-cases.yaml`, covering all 6 modules
 and 7 motivating scenarios (S1-S7 from scope.md).
 
 ### Summary by Module
@@ -71,25 +71,25 @@ and 7 motivating scenarios (S1-S7 from scope.md).
 | Module | Use Cases | Must-Have |
 |--------|-----------|-----------|
 | Identity & Actors | UC-001, UC-002, UC-020, UC-021 | UC-001 |
-| Conversation & Interaction | UC-003 to UC-006, UC-022 | UC-003, UC-004, UC-005 |
+| Conversation & Interaction | UC-003 to UC-006, UC-022, UC-027, UC-030 | UC-003, UC-004, UC-005 |
 | Memory | UC-007 to UC-012, UC-023, UC-024 | UC-007, UC-008, UC-009, UC-010 |
-| Actions, Events, Time | UC-013, UC-014 | UC-013 |
+| Actions, Events, Time | UC-013, UC-014, UC-028 | UC-013 |
 | Goals, Plans, Tasks | UC-015, UC-016, UC-025 | UC-015 |
-| Governance & Safety | UC-017 to UC-019, UC-026 | UC-017, UC-018 |
+| Governance & Safety | UC-017 to UC-019, UC-026, UC-029 | UC-017, UC-018 |
 
 ---
 
 ## 5. Competency Questions
 
-60 competency questions are defined in `competency-questions.yaml`.
+65 competency questions are defined in `competency-questions.yaml`.
 
 ### Priority Distribution (MoSCoW)
 
 | Priority | Count | CQ IDs |
 |----------|-------|--------|
 | Must Have | 30 | CQ-001 to CQ-009, CQ-011 to CQ-016, CQ-018, CQ-020, CQ-023 to CQ-028, CQ-030 to CQ-032, CQ-034, CQ-036, CQ-038 to CQ-040, CQ-048 |
-| Should Have | 27 | CQ-003, CQ-004, CQ-010, CQ-017, CQ-019, CQ-021, CQ-029, CQ-033, CQ-035, CQ-037, CQ-041 to CQ-043, CQ-045 to CQ-047, CQ-049 to CQ-059 |
-| Could Have | 3 | CQ-022, CQ-044, CQ-060 |
+| Should Have | 31 | CQ-003, CQ-004, CQ-010, CQ-017, CQ-019, CQ-021, CQ-029, CQ-033, CQ-035, CQ-037, CQ-041 to CQ-043, CQ-045 to CQ-047, CQ-049 to CQ-059, CQ-061 to CQ-064 |
+| Could Have | 4 | CQ-022, CQ-044, CQ-060, CQ-065 |
 | Won't Have | 0 | (none) |
 
 ### CQ Type Distribution

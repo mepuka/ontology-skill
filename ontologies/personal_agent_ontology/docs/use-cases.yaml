@@ -436,3 +436,72 @@ use_cases:
     related_scenarios: [S5]
     related_cqs: [CQ-048, CQ-049, CQ-050, CQ-051]
     priority: should_have
+
+  # ── v0.3.0 Use Cases (compaction, lifecycle, session continuity) ───
+
+  - id: UC-027
+    name: "Trace compaction preservation and loss"
+    actor: "System Architect / Memory Manager"
+    goal: "Track which memory items were preserved, dropped, summarized, or archived during compaction"
+    preconditions:
+      - "Compaction events have occurred with item fate dispositions"
+    main_flow:
+      - "System records CompactionDisposition for each item in a compaction"
+      - "Each disposition carries an ItemFate (Preserved, Dropped, Summarized, Archived)"
+      - "Reviewer queries dropped items and preservation rates"
+    postconditions:
+      - "All compacted items have traceable fate records"
+    related_scenarios: [S3]
+    related_cqs: [CQ-052, CQ-053]
+    priority: should_have
+
+  - id: UC-028
+    name: "Manage memory eviction eligibility"
+    actor: "Memory Manager"
+    goal: "Identify memory items eligible for eviction based on access recency and tier"
+    preconditions:
+      - "Memory items have last access timestamps and eviction flags"
+    main_flow:
+      - "System tracks last access time for memory items"
+      - "Items are flagged as eviction candidates based on policy"
+      - "Reviewer queries eviction-eligible items by tier"
+    postconditions:
+      - "Eviction candidates are identifiable for cleanup"
+    related_scenarios: [S3]
+    related_cqs: [CQ-054, CQ-055]
+    priority: should_have
+
+  - id: UC-029
+    name: "Track session continuity and lifecycle transitions"
+    actor: "AI Agent / Session Manager"
+    goal: "Record cross-session resume chains and status transitions with triggers"
+    preconditions:
+      - "Sessions have been continued from prior sessions"
+      - "Tasks and sessions have undergone status transitions"
+    main_flow:
+      - "System records continuedFrom/continuedBy links between sessions"
+      - "Status transitions are reified as events with from/to status and triggers"
+      - "Entities are identifiable by HasKey unique IDs"
+    postconditions:
+      - "Session chains and lifecycle histories are fully queryable"
+    related_scenarios: [S6]
+    related_cqs: [CQ-056, CQ-057, CQ-058, CQ-059, CQ-060]
+    priority: should_have
+
+  # ── v0.4.0 Use Cases ──────────────────────────────────────────────
+
+  - id: UC-030
+    name: "Monitor context window state and compaction triggers"
+    actor: "AI Agent / Memory Manager"
+    goal: "Track the token capacity, current usage, and available space of a session's context window to understand compaction triggers"
+    preconditions:
+      - "Sessions have associated context windows with capacity and usage data"
+    main_flow:
+      - "System records a ContextWindow for each session with token capacity and usage"
+      - "When usage exceeds a threshold, a compaction event is triggered"
+      - "Reviewer queries context window state and linked compaction events"
+    postconditions:
+      - "Context window metrics are queryable; compaction events trace back to their triggering context window"
+    related_scenarios: [S3]
+    related_cqs: [CQ-061, CQ-062, CQ-063, CQ-064, CQ-065]
+    priority: should_have

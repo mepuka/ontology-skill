@@ -59,3 +59,8 @@ stakeholder_need,use_case_id,cq_id,ontology_terms,sparql_test
 "Track task lifecycle transitions",UC-016,CQ-058,"TaskStatusTransition;fromStatus;toStatus",ontologies/personal_agent_ontology/tests/cq-058.sparql
 "Query previous session status",UC-003,CQ-059,"SessionStatusTransition;fromStatus",ontologies/personal_agent_ontology/tests/cq-059.sparql
 "Track transition triggers",UC-016,CQ-060,"StatusTransition;triggeredBy",ontologies/personal_agent_ontology/tests/cq-060.sparql
+"Monitor context window state",UC-030,CQ-061,"Session;ContextWindow;hasContextWindow",ontologies/personal_agent_ontology/tests/cq-061.sparql
+"Query context window capacity and usage",UC-030,CQ-062,"ContextWindow;hasTokenCapacity;hasTokensUsed",ontologies/personal_agent_ontology/tests/cq-062.sparql
+"Identify high-usage context windows",UC-030,CQ-063,"ContextWindow;hasTokenCapacity;hasTokensUsed",ontologies/personal_agent_ontology/tests/cq-063.sparql
+"Trace compaction to context window",UC-030,CQ-064,"CompactionEvent;ContextWindow;compactedContextOf",ontologies/personal_agent_ontology/tests/cq-064.sparql
+"Query available context capacity",UC-030,CQ-065,"ContextWindow;hasTokenCapacity;hasTokensUsed",ontologies/personal_agent_ontology/tests/cq-065.sparql

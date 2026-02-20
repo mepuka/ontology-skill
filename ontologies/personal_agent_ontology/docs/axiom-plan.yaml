@@ -1313,16 +1313,87 @@ axiom_plan:
     abox_requirements:
       - "StatusTransition with triggeredBy link to an Event"
 
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.4.0: Context Window
+  # ─────────────────────────────────────────────────────────────────────
+
+  - cq_id: CQ-061
+    natural_language: "What context window is associated with a given session?"
+    priority: should_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "Functional property (no existential)"
+        axiom_sketch: "hasContextWindow: Session -> ContextWindow [functional, optional]"
+        note: "Optional link — not every session has a context window. SHACL enforces max 1 when present."
+    tbox_requirements:
+      - "ContextWindow class, subclass of prov:Entity (BFO:GDC)"
+      - "hasContextWindow ObjectProperty with domain Session, range ContextWindow, functional"
+    abox_requirements:
+      - "Session with hasContextWindow link to a ContextWindow individual"
+
+  - cq_id: CQ-062
+    natural_language: "What is the token capacity and current usage of a context window?"
+    priority: should_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "ContextWindow SubClassOf hasTokenCapacity some xsd:nonNegativeInteger AND hasTokensUsed some xsd:nonNegativeInteger"
+        note: "Every context window must have capacity and usage"
+    tbox_requirements:
+      - "hasTokenCapacity DataProperty with domain ContextWindow, range xsd:nonNegativeInteger, functional"
+      - "hasTokensUsed DataProperty with domain ContextWindow, range xsd:nonNegativeInteger, functional"
+    abox_requirements:
+      - "ContextWindow with hasTokenCapacity and hasTokensUsed values"
+
+  - cq_id: CQ-063
+    natural_language: "Which context windows have usage exceeding a given threshold?"
+    priority: should_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "SPARQL FILTER"
+        axiom_sketch: "FILTER(?used > ?capacity * 8 / 10)"
+        note: "Threshold comparison — pure SPARQL, no additional axioms needed"
+    tbox_requirements:
+      - "(Covered by CQ-062 properties)"
+    abox_requirements:
+      - "ContextWindow with usage > 80% of capacity"
+
+  - cq_id: CQ-064
+    natural_language: "Which compaction events were triggered by a specific context window?"
+    priority: should_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "Functional property (no existential)"
+        axiom_sketch: "compactedContextOf: CompactionEvent -> ContextWindow [functional, optional]"
+        note: "Optional link — not all compaction events are triggered by context window state. SHACL enforces max 1 when present."
+    tbox_requirements:
+      - "compactedContextOf ObjectProperty with domain CompactionEvent, range ContextWindow, functional"
+    abox_requirements:
+      - "CompactionEvent with compactedContextOf link to a ContextWindow"
+
+  - cq_id: CQ-065
+    natural_language: "What is the available (remaining) capacity of a context window?"
+    priority: could_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "SPARQL computation"
+        axiom_sketch: "(?capacity - ?used AS ?available)"
+        note: "Derived value — computed in SPARQL, no additional axioms needed"
+    tbox_requirements:
+      - "(Covered by CQ-062 properties)"
+    abox_requirements:
+      - "(Covered by CQ-062 sample data)"
+
 # ═══════════════════════════════════════════════════════════════════════
 # AXIOM PATTERN SUMMARY
 # ═══════════════════════════════════════════════════════════════════════
 
 summary:
-  total_cqs: 60
+  total_cqs: 65
   by_priority:
     must_have: 30
-    should_have: 27
-    could_have: 3
+    should_have: 31
+    could_have: 4
 
   patterns_used:
     - pattern: "1. Simple SubClassOf"
@@ -1415,3 +1486,13 @@ summary:
         Resolved in v0.3.0 -- owl:hasKey axioms added for AIAgent
         (hasAgentId), Session (hasSessionId), and Conversation
         (hasConversationId).
+    - id: DN-06
+      title: "Compaction trigger-causality is weak"
+      status: open
+      note: >
+        UC-030 describes a causal flow (usage exceeded threshold => compaction)
+        but the ontology only models static links (CQ-063 checks current
+        utilization, CQ-064 checks a link to compaction event). There is no
+        explicit event-time snapshot or threshold assertion to prove the
+        trigger condition historically. Future work could add a reified
+        trigger event or temporal snapshot pattern.

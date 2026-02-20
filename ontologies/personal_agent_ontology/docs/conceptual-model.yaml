@@ -143,6 +143,7 @@ modules:
       - CompactionEvent
       - Observation
       - CompactionDisposition
+      - ContextWindow
 
   - id: pao-memory
     name: Memory
@@ -471,6 +472,12 @@ taxonomy:
     module: pao-conversation
     note: "N-ary reification linking compaction event, item, and fate with optional rationale"
 
+  - class: ContextWindow
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-conversation
+    note: "Finite attention resource of an AI agent session with token capacity and usage tracking"
+
   - class: RetentionPolicy
     parent: "prov:Entity"
     bfo: "GDC (BFO:0000031)"
@@ -666,11 +673,11 @@ design_decisions:
 # ═══════════════════════════════════════════════════════════════════════
 
 summary:
-  total_classes: 51
+  total_classes: 52
   by_module:
     pao-core: 7
     pao-event: 10     # was 6, +4 (StatusTransition, SessionStatusTransition, TaskStatusTransition, ItemFate)
-    pao-conversation: 9  # was 8, +1 (CompactionDisposition)
+    pao-conversation: 10  # was 9, +1 (ContextWindow)
     pao-memory: 15
     pao-planning: 4
     pao-governance: 6

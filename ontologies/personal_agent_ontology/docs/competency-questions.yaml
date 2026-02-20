@@ -1812,3 +1812,140 @@ competency_questions:
     required_properties:
       - triggeredBy
     required_axioms: []
+
+  # ── v0.4.0: Context Window ──────────────────────────────────────
+
+  - id: CQ-061
+    source_use_case: UC-030
+    natural_language: "What context window is associated with a given session?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - session: pao:Session_001
+        contextWindow: pao:ContextWindow_001
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Historical context window snapshots over time"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?session ?contextWindow WHERE {
+        ?session a pao:Session ;
+                 pao:hasContextWindow ?contextWindow .
+        ?contextWindow a pao:ContextWindow .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Session
+      - ContextWindow
+    required_properties:
+      - hasContextWindow
+    required_axioms: []
+
+  - id: CQ-062
+    source_use_case: UC-030
+    natural_language: "What is the token capacity and current usage of a context window?"
+    type: quantitative
+    priority: should_have
+    sample_answer:
+      - contextWindow: pao:ContextWindow_001
+        capacity: 200000
+        used: 165000
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Token counting algorithms and tokenizer-specific details"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?cw ?capacity ?used WHERE {
+        ?cw a pao:ContextWindow ;
+            pao:hasTokenCapacity ?capacity ;
+            pao:hasTokensUsed ?used .
+      }
+    expected_result: non_empty
+    required_classes:
+      - ContextWindow
+    required_properties:
+      - hasTokenCapacity
+      - hasTokensUsed
+    required_axioms: []
+
+  - id: CQ-063
+    source_use_case: UC-030
+    natural_language: "Which context windows have usage exceeding a given threshold?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - contextWindow: pao:ContextWindow_001
+        used: 165000
+        capacity: 200000
+    derivation_method: aggregation
+    out_of_scope:
+      - "Dynamic threshold configuration"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?cw ?used ?capacity WHERE {
+        ?cw a pao:ContextWindow ;
+            pao:hasTokenCapacity ?capacity ;
+            pao:hasTokensUsed ?used .
+        FILTER(?used > ?capacity * 8 / 10)
+      }
+    expected_result: non_empty
+    required_classes:
+      - ContextWindow
+    required_properties:
+      - hasTokenCapacity
+      - hasTokensUsed
+    required_axioms: []
+
+  - id: CQ-064
+    source_use_case: UC-030
+    natural_language: "Which compaction events were triggered by a specific context window?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - compaction: pao:CompactionEvent_001
+        contextWindow: pao:ContextWindow_001
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Compaction scheduling algorithms"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?compaction ?contextWindow WHERE {
+        ?compaction a pao:CompactionEvent ;
+                    pao:compactedContextOf ?contextWindow .
+        ?contextWindow a pao:ContextWindow .
+      }
+    expected_result: non_empty
+    required_classes:
+      - CompactionEvent
+      - ContextWindow
+    required_properties:
+      - compactedContextOf
+    required_axioms: []
+
+  - id: CQ-065
+    source_use_case: UC-030
+    natural_language: "What is the available (remaining) capacity of a context window?"
+    type: quantitative
+    priority: could_have
+    sample_answer:
+      - contextWindow: pao:ContextWindow_001
+        capacity: 200000
+        used: 165000
+        available: 35000
+    derivation_method: aggregation
+    out_of_scope:
+      - "Predictive capacity modeling"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?cw ?capacity ?used (?capacity - ?used AS ?available) WHERE {
+        ?cw a pao:ContextWindow ;
+            pao:hasTokenCapacity ?capacity ;
+            pao:hasTokensUsed ?used .
+      }
+    expected_result: non_empty
+    required_classes:
+      - ContextWindow
+    required_properties:
+      - hasTokenCapacity
+      - hasTokensUsed
+    required_axioms: []

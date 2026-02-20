@@ -198,6 +198,12 @@ pao:task_003 a owl:NamedIndividual,
     pao:partOfPlan pao:plan_001 ;
     pao:storedIn pao:semantic_memory_instance .
 
+pao:context_window_002 a owl:NamedIndividual,
+        pao:ContextWindow ;
+    rdfs:label "context window 002"@en ;
+    pao:hasTokenCapacity "200000"^^xsd:nonNegativeInteger ;
+    pao:hasTokensUsed "45000"^^xsd:nonNegativeInteger .
+
 pao:disp_claim_001 a owl:NamedIndividual,
         pao:CompactionDisposition ;
     rdfs:label "disposition of claim 001"@en ;
@@ -275,6 +281,7 @@ pao:session_002 a owl:NamedIndividual,
         pao:Session ;
     rdfs:label "session 002"@en ;
     pao:continuedFrom pao:session_001 ;
+    pao:hasContextWindow pao:context_window_002 ;
     pao:hasParticipant pao:alice_user ;
     pao:hasSessionId "sess-002" ;
     pao:hasStatus pao:Ended ;
@@ -338,6 +345,12 @@ pao:acme_corp a owl:NamedIndividual,
     rdfs:label "Acme Corp"@en ;
     pao:hasMember pao:alice_user,
         pao:claude_agent .
+
+pao:context_window_001 a owl:NamedIndividual,
+        pao:ContextWindow ;
+    rdfs:label "context window 001"@en ;
+    pao:hasTokenCapacity "200000"^^xsd:nonNegativeInteger ;
+    pao:hasTokensUsed "165000"^^xsd:nonNegativeInteger .
 
 pao:goal_001 a owl:NamedIndividual,
         pao:Goal ;
@@ -411,6 +424,7 @@ pao:turn_001 a owl:NamedIndividual,
 pao:compaction_001 a owl:NamedIndividual,
         pao:CompactionEvent ;
     rdfs:label "compaction event 001"@en ;
+    pao:compactedContextOf pao:context_window_001 ;
     pao:compactedItem pao:claim_001,
         pao:turn_001,
         pao:turn_002 ;
@@ -480,6 +494,7 @@ pao:session_001 a owl:NamedIndividual,
         pao:Session ;
     rdfs:label "session 001"@en ;
     pao:continuedBy pao:session_002 ;
+    pao:hasContextWindow pao:context_window_001 ;
     pao:hasParticipant pao:alice_user,
         pao:claude_agent ;
     pao:hasSessionId "sess-001" ;

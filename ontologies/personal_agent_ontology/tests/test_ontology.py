@@ -78,7 +78,7 @@ def shapes() -> Graph:
 
 
 # ---------------------------------------------------------------------------
-# Class declarations (51 classes)
+# Class declarations (52 classes)
 # ---------------------------------------------------------------------------
 
 EXPECTED_CLASSES = [
@@ -96,6 +96,7 @@ EXPECTED_CLASSES = [
     "Session",
     "Turn",
     "CompactionEvent",
+    "ContextWindow",
     "ErasureEvent",
     "Observation",
     "StatusTransition",
@@ -151,10 +152,10 @@ def test_class_declared(tbox: Graph, cls_name: str) -> None:
 
 
 def test_class_count(tbox: Graph) -> None:
-    """Exactly 51 PAO classes are declared."""
+    """Exactly 52 PAO classes are declared."""
     pao_classes = {s for s in tbox.subjects(RDF.type, OWL.Class) if str(s).startswith(str(PAO))}
-    assert len(pao_classes) == 51, (
-        f"Expected 51 PAO classes, found {len(pao_classes)}: {pao_classes}"
+    assert len(pao_classes) == 52, (
+        f"Expected 52 PAO classes, found {len(pao_classes)}: {pao_classes}"
     )
 
 
@@ -230,6 +231,7 @@ HIERARCHY_CHECKS = [
     ("TaskStatusTransition", PAO.StatusTransition),
     ("CompactionDisposition", PROV.Entity),
     ("ItemFate", PAO.Status),
+    ("ContextWindow", PROV.Entity),
 ]
 
 
@@ -268,6 +270,7 @@ BFO_ALIGNMENT = [
     ("RetentionPolicy", OBO["BFO_0000031"]),  # GDC
     # v0.3.0 additions
     ("CompactionDisposition", OBO["BFO_0000031"]),  # GDC
+    ("ContextWindow", OBO["BFO_0000031"]),  # GDC
 ]
 
 
@@ -282,7 +285,7 @@ def test_bfo_alignment(tbox: Graph, cls_name: str, bfo_class: URIRef) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Object property declarations (64 properties)
+# Object property declarations (66 properties)
 # ---------------------------------------------------------------------------
 
 EXPECTED_OBJ_PROPS = [
@@ -293,6 +296,7 @@ EXPECTED_OBJ_PROPS = [
     "belongsTo",
     "blockedBy",
     "blocks",
+    "compactedContextOf",
     "compactedItem",
     "consentPurpose",
     "consentSubject",
@@ -308,6 +312,7 @@ EXPECTED_OBJ_PROPS = [
     "hasAvailableTool",
     "hasCompactionDisposition",
     "hasComplianceStatus",
+    "hasContextWindow",
     "hasEvidence",
     "hasItemFate",
     "hasInput",
@@ -360,7 +365,7 @@ def test_object_property_declared(tbox: Graph, prop_name: str) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Datatype property declarations (14 properties)
+# Datatype property declarations (16 properties)
 # ---------------------------------------------------------------------------
 
 EXPECTED_DATA_PROPS = [
@@ -375,6 +380,8 @@ EXPECTED_DATA_PROPS = [
     "hasLastAccessTime",
     "hasSessionId",
     "hasTimestamp",
+    "hasTokenCapacity",
+    "hasTokensUsed",
     "hasTurnIndex",
     "isEvictionCandidate",
     "retentionPeriodDays",
@@ -394,6 +401,7 @@ def test_datatype_property_declared(tbox: Graph, prop_name: str) -> None:
 EXPECTED_FUNCTIONAL = [
     "belongsTo",
     "claimType",
+    "compactedContextOf",
     "consentSubject",
     "continuedFrom",
     "dispositionOf",
@@ -402,6 +410,7 @@ EXPECTED_FUNCTIONAL = [
     "hasComplianceStatus",
     "hasConfidence",
     "hasContent",
+    "hasContextWindow",
     "hasConversationId",
     "hasItemFate",
     "hasLastAccessTime",
@@ -411,6 +420,8 @@ EXPECTED_FUNCTIONAL = [
     "hasStatus",
     "hasTemporalExtent",
     "hasTimestamp",
+    "hasTokenCapacity",
+    "hasTokensUsed",
     "hasTurnIndex",
     "inConversation",
     "inSession",
@@ -566,6 +577,11 @@ DOMAIN_RANGE_CHECKS: list[tuple[str, URIRef | None, URIRef]] = [
     ("hasAgentId", PAO.AIAgent, XSD.string),
     ("hasSessionId", PAO.Session, XSD.string),
     ("hasConversationId", PAO.Conversation, XSD.string),
+    # v0.4.0 additions - ContextWindow
+    ("hasContextWindow", PAO.Session, PAO.ContextWindow),
+    ("compactedContextOf", PAO.CompactionEvent, PAO.ContextWindow),
+    ("hasTokenCapacity", PAO.ContextWindow, XSD.nonNegativeInteger),
+    ("hasTokensUsed", PAO.ContextWindow, XSD.nonNegativeInteger),
 ]
 
 
@@ -658,6 +674,7 @@ EXISTENTIAL_CHECKS = [
     ("StatusTransition", "transitionSubject", None),  # owl:Thing
     ("CompactionDisposition", "dispositionOf", None),  # prov:Entity
     ("CompactionDisposition", "hasItemFate", "ItemFate"),
+    # v0.4.0: hasContextWindow and compactedContextOf are optional (no existentials)
 ]
 
 
@@ -865,6 +882,7 @@ DISJOINT_GROUP_CHECKS = [
             PAO.ConsentRecord,
             PAO.RetentionPolicy,
             PAO.CompactionDisposition,
+            PAO.ContextWindow,
         },
         "Cross-module GDC disjointness",
     ),
@@ -1170,6 +1188,11 @@ CQ_SELECT_NON_EMPTY = [
     "cq-058.sparql",
     "cq-059.sparql",
     "cq-060.sparql",
+    "cq-061.sparql",
+    "cq-062.sparql",
+    "cq-063.sparql",
+    "cq-064.sparql",
+    "cq-065.sparql",
 ]
 
 
@@ -1247,9 +1270,9 @@ def test_shacl_conformance(shapes: Graph) -> None:
 
 
 def test_shacl_shape_count(shapes: Graph) -> None:
-    """At least 26 NodeShapes exist."""
+    """At least 27 NodeShapes exist."""
     node_shapes = set(shapes.subjects(RDF.type, SH.NodeShape))
-    assert len(node_shapes) >= 26, f"Expected >=26 NodeShapes, got {len(node_shapes)}"
+    assert len(node_shapes) >= 27, f"Expected >=27 NodeShapes, got {len(node_shapes)}"
 
 
 EXPECTED_SHAPE_TARGETS = [
@@ -1259,6 +1282,7 @@ EXPECTED_SHAPE_TARGETS = [
     "CompactionDisposition",
     "CompactionEvent",
     "ConsentRecord",
+    "ContextWindow",
     "Conversation",
     "Episode",
     "ErasureEvent",

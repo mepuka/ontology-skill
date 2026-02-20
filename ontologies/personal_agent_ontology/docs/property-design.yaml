@@ -1384,6 +1384,74 @@ properties:
     definition: "The unique string identifier for this conversation."
     constraint_note: "Functional. Used in owl:hasKey axiom for identity."
 
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.4.0: Context Window
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: hasContextWindow
+    type: ObjectProperty
+    domain: Session
+    range: ContextWindow
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-061"
+    definition: "Links a session to its context window resource."
+    constraint_note: "Functional: each session has at most one context window."
+
+  - name: compactedContextOf
+    type: ObjectProperty
+    domain: CompactionEvent
+    range: ContextWindow
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-064"
+    definition: "Links a compaction event to the context window that triggered it."
+    constraint_note: "Functional: each compaction event is triggered by at most one context window."
+
+  - name: hasTokenCapacity
+    type: DataProperty
+    domain: ContextWindow
+    range: "xsd:nonNegativeInteger"
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-062"
+    definition: "The maximum number of tokens the context window can hold."
+    constraint_note: "Functional, required: every context window has exactly one capacity."
+
+  - name: hasTokensUsed
+    type: DataProperty
+    domain: ContextWindow
+    range: "xsd:nonNegativeInteger"
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-062,CQ-063,CQ-065"
+    definition: "The number of tokens currently used in the context window."
+    constraint_note: "Functional, required: every context window has exactly one usage count."
+
 # ═══════════════════════════════════════════════════════════════════════
 # PROPERTY HIERARCHY SUMMARY
 # ═══════════════════════════════════════════════════════════════════════
@@ -1467,13 +1535,13 @@ properties:
 # ═══════════════════════════════════════════════════════════════════════
 
 summary:
-  total_properties: 77
-  object_properties: 63
-  data_properties: 14
+  total_properties: 81
+  object_properties: 65
+  data_properties: 16
   by_module:
     pao-core: 13      # partOf, hasPart, hasAvailableTool, availableToAgent, spawnedBy, hasParticipant, participatesIn, hasRole, performedBy, belongsTo, hasMember, hasPersona, hasAgentId
     pao-event: 9      # hasTemporalExtent, hasStatus, hasTimestamp, fromStatus, toStatus, transitionSubject, triggeredBy, previousTransition, nextTransition
-    pao-conversation: 22  # partOfConversation, inConversation, partOfSession, inSession, hasTurnIndex, hasContent, invokesTool, invokedIn, invokedBy, hasInput, hasOutput, producedSummary, delegatedTask, compactedItem, hasCompactionDisposition, dispositionOf, hasItemFate, continuedFrom, continuedBy, fateReason, hasSessionId, hasConversationId
+    pao-conversation: 26  # partOfConversation, inConversation, partOfSession, inSession, hasTurnIndex, hasContent, invokesTool, invokedIn, invokedBy, hasInput, hasOutput, producedSummary, delegatedTask, compactedItem, hasCompactionDisposition, dispositionOf, hasItemFate, continuedFrom, continuedBy, fateReason, hasSessionId, hasConversationId, hasContextWindow, compactedContextOf, hasTokenCapacity, hasTokensUsed
     pao-memory: 14    # storedIn, stores, hasTopic, aboutAgent, hasConfidence, claimType, hasEvidence, recordedInEpisode, recordsEvent, operatesOn, hasBlockKey, hasBlockValue, hasLastAccessTime, isEvictionCandidate
     pao-planning: 9   # pursuedBy, pursuesGoal, achievesGoal, partOfPlan, hasTask, blockedBy, blocks, intendedBy, derivedFromGoal
     pao-governance: 10 # appliesTo, grantsPermission, hasComplianceStatus, restrictsToolUse, requestedBy, hasSensitivityLevel, consentSubject, consentPurpose, governedByRetention, retentionPeriodDays

@@ -71,3 +71,4 @@ Preserved,"kept, retained","Item fate: content incorporated into summary.",indiv
 Dropped,"excluded, removed","Item fate: excluded from summary.",individual,CQ-052,ItemFate instance,Named individual of ItemFate.
 Summarized,"condensed, abbreviated","Item fate: partially represented in summary.",individual,CQ-052,ItemFate instance,Named individual of ItemFate.
 Archived,"stored, cold-stored","Item fate: moved to long-term storage.",individual,CQ-052,ItemFate instance,Named individual of ItemFate.
+ContextWindow,"context buffer, attention window, token window","A GDC representing the finite attention resource of an AI agent session with token capacity and usage tracking.",class,"CQ-061,CQ-062,CQ-063,CQ-064,CQ-065",GDC (BFO:0000031),Linked to Session via hasContextWindow. Linked to CompactionEvent via compactedContextOf.

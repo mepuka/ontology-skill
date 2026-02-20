@@ -20,16 +20,16 @@ pao:ActionShape a sh:NodeShape ;
     sh:targetClass pao:Action .
 
 pao:ClaimShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:decimal ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:hasContent ],
+        [ sh:datatype xsd:decimal ;
             sh:maxCount 1 ;
             sh:maxInclusive 1.0 ;
             sh:minCount 0 ;
             sh:minInclusive 0.0 ;
-            sh:path pao:hasConfidence ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path pao:hasContent ] ;
+            sh:path pao:hasConfidence ] ;
     sh:targetClass pao:Claim .
 
 pao:CompactionDispositionShape a sh:NodeShape ;
@@ -43,7 +43,10 @@ pao:CompactionDispositionShape a sh:NodeShape ;
     sh:targetClass pao:CompactionDisposition .
 
 pao:CompactionEventShape a sh:NodeShape ;
-    sh:property [ sh:class pao:MemoryItem ;
+    sh:property [ sh:class pao:ContextWindow ;
+            sh:maxCount 1 ;
+            sh:path pao:compactedContextOf ],
+        [ sh:class pao:MemoryItem ;
             sh:minCount 1 ;
             sh:path pao:producedSummary ] ;
     sh:targetClass pao:CompactionEvent .
@@ -55,21 +58,39 @@ pao:ConsentRecordShape a sh:NodeShape ;
             sh:path pao:consentSubject ] ;
     sh:targetClass pao:ConsentRecord .
 
-pao:ConversationShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:string ;
+pao:ContextWindowShape a sh:NodeShape ;
+    sh:property [ sh:datatype xsd:nonNegativeInteger ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path pao:hasConversationId ],
-        [ sh:class pao:Agent ;
+            sh:path pao:hasTokensUsed ],
+        [ sh:datatype xsd:nonNegativeInteger ;
+            sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path pao:hasParticipant ] ;
+            sh:path pao:hasTokenCapacity ] ;
+    sh:sparql [ sh:message "hasTokensUsed must not exceed hasTokenCapacity" ;
+            sh:select """PREFIX pao: <https://purl.org/pao/>
+SELECT $this WHERE {
+  $this pao:hasTokensUsed ?used .
+  $this pao:hasTokenCapacity ?cap .
+  FILTER(?used > ?cap)
+}""" ] ;
+    sh:targetClass pao:ContextWindow .
+
+pao:ConversationShape a sh:NodeShape ;
+    sh:property [ sh:class pao:Agent ;
+            sh:minCount 1 ;
+            sh:path pao:hasParticipant ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:hasConversationId ] ;
     sh:targetClass pao:Conversation .
 
 pao:EpisodeShape a sh:NodeShape ;
     sh:property [ sh:minCount 1 ;
-            sh:path pao:hasTopic ],
+            sh:path pao:hasTemporalExtent ],
         [ sh:minCount 1 ;
-            sh:path pao:hasTemporalExtent ] ;
+            sh:path pao:hasTopic ] ;
     sh:targetClass pao:Episode .
 
 pao:ErasureEventShape a sh:NodeShape ;
@@ -101,10 +122,10 @@ pao:IntentionShape a sh:NodeShape ;
 pao:MemoryBlockShape a sh:NodeShape ;
     sh:property [ sh:datatype xsd:string ;
             sh:minCount 1 ;
-            sh:path pao:hasBlockKey ],
+            sh:path pao:hasBlockValue ],
         [ sh:datatype xsd:string ;
             sh:minCount 1 ;
-            sh:path pao:hasBlockValue ] ;
+            sh:path pao:hasBlockKey ] ;
     sh:targetClass pao:MemoryBlock .
 
 pao:MemoryItemShape a sh:NodeShape ;
@@ -168,14 +189,17 @@ pao:RetentionPolicyShape a sh:NodeShape ;
     sh:targetClass pao:RetentionPolicy .
 
 pao:SessionShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path pao:hasSessionId ],
-        [ sh:class pao:Conversation ;
+    sh:property [ sh:class pao:Conversation ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path pao:partOfConversation ],
+        [ sh:class pao:ContextWindow ;
+            sh:maxCount 1 ;
+            sh:path pao:hasContextWindow ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:hasSessionId ],
         [ sh:class pao:SessionStatus ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
@@ -204,25 +228,25 @@ pao:SubAgentShape a sh:NodeShape ;
     sh:targetClass pao:SubAgent .
 
 pao:TaskShape a sh:NodeShape ;
-    sh:property [ sh:class pao:TaskStatus ;
+    sh:property [ sh:class pao:Plan ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path pao:hasStatus ],
-        [ sh:class pao:Plan ;
+            sh:path pao:partOfPlan ],
+        [ sh:class pao:TaskStatus ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path pao:partOfPlan ] ;
+            sh:path pao:hasStatus ] ;
     sh:targetClass pao:Task .
 
 pao:ToolInvocationShape a sh:NodeShape ;
-    sh:property [ sh:class pao:Agent ;
+    sh:property [ sh:class pao:ToolDefinition ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path pao:invokedBy ],
-        [ sh:class pao:ToolDefinition ;
+            sh:path pao:invokesTool ],
+        [ sh:class pao:Agent ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path pao:invokesTool ] ;
+            sh:path pao:invokedBy ] ;
     sh:targetClass pao:ToolInvocation .
 
 pao:TurnShape a sh:NodeShape ;

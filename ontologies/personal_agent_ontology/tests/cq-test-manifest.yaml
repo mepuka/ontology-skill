@@ -562,3 +562,50 @@ cq_tests:
     type: SELECT
     expected: non_empty
     requires_abox: true
+
+  # --- v0.4.0 Additions: Context Window ---
+
+  - id: cq-061
+    file: cq-061.sparql
+    cq: CQ-061
+    module: conversation_interaction
+    question: "What context window is associated with a given session?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-062
+    file: cq-062.sparql
+    cq: CQ-062
+    module: conversation_interaction
+    question: "What is the token capacity and current usage of a context window?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-063
+    file: cq-063.sparql
+    cq: CQ-063
+    module: conversation_interaction
+    question: "Which context windows have usage exceeding a given threshold?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-064
+    file: cq-064.sparql
+    cq: CQ-064
+    module: conversation_interaction
+    question: "Which compaction events were triggered by a specific context window?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-065
+    file: cq-065.sparql
+    cq: CQ-065
+    module: conversation_interaction
+    question: "What is the available (remaining) capacity of a context window?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
