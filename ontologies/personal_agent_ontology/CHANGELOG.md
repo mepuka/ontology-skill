@@ -4,6 +4,69 @@ All notable changes to the Personal Agent Ontology will be documented here.
 
 This project uses [Semantic Versioning](https://semver.org/).
 
+## [0.7.0] - 2026-02-20
+
+### Added
+
+**13 New Classes across 4 domains**
+
+Domain A — Model Identity & Execution Provenance:
+- ModelProvider, FoundationModel, ModelDeployment, ModelInvocation,
+  GenerationConfiguration
+
+Domain B — Operational Observability:
+- OperationalMetric, MetricObservation, ReliabilityIncident
+
+Domain C — Failure Taxonomy Expansion:
+- FailureType (value partition for failure classification)
+
+Domain D — BDI Completion:
+- Belief, Desire, Justification, Deliberation
+
+**27 New Properties (18 object, 9 data)**
+- Model identity: hasProvider, usesModel, deployedAs, invokedOnDeployment,
+  hasGenerationConfig, modelInvocationForTurn, producedByModelInvocation
+- Observability: observesMetric, observedOnEntity, incidentForEntity,
+  linkedToRecovery
+- Failure: hasFailureType
+- BDI: heldBelief, holdsDesire, justifiesIntention, producesIntention,
+  considersBelief, considersDesire
+- Data: hasModelId, hasModelVersion, hasTemperature, hasTopP,
+  hasMaxOutputTokens, hasPromptVersion, hasSeed, hasMetricName, hasMetricValue
+
+**15 New Competency Questions (CQ-099 through CQ-113)**
+- Model identity and execution provenance (CQ-099 to CQ-103)
+- Operational observability and reliability (CQ-104 to CQ-107)
+- Failure type classification (CQ-108, CQ-109)
+- BDI beliefs, desires, deliberation, justification (CQ-110 to CQ-113)
+
+**7 New Use Cases (UC-041 through UC-047)**
+
+**6 New Reference Individuals**
+- FailureType: Timeout, AuthenticationFailure, RateLimited,
+  DependencyFailure, ConfigurationError, NetworkError
+
+### Changed
+
+- SHACL shapes expanded from 46 to 57 NodeShapes
+- AllDisjointClasses: Event subtypes expanded to 20-way, Status subtypes
+  to 17-way, cross-module GDC to 41-way
+- HasKey axiom added for FoundationModel (hasModelId)
+- owl:priorVersion added to all three ontology modules
+
+### Metrics
+
+| Metric | v0.6.0 | v0.7.0 |
+|--------|--------|--------|
+| Classes | 92 | 105 |
+| Object properties | 110 | 128 |
+| Data properties | 23 | 32 |
+| SHACL shapes | 46 | 57 |
+| Named individuals | 60 | 65 |
+| CQ tests | 97 | 113 |
+| Total tests | 1,035+ | 1,212 |
+| TBox triples | 2,010 | 2,354 |
+
 ## [0.6.0] - 2026-02-20
 
 ### Added

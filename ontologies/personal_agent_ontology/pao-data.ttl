@@ -89,8 +89,18 @@ pao:data a owl:Ontology ;
     dcterms:license <https://spdx.org/licenses/MIT> ;
     dcterms:title "Personal Agent Ontology — Sample Data"@en ;
     owl:imports pao: ;
-    owl:versionIRI <https://purl.org/pao/data/0.6.0> ;
-    owl:versionInfo "0.6.0" .
+    owl:priorVersion <https://purl.org/pao/data/0.6.0> ;
+    owl:versionIRI <https://purl.org/pao/data/0.7.0> ;
+    owl:versionInfo "0.7.0" .
+
+pao:deliberation_01 a owl:NamedIndividual,
+        pao:Deliberation ;
+    rdfs:label "Deliberation 01"@en ;
+    pao:considersBelief pao:belief_01 ;
+    pao:considersDesire pao:desire_01 ;
+    pao:hasTemporalExtent pao:deliberation_01_time ;
+    pao:hasTimestamp "2026-02-20T10:05:00+00:00"^^xsd:dateTime ;
+    pao:producesIntention pao:intention_001 .
 
 pao:discovery_github_01 a owl:NamedIndividual,
         pao:CapabilityDiscoveryEvent ;
@@ -136,14 +146,13 @@ pao:grounding_act_01 a owl:NamedIndividual,
     pao:hasTimestamp "2026-02-20T12:05:00+00:00"^^xsd:dateTime ;
     pao:providesAcceptanceEvidence pao:acceptance_evidence_01 .
 
-pao:intention_001 a owl:NamedIndividual,
-        pao:Intention ;
-    rdfs:label "implement dark mode intention"@en ;
-    prov:wasAttributedTo pao:claude_agent ;
-    prov:wasGeneratedBy pao:conv_001 ;
-    pao:derivedFromGoal pao:goal_001 ;
-    pao:intendedBy pao:claude_agent ;
-    pao:storedIn pao:semantic_memory_instance .
+pao:incident_01 a owl:NamedIndividual,
+        pao:ReliabilityIncident ;
+    rdfs:label "Reliability incident 01"@en ;
+    pao:hasTemporalExtent pao:incident_01_time ;
+    pao:hasTimestamp "2026-02-20T11:00:00+00:00"^^xsd:dateTime ;
+    pao:incidentForEntity pao:claude_agent ;
+    pao:linkedToRecovery pao:recovery_event_01 .
 
 pao:invocation_002 a owl:NamedIndividual,
         pao:ToolInvocation ;
@@ -160,6 +169,11 @@ pao:invocation_002 a owl:NamedIndividual,
     pao:performedBy pao:claude_agent ;
     pao:producedToolResult pao:tool_result_002 .
 
+pao:justification_01 a owl:NamedIndividual,
+        pao:Justification ;
+    rdfs:label "Justification 01"@en ;
+    pao:justifiesIntention pao:intention_001 .
+
 pao:memory_block_001 a owl:NamedIndividual,
         pao:MemoryBlock,
         pao:MemoryItem ;
@@ -171,6 +185,23 @@ pao:memory_block_001 a owl:NamedIndividual,
     pao:hasBlockValue "Alice" ;
     pao:hasSensitivityLevel pao:Internal ;
     pao:storedIn pao:working_memory_instance .
+
+pao:metric_obs_01 a owl:NamedIndividual,
+        pao:MetricObservation ;
+    rdfs:label "Metric observation 01"@en ;
+    pao:hasMetricValue 142.5 ;
+    pao:hasTimestamp "2026-02-20T12:00:00+00:00"^^xsd:dateTime ;
+    pao:observedOnEntity pao:claude_agent ;
+    pao:observesMetric pao:metric_latency_p99 .
+
+pao:model_invocation_01 a owl:NamedIndividual,
+        pao:ModelInvocation ;
+    rdfs:label "Model invocation 01"@en ;
+    pao:hasGenerationConfig pao:gen_config_01 ;
+    pao:hasTemporalExtent pao:model_invocation_01_time ;
+    pao:hasTimestamp "2026-02-20T10:00:01+00:00"^^xsd:dateTime ;
+    pao:invokedOnDeployment pao:deployment_opus_prod ;
+    pao:modelInvocationForTurn pao:turn_001 .
 
 pao:msg_002 a owl:NamedIndividual,
         pao:Message ;
@@ -188,17 +219,6 @@ pao:observation_001 a owl:NamedIndividual,
     pao:hasTemporalExtent pao:observation_001_time ;
     pao:hasTimestamp "2026-02-18T10:04:00"^^xsd:dateTime ;
     pao:inSession pao:session_001 .
-
-pao:recovery_event_01 a owl:NamedIndividual,
-        pao:ErrorRecoveryEvent ;
-    rdfs:label "Recovery event 01"@en ;
-    pao:attemptedRetry pao:retry_01 ;
-    pao:hasAttemptCount "2"^^xsd:nonNegativeInteger ;
-    pao:hasRecoveryOutcome "resolved" ;
-    pao:hasTemporalExtent pao:recovery_event_01_time ;
-    pao:hasTimestamp "2026-02-20T11:00:00+00:00"^^xsd:dateTime ;
-    pao:recoveringFrom pao:invocation_failed_01 ;
-    pao:triggeredReplan pao:replan_01 .
 
 pao:rehearsal_001 a owl:NamedIndividual,
         pao:MemoryOperation,
@@ -305,6 +325,9 @@ pao:context_window_002 a owl:NamedIndividual,
 pao:conv_001_time a time:Instant ;
     time:inXSDDateTime "2026-02-18T10:00:00"^^xsd:dateTime .
 
+pao:deliberation_01_time a time:Instant ;
+    time:inXSDDateTime "2026-02-20T10:05:00+00:00"^^xsd:dateTime .
+
 pao:dialog_act_01 a owl:NamedIndividual,
         pao:DialogAct ;
     rdfs:label "Dialog act 01"@en ;
@@ -348,6 +371,15 @@ pao:episodic_memory_instance a owl:NamedIndividual,
 pao:erasure_001_time a time:Instant ;
     time:inXSDDateTime "2026-02-18T14:00:00"^^xsd:dateTime .
 
+pao:gen_config_01 a owl:NamedIndividual,
+        pao:GenerationConfiguration ;
+    rdfs:label "Generation config 01"@en ;
+    pao:hasMaxOutputTokens "4096"^^xsd:nonNegativeInteger ;
+    pao:hasPromptVersion "v2.1" ;
+    pao:hasSeed "42"^^xsd:nonNegativeInteger ;
+    pao:hasTemperature 0.7 ;
+    pao:hasTopP 0.95 .
+
 pao:grounding_act_01_time a time:Instant ;
     time:inXSDDateTime "2026-02-20T12:05:00+00:00"^^xsd:dateTime .
 
@@ -360,6 +392,9 @@ pao:hook_exec_01 a owl:NamedIndividual,
 
 pao:hook_exec_01_time a time:Instant ;
     time:inXSDDateTime "2026-02-20T10:30:00+00:00"^^xsd:dateTime .
+
+pao:incident_01_time a time:Instant ;
+    time:inXSDDateTime "2026-02-20T11:00:00+00:00"^^xsd:dateTime .
 
 pao:integration_notion_001 a owl:NamedIndividual,
         pao:Integration ;
@@ -450,6 +485,14 @@ pao:invocation_group_01 a owl:NamedIndividual,
     rdfs:label "Invocation group 01"@en ;
     pao:groupedInTurn pao:turn_001 .
 
+pao:metric_latency_p99 a owl:NamedIndividual,
+        pao:OperationalMetric ;
+    rdfs:label "Latency P99"@en ;
+    pao:hasMetricName "latency_p99_ms" .
+
+pao:model_invocation_01_time a time:Instant ;
+    time:inXSDDateTime "2026-02-20T10:00:01+00:00"^^xsd:dateTime .
+
 pao:msg_001 a owl:NamedIndividual,
         pao:Message ;
     rdfs:label "message 001"@en ;
@@ -473,9 +516,25 @@ pao:permission_001 a owl:NamedIndividual,
         odrl:Permission ;
     rdfs:label "allow file reading"@en .
 
+pao:provider_anthropic a owl:NamedIndividual,
+        pao:ModelProvider ;
+    rdfs:label "Anthropic"@en .
+
 pao:purpose_memory_storage a owl:NamedIndividual,
         prov:Entity ;
     rdfs:label "memory storage"@en .
+
+pao:recovery_event_01 a owl:NamedIndividual,
+        pao:ErrorRecoveryEvent ;
+    rdfs:label "Recovery event 01"@en ;
+    pao:attemptedRetry pao:retry_01 ;
+    pao:hasAttemptCount "2"^^xsd:nonNegativeInteger ;
+    pao:hasFailureType pao:Timeout ;
+    pao:hasRecoveryOutcome "resolved" ;
+    pao:hasTemporalExtent pao:recovery_event_01_time ;
+    pao:hasTimestamp "2026-02-20T11:00:00+00:00"^^xsd:dateTime ;
+    pao:recoveringFrom pao:invocation_failed_01 ;
+    pao:triggeredReplan pao:replan_01 .
 
 pao:recovery_event_01_time a time:Instant ;
     time:inXSDDateTime "2026-02-20T11:00:00+00:00"^^xsd:dateTime .
@@ -645,6 +704,10 @@ pao:audit_log_01 a owl:NamedIndividual,
         pao:AuditLog ;
     rdfs:label "Primary audit log"@en .
 
+pao:belief_01 a owl:NamedIndividual,
+        pao:Belief ;
+    rdfs:label "User prefers concise responses"@en .
+
 pao:cap_github_prompt a owl:NamedIndividual,
         pao:ServicePromptCapability ;
     rdfs:label "GitHub code-review prompt capability"@en .
@@ -662,6 +725,14 @@ pao:context_window_001 a owl:NamedIndividual,
     rdfs:label "context window 001"@en ;
     pao:hasTokenCapacity "200000"^^xsd:nonNegativeInteger ;
     pao:hasTokensUsed "165000"^^xsd:nonNegativeInteger .
+
+pao:deployment_opus_prod a owl:NamedIndividual,
+        pao:ModelDeployment ;
+    rdfs:label "Opus production deployment"@en .
+
+pao:desire_01 a owl:NamedIndividual,
+        pao:Desire ;
+    rdfs:label "Complete user task efficiently"@en .
 
 pao:goal_001 a owl:NamedIndividual,
         pao:Goal ;
@@ -686,6 +757,15 @@ pao:integration_github_001 a owl:NamedIndividual,
     pao:providesTool pao:bash_tool,
         pao:read_tool .
 
+pao:intention_001 a owl:NamedIndividual,
+        pao:Intention ;
+    rdfs:label "implement dark mode intention"@en ;
+    prov:wasAttributedTo pao:claude_agent ;
+    prov:wasGeneratedBy pao:conv_001 ;
+    pao:derivedFromGoal pao:goal_001 ;
+    pao:intendedBy pao:claude_agent ;
+    pao:storedIn pao:semantic_memory_instance .
+
 pao:invocation_001 a owl:NamedIndividual,
         pao:ToolInvocation ;
     rdfs:label "tool invocation 001"@en ;
@@ -701,6 +781,14 @@ pao:invocation_001 a owl:NamedIndividual,
     pao:partOfInvocationGroup pao:invocation_group_01 ;
     pao:performedBy pao:claude_agent ;
     pao:producedToolResult pao:tool_result_01 .
+
+pao:model_claude_opus a owl:NamedIndividual,
+        pao:FoundationModel ;
+    rdfs:label "Claude Opus"@en ;
+    pao:deployedAs pao:deployment_opus_prod ;
+    pao:hasModelId "claude-opus-4-6" ;
+    pao:hasModelVersion "4.6" ;
+    pao:hasProvider pao:provider_anthropic .
 
 pao:persona_claude a owl:NamedIndividual,
         pao:Persona ;
@@ -721,7 +809,8 @@ pao:search_subagent a owl:NamedIndividual,
     pao:hasIntegration pao:integration_github_001 ;
     pao:hasPersona pao:persona_claude ;
     pao:operatesInMode pao:Permissive ;
-    pao:spawnedBy pao:claude_agent .
+    pao:spawnedBy pao:claude_agent ;
+    pao:usesModel pao:model_claude_opus .
 
 pao:turn_002 a owl:NamedIndividual,
         pao:Turn ;
@@ -825,6 +914,14 @@ pao:task_001 a owl:NamedIndividual,
     pao:partOfPlan pao:plan_001 ;
     pao:storedIn pao:semantic_memory_instance .
 
+pao:retention_policy_30day a owl:NamedIndividual,
+        pao:RetentionPolicy ;
+    rdfs:label "30-day retention policy"@en ;
+    prov:wasAttributedTo pao:alice_user ;
+    prov:wasGeneratedBy pao:conv_001 ;
+    pao:retentionPeriodDays "30"^^xsd:nonNegativeInteger ;
+    pao:storedIn pao:procedural_memory_instance .
+
 pao:turn_001 a owl:NamedIndividual,
         pao:Turn ;
     rdfs:label "turn 001"@en ;
@@ -838,14 +935,6 @@ pao:turn_001 a owl:NamedIndividual,
     pao:partOfConversation pao:conv_001 ;
     pao:partOfSession pao:session_001 ;
     pao:recordedInEpisode pao:episode_001 .
-
-pao:retention_policy_30day a owl:NamedIndividual,
-        pao:RetentionPolicy ;
-    rdfs:label "30-day retention policy"@en ;
-    prov:wasAttributedTo pao:alice_user ;
-    prov:wasGeneratedBy pao:conv_001 ;
-    pao:retentionPeriodDays "30"^^xsd:nonNegativeInteger ;
-    pao:storedIn pao:procedural_memory_instance .
 
 pao:claim_001 a owl:NamedIndividual,
         pao:Claim,
@@ -896,11 +985,11 @@ pao:conv_001 a owl:NamedIndividual,
         pao:Conversation ;
     rdfs:label "conversation 001"@en ;
     prov:qualifiedAssociation [ a prov:Association ;
-            prov:agent pao:alice_user ;
-            prov:hadRole pao:UserRole ],
-        [ a prov:Association ;
             prov:agent pao:claude_agent ;
-            prov:hadRole pao:AssistantRole ] ;
+            prov:hadRole pao:AssistantRole ],
+        [ a prov:Association ;
+            prov:agent pao:alice_user ;
+            prov:hadRole pao:UserRole ] ;
     prov:wasAssociatedWith pao:claude_agent ;
     pao:hasConversationId "conv-001" ;
     pao:hasParticipant pao:alice_user,
@@ -924,4 +1013,7 @@ pao:claude_agent a owl:NamedIndividual,
     pao:hasPersona pao:persona_claude ;
     pao:hasRole pao:AssistantRole ;
     pao:hasServiceConnection pao:svc_conn_github_01 ;
-    pao:operatesInMode pao:Standard .
+    pao:heldBelief pao:belief_01 ;
+    pao:holdsDesire pao:desire_01 ;
+    pao:operatesInMode pao:Standard ;
+    pao:usesModel pao:model_claude_opus .

@@ -20,7 +20,7 @@ stakeholder_need,use_case_id,cq_id,ontology_terms,sparql_test
 "Track memory operations",UC-011,CQ-019,"MemoryOperation;Encoding;Retrieval;Consolidation;Forgetting;operatesOn",ontologies/personal_agent_ontology/tests/cq-019.sparql
 "Order events in session",UC-013,CQ-020,"Event;Session;inSession;hasTimestamp",ontologies/personal_agent_ontology/tests/cq-020.sparql
 "Determine temporal ordering of events",UC-014,CQ-021,"Event;hasTemporalExtent;time:Interval",ontologies/personal_agent_ontology/tests/cq-021.sparql
-"Track overlapping sessions",UC-014,CQ-022,"Session;hasTemporalExtent;time:Interval;time:before;time:after",ontologies/personal_agent_ontology/tests/cq-022.sparql (deferred - requires temporal reasoning)
+"Track overlapping sessions",UC-014,CQ-022,"Session;hasTemporalExtent;time:Interval;time:hasBeginning;time:hasEnd",ontologies/personal_agent_ontology/tests/cq-022.sparql
 "Find actions by agent in time period",UC-013,CQ-023,"Action;Agent;performedBy;hasTimestamp",ontologies/personal_agent_ontology/tests/cq-023.sparql
 "Classify events by type",UC-013,CQ-024,"Event;Turn;ToolInvocation;MemoryOperation",ontologies/personal_agent_ontology/tests/cq-024.sparql
 "List events in an episode",UC-007,CQ-025,"Episode;Event;recordedInEpisode",ontologies/personal_agent_ontology/tests/cq-025.sparql
@@ -106,3 +106,18 @@ stakeholder_need,use_case_id,cq_id,ontology_terms,sparql_test
 "Track task lifecycle transitions",UC-029,CQ-058,"TaskStatusTransition;fromStatus;toStatus",ontologies/personal_agent_ontology/tests/cq-058.sparql
 "Query previous session status",UC-029,CQ-059,"SessionStatusTransition;fromStatus",ontologies/personal_agent_ontology/tests/cq-059.sparql
 "Track transition triggers",UC-029,CQ-060,"StatusTransition;triggeredBy",ontologies/personal_agent_ontology/tests/cq-060.sparql
+"Trace model provenance for turns",UC-041,CQ-099,"Turn;ModelInvocation;ModelDeployment;FoundationModel;modelInvocationForTurn;invokedOnDeployment;deployedAs;hasModelId",ontologies/personal_agent_ontology/tests/cq-099.sparql
+"Query model deployments",UC-041,CQ-100,"FoundationModel;ModelDeployment;deployedAs",ontologies/personal_agent_ontology/tests/cq-100.sparql
+"Identify model provider",UC-041,CQ-101,"FoundationModel;ModelProvider;hasProvider",ontologies/personal_agent_ontology/tests/cq-101.sparql
+"Inspect generation parameters",UC-042,CQ-102,"ModelInvocation;GenerationConfiguration;hasGenerationConfig;hasTemperature;hasTopP;hasMaxOutputTokens",ontologies/personal_agent_ontology/tests/cq-102.sparql
+"Query agent model assignment",UC-042,CQ-103,"AIAgent;FoundationModel;usesModel",ontologies/personal_agent_ontology/tests/cq-103.sparql
+"Query metric observations per entity",UC-043,CQ-104,"MetricObservation;OperationalMetric;observedOnEntity;observesMetric;hasMetricValue;hasMetricName",ontologies/personal_agent_ontology/tests/cq-104.sparql
+"List operational metrics",UC-043,CQ-105,"OperationalMetric;hasMetricName",ontologies/personal_agent_ontology/tests/cq-105.sparql
+"Track reliability incidents",UC-044,CQ-106,"ReliabilityIncident;incidentForEntity",ontologies/personal_agent_ontology/tests/cq-106.sparql
+"Link incidents to recovery",UC-044,CQ-107,"ReliabilityIncident;ErrorRecoveryEvent;linkedToRecovery",ontologies/personal_agent_ontology/tests/cq-107.sparql
+"Classify recovery by failure type",UC-045,CQ-108,"ErrorRecoveryEvent;FailureType;hasFailureType",ontologies/personal_agent_ontology/tests/cq-108.sparql
+"Count recoveries per failure type",UC-045,CQ-109,"ErrorRecoveryEvent;FailureType;hasFailureType",ontologies/personal_agent_ontology/tests/cq-109.sparql
+"Query agent beliefs",UC-046,CQ-110,"Agent;Belief;heldBelief",ontologies/personal_agent_ontology/tests/cq-110.sparql
+"Query agent desires",UC-046,CQ-111,"Agent;Desire;holdsDesire",ontologies/personal_agent_ontology/tests/cq-111.sparql
+"Trace deliberation inputs",UC-046,CQ-112,"Deliberation;Belief;Desire;considersBelief;considersDesire",ontologies/personal_agent_ontology/tests/cq-112.sparql
+"Audit intention justifications",UC-047,CQ-113,"Justification;Intention;justifiesIntention",ontologies/personal_agent_ontology/tests/cq-113.sparql

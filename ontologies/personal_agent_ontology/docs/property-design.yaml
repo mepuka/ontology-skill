@@ -2307,6 +2307,462 @@ properties:
     definition: "Links a clarification request to the turn it is clarifying."
     constraint_note: "Functional: each clarification request targets exactly one turn."
 
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.7.0: Foundation Model & Deployment (pao-model)
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: hasProvider
+    type: ObjectProperty
+    domain: FoundationModel
+    range: ModelProvider
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-model
+    source_cq: ""
+    definition: "Links a foundation model to its hosting provider."
+    constraint_note: "Functional: each foundation model has at most one provider."
+
+  - name: usesModel
+    type: ObjectProperty
+    domain: AIAgent
+    range: FoundationModel
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-model
+    source_cq: ""
+    definition: "Links an AI agent to the foundation model it uses."
+    constraint_note: ""
+
+  - name: deployedAs
+    type: ObjectProperty
+    domain: FoundationModel
+    range: ModelDeployment
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-model
+    source_cq: ""
+    definition: "Links a foundation model to one of its deployments."
+    constraint_note: ""
+
+  - name: invokedOnDeployment
+    type: ObjectProperty
+    domain: ModelInvocation
+    range: ModelDeployment
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-model
+    source_cq: ""
+    definition: "Links a model invocation to the deployment it ran on."
+    constraint_note: "Functional: each invocation targets at most one deployment."
+
+  - name: hasGenerationConfig
+    type: ObjectProperty
+    domain: ModelInvocation
+    range: GenerationConfiguration
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-model
+    source_cq: ""
+    definition: "Links a model invocation to its generation configuration."
+    constraint_note: "Functional: each invocation has at most one generation configuration."
+
+  - name: modelInvocationForTurn
+    type: ObjectProperty
+    domain: ModelInvocation
+    range: Turn
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: producedByModelInvocation
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-model
+    source_cq: ""
+    definition: "Links a model invocation to the turn it produced."
+    constraint_note: "Functional: each model invocation produces at most one turn."
+
+  - name: producedByModelInvocation
+    type: ObjectProperty
+    domain: Turn
+    range: ModelInvocation
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: modelInvocationForTurn
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-model
+    source_cq: ""
+    definition: "Links a turn to the model invocation that produced it."
+    constraint_note: "Inverse of modelInvocationForTurn."
+
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.7.0: Observability (pao-observability)
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: observesMetric
+    type: ObjectProperty
+    domain: MetricObservation
+    range: OperationalMetric
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-observability
+    source_cq: ""
+    definition: "Links a metric observation to the metric type it measures."
+    constraint_note: "Functional: each observation measures at most one metric."
+
+  - name: observedOnEntity
+    type: ObjectProperty
+    domain: MetricObservation
+    range: owl:Thing
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-observability
+    source_cq: ""
+    definition: "Links a metric observation to the entity being measured."
+    constraint_note: "Range is owl:Thing to allow observation of any entity type."
+
+  - name: incidentForEntity
+    type: ObjectProperty
+    domain: ReliabilityIncident
+    range: owl:Thing
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-observability
+    source_cq: ""
+    definition: "Links a reliability incident to the affected entity."
+    constraint_note: "Range is owl:Thing to allow incidents on any entity type."
+
+  - name: linkedToRecovery
+    type: ObjectProperty
+    domain: ReliabilityIncident
+    range: ErrorRecoveryEvent
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-observability
+    source_cq: ""
+    definition: "Links a reliability incident to a triggered recovery event."
+    constraint_note: ""
+
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.7.0: Recovery addition (pao-recovery)
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: hasFailureType
+    type: ObjectProperty
+    domain: ErrorRecoveryEvent
+    range: FailureType
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-recovery
+    source_cq: ""
+    definition: "Links an error recovery event to its failure type classification."
+    constraint_note: "Functional: each recovery event has at most one failure type."
+
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.7.0: Planning additions (pao-planning)
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: heldBelief
+    type: ObjectProperty
+    domain: Agent
+    range: Belief
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-planning
+    source_cq: ""
+    definition: "Links an agent to a belief it holds."
+    constraint_note: ""
+
+  - name: holdsDesire
+    type: ObjectProperty
+    domain: Agent
+    range: Desire
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-planning
+    source_cq: ""
+    definition: "Links an agent to a desire it has."
+    constraint_note: ""
+
+  - name: justifiesIntention
+    type: ObjectProperty
+    domain: Justification
+    range: Intention
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-planning
+    source_cq: ""
+    definition: "Links a justification to the intention it supports."
+    constraint_note: ""
+
+  - name: producesIntention
+    type: ObjectProperty
+    domain: Deliberation
+    range: Intention
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-planning
+    source_cq: ""
+    definition: "Links a deliberation process to the intention it produces."
+    constraint_note: ""
+
+  - name: considersBelief
+    type: ObjectProperty
+    domain: Deliberation
+    range: Belief
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-planning
+    source_cq: ""
+    definition: "Links a deliberation to a belief it considers."
+    constraint_note: ""
+
+  - name: considersDesire
+    type: ObjectProperty
+    domain: Deliberation
+    range: Desire
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-planning
+    source_cq: ""
+    definition: "Links a deliberation to a desire it considers."
+    constraint_note: ""
+
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.7.0: Foundation Model data properties (pao-model)
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: hasModelId
+    type: DataProperty
+    domain: FoundationModel
+    range: "xsd:string"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-model
+    source_cq: ""
+    definition: "The unique identifier for a foundation model."
+    constraint_note: "Functional: each foundation model has at most one identifier."
+
+  - name: hasModelVersion
+    type: DataProperty
+    domain: FoundationModel
+    range: "xsd:string"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-model
+    source_cq: ""
+    definition: "The version string of a foundation model."
+    constraint_note: "Functional: each foundation model has at most one version string."
+
+  - name: hasTemperature
+    type: DataProperty
+    domain: GenerationConfiguration
+    range: "xsd:decimal"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-model
+    source_cq: ""
+    definition: "The temperature parameter for generation sampling."
+    constraint_note: "Functional: each configuration has at most one temperature."
+
+  - name: hasTopP
+    type: DataProperty
+    domain: GenerationConfiguration
+    range: "xsd:decimal"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-model
+    source_cq: ""
+    definition: "The top-p (nucleus sampling) parameter."
+    constraint_note: "Functional: each configuration has at most one top-p value."
+
+  - name: hasMaxOutputTokens
+    type: DataProperty
+    domain: GenerationConfiguration
+    range: "xsd:nonNegativeInteger"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-model
+    source_cq: ""
+    definition: "The maximum number of output tokens."
+    constraint_note: "Functional: each configuration has at most one max output tokens value."
+
+  - name: hasPromptVersion
+    type: DataProperty
+    domain: GenerationConfiguration
+    range: "xsd:string"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-model
+    source_cq: ""
+    definition: "The version of the prompt template used."
+    constraint_note: "Functional: each configuration has at most one prompt version."
+
+  - name: hasSeed
+    type: DataProperty
+    domain: GenerationConfiguration
+    range: "xsd:nonNegativeInteger"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-model
+    source_cq: ""
+    definition: "The random seed for reproducible generation."
+    constraint_note: "Functional: each configuration has at most one seed value."
+
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.7.0: Observability data properties (pao-observability)
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: hasMetricName
+    type: DataProperty
+    domain: OperationalMetric
+    range: "xsd:string"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-observability
+    source_cq: ""
+    definition: "The name identifier for an operational metric."
+    constraint_note: "Functional: each metric has at most one name."
+
+  - name: hasMetricValue
+    type: DataProperty
+    domain: MetricObservation
+    range: "xsd:decimal"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-observability
+    source_cq: ""
+    definition: "The numeric value of a metric observation."
+    constraint_note: "Functional: each observation has at most one value."
+
 # ═══════════════════════════════════════════════════════════════════════
 # PROPERTY HIERARCHY SUMMARY
 # ═══════════════════════════════════════════════════════════════════════
@@ -2399,18 +2855,20 @@ properties:
 # ═══════════════════════════════════════════════════════════════════════
 
 summary:
-  total_properties: 133   # 109 object + 24 data
-  object_properties: 109  # was 93, +16 v0.6.0 Phase B
-  data_properties: 24     # was 23, +1 v0.6.0 Phase B (blockSequenceIndex)
+  total_properties: 160   # 128 object + 32 data
+  object_properties: 128  # was 110, +18 v0.7.0 (7 pao-model, 4 pao-observability, 1 pao-recovery, 6 pao-planning)
+  data_properties: 32     # was 23, +9 v0.7.0 (7 pao-model, 2 pao-observability)
   by_module:
-    pao-core: 16
+    pao-core: 18
     pao-event: 9
-    pao-conversation: 40  # was 29, +11 (partOfInvocationGroup, groupedInTurn, producedToolResult, hasContentBlock, hasContentBlockType, blockSequenceIndex, hasDialogAct, hasCommunicativeFunction, contributesToCommonGround, providesAcceptanceEvidence, clarifiesTurn)
-    pao-memory: 20        # was 14, +6 (hasMemorySource, hasMemoryScope, sharedAcrossAgents, writesByAgent, conflictOnArtifact, resolvedByPolicy)
-    pao-planning: 9
-    pao-governance: 18
-    pao-services: 11
-    pao-recovery: 10
+    pao-conversation: 40
+    pao-memory: 20
+    pao-planning: 15      # was 9, +6 v0.7.0 (heldBelief, holdsDesire, justifiesIntention, producesIntention, considersBelief, considersDesire)
+    pao-governance: 19
+    pao-services: 9
+    pao-recovery: 9       # was 8, +1 v0.7.0 (hasFailureType)
+    pao-model: 14         # new in v0.7.0 (7 OP + 7 DP; 7 OP: hasProvider, usesModel, deployedAs, invokedOnDeployment, hasGenerationConfig, modelInvocationForTurn, producedByModelInvocation; 7 DP: hasModelId, hasModelVersion, hasTemperature, hasTopP, hasMaxOutputTokens, hasPromptVersion, hasSeed)
+    pao-observability: 6  # new in v0.7.0 (4 OP + 2 DP; 4 OP: observesMetric, observedOnEntity, incidentForEntity, linkedToRecovery; 2 DP: hasMetricName, hasMetricValue)
   imported_property_sets: 2  # PROV-O (14 properties), OWL-Time (5 properties)
   sub_property_chains:
     - "partOfConversation, partOfSession, partOfPlan -> partOf"

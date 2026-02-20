@@ -1,7 +1,6 @@
 # Personal Agent Ontology -- CQ Test Manifest (TDOD-style)
 # Framework: Test-Driven Ontology Development (Keet & Lawrynowicz, 2016)
 # Runner: ROBOT verify (--queries flag) or custom SPARQL test harness
-# CQ-022 skipped (could_have priority)
 
 ontology:
   name: Personal Agent Ontology
@@ -206,7 +205,14 @@ cq_tests:
     expected: "true"
     requires_abox: true
 
-  # CQ-022 skipped (could_have priority)
+  - id: cq-022
+    file: cq-022.sparql
+    cq: CQ-022
+    module: actions_events_time
+    question: "What events overlap temporally with a given event?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
 
   - id: cq-023
     file: cq-023.sparql
@@ -917,6 +923,143 @@ cq_tests:
     cq: CQ-098
     module: conversation_interaction
     question: "Which clarifications were issued before commitment was established?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  # --- v0.7.0 Additions: Model Identity, Observability, Failure Taxonomy, BDI ---
+
+  - id: cq-099
+    file: cq-099.sparql
+    cq: CQ-099
+    module: model_identity
+    question: "Which foundation model was used for a given turn?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-100
+    file: cq-100.sparql
+    cq: CQ-100
+    module: model_identity
+    question: "What model deployments exist for a foundation model?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-101
+    file: cq-101.sparql
+    cq: CQ-101
+    module: model_identity
+    question: "Which provider hosts a given model?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-102
+    file: cq-102.sparql
+    cq: CQ-102
+    module: model_identity
+    question: "What generation config was used for a model invocation?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-103
+    file: cq-103.sparql
+    cq: CQ-103
+    module: model_identity
+    question: "Which model does a given AI agent use?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-104
+    file: cq-104.sparql
+    cq: CQ-104
+    module: observability
+    question: "What metric observations were recorded for a given entity?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-105
+    file: cq-105.sparql
+    cq: CQ-105
+    module: observability
+    question: "What operational metrics are defined in the system?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-106
+    file: cq-106.sparql
+    cq: CQ-106
+    module: observability
+    question: "What reliability incidents occurred for a service?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-107
+    file: cq-107.sparql
+    cq: CQ-107
+    module: observability
+    question: "Is a reliability incident linked to a recovery event?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-108
+    file: cq-108.sparql
+    cq: CQ-108
+    module: failure_taxonomy
+    question: "What failure type caused a given error recovery event?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-109
+    file: cq-109.sparql
+    cq: CQ-109
+    module: failure_taxonomy
+    question: "How many recovery events of each failure type occurred?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-110
+    file: cq-110.sparql
+    cq: CQ-110
+    module: bdi
+    question: "What beliefs does an agent hold?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-111
+    file: cq-111.sparql
+    cq: CQ-111
+    module: bdi
+    question: "What desires does an agent have?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-112
+    file: cq-112.sparql
+    cq: CQ-112
+    module: bdi
+    question: "What beliefs and desires were considered in a deliberation?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-113
+    file: cq-113.sparql
+    cq: CQ-113
+    module: bdi
+    question: "What justification supports a given intention?"
     type: SELECT
     expected: non_empty
     requires_abox: true

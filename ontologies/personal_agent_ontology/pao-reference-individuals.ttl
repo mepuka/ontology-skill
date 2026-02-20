@@ -11,8 +11,9 @@ pao:reference-individuals a owl:Ontology ;
     dcterms:description "Named individuals for status values, agent roles, and classifiers."@en ;
     dcterms:license <https://spdx.org/licenses/MIT> ;
     dcterms:title "Personal Agent Ontology — Reference Individuals"@en ;
-    owl:versionIRI <https://purl.org/pao/reference-individuals/0.6.0> ;
-    owl:versionInfo "0.6.0" .
+    owl:priorVersion <https://purl.org/pao/reference-individuals/0.6.0> ;
+    owl:versionIRI <https://purl.org/pao/reference-individuals/0.7.0> ;
+    owl:versionInfo "0.7.0" .
 
 pao:ClaimType owl:equivalentClass [ owl:oneOf ( pao:UserPreference ) ] .
 
@@ -58,6 +59,11 @@ pao:AssistantRole a owl:NamedIndividual,
     rdfs:label "assistant role"@en ;
     skos:definition "The role of the AI assistant in a conversation."@en .
 
+pao:AuthenticationFailure a owl:NamedIndividual,
+        pao:FailureType ;
+    rdfs:label "authentication failure"@en ;
+    skos:definition "Failure type: authentication or authorization was rejected."@en .
+
 pao:Blocked a owl:NamedIndividual,
         pao:TaskStatus ;
     rdfs:label "blocked"@en ;
@@ -95,6 +101,11 @@ pao:Confidential a owl:NamedIndividual,
     rdfs:label "confidential"@en ;
     skos:definition "Sensitivity level: restricted personal data."@en .
 
+pao:ConfigurationError a owl:NamedIndividual,
+        pao:FailureType ;
+    rdfs:label "configuration error"@en ;
+    skos:definition "Failure type: the system was misconfigured."@en .
+
 pao:Confirm a owl:NamedIndividual,
         pao:CommunicativeFunction ;
     rdfs:label "confirm"@en ;
@@ -114,6 +125,11 @@ pao:Deny a owl:NamedIndividual,
         pao:AuthorizationDecision ;
     rdfs:label "deny"@en ;
     skos:definition "Authorization decision: the operation was denied."@en .
+
+pao:DependencyFailure a owl:NamedIndividual,
+        pao:FailureType ;
+    rdfs:label "dependency failure"@en ;
+    skos:definition "Failure type: a required upstream dependency was unavailable."@en .
 
 pao:Disconnected a owl:NamedIndividual,
         pao:IntegrationStatus ;
@@ -185,6 +201,11 @@ pao:Messaging a owl:NamedIndividual,
     rdfs:label "messaging"@en ;
     skos:definition "Channel type: messaging platform interaction."@en .
 
+pao:NetworkError a owl:NamedIndividual,
+        pao:FailureType ;
+    rdfs:label "network error"@en ;
+    skos:definition "Failure type: a network connectivity issue occurred."@en .
+
 pao:NonCompliant a owl:NamedIndividual,
         pao:ComplianceStatus ;
     rdfs:label "non compliant"@en ;
@@ -219,6 +240,11 @@ pao:Public a owl:NamedIndividual,
         pao:SensitivityLevel ;
     rdfs:label "public"@en ;
     skos:definition "Sensitivity level: unrestricted data."@en .
+
+pao:RateLimited a owl:NamedIndividual,
+        pao:FailureType ;
+    rdfs:label "rate limited"@en ;
+    skos:definition "Failure type: the request was rejected due to rate limiting."@en .
 
 pao:Reconnecting a owl:NamedIndividual,
         pao:ConnectionStatus ;
@@ -279,6 +305,11 @@ pao:TextBlock a owl:NamedIndividual,
         pao:ContentBlockType ;
     rdfs:label "text block"@en ;
     skos:definition "Content block type: plain text content."@en .
+
+pao:Timeout a owl:NamedIndividual,
+        pao:FailureType ;
+    rdfs:label "timeout"@en ;
+    skos:definition "Failure type: the operation exceeded its allowed time limit."@en .
 
 pao:ToolResultBlock a owl:NamedIndividual,
         pao:ContentBlockType ;
@@ -343,26 +374,49 @@ pao:ChannelType owl:equivalentClass [ owl:oneOf ( pao:CLI pao:Messaging pao:WebC
 
 pao:CommunicativeFunction owl:equivalentClass [ owl:oneOf ( pao:Inform pao:Request pao:Confirm pao:Clarify pao:Accept pao:Reject ) ] .
 
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Permissive pao:Standard pao:Restrictive ) .
+pao:FailureType owl:equivalentClass [ owl:oneOf ( pao:Timeout pao:AuthenticationFailure pao:RateLimited pao:DependencyFailure pao:ConfigurationError pao:NetworkError ) ] .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Approved pao:Rejected pao:Deferred ) .
+    owl:distinctMembers ( pao:Pending pao:InProgress pao:Completed pao:Blocked ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:UserSource pao:SystemSource pao:AgentSource ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Connected pao:Disconnected pao:Error pao:Initializing ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Timeout pao:AuthenticationFailure pao:RateLimited pao:DependencyFailure pao:ConfigurationError pao:NetworkError ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:CLI pao:Messaging pao:WebChat pao:APIChannel pao:VoiceChannel pao:EmailChannel ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Open pao:Closed pao:Reconnecting pao:Failed ) .
 
 [] a owl:AllDifferent ;
     owl:distinctMembers ( pao:TextBlock pao:ToolUseBlock pao:ToolResultBlock pao:ImageBlock ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Inform pao:Request pao:Confirm pao:Clarify pao:Accept pao:Reject ) .
+    owl:distinctMembers ( pao:Public pao:Internal pao:Confidential pao:Restricted ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Allow pao:Deny pao:RequireApproval ) .
 
 [] a owl:AllDifferent ;
     owl:distinctMembers ( pao:Preserved pao:Dropped pao:Summarized pao:Archived ) .
 
 [] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Approved pao:Rejected pao:Deferred ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Compliant pao:NonCompliant ) .
+
+[] a owl:AllDifferent ;
     owl:distinctMembers ( pao:UserPreference ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Public pao:Internal pao:Confidential pao:Restricted ) .
+    owl:distinctMembers ( pao:SessionScope pao:ProjectScope pao:GlobalScope ) .
 
 [] a owl:AllDifferent ;
     owl:distinctMembers ( pao:AssistantRole pao:UserRole ) .
@@ -371,25 +425,7 @@ pao:CommunicativeFunction owl:equivalentClass [ owl:oneOf ( pao:Inform pao:Reque
     owl:distinctMembers ( pao:Active pao:Ended pao:Interrupted ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:SessionScope pao:ProjectScope pao:GlobalScope ) .
+    owl:distinctMembers ( pao:Inform pao:Request pao:Confirm pao:Clarify pao:Accept pao:Reject ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Allow pao:Deny pao:RequireApproval ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Connected pao:Disconnected pao:Error pao:Initializing ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:UserSource pao:SystemSource pao:AgentSource ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Pending pao:InProgress pao:Completed pao:Blocked ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Compliant pao:NonCompliant ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Open pao:Closed pao:Reconnecting pao:Failed ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:CLI pao:Messaging pao:WebChat pao:APIChannel pao:VoiceChannel pao:EmailChannel ) .
+    owl:distinctMembers ( pao:Permissive pao:Standard pao:Restrictive ) .

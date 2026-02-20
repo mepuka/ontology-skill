@@ -188,6 +188,23 @@ EXPECTED_CLASSES = [
     "AcceptanceEvidence",
     # Roles
     "AgentRole",
+    # v0.7.0: Model Identity & Execution Provenance
+    "ModelProvider",
+    "FoundationModel",
+    "ModelDeployment",
+    "ModelInvocation",
+    "GenerationConfiguration",
+    # v0.7.0: Operational Observability
+    "OperationalMetric",
+    "MetricObservation",
+    "ReliabilityIncident",
+    # v0.7.0: Failure Taxonomy
+    "FailureType",
+    # v0.7.0: BDI Completion
+    "Belief",
+    "Desire",
+    "Justification",
+    "Deliberation",
 ]
 
 
@@ -198,10 +215,10 @@ def test_class_declared(tbox: Graph, cls_name: str) -> None:
 
 
 def test_class_count(tbox: Graph) -> None:
-    """Exactly 92 PAO classes are declared."""
+    """Exactly 105 PAO classes are declared."""
     pao_classes = {s for s in tbox.subjects(RDF.type, OWL.Class) if str(s).startswith(str(PAO))}
-    assert len(pao_classes) == 92, (
-        f"Expected 92 PAO classes, found {len(pao_classes)}: {pao_classes}"
+    assert len(pao_classes) == 105, (
+        f"Expected 105 PAO classes, found {len(pao_classes)}: {pao_classes}"
     )
 
 
@@ -327,6 +344,23 @@ HIERARCHY_CHECKS = [
     ("AcceptanceEvidence", PROV.Entity),
     # v0.6.0 review: claimType migration
     ("ClaimType", PAO.Status),
+    # v0.7.0: Model Identity
+    ("ModelProvider", PROV.Entity),
+    ("FoundationModel", PROV.Entity),
+    ("ModelDeployment", PROV.Entity),
+    ("ModelInvocation", PAO.Event),
+    ("GenerationConfiguration", PROV.Entity),
+    # v0.7.0: Observability
+    ("OperationalMetric", PROV.Entity),
+    ("MetricObservation", PROV.Entity),
+    ("ReliabilityIncident", PAO.Event),
+    # v0.7.0: Failure Taxonomy
+    ("FailureType", PAO.Status),
+    # v0.7.0: BDI Completion
+    ("Belief", PROV.Entity),
+    ("Desire", PROV.Entity),
+    ("Justification", PROV.Entity),
+    ("Deliberation", PAO.Event),
 ]
 
 
@@ -388,6 +422,16 @@ BFO_ALIGNMENT = [
     ("CommonGround", OBO["BFO_0000031"]),  # GDC
     ("ClarificationRequest", OBO["BFO_0000031"]),  # GDC
     ("AcceptanceEvidence", OBO["BFO_0000031"]),  # GDC
+    # v0.7.0 additions
+    ("ModelProvider", OBO["BFO_0000031"]),  # GDC
+    ("FoundationModel", OBO["BFO_0000031"]),  # GDC
+    ("ModelDeployment", OBO["BFO_0000031"]),  # GDC
+    ("GenerationConfiguration", OBO["BFO_0000031"]),  # GDC
+    ("OperationalMetric", OBO["BFO_0000031"]),  # GDC
+    ("MetricObservation", OBO["BFO_0000031"]),  # GDC
+    ("Belief", OBO["BFO_0000031"]),  # GDC
+    ("Desire", OBO["BFO_0000031"]),  # GDC
+    ("Justification", OBO["BFO_0000031"]),  # GDC
 ]
 
 
@@ -516,6 +560,28 @@ EXPECTED_OBJ_PROPS = [
     "viaChannel",
     "writesByAgent",
     "writtenToAuditLog",
+    # v0.7.0: Model Identity
+    "hasProvider",
+    "usesModel",
+    "deployedAs",
+    "invokedOnDeployment",
+    "hasGenerationConfig",
+    "modelInvocationForTurn",
+    "producedByModelInvocation",
+    # v0.7.0: Observability
+    "observesMetric",
+    "observedOnEntity",
+    "incidentForEntity",
+    "linkedToRecovery",
+    # v0.7.0: Failure Taxonomy
+    "hasFailureType",
+    # v0.7.0: BDI Completion
+    "heldBelief",
+    "holdsDesire",
+    "justifiesIntention",
+    "producesIntention",
+    "considersBelief",
+    "considersDesire",
 ]
 
 
@@ -526,7 +592,7 @@ def test_object_property_declared(tbox: Graph, prop_name: str) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Datatype property declarations (23 properties)
+# Datatype property declarations (32 properties)
 # ---------------------------------------------------------------------------
 
 EXPECTED_DATA_PROPS = [
@@ -553,6 +619,17 @@ EXPECTED_DATA_PROPS = [
     "hasTurnIndex",
     "isEvictionCandidate",
     "retentionPeriodDays",
+    # v0.7.0: Model Identity
+    "hasModelId",
+    "hasModelVersion",
+    "hasTemperature",
+    "hasTopP",
+    "hasMaxOutputTokens",
+    "hasPromptVersion",
+    "hasSeed",
+    # v0.7.0: Observability
+    "hasMetricName",
+    "hasMetricValue",
 ]
 
 
@@ -643,6 +720,24 @@ EXPECTED_FUNCTIONAL = [
     "triggeredRollback",
     "viaChannel",
     "writtenToAuditLog",
+    # v0.7.0: Model Identity
+    "hasProvider",
+    "invokedOnDeployment",
+    "hasGenerationConfig",
+    "modelInvocationForTurn",
+    "hasModelId",
+    "hasModelVersion",
+    "hasTemperature",
+    "hasTopP",
+    "hasMaxOutputTokens",
+    "hasPromptVersion",
+    "hasSeed",
+    # v0.7.0: Observability
+    "observesMetric",
+    "hasMetricName",
+    "hasMetricValue",
+    # v0.7.0: Failure Taxonomy
+    "hasFailureType",
 ]
 
 
@@ -684,6 +779,8 @@ INVERSE_PAIRS = [
     ("belongsTo", "hasMember"),
     ("continuedFrom", "continuedBy"),
     ("previousTransition", "nextTransition"),
+    # v0.7.0: Model Identity
+    ("modelInvocationForTurn", "producedByModelInvocation"),
 ]
 
 
@@ -847,6 +944,37 @@ DOMAIN_RANGE_CHECKS: list[tuple[str, URIRef | None, URIRef]] = [
     ("contributesToCommonGround", PAO.GroundingAct, PAO.CommonGround),
     ("providesAcceptanceEvidence", PAO.GroundingAct, PAO.AcceptanceEvidence),
     ("clarifiesTurn", PAO.ClarificationRequest, PAO.Turn),
+    # v0.7.0: Model Identity
+    ("hasProvider", PAO.FoundationModel, PAO.ModelProvider),
+    ("usesModel", PAO.AIAgent, PAO.FoundationModel),
+    ("deployedAs", PAO.FoundationModel, PAO.ModelDeployment),
+    ("invokedOnDeployment", PAO.ModelInvocation, PAO.ModelDeployment),
+    ("hasGenerationConfig", PAO.ModelInvocation, PAO.GenerationConfiguration),
+    ("modelInvocationForTurn", PAO.ModelInvocation, PAO.Turn),
+    ("producedByModelInvocation", PAO.Turn, PAO.ModelInvocation),
+    ("hasModelId", PAO.FoundationModel, XSD.string),
+    ("hasModelVersion", PAO.FoundationModel, XSD.string),
+    ("hasTemperature", PAO.GenerationConfiguration, XSD.decimal),
+    ("hasTopP", PAO.GenerationConfiguration, XSD.decimal),
+    ("hasMaxOutputTokens", PAO.GenerationConfiguration, XSD.nonNegativeInteger),
+    ("hasPromptVersion", PAO.GenerationConfiguration, XSD.string),
+    ("hasSeed", PAO.GenerationConfiguration, XSD.nonNegativeInteger),
+    # v0.7.0: Observability
+    ("observesMetric", PAO.MetricObservation, PAO.OperationalMetric),
+    ("observedOnEntity", PAO.MetricObservation, OWL.Thing),
+    ("incidentForEntity", PAO.ReliabilityIncident, OWL.Thing),
+    ("linkedToRecovery", PAO.ReliabilityIncident, PAO.ErrorRecoveryEvent),
+    ("hasMetricName", PAO.OperationalMetric, XSD.string),
+    ("hasMetricValue", PAO.MetricObservation, XSD.decimal),
+    # v0.7.0: Failure Taxonomy
+    ("hasFailureType", PAO.ErrorRecoveryEvent, PAO.FailureType),
+    # v0.7.0: BDI Completion
+    ("heldBelief", PAO.Agent, PAO.Belief),
+    ("holdsDesire", PAO.Agent, PAO.Desire),
+    ("justifiesIntention", PAO.Justification, PAO.Intention),
+    ("producesIntention", PAO.Deliberation, PAO.Intention),
+    ("considersBelief", PAO.Deliberation, PAO.Belief),
+    ("considersDesire", PAO.Deliberation, PAO.Desire),
 ]
 
 
@@ -976,6 +1104,23 @@ EXISTENTIAL_CHECKS = [
     ("DialogAct", "hasCommunicativeFunction", "CommunicativeFunction"),
     ("GroundingAct", "contributesToCommonGround", "CommonGround"),
     ("ClarificationRequest", "clarifiesTurn", "Turn"),
+    # v0.7.0: Model Identity
+    ("ModelInvocation", "invokedOnDeployment", "ModelDeployment"),
+    ("ModelInvocation", "modelInvocationForTurn", "Turn"),
+    ("ModelInvocation", "hasGenerationConfig", "GenerationConfiguration"),
+    ("FoundationModel", "deployedAs", "ModelDeployment"),
+    ("FoundationModel", "hasProvider", "ModelProvider"),
+    ("AIAgent", "usesModel", "FoundationModel"),
+    # v0.7.0: Observability
+    ("MetricObservation", "observesMetric", "OperationalMetric"),
+    ("ReliabilityIncident", "incidentForEntity", None),  # owl:Thing
+    # v0.7.0: Failure Taxonomy
+    ("ErrorRecoveryEvent", "hasFailureType", "FailureType"),
+    # v0.7.0: BDI Completion
+    ("Deliberation", "considersBelief", "Belief"),
+    ("Deliberation", "considersDesire", "Desire"),
+    ("Deliberation", "producesIntention", "Intention"),
+    ("Justification", "justifiesIntention", "Intention"),
 ]
 
 
@@ -1162,6 +1307,9 @@ DISJOINT_GROUP_CHECKS = [
             PAO.RollbackEvent,
             PAO.MemoryWriteConflict,
             PAO.GroundingAct,
+            PAO.ModelInvocation,
+            PAO.ReliabilityIncident,
+            PAO.Deliberation,
         },
         "Event subtypes",
     ),
@@ -1184,6 +1332,7 @@ DISJOINT_GROUP_CHECKS = [
             PAO.MemoryScope,
             PAO.CommunicativeFunction,
             PAO.ClaimType,
+            PAO.FailureType,
         },
         "Status subtypes",
     ),
@@ -1242,6 +1391,15 @@ DISJOINT_GROUP_CHECKS = [
             PAO.CommonGround,
             PAO.ClarificationRequest,
             PAO.AcceptanceEvidence,
+            PAO.ModelProvider,
+            PAO.FoundationModel,
+            PAO.ModelDeployment,
+            PAO.GenerationConfiguration,
+            PAO.OperationalMetric,
+            PAO.MetricObservation,
+            PAO.Belief,
+            PAO.Desire,
+            PAO.Justification,
         },
         "Cross-module GDC disjointness",
     ),
@@ -1581,6 +1739,55 @@ def test_has_key_conversation(tbox: Graph) -> None:
     assert PAO.hasConversationId in keys
 
 
+def test_has_key_foundation_model(tbox: Graph) -> None:
+    """FoundationModel has owl:hasKey (hasModelId)."""
+    key_list = tbox.value(PAO.FoundationModel, OWL.hasKey)
+    assert key_list is not None, "FoundationModel missing owl:hasKey"
+    keys = list(Collection(tbox, key_list))
+    assert PAO.hasModelId in keys
+
+
+def test_failure_type_individuals(ref: Graph) -> None:
+    """FailureType individuals exist."""
+    for name in [
+        "Timeout",
+        "AuthenticationFailure",
+        "RateLimited",
+        "DependencyFailure",
+        "ConfigurationError",
+        "NetworkError",
+    ]:
+        assert (PAO[name], RDF.type, PAO.FailureType) in ref
+
+
+def test_failure_type_enumeration(ref: Graph) -> None:
+    """FailureType owl:oneOf contains all 6 members."""
+    members = _get_one_of_members(ref, PAO.FailureType)
+    assert members == {
+        PAO.Timeout,
+        PAO.AuthenticationFailure,
+        PAO.RateLimited,
+        PAO.DependencyFailure,
+        PAO.ConfigurationError,
+        PAO.NetworkError,
+    }
+
+
+def test_all_different_failure_type(ref: Graph) -> None:
+    """AllDifferent for FailureType individuals."""
+    assert _find_all_different_containing(
+        ref,
+        {
+            PAO.Timeout,
+            PAO.AuthenticationFailure,
+            PAO.RateLimited,
+            PAO.DependencyFailure,
+            PAO.ConfigurationError,
+            PAO.NetworkError,
+        },
+    )
+
+
 # ---------------------------------------------------------------------------
 # owl:oneOf enumerations
 # ---------------------------------------------------------------------------
@@ -1733,6 +1940,7 @@ CQ_SELECT_NON_EMPTY = [
     "cq-018.sparql",
     "cq-019.sparql",
     "cq-020.sparql",
+    "cq-022.sparql",
     "cq-023.sparql",
     "cq-024.sparql",
     "cq-025.sparql",
@@ -1807,6 +2015,22 @@ CQ_SELECT_NON_EMPTY = [
     "cq-096.sparql",
     "cq-097.sparql",
     "cq-098.sparql",
+    # v0.7.0: Model Identity, Observability, Failure Taxonomy, BDI
+    "cq-099.sparql",
+    "cq-100.sparql",
+    "cq-101.sparql",
+    "cq-102.sparql",
+    "cq-103.sparql",
+    "cq-104.sparql",
+    "cq-105.sparql",
+    "cq-106.sparql",
+    "cq-107.sparql",
+    "cq-108.sparql",
+    "cq-109.sparql",
+    "cq-110.sparql",
+    "cq-111.sparql",
+    "cq-112.sparql",
+    "cq-113.sparql",
 ]
 
 
@@ -1884,9 +2108,9 @@ def test_shacl_conformance(shapes: Graph) -> None:
 
 
 def test_shacl_shape_count(shapes: Graph) -> None:
-    """At least 46 NodeShapes exist."""
+    """At least 57 NodeShapes exist."""
     node_shapes = set(shapes.subjects(RDF.type, SH.NodeShape))
-    assert len(node_shapes) >= 46, f"Expected >=46 NodeShapes, got {len(node_shapes)}"
+    assert len(node_shapes) >= 57, f"Expected >=57 NodeShapes, got {len(node_shapes)}"
 
 
 EXPECTED_SHAPE_TARGETS = [
@@ -1936,6 +2160,20 @@ EXPECTED_SHAPE_TARGETS = [
     "ToolInvocation",
     "ToolInvocationGroup",
     "Turn",
+    # v0.7.0: Model Identity
+    "FoundationModel",
+    "ModelInvocation",
+    "GenerationConfiguration",
+    "ModelProvider",
+    # v0.7.0: Observability
+    "OperationalMetric",
+    "MetricObservation",
+    "ReliabilityIncident",
+    # v0.7.0: BDI Completion
+    "Belief",
+    "Desire",
+    "Deliberation",
+    "Justification",
 ]
 
 

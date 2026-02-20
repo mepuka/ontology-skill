@@ -24,12 +24,12 @@ independently and note the PROV-O relationship.
 | BFO Category | PAO Classes |
 |---|---|
 | Object (BFO:0000030) | HumanUser, Organization |
-| Generically Dependent Continuant (BFO:0000031) | AIAgent, SubAgent, ToolDefinition, Message, MemoryItem, MemoryTier, WorkingMemory, EpisodicMemory, SemanticMemory, ProceduralMemory, Episode, Claim, MemoryBlock, Goal, Plan, Task, Persona, Intention, PermissionPolicy, SafetyConstraint, ConsentRecord, RetentionPolicy, CompactionDisposition, ContextWindow, CommunicationChannel, Integration, ExternalService, ServiceConnection, ServiceCapability, ServiceToolCapability, ServiceResourceCapability, ServicePromptCapability, SandboxPolicy, Hook, AuditLog, AuditEntry, Checkpoint, ToolResult, ToolInvocationGroup, ContentBlock, SharedMemoryArtifact, DialogAct, CommonGround, ClarificationRequest, AcceptanceEvidence, Status, SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate, ChannelType, IntegrationStatus, ConnectionStatus, PermissionMode, AuthorizationDecision, CheckpointDecision, ContentBlockType, MemorySource, MemoryScope, CommunicativeFunction |
+| Generically Dependent Continuant (BFO:0000031) | AIAgent, SubAgent, ToolDefinition, Message, MemoryItem, MemoryTier, WorkingMemory, EpisodicMemory, SemanticMemory, ProceduralMemory, Episode, Claim, MemoryBlock, Goal, Plan, Task, Persona, Intention, PermissionPolicy, SafetyConstraint, ConsentRecord, RetentionPolicy, CompactionDisposition, ContextWindow, CommunicationChannel, Integration, ExternalService, ServiceConnection, ServiceCapability, ServiceToolCapability, ServiceResourceCapability, ServicePromptCapability, SandboxPolicy, Hook, AuditLog, AuditEntry, Checkpoint, ToolResult, ToolInvocationGroup, ContentBlock, SharedMemoryArtifact, DialogAct, CommonGround, ClarificationRequest, AcceptanceEvidence, ModelProvider, FoundationModel, ModelDeployment, GenerationConfiguration, OperationalMetric, MetricObservation, Belief, Desire, Justification, Status, SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate, ChannelType, IntegrationStatus, ConnectionStatus, PermissionMode, AuthorizationDecision, CheckpointDecision, ContentBlockType, MemorySource, MemoryScope, CommunicativeFunction |
 | Role (BFO:0000023) | AgentRole |
-| Process (BFO:0000015) | Conversation, Session, Turn, ToolInvocation, CompactionEvent, ErasureEvent, Event, Action, MemoryOperation, Encoding, Retrieval, Consolidation, Forgetting, Observation, Rehearsal, StatusTransition, SessionStatusTransition, TaskStatusTransition, CapabilityDiscoveryEvent, HookExecution, ErrorRecoveryEvent, RetryAttempt, ReplanEvent, RollbackEvent, MemoryWriteConflict, GroundingAct |
+| Process (BFO:0000015) | Conversation, Session, Turn, ToolInvocation, CompactionEvent, ErasureEvent, Event, Action, MemoryOperation, Encoding, Retrieval, Consolidation, Forgetting, Observation, Rehearsal, StatusTransition, SessionStatusTransition, TaskStatusTransition, CapabilityDiscoveryEvent, HookExecution, ErrorRecoveryEvent, RetryAttempt, ReplanEvent, RollbackEvent, MemoryWriteConflict, GroundingAct, ModelInvocation, ReliabilityIncident, Deliberation |
 | Cross-cutting (documented) | Agent (umbrella for Object + GDC subtypes) |
-| *(Status subtypes listed under GDC above — Value Partition ODP-6)* | |
-| Named Individuals | Active, Ended, Interrupted, Pending, InProgress, Completed, Blocked, Compliant, NonCompliant, AssistantRole, UserRole, UserPreference, Public, Internal, Confidential, Restricted, Preserved, Dropped, Summarized, Archived, CLI, Messaging, WebChat, APIChannel, VoiceChannel, EmailChannel, Connected, Disconnected, Error, Initializing, Open, Closed, Reconnecting, Failed, Permissive, Standard, Restrictive, Allow, Deny, RequireApproval, Approved, Rejected, Deferred, TextBlock, ToolUseBlock, ToolResultBlock, ImageBlock, UserSource, SystemSource, AgentSource, SessionScope, ProjectScope, GlobalScope, Inform, Request, Confirm, Clarify, Accept, Reject |
+| *(Status subtypes listed under GDC above — Value Partition ODP-6, incl. FailureType)* | |
+| Named Individuals | Active, Ended, Interrupted, Pending, InProgress, Completed, Blocked, Compliant, NonCompliant, AssistantRole, UserRole, UserPreference, Public, Internal, Confidential, Restricted, Preserved, Dropped, Summarized, Archived, CLI, Messaging, WebChat, APIChannel, VoiceChannel, EmailChannel, Connected, Disconnected, Error, Initializing, Open, Closed, Reconnecting, Failed, Permissive, Standard, Restrictive, Allow, Deny, RequireApproval, Approved, Rejected, Deferred, TextBlock, ToolUseBlock, ToolResultBlock, ImageBlock, UserSource, SystemSource, AgentSource, SessionScope, ProjectScope, GlobalScope, Inform, Request, Confirm, Clarify, Accept, Reject, Timeout, AuthenticationFailure, RateLimited, DependencyFailure, ConfigurationError, NetworkError |
 
 ---
 
@@ -964,6 +964,140 @@ not the act of requesting itself.
 that a participant has accepted or understood a proposition. Produced by
 GroundingActs and contributed to CommonGround. It is a record, not the
 acceptance process.
+
+---
+
+## v0.7.0 Phase C Alignment Decisions
+
+### 79. ModelProvider -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: An information artifact identifying an organization that hosts
+foundation models. It is a specification of a hosting entity, not the entity
+itself. Persists independently of any particular model deployment.
+
+---
+
+### 80. FoundationModel -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: An information artifact specifying a model family (name, version).
+It describes the model's identity and capabilities as a document, not the
+computational process itself. Has a HasKey axiom on hasModelId.
+
+---
+
+### 81. ModelDeployment -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A configuration artifact for a running model endpoint. It
+describes deployment parameters and endpoint information as structured data,
+not the running service itself.
+
+---
+
+### 82. ModelInvocation -> Process (BFO:0000015)
+
+**Decision**: Process (via pao:Event)
+
+**Rationale**: A temporal process in which a foundation model generates output.
+It unfolds in time, has a beginning and end, and produces a result. Subclass
+of Event, which is already aligned to BFO:Process.
+
+---
+
+### 83. GenerationConfiguration -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A parameter set document specifying temperature, top-p, max
+tokens, seed, and prompt version for controlling model generation. It is an
+information specification, not a process.
+
+---
+
+### 84. OperationalMetric -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A named metric type definition (e.g., latency_p99, error_rate).
+It is an information artifact defining what is measured, not the measurement
+itself.
+
+---
+
+### 85. MetricObservation -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A recorded measurement data point. While the act of measuring
+is a process, the recorded observation is an information artifact with a value
+and timestamp. Analogous to how Claim records a proposition.
+
+---
+
+### 86. ReliabilityIncident -> Process (BFO:0000015)
+
+**Decision**: Process (via pao:Event)
+
+**Rationale**: A failure or degradation event. It unfolds in time, has temporal
+extent, and may trigger recovery processes. Subclass of Event.
+
+---
+
+### 87. FailureType -> Value Partition (GDC via Status)
+
+**Decision**: Value Partition with named individuals
+
+**Rationale**: A controlled vocabulary classifying failure categories. Follows
+the same Value Partition pattern (ODP-6) used for SessionStatus, TaskStatus,
+etc. Enumerated individuals with `owl:oneOf`.
+
+**Individuals**: Timeout, AuthenticationFailure, RateLimited,
+DependencyFailure, ConfigurationError, NetworkError.
+
+---
+
+### 88. Belief -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: An agent-held proposition about the world. It is information
+content -- a statement the agent treats as true. Not a quality or disposition
+of the agent, but a separate information entity the agent holds.
+
+---
+
+### 89. Desire -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A desired state or outcome. Like Goal (which is already GDC),
+a Desire is an information specification of what the agent wants. It describes
+a target state, not the motivational process.
+
+---
+
+### 90. Justification -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: Evidence supporting an intention. It is a record or document
+providing rationale, not the reasoning process itself (which is Deliberation).
+
+---
+
+### 91. Deliberation -> Process (BFO:0000015)
+
+**Decision**: Process (via pao:Event)
+
+**Rationale**: A reasoning process in which an agent considers beliefs and
+desires to produce intentions. It unfolds in time and has temporal extent.
+Subclass of Event. Distinct from the information entities it considers
+(Belief, Desire) and produces (Intention).
 
 ---
 

@@ -49,9 +49,9 @@ TIME_DECL_IRI = URIRef("https://purl.org/pao/time-declarations")
 FOAF_DECL_IRI = URIRef("https://purl.org/pao/foaf-declarations")
 ODRL_DECL_IRI = URIRef("https://purl.org/pao/odrl-declarations")
 BFO_DECL_IRI = URIRef("https://purl.org/pao/bfo-declarations")
-TBOX_VERSION_IRI = URIRef("https://purl.org/pao/0.6.0")
-REF_VERSION_IRI = URIRef("https://purl.org/pao/reference-individuals/0.6.0")
-DATA_VERSION_IRI = URIRef("https://purl.org/pao/data/0.6.0")
+TBOX_VERSION_IRI = URIRef("https://purl.org/pao/0.7.0")
+REF_VERSION_IRI = URIRef("https://purl.org/pao/reference-individuals/0.7.0")
+DATA_VERSION_IRI = URIRef("https://purl.org/pao/data/0.7.0")
 
 # Ontology project root (ontologies/personal_agent_ontology/)
 PROJECT = Path(__file__).resolve().parent.parent
@@ -248,7 +248,8 @@ def build_tbox(glossary: list[dict[str, str]]) -> Graph:
             ),
         )
     )
-    g.add((TBOX_IRI, OWL.versionInfo, Literal("0.6.0")))
+    g.add((TBOX_IRI, OWL.versionInfo, Literal("0.7.0")))
+    g.add((TBOX_IRI, OWL.priorVersion, URIRef("https://purl.org/pao/0.6.0")))
     g.add((TBOX_IRI, DCTERMS.created, Literal("2026-02-20")))
     g.add((TBOX_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((TBOX_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
@@ -302,7 +303,7 @@ def build_tbox(glossary: list[dict[str, str]]) -> Graph:
 
 
 def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
-    """Declare all 92 PAO classes with labels, definitions, and subclass axioms."""
+    """Declare all 105 PAO classes with labels, definitions, and subclass axioms."""
     # Class hierarchy: (class_name, parent_uri, bfo_uri_or_none)
     class_defs: list[tuple[str, URIRef | None, URIRef | None]] = [
         # pao-core
@@ -413,6 +414,23 @@ def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
         ("AcceptanceEvidence", PROV.Entity, OBO.BFO_0000031),
         # pao-memory (v0.6.0 review: claimType migration)
         ("ClaimType", PAO.Status, None),  # Value Partition
+        # pao-model (v0.7.0)
+        ("ModelProvider", PROV.Entity, OBO.BFO_0000031),
+        ("FoundationModel", PROV.Entity, OBO.BFO_0000031),
+        ("ModelDeployment", PROV.Entity, OBO.BFO_0000031),
+        ("ModelInvocation", PAO.Event, None),  # inherits Process via Event
+        ("GenerationConfiguration", PROV.Entity, OBO.BFO_0000031),
+        # pao-observability (v0.7.0)
+        ("OperationalMetric", PROV.Entity, OBO.BFO_0000031),
+        ("MetricObservation", PROV.Entity, OBO.BFO_0000031),
+        ("ReliabilityIncident", PAO.Event, None),  # inherits Process via Event
+        # pao-recovery (v0.7.0)
+        ("FailureType", PAO.Status, None),  # Value Partition
+        # pao-planning (v0.7.0)
+        ("Belief", PROV.Entity, OBO.BFO_0000031),
+        ("Desire", PROV.Entity, OBO.BFO_0000031),
+        ("Justification", PROV.Entity, OBO.BFO_0000031),
+        ("Deliberation", PAO.Event, None),  # inherits Process via Event
     ]
 
     # Additional parent axioms (multiple inheritance)
@@ -441,7 +459,7 @@ def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
 
 
 def _add_object_properties(g: Graph) -> None:
-    """Declare all 92 object properties."""
+    """Declare all 128 object properties."""
     # Each tuple: (name, domain, range, characteristics, definition)
     obj_props: list[tuple[str, URIRef | None, URIRef | None, list[str], str]] = [
         # pao-core: generic part-whole
@@ -1232,6 +1250,136 @@ def _add_object_properties(g: Graph) -> None:
             ["functional"],
             "Links a clarification request to the turn it seeks to clarify.",
         ),
+        # pao-model (v0.7.0)
+        (
+            "hasProvider",
+            PAO.FoundationModel,
+            PAO.ModelProvider,
+            ["functional"],
+            "Links a foundation model to its hosting provider.",
+        ),
+        (
+            "usesModel",
+            PAO.AIAgent,
+            PAO.FoundationModel,
+            [],
+            "Links an AI agent to a foundation model it uses.",
+        ),
+        (
+            "deployedAs",
+            PAO.FoundationModel,
+            PAO.ModelDeployment,
+            [],
+            "Links a foundation model to one of its deployments.",
+        ),
+        (
+            "invokedOnDeployment",
+            PAO.ModelInvocation,
+            PAO.ModelDeployment,
+            ["functional"],
+            "Links a model invocation to the deployment it was executed on.",
+        ),
+        (
+            "hasGenerationConfig",
+            PAO.ModelInvocation,
+            PAO.GenerationConfiguration,
+            ["functional"],
+            "Links a model invocation to its generation configuration.",
+        ),
+        (
+            "modelInvocationForTurn",
+            PAO.ModelInvocation,
+            PAO.Turn,
+            ["functional"],
+            "Links a model invocation to the turn it produced output for.",
+        ),
+        (
+            "producedByModelInvocation",
+            PAO.Turn,
+            PAO.ModelInvocation,
+            [],
+            "Links a turn to the model invocation that produced it.",
+        ),
+        # pao-observability (v0.7.0)
+        (
+            "observesMetric",
+            PAO.MetricObservation,
+            PAO.OperationalMetric,
+            ["functional"],
+            "Links a metric observation to the metric it measures.",
+        ),
+        (
+            "observedOnEntity",
+            PAO.MetricObservation,
+            OWL.Thing,
+            [],
+            "Links a metric observation to the entity it was recorded on.",
+        ),
+        (
+            "incidentForEntity",
+            PAO.ReliabilityIncident,
+            OWL.Thing,
+            [],
+            "Links a reliability incident to the entity it affects.",
+        ),
+        (
+            "linkedToRecovery",
+            PAO.ReliabilityIncident,
+            PAO.ErrorRecoveryEvent,
+            [],
+            "Links a reliability incident to a recovery event that addressed it.",
+        ),
+        # pao-recovery (v0.7.0)
+        (
+            "hasFailureType",
+            PAO.ErrorRecoveryEvent,
+            PAO.FailureType,
+            ["functional"],
+            "Links an error recovery event to its classified failure type.",
+        ),
+        # pao-planning (v0.7.0)
+        (
+            "heldBelief",
+            PAO.Agent,
+            PAO.Belief,
+            [],
+            "Links an agent to a belief it holds.",
+        ),
+        (
+            "holdsDesire",
+            PAO.Agent,
+            PAO.Desire,
+            [],
+            "Links an agent to a desire it has.",
+        ),
+        (
+            "justifiesIntention",
+            PAO.Justification,
+            PAO.Intention,
+            [],
+            "Links a justification to the intention it supports.",
+        ),
+        (
+            "producesIntention",
+            PAO.Deliberation,
+            PAO.Intention,
+            [],
+            "Links a deliberation process to an intention it produces.",
+        ),
+        (
+            "considersBelief",
+            PAO.Deliberation,
+            PAO.Belief,
+            [],
+            "Links a deliberation to a belief it considers.",
+        ),
+        (
+            "considersDesire",
+            PAO.Deliberation,
+            PAO.Desire,
+            [],
+            "Links a deliberation to a desire it considers.",
+        ),
     ]
 
     for name, domain, range_, chars, defn in obj_props:
@@ -1250,7 +1398,7 @@ def _add_object_properties(g: Graph) -> None:
 
 
 def _add_data_properties(g: Graph) -> None:
-    """Declare all 23 data properties."""
+    """Declare all 32 data properties."""
     data_props: list[tuple[str, URIRef | None, URIRef, list[str], str]] = [
         (
             "hasTimestamp",
@@ -1424,6 +1572,71 @@ def _add_data_properties(g: Graph) -> None:
             ["functional"],
             "The zero-based ordinal position of a content block within its message.",
         ),
+        # pao-model (v0.7.0)
+        (
+            "hasModelId",
+            PAO.FoundationModel,
+            XSD.string,
+            ["functional"],
+            "The unique string identifier of a foundation model.",
+        ),
+        (
+            "hasModelVersion",
+            PAO.FoundationModel,
+            XSD.string,
+            ["functional"],
+            "The version string of a foundation model.",
+        ),
+        (
+            "hasTemperature",
+            PAO.GenerationConfiguration,
+            XSD.decimal,
+            ["functional"],
+            "The temperature parameter for controlling generation randomness.",
+        ),
+        (
+            "hasTopP",
+            PAO.GenerationConfiguration,
+            XSD.decimal,
+            ["functional"],
+            "The top-p (nucleus sampling) parameter for generation.",
+        ),
+        (
+            "hasMaxOutputTokens",
+            PAO.GenerationConfiguration,
+            XSD.nonNegativeInteger,
+            ["functional"],
+            "The maximum number of output tokens for generation.",
+        ),
+        (
+            "hasPromptVersion",
+            PAO.GenerationConfiguration,
+            XSD.string,
+            ["functional"],
+            "The version identifier of the prompt template used.",
+        ),
+        (
+            "hasSeed",
+            PAO.GenerationConfiguration,
+            XSD.nonNegativeInteger,
+            ["functional"],
+            "The random seed for reproducible generation.",
+        ),
+        # pao-observability (v0.7.0)
+        (
+            "hasMetricName",
+            PAO.OperationalMetric,
+            XSD.string,
+            ["functional"],
+            "The name of an operational metric.",
+        ),
+        (
+            "hasMetricValue",
+            PAO.MetricObservation,
+            XSD.decimal,
+            ["functional"],
+            "The measured value of a metric observation.",
+        ),
     ]
 
     for name, domain, range_, chars, defn in data_props:
@@ -1474,6 +1687,8 @@ def _add_inverse_pairs(g: Graph) -> None:
         (PAO.continuedFrom, PAO.continuedBy),
         (PAO.previousTransition, PAO.nextTransition),
         (PAO.achievesGoal, None),  # no inverse defined
+        # v0.7.0: Model invocation ↔ turn
+        (PAO.modelInvocationForTurn, PAO.producedByModelInvocation),
     ]
     for p1, p2 in pairs:
         if p2 is not None:
@@ -1629,6 +1844,23 @@ def _add_existential_restrictions(g: Graph) -> None:
         (PAO.GroundingAct, PAO.contributesToCommonGround, PAO.CommonGround),
         # CQ-098: ClarificationRequest clarifies turn
         (PAO.ClarificationRequest, PAO.clarifiesTurn, PAO.Turn),
+        # CQ-099/100/101: Model identity (v0.7.0)
+        (PAO.ModelInvocation, PAO.invokedOnDeployment, PAO.ModelDeployment),
+        (PAO.ModelInvocation, PAO.modelInvocationForTurn, PAO.Turn),
+        (PAO.ModelInvocation, PAO.hasGenerationConfig, PAO.GenerationConfiguration),
+        (PAO.FoundationModel, PAO.deployedAs, PAO.ModelDeployment),
+        (PAO.FoundationModel, PAO.hasProvider, PAO.ModelProvider),
+        (PAO.AIAgent, PAO.usesModel, PAO.FoundationModel),
+        # CQ-104/106: Observability (v0.7.0)
+        (PAO.MetricObservation, PAO.observesMetric, PAO.OperationalMetric),
+        (PAO.ReliabilityIncident, PAO.incidentForEntity, OWL.Thing),
+        # CQ-108: Failure taxonomy (v0.7.0)
+        (PAO.ErrorRecoveryEvent, PAO.hasFailureType, PAO.FailureType),
+        # CQ-110/111/112/113: BDI completion (v0.7.0)
+        (PAO.Deliberation, PAO.considersBelief, PAO.Belief),
+        (PAO.Deliberation, PAO.considersDesire, PAO.Desire),
+        (PAO.Deliberation, PAO.producesIntention, PAO.Intention),
+        (PAO.Justification, PAO.justifiesIntention, PAO.Intention),
     ]
     for cls, prop, filler in restrictions:
         _add_existential(g, cls, prop, filler)
@@ -1720,6 +1952,9 @@ def _add_disjointness_axioms(g: Graph) -> None:
             PAO.RollbackEvent,
             PAO.MemoryWriteConflict,  # v0.6.0 Phase B
             PAO.GroundingAct,  # v0.6.0 Phase B
+            PAO.ModelInvocation,  # v0.7.0
+            PAO.ReliabilityIncident,  # v0.7.0
+            PAO.Deliberation,  # v0.7.0
         ],
     )
     # StatusTransition subtypes
@@ -1746,6 +1981,7 @@ def _add_disjointness_axioms(g: Graph) -> None:
             PAO.MemoryScope,  # v0.6.0 Phase B
             PAO.CommunicativeFunction,  # v0.6.0 Phase B
             PAO.ClaimType,  # v0.6.0 review
+            PAO.FailureType,  # v0.7.0
         ],
     )
     # Governance types (7-way)
@@ -1798,6 +2034,15 @@ def _add_disjointness_axioms(g: Graph) -> None:
             PAO.CommonGround,  # v0.6.0 Phase B
             PAO.ClarificationRequest,  # v0.6.0 Phase B
             PAO.AcceptanceEvidence,  # v0.6.0 Phase B
+            PAO.ModelProvider,  # v0.7.0
+            PAO.FoundationModel,  # v0.7.0
+            PAO.ModelDeployment,  # v0.7.0
+            PAO.GenerationConfiguration,  # v0.7.0
+            PAO.OperationalMetric,  # v0.7.0
+            PAO.MetricObservation,  # v0.7.0
+            PAO.Belief,  # v0.7.0
+            PAO.Desire,  # v0.7.0
+            PAO.Justification,  # v0.7.0
         ],
     )
     # ServiceCapability subtypes (covered by DisjointUnion, but explicit)
@@ -1843,6 +2088,7 @@ def _add_has_key_axioms(g: Graph) -> None:
         (PAO.AIAgent, PAO.hasAgentId),
         (PAO.Session, PAO.hasSessionId),
         (PAO.Conversation, PAO.hasConversationId),
+        (PAO.FoundationModel, PAO.hasModelId),  # v0.7.0
     ]:
         key_list = BNode()
         Collection(g, key_list, [key_prop])
@@ -1889,7 +2135,8 @@ def build_reference_individuals(glossary: list[dict[str, str]]) -> Graph:
             ),
         )
     )
-    g.add((REF_IRI, OWL.versionInfo, Literal("0.6.0")))
+    g.add((REF_IRI, OWL.versionInfo, Literal("0.7.0")))
+    g.add((REF_IRI, OWL.priorVersion, URIRef("https://purl.org/pao/reference-individuals/0.6.0")))
     g.add((REF_IRI, DCTERMS.created, Literal("2026-02-20")))
     g.add((REF_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((REF_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
@@ -2018,6 +2265,17 @@ def build_reference_individuals(glossary: list[dict[str, str]]) -> Graph:
     user_preference = _add_individual("UserPreference", PAO.ClaimType)
     _add_all_different(g, [user_preference])
 
+    # --- Failure type individuals (v0.7.0) ---
+    timeout = _add_individual("Timeout", PAO.FailureType)
+    auth_failure = _add_individual("AuthenticationFailure", PAO.FailureType)
+    rate_limited = _add_individual("RateLimited", PAO.FailureType)
+    dependency_failure = _add_individual("DependencyFailure", PAO.FailureType)
+    config_error = _add_individual("ConfigurationError", PAO.FailureType)
+    network_error = _add_individual("NetworkError", PAO.FailureType)
+    _add_all_different(
+        g, [timeout, auth_failure, rate_limited, dependency_failure, config_error, network_error]
+    )
+
     # --- Enumeration axioms (owl:oneOf) ---
     # These are on the classes, so they go in the TBox conceptually,
     # but individuals must exist first. We add the equivalentClass axioms here
@@ -2050,6 +2308,11 @@ def build_reference_individuals(glossary: list[dict[str, str]]) -> Graph:
         g,
         PAO.CommunicativeFunction,
         [inform, request, confirm, clarify, accept, reject],
+    )
+    _add_enumeration(
+        g,
+        PAO.FailureType,
+        [timeout, auth_failure, rate_limited, dependency_failure, config_error, network_error],
     )
 
     return g
@@ -2089,7 +2352,8 @@ def build_abox_data() -> Graph:
             ),
         )
     )
-    g.add((DATA_IRI, OWL.versionInfo, Literal("0.6.0")))
+    g.add((DATA_IRI, OWL.versionInfo, Literal("0.7.0")))
+    g.add((DATA_IRI, OWL.priorVersion, URIRef("https://purl.org/pao/data/0.6.0")))
     g.add((DATA_IRI, DCTERMS.created, Literal("2026-02-20")))
     g.add((DATA_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((DATA_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
@@ -2121,6 +2385,9 @@ def build_abox_data() -> Graph:
     _add_sample_tool_trace(g)
     _add_sample_memory_control_plane(g)
     _add_sample_dialog_pragmatics(g)
+    _add_sample_model_identity(g)
+    _add_sample_observability(g)
+    _add_sample_bdi(g)
     _ensure_temporal_extents(g)
 
     return g
@@ -3110,6 +3377,7 @@ def _add_sample_recovery(g: Graph) -> None:
     g.add((recovery, PAO.recoveringFrom, failed_inv))
     g.add((recovery, PAO.hasAttemptCount, Literal(2, datatype=XSD.nonNegativeInteger)))
     g.add((recovery, PAO.hasRecoveryOutcome, Literal("resolved")))
+    g.add((recovery, PAO.hasFailureType, PAO.Timeout))  # v0.7.0
     g.add((recovery, PAO.hasTimestamp, Literal("2026-02-20T11:00:00Z", datatype=XSD.dateTime)))
 
     # Retry attempt
@@ -3238,6 +3506,119 @@ def _add_sample_dialog_pragmatics(g: Graph) -> None:
     g.add((clarification, PAO.clarifiesTurn, PAO.turn_001))
 
 
+def _add_sample_model_identity(g: Graph) -> None:
+    """Add sample model identity individuals (CQ-099 through CQ-103)."""
+    # --- provider individual for CQ-101 ---
+    provider = PAO.provider_anthropic
+    g.add((provider, RDF.type, PAO.ModelProvider))
+    g.add((provider, RDF.type, OWL.NamedIndividual))
+    g.add((provider, RDFS.label, Literal("Anthropic", lang="en")))
+
+    # FoundationModel (CQ-099, CQ-100, CQ-101, CQ-103)
+    model = PAO.model_claude_opus
+    g.add((model, RDF.type, PAO.FoundationModel))
+    g.add((model, RDF.type, OWL.NamedIndividual))
+    g.add((model, RDFS.label, Literal("Claude Opus", lang="en")))
+    g.add((model, PAO.hasModelId, Literal("claude-opus-4-6")))
+    g.add((model, PAO.hasModelVersion, Literal("4.6")))
+    g.add((model, PAO.hasProvider, provider))
+
+    # --- deployment individual for CQ-100 ---
+    deployment = PAO.deployment_opus_prod
+    g.add((deployment, RDF.type, PAO.ModelDeployment))
+    g.add((deployment, RDF.type, OWL.NamedIndividual))
+    g.add((deployment, RDFS.label, Literal("Opus production deployment", lang="en")))
+    g.add((model, PAO.deployedAs, deployment))
+
+    # --- generation config individual for CQ-102 ---
+    gen_config = PAO.gen_config_01
+    g.add((gen_config, RDF.type, PAO.GenerationConfiguration))
+    g.add((gen_config, RDF.type, OWL.NamedIndividual))
+    g.add((gen_config, RDFS.label, Literal("Generation config 01", lang="en")))
+    g.add((gen_config, PAO.hasTemperature, Literal("0.7", datatype=XSD.decimal)))
+    g.add((gen_config, PAO.hasTopP, Literal("0.95", datatype=XSD.decimal)))
+    g.add((gen_config, PAO.hasMaxOutputTokens, Literal(4096, datatype=XSD.nonNegativeInteger)))
+    g.add((gen_config, PAO.hasPromptVersion, Literal("v2.1")))
+    g.add((gen_config, PAO.hasSeed, Literal(42, datatype=XSD.nonNegativeInteger)))
+
+    # ModelInvocation (CQ-099, CQ-102)
+    invocation = PAO.model_invocation_01
+    g.add((invocation, RDF.type, PAO.ModelInvocation))
+    g.add((invocation, RDF.type, OWL.NamedIndividual))
+    g.add((invocation, RDFS.label, Literal("Model invocation 01", lang="en")))
+    g.add((invocation, PAO.invokedOnDeployment, deployment))
+    g.add((invocation, PAO.hasGenerationConfig, gen_config))
+    g.add((invocation, PAO.modelInvocationForTurn, PAO.turn_001))
+    g.add((invocation, PAO.hasTimestamp, Literal("2026-02-20T10:00:01Z", datatype=XSD.dateTime)))
+
+    # Link agents to model (CQ-103)
+    g.add((PAO.claude_agent, PAO.usesModel, model))
+    g.add((PAO.search_subagent, PAO.usesModel, model))
+
+
+def _add_sample_observability(g: Graph) -> None:
+    """Add sample observability individuals (CQ-104 through CQ-107)."""
+    # --- operational metric individual for CQ-105 ---
+    metric = PAO.metric_latency_p99
+    g.add((metric, RDF.type, PAO.OperationalMetric))
+    g.add((metric, RDF.type, OWL.NamedIndividual))
+    g.add((metric, RDFS.label, Literal("Latency P99", lang="en")))
+    g.add((metric, PAO.hasMetricName, Literal("latency_p99_ms")))
+
+    # --- metric observation individual for CQ-104 ---
+    obs = PAO.metric_obs_01
+    g.add((obs, RDF.type, PAO.MetricObservation))
+    g.add((obs, RDF.type, OWL.NamedIndividual))
+    g.add((obs, RDFS.label, Literal("Metric observation 01", lang="en")))
+    g.add((obs, PAO.observesMetric, metric))
+    g.add((obs, PAO.observedOnEntity, PAO.claude_agent))
+    g.add((obs, PAO.hasMetricValue, Literal("142.5", datatype=XSD.decimal)))
+    g.add((obs, PAO.hasTimestamp, Literal("2026-02-20T12:00:00Z", datatype=XSD.dateTime)))
+
+    # --- reliability incident individual for CQ-106 and CQ-107 ---
+    incident = PAO.incident_01
+    g.add((incident, RDF.type, PAO.ReliabilityIncident))
+    g.add((incident, RDF.type, OWL.NamedIndividual))
+    g.add((incident, RDFS.label, Literal("Reliability incident 01", lang="en")))
+    g.add((incident, PAO.incidentForEntity, PAO.claude_agent))
+    g.add((incident, PAO.linkedToRecovery, PAO.recovery_event_01))
+    g.add((incident, PAO.hasTimestamp, Literal("2026-02-20T11:00:00Z", datatype=XSD.dateTime)))
+
+
+def _add_sample_bdi(g: Graph) -> None:
+    """Add sample BDI individuals (CQ-110 through CQ-113)."""
+    # --- belief individual for CQ-110 ---
+    belief = PAO.belief_01
+    g.add((belief, RDF.type, PAO.Belief))
+    g.add((belief, RDF.type, OWL.NamedIndividual))
+    g.add((belief, RDFS.label, Literal("User prefers concise responses", lang="en")))
+    g.add((PAO.claude_agent, PAO.heldBelief, belief))
+
+    # --- desire individual for CQ-111 ---
+    desire = PAO.desire_01
+    g.add((desire, RDF.type, PAO.Desire))
+    g.add((desire, RDF.type, OWL.NamedIndividual))
+    g.add((desire, RDFS.label, Literal("Complete user task efficiently", lang="en")))
+    g.add((PAO.claude_agent, PAO.holdsDesire, desire))
+
+    # --- deliberation individual for CQ-112 ---
+    deliberation = PAO.deliberation_01
+    g.add((deliberation, RDF.type, PAO.Deliberation))
+    g.add((deliberation, RDF.type, OWL.NamedIndividual))
+    g.add((deliberation, RDFS.label, Literal("Deliberation 01", lang="en")))
+    g.add((deliberation, PAO.considersBelief, belief))
+    g.add((deliberation, PAO.considersDesire, desire))
+    g.add((deliberation, PAO.producesIntention, PAO.intention_001))
+    g.add((deliberation, PAO.hasTimestamp, Literal("2026-02-20T10:05:00Z", datatype=XSD.dateTime)))
+
+    # --- justification individual for CQ-113 ---
+    justification = PAO.justification_01
+    g.add((justification, RDF.type, PAO.Justification))
+    g.add((justification, RDF.type, OWL.NamedIndividual))
+    g.add((justification, RDFS.label, Literal("Justification 01", lang="en")))
+    g.add((justification, PAO.justifiesIntention, PAO.intention_001))
+
+
 def _ensure_temporal_extents(g: Graph) -> None:
     """Add hasTemporalExtent to all Event instances that lack one.
 
@@ -3274,6 +3655,9 @@ def _ensure_temporal_extents(g: Graph) -> None:
         PAO.RollbackEvent,
         PAO.MemoryWriteConflict,
         PAO.GroundingAct,
+        PAO.ModelInvocation,  # v0.7.0
+        PAO.ReliabilityIncident,  # v0.7.0
+        PAO.Deliberation,  # v0.7.0
     }
 
     # Find all event instances missing hasTemporalExtent
@@ -3356,6 +3740,8 @@ def build_shacl_shapes() -> Graph:
                 g, PAO.hasExternalService, min_count=1, class_constraint=PAO.ExternalService
             ),
             _property_shape(g, PAO.hasHook, min_count=1, class_constraint=PAO.Hook),
+            # v0.7.0: Model Identity — every AIAgent uses at least one model
+            _property_shape(g, PAO.usesModel, min_count=1, class_constraint=PAO.FoundationModel),
         ],
     )
 
@@ -3932,6 +4318,10 @@ def build_shacl_shapes() -> Graph:
                 datatype=XSD.nonNegativeInteger,
             ),
             _property_shape(g, PAO.hasRecoveryOutcome, max_count=1, datatype=XSD.string),
+            # v0.7.0: Failure Taxonomy — every recovery event has a failure type
+            _property_shape(
+                g, PAO.hasFailureType, min_count=1, max_count=1, class_constraint=PAO.FailureType
+            ),
         ],
     )
 
@@ -4080,6 +4470,150 @@ def build_shacl_shapes() -> Graph:
             _property_shape(
                 g, PAO.clarifiesTurn, min_count=1, max_count=1, class_constraint=PAO.Turn
             ),
+        ],
+    )
+
+    # --- FoundationModelShape (v0.7.0) ---
+    _add_shape(
+        g,
+        PAO.FoundationModelShape,
+        PAO.FoundationModel,
+        [
+            _property_shape(g, PAO.hasModelId, min_count=1, max_count=1, datatype=XSD.string),
+            _property_shape(g, PAO.hasModelVersion, max_count=1, datatype=XSD.string),
+            _property_shape(
+                g, PAO.hasProvider, min_count=1, max_count=1, class_constraint=PAO.ModelProvider
+            ),
+            _property_shape(g, PAO.deployedAs, min_count=1, class_constraint=PAO.ModelDeployment),
+        ],
+    )
+
+    # --- ModelInvocationShape (v0.7.0) ---
+    _add_shape(
+        g,
+        PAO.ModelInvocationShape,
+        PAO.ModelInvocation,
+        [
+            _property_shape(
+                g,
+                PAO.invokedOnDeployment,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.ModelDeployment,
+            ),
+            _property_shape(
+                g,
+                PAO.hasGenerationConfig,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.GenerationConfiguration,
+            ),
+            _property_shape(
+                g, PAO.modelInvocationForTurn, min_count=1, max_count=1, class_constraint=PAO.Turn
+            ),
+        ],
+    )
+
+    # --- GenerationConfigurationShape (v0.7.0) ---
+    _add_shape(
+        g,
+        PAO.GenerationConfigurationShape,
+        PAO.GenerationConfiguration,
+        [
+            _property_shape(g, PAO.hasTemperature, max_count=1, datatype=XSD.decimal),
+            _property_shape(g, PAO.hasTopP, max_count=1, datatype=XSD.decimal),
+            _property_shape(
+                g, PAO.hasMaxOutputTokens, max_count=1, datatype=XSD.nonNegativeInteger
+            ),
+        ],
+    )
+
+    # --- ModelProviderShape (v0.7.0) ---
+    _add_shape(
+        g,
+        PAO.ModelProviderShape,
+        PAO.ModelProvider,
+        [
+            _property_shape(g, RDFS.label, min_count=1),
+        ],
+    )
+
+    # --- OperationalMetricShape (v0.7.0) ---
+    _add_shape(
+        g,
+        PAO.OperationalMetricShape,
+        PAO.OperationalMetric,
+        [
+            _property_shape(g, PAO.hasMetricName, min_count=1, max_count=1, datatype=XSD.string),
+        ],
+    )
+
+    # --- MetricObservationShape (v0.7.0) ---
+    _add_shape(
+        g,
+        PAO.MetricObservationShape,
+        PAO.MetricObservation,
+        [
+            _property_shape(
+                g,
+                PAO.observesMetric,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.OperationalMetric,
+            ),
+            _property_shape(g, PAO.hasMetricValue, min_count=1, max_count=1, datatype=XSD.decimal),
+        ],
+    )
+
+    # --- ReliabilityIncidentShape (v0.7.0) ---
+    _add_shape(
+        g,
+        PAO.ReliabilityIncidentShape,
+        PAO.ReliabilityIncident,
+        [
+            _property_shape(g, PAO.incidentForEntity, min_count=1),
+        ],
+    )
+
+    # --- BeliefShape (v0.7.0) ---
+    _add_shape(
+        g,
+        PAO.BeliefShape,
+        PAO.Belief,
+        [
+            _property_shape(g, RDFS.label, min_count=1),
+        ],
+    )
+
+    # --- DesireShape (v0.7.0) ---
+    _add_shape(
+        g,
+        PAO.DesireShape,
+        PAO.Desire,
+        [
+            _property_shape(g, RDFS.label, min_count=1),
+        ],
+    )
+
+    # --- DeliberationShape (v0.7.0) ---
+    _add_shape(
+        g,
+        PAO.DeliberationShape,
+        PAO.Deliberation,
+        [
+            _property_shape(g, PAO.considersBelief, min_count=1, class_constraint=PAO.Belief),
+            _property_shape(g, PAO.considersDesire, min_count=1, class_constraint=PAO.Desire),
+            _property_shape(g, PAO.producesIntention, min_count=1, class_constraint=PAO.Intention),
+        ],
+    )
+
+    # --- JustificationShape (v0.7.0) ---
+    _add_shape(
+        g,
+        PAO.JustificationShape,
+        PAO.Justification,
+        [
+            _property_shape(g, PAO.justifiesIntention, min_count=1, class_constraint=PAO.Intention),
         ],
     )
 

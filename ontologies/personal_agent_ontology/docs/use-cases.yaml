@@ -696,3 +696,125 @@ use_cases:
     related_scenarios: [S1, S4]
     related_cqs: [CQ-096, CQ-097, CQ-098]
     priority: should_have
+
+  # ── v0.7.0 Use Cases (Model Identity, Observability, Failure Taxonomy, BDI) ──
+
+  - id: UC-041
+    name: "Trace which model produced a conversation turn"
+    actor: "Compliance/Governance"
+    goal: "Determine the foundation model, provider, and deployment that generated each turn for audit and compliance"
+    preconditions:
+      - "Model invocations are recorded with deployment and provider metadata"
+      - "Turns are linked to their generating model invocation"
+    main_flow:
+      - "Reviewer queries which model invocation produced a given turn"
+      - "System returns the foundation model, provider, and deployment endpoint"
+      - "Reviewer verifies the model was authorized for that use case"
+    postconditions:
+      - "Every turn's model provenance is queryable end-to-end"
+    related_scenarios: [S3]
+    related_cqs: [CQ-099, CQ-100, CQ-101]
+    priority: must_have
+
+  - id: UC-042
+    name: "Compare generation parameters across invocations"
+    actor: "System Architect"
+    goal: "Inspect and compare generation configurations (temperature, top-p, max tokens) used across model invocations"
+    preconditions:
+      - "Model invocations have associated generation configurations"
+    main_flow:
+      - "Architect queries generation configs for a set of invocations"
+      - "System returns temperature, top-p, max tokens, and prompt version"
+      - "Architect compares parameter settings across invocations"
+    postconditions:
+      - "Generation parameter variations are visible and comparable"
+    related_scenarios: [S3]
+    related_cqs: [CQ-102, CQ-103]
+    priority: must_have
+
+  - id: UC-043
+    name: "Monitor operational metrics for agent components"
+    actor: "System Architect"
+    goal: "Record and query operational metrics (latency, throughput, error rates) for agent components"
+    preconditions:
+      - "Operational metrics are defined with named types"
+      - "Metric observations are recorded with timestamps"
+    main_flow:
+      - "System records metric observations for agent components"
+      - "Architect queries observations for a given entity and metric type"
+      - "Architect identifies performance trends or anomalies"
+    postconditions:
+      - "Operational metrics are queryable by entity and metric type"
+    related_scenarios: [S3]
+    related_cqs: [CQ-104, CQ-105]
+    priority: should_have
+
+  - id: UC-044
+    name: "Track reliability incidents and recovery linkage"
+    actor: "System Architect"
+    goal: "Record reliability incidents (outages, degradation) and link them to recovery events"
+    preconditions:
+      - "Reliability incidents are recorded as events"
+      - "Recovery events exist in the ontology"
+    main_flow:
+      - "System records a reliability incident for a service or component"
+      - "Incident is linked to any triggered recovery events"
+      - "Architect queries incidents and their recovery chains"
+    postconditions:
+      - "Incident-to-recovery linkage is queryable"
+    related_scenarios: [S3]
+    related_cqs: [CQ-106, CQ-107]
+    priority: should_have
+
+  - id: UC-045
+    name: "Classify error recovery events by failure type"
+    actor: "System Architect"
+    goal: "Categorize error recovery events using a controlled vocabulary of failure types for analysis"
+    preconditions:
+      - "Error recovery events exist in the ontology"
+      - "FailureType controlled vocabulary is defined"
+    main_flow:
+      - "System assigns a failure type to each error recovery event"
+      - "Architect queries recovery events grouped by failure type"
+      - "Architect identifies patterns in failure categories"
+    postconditions:
+      - "Error recovery events are classifiable by failure type"
+    related_scenarios: [S3]
+    related_cqs: [CQ-108, CQ-109]
+    priority: should_have
+
+  - id: UC-046
+    name: "Model agent beliefs and desires in deliberation"
+    actor: "AI Agent"
+    goal: "Record and query agent beliefs, desires, and their role in deliberation processes"
+    preconditions:
+      - "Agent has formed beliefs about the world"
+      - "Agent has desires (desired outcomes)"
+      - "Deliberation processes produce intentions"
+    main_flow:
+      - "Agent records beliefs and desires"
+      - "Deliberation process considers beliefs and desires"
+      - "Deliberation produces intentions"
+      - "Analyst queries which beliefs and desires influenced a deliberation"
+    postconditions:
+      - "BDI mental states are queryable with deliberation provenance"
+    related_scenarios: [S6]
+    related_cqs: [CQ-110, CQ-111, CQ-112]
+    priority: should_have
+
+  - id: UC-047
+    name: "Trace justification for agent intentions"
+    actor: "Compliance/Governance"
+    goal: "Examine the justification evidence supporting an agent's intention for audit"
+    preconditions:
+      - "Intentions have associated justifications"
+      - "Justifications link to supporting evidence"
+    main_flow:
+      - "Reviewer queries justifications for a given intention"
+      - "System returns the justification and its supporting evidence"
+      - "Reviewer assesses whether the intention was well-founded"
+    postconditions:
+      - "Intention justifications are auditable"
+    related_scenarios: [S3, S6]
+    related_cqs: [CQ-113]
+    priority: should_have

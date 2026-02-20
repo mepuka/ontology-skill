@@ -2966,3 +2966,472 @@ competency_questions:
     required_properties:
       - clarifiesTurn
     required_axioms: []
+
+  # ═══════════════════════════════════════════════════════════════════
+  # v0.7.0 ADDITIONS — Model Identity, Observability, Failure Taxonomy, BDI
+  # ═══════════════════════════════════════════════════════════════════
+
+  # ── Domain A: Model Identity ──────────────────────────────────────
+
+  - id: CQ-099
+    source_use_case: UC-041
+    natural_language: "Which foundation model was used for a given turn?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - turn: pao:Turn_001
+        model: pao:model_claude_opus
+        modelId: "claude-opus-4"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Model architecture internals (weights, layers)"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?turn ?model ?modelId WHERE {
+        ?turn a pao:Turn .
+        ?invocation a pao:ModelInvocation ;
+                    pao:modelInvocationForTurn ?turn ;
+                    pao:invokedOnDeployment ?deployment .
+        ?deployment a pao:ModelDeployment .
+        ?model a pao:FoundationModel ;
+               pao:deployedAs ?deployment ;
+               pao:hasModelId ?modelId .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Turn
+      - ModelInvocation
+      - ModelDeployment
+      - FoundationModel
+    required_properties:
+      - modelInvocationForTurn
+      - invokedOnDeployment
+      - deployedAs
+      - hasModelId
+    required_axioms: []
+
+  - id: CQ-100
+    source_use_case: UC-041
+    natural_language: "What model deployments exist for a foundation model?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - model: pao:model_claude_opus
+        deployment: pao:deployment_opus_prod
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Deployment infrastructure details (servers, GPUs)"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?model ?modelLabel ?deployment ?deploymentLabel WHERE {
+        ?model a pao:FoundationModel ;
+               rdfs:label ?modelLabel .
+        ?deployment a pao:ModelDeployment ;
+                    rdfs:label ?deploymentLabel .
+        ?model pao:deployedAs ?deployment .
+      }
+    expected_result: non_empty
+    required_classes:
+      - FoundationModel
+      - ModelDeployment
+    required_properties:
+      - deployedAs
+    required_axioms: []
+
+  - id: CQ-101
+    source_use_case: UC-041
+    natural_language: "Which provider hosts a given model?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - model: pao:model_claude_opus
+        provider: pao:provider_anthropic
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Provider billing or contractual details"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?model ?modelLabel ?provider ?providerLabel WHERE {
+        ?model a pao:FoundationModel ;
+               rdfs:label ?modelLabel ;
+               pao:hasProvider ?provider .
+        ?provider a pao:ModelProvider ;
+                  rdfs:label ?providerLabel .
+      }
+    expected_result: non_empty
+    required_classes:
+      - FoundationModel
+      - ModelProvider
+    required_properties:
+      - hasProvider
+    required_axioms: []
+
+  - id: CQ-102
+    source_use_case: UC-042
+    natural_language: "What generation config was used for a model invocation?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - invocation: pao:model_invocation_01
+        config: pao:gen_config_01
+        temperature: 0.7
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Config optimization or auto-tuning"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?invocation ?config ?temp ?topP ?maxTokens WHERE {
+        ?invocation a pao:ModelInvocation ;
+                    pao:hasGenerationConfig ?config .
+        ?config a pao:GenerationConfiguration .
+        OPTIONAL { ?config pao:hasTemperature ?temp . }
+        OPTIONAL { ?config pao:hasTopP ?topP . }
+        OPTIONAL { ?config pao:hasMaxOutputTokens ?maxTokens . }
+      }
+    expected_result: non_empty
+    required_classes:
+      - ModelInvocation
+      - GenerationConfiguration
+    required_properties:
+      - hasGenerationConfig
+      - hasTemperature
+      - hasTopP
+      - hasMaxOutputTokens
+    required_axioms: []
+
+  - id: CQ-103
+    source_use_case: UC-042
+    natural_language: "Which model does a given AI agent use?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - agent: pao:ClaudeCodeAgent_01
+        model: pao:model_claude_opus
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Multi-model routing or selection strategies"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?agent ?agentLabel ?model ?modelLabel WHERE {
+        ?agent a pao:AIAgent ;
+               rdfs:label ?agentLabel ;
+               pao:usesModel ?model .
+        ?model a pao:FoundationModel ;
+               rdfs:label ?modelLabel .
+      }
+    expected_result: non_empty
+    required_classes:
+      - AIAgent
+      - FoundationModel
+    required_properties:
+      - usesModel
+    required_axioms: []
+
+  # ── Domain B: Observability ───────────────────────────────────────
+
+  - id: CQ-104
+    source_use_case: UC-043
+    natural_language: "What metric observations were recorded for a given entity?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - entity: pao:ClaudeCodeAgent_01
+        observation: pao:metric_obs_01
+        metric: pao:metric_latency_p99
+        value: 1.25
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Metric aggregation or statistical analysis"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?entity ?obs ?metric ?metricName ?value WHERE {
+        ?obs a pao:MetricObservation ;
+             pao:observedOnEntity ?entity ;
+             pao:observesMetric ?metric ;
+             pao:hasMetricValue ?value .
+        ?metric a pao:OperationalMetric ;
+                pao:hasMetricName ?metricName .
+      }
+    expected_result: non_empty
+    required_classes:
+      - MetricObservation
+      - OperationalMetric
+    required_properties:
+      - observedOnEntity
+      - observesMetric
+      - hasMetricValue
+      - hasMetricName
+    required_axioms: []
+
+  - id: CQ-105
+    source_use_case: UC-043
+    natural_language: "What operational metrics are defined in the system?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - metric: pao:metric_latency_p99
+        name: "latency_p99"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Metric definition standards or naming conventions"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?metric ?name ?label WHERE {
+        ?metric a pao:OperationalMetric ;
+                pao:hasMetricName ?name .
+        OPTIONAL { ?metric rdfs:label ?label . }
+      }
+    expected_result: non_empty
+    required_classes:
+      - OperationalMetric
+    required_properties:
+      - hasMetricName
+    required_axioms: []
+
+  - id: CQ-106
+    source_use_case: UC-044
+    natural_language: "What reliability incidents occurred for a service?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - incident: pao:incident_01
+        entity: pao:deployment_opus_prod
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Incident root cause analysis"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?incident ?label ?entity WHERE {
+        ?incident a pao:ReliabilityIncident ;
+                  rdfs:label ?label ;
+                  pao:incidentForEntity ?entity .
+      }
+    expected_result: non_empty
+    required_classes:
+      - ReliabilityIncident
+    required_properties:
+      - incidentForEntity
+    required_axioms: []
+
+  - id: CQ-107
+    source_use_case: UC-044
+    natural_language: "Is a reliability incident linked to a recovery event?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - incident: pao:incident_01
+        recovery: pao:recovery_event_01
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Recovery outcome evaluation"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?incident ?recovery WHERE {
+        ?incident a pao:ReliabilityIncident ;
+                  pao:linkedToRecovery ?recovery .
+        ?recovery a pao:ErrorRecoveryEvent .
+      }
+    expected_result: non_empty
+    required_classes:
+      - ReliabilityIncident
+      - ErrorRecoveryEvent
+    required_properties:
+      - linkedToRecovery
+    required_axioms: []
+
+  # ── Domain C: Failure Taxonomy ────────────────────────────────────
+
+  - id: CQ-108
+    source_use_case: UC-045
+    natural_language: "What failure type caused a given error recovery event?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - recovery: pao:recovery_event_01
+        failureType: pao:Timeout
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Failure root cause chains"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?recovery ?failureType ?label WHERE {
+        ?recovery a pao:ErrorRecoveryEvent ;
+                  pao:hasFailureType ?failureType .
+        ?failureType a pao:FailureType ;
+                     rdfs:label ?label .
+      }
+    expected_result: non_empty
+    required_classes:
+      - ErrorRecoveryEvent
+      - FailureType
+    required_properties:
+      - hasFailureType
+    required_axioms: []
+
+  - id: CQ-109
+    source_use_case: UC-045
+    natural_language: "How many recovery events of each failure type occurred?"
+    type: quantitative
+    priority: should_have
+    sample_answer:
+      - failureType: pao:Timeout
+        count: 3
+    derivation_method: aggregation
+    out_of_scope:
+      - "Failure trend analysis over time"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?failureType ?label (COUNT(?recovery) AS ?count) WHERE {
+        ?recovery a pao:ErrorRecoveryEvent ;
+                  pao:hasFailureType ?failureType .
+        ?failureType a pao:FailureType ;
+                     rdfs:label ?label .
+      }
+      GROUP BY ?failureType ?label
+    expected_result: non_empty
+    required_classes:
+      - ErrorRecoveryEvent
+      - FailureType
+    required_properties:
+      - hasFailureType
+    required_axioms: []
+
+  # ── Domain D: BDI Completion ──────────────────────────────────────
+
+  - id: CQ-110
+    source_use_case: UC-046
+    natural_language: "What beliefs does an agent hold?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - agent: pao:ClaudeCodeAgent_01
+        belief: pao:belief_01
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Belief confidence or uncertainty modeling"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?agent ?belief ?label WHERE {
+        ?agent pao:heldBelief ?belief .
+        ?belief a pao:Belief ;
+                rdfs:label ?label .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Belief
+      - Agent
+    required_properties:
+      - heldBelief
+    required_axioms: []
+
+  - id: CQ-111
+    source_use_case: UC-046
+    natural_language: "What desires does an agent have?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - agent: pao:ClaudeCodeAgent_01
+        desire: pao:desire_01
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Desire priority ranking"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?agent ?desire ?label WHERE {
+        ?agent pao:holdsDesire ?desire .
+        ?desire a pao:Desire ;
+                rdfs:label ?label .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Desire
+      - Agent
+    required_properties:
+      - holdsDesire
+    required_axioms: []
+
+  - id: CQ-112
+    source_use_case: UC-046
+    natural_language: "What beliefs and desires were considered in a deliberation?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - deliberation: pao:deliberation_01
+        belief: pao:belief_01
+        desire: pao:desire_01
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Deliberation weighting or scoring algorithms"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?deliberation ?belief ?desire WHERE {
+        ?deliberation a pao:Deliberation ;
+                      pao:considersBelief ?belief ;
+                      pao:considersDesire ?desire .
+        ?belief a pao:Belief .
+        ?desire a pao:Desire .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Deliberation
+      - Belief
+      - Desire
+    required_properties:
+      - considersBelief
+      - considersDesire
+    required_axioms: []
+
+  - id: CQ-113
+    source_use_case: UC-047
+    natural_language: "What justification supports a given intention?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - intention: pao:intention_01
+        justification: pao:justification_01
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Justification quality assessment"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?intention ?justification ?label WHERE {
+        ?justification a pao:Justification ;
+                       pao:justifiesIntention ?intention ;
+                       rdfs:label ?label .
+        ?intention a pao:Intention .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Justification
+      - Intention
+    required_properties:
+      - justifiesIntention
+    required_axioms: []

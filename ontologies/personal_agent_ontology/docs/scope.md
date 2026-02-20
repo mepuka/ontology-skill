@@ -3,7 +3,7 @@
 **Ontology Name**: Personal Agent Ontology
 **Prefix**: `pao:`
 **Namespace**: `https://purl.org/pao/`
-**Version**: 0.3.0
+**Version**: 0.7.0
 **Date**: 2026-02-19
 **Upper Ontology**: BFO 2020 (ISO 21838-2)
 
@@ -54,6 +54,7 @@ The domain covers the **control architecture** of a personal AI agent:
 - Agent roles (conversational roles, functional roles)
 - Agent capabilities and tool access
 - Agent identity and configuration (persona, system prompt)
+- Model identity: provider, foundation model name/version, deployment endpoint, generation parameters (temperature, top-p, max tokens)
 
 ### Module 2: Conversation and Interaction
 - Session: a bounded period of agent-user interaction
@@ -92,6 +93,16 @@ The domain covers the **control architecture** of a personal AI agent:
 - Privacy metadata: sensitivity levels, consent, retention periods
 - Audit trails: provenance-backed records of agent actions
 
+### Module 7: Error Recovery and Failure Classification
+- Error recovery events: tracking failures and recovery strategies
+- Failure types: controlled vocabulary classifying error categories (timeout, authentication, rate limiting, dependency, configuration, network)
+- Recovery trajectories: retry, replan, rollback pathways
+
+### Module 8: Observability
+- Operational metrics: named metric types with measurement recording
+- Metric observations: timestamped measurement data points for system components
+- Reliability incidents: failure or degradation events linked to recovery workflows
+
 ---
 
 ## 4. Out of Scope
@@ -101,7 +112,7 @@ The following are explicitly **not** modeled in PAO v1:
 | Excluded Concept | Rationale |
 |-----------------|-----------|
 | Domain-specific knowledge (e.g., finance, health, travel) | PAO is domain-neutral infrastructure; domain ontologies import PAO and extend it |
-| LLM internals (weights, layers, attention heads) | PAO models the agent at the control/architecture level, not the model level |
+| LLM internals (weights, layers, attention heads, training data, embedding vectors) | PAO models the agent at the control/architecture level, not the model level. Model identity (name, version, provider, deployment endpoint, generation configuration) IS in scope as operational metadata. |
 | Vector embeddings as first-class data | PAO references embedding stores via identifiers; actual vectors live in vector DBs |
 | Multi-agent orchestration protocols | PAO models individual agents and their immediate collaborators; orchestration frameworks (e.g., swarm coordination) are future work |
 | Natural language understanding/generation | PAO models messages as information artifacts, not linguistic structures |

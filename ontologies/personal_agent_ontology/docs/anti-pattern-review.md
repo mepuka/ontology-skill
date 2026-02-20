@@ -13,7 +13,7 @@
 | 1 | Singleton Hierarchy | ACCEPTED | 2 singletons, both CQ-driven |
 | 2 | Role-Type Confusion | PASS | AgentRole uses BFO Role pattern |
 | 3 | Process-Object Confusion | PASS | BFO alignment separates all Process/GDC classes |
-| 4 | Missing Disjointness | RECOMMENDATION | GDC siblings under prov:Entity need cross-module disjointness |
+| 4 | Missing Disjointness | RESOLVED | Cross-module GDC disjointness implemented (v0.3.0) |
 | 5 | Circular Definition | PASS | No EquivalentTo chains |
 | 6 | Quality-as-Class | PASS | Status uses Value Partition (ODP-6) |
 | 7 | Information-Physical Conflation | PASS | Message/Turn, Episode/Event properly separated |
@@ -27,7 +27,7 @@
 | 15 | Technical Perspective | PASS | All terms CQ-driven and domain-grounded |
 | 16 | Class/Individual Mixing | PASS | Clean separation |
 
-**Result**: 0 unresolved issues. 2 accepted findings (with rationale). 1 recommendation for the architect.
+**Result**: 0 unresolved issues. 2 accepted findings (with rationale). 0 open recommendations.
 
 ---
 
@@ -62,27 +62,19 @@ Two singleton hierarchies exist in the conceptual model:
 
 ### Finding 2: Missing Cross-Module Disjointness (Anti-Pattern #4)
 
-**Status**: RECOMMENDATION for architect
+**Status**: RESOLVED (implemented in v0.3.0)
 
-The conceptual model declares 8 disjoint sets covering sibling classes
-within PAO grouping parents (Agent, Event, MemoryItem, MemoryTier,
-MemoryOperation, Status, Governance). However, several GDC classes share
-the external parent `prov:Entity` without cross-module disjointness:
+The conceptual model originally declared 8 disjoint sets covering sibling
+classes within PAO grouping parents (Agent, Event, MemoryItem, MemoryTier,
+MemoryOperation, Status, Governance). The cross-module GDC disjointness
+recommendation has been implemented — an `owl:AllDisjointClasses` declaration
+covers: Message, ToolDefinition, Goal, Plan, Task, MemoryItem, MemoryTier,
+PermissionPolicy, SafetyConstraint, and additional v0.7.0 classes
+(ModelProvider, FoundationModel, ModelDeployment, GenerationConfiguration,
+OperationalMetric, MetricObservation, Belief, Desire, Justification).
 
-- Message, ToolDefinition, Goal, Plan, Task, MemoryItem, MemoryTier
-
-These ARE semantically disjoint (a Message is never a Goal, a
-ToolDefinition is never a MemoryTier, etc.). Since there is no PAO
-intermediate grouping class between these classes and prov:Entity,
-explicit pairwise disjoint axioms should be declared by the architect.
-
-**Recommended action**: Add an `owl:AllDisjointClasses` declaration
-covering: Message, ToolDefinition, Goal, Plan, Task, MemoryItem,
-MemoryTier, PermissionPolicy, SafetyConstraint.
-
-Note: PermissionPolicy (parent: odrl:Policy) and SafetyConstraint
-(parent: prov:Entity) are already declared disjoint with each other,
-but they should also be disjoint with the other GDC siblings listed above.
+Verified in `test_ontology.py` via the `Cross-module GDC disjointness`
+test group.
 
 ---
 
@@ -157,14 +149,14 @@ should be addressed before or during formalization:
 
 | ID | Issue | Action |
 |---|---|---|
-| DN-01 | CQ-004 SPARQL references removed ConversationParticipation class | Update `tests/cq-004.sparql` to use `prov:qualifiedAssociation` pattern per DD-03 |
+| DN-01 | CQ-004 SPARQL references removed ConversationParticipation class | RESOLVED: `tests/cq-004.sparql` updated to use `prov:qualifiedAssociation` pattern |
 | DN-02 | Goal status could overlap with TaskStatus individuals | Architect should verify GoalStatus individuals are distinct; consider a separate GoalStatus class |
-| DN-03 | CQ-025 SPARQL uses old `partOfEpisode` property name | Update `tests/cq-025.sparql` to use `recordedInEpisode` per DD-06 |
-| DN-04 | No EquivalentTo (defined classes) planned yet | Deferred intentionally; add defined classes in v0.2 if reasoning demands |
-| DN-05 | HasKey candidates identified but not committed | Deferred; architect can add HasKey for ToolDefinition (hasName) and Session (session ID) if needed |
+| DN-03 | CQ-025 SPARQL uses old `partOfEpisode` property name | RESOLVED: `tests/cq-025.sparql` updated to use `recordedInEpisode` |
+| DN-04 | No EquivalentTo (defined classes) planned yet | Deferred intentionally; add defined classes in a future version if reasoning demands |
+| DN-05 | HasKey candidates identified but not committed | Partially resolved: HasKey added for FoundationModel (hasModelId) in v0.7.0 |
 
-DN-01 and DN-03 require SPARQL test updates before CQ tests can pass
-against the formalized ontology.
+DN-01 and DN-03 have been resolved — SPARQL tests now match the formalized
+ontology.
 
 ---
 
@@ -174,6 +166,7 @@ The PAO conceptual model passes the anti-pattern review with:
 
 - **14 of 16 patterns**: clean pass
 - **2 patterns**: accepted with documented rationale (Singleton, Orphan)
-- **1 recommendation**: add cross-module disjoint axioms for GDC siblings
+- **0 open recommendations** (cross-module GDC disjointness resolved in v0.3.0)
 
-The model is ready for handoff to the architect skill.
+All design notes (DN-01 through DN-05) have been addressed or explicitly
+deferred. The model is current as of v0.7.0.

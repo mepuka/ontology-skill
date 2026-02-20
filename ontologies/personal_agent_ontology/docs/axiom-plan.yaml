@@ -2063,6 +2063,274 @@ axiom_plan:
     abox_requirements:
       - "ClarificationRequest individuals linked to turns"
 
+  # ═══════════════════════════════════════════════════════════════════════
+  # MODULE 14: Model Identity (pao-model) — v0.7.0
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - cq_id: CQ-099
+    natural_language: "Which foundation model was used for a given turn?"
+    priority: must_have
+    module: pao-model
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          Turn SubClassOf producedByModelInvocation some ModelInvocation
+          ModelInvocation SubClassOf invokedOnDeployment some ModelDeployment
+          ModelDeployment SubClassOf inverse(deployedAs) some FoundationModel
+        note: "Three-hop chain from Turn to FoundationModel via ModelInvocation and ModelDeployment."
+      - pattern: "Inverse Pair"
+        axiom_sketch: "InversePair(modelInvocationForTurn, producedByModelInvocation)"
+        note: "Bidirectional navigation between Turn and ModelInvocation."
+    tbox_requirements:
+      - "Class ModelInvocation SubClassOf prov:Activity"
+      - "Class ModelDeployment SubClassOf prov:Entity"
+      - "Class FoundationModel SubClassOf prov:Entity"
+      - "ObjectProperty producedByModelInvocation domain Turn range ModelInvocation"
+      - "ObjectProperty modelInvocationForTurn domain ModelInvocation range Turn (inverse of producedByModelInvocation)"
+      - "ObjectProperty invokedOnDeployment domain ModelInvocation range ModelDeployment [functional]"
+      - "ObjectProperty deployedAs domain FoundationModel range ModelDeployment"
+    abox_requirements:
+      - "FoundationModel, ModelDeployment, ModelInvocation individuals linked to turns"
+
+  - cq_id: CQ-100
+    natural_language: "What model deployments exist for a foundation model?"
+    priority: must_have
+    module: pao-model
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "FoundationModel SubClassOf deployedAs some ModelDeployment"
+        note: "Every foundation model has at least one deployment."
+    tbox_requirements:
+      - "ObjectProperty deployedAs domain FoundationModel range ModelDeployment"
+    abox_requirements:
+      - "FoundationModel individuals with at least one ModelDeployment"
+
+  - cq_id: CQ-101
+    natural_language: "Which provider hosts a given model?"
+    priority: must_have
+    module: pao-model
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "FoundationModel SubClassOf hasProvider some ModelProvider"
+        note: "Every foundation model is hosted by exactly one provider."
+      - pattern: "Functional Property"
+        axiom_sketch: "hasProvider is functional"
+        note: "A foundation model has at most one provider (single-valued)."
+    tbox_requirements:
+      - "Class ModelProvider SubClassOf prov:Agent"
+      - "ObjectProperty hasProvider domain FoundationModel range ModelProvider [functional]"
+    abox_requirements:
+      - "ModelProvider individuals linked to FoundationModel individuals"
+
+  - cq_id: CQ-102
+    natural_language: "What generation config was used for a model invocation?"
+    priority: must_have
+    module: pao-model
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "ModelInvocation SubClassOf hasGenerationConfig some GenerationConfiguration"
+        note: "Every model invocation uses exactly one generation configuration."
+      - pattern: "Functional Property"
+        axiom_sketch: "hasGenerationConfig is functional"
+        note: "A model invocation has at most one generation configuration (single-valued)."
+    tbox_requirements:
+      - "Class GenerationConfiguration SubClassOf prov:Entity"
+      - "ObjectProperty hasGenerationConfig domain ModelInvocation range GenerationConfiguration [functional]"
+    abox_requirements:
+      - "GenerationConfiguration individuals linked to ModelInvocation individuals"
+
+  - cq_id: CQ-103
+    natural_language: "Which model does a given AI agent use?"
+    priority: must_have
+    module: pao-model
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "AIAgent SubClassOf usesModel some FoundationModel"
+        note: "Every AI agent uses at least one foundation model."
+    tbox_requirements:
+      - "ObjectProperty usesModel domain AIAgent range FoundationModel"
+    abox_requirements:
+      - "AIAgent individuals linked to FoundationModel individuals"
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # MODULE 15: Observability (pao-observability) — v0.7.0
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - cq_id: CQ-104
+    natural_language: "What metric observations were recorded for a given entity?"
+    priority: should_have
+    module: pao-observability
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          MetricObservation SubClassOf observesMetric some OperationalMetric
+          MetricObservation SubClassOf observedOnEntity some owl:Thing
+        note: "Every metric observation targets a metric and an observed entity."
+    tbox_requirements:
+      - "Class MetricObservation SubClassOf prov:Entity"
+      - "Class OperationalMetric SubClassOf prov:Entity"
+      - "ObjectProperty observesMetric domain MetricObservation range OperationalMetric [functional]"
+      - "ObjectProperty observedOnEntity domain MetricObservation range owl:Thing"
+    abox_requirements:
+      - "MetricObservation individuals linked to OperationalMetric and observed entities"
+
+  - cq_id: CQ-105
+    natural_language: "What operational metrics are defined in the system?"
+    priority: should_have
+    module: pao-observability
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "OperationalMetric SubClassOf prov:Entity"
+        note: "OperationalMetric is a GDC (BFO:0000031) — a named measurable quantity."
+      - pattern: "Data Property"
+        axiom_sketch: "hasMetricName: OperationalMetric -> xsd:string (functional)"
+        note: "Every operational metric has exactly one human-readable name."
+    tbox_requirements:
+      - "Class OperationalMetric SubClassOf prov:Entity, BFO:GDC"
+      - "DatatypeProperty hasMetricName domain OperationalMetric range xsd:string [functional]"
+    abox_requirements:
+      - "OperationalMetric individuals with hasMetricName values"
+
+  - cq_id: CQ-106
+    natural_language: "What reliability incidents occurred for a service?"
+    priority: should_have
+    module: pao-observability
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "ReliabilityIncident SubClassOf incidentForEntity some owl:Thing"
+        note: "Every reliability incident is associated with an affected entity (e.g., a service or agent)."
+    tbox_requirements:
+      - "Class ReliabilityIncident SubClassOf Event"
+      - "ObjectProperty incidentForEntity domain ReliabilityIncident range owl:Thing"
+    abox_requirements:
+      - "ReliabilityIncident individuals linked to service entities"
+
+  - cq_id: CQ-107
+    natural_language: "Is a reliability incident linked to a recovery event?"
+    priority: should_have
+    module: pao-observability
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "ReliabilityIncident SubClassOf linkedToRecovery some ErrorRecoveryEvent"
+        note: >
+          Not all incidents trigger recovery. This restriction is NOT universal —
+          consider making this a SHACL shape rather than OWL restriction. The
+          existential here expresses a modeling capability, not a hard constraint.
+    tbox_requirements:
+      - "ObjectProperty linkedToRecovery domain ReliabilityIncident range ErrorRecoveryEvent"
+      - "SHACL shape recommended instead of OWL existential (optional link)"
+    abox_requirements:
+      - "ReliabilityIncident individuals, some with and some without linked ErrorRecoveryEvent"
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # MODULE 16: Failure Taxonomy (pao-recovery) — v0.7.0
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - cq_id: CQ-108
+    natural_language: "What failure type caused a given error recovery event?"
+    priority: should_have
+    module: pao-recovery
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "ErrorRecoveryEvent SubClassOf hasFailureType some FailureType"
+        note: "Every error recovery event has at least one associated failure type."
+      - pattern: "8. Value Partition"
+        axiom_sketch: |
+          FailureType SubClassOf Status
+          owl:oneOf(Timeout, AuthenticationFailure, RateLimited, DependencyFailure, ConfigurationError, NetworkError)
+        note: "ODP-6: Enumerated failure types as named individuals."
+    tbox_requirements:
+      - "Class FailureType SubClassOf Status (Value Partition)"
+      - "Enumeration: owl:oneOf(Timeout, AuthenticationFailure, RateLimited, DependencyFailure, ConfigurationError, NetworkError)"
+      - "ObjectProperty hasFailureType domain ErrorRecoveryEvent range FailureType [functional]"
+    abox_requirements:
+      - "FailureType individuals: Timeout, AuthenticationFailure, RateLimited, DependencyFailure, ConfigurationError, NetworkError"
+      - "ErrorRecoveryEvent individuals linked to FailureType individuals"
+
+  - cq_id: CQ-109
+    natural_language: "How many recovery events of each failure type occurred?"
+    priority: should_have
+    module: pao-recovery
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "No additional axioms beyond CQ-108. The SPARQL GROUP BY handles counting."
+        note: "Aggregation is a query concern, not an ontological one. CQ-108 axioms suffice."
+    tbox_requirements:
+      - "No additional TBox requirements — reuses CQ-108 axioms"
+    abox_requirements:
+      - "Multiple ErrorRecoveryEvent individuals with varied FailureType values for aggregation testing"
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # MODULE 17: BDI Completion (pao-planning) — v0.7.0
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - cq_id: CQ-110
+    natural_language: "What beliefs does an agent hold?"
+    priority: should_have
+    module: pao-planning
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "Belief SubClassOf prov:Entity"
+        note: "Belief is a GDC (BFO:0000031) — a propositional attitude held by an agent."
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "Agent SubClassOf heldBelief some Belief"
+        note: "Links agents to their beliefs via heldBelief property."
+    tbox_requirements:
+      - "Class Belief SubClassOf prov:Entity, BFO:GDC"
+      - "ObjectProperty heldBelief domain Agent range Belief"
+    abox_requirements:
+      - "Belief individuals linked to Agent individuals"
+
+  - cq_id: CQ-111
+    natural_language: "What desires does an agent have?"
+    priority: should_have
+    module: pao-planning
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "Desire SubClassOf prov:Entity"
+        note: "Desire is a GDC (BFO:0000031) — a motivational attitude held by an agent."
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "Agent SubClassOf holdsDesire some Desire"
+        note: "Links agents to their desires via holdsDesire property."
+    tbox_requirements:
+      - "Class Desire SubClassOf prov:Entity, BFO:GDC"
+      - "ObjectProperty holdsDesire domain Agent range Desire"
+    abox_requirements:
+      - "Desire individuals linked to Agent individuals"
+
+  - cq_id: CQ-112
+    natural_language: "What beliefs and desires were considered in a deliberation?"
+    priority: should_have
+    module: pao-planning
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          Deliberation SubClassOf considersBelief some Belief
+          Deliberation SubClassOf considersDesire some Desire
+          Deliberation SubClassOf producesIntention some Intention
+        note: "A deliberation considers beliefs and desires and produces at least one intention."
+    tbox_requirements:
+      - "Class Deliberation SubClassOf prov:Activity"
+      - "ObjectProperty considersBelief domain Deliberation range Belief"
+      - "ObjectProperty considersDesire domain Deliberation range Desire"
+      - "ObjectProperty producesIntention domain Deliberation range Intention"
+    abox_requirements:
+      - "Deliberation individuals linked to Belief, Desire, and Intention individuals"
+
+  - cq_id: CQ-113
+    natural_language: "What justification supports a given intention?"
+    priority: should_have
+    module: pao-planning
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "Justification SubClassOf justifiesIntention some Intention"
+        note: "Every justification targets at least one intention."
+    tbox_requirements:
+      - "Class Justification SubClassOf prov:Entity, BFO:GDC"
+      - "ObjectProperty justifiesIntention domain Justification range Intention"
+    abox_requirements:
+      - "Justification individuals linked to Intention individuals"
+
 # ═══════════════════════════════════════════════════════════════════════
 # DESIGN NOTES (v0.5.0 review remediation)
 # ═══════════════════════════════════════════════════════════════════════

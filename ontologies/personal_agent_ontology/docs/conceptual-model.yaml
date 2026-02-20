@@ -7,7 +7,7 @@ ontology:
   name: Personal Agent Ontology
   prefix: pao
   namespace: "https://purl.org/pao/"
-  version: "0.6.0"
+  version: "0.7.0"
   owl_profile: OWL 2 DL
   upper_ontology: BFO 2020 (ISO 21838-2)
 
@@ -206,6 +206,10 @@ modules:
       - Plan
       - Task
       - Intention
+      - Belief
+      - Desire
+      - Justification
+      - Deliberation
 
   - id: pao-governance
     name: "Governance & Safety"
@@ -224,6 +228,38 @@ modules:
       - SensitivityLevel
       - ConsentRecord
       - RetentionPolicy
+
+  - id: pao-model
+    name: "Model Identity & Provenance"
+    layer: problem_specific
+    description: >
+      Model identity and execution provenance. Tracks which foundation model,
+      provider, and deployment produced each conversation turn, along with
+      generation configuration parameters.
+    depends_on:
+      - pao-core
+      - pao-event
+    classes:
+      - ModelProvider
+      - FoundationModel
+      - ModelDeployment
+      - ModelInvocation
+      - GenerationConfiguration
+
+  - id: pao-observability
+    name: "Observability & Monitoring"
+    layer: problem_specific
+    description: >
+      Operational monitoring and reliability tracking. Records named metrics,
+      timestamped observations, and reliability incidents linked to recovery workflows.
+    depends_on:
+      - pao-core
+      - pao-event
+      - pao-recovery
+    classes:
+      - OperationalMetric
+      - MetricObservation
+      - ReliabilityIncident
 
 # ═══════════════════════════════════════════════════════════════════════
 # ARCHITECTURE LAYERS
@@ -252,7 +288,7 @@ architecture_layers:
   - layer: problem_specific
     description: "PAO modules tailored to agent architecture CQs"
     ontologies:
-      - {prefix: pao, modules: [pao-core, pao-event, pao-conversation, pao-memory, pao-planning, pao-governance]}
+      - {prefix: pao, modules: [pao-core, pao-event, pao-conversation, pao-memory, pao-planning, pao-governance, pao-model, pao-observability]}
 
 # ═══════════════════════════════════════════════════════════════════════
 # TAXONOMY (asserted class hierarchy)
@@ -368,6 +404,21 @@ taxonomy:
         bfo: "Process (BFO:0000015)"
         module: pao-conversation
         note: "A participant contributes evidence to the common ground of a conversation"
+      - class: Deliberation
+        parent: Event
+        bfo: "Process (BFO:0000015)"
+        module: pao-planning
+        note: "A reasoning process producing intentions from beliefs and desires"
+      - class: ModelInvocation
+        parent: Event
+        bfo: "Process (BFO:0000015)"
+        module: pao-model
+        note: "An event in which a foundation model generates output for a turn"
+      - class: ReliabilityIncident
+        parent: Event
+        bfo: "Process (BFO:0000015)"
+        module: pao-observability
+        note: "A failure or degradation event for a service or component"
       - class: StatusTransition
         parent: Event
         bfo: "Process (BFO:0000015)"
@@ -409,7 +460,7 @@ taxonomy:
             module: pao-memory
 
   # Disjointness (events):
-  # - [Action, Conversation, Session, Turn, CompactionEvent, ErasureEvent, MemoryOperation, Observation, StatusTransition, MemoryWriteConflict, GroundingAct] pairwise disjoint under Event
+  # - [Action, Conversation, Session, Turn, CompactionEvent, ErasureEvent, MemoryOperation, Observation, StatusTransition, MemoryWriteConflict, GroundingAct, Deliberation, ModelInvocation, ReliabilityIncident] pairwise disjoint under Event
   # - [Encoding, Retrieval, Consolidation, Forgetting, Rehearsal] DisjointUnion under MemoryOperation
   # - [SessionStatusTransition, TaskStatusTransition] pairwise disjoint under StatusTransition
 
@@ -477,6 +528,24 @@ taxonomy:
     bfo: "GDC (BFO:0000031)"
     module: pao-planning
     note: "BDI intention: agent's commitment to execute a plan derived from a goal"
+
+  - class: Belief
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-planning
+    note: "A proposition an agent holds to be true about the world"
+
+  - class: Desire
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-planning
+    note: "A desired state or outcome an agent works toward"
+
+  - class: Justification
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-planning
+    note: "Evidence supporting an agent's intention"
 
   - class: PermissionPolicy
     parent: "odrl:Policy"
@@ -699,6 +768,50 @@ taxonomy:
     module: pao-recovery
     note: "A decision point in a task where human approval may be required."
 
+  # --- v0.7.0: Model Identity & Provenance (pao-model) ---
+
+  - class: ModelProvider
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-model
+    note: "An information artifact identifying a model hosting entity"
+
+  - class: FoundationModel
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-model
+    note: "An information artifact specifying a model family with name and version"
+
+  - class: ModelDeployment
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-model
+    note: "A configuration artifact for a running model endpoint"
+
+  - class: GenerationConfiguration
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-model
+    note: "A parameter set for controlling model generation (temperature, top-p, max tokens)"
+
+  # --- v0.7.0: Observability & Monitoring (pao-observability) ---
+
+  - class: OperationalMetric
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-observability
+    note: "A named metric type definition for operational monitoring"
+
+  - class: MetricObservation
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-observability
+    note: "A recorded measurement data point for an operational metric"
+
+  # Disjointness (model): [ModelProvider, FoundationModel, ModelDeployment, GenerationConfiguration] pairwise disjoint
+  # Disjointness (observability): [OperationalMetric, MetricObservation, ReliabilityIncident] pairwise disjoint
+  # Disjointness (planning additions): [Belief, Desire, Justification] pairwise disjoint
+
   # Disjointness (governance): [PermissionPolicy, SafetyConstraint, ConsentRecord, RetentionPolicy, SandboxPolicy, Hook, AuditLog] pairwise disjoint
   # Disjointness (services GDC): [ExternalService, ServiceConnection, ServiceCapability] pairwise disjoint
   # Disjointness (services capabilities): [ServiceToolCapability, ServiceResourceCapability, ServicePromptCapability] DisjointUnion under ServiceCapability
@@ -839,8 +952,16 @@ taxonomy:
         individuals: [Inform, Request, Confirm, Clarify, Accept, Reject]
         enumeration: true
         note: "Classifies the communicative purpose of a dialog act (DIT++/ISO 24617-2 curated subset)"
+      # v0.7.0 additions
+      - class: FailureType
+        parent: Status
+        bfo: "Value Partition"
+        module: pao-recovery
+        individuals: [TransientError, PermanentError, TimeoutError, AuthenticationError, ResourceExhausted, ValidationError]
+        enumeration: true
+        note: "Classifies error categories for recovery workflows"
 
-  # Disjointness (status): [SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate, ChannelType, IntegrationStatus, ConnectionStatus, PermissionMode, AuthorizationDecision, CheckpointDecision, ContentBlockType, MemorySource, MemoryScope, CommunicativeFunction] pairwise disjoint under Status (not exhaustive)
+  # Disjointness (status): [SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate, ChannelType, IntegrationStatus, ConnectionStatus, PermissionMode, AuthorizationDecision, CheckpointDecision, ContentBlockType, MemorySource, MemoryScope, CommunicativeFunction, FailureType] pairwise disjoint under Status (not exhaustive)
 
 # ═══════════════════════════════════════════════════════════════════════
 # DESIGN PATTERNS APPLIED
@@ -888,7 +1009,7 @@ design_patterns:
 
   - id: ODP-6
     name: "Value Partition (Status)"
-    applied_to: [SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate, ChannelType, IntegrationStatus, ConnectionStatus, PermissionMode, AuthorizationDecision, CheckpointDecision, ContentBlockType, MemorySource, MemoryScope, CommunicativeFunction]
+    applied_to: [SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate, ChannelType, IntegrationStatus, ConnectionStatus, PermissionMode, AuthorizationDecision, CheckpointDecision, ContentBlockType, MemorySource, MemoryScope, CommunicativeFunction, FailureType]
     description: >
       Status hierarchies with owl:oneOf enumeration of named individuals.
       Closed value spaces for reasoning.
@@ -962,19 +1083,21 @@ design_decisions:
 # ═══════════════════════════════════════════════════════════════════════
 
 summary:
-  total_classes: 92       # was 77, +15 (v0.6.0 Phase B: 10 pao-conversation, 4 pao-memory, 1 ClaimType VP)
+  total_classes: 105      # was 92, +13 (v0.7.0: 5 pao-model, 3 pao-observability, 4 pao-planning, 1 pao-recovery)
   by_module:
     pao-core: 9
     pao-event: 10
-    pao-conversation: 22  # was 12, +10 (ToolResult, ToolInvocationGroup, ContentBlock, ContentBlockType, DialogAct, CommunicativeFunction, CommonGround, GroundingAct, ClarificationRequest, AcceptanceEvidence)
-    pao-memory: 20        # was 15, +5 (MemorySource, MemoryScope, SharedMemoryArtifact, MemoryWriteConflict, ClaimType)
-    pao-planning: 4
+    pao-conversation: 22
+    pao-memory: 20
+    pao-planning: 8       # was 4, +4 (Belief, Desire, Justification, Deliberation)
     pao-governance: 14
     pao-services: 8
-    pao-recovery: 5
-  object_properties: 110  # was 93, +17 Phase B (includes writtenToAuditLog)
-  data_properties: 23     # was 23, unchanged (blockSequenceIndex added, hasSensitivityLevel migrated to obj prop in v0.2.0)
-  named_individuals: 59   # was 43, +16 (4 ContentBlockType, 3 MemorySource, 3 MemoryScope, 6 CommunicativeFunction)
+    pao-recovery: 6       # was 5, +1 (FailureType)
+    pao-model: 5          # new (ModelProvider, FoundationModel, ModelDeployment, ModelInvocation, GenerationConfiguration)
+    pao-observability: 3  # new (OperationalMetric, MetricObservation, ReliabilityIncident)
+  object_properties: 128  # was 110, +18
+  data_properties: 32     # was 23, +9
+  named_individuals: 65   # was 59, +6 (6 FailureType individuals)
   imported_classes: "~16 (from PROV-O, OWL-Time, FOAF, ODRL)"
-  disjoint_sets: 18       # was 16, +2 (Phase B event types + Phase B GDCs added to existing disjoint sets; 4 VP types added to Status disjoint set)
+  disjoint_sets: 21       # was 18, +3 (pao-model GDCs, pao-observability, pao-planning additions)
   covering_axioms: 2
