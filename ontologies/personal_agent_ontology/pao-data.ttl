@@ -178,14 +178,14 @@ pao:search_subagent a owl:NamedIndividual,
     pao:hasAvailableTool pao:read_tool ;
     pao:spawnedBy pao:claude_agent .
 
-pao:session_002 a owl:NamedIndividual,
-        pao:Session ;
-    rdfs:label "session 002"@en ;
-    pao:hasParticipant pao:alice_user ;
-    pao:hasStatus pao:Ended ;
-    pao:hasTemporalExtent pao:session_002_interval ;
-    pao:hasTimestamp "2026-02-18T12:00:00"^^xsd:dateTime ;
-    pao:partOfConversation pao:conv_001 .
+pao:session_transition_001 a owl:NamedIndividual,
+        pao:SessionStatusTransition ;
+    rdfs:label "session transition 001"@en ;
+    pao:fromStatus pao:Active ;
+    pao:hasTimestamp "2026-02-19T12:00:00+00:00"^^xsd:dateTime ;
+    pao:toStatus pao:Ended ;
+    pao:transitionSubject pao:session_001 ;
+    pao:triggeredBy pao:compaction_001 .
 
 pao:task_003 a owl:NamedIndividual,
         pao:Task ;
@@ -197,12 +197,19 @@ pao:task_003 a owl:NamedIndividual,
     pao:partOfPlan pao:plan_001 ;
     pao:storedIn pao:semantic_memory_instance .
 
-pao:compaction_001 a owl:NamedIndividual,
-        pao:CompactionEvent ;
-    rdfs:label "compaction event 001"@en ;
-    pao:hasTimestamp "2026-02-18T10:30:00"^^xsd:dateTime ;
-    pao:inConversation pao:conv_001 ;
-    pao:producedSummary pao:summary_001 .
+pao:disp_claim_001 a owl:NamedIndividual,
+        pao:CompactionDisposition ;
+    rdfs:label "disposition of claim 001"@en ;
+    pao:dispositionOf pao:claim_001 ;
+    pao:fateReason "Active user preference" ;
+    pao:hasItemFate pao:Preserved .
+
+pao:disp_turn_001 a owl:NamedIndividual,
+        pao:CompactionDisposition ;
+    rdfs:label "disposition of turn 001"@en ;
+    pao:dispositionOf pao:turn_001 ;
+    pao:fateReason "Low relevance to active goals" ;
+    pao:hasItemFate pao:Dropped .
 
 pao:episode_001_begin a time:Instant ;
     time:inXSDDateTime "2026-02-18T10:00:00+00:00"^^xsd:dateTime .
@@ -263,6 +270,17 @@ pao:session_001_interval a time:Interval ;
     time:hasBeginning pao:session_001_begin ;
     time:hasEnd pao:session_001_end .
 
+pao:session_002 a owl:NamedIndividual,
+        pao:Session ;
+    rdfs:label "session 002"@en ;
+    pao:continuedFrom pao:session_001 ;
+    pao:hasParticipant pao:alice_user ;
+    pao:hasSessionId "sess-002" ;
+    pao:hasStatus pao:Ended ;
+    pao:hasTemporalExtent pao:session_002_interval ;
+    pao:hasTimestamp "2026-02-18T12:00:00"^^xsd:dateTime ;
+    pao:partOfConversation pao:conv_001 .
+
 pao:session_002_begin a time:Instant ;
     time:inXSDDateTime "2026-02-18T12:00:00+00:00"^^xsd:dateTime .
 
@@ -277,6 +295,7 @@ pao:summary_001 a owl:NamedIndividual,
         pao:MemoryItem ;
     rdfs:label "compaction summary"@en ;
     prov:wasAttributedTo pao:claude_agent ;
+    prov:wasDerivedFrom pao:claim_001 ;
     prov:wasGeneratedBy pao:compaction_001 ;
     pao:hasContent "Summary of first 10 turns..." ;
     pao:hasSensitivityLevel pao:Public ;
@@ -292,30 +311,26 @@ pao:task_002 a owl:NamedIndividual,
     pao:partOfPlan pao:plan_001 ;
     pao:storedIn pao:semantic_memory_instance .
 
+pao:task_transition_001 a owl:NamedIndividual,
+        pao:TaskStatusTransition ;
+    rdfs:label "task transition 001"@en ;
+    pao:fromStatus pao:Pending ;
+    pao:hasTimestamp "2026-02-19T10:00:00+00:00"^^xsd:dateTime ;
+    pao:nextTransition pao:task_transition_002 ;
+    pao:toStatus pao:InProgress ;
+    pao:transitionSubject pao:task_001 .
+
+pao:task_transition_002 a owl:NamedIndividual,
+        pao:TaskStatusTransition ;
+    rdfs:label "task transition 002"@en ;
+    pao:fromStatus pao:InProgress ;
+    pao:hasTimestamp "2026-02-19T11:30:00+00:00"^^xsd:dateTime ;
+    pao:previousTransition pao:task_transition_001 ;
+    pao:toStatus pao:Completed ;
+    pao:transitionSubject pao:task_001 .
+
 pao:topic_dark_mode a skos:Concept ;
     rdfs:label "dark mode implementation"@en .
-
-pao:turn_001 a owl:NamedIndividual,
-        pao:Turn ;
-    rdfs:label "turn 001"@en ;
-    pao:hasParticipant pao:alice_user ;
-    pao:hasTimestamp "2026-02-18T10:01:00"^^xsd:dateTime ;
-    pao:hasTurnIndex "0"^^xsd:nonNegativeInteger ;
-    pao:inSession pao:session_001 ;
-    pao:partOfConversation pao:conv_001 ;
-    pao:partOfSession pao:session_001 ;
-    pao:recordedInEpisode pao:episode_001 .
-
-pao:turn_002 a owl:NamedIndividual,
-        pao:Turn ;
-    rdfs:label "turn 002"@en ;
-    pao:hasParticipant pao:claude_agent ;
-    pao:hasTimestamp "2026-02-18T10:02:00"^^xsd:dateTime ;
-    pao:hasTurnIndex "1"^^xsd:nonNegativeInteger ;
-    pao:inSession pao:session_001 ;
-    pao:partOfConversation pao:conv_001 ;
-    pao:partOfSession pao:session_001 ;
-    pao:recordedInEpisode pao:episode_001 .
 
 pao:acme_corp a owl:NamedIndividual,
         pao:Organization ;
@@ -342,14 +357,17 @@ pao:policy_001 a owl:NamedIndividual,
     pao:restrictsToolUse pao:bash_tool ;
     pao:storedIn pao:procedural_memory_instance .
 
-pao:task_001 a owl:NamedIndividual,
-        pao:Task ;
-    rdfs:label "update CSS theme"@en ;
-    prov:wasAttributedTo pao:claude_agent ;
-    prov:wasGeneratedBy pao:conv_001 ;
-    pao:hasStatus pao:Completed ;
-    pao:partOfPlan pao:plan_001 ;
-    pao:storedIn pao:semantic_memory_instance .
+pao:turn_002 a owl:NamedIndividual,
+        pao:Turn ;
+    rdfs:label "turn 002"@en ;
+    prov:wasInvalidatedBy pao:compaction_001 ;
+    pao:hasParticipant pao:claude_agent ;
+    pao:hasTimestamp "2026-02-18T10:02:00"^^xsd:dateTime ;
+    pao:hasTurnIndex "1"^^xsd:nonNegativeInteger ;
+    pao:inSession pao:session_001 ;
+    pao:partOfConversation pao:conv_001 ;
+    pao:partOfSession pao:session_001 ;
+    pao:recordedInEpisode pao:episode_001 .
 
 pao:bash_tool a owl:NamedIndividual,
         pao:ToolDefinition ;
@@ -377,6 +395,39 @@ pao:retention_policy_30day a owl:NamedIndividual,
     pao:retentionPeriodDays "30"^^xsd:nonNegativeInteger ;
     pao:storedIn pao:procedural_memory_instance .
 
+pao:turn_001 a owl:NamedIndividual,
+        pao:Turn ;
+    rdfs:label "turn 001"@en ;
+    prov:wasInvalidatedBy pao:compaction_001 ;
+    pao:hasParticipant pao:alice_user ;
+    pao:hasTimestamp "2026-02-18T10:01:00"^^xsd:dateTime ;
+    pao:hasTurnIndex "0"^^xsd:nonNegativeInteger ;
+    pao:inSession pao:session_001 ;
+    pao:partOfConversation pao:conv_001 ;
+    pao:partOfSession pao:session_001 ;
+    pao:recordedInEpisode pao:episode_001 .
+
+pao:compaction_001 a owl:NamedIndividual,
+        pao:CompactionEvent ;
+    rdfs:label "compaction event 001"@en ;
+    pao:compactedItem pao:claim_001,
+        pao:turn_001,
+        pao:turn_002 ;
+    pao:hasCompactionDisposition pao:disp_claim_001,
+        pao:disp_turn_001 ;
+    pao:hasTimestamp "2026-02-18T10:30:00"^^xsd:dateTime ;
+    pao:inConversation pao:conv_001 ;
+    pao:producedSummary pao:summary_001 .
+
+pao:task_001 a owl:NamedIndividual,
+        pao:Task ;
+    rdfs:label "update CSS theme"@en ;
+    prov:wasAttributedTo pao:claude_agent ;
+    prov:wasGeneratedBy pao:conv_001 ;
+    pao:hasStatus pao:Completed ;
+    pao:partOfPlan pao:plan_001 ;
+    pao:storedIn pao:semantic_memory_instance .
+
 pao:working_memory_instance a owl:NamedIndividual,
         pao:MemoryTier,
         pao:WorkingMemory ;
@@ -388,8 +439,10 @@ pao:episode_001 a owl:NamedIndividual,
     rdfs:label "episode 001"@en ;
     prov:wasAttributedTo pao:claude_agent ;
     prov:wasGeneratedBy pao:conv_001 ;
+    pao:hasLastAccessTime "2025-01-15T10:00:00+00:00"^^xsd:dateTime ;
     pao:hasTemporalExtent pao:episode_001_interval ;
     pao:hasTopic pao:topic_dark_mode ;
+    pao:isEvictionCandidate true ;
     pao:storedIn pao:episodic_memory_instance .
 
 pao:procedural_memory_instance a owl:NamedIndividual,
@@ -411,24 +464,28 @@ pao:claim_001 a owl:NamedIndividual,
     pao:hasConfidence 0.9 ;
     pao:hasContent "User prefers dark mode" ;
     pao:hasEvidence pao:episode_001 ;
+    pao:hasLastAccessTime "2026-02-19T08:00:00+00:00"^^xsd:dateTime ;
     pao:hasSensitivityLevel pao:Confidential ;
     pao:hasTimestamp "2026-02-18T10:10:00"^^xsd:dateTime ;
+    pao:isEvictionCandidate false ;
     pao:storedIn pao:semantic_memory_instance .
-
-pao:session_001 a owl:NamedIndividual,
-        pao:Session ;
-    rdfs:label "session 001"@en ;
-    pao:hasParticipant pao:alice_user,
-        pao:claude_agent ;
-    pao:hasStatus pao:Active ;
-    pao:hasTemporalExtent pao:session_001_interval ;
-    pao:hasTimestamp "2026-02-18T10:00:00"^^xsd:dateTime ;
-    pao:partOfConversation pao:conv_001 .
 
 pao:semantic_memory_instance a owl:NamedIndividual,
         pao:MemoryTier,
         pao:SemanticMemory ;
     rdfs:label "semantic memory instance"@en .
+
+pao:session_001 a owl:NamedIndividual,
+        pao:Session ;
+    rdfs:label "session 001"@en ;
+    pao:continuedBy pao:session_002 ;
+    pao:hasParticipant pao:alice_user,
+        pao:claude_agent ;
+    pao:hasSessionId "sess-001" ;
+    pao:hasStatus pao:Active ;
+    pao:hasTemporalExtent pao:session_001_interval ;
+    pao:hasTimestamp "2026-02-18T10:00:00"^^xsd:dateTime ;
+    pao:partOfConversation pao:conv_001 .
 
 pao:alice_user a owl:NamedIndividual,
         pao:HumanUser ;
@@ -440,12 +497,13 @@ pao:conv_001 a owl:NamedIndividual,
         pao:Conversation ;
     rdfs:label "conversation 001"@en ;
     prov:qualifiedAssociation [ a prov:Association ;
-            prov:agent pao:claude_agent ;
-            prov:hadRole pao:AssistantRole ],
-        [ a prov:Association ;
             prov:agent pao:alice_user ;
-            prov:hadRole pao:UserRole ] ;
+            prov:hadRole pao:UserRole ],
+        [ a prov:Association ;
+            prov:agent pao:claude_agent ;
+            prov:hadRole pao:AssistantRole ] ;
     prov:wasAssociatedWith pao:claude_agent ;
+    pao:hasConversationId "conv-001" ;
     pao:hasParticipant pao:alice_user,
         pao:claude_agent ;
     pao:hasTimestamp "2026-02-18T10:00:00"^^xsd:dateTime .
@@ -455,6 +513,7 @@ pao:claude_agent a owl:NamedIndividual,
     rdfs:label "Claude"@en ;
     prov:wasAttributedTo pao:claude_agent ;
     pao:belongsTo pao:acme_corp ;
+    pao:hasAgentId "agent-claude-001" ;
     pao:hasAvailableTool pao:bash_tool,
         pao:read_tool ;
     pao:hasPersona pao:persona_claude ;

@@ -78,7 +78,7 @@ def shapes() -> Graph:
 
 
 # ---------------------------------------------------------------------------
-# Class declarations (46 classes)
+# Class declarations (51 classes)
 # ---------------------------------------------------------------------------
 
 EXPECTED_CLASSES = [
@@ -98,6 +98,9 @@ EXPECTED_CLASSES = [
     "CompactionEvent",
     "ErasureEvent",
     "Observation",
+    "StatusTransition",
+    "SessionStatusTransition",
+    "TaskStatusTransition",
     # pao-memory: Memory system
     "MemoryItem",
     "Episode",
@@ -128,12 +131,14 @@ EXPECTED_CLASSES = [
     "SafetyConstraint",
     "ConsentRecord",
     "RetentionPolicy",
+    "CompactionDisposition",
     # Status types
     "Status",
     "SessionStatus",
     "TaskStatus",
     "ComplianceStatus",
     "SensitivityLevel",
+    "ItemFate",
     # Roles
     "AgentRole",
 ]
@@ -146,10 +151,10 @@ def test_class_declared(tbox: Graph, cls_name: str) -> None:
 
 
 def test_class_count(tbox: Graph) -> None:
-    """Exactly 46 PAO classes are declared."""
+    """Exactly 51 PAO classes are declared."""
     pao_classes = {s for s in tbox.subjects(RDF.type, OWL.Class) if str(s).startswith(str(PAO))}
-    assert len(pao_classes) == 46, (
-        f"Expected 46 PAO classes, found {len(pao_classes)}: {pao_classes}"
+    assert len(pao_classes) == 51, (
+        f"Expected 51 PAO classes, found {len(pao_classes)}: {pao_classes}"
     )
 
 
@@ -219,6 +224,12 @@ HIERARCHY_CHECKS = [
     ("SensitivityLevel", PAO.Status),
     ("ConsentRecord", PROV.Entity),
     ("RetentionPolicy", PROV.Entity),
+    # v0.3.0 additions
+    ("StatusTransition", PAO.Event),
+    ("SessionStatusTransition", PAO.StatusTransition),
+    ("TaskStatusTransition", PAO.StatusTransition),
+    ("CompactionDisposition", PROV.Entity),
+    ("ItemFate", PAO.Status),
 ]
 
 
@@ -255,6 +266,8 @@ BFO_ALIGNMENT = [
     ("Intention", OBO["BFO_0000031"]),  # GDC
     ("ConsentRecord", OBO["BFO_0000031"]),  # GDC
     ("RetentionPolicy", OBO["BFO_0000031"]),  # GDC
+    # v0.3.0 additions
+    ("CompactionDisposition", OBO["BFO_0000031"]),  # GDC
 ]
 
 
@@ -269,7 +282,7 @@ def test_bfo_alignment(tbox: Graph, cls_name: str, bfo_class: URIRef) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Object property declarations (52 properties)
+# Object property declarations (64 properties)
 # ---------------------------------------------------------------------------
 
 EXPECTED_OBJ_PROPS = [
@@ -280,16 +293,23 @@ EXPECTED_OBJ_PROPS = [
     "belongsTo",
     "blockedBy",
     "blocks",
+    "compactedItem",
     "consentPurpose",
     "consentSubject",
+    "continuedBy",
+    "continuedFrom",
     "delegatedTask",
     "derivedFromGoal",
+    "dispositionOf",
     "governedByPolicy",
     "governedByRetention",
     "grantsPermission",
+    "fromStatus",
     "hasAvailableTool",
+    "hasCompactionDisposition",
     "hasComplianceStatus",
     "hasEvidence",
+    "hasItemFate",
     "hasInput",
     "hasMember",
     "hasOutput",
@@ -308,6 +328,7 @@ EXPECTED_OBJ_PROPS = [
     "invokedBy",
     "invokedIn",
     "invokesTool",
+    "nextTransition",
     "operatesOn",
     "participatesIn",
     "partOf",
@@ -315,6 +336,7 @@ EXPECTED_OBJ_PROPS = [
     "partOfPlan",
     "partOfSession",
     "performedBy",
+    "previousTransition",
     "producedSummary",
     "pursuedBy",
     "pursuesGoal",
@@ -325,6 +347,9 @@ EXPECTED_OBJ_PROPS = [
     "spawnedBy",
     "storedIn",
     "stores",
+    "toStatus",
+    "transitionSubject",
+    "triggeredBy",
 ]
 
 
@@ -335,17 +360,23 @@ def test_object_property_declared(tbox: Graph, prop_name: str) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Datatype property declarations (8 properties)
+# Datatype property declarations (14 properties)
 # ---------------------------------------------------------------------------
 
 EXPECTED_DATA_PROPS = [
     "claimType",
+    "fateReason",
+    "hasAgentId",
     "hasBlockKey",
     "hasBlockValue",
     "hasConfidence",
     "hasContent",
+    "hasConversationId",
+    "hasLastAccessTime",
+    "hasSessionId",
     "hasTimestamp",
     "hasTurnIndex",
+    "isEvictionCandidate",
     "retentionPeriodDays",
 ]
 
@@ -364,11 +395,19 @@ EXPECTED_FUNCTIONAL = [
     "belongsTo",
     "claimType",
     "consentSubject",
+    "continuedFrom",
+    "dispositionOf",
+    "fromStatus",
+    "hasAgentId",
     "hasComplianceStatus",
     "hasConfidence",
     "hasContent",
+    "hasConversationId",
+    "hasItemFate",
+    "hasLastAccessTime",
     "hasPersona",
     "hasSensitivityLevel",
+    "hasSessionId",
     "hasStatus",
     "hasTemporalExtent",
     "hasTimestamp",
@@ -377,14 +416,19 @@ EXPECTED_FUNCTIONAL = [
     "inSession",
     "invokedBy",
     "invokesTool",
+    "isEvictionCandidate",
+    "nextTransition",
     "partOfConversation",
     "partOfPlan",
     "partOfSession",
     "performedBy",
+    "previousTransition",
     "producedSummary",
     "requestedBy",
     "retentionPeriodDays",
     "spawnedBy",
+    "toStatus",
+    "transitionSubject",
 ]
 
 
@@ -424,6 +468,8 @@ INVERSE_PAIRS = [
     ("partOfPlan", "hasTask"),
     ("blockedBy", "blocks"),
     ("belongsTo", "hasMember"),
+    ("continuedFrom", "continuedBy"),
+    ("previousTransition", "nextTransition"),
 ]
 
 
@@ -464,6 +510,11 @@ def test_property_hierarchy(tbox: Graph, sub: str, super_: str) -> None:
     assert (PAO[sub], RDFS.subPropertyOf, PAO[super_]) in tbox
 
 
+def test_compacted_item_sub_property_of_prov_used(tbox: Graph) -> None:
+    """compactedItem is subPropertyOf prov:used."""
+    assert (PAO.compactedItem, RDFS.subPropertyOf, PROV.used) in tbox
+
+
 # ---------------------------------------------------------------------------
 # Domain and range checks (selected important properties)
 # ---------------------------------------------------------------------------
@@ -496,6 +547,25 @@ DOMAIN_RANGE_CHECKS: list[tuple[str, URIRef | None, URIRef]] = [
     ("hasBlockKey", PAO.MemoryBlock, XSD.string),
     ("hasBlockValue", PAO.MemoryBlock, XSD.string),
     ("retentionPeriodDays", PAO.RetentionPolicy, XSD.nonNegativeInteger),
+    # v0.3.0 additions
+    ("compactedItem", PAO.CompactionEvent, PROV.Entity),
+    ("hasCompactionDisposition", PAO.CompactionEvent, PAO.CompactionDisposition),
+    ("dispositionOf", PAO.CompactionDisposition, PROV.Entity),
+    ("hasItemFate", PAO.CompactionDisposition, PAO.ItemFate),
+    ("continuedFrom", PAO.Session, PAO.Session),
+    ("continuedBy", PAO.Session, PAO.Session),
+    ("fromStatus", PAO.StatusTransition, PAO.Status),
+    ("toStatus", PAO.StatusTransition, PAO.Status),
+    ("transitionSubject", PAO.StatusTransition, OWL.Thing),
+    ("triggeredBy", PAO.StatusTransition, PAO.Event),
+    ("previousTransition", PAO.StatusTransition, PAO.StatusTransition),
+    ("nextTransition", PAO.StatusTransition, PAO.StatusTransition),
+    ("fateReason", PAO.CompactionDisposition, XSD.string),
+    ("hasLastAccessTime", PAO.MemoryItem, XSD.dateTime),
+    ("isEvictionCandidate", PAO.MemoryItem, XSD.boolean),
+    ("hasAgentId", PAO.AIAgent, XSD.string),
+    ("hasSessionId", PAO.Session, XSD.string),
+    ("hasConversationId", PAO.Conversation, XSD.string),
 ]
 
 
@@ -581,6 +651,13 @@ EXISTENTIAL_CHECKS = [
     ("MemoryItem", "hasSensitivityLevel", "SensitivityLevel"),
     ("ConsentRecord", "consentSubject", "Agent"),
     ("MemoryItem", "governedByRetention", "RetentionPolicy"),
+    # v0.3.0 additions
+    ("CompactionEvent", "compactedItem", None),  # prov:Entity
+    ("StatusTransition", "fromStatus", "Status"),
+    ("StatusTransition", "toStatus", "Status"),
+    ("StatusTransition", "transitionSubject", None),  # owl:Thing
+    ("CompactionDisposition", "dispositionOf", None),  # prov:Entity
+    ("CompactionDisposition", "hasItemFate", "ItemFate"),
 ]
 
 
@@ -728,9 +805,9 @@ def _collect_all_disjoint_groups(g: Graph) -> list[set[URIRef]]:
 
 
 def test_all_disjoint_classes_count(tbox: Graph) -> None:
-    """At least 8 AllDisjointClasses axioms exist."""
+    """At least 9 AllDisjointClasses axioms exist."""
     groups = _collect_all_disjoint_groups(tbox)
-    assert len(groups) >= 8, f"Expected >=8 AllDisjointClasses, got {len(groups)}"
+    assert len(groups) >= 9, f"Expected >=9 AllDisjointClasses, got {len(groups)}"
 
 
 DISJOINT_GROUP_CHECKS = [
@@ -745,12 +822,19 @@ DISJOINT_GROUP_CHECKS = [
             PAO.ErasureEvent,
             PAO.MemoryOperation,
             PAO.Observation,
+            PAO.StatusTransition,
         },
         "Event subtypes",
     ),
     ({PAO.Episode, PAO.Claim, PAO.MemoryBlock}, "MemoryItem subtypes"),
     (
-        {PAO.SessionStatus, PAO.TaskStatus, PAO.ComplianceStatus, PAO.SensitivityLevel},
+        {
+            PAO.SessionStatus,
+            PAO.TaskStatus,
+            PAO.ComplianceStatus,
+            PAO.SensitivityLevel,
+            PAO.ItemFate,
+        },
         "Status subtypes",
     ),
     (
@@ -780,8 +864,13 @@ DISJOINT_GROUP_CHECKS = [
             PAO.Intention,
             PAO.ConsentRecord,
             PAO.RetentionPolicy,
+            PAO.CompactionDisposition,
         },
         "Cross-module GDC disjointness",
+    ),
+    (
+        {PAO.SessionStatusTransition, PAO.TaskStatusTransition},
+        "StatusTransition subtypes",
     ),
 ]
 
@@ -851,6 +940,49 @@ def test_all_different_sensitivity_level(ref: Graph) -> None:
     assert _find_all_different_containing(
         ref, {PAO.Public, PAO.Internal, PAO.Confidential, PAO.Restricted}
     )
+
+
+def test_item_fate_individuals(ref: Graph) -> None:
+    """Preserved, Dropped, Summarized, Archived are ItemFate individuals."""
+    for name in ["Preserved", "Dropped", "Summarized", "Archived"]:
+        assert (PAO[name], RDF.type, PAO.ItemFate) in ref
+
+
+def test_item_fate_enumeration(ref: Graph) -> None:
+    """ItemFate owl:oneOf (Preserved, Dropped, Summarized, Archived)."""
+    members = _get_one_of_members(ref, PAO.ItemFate)
+    assert members == {PAO.Preserved, PAO.Dropped, PAO.Summarized, PAO.Archived}
+
+
+def test_all_different_item_fate(ref: Graph) -> None:
+    """AllDifferent for ItemFate individuals."""
+    assert _find_all_different_containing(
+        ref, {PAO.Preserved, PAO.Dropped, PAO.Summarized, PAO.Archived}
+    )
+
+
+def test_has_key_ai_agent(tbox: Graph) -> None:
+    """AIAgent has owl:hasKey (hasAgentId)."""
+    key_list = tbox.value(PAO.AIAgent, OWL.hasKey)
+    assert key_list is not None, "AIAgent missing owl:hasKey"
+    keys = list(Collection(tbox, key_list))
+    assert PAO.hasAgentId in keys
+
+
+def test_has_key_session(tbox: Graph) -> None:
+    """Session has owl:hasKey (hasSessionId)."""
+    key_list = tbox.value(PAO.Session, OWL.hasKey)
+    assert key_list is not None, "Session missing owl:hasKey"
+    keys = list(Collection(tbox, key_list))
+    assert PAO.hasSessionId in keys
+
+
+def test_has_key_conversation(tbox: Graph) -> None:
+    """Conversation has owl:hasKey (hasConversationId)."""
+    key_list = tbox.value(PAO.Conversation, OWL.hasKey)
+    assert key_list is not None, "Conversation missing owl:hasKey"
+    keys = list(Collection(tbox, key_list))
+    assert PAO.hasConversationId in keys
 
 
 # ---------------------------------------------------------------------------
@@ -1029,6 +1161,15 @@ CQ_SELECT_NON_EMPTY = [
     "cq-048.sparql",
     "cq-050.sparql",
     "cq-051.sparql",
+    "cq-052.sparql",
+    "cq-053.sparql",
+    "cq-054.sparql",
+    "cq-055.sparql",
+    "cq-056.sparql",
+    "cq-057.sparql",
+    "cq-058.sparql",
+    "cq-059.sparql",
+    "cq-060.sparql",
 ]
 
 
@@ -1106,15 +1247,16 @@ def test_shacl_conformance(shapes: Graph) -> None:
 
 
 def test_shacl_shape_count(shapes: Graph) -> None:
-    """At least 24 NodeShapes exist."""
+    """At least 26 NodeShapes exist."""
     node_shapes = set(shapes.subjects(RDF.type, SH.NodeShape))
-    assert len(node_shapes) >= 24, f"Expected >=24 NodeShapes, got {len(node_shapes)}"
+    assert len(node_shapes) >= 26, f"Expected >=26 NodeShapes, got {len(node_shapes)}"
 
 
 EXPECTED_SHAPE_TARGETS = [
     "AIAgent",
     "Action",
     "Claim",
+    "CompactionDisposition",
     "CompactionEvent",
     "ConsentRecord",
     "Conversation",
@@ -1132,6 +1274,7 @@ EXPECTED_SHAPE_TARGETS = [
     "Plan",
     "RetentionPolicy",
     "Session",
+    "StatusTransition",
     "SubAgent",
     "Task",
     "ToolInvocation",

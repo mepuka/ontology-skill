@@ -25,6 +25,11 @@ pao:Active a owl:NamedIndividual,
 
 pao:AgentRole owl:equivalentClass [ owl:oneOf ( pao:AssistantRole pao:UserRole ) ] .
 
+pao:Archived a owl:NamedIndividual,
+        pao:ItemFate ;
+    rdfs:label "archived"@en ;
+    skos:definition "Item fate: moved to long-term storage."@en .
+
 pao:AssistantRole a owl:NamedIndividual,
         pao:AgentRole ;
     rdfs:label "assistant role"@en ;
@@ -51,6 +56,11 @@ pao:Confidential a owl:NamedIndividual,
         pao:SensitivityLevel ;
     rdfs:label "confidential"@en ;
     skos:definition "Sensitivity level: restricted personal data."@en .
+
+pao:Dropped a owl:NamedIndividual,
+        pao:ItemFate ;
+    rdfs:label "dropped"@en ;
+    skos:definition "Item fate: excluded from summary."@en .
 
 pao:Ended a owl:NamedIndividual,
         pao:SessionStatus ;
@@ -82,6 +92,11 @@ pao:Pending a owl:NamedIndividual,
     rdfs:label "pending"@en ;
     skos:definition "Status value: a task has not yet started."@en .
 
+pao:Preserved a owl:NamedIndividual,
+        pao:ItemFate ;
+    rdfs:label "preserved"@en ;
+    skos:definition "Item fate: content incorporated into summary."@en .
+
 pao:Public a owl:NamedIndividual,
         pao:SensitivityLevel ;
     rdfs:label "public"@en ;
@@ -92,6 +107,11 @@ pao:Restricted a owl:NamedIndividual,
     rdfs:label "restricted"@en ;
     skos:definition "Sensitivity level: highly sensitive data requiring special controls."@en .
 
+pao:Summarized a owl:NamedIndividual,
+        pao:ItemFate ;
+    rdfs:label "summarized"@en ;
+    skos:definition "Item fate: partially represented in summary."@en .
+
 pao:UserRole a owl:NamedIndividual,
         pao:AgentRole ;
     rdfs:label "user role"@en ;
@@ -99,9 +119,14 @@ pao:UserRole a owl:NamedIndividual,
 
 pao:SessionStatus owl:equivalentClass [ owl:oneOf ( pao:Active pao:Ended pao:Interrupted ) ] .
 
+pao:ItemFate owl:equivalentClass [ owl:oneOf ( pao:Preserved pao:Dropped pao:Summarized pao:Archived ) ] .
+
 pao:SensitivityLevel owl:equivalentClass [ owl:oneOf ( pao:Public pao:Internal pao:Confidential pao:Restricted ) ] .
 
 pao:TaskStatus owl:equivalentClass [ owl:oneOf ( pao:Pending pao:InProgress pao:Completed pao:Blocked ) ] .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:AssistantRole pao:UserRole ) .
 
 [] a owl:AllDifferent ;
     owl:distinctMembers ( pao:Pending pao:InProgress pao:Completed pao:Blocked ) .
@@ -113,7 +138,7 @@ pao:TaskStatus owl:equivalentClass [ owl:oneOf ( pao:Pending pao:InProgress pao:
     owl:distinctMembers ( pao:Public pao:Internal pao:Confidential pao:Restricted ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Compliant pao:NonCompliant ) .
+    owl:distinctMembers ( pao:Preserved pao:Dropped pao:Summarized pao:Archived ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:AssistantRole pao:UserRole ) .
+    owl:distinctMembers ( pao:Compliant pao:NonCompliant ) .

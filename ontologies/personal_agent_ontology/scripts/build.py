@@ -1351,6 +1351,13 @@ def build_reference_individuals(glossary: list[dict[str, str]]) -> Graph:
     restricted = _add_individual("Restricted", PAO.SensitivityLevel)
     _add_all_different(g, [public, internal, confidential, restricted])
 
+    # --- Item fate individuals (v0.3.0) ---
+    preserved = _add_individual("Preserved", PAO.ItemFate)
+    dropped = _add_individual("Dropped", PAO.ItemFate)
+    summarized = _add_individual("Summarized", PAO.ItemFate)
+    archived = _add_individual("Archived", PAO.ItemFate)
+    _add_all_different(g, [preserved, dropped, summarized, archived])
+
     # --- Classifier individuals (used as string property values) ---
     # UserPreference is a reference label, NOT an instance of a domain class.
     for cname in ("UserPreference",):
@@ -1371,6 +1378,7 @@ def build_reference_individuals(glossary: list[dict[str, str]]) -> Graph:
     _add_enumeration(g, PAO.ComplianceStatus, [compliant, non_compliant])
     _add_enumeration(g, PAO.AgentRole, [assistant_role, user_role])
     _add_enumeration(g, PAO.SensitivityLevel, [public, internal, confidential, restricted])
+    _add_enumeration(g, PAO.ItemFate, [preserved, dropped, summarized, archived])
 
     return g
 
@@ -1427,6 +1435,11 @@ def build_abox_data() -> Graph:
     _add_sample_memory_block(g)
     _add_sample_intention(g)
     _add_sample_governance_v2(g)
+    _add_sample_compaction_trace(g)
+    _add_sample_eviction(g)
+    _add_sample_session_continuation(g)
+    _add_sample_identity(g)
+    _add_sample_transitions(g)
 
     return g
 
@@ -2029,6 +2042,104 @@ def _add_sample_governance_v2(g: Graph) -> None:
     g.add((expired, PAO.hasTimestamp, Literal("2025-12-20T10:00:00", datatype=XSD.dateTime)))
 
 
+def _add_sample_compaction_trace(g: Graph) -> None:
+    """Add compaction trace data linking items to preservation/drop fates (CQ-052, CQ-053)."""
+    compaction = PAO.compaction_001  # existing individual
+    # Mark items as compacted inputs
+    g.add((compaction, PAO.compactedItem, PAO.turn_001))
+    g.add((compaction, PAO.compactedItem, PAO.turn_002))
+    g.add((compaction, PAO.compactedItem, PAO.claim_001))
+    # Dropped items: invalidated by compaction
+    g.add((PAO.turn_001, PROV.wasInvalidatedBy, compaction))
+    g.add((PAO.turn_002, PROV.wasInvalidatedBy, compaction))
+    # Preserved item: derived into summary
+    g.add((PAO.summary_001, PROV.wasDerivedFrom, PAO.claim_001))
+    # Dispositions with metadata
+    disp1 = PAO.disp_turn_001
+    g.add((disp1, RDF.type, PAO.CompactionDisposition))
+    g.add((disp1, RDF.type, OWL.NamedIndividual))
+    g.add((disp1, RDFS.label, Literal("disposition of turn 001", lang="en")))
+    g.add((disp1, PAO.dispositionOf, PAO.turn_001))
+    g.add((disp1, PAO.hasItemFate, PAO.Dropped))
+    g.add((disp1, PAO.fateReason, Literal("Low relevance to active goals")))
+    g.add((compaction, PAO.hasCompactionDisposition, disp1))
+    disp2 = PAO.disp_claim_001
+    g.add((disp2, RDF.type, PAO.CompactionDisposition))
+    g.add((disp2, RDF.type, OWL.NamedIndividual))
+    g.add((disp2, RDFS.label, Literal("disposition of claim 001", lang="en")))
+    g.add((disp2, PAO.dispositionOf, PAO.claim_001))
+    g.add((disp2, PAO.hasItemFate, PAO.Preserved))
+    g.add((disp2, PAO.fateReason, Literal("Active user preference")))
+    g.add((compaction, PAO.hasCompactionDisposition, disp2))
+
+
+def _add_sample_eviction(g: Graph) -> None:
+    """Add last-access timestamps and eviction candidacy to memory items (CQ-054, CQ-055)."""
+    g.add(
+        (
+            PAO.claim_001,
+            PAO.hasLastAccessTime,
+            Literal("2026-02-19T08:00:00Z", datatype=XSD.dateTime),
+        )
+    )
+    g.add((PAO.claim_001, PAO.isEvictionCandidate, Literal(False)))
+    g.add(
+        (
+            PAO.episode_001,
+            PAO.hasLastAccessTime,
+            Literal("2025-01-15T10:00:00Z", datatype=XSD.dateTime),
+        )
+    )
+    g.add((PAO.episode_001, PAO.isEvictionCandidate, Literal(True)))
+
+
+def _add_sample_session_continuation(g: Graph) -> None:
+    """Link sessions in a continuation chain (CQ-056)."""
+    g.add((PAO.session_002, PAO.continuedFrom, PAO.session_001))
+    g.add((PAO.session_001, PAO.continuedBy, PAO.session_002))
+
+
+def _add_sample_identity(g: Graph) -> None:
+    """Add unique identifiers to key entities (CQ-057)."""
+    g.add((PAO.claude_agent, PAO.hasAgentId, Literal("agent-claude-001")))
+    g.add((PAO.session_001, PAO.hasSessionId, Literal("sess-001")))
+    g.add((PAO.session_002, PAO.hasSessionId, Literal("sess-002")))
+    g.add((PAO.conv_001, PAO.hasConversationId, Literal("conv-001")))
+
+
+def _add_sample_transitions(g: Graph) -> None:
+    """Add sample status transition chains (CQ-058, CQ-059, CQ-060)."""
+    # Task transitions: Pending -> InProgress -> Completed
+    tt1 = PAO.task_transition_001
+    g.add((tt1, RDF.type, PAO.TaskStatusTransition))
+    g.add((tt1, RDF.type, OWL.NamedIndividual))
+    g.add((tt1, RDFS.label, Literal("task transition 001", lang="en")))
+    g.add((tt1, PAO.transitionSubject, PAO.task_001))
+    g.add((tt1, PAO.fromStatus, PAO.Pending))
+    g.add((tt1, PAO.toStatus, PAO.InProgress))
+    g.add((tt1, PAO.hasTimestamp, Literal("2026-02-19T10:00:00Z", datatype=XSD.dateTime)))
+    tt2 = PAO.task_transition_002
+    g.add((tt2, RDF.type, PAO.TaskStatusTransition))
+    g.add((tt2, RDF.type, OWL.NamedIndividual))
+    g.add((tt2, RDFS.label, Literal("task transition 002", lang="en")))
+    g.add((tt2, PAO.transitionSubject, PAO.task_001))
+    g.add((tt2, PAO.fromStatus, PAO.InProgress))
+    g.add((tt2, PAO.toStatus, PAO.Completed))
+    g.add((tt2, PAO.hasTimestamp, Literal("2026-02-19T11:30:00Z", datatype=XSD.dateTime)))
+    g.add((tt1, PAO.nextTransition, tt2))
+    g.add((tt2, PAO.previousTransition, tt1))
+    # Session transition: Active -> Ended
+    st1 = PAO.session_transition_001
+    g.add((st1, RDF.type, PAO.SessionStatusTransition))
+    g.add((st1, RDF.type, OWL.NamedIndividual))
+    g.add((st1, RDFS.label, Literal("session transition 001", lang="en")))
+    g.add((st1, PAO.transitionSubject, PAO.session_001))
+    g.add((st1, PAO.fromStatus, PAO.Active))
+    g.add((st1, PAO.toStatus, PAO.Ended))
+    g.add((st1, PAO.hasTimestamp, Literal("2026-02-19T12:00:00Z", datatype=XSD.dateTime)))
+    g.add((st1, PAO.triggeredBy, PAO.compaction_001))
+
+
 # ---------------------------------------------------------------------------
 # SHACL Shapes Builder
 # ---------------------------------------------------------------------------
@@ -2296,6 +2407,7 @@ def build_shacl_shapes() -> Graph:
                 max_count=1,
                 class_constraint=PAO.SensitivityLevel,
             ),
+            _property_shape(g, PAO.hasLastAccessTime, max_count=1, datatype=XSD.dateTime),
         ],
     )
 
@@ -2337,6 +2449,33 @@ def build_shacl_shapes() -> Graph:
         PAO.Persona,
         [
             _property_shape(g, PAO.hasContent, min_count=1, max_count=1, datatype=XSD.string),
+        ],
+    )
+
+    # --- StatusTransitionShape (v0.3.0) ---
+    _add_shape(
+        g,
+        PAO.StatusTransitionShape,
+        PAO.StatusTransition,
+        [
+            _property_shape(
+                g, PAO.fromStatus, min_count=1, max_count=1, class_constraint=PAO.Status
+            ),
+            _property_shape(g, PAO.toStatus, min_count=1, max_count=1, class_constraint=PAO.Status),
+            _property_shape(g, PAO.transitionSubject, min_count=1, max_count=1),
+        ],
+    )
+
+    # --- CompactionDispositionShape (v0.3.0) ---
+    _add_shape(
+        g,
+        PAO.CompactionDispositionShape,
+        PAO.CompactionDisposition,
+        [
+            _property_shape(g, PAO.dispositionOf, min_count=1, max_count=1),
+            _property_shape(
+                g, PAO.hasItemFate, min_count=1, max_count=1, class_constraint=PAO.ItemFate
+            ),
         ],
     )
 
