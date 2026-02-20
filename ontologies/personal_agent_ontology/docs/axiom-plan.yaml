@@ -1592,6 +1592,477 @@ axiom_plan:
     abox_requirements:
       - "Integration individuals with hasServiceName and optionally hasEndpoint"
 
+  # ═══════════════════════════════════════════════════════════════════════
+  # MODULE 8: External Service Capability Model (pao-services) — v0.6.0 Phase A
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - cq_id: CQ-079
+    natural_language: "What external services are configured for each agent?"
+    priority: must_have
+    module: pao-services
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: |
+          ExternalService SubClassOf prov:Entity
+          ServiceConnection SubClassOf prov:Entity
+        note: "Establishes external service and connection classes."
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          ExternalService SubClassOf exposesCapability some ServiceCapability
+          ServiceConnection SubClassOf connectsToService some ExternalService
+        note: "Every external service exposes at least one capability; every connection targets a service."
+    tbox_requirements:
+      - "Class ExternalService SubClassOf prov:Entity, BFO:GDC"
+      - "Class ServiceConnection SubClassOf prov:Entity, BFO:GDC"
+      - "ObjectProperty hasExternalService domain Agent range ExternalService"
+      - "ObjectProperty hasServiceConnection domain Agent range ServiceConnection"
+      - "ObjectProperty connectsToService domain ServiceConnection range ExternalService [functional]"
+      - "ObjectProperty hasConnectionStatus domain ServiceConnection range ConnectionStatus [functional] subPropertyOf hasStatus"
+    abox_requirements:
+      - "ExternalService individuals with labels and service identifiers"
+      - "ServiceConnection individuals linking agents to services with ConnectionStatus"
+
+  - cq_id: CQ-080
+    natural_language: "What capabilities does a given external service expose?"
+    priority: must_have
+    module: pao-services
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: |
+          ServiceCapability SubClassOf prov:Entity
+          ServiceToolCapability SubClassOf ServiceCapability
+          ServiceResourceCapability SubClassOf ServiceCapability
+          ServicePromptCapability SubClassOf ServiceCapability
+        note: "MCP capability type hierarchy."
+      - pattern: "5. Disjoint Classes"
+        axiom_sketch: "DisjointUnion(ServiceCapability, ServiceToolCapability, ServiceResourceCapability, ServicePromptCapability)"
+        note: "Capabilities are one of exactly three types."
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "ExternalService SubClassOf exposesCapability some ServiceCapability"
+        note: "Every service exposes at least one capability."
+    tbox_requirements:
+      - "Class ServiceCapability SubClassOf prov:Entity"
+      - "Class ServiceToolCapability SubClassOf ServiceCapability"
+      - "Class ServiceResourceCapability SubClassOf ServiceCapability"
+      - "Class ServicePromptCapability SubClassOf ServiceCapability"
+      - "DisjointUnion on ServiceCapability subtypes"
+      - "ObjectProperty exposesCapability domain ExternalService range ServiceCapability"
+    abox_requirements:
+      - "ServiceCapability individuals of each subtype linked to services"
+
+  - cq_id: CQ-081
+    natural_language: "Which capabilities were discovered in the latest discovery event?"
+    priority: should_have
+    module: pao-services
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "CapabilityDiscoveryEvent SubClassOf Event"
+        note: "Discovery events are a type of Event (Process)."
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          CapabilityDiscoveryEvent SubClassOf discoveredCapability some ServiceCapability
+          CapabilityDiscoveryEvent SubClassOf discoveryAgainstService some ExternalService
+        note: "Every discovery event finds at least one capability from a service."
+    tbox_requirements:
+      - "Class CapabilityDiscoveryEvent SubClassOf Event"
+      - "ObjectProperty discoveredCapability domain CapabilityDiscoveryEvent range ServiceCapability"
+      - "ObjectProperty discoveryAgainstService domain CapabilityDiscoveryEvent range ExternalService [functional]"
+    abox_requirements:
+      - "CapabilityDiscoveryEvent individuals with discovered capabilities and target service"
+
+  - cq_id: CQ-082
+    natural_language: "Which services provide resources versus tools versus prompts?"
+    priority: should_have
+    module: pao-services
+    axiom_patterns:
+      - pattern: "5. Disjoint Classes"
+        axiom_sketch: "DisjointUnion(ServiceCapability, ServiceToolCapability, ServiceResourceCapability, ServicePromptCapability)"
+        note: "Reuses CQ-080 DisjointUnion. CQ-082 is answerable via subclass reasoning on typed capabilities."
+    tbox_requirements:
+      - "Reuses CQ-080 TBox (DisjointUnion on capability subtypes)"
+    abox_requirements:
+      - "ABox from CQ-080 sufficient"
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # MODULE 9: Runtime Safety Control Plane (extends pao-governance) — v0.6.0 Phase A
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - cq_id: CQ-083
+    natural_language: "What permission mode is active for each agent?"
+    priority: must_have
+    module: pao-governance
+    axiom_patterns:
+      - pattern: "8. Value Partition"
+        axiom_sketch: |
+          PermissionMode SubClassOf Status
+          owl:oneOf(Permissive, Standard, Restrictive)
+        note: "ODP-6 closed vocabulary for permission modes."
+      - pattern: "15. Enumeration (owl:oneOf)"
+        axiom_sketch: "PermissionMode EquivalentTo owl:oneOf(Permissive, Standard, Restrictive)"
+    tbox_requirements:
+      - "Class PermissionMode SubClassOf Status"
+      - "Enumeration: owl:oneOf(Permissive, Standard, Restrictive)"
+      - "ObjectProperty operatesInMode domain AIAgent range PermissionMode [functional]"
+    abox_requirements:
+      - "PermissionMode individuals: Permissive, Standard, Restrictive"
+      - "AIAgent individuals with operatesInMode links"
+
+  - cq_id: CQ-084
+    natural_language: "Which sandbox policy constrains a given agent?"
+    priority: should_have
+    module: pao-governance
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "SandboxPolicy SubClassOf prov:Entity"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "SandboxPolicy SubClassOf appliesTo some Agent"
+        note: "Every sandbox policy applies to at least one agent."
+    tbox_requirements:
+      - "Class SandboxPolicy SubClassOf prov:Entity, BFO:GDC"
+      - "ObjectProperty enforcedBySandboxPolicy domain AIAgent range SandboxPolicy [functional]"
+    abox_requirements:
+      - "SandboxPolicy individuals with labels"
+      - "AIAgent individuals with enforcedBySandboxPolicy links"
+
+  - cq_id: CQ-085
+    natural_language: "Which hooks intercepted a specific tool invocation?"
+    priority: should_have
+    module: pao-governance
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: |
+          Hook SubClassOf prov:Entity
+          HookExecution SubClassOf Event
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          HookExecution SubClassOf interceptsInvocation some ToolInvocation
+        note: "Every hook execution intercepts exactly one tool invocation."
+    tbox_requirements:
+      - "Class Hook SubClassOf prov:Entity, BFO:GDC"
+      - "Class HookExecution SubClassOf Event, BFO:Process"
+      - "ObjectProperty hasHook domain AIAgent range Hook"
+      - "ObjectProperty hookTriggeredExecution domain Hook range HookExecution"
+      - "ObjectProperty interceptsInvocation domain HookExecution range ToolInvocation [functional]"
+    abox_requirements:
+      - "Hook and HookExecution individuals linked to agents and invocations"
+
+  - cq_id: CQ-086
+    natural_language: "What authorization decisions were recorded for denied operations?"
+    priority: must_have
+    module: pao-governance
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: |
+          AuditLog SubClassOf prov:Entity
+          AuditEntry SubClassOf prov:Entity
+      - pattern: "8. Value Partition"
+        axiom_sketch: |
+          AuthorizationDecision SubClassOf Status
+          owl:oneOf(Allow, Deny, RequireApproval)
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          AuditEntry SubClassOf recordsDecision some AuthorizationDecision
+          AuditEntry SubClassOf auditForInvocation some ToolInvocation
+    tbox_requirements:
+      - "Class AuditLog SubClassOf prov:Entity, BFO:GDC"
+      - "Class AuditEntry SubClassOf prov:Entity, BFO:GDC"
+      - "Class AuthorizationDecision SubClassOf Status"
+      - "Enumeration: owl:oneOf(Allow, Deny, RequireApproval)"
+      - "ObjectProperty writtenToAuditLog domain AuditEntry range AuditLog [functional]"
+      - "ObjectProperty recordsDecision domain AuditEntry range AuthorizationDecision [functional]"
+      - "ObjectProperty auditForInvocation domain AuditEntry range ToolInvocation [functional]"
+    abox_requirements:
+      - "AuthorizationDecision individuals: Allow, Deny, RequireApproval"
+      - "AuditLog, AuditEntry individuals with decision links"
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # MODULE 10: Recovery and Resilience (pao-recovery) — v0.6.0 Phase A
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - cq_id: CQ-087
+    natural_language: "What recovery events occurred after failed invocations?"
+    priority: must_have
+    module: pao-recovery
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: |
+          ErrorRecoveryEvent SubClassOf Event
+          RetryAttempt SubClassOf Event
+          ReplanEvent SubClassOf Event
+          RollbackEvent SubClassOf Event
+      - pattern: "5. Disjoint Classes"
+        axiom_sketch: "Disjoint(ErrorRecoveryEvent, RetryAttempt, ReplanEvent, RollbackEvent)"
+        note: "Recovery event subtypes are pairwise disjoint."
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "ErrorRecoveryEvent SubClassOf recoveringFrom some ToolInvocation"
+        note: "Every recovery event is triggered by a failed invocation."
+    tbox_requirements:
+      - "Class ErrorRecoveryEvent SubClassOf Event"
+      - "Class RetryAttempt SubClassOf Event"
+      - "Class ReplanEvent SubClassOf Event"
+      - "Class RollbackEvent SubClassOf Event"
+      - "Disjoint(ErrorRecoveryEvent, RetryAttempt, ReplanEvent, RollbackEvent)"
+      - "ObjectProperty recoveringFrom domain ErrorRecoveryEvent range ToolInvocation [functional]"
+      - "ObjectProperty attemptedRetry domain ErrorRecoveryEvent range RetryAttempt"
+      - "ObjectProperty triggeredReplan domain ErrorRecoveryEvent range ReplanEvent [functional]"
+      - "ObjectProperty triggeredRollback domain ErrorRecoveryEvent range RollbackEvent [functional]"
+    abox_requirements:
+      - "ErrorRecoveryEvent, RetryAttempt, ReplanEvent, and RollbackEvent individuals"
+
+  - cq_id: CQ-088
+    natural_language: "How many retries were attempted before success or abandonment?"
+    priority: should_have
+    module: pao-recovery
+    axiom_patterns:
+      - pattern: "Data property lookup"
+        axiom_sketch: "ErrorRecoveryEvent hasAttemptCount xsd:nonNegativeInteger"
+        note: "Functional data property for retry count."
+    tbox_requirements:
+      - "DataProperty hasAttemptCount domain ErrorRecoveryEvent range xsd:nonNegativeInteger [functional]"
+    abox_requirements:
+      - "ErrorRecoveryEvent individuals with hasAttemptCount values"
+
+  - cq_id: CQ-089
+    natural_language: "Which tasks required human checkpoint decisions?"
+    priority: should_have
+    module: pao-recovery
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "Checkpoint SubClassOf prov:Entity"
+      - pattern: "8. Value Partition"
+        axiom_sketch: |
+          CheckpointDecision SubClassOf Status
+          owl:oneOf(Approved, Rejected, Deferred)
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          Checkpoint SubClassOf checkpointForTask some Task
+        note: "Every checkpoint gates exactly one task."
+    tbox_requirements:
+      - "Class Checkpoint SubClassOf prov:Entity, BFO:GDC"
+      - "Class CheckpointDecision SubClassOf Status"
+      - "Enumeration: owl:oneOf(Approved, Rejected, Deferred)"
+      - "ObjectProperty checkpointForTask domain Checkpoint range Task [functional]"
+      - "ObjectProperty checkpointDecision domain Checkpoint range CheckpointDecision [functional]"
+    abox_requirements:
+      - "CheckpointDecision individuals: Approved, Rejected, Deferred"
+      - "Checkpoint individuals with task and decision links"
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # MODULE 11: Tool/Message Trace Richness (extends pao-conversation) — v0.6.0 Phase B
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - cq_id: CQ-090
+    natural_language: "Which tool invocations were executed in parallel within a single turn?"
+    priority: should_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: |
+          ToolInvocationGroup SubClassOf prov:Entity
+        note: "Groups parallel invocations as a GDC (BFO:0000031)."
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          ToolInvocationGroup SubClassOf groupedInTurn some Turn
+        note: "Every invocation group belongs to exactly one turn."
+    tbox_requirements:
+      - "Class ToolInvocationGroup SubClassOf prov:Entity, BFO:GDC"
+      - "ObjectProperty partOfInvocationGroup domain ToolInvocation range ToolInvocationGroup"
+      - "ObjectProperty groupedInTurn domain ToolInvocationGroup range Turn [functional]"
+    abox_requirements:
+      - "ToolInvocationGroup individual with partOfInvocationGroup links from multiple ToolInvocations"
+
+  - cq_id: CQ-091
+    natural_language: "What result artifact was produced by each tool invocation?"
+    priority: should_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "ToolResult SubClassOf prov:Entity"
+        note: "ToolResult is a GDC (BFO:0000031) — the output artifact of a tool invocation."
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "ToolInvocation SubClassOf producedToolResult some ToolResult"
+        note: "Every invocation produces at least one result."
+    tbox_requirements:
+      - "Class ToolResult SubClassOf prov:Entity, BFO:GDC"
+      - "ObjectProperty producedToolResult domain ToolInvocation range ToolResult [functional]"
+    abox_requirements:
+      - "ToolResult individuals linked to ToolInvocation individuals"
+
+  - cq_id: CQ-092
+    natural_language: "Which message content blocks are tool-use blocks versus text blocks?"
+    priority: should_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "ContentBlock SubClassOf prov:Entity"
+        note: "ContentBlock is a GDC — a typed segment of message content."
+      - pattern: "8. Value Partition"
+        axiom_sketch: |
+          ContentBlockType SubClassOf Status
+          owl:oneOf(TextBlock, ToolUseBlock, ToolResultBlock, ImageBlock)
+        note: "ODP-6: Exhaustive enumeration of content block kinds."
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          ContentBlock SubClassOf hasContentBlockType some ContentBlockType
+        note: "Every content block has exactly one type."
+    tbox_requirements:
+      - "Class ContentBlock SubClassOf prov:Entity, BFO:GDC"
+      - "Class ContentBlockType SubClassOf Status (Value Partition)"
+      - "Enumeration: owl:oneOf(TextBlock, ToolUseBlock, ToolResultBlock, ImageBlock)"
+      - "ObjectProperty hasContentBlock domain Message range ContentBlock"
+      - "ObjectProperty hasContentBlockType domain ContentBlock range ContentBlockType [functional]"
+      - "DataProperty blockSequenceIndex domain ContentBlock range xsd:nonNegativeInteger [functional]"
+    abox_requirements:
+      - "ContentBlockType individuals: TextBlock, ToolUseBlock, ToolResultBlock, ImageBlock"
+      - "ContentBlock individuals with type and sequence index"
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # MODULE 12: Memory Control Plane and Sharing (extends pao-memory) — v0.6.0 Phase B
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - cq_id: CQ-093
+    natural_language: "What is the scope and source of each memory item?"
+    priority: should_have
+    module: pao-memory
+    axiom_patterns:
+      - pattern: "8. Value Partition"
+        axiom_sketch: |
+          MemorySource SubClassOf Status
+          owl:oneOf(UserSource, SystemSource, AgentSource)
+          MemoryScope SubClassOf Status
+          owl:oneOf(SessionScope, ProjectScope, GlobalScope)
+        note: "ODP-6: Two independent VP enumerations for memory provenance metadata."
+    tbox_requirements:
+      - "Class MemorySource SubClassOf Status (Value Partition)"
+      - "Enumeration: owl:oneOf(UserSource, SystemSource, AgentSource)"
+      - "Class MemoryScope SubClassOf Status (Value Partition)"
+      - "Enumeration: owl:oneOf(SessionScope, ProjectScope, GlobalScope)"
+      - "ObjectProperty hasMemorySource domain MemoryItem range MemorySource [functional]"
+      - "ObjectProperty hasMemoryScope domain MemoryItem range MemoryScope [functional]"
+    abox_requirements:
+      - "MemorySource individuals: UserSource, SystemSource, AgentSource"
+      - "MemoryScope individuals: SessionScope, ProjectScope, GlobalScope"
+      - "MemoryItem individuals with hasMemorySource and hasMemoryScope links"
+
+  - cq_id: CQ-094
+    natural_language: "Which memory artifacts are shared across multiple agents?"
+    priority: should_have
+    module: pao-memory
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "SharedMemoryArtifact SubClassOf prov:Entity"
+        note: >
+          SharedMemoryArtifact is a standalone GDC, not a subclass of MemoryItem,
+          to avoid disjointness conflict with Episode/Claim/MemoryBlock.
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "SharedMemoryArtifact SubClassOf sharedAcrossAgents some Agent"
+        note: "Every shared artifact is shared with at least one agent (SHACL enforces min 2)."
+    tbox_requirements:
+      - "Class SharedMemoryArtifact SubClassOf prov:Entity, BFO:GDC"
+      - "ObjectProperty sharedAcrossAgents domain SharedMemoryArtifact range Agent"
+    abox_requirements:
+      - "SharedMemoryArtifact individual linked to ≥2 agents"
+
+  - cq_id: CQ-095
+    natural_language: "What memory write conflicts occurred and how were they resolved?"
+    priority: should_have
+    module: pao-memory
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "MemoryWriteConflict SubClassOf Event"
+        note: "MemoryWriteConflict is a Process (BFO:0000015) — a concurrent-write event."
+      - pattern: "9. N-ary Relation"
+        axiom_sketch: |
+          MemoryWriteConflict SubClassOf conflictOnArtifact some SharedMemoryArtifact
+          MemoryWriteConflict SubClassOf writesByAgent some Agent
+        note: "N-ary reification: a conflict involves an artifact and ≥2 agents."
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          MemoryWriteConflict SubClassOf conflictOnArtifact some SharedMemoryArtifact
+          MemoryWriteConflict SubClassOf writesByAgent some Agent
+        note: "Every conflict targets an artifact and involves at least one writing agent (SHACL enforces min 2)."
+    tbox_requirements:
+      - "Class MemoryWriteConflict SubClassOf Event"
+      - "ObjectProperty conflictOnArtifact domain MemoryWriteConflict range SharedMemoryArtifact [functional]"
+      - "ObjectProperty writesByAgent domain MemoryWriteConflict range Agent"
+      - "ObjectProperty resolvedByPolicy domain MemoryWriteConflict range PermissionPolicy (optional)"
+    abox_requirements:
+      - "MemoryWriteConflict individual with artifact, ≥2 agents, and optional resolution policy"
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # MODULE 13: Dialog Pragmatics and Grounding (extends pao-conversation) — v0.6.0 Phase B
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - cq_id: CQ-096
+    natural_language: "What communicative function does each turn perform?"
+    priority: should_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "DialogAct SubClassOf prov:Entity"
+        note: "DialogAct is a GDC (BFO:0000031) — reifies the pragmatic intent of a turn."
+      - pattern: "8. Value Partition"
+        axiom_sketch: |
+          CommunicativeFunction SubClassOf Status
+          owl:oneOf(Inform, Request, Confirm, Clarify, Accept, Reject)
+        note: "ODP-6: DIT++/ISO 24617-2 inspired function enumeration."
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          DialogAct SubClassOf hasCommunicativeFunction some CommunicativeFunction
+        note: "Every dialog act has exactly one communicative function."
+    tbox_requirements:
+      - "Class DialogAct SubClassOf prov:Entity, BFO:GDC"
+      - "Class CommunicativeFunction SubClassOf Status (Value Partition)"
+      - "Enumeration: owl:oneOf(Inform, Request, Confirm, Clarify, Accept, Reject)"
+      - "ObjectProperty hasDialogAct domain Turn range DialogAct"
+      - "ObjectProperty hasCommunicativeFunction domain DialogAct range CommunicativeFunction [functional]"
+    abox_requirements:
+      - "CommunicativeFunction individuals: Inform, Request, Confirm, Clarify, Accept, Reject"
+      - "DialogAct individuals linked to turns and functions"
+
+  - cq_id: CQ-097
+    natural_language: "Which turns updated common ground with acceptance evidence?"
+    priority: should_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: |
+          CommonGround SubClassOf prov:Entity
+          GroundingAct SubClassOf Event
+          AcceptanceEvidence SubClassOf prov:Entity
+        note: >
+          Clark & Schaefer (1989) grounding theory: CommonGround is a GDC,
+          GroundingAct is a Process, AcceptanceEvidence is a GDC.
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: |
+          GroundingAct SubClassOf contributesToCommonGround some CommonGround
+        note: "Every grounding act updates exactly one common ground."
+    tbox_requirements:
+      - "Class CommonGround SubClassOf prov:Entity, BFO:GDC"
+      - "Class GroundingAct SubClassOf Event (Process)"
+      - "Class AcceptanceEvidence SubClassOf prov:Entity, BFO:GDC"
+      - "ObjectProperty contributesToCommonGround domain GroundingAct range CommonGround [functional]"
+      - "ObjectProperty providesAcceptanceEvidence domain GroundingAct range AcceptanceEvidence"
+    abox_requirements:
+      - "CommonGround, GroundingAct, and AcceptanceEvidence individuals"
+
+  - cq_id: CQ-098
+    natural_language: "Which clarifications were issued before commitment was established?"
+    priority: should_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "ClarificationRequest SubClassOf prov:Entity"
+        note: "ClarificationRequest is a GDC (BFO:0000031) — a request to resolve ambiguity."
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "ClarificationRequest SubClassOf clarifiesTurn some Turn"
+        note: "Every clarification request targets exactly one turn."
+    tbox_requirements:
+      - "Class ClarificationRequest SubClassOf prov:Entity, BFO:GDC"
+      - "ObjectProperty clarifiesTurn domain ClarificationRequest range Turn [functional]"
+    abox_requirements:
+      - "ClarificationRequest individuals linked to turns"
+
 # ═══════════════════════════════════════════════════════════════════════
 # DESIGN NOTES (v0.5.0 review remediation)
 # ═══════════════════════════════════════════════════════════════════════
@@ -1627,19 +2098,19 @@ axiom_plan:
 # ═══════════════════════════════════════════════════════════════════════
 
 summary:
-  total_cqs: 78
+  total_cqs: 98       # was 89, +9 (CQ-090 through CQ-098, v0.6.0 Phase B)
   by_priority:
-    must_have: 30
-    should_have: 42
+    must_have: 35      # unchanged (all Phase B CQs are should_have)
+    should_have: 57    # was 48, +9 (CQ-090 through CQ-098)
     could_have: 6
 
   patterns_used:
     - pattern: "1. Simple SubClassOf"
-      count: 30
-      note: "Foundation of the taxonomy; used by nearly every CQ"
+      count: 38
+      note: "Foundation of the taxonomy; used by nearly every CQ (+8 Phase B)"
     - pattern: "2. Existential Restriction"
-      count: 36
-      note: "Most common pattern; expresses necessary conditions on classes"
+      count: 44
+      note: "Most common pattern; expresses necessary conditions on classes (+8 Phase B)"
     - pattern: "3. Universal Restriction"
       count: 1
       note: "Used for Episode storedIn only EpisodicMemory (CQ-012)"
@@ -1653,11 +2124,11 @@ summary:
       count: 3
       note: "Turn index (CQ-006), Turn participant (CQ-006), storedIn (CQ-018)"
     - pattern: "8. Value Partition"
-      count: 9
-      note: "SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ChannelType, IntegrationStatus"
+      count: 17
+      note: "SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ChannelType, IntegrationStatus, ConnectionStatus, PermissionMode, AuthorizationDecision, CheckpointDecision, ContentBlockType, MemorySource, MemoryScope, CommunicativeFunction"
     - pattern: "9. N-ary Relation"
-      count: 6
-      note: "ToolInvocation, Claim, PROV-O qualified associations"
+      count: 7
+      note: "ToolInvocation, Claim, PROV-O qualified associations, MemoryWriteConflict"
     - pattern: "12. Property Chain"
       count: 1
       note: "Considered for CQ-016 (deferred to SPARQL property paths)"
@@ -1665,8 +2136,8 @@ summary:
       count: 1
       note: "DN-05: Identity contracts for AIAgent, Session, Conversation"
     - pattern: "15. Enumeration (owl:oneOf)"
-      count: 9
-      note: "AgentRole, SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ChannelType, IntegrationStatus"
+      count: 17
+      note: "AgentRole, SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ChannelType, IntegrationStatus, ConnectionStatus, PermissionMode, AuthorizationDecision, CheckpointDecision, ContentBlockType, MemorySource, MemoryScope, CommunicativeFunction"
 
   patterns_not_used:
     - "4. Equivalent Class: No defined classes needed yet; all classes are primitive"
@@ -1687,7 +2158,7 @@ summary:
     - name: "ODP-5: Temporal Extent"
       applied_to: ["All Event subclasses (CQ-005, CQ-006, CQ-012, CQ-020, CQ-021, CQ-022)"]
     - name: "ODP-6: Value Partition (Status)"
-      applied_to: ["SessionStatus (CQ-038)", "TaskStatus (CQ-026, CQ-029)", "ComplianceStatus (CQ-007, CQ-031, CQ-039)", "SensitivityLevel (CQ-033)", "ChannelType (CQ-067)", "IntegrationStatus (CQ-073)"]
+      applied_to: ["SessionStatus (CQ-038)", "TaskStatus (CQ-026, CQ-029)", "ComplianceStatus (CQ-007, CQ-031, CQ-039)", "SensitivityLevel (CQ-033)", "ChannelType (CQ-067)", "IntegrationStatus (CQ-073)", "ConnectionStatus (CQ-079)", "PermissionMode (CQ-083)", "AuthorizationDecision (CQ-086)", "CheckpointDecision (CQ-089)", "ContentBlockType (CQ-092)", "MemorySource (CQ-093)", "MemoryScope (CQ-093)", "CommunicativeFunction (CQ-096)"]
 
   design_notes:
     - id: DN-01

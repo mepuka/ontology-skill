@@ -78,7 +78,7 @@ def shapes() -> Graph:
 
 
 # ---------------------------------------------------------------------------
-# Class declarations (56 classes)
+# Class declarations (91 classes)
 # ---------------------------------------------------------------------------
 
 EXPECTED_CLASSES = [
@@ -136,6 +136,7 @@ EXPECTED_CLASSES = [
     "RetentionPolicy",
     "CompactionDisposition",
     # Status types
+    "ClaimType",
     "Status",
     "SessionStatus",
     "TaskStatus",
@@ -144,6 +145,47 @@ EXPECTED_CLASSES = [
     "ItemFate",
     "ChannelType",
     "IntegrationStatus",
+    # pao-services (v0.6.0)
+    "ExternalService",
+    "ServiceConnection",
+    "ServiceCapability",
+    "ServiceToolCapability",
+    "ServiceResourceCapability",
+    "ServicePromptCapability",
+    "CapabilityDiscoveryEvent",
+    "ConnectionStatus",
+    # pao-governance (v0.6.0)
+    "SandboxPolicy",
+    "Hook",
+    "HookExecution",
+    "AuditLog",
+    "AuditEntry",
+    "PermissionMode",
+    "AuthorizationDecision",
+    "CheckpointDecision",
+    # pao-recovery (v0.6.0)
+    "ErrorRecoveryEvent",
+    "RetryAttempt",
+    "ReplanEvent",
+    "RollbackEvent",
+    "Checkpoint",
+    # v0.6.0 Phase B: Tool/Message Trace
+    "ToolResult",
+    "ToolInvocationGroup",
+    "ContentBlock",
+    "ContentBlockType",
+    # v0.6.0 Phase B: Memory Control Plane
+    "MemorySource",
+    "MemoryScope",
+    "SharedMemoryArtifact",
+    "MemoryWriteConflict",
+    # v0.6.0 Phase B: Dialog Pragmatics
+    "DialogAct",
+    "CommunicativeFunction",
+    "CommonGround",
+    "GroundingAct",
+    "ClarificationRequest",
+    "AcceptanceEvidence",
     # Roles
     "AgentRole",
 ]
@@ -156,10 +198,10 @@ def test_class_declared(tbox: Graph, cls_name: str) -> None:
 
 
 def test_class_count(tbox: Graph) -> None:
-    """Exactly 56 PAO classes are declared."""
+    """Exactly 92 PAO classes are declared."""
     pao_classes = {s for s in tbox.subjects(RDF.type, OWL.Class) if str(s).startswith(str(PAO))}
-    assert len(pao_classes) == 56, (
-        f"Expected 56 PAO classes, found {len(pao_classes)}: {pao_classes}"
+    assert len(pao_classes) == 92, (
+        f"Expected 92 PAO classes, found {len(pao_classes)}: {pao_classes}"
     )
 
 
@@ -242,6 +284,49 @@ HIERARCHY_CHECKS = [
     ("ChannelType", PAO.Status),
     ("Integration", PROV.Entity),
     ("IntegrationStatus", PAO.Status),
+    # v0.6.0 additions - External Services
+    ("ExternalService", PROV.Entity),
+    ("ServiceConnection", PROV.Entity),
+    ("ServiceCapability", PROV.Entity),
+    ("ServiceToolCapability", PAO.ServiceCapability),
+    ("ServiceResourceCapability", PAO.ServiceCapability),
+    ("ServicePromptCapability", PAO.ServiceCapability),
+    ("CapabilityDiscoveryEvent", PAO.Event),
+    ("ConnectionStatus", PAO.Status),
+    # v0.6.0 additions - Runtime Safety
+    ("SandboxPolicy", PROV.Entity),
+    ("Hook", PROV.Entity),
+    ("HookExecution", PAO.Event),
+    ("AuditLog", PROV.Entity),
+    ("AuditEntry", PROV.Entity),
+    ("PermissionMode", PAO.Status),
+    ("AuthorizationDecision", PAO.Status),
+    ("CheckpointDecision", PAO.Status),
+    # v0.6.0 additions - Recovery
+    ("ErrorRecoveryEvent", PAO.Event),
+    ("RetryAttempt", PAO.Event),
+    ("ReplanEvent", PAO.Event),
+    ("RollbackEvent", PAO.Event),
+    ("Checkpoint", PROV.Entity),
+    # v0.6.0 Phase B: Tool/Message Trace
+    ("ToolResult", PROV.Entity),
+    ("ToolInvocationGroup", PROV.Entity),
+    ("ContentBlock", PROV.Entity),
+    ("ContentBlockType", PAO.Status),
+    # v0.6.0 Phase B: Memory Control Plane
+    ("MemorySource", PAO.Status),
+    ("MemoryScope", PAO.Status),
+    ("SharedMemoryArtifact", PROV.Entity),
+    ("MemoryWriteConflict", PAO.Event),
+    # v0.6.0 Phase B: Dialog Pragmatics
+    ("DialogAct", PROV.Entity),
+    ("CommunicativeFunction", PAO.Status),
+    ("CommonGround", PROV.Entity),
+    ("GroundingAct", PAO.Event),
+    ("ClarificationRequest", PROV.Entity),
+    ("AcceptanceEvidence", PROV.Entity),
+    # v0.6.0 review: claimType migration
+    ("ClaimType", PAO.Status),
 ]
 
 
@@ -285,6 +370,24 @@ BFO_ALIGNMENT = [
     ("CommunicationChannel", OBO["BFO_0000031"]),  # GDC
     ("Integration", OBO["BFO_0000031"]),  # GDC
     ("Status", OBO["BFO_0000031"]),  # GDC (value partition)
+    # v0.6.0 additions
+    ("ExternalService", OBO["BFO_0000031"]),  # GDC
+    ("ServiceConnection", OBO["BFO_0000031"]),  # GDC
+    ("ServiceCapability", OBO["BFO_0000031"]),  # GDC
+    ("SandboxPolicy", OBO["BFO_0000031"]),  # GDC
+    ("Hook", OBO["BFO_0000031"]),  # GDC
+    ("AuditLog", OBO["BFO_0000031"]),  # GDC
+    ("AuditEntry", OBO["BFO_0000031"]),  # GDC
+    ("Checkpoint", OBO["BFO_0000031"]),  # GDC
+    # v0.6.0 Phase B additions
+    ("ToolResult", OBO["BFO_0000031"]),  # GDC
+    ("ToolInvocationGroup", OBO["BFO_0000031"]),  # GDC
+    ("ContentBlock", OBO["BFO_0000031"]),  # GDC
+    ("SharedMemoryArtifact", OBO["BFO_0000031"]),  # GDC
+    ("DialogAct", OBO["BFO_0000031"]),  # GDC
+    ("CommonGround", OBO["BFO_0000031"]),  # GDC
+    ("ClarificationRequest", OBO["BFO_0000031"]),  # GDC
+    ("AcceptanceEvidence", OBO["BFO_0000031"]),  # GDC
 ]
 
 
@@ -299,82 +402,119 @@ def test_bfo_alignment(tbox: Graph, cls_name: str, bfo_class: URIRef) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Object property declarations (72 properties)
+# Object property declarations (109 properties)
 # ---------------------------------------------------------------------------
 
 EXPECTED_OBJ_PROPS = [
     "aboutAgent",
     "achievesGoal",
     "appliesTo",
+    "attemptedRetry",
+    "auditForInvocation",
     "availableToAgent",
     "belongsTo",
     "blockedBy",
     "blocks",
+    "checkpointDecision",
+    "checkpointForTask",
+    "claimType",
+    "clarifiesTurn",
     "compactedContextOf",
     "compactedItem",
+    "conflictOnArtifact",
+    "connectsToService",
     "consentPurpose",
     "consentSubject",
     "continuedBy",
     "continuedFrom",
+    "contributesToCommonGround",
     "delegatedTask",
     "derivedFromGoal",
+    "discoveredCapability",
+    "discoveryAgainstService",
     "dispositionOf",
+    "enforcedBySandboxPolicy",
+    "exposesCapability",
     "governedByPolicy",
     "governedByRetention",
     "grantsPermission",
+    "groupedInTurn",
     "fromStatus",
     "hasAvailableTool",
     "hasChannelType",
+    "hasCommunicativeFunction",
     "hasCompactionDisposition",
     "hasComplianceStatus",
+    "hasConnectionStatus",
+    "hasContentBlock",
+    "hasContentBlockType",
     "hasContextWindow",
+    "hasDialogAct",
     "hasEvidence",
+    "hasExternalService",
+    "hasHook",
     "hasIntegration",
     "hasIntegrationStatus",
     "hasItemFate",
     "hasInput",
     "hasMember",
+    "hasMemoryScope",
+    "hasMemorySource",
     "hasOutput",
     "hasPart",
     "hasParticipant",
     "hasPersona",
     "hasRole",
     "hasSensitivityLevel",
+    "hasServiceConnection",
     "hasStatus",
     "hasTask",
     "hasTemporalExtent",
     "hasTopic",
+    "hookTriggeredExecution",
     "inConversation",
     "inSession",
     "intendedBy",
+    "interceptsInvocation",
     "invokedBy",
     "invokedIn",
     "invokesTool",
     "nextTransition",
+    "operatesInMode",
     "operatesOn",
     "participatesIn",
     "partOf",
     "partOfConversation",
+    "partOfInvocationGroup",
     "partOfPlan",
     "partOfSession",
     "performedBy",
     "previousTransition",
     "producedSummary",
+    "producedToolResult",
+    "providesAcceptanceEvidence",
     "providesTool",
     "pursuedBy",
     "pursuesGoal",
+    "recoveringFrom",
     "recordedInEpisode",
+    "recordsDecision",
     "recordsEvent",
     "requestedBy",
+    "resolvedByPolicy",
     "restrictsToolUse",
     "sentViaChannel",
+    "sharedAcrossAgents",
     "spawnedBy",
     "storedIn",
     "stores",
     "toStatus",
     "transitionSubject",
     "triggeredBy",
+    "triggeredReplan",
+    "triggeredRollback",
     "viaChannel",
+    "writesByAgent",
 ]
 
 
@@ -385,21 +525,26 @@ def test_object_property_declared(tbox: Graph, prop_name: str) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Datatype property declarations (18 properties)
+# Datatype property declarations (23 properties)
 # ---------------------------------------------------------------------------
 
 EXPECTED_DATA_PROPS = [
-    "claimType",
+    "blockSequenceIndex",
     "fateReason",
     "hasAgentId",
+    "hasAttemptCount",
     "hasBlockKey",
     "hasBlockValue",
     "hasConfidence",
     "hasContent",
     "hasConversationId",
+    "hasDecisionReason",
     "hasEndpoint",
     "hasLastAccessTime",
+    "hasRecoveryOutcome",
+    "hasServiceIdentifier",
     "hasServiceName",
+    "hasServiceTransport",
     "hasSessionId",
     "hasTimestamp",
     "hasTokenCapacity",
@@ -421,27 +566,48 @@ def test_datatype_property_declared(tbox: Graph, prop_name: str) -> None:
 # ---------------------------------------------------------------------------
 
 EXPECTED_FUNCTIONAL = [
+    "auditForInvocation",
     "belongsTo",
+    "blockSequenceIndex",
+    "checkpointDecision",
+    "checkpointForTask",
     "claimType",
+    "clarifiesTurn",
     "compactedContextOf",
+    "conflictOnArtifact",
+    "connectsToService",
     "consentSubject",
     "continuedFrom",
+    "contributesToCommonGround",
     "dispositionOf",
+    "discoveryAgainstService",
+    "enforcedBySandboxPolicy",
     "fromStatus",
+    "groupedInTurn",
     "hasAgentId",
+    "hasAttemptCount",
+    "hasCommunicativeFunction",
     "hasComplianceStatus",
     "hasConfidence",
     "hasChannelType",
     "hasContent",
+    "hasContentBlockType",
     "hasContextWindow",
+    "hasConnectionStatus",
     "hasConversationId",
+    "hasDecisionReason",
     "hasEndpoint",
     "hasIntegrationStatus",
     "hasItemFate",
     "hasLastAccessTime",
+    "hasMemoryScope",
+    "hasMemorySource",
     "hasPersona",
+    "hasRecoveryOutcome",
     "hasSensitivityLevel",
+    "hasServiceIdentifier",
     "hasServiceName",
+    "hasServiceTransport",
     "hasSessionId",
     "hasStatus",
     "hasTemporalExtent",
@@ -451,23 +617,31 @@ EXPECTED_FUNCTIONAL = [
     "hasTurnIndex",
     "inConversation",
     "inSession",
+    "interceptsInvocation",
     "invokedBy",
     "invokesTool",
     "isEvictionCandidate",
     "nextTransition",
+    "operatesInMode",
     "partOfConversation",
     "partOfPlan",
     "partOfSession",
     "performedBy",
     "previousTransition",
     "producedSummary",
+    "producedToolResult",
+    "recoveringFrom",
+    "recordsDecision",
     "requestedBy",
     "retentionPeriodDays",
     "sentViaChannel",
     "spawnedBy",
     "toStatus",
     "transitionSubject",
+    "triggeredReplan",
+    "triggeredRollback",
     "viaChannel",
+    "writtenToAuditLog",
 ]
 
 
@@ -537,6 +711,8 @@ SUBPROPERTY_CHECKS = [
     ("invokedBy", "performedBy"),
     ("hasComplianceStatus", "hasStatus"),
     ("hasIntegrationStatus", "hasStatus"),
+    ("hasConnectionStatus", "hasStatus"),
+    ("checkpointDecision", "hasStatus"),
 ]
 
 
@@ -561,12 +737,13 @@ def test_compacted_item_sub_property_of_prov_used(tbox: Graph) -> None:
 
 DOMAIN_RANGE_CHECKS: list[tuple[str, URIRef | None, URIRef]] = [
     ("storedIn", None, PAO.MemoryTier),
+    ("stores", PAO.MemoryTier, PAO.MemoryItem),
     ("operatesOn", PAO.MemoryOperation, PAO.MemoryItem),
     ("recordedInEpisode", PAO.Event, PAO.Episode),
     ("hasTimestamp", None, XSD.dateTime),
     ("hasTurnIndex", PAO.Turn, XSD.nonNegativeInteger),
     ("hasConfidence", PAO.Claim, XSD.decimal),
-    ("claimType", PAO.Claim, XSD.string),
+    ("claimType", PAO.Claim, PAO.ClaimType),
     ("governedByPolicy", PAO.ToolInvocation, PAO.PermissionPolicy),
     ("invokesTool", PAO.ToolInvocation, PAO.ToolDefinition),
     ("invokedBy", PAO.ToolInvocation, PAO.Agent),
@@ -620,6 +797,55 @@ DOMAIN_RANGE_CHECKS: list[tuple[str, URIRef | None, URIRef]] = [
     ("hasIntegrationStatus", PAO.Integration, PAO.IntegrationStatus),
     ("hasServiceName", PAO.Integration, XSD.string),
     ("hasEndpoint", PAO.Integration, XSD.anyURI),
+    # v0.6.0 additions - External Services
+    ("hasExternalService", PAO.Agent, PAO.ExternalService),
+    ("hasServiceConnection", PAO.Agent, PAO.ServiceConnection),
+    ("connectsToService", PAO.ServiceConnection, PAO.ExternalService),
+    ("hasConnectionStatus", PAO.ServiceConnection, PAO.ConnectionStatus),
+    ("exposesCapability", PAO.ExternalService, PAO.ServiceCapability),
+    ("discoveredCapability", PAO.CapabilityDiscoveryEvent, PAO.ServiceCapability),
+    ("discoveryAgainstService", PAO.CapabilityDiscoveryEvent, PAO.ExternalService),
+    ("hasServiceTransport", PAO.ExternalService, XSD.string),
+    ("hasServiceIdentifier", PAO.ExternalService, XSD.string),
+    # v0.6.0 additions - Runtime Safety
+    ("operatesInMode", PAO.AIAgent, PAO.PermissionMode),
+    ("enforcedBySandboxPolicy", PAO.AIAgent, PAO.SandboxPolicy),
+    ("hasHook", PAO.AIAgent, PAO.Hook),
+    ("hookTriggeredExecution", PAO.Hook, PAO.HookExecution),
+    ("interceptsInvocation", PAO.HookExecution, PAO.ToolInvocation),
+    ("writtenToAuditLog", PAO.AuditEntry, PAO.AuditLog),
+    ("recordsDecision", PAO.AuditEntry, PAO.AuthorizationDecision),
+    ("auditForInvocation", PAO.AuditEntry, PAO.ToolInvocation),
+    ("hasDecisionReason", PAO.AuditEntry, XSD.string),
+    # v0.6.0 additions - Recovery
+    ("recoveringFrom", PAO.ErrorRecoveryEvent, PAO.ToolInvocation),
+    ("attemptedRetry", PAO.ErrorRecoveryEvent, PAO.RetryAttempt),
+    ("triggeredReplan", PAO.ErrorRecoveryEvent, PAO.ReplanEvent),
+    ("triggeredRollback", PAO.ErrorRecoveryEvent, PAO.RollbackEvent),
+    ("checkpointForTask", PAO.Checkpoint, PAO.Task),
+    ("checkpointDecision", PAO.Checkpoint, PAO.CheckpointDecision),
+    ("hasAttemptCount", PAO.ErrorRecoveryEvent, XSD.nonNegativeInteger),
+    ("hasRecoveryOutcome", PAO.ErrorRecoveryEvent, XSD.string),
+    # v0.6.0 Phase B: Tool/Message Trace
+    ("partOfInvocationGroup", PAO.ToolInvocation, PAO.ToolInvocationGroup),
+    ("groupedInTurn", PAO.ToolInvocationGroup, PAO.Turn),
+    ("producedToolResult", PAO.ToolInvocation, PAO.ToolResult),
+    ("hasContentBlock", PAO.Message, PAO.ContentBlock),
+    ("hasContentBlockType", PAO.ContentBlock, PAO.ContentBlockType),
+    ("blockSequenceIndex", PAO.ContentBlock, XSD.nonNegativeInteger),
+    # v0.6.0 Phase B: Memory Control Plane
+    ("hasMemorySource", PAO.MemoryItem, PAO.MemorySource),
+    ("hasMemoryScope", PAO.MemoryItem, PAO.MemoryScope),
+    ("sharedAcrossAgents", PAO.SharedMemoryArtifact, PAO.Agent),
+    ("writesByAgent", PAO.MemoryWriteConflict, PAO.Agent),
+    ("conflictOnArtifact", PAO.MemoryWriteConflict, PAO.SharedMemoryArtifact),
+    ("resolvedByPolicy", PAO.MemoryWriteConflict, PAO.PermissionPolicy),
+    # v0.6.0 Phase B: Dialog Pragmatics
+    ("hasDialogAct", PAO.Turn, PAO.DialogAct),
+    ("hasCommunicativeFunction", PAO.DialogAct, PAO.CommunicativeFunction),
+    ("contributesToCommonGround", PAO.GroundingAct, PAO.CommonGround),
+    ("providesAcceptanceEvidence", PAO.GroundingAct, PAO.AcceptanceEvidence),
+    ("clarifiesTurn", PAO.ClarificationRequest, PAO.Turn),
 ]
 
 
@@ -719,6 +945,36 @@ EXISTENTIAL_CHECKS = [
     ("AIAgent", "hasIntegration", "Integration"),
     ("Integration", "providesTool", "ToolDefinition"),
     ("Integration", "hasIntegrationStatus", "IntegrationStatus"),
+    # v0.6.0 additions - External Services
+    ("AIAgent", "hasExternalService", "ExternalService"),
+    ("ServiceConnection", "connectsToService", "ExternalService"),
+    ("ServiceConnection", "hasConnectionStatus", "ConnectionStatus"),
+    ("ExternalService", "exposesCapability", "ServiceCapability"),
+    ("CapabilityDiscoveryEvent", "discoveredCapability", "ServiceCapability"),
+    ("CapabilityDiscoveryEvent", "discoveryAgainstService", "ExternalService"),
+    # v0.6.0 additions - Runtime Safety
+    ("AIAgent", "operatesInMode", "PermissionMode"),
+    ("AIAgent", "hasHook", "Hook"),
+    ("HookExecution", "interceptsInvocation", "ToolInvocation"),
+    ("AuditEntry", "writtenToAuditLog", "AuditLog"),
+    ("AuditEntry", "recordsDecision", "AuthorizationDecision"),
+    ("AuditEntry", "auditForInvocation", "ToolInvocation"),
+    # v0.6.0 additions - Recovery
+    ("ErrorRecoveryEvent", "recoveringFrom", "ToolInvocation"),
+    ("Checkpoint", "checkpointForTask", "Task"),
+    ("Checkpoint", "checkpointDecision", "CheckpointDecision"),
+    # v0.6.0 Phase B: Tool/Message Trace
+    ("ToolInvocationGroup", "groupedInTurn", "Turn"),
+    ("ToolInvocation", "producedToolResult", "ToolResult"),
+    ("ContentBlock", "hasContentBlockType", "ContentBlockType"),
+    # v0.6.0 Phase B: Memory Control Plane
+    ("SharedMemoryArtifact", "sharedAcrossAgents", "Agent"),
+    ("MemoryWriteConflict", "conflictOnArtifact", "SharedMemoryArtifact"),
+    ("MemoryWriteConflict", "writesByAgent", "Agent"),
+    # v0.6.0 Phase B: Dialog Pragmatics
+    ("DialogAct", "hasCommunicativeFunction", "CommunicativeFunction"),
+    ("GroundingAct", "contributesToCommonGround", "CommonGround"),
+    ("ClarificationRequest", "clarifiesTurn", "Turn"),
 ]
 
 
@@ -850,6 +1106,19 @@ def test_memory_operation_disjoint_union(tbox: Graph) -> None:
     assert members == expected, f"MemoryOperation DisjointUnion: expected {expected}, got {members}"
 
 
+def test_service_capability_disjoint_union(tbox: Graph) -> None:
+    """ServiceCapability disjointUnionOf 3 subtypes."""
+    members = _get_disjoint_union_members(tbox, PAO.ServiceCapability)
+    expected = {
+        PAO.ServiceToolCapability,
+        PAO.ServiceResourceCapability,
+        PAO.ServicePromptCapability,
+    }
+    assert members == expected, (
+        f"ServiceCapability DisjointUnion: expected {expected}, got {members}"
+    )
+
+
 # ---------------------------------------------------------------------------
 # AllDisjointClasses axioms (8 axioms)
 # ---------------------------------------------------------------------------
@@ -866,9 +1135,9 @@ def _collect_all_disjoint_groups(g: Graph) -> list[set[URIRef]]:
 
 
 def test_all_disjoint_classes_count(tbox: Graph) -> None:
-    """At least 9 AllDisjointClasses axioms exist."""
+    """At least 11 AllDisjointClasses axioms exist."""
     groups = _collect_all_disjoint_groups(tbox)
-    assert len(groups) >= 9, f"Expected >=9 AllDisjointClasses, got {len(groups)}"
+    assert len(groups) >= 11, f"Expected >=11 AllDisjointClasses, got {len(groups)}"
 
 
 DISJOINT_GROUP_CHECKS = [
@@ -884,6 +1153,14 @@ DISJOINT_GROUP_CHECKS = [
             PAO.MemoryOperation,
             PAO.Observation,
             PAO.StatusTransition,
+            PAO.CapabilityDiscoveryEvent,
+            PAO.HookExecution,
+            PAO.ErrorRecoveryEvent,
+            PAO.RetryAttempt,
+            PAO.ReplanEvent,
+            PAO.RollbackEvent,
+            PAO.MemoryWriteConflict,
+            PAO.GroundingAct,
         },
         "Event subtypes",
     ),
@@ -897,11 +1174,28 @@ DISJOINT_GROUP_CHECKS = [
             PAO.ItemFate,
             PAO.ChannelType,
             PAO.IntegrationStatus,
+            PAO.ConnectionStatus,
+            PAO.PermissionMode,
+            PAO.AuthorizationDecision,
+            PAO.CheckpointDecision,
+            PAO.ContentBlockType,
+            PAO.MemorySource,
+            PAO.MemoryScope,
+            PAO.CommunicativeFunction,
+            PAO.ClaimType,
         },
         "Status subtypes",
     ),
     (
-        {PAO.PermissionPolicy, PAO.SafetyConstraint, PAO.ConsentRecord, PAO.RetentionPolicy},
+        {
+            PAO.PermissionPolicy,
+            PAO.SafetyConstraint,
+            PAO.ConsentRecord,
+            PAO.RetentionPolicy,
+            PAO.SandboxPolicy,
+            PAO.Hook,
+            PAO.AuditLog,
+        },
         "Governance types",
     ),
     (
@@ -931,12 +1225,36 @@ DISJOINT_GROUP_CHECKS = [
             PAO.ContextWindow,
             PAO.CommunicationChannel,
             PAO.Integration,
+            PAO.ExternalService,
+            PAO.ServiceConnection,
+            PAO.ServiceCapability,
+            PAO.SandboxPolicy,
+            PAO.Hook,
+            PAO.AuditLog,
+            PAO.AuditEntry,
+            PAO.Checkpoint,
+            PAO.ToolResult,
+            PAO.ToolInvocationGroup,
+            PAO.ContentBlock,
+            PAO.SharedMemoryArtifact,
+            PAO.DialogAct,
+            PAO.CommonGround,
+            PAO.ClarificationRequest,
+            PAO.AcceptanceEvidence,
         },
         "Cross-module GDC disjointness",
     ),
     (
         {PAO.SessionStatusTransition, PAO.TaskStatusTransition},
         "StatusTransition subtypes",
+    ),
+    (
+        {PAO.ServiceToolCapability, PAO.ServiceResourceCapability, PAO.ServicePromptCapability},
+        "ServiceCapability subtypes",
+    ),
+    (
+        {PAO.RetryAttempt, PAO.ReplanEvent, PAO.RollbackEvent},
+        "Recovery event subtypes",
     ),
 ]
 
@@ -1052,6 +1370,171 @@ def test_all_different_integration_status(ref: Graph) -> None:
     assert _find_all_different_containing(
         ref, {PAO.Connected, PAO.Disconnected, PAO.Error, PAO.Initializing}
     )
+
+
+def test_connection_status_individuals(ref: Graph) -> None:
+    """Open, Closed, Reconnecting, Failed are ConnectionStatus individuals."""
+    for name in ["Open", "Closed", "Reconnecting", "Failed"]:
+        assert (PAO[name], RDF.type, PAO.ConnectionStatus) in ref
+
+
+def test_connection_status_enumeration(ref: Graph) -> None:
+    """ConnectionStatus owl:oneOf (Open, Closed, Reconnecting, Failed)."""
+    members = _get_one_of_members(ref, PAO.ConnectionStatus)
+    assert members == {PAO.Open, PAO.Closed, PAO.Reconnecting, PAO.Failed}
+
+
+def test_all_different_connection_status(ref: Graph) -> None:
+    """AllDifferent for ConnectionStatus individuals."""
+    assert _find_all_different_containing(ref, {PAO.Open, PAO.Closed, PAO.Reconnecting, PAO.Failed})
+
+
+def test_permission_mode_individuals(ref: Graph) -> None:
+    """Permissive, Standard, Restrictive are PermissionMode individuals."""
+    for name in ["Permissive", "Standard", "Restrictive"]:
+        assert (PAO[name], RDF.type, PAO.PermissionMode) in ref
+
+
+def test_permission_mode_enumeration(ref: Graph) -> None:
+    """PermissionMode owl:oneOf (Permissive, Standard, Restrictive)."""
+    members = _get_one_of_members(ref, PAO.PermissionMode)
+    assert members == {PAO.Permissive, PAO.Standard, PAO.Restrictive}
+
+
+def test_all_different_permission_mode(ref: Graph) -> None:
+    """AllDifferent for PermissionMode individuals."""
+    assert _find_all_different_containing(ref, {PAO.Permissive, PAO.Standard, PAO.Restrictive})
+
+
+def test_authorization_decision_individuals(ref: Graph) -> None:
+    """Allow, Deny, RequireApproval are AuthorizationDecision individuals."""
+    for name in ["Allow", "Deny", "RequireApproval"]:
+        assert (PAO[name], RDF.type, PAO.AuthorizationDecision) in ref
+
+
+def test_authorization_decision_enumeration(ref: Graph) -> None:
+    """AuthorizationDecision owl:oneOf (Allow, Deny, RequireApproval)."""
+    members = _get_one_of_members(ref, PAO.AuthorizationDecision)
+    assert members == {PAO.Allow, PAO.Deny, PAO.RequireApproval}
+
+
+def test_all_different_authorization_decision(ref: Graph) -> None:
+    """AllDifferent for AuthorizationDecision individuals."""
+    assert _find_all_different_containing(ref, {PAO.Allow, PAO.Deny, PAO.RequireApproval})
+
+
+def test_checkpoint_decision_individuals(ref: Graph) -> None:
+    """Approved, Rejected, Deferred are CheckpointDecision individuals."""
+    for name in ["Approved", "Rejected", "Deferred"]:
+        assert (PAO[name], RDF.type, PAO.CheckpointDecision) in ref
+
+
+def test_checkpoint_decision_enumeration(ref: Graph) -> None:
+    """CheckpointDecision owl:oneOf (Approved, Rejected, Deferred)."""
+    members = _get_one_of_members(ref, PAO.CheckpointDecision)
+    assert members == {PAO.Approved, PAO.Rejected, PAO.Deferred}
+
+
+def test_all_different_checkpoint_decision(ref: Graph) -> None:
+    """AllDifferent for CheckpointDecision individuals."""
+    assert _find_all_different_containing(ref, {PAO.Approved, PAO.Rejected, PAO.Deferred})
+
+
+def test_content_block_type_individuals(ref: Graph) -> None:
+    """TextBlock, ToolUseBlock, ToolResultBlock, ImageBlock are ContentBlockType individuals."""
+    for name in ["TextBlock", "ToolUseBlock", "ToolResultBlock", "ImageBlock"]:
+        assert (PAO[name], RDF.type, PAO.ContentBlockType) in ref
+
+
+def test_content_block_type_enumeration(ref: Graph) -> None:
+    """ContentBlockType owl:oneOf (TextBlock, ToolUseBlock, ToolResultBlock, ImageBlock)."""
+    members = _get_one_of_members(ref, PAO.ContentBlockType)
+    assert members == {PAO.TextBlock, PAO.ToolUseBlock, PAO.ToolResultBlock, PAO.ImageBlock}
+
+
+def test_all_different_content_block_type(ref: Graph) -> None:
+    """AllDifferent for ContentBlockType individuals."""
+    assert _find_all_different_containing(
+        ref, {PAO.TextBlock, PAO.ToolUseBlock, PAO.ToolResultBlock, PAO.ImageBlock}
+    )
+
+
+def test_memory_source_individuals(ref: Graph) -> None:
+    """UserSource, SystemSource, AgentSource are MemorySource individuals."""
+    for name in ["UserSource", "SystemSource", "AgentSource"]:
+        assert (PAO[name], RDF.type, PAO.MemorySource) in ref
+
+
+def test_memory_source_enumeration(ref: Graph) -> None:
+    """MemorySource owl:oneOf (UserSource, SystemSource, AgentSource)."""
+    members = _get_one_of_members(ref, PAO.MemorySource)
+    assert members == {PAO.UserSource, PAO.SystemSource, PAO.AgentSource}
+
+
+def test_all_different_memory_source(ref: Graph) -> None:
+    """AllDifferent for MemorySource individuals."""
+    assert _find_all_different_containing(ref, {PAO.UserSource, PAO.SystemSource, PAO.AgentSource})
+
+
+def test_memory_scope_individuals(ref: Graph) -> None:
+    """SessionScope, ProjectScope, GlobalScope are MemoryScope individuals."""
+    for name in ["SessionScope", "ProjectScope", "GlobalScope"]:
+        assert (PAO[name], RDF.type, PAO.MemoryScope) in ref
+
+
+def test_memory_scope_enumeration(ref: Graph) -> None:
+    """MemoryScope owl:oneOf (SessionScope, ProjectScope, GlobalScope)."""
+    members = _get_one_of_members(ref, PAO.MemoryScope)
+    assert members == {PAO.SessionScope, PAO.ProjectScope, PAO.GlobalScope}
+
+
+def test_all_different_memory_scope(ref: Graph) -> None:
+    """AllDifferent for MemoryScope individuals."""
+    assert _find_all_different_containing(
+        ref, {PAO.SessionScope, PAO.ProjectScope, PAO.GlobalScope}
+    )
+
+
+def test_communicative_function_individuals(ref: Graph) -> None:
+    """Inform, Request, Confirm, Clarify, Accept, Reject are CommunicativeFunction individuals."""
+    for name in ["Inform", "Request", "Confirm", "Clarify", "Accept", "Reject"]:
+        assert (PAO[name], RDF.type, PAO.CommunicativeFunction) in ref
+
+
+def test_communicative_function_enumeration(ref: Graph) -> None:
+    """CommunicativeFunction owl:oneOf (Inform, Request, Confirm, Clarify, Accept, Reject)."""
+    members = _get_one_of_members(ref, PAO.CommunicativeFunction)
+    assert members == {
+        PAO.Inform,
+        PAO.Request,
+        PAO.Confirm,
+        PAO.Clarify,
+        PAO.Accept,
+        PAO.Reject,
+    }
+
+
+def test_all_different_communicative_function(ref: Graph) -> None:
+    """AllDifferent for CommunicativeFunction individuals."""
+    assert _find_all_different_containing(
+        ref, {PAO.Inform, PAO.Request, PAO.Confirm, PAO.Clarify, PAO.Accept, PAO.Reject}
+    )
+
+
+def test_claim_type_individuals(ref: Graph) -> None:
+    """UserPreference is a ClaimType individual."""
+    assert (PAO.UserPreference, RDF.type, PAO.ClaimType) in ref
+
+
+def test_claim_type_enumeration(ref: Graph) -> None:
+    """ClaimType owl:oneOf (UserPreference)."""
+    members = _get_one_of_members(ref, PAO.ClaimType)
+    assert members == {PAO.UserPreference}
+
+
+def test_all_different_claim_type(ref: Graph) -> None:
+    """AllDifferent for ClaimType individuals."""
+    assert _find_all_different_containing(ref, {PAO.UserPreference})
 
 
 def test_item_fate_individuals(ref: Graph) -> None:
@@ -1301,6 +1784,28 @@ CQ_SELECT_NON_EMPTY = [
     "cq-076.sparql",
     "cq-077.sparql",
     "cq-078.sparql",
+    # v0.6.0: External Services, Runtime Safety, Recovery
+    "cq-079.sparql",
+    "cq-080.sparql",
+    "cq-081.sparql",
+    "cq-082.sparql",
+    "cq-083.sparql",
+    "cq-084.sparql",
+    "cq-085.sparql",
+    "cq-086.sparql",
+    "cq-087.sparql",
+    "cq-088.sparql",
+    "cq-089.sparql",
+    # v0.6.0 Phase B: Tool/Message Trace, Memory Control Plane, Dialog Pragmatics
+    "cq-090.sparql",
+    "cq-091.sparql",
+    "cq-092.sparql",
+    "cq-093.sparql",
+    "cq-094.sparql",
+    "cq-095.sparql",
+    "cq-096.sparql",
+    "cq-097.sparql",
+    "cq-098.sparql",
 ]
 
 
@@ -1367,7 +1872,7 @@ def test_shacl_conformance(shapes: Graph) -> None:
     conforms, _results_graph, results_text = validate(
         data_graph=data,
         shacl_graph=shapes,
-        inference="none",
+        inference="rdfs",
     )
     assert conforms, f"SHACL validation failed:\n{results_text}"
 
@@ -1378,40 +1883,56 @@ def test_shacl_conformance(shapes: Graph) -> None:
 
 
 def test_shacl_shape_count(shapes: Graph) -> None:
-    """At least 29 NodeShapes exist."""
+    """At least 45 NodeShapes exist."""
     node_shapes = set(shapes.subjects(RDF.type, SH.NodeShape))
-    assert len(node_shapes) >= 29, f"Expected >=29 NodeShapes, got {len(node_shapes)}"
+    assert len(node_shapes) >= 45, f"Expected >=45 NodeShapes, got {len(node_shapes)}"
 
 
 EXPECTED_SHAPE_TARGETS = [
     "AIAgent",
     "Action",
+    "AuditEntry",
+    "Checkpoint",
+    "ClarificationRequest",
     "Claim",
     "CommunicationChannel",
     "CompactionDisposition",
     "CompactionEvent",
     "ConsentRecord",
+    "ContentBlock",
     "ContextWindow",
     "Conversation",
+    "DialogAct",
     "Episode",
     "ErasureEvent",
+    "ErrorRecoveryEvent",
+    "Event",
+    "ExternalService",
     "Goal",
+    "GroundingAct",
+    "HookExecution",
     "Integration",
     "Intention",
     "MemoryBlock",
     "MemoryItem",
     "MemoryOperation",
+    "MemoryWriteConflict",
     "Message",
     "Observation",
     "Organization",
+    "PermissionPolicy",
     "Persona",
     "Plan",
     "RetentionPolicy",
+    "SafetyConstraint",
+    "ServiceConnection",
+    "SharedMemoryArtifact",
     "Session",
     "StatusTransition",
     "SubAgent",
     "Task",
     "ToolInvocation",
+    "ToolInvocationGroup",
     "Turn",
 ]
 

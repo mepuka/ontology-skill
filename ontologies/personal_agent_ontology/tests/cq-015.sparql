@@ -12,7 +12,7 @@ PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 
 SELECT ?preference ?content ?firstStated WHERE {
   ?preference a pao:Claim ;
-              pao:claimType "UserPreference" ;
+              pao:claimType pao:UserPreference ;
               pao:aboutAgent ?user ;
               pao:hasContent ?content ;
               pao:hasTimestamp ?firstStated .

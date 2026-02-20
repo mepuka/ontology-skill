@@ -203,7 +203,7 @@ cq_tests:
     module: actions_events_time
     question: "Does event A occur before event B?"
     type: ASK
-    expected: true
+    expected: "true"
     requires_abox: true
 
   # CQ-022 skipped (could_have priority)
@@ -290,7 +290,7 @@ cq_tests:
     module: governance_safety
     question: "Did a given tool invocation comply with its applicable permission policies?"
     type: ASK
-    expected: true
+    expected: "true"
     requires_abox: true
 
   - id: cq-032
@@ -355,7 +355,7 @@ cq_tests:
     module: cross_module
     question: "Is a given session still active or has it ended?"
     type: ASK
-    expected: true
+    expected: "true"
     requires_abox: true
 
   # --- Constraint / Negative Tests ---
@@ -458,7 +458,7 @@ cq_tests:
     module: governance_safety
     question: "Does a consent record exist for a given data subject and purpose?"
     type: ASK
-    expected: true
+    expected: "true"
     requires_abox: true
 
   - id: cq-050
@@ -725,6 +725,198 @@ cq_tests:
     cq: CQ-078
     module: cross_module
     question: "What service name and endpoint are configured for an agent's integrations?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  # ── v0.6.0 Phase A: External Service Capability Model ──────────────
+
+  - id: cq-079
+    file: cq-079.sparql
+    cq: CQ-079
+    module: service_capability
+    question: "What external services are configured for each agent?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-080
+    file: cq-080.sparql
+    cq: CQ-080
+    module: service_capability
+    question: "What capabilities does a given external service expose?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-081
+    file: cq-081.sparql
+    cq: CQ-081
+    module: service_capability
+    question: "Which capabilities were discovered in the latest discovery event?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-082
+    file: cq-082.sparql
+    cq: CQ-082
+    module: service_capability
+    question: "Which services provide resources versus tools versus prompts?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  # ── v0.6.0 Phase A: Runtime Safety Control Plane ───────────────────
+
+  - id: cq-083
+    file: cq-083.sparql
+    cq: CQ-083
+    module: governance_safety
+    question: "What permission mode is active for each agent?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-084
+    file: cq-084.sparql
+    cq: CQ-084
+    module: governance_safety
+    question: "Which sandbox policy constrains a given agent?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-085
+    file: cq-085.sparql
+    cq: CQ-085
+    module: governance_safety
+    question: "Which hooks intercepted a specific tool invocation?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-086
+    file: cq-086.sparql
+    cq: CQ-086
+    module: governance_safety
+    question: "What authorization decisions were recorded for denied operations?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  # ── v0.6.0 Phase A: Recovery and Resilience ────────────────────────
+
+  - id: cq-087
+    file: cq-087.sparql
+    cq: CQ-087
+    module: events_lifecycle
+    question: "What recovery events occurred after failed invocations?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-088
+    file: cq-088.sparql
+    cq: CQ-088
+    module: events_lifecycle
+    question: "How many retries were attempted before success or abandonment?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-089
+    file: cq-089.sparql
+    cq: CQ-089
+    module: events_lifecycle
+    question: "Which tasks required human checkpoint decisions?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  # --- Phase B (P1): Tool & Message Trace Richness ---
+
+  - id: cq-090
+    file: cq-090.sparql
+    cq: CQ-090
+    module: conversation_interaction
+    question: "Which tool invocations were executed in parallel within a single turn?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-091
+    file: cq-091.sparql
+    cq: CQ-091
+    module: conversation_interaction
+    question: "What result artifact was produced by each tool invocation?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-092
+    file: cq-092.sparql
+    cq: CQ-092
+    module: conversation_interaction
+    question: "Which message content blocks are tool-use blocks versus text blocks?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  # --- Phase B (P1): Memory Control Plane and Sharing ---
+
+  - id: cq-093
+    file: cq-093.sparql
+    cq: CQ-093
+    module: memory
+    question: "What is the scope and source of each memory item?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-094
+    file: cq-094.sparql
+    cq: CQ-094
+    module: memory
+    question: "Which memory artifacts are shared across multiple agents?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-095
+    file: cq-095.sparql
+    cq: CQ-095
+    module: memory
+    question: "What memory write conflicts occurred and how were they resolved?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  # --- Phase B (P1): Dialog Pragmatics and Grounding ---
+
+  - id: cq-096
+    file: cq-096.sparql
+    cq: CQ-096
+    module: conversation_interaction
+    question: "What communicative function does each turn perform?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-097
+    file: cq-097.sparql
+    cq: CQ-097
+    module: conversation_interaction
+    question: "Which turns updated common ground with acceptance evidence?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-098
+    file: cq-098.sparql
+    cq: CQ-098
+    module: conversation_interaction
+    question: "Which clarifications were issued before commitment was established?"
     type: SELECT
     expected: non_empty
     requires_abox: true

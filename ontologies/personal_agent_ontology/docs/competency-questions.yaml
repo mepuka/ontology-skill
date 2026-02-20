@@ -2340,3 +2340,629 @@ competency_questions:
       - hasServiceName
       - hasEndpoint
     required_axioms: []
+
+  # ── v0.6.0 Phase A: External Service Capability Model ──────────────
+
+  - id: CQ-079
+    source_use_case: UC-035
+    natural_language: "What external services are configured for each agent?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - agent: pao:ClaudeCodeAgent_01
+        service: pao:GitHubService_01
+        label: "GitHub API"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Authentication credentials or API keys"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?agent ?service ?label WHERE {
+        ?agent pao:hasExternalService ?service .
+        ?service a pao:ExternalService ;
+                 rdfs:label ?label .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Agent
+      - ExternalService
+    required_properties:
+      - hasExternalService
+    required_axioms: []
+
+  - id: CQ-080
+    source_use_case: UC-035
+    natural_language: "What capabilities does a given external service expose?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - service: pao:GitHubService_01
+        capability: pao:GitHubCreateIssueTool
+        capabilityType: "ServiceToolCapability"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Capability version negotiation"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?service ?capability ?label ?type WHERE {
+        ?service a pao:ExternalService ;
+                 pao:exposesCapability ?capability .
+        ?capability rdfs:label ?label ;
+                    rdf:type ?type .
+        FILTER(?type != pao:ServiceCapability)
+      }
+    expected_result: non_empty
+    required_classes:
+      - ExternalService
+      - ServiceCapability
+    required_properties:
+      - exposesCapability
+    required_axioms: []
+
+  - id: CQ-081
+    source_use_case: UC-035
+    natural_language: "Which capabilities were discovered in the latest discovery event?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - event: pao:Discovery_GitHub_01
+        capability: pao:GitHubCreateIssueTool
+        service: pao:GitHubService_01
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Discovery protocol details (JSON-RPC, HTTP)"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?event ?capability ?service WHERE {
+        ?event a pao:CapabilityDiscoveryEvent ;
+               pao:discoveredCapability ?capability ;
+               pao:discoveryAgainstService ?service ;
+               pao:hasTimestamp ?ts .
+      }
+      ORDER BY DESC(?ts) LIMIT 10
+    expected_result: non_empty
+    required_classes:
+      - CapabilityDiscoveryEvent
+      - ServiceCapability
+      - ExternalService
+    required_properties:
+      - discoveredCapability
+      - discoveryAgainstService
+    required_axioms: []
+
+  - id: CQ-082
+    source_use_case: UC-035
+    natural_language: "Which services provide resources versus tools versus prompts?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - service: pao:GitHubService_01
+        capabilityType: "ServiceToolCapability"
+        count: 3
+    derivation_method: aggregation
+    out_of_scope:
+      - "Capability quality or performance metrics"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?service ?serviceLabel ?capType (COUNT(?cap) AS ?count) WHERE {
+        ?service a pao:ExternalService ;
+                 rdfs:label ?serviceLabel ;
+                 pao:exposesCapability ?cap .
+        ?cap rdf:type ?capType .
+        VALUES ?capType {
+          pao:ServiceToolCapability
+          pao:ServiceResourceCapability
+          pao:ServicePromptCapability
+        }
+      }
+      GROUP BY ?service ?serviceLabel ?capType
+    expected_result: non_empty
+    required_classes:
+      - ExternalService
+      - ServiceToolCapability
+      - ServiceResourceCapability
+      - ServicePromptCapability
+    required_properties:
+      - exposesCapability
+    required_axioms: []
+
+  # ── v0.6.0 Phase A: Runtime Safety Control Plane ───────────────────
+
+  - id: CQ-083
+    source_use_case: UC-036
+    natural_language: "What permission mode is active for each agent?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - agent: pao:ClaudeCodeAgent_01
+        mode: pao:DefaultPermissionMode
+        label: "Default"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Permission mode configuration UI"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?agent ?mode ?label WHERE {
+        ?agent a pao:AIAgent ;
+               pao:operatesInMode ?mode .
+        ?mode a pao:PermissionMode ;
+              rdfs:label ?label .
+      }
+    expected_result: non_empty
+    required_classes:
+      - AIAgent
+      - PermissionMode
+    required_properties:
+      - operatesInMode
+    required_axioms: []
+
+  - id: CQ-084
+    source_use_case: UC-036
+    natural_language: "Which sandbox policy constrains a given agent?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - agent: pao:ClaudeCodeAgent_01
+        policy: pao:SandboxPolicy_Default
+        label: "Default filesystem sandbox"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "OS-level sandbox implementation details"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?agent ?policy ?label WHERE {
+        ?agent a pao:AIAgent ;
+               pao:enforcedBySandboxPolicy ?policy .
+        ?policy a pao:SandboxPolicy ;
+                rdfs:label ?label .
+      }
+    expected_result: non_empty
+    required_classes:
+      - AIAgent
+      - SandboxPolicy
+    required_properties:
+      - enforcedBySandboxPolicy
+    required_axioms: []
+
+  - id: CQ-085
+    source_use_case: UC-036
+    natural_language: "Which hooks intercepted a specific tool invocation?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - invocation: pao:ToolInv_042
+        hook: pao:Hook_PreCommit
+        execution: pao:HookExec_01
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Hook implementation code or scripts"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?invocation ?hook ?execution WHERE {
+        ?execution a pao:HookExecution ;
+                   pao:interceptsInvocation ?invocation .
+        ?hook a pao:Hook ;
+              pao:hookTriggeredExecution ?execution .
+      }
+    expected_result: non_empty
+    required_classes:
+      - ToolInvocation
+      - Hook
+      - HookExecution
+    required_properties:
+      - interceptsInvocation
+      - hookTriggeredExecution
+    required_axioms: []
+
+  - id: CQ-086
+    source_use_case: UC-036
+    natural_language: "What authorization decisions were recorded for denied operations?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - entry: pao:AuditEntry_01
+        invocation: pao:ToolInv_042
+        decision: pao:Deny
+        reason: "Filesystem write outside sandbox"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Real-time alerting or notification"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?entry ?invocation ?decision ?reason WHERE {
+        ?entry a pao:AuditEntry ;
+               pao:auditForInvocation ?invocation ;
+               pao:recordsDecision ?decision ;
+               pao:hasDecisionReason ?reason .
+        FILTER(?decision = pao:Deny)
+      }
+    expected_result: non_empty
+    required_classes:
+      - AuditEntry
+      - ToolInvocation
+      - AuthorizationDecision
+    required_properties:
+      - auditForInvocation
+      - recordsDecision
+      - hasDecisionReason
+    required_axioms: []
+
+  # ── v0.6.0 Phase A: Recovery and Resilience ────────────────────────
+
+  - id: CQ-087
+    source_use_case: UC-037
+    natural_language: "What recovery events occurred after failed invocations?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - recovery: pao:Recovery_01
+        invocation: pao:ToolInv_042
+        outcome: "retried_success"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Failure root cause analysis"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?recovery ?invocation ?outcome WHERE {
+        ?recovery a pao:ErrorRecoveryEvent ;
+                  pao:recoveringFrom ?invocation ;
+                  pao:hasRecoveryOutcome ?outcome .
+      }
+    expected_result: non_empty
+    required_classes:
+      - ErrorRecoveryEvent
+      - ToolInvocation
+    required_properties:
+      - recoveringFrom
+      - hasRecoveryOutcome
+    required_axioms: []
+
+  - id: CQ-088
+    source_use_case: UC-037
+    natural_language: "How many retries were attempted before success or abandonment?"
+    type: quantitative
+    priority: should_have
+    sample_answer:
+      - recovery: pao:Recovery_01
+        retryCount: 3
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Backoff strategy or timing details"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?recovery ?retry ?attemptCount WHERE {
+        ?recovery a pao:ErrorRecoveryEvent ;
+                  pao:attemptedRetry ?retry .
+        ?retry a pao:RetryAttempt ;
+               pao:hasAttemptCount ?attemptCount .
+      }
+    expected_result: non_empty
+    required_classes:
+      - ErrorRecoveryEvent
+      - RetryAttempt
+    required_properties:
+      - attemptedRetry
+      - hasAttemptCount
+    required_axioms: []
+
+  - id: CQ-089
+    source_use_case: UC-037
+    natural_language: "Which tasks required human checkpoint decisions?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - checkpoint: pao:Checkpoint_01
+        task: pao:Task_Deploy_01
+        decision: pao:Approved
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Checkpoint approval UI or workflow"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?checkpoint ?task ?decision WHERE {
+        ?checkpoint a pao:Checkpoint ;
+                    pao:checkpointForTask ?task ;
+                    pao:checkpointDecision ?decision .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Checkpoint
+      - Task
+      - CheckpointDecision
+    required_properties:
+      - checkpointForTask
+      - checkpointDecision
+    required_axioms: []
+
+  # ── Phase B (P1): Tool & Message Trace Richness ──────────────────
+
+  - id: CQ-090
+    source_use_case: UC-038
+    natural_language: "Which tool invocations were executed in parallel within a single turn?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - group: pao:InvocationGroup_01
+        turn: pao:Turn_01
+        invocation: pao:ToolInvocation_Read_01
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Execution ordering within a parallel group"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?group ?turn ?invocation WHERE {
+        ?group a pao:ToolInvocationGroup ;
+               pao:groupedInTurn ?turn .
+        ?invocation a pao:ToolInvocation ;
+                    pao:partOfInvocationGroup ?group .
+      }
+    expected_result: non_empty
+    required_classes:
+      - ToolInvocationGroup
+      - ToolInvocation
+      - Turn
+    required_properties:
+      - groupedInTurn
+      - partOfInvocationGroup
+    required_axioms: []
+
+  - id: CQ-091
+    source_use_case: UC-038
+    natural_language: "What result artifact was produced by each tool invocation?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - invocation: pao:ToolInvocation_Read_01
+        result: pao:ToolResult_01
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Result content parsing or format details"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?invocation ?result WHERE {
+        ?invocation a pao:ToolInvocation ;
+                    pao:producedToolResult ?result .
+        ?result a pao:ToolResult .
+      }
+    expected_result: non_empty
+    required_classes:
+      - ToolInvocation
+      - ToolResult
+    required_properties:
+      - producedToolResult
+    required_axioms: []
+
+  - id: CQ-092
+    source_use_case: UC-038
+    natural_language: "Which message content blocks are tool-use blocks versus text blocks?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - message: pao:Message_01
+        block: pao:ContentBlock_01
+        blockType: pao:TextBlock
+        seqIndex: 0
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Content block rendering or display format"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?message ?block ?blockType ?seqIndex WHERE {
+        ?message a pao:Message ;
+                 pao:hasContentBlock ?block .
+        ?block a pao:ContentBlock ;
+               pao:hasContentBlockType ?blockType ;
+               pao:blockSequenceIndex ?seqIndex .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Message
+      - ContentBlock
+      - ContentBlockType
+    required_properties:
+      - hasContentBlock
+      - hasContentBlockType
+      - blockSequenceIndex
+    required_axioms: []
+
+  # ── Phase B (P1): Memory Control Plane and Sharing ───────────────
+
+  - id: CQ-093
+    source_use_case: UC-039
+    natural_language: "What is the scope and source of each memory item?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - item: pao:MemoryItem_Pref_01
+        source: pao:UserSource
+        scope: pao:SessionScope
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Memory item content or encoding format"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?item ?source ?scope WHERE {
+        ?item a pao:MemoryItem ;
+              pao:hasMemorySource ?source ;
+              pao:hasMemoryScope ?scope .
+      }
+    expected_result: non_empty
+    required_classes:
+      - MemoryItem
+      - MemorySource
+      - MemoryScope
+    required_properties:
+      - hasMemorySource
+      - hasMemoryScope
+    required_axioms: []
+
+  - id: CQ-094
+    source_use_case: UC-039
+    natural_language: "Which memory artifacts are shared across multiple agents?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - artifact: pao:SharedMemory_Project_01
+        agent: pao:ClaudeCodeAgent_01
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Memory synchronization protocol details"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?artifact ?agent WHERE {
+        ?artifact a pao:SharedMemoryArtifact ;
+                  pao:sharedAcrossAgents ?agent .
+      }
+    expected_result: non_empty
+    required_classes:
+      - SharedMemoryArtifact
+      - Agent
+    required_properties:
+      - sharedAcrossAgents
+    required_axioms: []
+
+  - id: CQ-095
+    source_use_case: UC-039
+    natural_language: "What memory write conflicts occurred and how were they resolved?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - conflict: pao:WriteConflict_01
+        artifact: pao:SharedMemory_Project_01
+        agent: pao:SubAgent_01
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Conflict resolution algorithm implementation"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?conflict ?artifact ?agent ?policy WHERE {
+        ?conflict a pao:MemoryWriteConflict ;
+                  pao:conflictOnArtifact ?artifact ;
+                  pao:writesByAgent ?agent .
+        OPTIONAL { ?conflict pao:resolvedByPolicy ?policy . }
+      }
+    expected_result: non_empty
+    required_classes:
+      - MemoryWriteConflict
+      - SharedMemoryArtifact
+      - Agent
+    required_properties:
+      - conflictOnArtifact
+      - writesByAgent
+    required_axioms: []
+
+  # ── Phase B (P1): Dialog Pragmatics and Grounding ────────────────
+
+  - id: CQ-096
+    source_use_case: UC-040
+    natural_language: "What communicative function does each turn perform?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - turn: pao:Turn_01
+        dialogAct: pao:DialogAct_01
+        function: pao:Inform
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Natural language intent classification algorithms"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?turn ?dialogAct ?function WHERE {
+        ?turn a pao:Turn ;
+              pao:hasDialogAct ?dialogAct .
+        ?dialogAct a pao:DialogAct ;
+                   pao:hasCommunicativeFunction ?function .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Turn
+      - DialogAct
+      - CommunicativeFunction
+    required_properties:
+      - hasDialogAct
+      - hasCommunicativeFunction
+    required_axioms: []
+
+  - id: CQ-097
+    source_use_case: UC-040
+    natural_language: "Which turns updated common ground with acceptance evidence?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - groundingAct: pao:GroundingAct_01
+        commonGround: pao:CommonGround_Session_01
+        evidence: pao:AcceptanceEvidence_01
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Grounding state quantification or confidence scoring"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?groundingAct ?commonGround ?evidence WHERE {
+        ?groundingAct a pao:GroundingAct ;
+                      pao:contributesToCommonGround ?commonGround ;
+                      pao:providesAcceptanceEvidence ?evidence .
+      }
+    expected_result: non_empty
+    required_classes:
+      - GroundingAct
+      - CommonGround
+      - AcceptanceEvidence
+    required_properties:
+      - contributesToCommonGround
+      - providesAcceptanceEvidence
+    required_axioms: []
+
+  - id: CQ-098
+    source_use_case: UC-040
+    natural_language: "Which clarifications were issued before commitment was established?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - clarification: pao:ClarificationRequest_01
+        turn: pao:Turn_02
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Clarification necessity detection algorithms"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?clarification ?turn WHERE {
+        ?clarification a pao:ClarificationRequest ;
+                       pao:clarifiesTurn ?turn .
+      }
+    expected_result: non_empty
+    required_classes:
+      - ClarificationRequest
+      - Turn
+    required_properties:
+      - clarifiesTurn
+    required_axioms: []

@@ -1588,6 +1588,725 @@ properties:
     definition: "The endpoint URI of the external service an integration connects to."
     constraint_note: "Functional: each integration has at most one endpoint. Optional since some integrations (local MCP) may not have a network endpoint."
 
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.6.0 Phase A: External Service Capability Model
+  #
+  # Architecture note: ExternalService + ServiceConnection is the
+  # canonical model for MCP-grade service integration (identity,
+  # transport, capability taxonomy, runtime connection status).
+  # The v0.5.0 Integration class remains as a lightweight tool-grouping
+  # abstraction (service name + status). Both can coexist on the same
+  # agent. New implementations should prefer ExternalService.
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: hasExternalService
+    type: ObjectProperty
+    domain: Agent
+    range: ExternalService
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-services
+    source_cq: "CQ-079"
+    definition: "Links an agent to an external service it is configured to access."
+    constraint_note: "Not functional: an agent may access multiple external services."
+
+  - name: hasServiceConnection
+    type: ObjectProperty
+    domain: Agent
+    range: ServiceConnection
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-services
+    source_cq: "CQ-079"
+    definition: "Links an agent to a runtime connection to an external service."
+    constraint_note: "Not functional: an agent may have multiple active connections."
+
+  - name: connectsToService
+    type: ObjectProperty
+    domain: ServiceConnection
+    range: ExternalService
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-services
+    source_cq: "CQ-079"
+    definition: "Links a service connection to the external service it connects to."
+    constraint_note: "Functional: each connection targets exactly one service."
+
+  - name: hasConnectionStatus
+    type: ObjectProperty
+    domain: ServiceConnection
+    range: ConnectionStatus
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: hasStatus
+    bfo_ro_relation: null
+    module: pao-services
+    source_cq: "CQ-079"
+    definition: "Links a service connection to its runtime status."
+    constraint_note: "Functional. Sub-property of hasStatus. ODP-6 value partition."
+
+  - name: exposesCapability
+    type: ObjectProperty
+    domain: ExternalService
+    range: ServiceCapability
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-services
+    source_cq: "CQ-080,CQ-082"
+    definition: "Links an external service to a capability it exposes."
+    constraint_note: "Not functional: a service may expose multiple capabilities."
+
+  - name: discoveredCapability
+    type: ObjectProperty
+    domain: CapabilityDiscoveryEvent
+    range: ServiceCapability
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-services
+    source_cq: "CQ-081"
+    definition: "Links a capability discovery event to a capability it discovered."
+    constraint_note: "Not functional: one discovery event may find multiple capabilities."
+
+  - name: discoveryAgainstService
+    type: ObjectProperty
+    domain: CapabilityDiscoveryEvent
+    range: ExternalService
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-services
+    source_cq: "CQ-081"
+    definition: "Links a capability discovery event to the service it queried."
+    constraint_note: "Functional: each discovery event targets exactly one service."
+
+  - name: hasServiceTransport
+    type: DataProperty
+    domain: ExternalService
+    range: "xsd:string"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-services
+    source_cq: "CQ-079"
+    definition: "The transport protocol of the external service (e.g., stdio, sse, http)."
+    constraint_note: "Functional. String for extensibility; could be migrated to a controlled vocabulary later."
+
+  - name: hasServiceIdentifier
+    type: DataProperty
+    domain: ExternalService
+    range: "xsd:string"
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-services
+    source_cq: "CQ-079"
+    definition: "A unique identifier string for the external service."
+    constraint_note: "Functional, required. Used for identity."
+
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.6.0 Phase A: Runtime Safety Control Plane
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: operatesInMode
+    type: ObjectProperty
+    domain: AIAgent
+    range: PermissionMode
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-governance
+    source_cq: "CQ-083"
+    definition: "Links an AI agent to the permission mode it currently operates under."
+    constraint_note: "Functional: each agent has at most one active permission mode. ODP-6 value partition."
+
+  - name: enforcedBySandboxPolicy
+    type: ObjectProperty
+    domain: AIAgent
+    range: SandboxPolicy
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-governance
+    source_cq: "CQ-084"
+    definition: "Links an AI agent to the sandbox policy that constrains its execution."
+    constraint_note: "Functional: each agent is constrained by at most one sandbox policy."
+
+  - name: hasHook
+    type: ObjectProperty
+    domain: AIAgent
+    range: Hook
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-governance
+    source_cq: "CQ-085"
+    definition: "Links an AI agent to a hook configured for tool invocation interception."
+    constraint_note: "Not functional: an agent may have multiple hooks."
+
+  - name: hookTriggeredExecution
+    type: ObjectProperty
+    domain: Hook
+    range: HookExecution
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-governance
+    source_cq: "CQ-085"
+    definition: "Links a hook to an execution instance it triggered."
+    constraint_note: "Not functional: a hook may fire multiple times."
+
+  - name: interceptsInvocation
+    type: ObjectProperty
+    domain: HookExecution
+    range: ToolInvocation
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-governance
+    source_cq: "CQ-085"
+    definition: "Links a hook execution to the tool invocation it intercepted."
+    constraint_note: "Functional: each hook execution intercepts exactly one invocation."
+
+  - name: writtenToAuditLog
+    type: ObjectProperty
+    domain: AuditEntry
+    range: AuditLog
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-governance
+    source_cq: "CQ-086"
+    definition: "Links an audit entry to the audit log it belongs to."
+    constraint_note: "Functional: each entry belongs to at most one log."
+
+  - name: recordsDecision
+    type: ObjectProperty
+    domain: AuditEntry
+    range: AuthorizationDecision
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-governance
+    source_cq: "CQ-086"
+    definition: "Links an audit entry to the authorization decision it records."
+    constraint_note: "Functional: each entry records exactly one decision. ODP-6 value partition."
+
+  - name: auditForInvocation
+    type: ObjectProperty
+    domain: AuditEntry
+    range: ToolInvocation
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-governance
+    source_cq: "CQ-086"
+    definition: "Links an audit entry to the tool invocation it documents."
+    constraint_note: "Functional: each entry documents exactly one invocation."
+
+  - name: hasDecisionReason
+    type: DataProperty
+    domain: AuditEntry
+    range: "xsd:string"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-governance
+    source_cq: "CQ-086"
+    definition: "A textual rationale for the authorization decision."
+    constraint_note: "Functional: at most one reason per entry."
+
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.6.0 Phase A: Recovery and Resilience
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: recoveringFrom
+    type: ObjectProperty
+    domain: ErrorRecoveryEvent
+    range: ToolInvocation
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-recovery
+    source_cq: "CQ-087"
+    definition: "Links an error recovery event to the failed tool invocation that triggered it."
+    constraint_note: "Functional: each recovery event addresses exactly one failed invocation."
+
+  - name: attemptedRetry
+    type: ObjectProperty
+    domain: ErrorRecoveryEvent
+    range: RetryAttempt
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-recovery
+    source_cq: "CQ-088"
+    definition: "Links an error recovery event to a retry attempt it initiated."
+    constraint_note: "Not functional: recovery may involve multiple retries."
+
+  - name: triggeredReplan
+    type: ObjectProperty
+    domain: ErrorRecoveryEvent
+    range: ReplanEvent
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-recovery
+    source_cq: "CQ-087"
+    definition: "Links an error recovery event to the replan event it triggered."
+    constraint_note: "Functional: recovery triggers at most one replan."
+
+  - name: triggeredRollback
+    type: ObjectProperty
+    domain: ErrorRecoveryEvent
+    range: RollbackEvent
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-recovery
+    source_cq: "CQ-087"
+    definition: "Links an error recovery event to the rollback event it triggered."
+    constraint_note: "Functional: recovery triggers at most one rollback."
+
+  - name: checkpointForTask
+    type: ObjectProperty
+    domain: Checkpoint
+    range: Task
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-recovery
+    source_cq: "CQ-089"
+    definition: "Links a checkpoint to the task it gates."
+    constraint_note: "Functional: each checkpoint gates exactly one task."
+
+  - name: checkpointDecision
+    type: ObjectProperty
+    domain: Checkpoint
+    range: CheckpointDecision
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-recovery
+    source_cq: "CQ-089"
+    definition: "Links a checkpoint to the human decision recorded for it."
+    constraint_note: "Functional: each checkpoint has at most one decision. ODP-6 value partition."
+
+  - name: hasAttemptCount
+    type: DataProperty
+    domain: ErrorRecoveryEvent
+    range: "xsd:nonNegativeInteger"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-recovery
+    source_cq: "CQ-088"
+    definition: "The total number of retry attempts in this recovery event."
+    constraint_note: "Functional: each recovery event has at most one attempt count."
+
+  - name: hasRecoveryOutcome
+    type: DataProperty
+    domain: ErrorRecoveryEvent
+    range: "xsd:string"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-recovery
+    source_cq: "CQ-087"
+    definition: "A textual description of the recovery outcome (e.g., success, abandoned)."
+    constraint_note: "Functional: each recovery event has at most one outcome description."
+
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.6.0 Phase B: Tool/Message Trace Richness
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: partOfInvocationGroup
+    type: ObjectProperty
+    domain: ToolInvocation
+    range: ToolInvocationGroup
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-090"
+    definition: "Links a tool invocation to the group it was executed within."
+    constraint_note: "Not functional: a tool invocation may optionally belong to a group (ungrouped invocations have no group)."
+
+  - name: groupedInTurn
+    type: ObjectProperty
+    domain: ToolInvocationGroup
+    range: Turn
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-090"
+    definition: "Links a tool invocation group to the turn in which it was executed."
+    constraint_note: "Functional: each group belongs to exactly one turn."
+
+  - name: producedToolResult
+    type: ObjectProperty
+    domain: ToolInvocation
+    range: ToolResult
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-091"
+    definition: "Links a tool invocation to the typed result artifact it produced."
+    constraint_note: "Functional: each invocation produces at most one result."
+
+  - name: hasContentBlock
+    type: ObjectProperty
+    domain: Message
+    range: ContentBlock
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-092"
+    definition: "Links a message to one of its typed content blocks."
+    constraint_note: "Not functional: a message may have multiple content blocks. Use blockSequenceIndex on ContentBlock for ordering."
+
+  - name: hasContentBlockType
+    type: ObjectProperty
+    domain: ContentBlock
+    range: ContentBlockType
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-092"
+    definition: "Links a content block to its type classification."
+    constraint_note: "Functional: each block has exactly one type. ODP-6 value partition."
+
+  - name: blockSequenceIndex
+    type: DataProperty
+    domain: ContentBlock
+    range: "xsd:nonNegativeInteger"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-092"
+    definition: "The zero-based position of a content block within its parent message."
+    constraint_note: "Functional: at most one sequence index per block."
+
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.6.0 Phase B: Memory Control Plane and Sharing
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: hasMemorySource
+    type: ObjectProperty
+    domain: MemoryItem
+    range: MemorySource
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-memory
+    source_cq: "CQ-093"
+    definition: "Links a memory item to its originating source classification."
+    constraint_note: "Functional: each item has at most one source. ODP-6 value partition."
+
+  - name: hasMemoryScope
+    type: ObjectProperty
+    domain: MemoryItem
+    range: MemoryScope
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-memory
+    source_cq: "CQ-093"
+    definition: "Links a memory item to its visibility scope classification."
+    constraint_note: "Functional: each item has at most one scope. ODP-6 value partition."
+
+  - name: sharedAcrossAgents
+    type: ObjectProperty
+    domain: SharedMemoryArtifact
+    range: Agent
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-memory
+    source_cq: "CQ-094"
+    definition: "Links a shared memory artifact to an agent that has access to it."
+    constraint_note: "Not functional: multiple agents may share one artifact. SHACL: SharedMemoryArtifact should have min 2 sharedAcrossAgents."
+
+  - name: writesByAgent
+    type: ObjectProperty
+    domain: MemoryWriteConflict
+    range: Agent
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-memory
+    source_cq: "CQ-095"
+    definition: "Links a memory write conflict to an agent that caused a conflicting write."
+    constraint_note: "Not functional: multiple agents are involved in a conflict. SHACL: MemoryWriteConflict should have min 2 writesByAgent."
+
+  - name: conflictOnArtifact
+    type: ObjectProperty
+    domain: MemoryWriteConflict
+    range: SharedMemoryArtifact
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-memory
+    source_cq: "CQ-095"
+    definition: "Links a memory write conflict to the shared artifact where the conflict occurred."
+    constraint_note: "Functional: each conflict targets exactly one artifact."
+
+  - name: resolvedByPolicy
+    type: ObjectProperty
+    domain: MemoryWriteConflict
+    range: PermissionPolicy
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-memory
+    source_cq: "CQ-095"
+    definition: "Links a memory write conflict to the policy used to resolve it."
+    constraint_note: "Optional: not all conflicts may have been resolved."
+
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.6.0 Phase B: Dialog Pragmatics and Grounding
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: hasDialogAct
+    type: ObjectProperty
+    domain: Turn
+    range: DialogAct
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-096"
+    definition: "Links a turn to its pragmatic dialog act classification."
+    constraint_note: "Not functional: a turn may have multiple dialog acts (e.g., inform + request)."
+
+  - name: hasCommunicativeFunction
+    type: ObjectProperty
+    domain: DialogAct
+    range: CommunicativeFunction
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-096"
+    definition: "Links a dialog act to its communicative function classification."
+    constraint_note: "Functional: each dialog act has exactly one function. ODP-6 value partition."
+
+  - name: contributesToCommonGround
+    type: ObjectProperty
+    domain: GroundingAct
+    range: CommonGround
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-097"
+    definition: "Links a grounding act to the common ground it updates."
+    constraint_note: "Functional: each grounding act contributes to at most one common ground."
+
+  - name: providesAcceptanceEvidence
+    type: ObjectProperty
+    domain: GroundingAct
+    range: AcceptanceEvidence
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-097"
+    definition: "Links a grounding act to the acceptance evidence it produces."
+    constraint_note: "Not functional: a grounding act may produce multiple pieces of evidence."
+
+  - name: clarifiesTurn
+    type: ObjectProperty
+    domain: ClarificationRequest
+    range: Turn
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-conversation
+    source_cq: "CQ-098"
+    definition: "Links a clarification request to the turn it is clarifying."
+    constraint_note: "Functional: each clarification request targets exactly one turn."
+
 # ═══════════════════════════════════════════════════════════════════════
 # PROPERTY HIERARCHY SUMMARY
 # ═══════════════════════════════════════════════════════════════════════
@@ -1606,7 +2325,8 @@ properties:
 #
 # hasStatus
 #   ├── hasComplianceStatus  (ToolInvocation -> ComplianceStatus)
-#   └── hasIntegrationStatus (Integration -> IntegrationStatus)
+#   ├── hasIntegrationStatus (Integration -> IntegrationStatus)
+#   └── hasConnectionStatus  (ServiceConnection -> ConnectionStatus)
 #
 # belongsTo <-> hasMember (inverse pair)
 #
@@ -1679,16 +2399,18 @@ properties:
 # ═══════════════════════════════════════════════════════════════════════
 
 summary:
-  total_properties: 87    # was 81, +6 (viaChannel, hasChannelType, sentViaChannel, hasIntegration, providesTool, hasIntegrationStatus)
-  object_properties: 71   # was 65, +6 new object properties
-  data_properties: 16
+  total_properties: 133   # 109 object + 24 data
+  object_properties: 109  # was 93, +16 v0.6.0 Phase B
+  data_properties: 24     # was 23, +1 v0.6.0 Phase B (blockSequenceIndex)
   by_module:
-    pao-core: 16      # was 13, +3 (hasIntegration, providesTool, hasIntegrationStatus)
-    pao-event: 9      # hasTemporalExtent, hasStatus, hasTimestamp, fromStatus, toStatus, transitionSubject, triggeredBy, previousTransition, nextTransition
-    pao-conversation: 29  # was 26, +3 (viaChannel, hasChannelType, sentViaChannel)
-    pao-memory: 14    # storedIn, stores, hasTopic, aboutAgent, hasConfidence, claimType, hasEvidence, recordedInEpisode, recordsEvent, operatesOn, hasBlockKey, hasBlockValue, hasLastAccessTime, isEvictionCandidate
-    pao-planning: 9   # pursuedBy, pursuesGoal, achievesGoal, partOfPlan, hasTask, blockedBy, blocks, intendedBy, derivedFromGoal
-    pao-governance: 10 # appliesTo, grantsPermission, hasComplianceStatus, restrictsToolUse, requestedBy, hasSensitivityLevel, consentSubject, consentPurpose, governedByRetention, retentionPeriodDays
+    pao-core: 16
+    pao-event: 9
+    pao-conversation: 40  # was 29, +11 (partOfInvocationGroup, groupedInTurn, producedToolResult, hasContentBlock, hasContentBlockType, blockSequenceIndex, hasDialogAct, hasCommunicativeFunction, contributesToCommonGround, providesAcceptanceEvidence, clarifiesTurn)
+    pao-memory: 20        # was 14, +6 (hasMemorySource, hasMemoryScope, sharedAcrossAgents, writesByAgent, conflictOnArtifact, resolvedByPolicy)
+    pao-planning: 9
+    pao-governance: 18
+    pao-services: 11
+    pao-recovery: 10
   imported_property_sets: 2  # PROV-O (14 properties), OWL-Time (5 properties)
   sub_property_chains:
     - "partOfConversation, partOfSession, partOfPlan -> partOf"

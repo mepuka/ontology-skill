@@ -18,7 +18,7 @@ use_cases:
     postconditions:
       - "Developer has a complete picture of agent capabilities"
     related_scenarios: [S3, S7]
-    related_cqs: []
+    related_cqs: [CQ-001, CQ-002, CQ-004, CQ-057]
     priority: must_have
 
   - id: UC-002
@@ -33,7 +33,7 @@ use_cases:
     postconditions:
       - "Full delegation chain is visible with task assignments and outcomes"
     related_scenarios: [S7]
-    related_cqs: []
+    related_cqs: [CQ-003]
     priority: should_have
 
   # ── Module 2: Conversation & Interaction ─────────────────────────
@@ -52,7 +52,7 @@ use_cases:
     postconditions:
       - "User experiences continuity; no information is lost"
     related_scenarios: [S1]
-    related_cqs: []
+    related_cqs: [CQ-005, CQ-009, CQ-038, CQ-059]
     priority: must_have
 
   - id: UC-004
@@ -67,7 +67,7 @@ use_cases:
     postconditions:
       - "Complete audit trail of the conversation is available"
     related_scenarios: [S1, S3]
-    related_cqs: []
+    related_cqs: [CQ-006]
     priority: must_have
 
   - id: UC-005
@@ -83,7 +83,7 @@ use_cases:
     postconditions:
       - "All tool invocations are accounted for with compliance status"
     related_scenarios: [S3]
-    related_cqs: []
+    related_cqs: [CQ-007, CQ-008, CQ-037]
     priority: must_have
 
   - id: UC-006
@@ -98,7 +98,7 @@ use_cases:
     postconditions:
       - "Architect understands information loss/preservation during compaction"
     related_scenarios: [S1, S2]
-    related_cqs: []
+    related_cqs: [CQ-010, CQ-052, CQ-053]
     priority: should_have
 
   # ── Module 3: Memory ─────────────────────────────────────────────
@@ -116,7 +116,7 @@ use_cases:
     postconditions:
       - "Relevant past episodes are available for grounding current responses"
     related_scenarios: [S2, S4]
-    related_cqs: []
+    related_cqs: [CQ-011, CQ-012, CQ-025]
     priority: must_have
 
   - id: UC-008
@@ -132,7 +132,7 @@ use_cases:
     postconditions:
       - "Semantic memory contains verified, provenance-tracked claims"
     related_scenarios: [S2, S4]
-    related_cqs: []
+    related_cqs: [CQ-013, CQ-016]
     priority: must_have
 
   - id: UC-009
@@ -148,7 +148,7 @@ use_cases:
     postconditions:
       - "User's preferences are respected without re-asking"
     related_scenarios: [S4]
-    related_cqs: []
+    related_cqs: [CQ-015]
     priority: must_have
 
   - id: UC-010
@@ -163,7 +163,7 @@ use_cases:
     postconditions:
       - "Full derivation chain from raw interaction to stored memory is visible"
     related_scenarios: [S2, S5]
-    related_cqs: []
+    related_cqs: [CQ-014, CQ-036, CQ-040]
     priority: must_have
 
   - id: UC-011
@@ -178,7 +178,7 @@ use_cases:
     postconditions:
       - "Architect can optimize memory tier configuration"
     related_scenarios: [S1, S2]
-    related_cqs: []
+    related_cqs: [CQ-018, CQ-019, CQ-054, CQ-055]
     priority: should_have
 
   - id: UC-012
@@ -194,7 +194,7 @@ use_cases:
     postconditions:
       - "Belief history is preserved; current belief reflects latest evidence"
     related_scenarios: [S2, S4]
-    related_cqs: []
+    related_cqs: [CQ-017]
     priority: should_have
 
   # ── Module 4: Actions, Events, and Time ──────────────────────────
@@ -211,7 +211,7 @@ use_cases:
     postconditions:
       - "Complete temporal event log is available for audit"
     related_scenarios: [S1, S3]
-    related_cqs: []
+    related_cqs: [CQ-020, CQ-023, CQ-024]
     priority: must_have
 
   - id: UC-014
@@ -226,7 +226,7 @@ use_cases:
     postconditions:
       - "Temporal structure of agent behavior is queryable"
     related_scenarios: [S1, S3]
-    related_cqs: []
+    related_cqs: [CQ-021, CQ-022]
     priority: should_have
 
   # ── Module 5: Goals, Plans, and Tasks ────────────────────────────
@@ -244,7 +244,7 @@ use_cases:
     postconditions:
       - "Goal is achieved; task execution history is recorded"
     related_scenarios: [S6]
-    related_cqs: []
+    related_cqs: [CQ-026, CQ-027, CQ-028]
     priority: must_have
 
   - id: UC-016
@@ -259,7 +259,7 @@ use_cases:
     postconditions:
       - "User sees progress and remaining work"
     related_scenarios: [S1, S6]
-    related_cqs: []
+    related_cqs: [CQ-029, CQ-056, CQ-058, CQ-060]
     priority: should_have
 
   # ── Module 6: Governance & Safety ────────────────────────────────
@@ -277,7 +277,7 @@ use_cases:
     postconditions:
       - "All tool uses are verified against policy"
     related_scenarios: [S3]
-    related_cqs: []
+    related_cqs: [CQ-030, CQ-031, CQ-035, CQ-039]
     priority: must_have
 
   - id: UC-018
@@ -294,7 +294,7 @@ use_cases:
     postconditions:
       - "Target data and all derivatives are deleted; audit trail preserved"
     related_scenarios: [S5]
-    related_cqs: []
+    related_cqs: [CQ-032, CQ-034]
     priority: must_have
 
   - id: UC-019
@@ -310,7 +310,7 @@ use_cases:
     postconditions:
       - "All memory items have privacy metadata; policies are enforceable"
     related_scenarios: [S5]
-    related_cqs: []
+    related_cqs: [CQ-033]
     priority: should_have
 
   # ── Module 1: Identity & Actors (continued) ────────────────────────
@@ -537,7 +537,7 @@ use_cases:
     postconditions:
       - "All agent integrations are queryable with status metadata"
     related_scenarios: [S3, S7]
-    related_cqs: [CQ-071, CQ-073, CQ-076]
+    related_cqs: [CQ-071, CQ-073, CQ-076, CQ-078]
     priority: should_have
 
   - id: UC-034
@@ -572,4 +572,127 @@ use_cases:
       - "Context window metrics are queryable; compaction events trace back to their triggering context window"
     related_scenarios: [S3]
     related_cqs: [CQ-061, CQ-062, CQ-063, CQ-064, CQ-065]
+    priority: should_have
+
+  # ── v0.6.0 Use Cases (Phase A — P0) ────────────────────────────────
+
+  - id: UC-035
+    name: "Query external service capabilities and discovery"
+    actor: "Agent Developer / System Architect"
+    goal: "Discover what capabilities (tools, resources, prompts) each external service exposes and track capability discovery events"
+    preconditions:
+      - "Agent has connections to external services (MCP servers, APIs)"
+      - "Services expose typed capabilities (tool, resource, prompt)"
+    main_flow:
+      - "System registers an external service with transport and identifier metadata"
+      - "Agent connects to the service via a service connection"
+      - "A capability discovery event records what capabilities were found"
+      - "Developer queries capability surfaces per service and per type"
+    postconditions:
+      - "Service capability topology is queryable independently of integration"
+      - "Discovery events are traceable with timestamps and resulting capabilities"
+    related_scenarios: [S3, S7]
+    related_cqs: [CQ-079, CQ-080, CQ-081, CQ-082]
+    priority: must_have
+
+  - id: UC-036
+    name: "Manage runtime safety controls and audit trail"
+    actor: "Agent Developer / Compliance / Security"
+    goal: "Configure permission modes, sandbox policies, and hooks for agents, and audit all authorization decisions"
+    preconditions:
+      - "Agent operates under a configured permission mode"
+      - "Tool invocations may be intercepted by hooks"
+    main_flow:
+      - "Developer configures an agent with a permission mode and sandbox policy"
+      - "Hooks are registered to intercept specific tool invocations"
+      - "Each tool invocation generates an audit entry with an authorization decision and reason"
+      - "Compliance queries the audit log for denied or escalated operations"
+    postconditions:
+      - "Every governed invocation is traceable to a decision and rationale"
+      - "Hook interception history is queryable"
+      - "Safety mode and sandbox posture are explicit ontology objects"
+    related_scenarios: [S3, S7]
+    related_cqs: [CQ-083, CQ-084, CQ-085, CQ-086]
+    priority: must_have
+
+  - id: UC-037
+    name: "Track error recovery and resilience workflows"
+    actor: "AI Agent / System Architect / Operations"
+    goal: "Model and query recovery trajectories after failures, including retries, replanning, rollbacks, and human checkpoint decisions"
+    preconditions:
+      - "Tool invocations or integrations may fail"
+      - "Agent has recovery strategies (retry, replan, rollback)"
+    main_flow:
+      - "A failed tool invocation triggers an error recovery event"
+      - "The recovery event may spawn retry attempts, replan events, or rollback events"
+      - "For critical tasks, a checkpoint captures the decision point and outcome"
+      - "Operations queries the failure-to-recovery chain end-to-end"
+    postconditions:
+      - "Failure-to-recovery chains are queryable"
+      - "Retry and rollback semantics are visible in event history"
+      - "Checkpoint decisions are part of auditable task lifecycle"
+    related_scenarios: [S3, S7]
+    related_cqs: [CQ-087, CQ-088, CQ-089]
+    priority: must_have
+
+  # ── Phase B (P1) ──────────────────────────────────────────────────
+
+  - id: UC-038
+    name: "Trace tool invocation groups and typed results"
+    actor: "System Architect / Compliance"
+    goal: "Reconstruct parallel tool invocation groups, inspect typed result artifacts, and parse mixed-content messages into structured content blocks"
+    preconditions:
+      - "Agent has executed tool invocations, some in parallel"
+      - "Messages contain mixed content (text, tool-use blocks, images)"
+    main_flow:
+      - "Architect queries which tool invocations were grouped in a single turn"
+      - "System returns invocation groups with their member invocations"
+      - "Architect inspects the typed result artifact for each invocation"
+      - "Analyst queries content blocks of a message to distinguish text from tool-use"
+    postconditions:
+      - "Parallel tool use is reconstructable from ontology data"
+      - "Tool results are first-class entities with provenance"
+      - "Mixed-content messages are decomposed into typed blocks"
+    related_scenarios: [S1, S3]
+    related_cqs: [CQ-090, CQ-091, CQ-092]
+    priority: should_have
+
+  - id: UC-039
+    name: "Manage memory control plane and shared memory"
+    actor: "System Architect / AI Agent"
+    goal: "Track memory item provenance by source and scope, manage file-backed memory, and detect shared-memory write conflicts across agents"
+    preconditions:
+      - "Memory items exist with different sources (user, system, agent)"
+      - "Multiple agents may share memory artifacts"
+    main_flow:
+      - "Architect queries memory items filtered by source and scope"
+      - "System returns items with their backing file, source, and scope metadata"
+      - "Architect identifies shared memory artifacts and their owning agents"
+      - "System reports write conflicts on shared artifacts and resolution policies"
+    postconditions:
+      - "Memory items can be filtered by source and scope"
+      - "Shared memory and concurrent writes are traceable"
+      - "Memory governance integrates with existing policy model"
+    related_scenarios: [S2, S4, S5]
+    related_cqs: [CQ-093, CQ-094, CQ-095]
+    priority: should_have
+
+  - id: UC-040
+    name: "Classify dialog acts and track conversational grounding"
+    actor: "AI Agent / Ontology Engineer"
+    goal: "Classify turns by communicative function, track grounding evidence, and identify clarification exchanges before commitment"
+    preconditions:
+      - "Conversation has occurred with multiple turns"
+      - "Turns have pragmatic intent beyond raw content"
+    main_flow:
+      - "Agent or analyst classifies each turn's dialog act"
+      - "System records communicative function for each act"
+      - "Grounding acts contribute acceptance evidence to common ground"
+      - "Analyst queries which clarifications preceded commitments"
+    postconditions:
+      - "Dialog turns are classified beyond raw content"
+      - "Grounded versus ungrounded commitments are queryable"
+      - "Clarification and acceptance mechanics are model-visible"
+    related_scenarios: [S1, S4]
+    related_cqs: [CQ-096, CQ-097, CQ-098]
     priority: should_have

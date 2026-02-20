@@ -20,7 +20,7 @@ stakeholder_need,use_case_id,cq_id,ontology_terms,sparql_test
 "Track memory operations",UC-011,CQ-019,"MemoryOperation;Encoding;Retrieval;Consolidation;Forgetting;operatesOn",ontologies/personal_agent_ontology/tests/cq-019.sparql
 "Order events in session",UC-013,CQ-020,"Event;Session;inSession;hasTimestamp",ontologies/personal_agent_ontology/tests/cq-020.sparql
 "Determine temporal ordering of events",UC-014,CQ-021,"Event;hasTemporalExtent;time:Interval",ontologies/personal_agent_ontology/tests/cq-021.sparql
-"Track overlapping sessions",UC-005,CQ-022,"Session;hasTemporalExtent;time:Interval;time:before;time:after",ontologies/personal_agent_ontology/tests/cq-022.sparql (deferred - requires temporal reasoning)
+"Track overlapping sessions",UC-014,CQ-022,"Session;hasTemporalExtent;time:Interval;time:before;time:after",ontologies/personal_agent_ontology/tests/cq-022.sparql (deferred - requires temporal reasoning)
 "Find actions by agent in time period",UC-013,CQ-023,"Action;Agent;performedBy;hasTimestamp",ontologies/personal_agent_ontology/tests/cq-023.sparql
 "Classify events by type",UC-013,CQ-024,"Event;Turn;ToolInvocation;MemoryOperation",ontologies/personal_agent_ontology/tests/cq-024.sparql
 "List events in an episode",UC-007,CQ-025,"Episode;Event;recordedInEpisode",ontologies/personal_agent_ontology/tests/cq-025.sparql
@@ -77,3 +77,32 @@ stakeholder_need,use_case_id,cq_id,ontology_terms,sparql_test
 "Detect integration errors",UC-033,CQ-076,"Integration;IntegrationStatus;hasIntegrationStatus;Error",ontologies/personal_agent_ontology/tests/cq-076.sparql
 "Trace invocations to integrations",UC-034,CQ-077,"ToolInvocation;ToolDefinition;Integration;invokesTool;providesTool",ontologies/personal_agent_ontology/tests/cq-077.sparql
 "Query integration metadata",UC-033,CQ-078,"Integration;hasServiceName;hasEndpoint",ontologies/personal_agent_ontology/tests/cq-078.sparql
+"Query agent external services",UC-035,CQ-079,"Agent;ExternalService;hasExternalService",ontologies/personal_agent_ontology/tests/cq-079.sparql
+"Query service capabilities",UC-035,CQ-080,"ExternalService;ServiceCapability;exposesCapability",ontologies/personal_agent_ontology/tests/cq-080.sparql
+"Track capability discovery events",UC-035,CQ-081,"CapabilityDiscoveryEvent;ServiceCapability;discoveredCapability",ontologies/personal_agent_ontology/tests/cq-081.sparql
+"Classify service capabilities by type",UC-035,CQ-082,"ExternalService;ServiceToolCapability;ServiceResourceCapability;ServicePromptCapability",ontologies/personal_agent_ontology/tests/cq-082.sparql
+"Query agent permission mode",UC-036,CQ-083,"AIAgent;PermissionMode;operatesInMode",ontologies/personal_agent_ontology/tests/cq-083.sparql
+"Query agent sandbox policy",UC-036,CQ-084,"AIAgent;SandboxPolicy;enforcedBySandboxPolicy",ontologies/personal_agent_ontology/tests/cq-084.sparql
+"Track hook interceptions",UC-036,CQ-085,"Hook;HookExecution;ToolInvocation;interceptsInvocation",ontologies/personal_agent_ontology/tests/cq-085.sparql
+"Audit authorization decisions",UC-036,CQ-086,"AuditEntry;AuthorizationDecision;ToolInvocation;recordsDecision",ontologies/personal_agent_ontology/tests/cq-086.sparql
+"Track error recovery events",UC-037,CQ-087,"ErrorRecoveryEvent;ToolInvocation;recoveringFrom",ontologies/personal_agent_ontology/tests/cq-087.sparql
+"Query retry attempts",UC-037,CQ-088,"ErrorRecoveryEvent;RetryAttempt;hasAttemptCount",ontologies/personal_agent_ontology/tests/cq-088.sparql
+"Track human checkpoint decisions",UC-037,CQ-089,"Checkpoint;Task;CheckpointDecision;checkpointForTask",ontologies/personal_agent_ontology/tests/cq-089.sparql
+"Trace parallel tool invocation groups",UC-038,CQ-090,"ToolInvocationGroup;ToolInvocation;Turn;groupedInTurn;partOfInvocationGroup",ontologies/personal_agent_ontology/tests/cq-090.sparql
+"Query typed tool result artifacts",UC-038,CQ-091,"ToolInvocation;ToolResult;producedToolResult",ontologies/personal_agent_ontology/tests/cq-091.sparql
+"Classify message content blocks",UC-038,CQ-092,"Message;ContentBlock;ContentBlockType;hasContentBlock;hasContentBlockType;blockSequenceIndex",ontologies/personal_agent_ontology/tests/cq-092.sparql
+"Query memory item scope and source",UC-039,CQ-093,"MemoryItem;MemorySource;MemoryScope;hasMemorySource;hasMemoryScope",ontologies/personal_agent_ontology/tests/cq-093.sparql
+"Identify shared memory artifacts",UC-039,CQ-094,"SharedMemoryArtifact;Agent;sharedAcrossAgents",ontologies/personal_agent_ontology/tests/cq-094.sparql
+"Track memory write conflicts",UC-039,CQ-095,"MemoryWriteConflict;SharedMemoryArtifact;Agent;conflictOnArtifact;writesByAgent",ontologies/personal_agent_ontology/tests/cq-095.sparql
+"Classify turn communicative functions",UC-040,CQ-096,"Turn;DialogAct;CommunicativeFunction;hasDialogAct;hasCommunicativeFunction",ontologies/personal_agent_ontology/tests/cq-096.sparql
+"Track grounding evidence and acceptance",UC-040,CQ-097,"GroundingAct;CommonGround;AcceptanceEvidence;contributesToCommonGround;providesAcceptanceEvidence",ontologies/personal_agent_ontology/tests/cq-097.sparql
+"Query pre-commitment clarifications",UC-040,CQ-098,"ClarificationRequest;Turn;clarifiesTurn",ontologies/personal_agent_ontology/tests/cq-098.sparql
+"Track compaction item fate",UC-027,CQ-052,"CompactionEvent;CompactionDisposition;ItemFate",ontologies/personal_agent_ontology/tests/cq-052.sparql
+"Track compaction preservation rate",UC-027,CQ-053,"CompactionEvent;compactedItem",ontologies/personal_agent_ontology/tests/cq-053.sparql
+"Track memory access recency",UC-028,CQ-054,"MemoryItem;hasLastAccessTime",ontologies/personal_agent_ontology/tests/cq-054.sparql
+"Identify eviction candidates",UC-028,CQ-055,"MemoryItem;isEvictionCandidate",ontologies/personal_agent_ontology/tests/cq-055.sparql
+"Track cross-session continuity",UC-029,CQ-056,"Session;continuedFrom",ontologies/personal_agent_ontology/tests/cq-056.sparql
+"Identify entities by unique ID",UC-029,CQ-057,"AIAgent;Session;Conversation;hasAgentId;hasSessionId;hasConversationId",ontologies/personal_agent_ontology/tests/cq-057.sparql
+"Track task lifecycle transitions",UC-029,CQ-058,"TaskStatusTransition;fromStatus;toStatus",ontologies/personal_agent_ontology/tests/cq-058.sparql
+"Query previous session status",UC-029,CQ-059,"SessionStatusTransition;fromStatus",ontologies/personal_agent_ontology/tests/cq-059.sparql
+"Track transition triggers",UC-029,CQ-060,"StatusTransition;triggeredBy",ontologies/personal_agent_ontology/tests/cq-060.sparql

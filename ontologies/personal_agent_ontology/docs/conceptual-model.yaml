@@ -7,7 +7,7 @@ ontology:
   name: Personal Agent Ontology
   prefix: pao
   namespace: "https://purl.org/pao/"
-  version: "0.5.0"
+  version: "0.6.0-alpha"
   owl_profile: OWL 2 DL
   upper_ontology: BFO 2020 (ISO 21838-2)
 
@@ -130,7 +130,8 @@ modules:
     layer: problem_specific
     description: >
       Models the structure of agent-user dialogue including sessions,
-      turns, messages, tool use, and context compaction.
+      turns, messages, tool use, context compaction, dialog pragmatics,
+      and conversational grounding.
     depends_on:
       - pao-core
       - pao-event
@@ -146,14 +147,26 @@ modules:
       - CompactionDisposition
       - ContextWindow
       - CommunicationChannel
+      # Phase B: Tool/Message Trace
+      - ToolResult
+      - ToolInvocationGroup
+      - ContentBlock
+      - ContentBlockType
+      # Phase B: Dialog Pragmatics & Grounding
+      - DialogAct
+      - CommunicativeFunction
+      - CommonGround
+      - GroundingAct
+      - ClarificationRequest
+      - AcceptanceEvidence
 
   - id: pao-memory
     name: Memory
     layer: problem_specific
     description: >
       Multi-tier memory architecture modeling. Covers memory items,
-      storage tiers, claims with evidence, and memory lifecycle
-      operations (encoding, retrieval, consolidation, forgetting).
+      storage tiers, claims with evidence, memory lifecycle operations,
+      memory provenance (source/scope), shared memory, and write conflicts.
     depends_on:
       - pao-core
       - pao-event
@@ -173,6 +186,11 @@ modules:
       - Forgetting
       - Rehearsal
       - MemoryBlock
+      # Phase B: Memory Control Plane
+      - MemorySource
+      - MemoryScope
+      - SharedMemoryArtifact
+      - MemoryWriteConflict
 
   - id: pao-planning
     name: "Goals, Plans & Tasks"
@@ -340,6 +358,16 @@ taxonomy:
         bfo: "Process (BFO:0000015)"
         module: pao-conversation
         note: "Environmental feedback received by an agent during a session"
+      - class: MemoryWriteConflict
+        parent: Event
+        bfo: "Process (BFO:0000015)"
+        module: pao-memory
+        note: "Concurrent writes to the same shared memory artifact by multiple agents"
+      - class: GroundingAct
+        parent: Event
+        bfo: "Process (BFO:0000015)"
+        module: pao-conversation
+        note: "A participant contributes evidence to the common ground of a conversation"
       - class: StatusTransition
         parent: Event
         bfo: "Process (BFO:0000015)"
@@ -381,7 +409,7 @@ taxonomy:
             module: pao-memory
 
   # Disjointness (events):
-  # - [Action, Conversation, Session, Turn, CompactionEvent, ErasureEvent, MemoryOperation, Observation, StatusTransition] pairwise disjoint under Event
+  # - [Action, Conversation, Session, Turn, CompactionEvent, ErasureEvent, MemoryOperation, Observation, StatusTransition, MemoryWriteConflict, GroundingAct] pairwise disjoint under Event
   # - [Encoding, Retrieval, Consolidation, Forgetting, Rehearsal] DisjointUnion under MemoryOperation
   # - [SessionStatusTransition, TaskStatusTransition] pairwise disjoint under StatusTransition
 
@@ -486,11 +514,73 @@ taxonomy:
     module: pao-conversation
     note: "Configured communication endpoint through which agent-user dialogue occurs. Linked to Session via viaChannel."
 
+  # --- v0.6.0 Phase B: Tool/Message Trace Richness (pao-conversation) ---
+
+  - class: ToolResult
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-conversation
+    note: "Typed output artifact produced by a tool invocation"
+
+  - class: ToolInvocationGroup
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-conversation
+    note: "Groups tool invocations executed in parallel within a single turn"
+
+  - class: ContentBlock
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-conversation
+    note: "Typed segment of a message's content (text, tool use, tool result, image)"
+
+  # --- v0.6.0 Phase B: Memory Control Plane (pao-memory) ---
+
+  - class: SharedMemoryArtifact
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-memory
+    note: "Memory artifact accessible to multiple agents for shared read/write"
+
+  # --- v0.6.0 Phase B: Dialog Pragmatics & Grounding (pao-conversation) ---
+
+  - class: DialogAct
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-conversation
+    note: "Pragmatic classification of a turn's communicative intent (DIT++/ISO 24617-2 inspired)"
+
+  - class: CommonGround
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-conversation
+    note: "Accumulated shared knowledge state between conversation participants (Clark & Schaefer 1989)"
+
+  - class: ClarificationRequest
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-conversation
+    note: "Request for additional information to resolve ambiguity in a turn"
+
+  - class: AcceptanceEvidence
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-conversation
+    note: "Evidence that a participant has accepted or understood a proposition"
+
+  # Disjointness (Phase B GDCs): [ToolResult, ToolInvocationGroup, ContentBlock, SharedMemoryArtifact, DialogAct, CommonGround, ClarificationRequest, AcceptanceEvidence] pairwise disjoint
+
   - class: Integration
     parent: "prov:Entity"
     bfo: "GDC (BFO:0000031)"
     module: pao-core
-    note: "Configured connection to an external service (e.g., MCP server) that provides tools. Linked to Agent via hasIntegration."
+    note: >
+      Lightweight tool-grouping abstraction: groups tools by service name
+      and tracks IntegrationStatus. For simple use cases where capability
+      discovery and transport metadata are not needed. For richer modeling,
+      use ExternalService + ServiceConnection (pao-services module).
+      Both can coexist on the same agent — Integration for tool grouping,
+      ExternalService for full MCP-grade capability metadata.
 
   - class: RetentionPolicy
     parent: "prov:Entity"
@@ -498,7 +588,121 @@ taxonomy:
     module: pao-governance
     note: "Specifies how long memory items should be retained"
 
-  # Disjointness (governance): [PermissionPolicy, SafetyConstraint, ConsentRecord, RetentionPolicy] pairwise disjoint
+  # --- v0.6.0 Phase A: External Service Capability Model (pao-services) ---
+
+  - class: ExternalService
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-services
+    note: >
+      Full MCP-grade external service model with identity
+      (hasServiceIdentifier), transport (hasServiceTransport), and
+      capability taxonomy (exposesCapability). Canonical model for new
+      implementations. Connected to agents via hasExternalService and
+      runtime state via ServiceConnection. Supersedes Integration for
+      use cases requiring capability discovery or transport metadata.
+
+  - class: ServiceConnection
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-services
+    note: "Runtime connection between an agent and an external service. Carries ConnectionStatus."
+
+  - class: ServiceCapability
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-services
+    note: "Abstract parent for typed capabilities exposed by external services."
+    children:
+      - class: ServiceToolCapability
+        parent: ServiceCapability
+        bfo: "GDC (BFO:0000031)"
+        module: pao-services
+      - class: ServiceResourceCapability
+        parent: ServiceCapability
+        bfo: "GDC (BFO:0000031)"
+        module: pao-services
+      - class: ServicePromptCapability
+        parent: ServiceCapability
+        bfo: "GDC (BFO:0000031)"
+        module: pao-services
+
+  # Disjointness (capabilities): [ServiceToolCapability, ServiceResourceCapability, ServicePromptCapability] DisjointUnion under ServiceCapability
+
+  - class: CapabilityDiscoveryEvent
+    parent: Event
+    bfo: "Process (BFO:0000015)"
+    module: pao-services
+    note: "An event in which capabilities are discovered from an external service."
+
+  # --- v0.6.0 Phase A: Runtime Safety Control Plane (extends pao-governance) ---
+
+  - class: SandboxPolicy
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-governance
+    note: "Filesystem and network restriction policy imposed on an agent."
+
+  - class: Hook
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-governance
+    note: "Configured interceptor that can modify or block tool invocations."
+
+  - class: HookExecution
+    parent: Event
+    bfo: "Process (BFO:0000015)"
+    module: pao-governance
+    note: "An event in which a hook intercepts a tool invocation."
+
+  - class: AuditLog
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-governance
+    note: "Container for audit entries."
+
+  - class: AuditEntry
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-governance
+    note: "Records an authorization decision for a tool invocation with rationale."
+
+  # --- v0.6.0 Phase A: Recovery and Resilience (pao-recovery) ---
+
+  - class: ErrorRecoveryEvent
+    parent: Event
+    bfo: "Process (BFO:0000015)"
+    module: pao-recovery
+    note: "An event in which an agent initiates recovery after a failure."
+
+  - class: RetryAttempt
+    parent: Event
+    bfo: "Process (BFO:0000015)"
+    module: pao-recovery
+    note: "A retry of a failed operation."
+
+  - class: ReplanEvent
+    parent: Event
+    bfo: "Process (BFO:0000015)"
+    module: pao-recovery
+    note: "An event in which an agent generates a new plan after failure."
+
+  - class: RollbackEvent
+    parent: Event
+    bfo: "Process (BFO:0000015)"
+    module: pao-recovery
+    note: "An event in which an agent reverts changes from a failed operation."
+
+  - class: Checkpoint
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-recovery
+    note: "A decision point in a task where human approval may be required."
+
+  # Disjointness (governance): [PermissionPolicy, SafetyConstraint, ConsentRecord, RetentionPolicy, SandboxPolicy, Hook, AuditLog] pairwise disjoint
+  # Disjointness (services GDC): [ExternalService, ServiceConnection, ServiceCapability] pairwise disjoint
+  # Disjointness (services capabilities): [ServiceToolCapability, ServiceResourceCapability, ServicePromptCapability] DisjointUnion under ServiceCapability
+  # Disjointness (recovery events): [ErrorRecoveryEvent, RetryAttempt, ReplanEvent, RollbackEvent] pairwise disjoint under Event
   # Disjointness (cross-module GDC): CompactionDisposition disjoint with governance GDCs and other prov:Entity subclasses
 
   # --- Memory Tiers ---
@@ -578,8 +782,65 @@ taxonomy:
         individuals: [Connected, Disconnected, Error, Initializing]
         enumeration: true
         note: "Operational state of an integration connection"
+      - class: ConnectionStatus
+        parent: Status
+        bfo: "Value Partition"
+        module: pao-services
+        individuals: [Open, Closed, Reconnecting, Failed]
+        enumeration: true
+        note: "Runtime state of a ServiceConnection to an external service"
+      - class: PermissionMode
+        parent: Status
+        bfo: "Value Partition"
+        module: pao-governance
+        individuals: [Permissive, Standard, Restrictive]
+        enumeration: true
+        note: "Controls how strictly tool invocations are gated for an agent"
+      - class: AuthorizationDecision
+        parent: Status
+        bfo: "Value Partition"
+        module: pao-governance
+        individuals: [Allow, Deny, RequireApproval]
+        enumeration: true
+        note: "Outcome recorded in an AuditEntry for a tool invocation"
+      - class: CheckpointDecision
+        parent: Status
+        bfo: "Value Partition"
+        module: pao-governance
+        individuals: [Approved, Rejected, Deferred]
+        enumeration: true
+        note: "Human decision at a task checkpoint in the recovery workflow"
+      # Phase B additions
+      - class: ContentBlockType
+        parent: Status
+        bfo: "Value Partition"
+        module: pao-conversation
+        individuals: [TextBlock, ToolUseBlock, ToolResultBlock, ImageBlock]
+        enumeration: true
+        note: "Classifies the type of a content block within a message"
+      - class: MemorySource
+        parent: Status
+        bfo: "Value Partition"
+        module: pao-memory
+        individuals: [UserSource, SystemSource, AgentSource]
+        enumeration: true
+        note: "Classifies where a memory item originates"
+      - class: MemoryScope
+        parent: Status
+        bfo: "Value Partition"
+        module: pao-memory
+        individuals: [SessionScope, ProjectScope, GlobalScope]
+        enumeration: true
+        note: "Classifies the visibility scope of a memory item"
+      - class: CommunicativeFunction
+        parent: Status
+        bfo: "Value Partition"
+        module: pao-conversation
+        individuals: [Inform, Request, Confirm, Clarify, Accept, Reject]
+        enumeration: true
+        note: "Classifies the communicative purpose of a dialog act (DIT++/ISO 24617-2 curated subset)"
 
-  # Disjointness (status): [SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate, ChannelType, IntegrationStatus] pairwise disjoint under Status (not exhaustive)
+  # Disjointness (status): [SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate, ChannelType, IntegrationStatus, ConnectionStatus, PermissionMode, AuthorizationDecision, CheckpointDecision, ContentBlockType, MemorySource, MemoryScope, CommunicativeFunction] pairwise disjoint under Status (not exhaustive)
 
 # ═══════════════════════════════════════════════════════════════════════
 # DESIGN PATTERNS APPLIED
@@ -627,7 +888,7 @@ design_patterns:
 
   - id: ODP-6
     name: "Value Partition (Status)"
-    applied_to: [SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate, ChannelType, IntegrationStatus]
+    applied_to: [SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate, ChannelType, IntegrationStatus, ConnectionStatus, PermissionMode, AuthorizationDecision, CheckpointDecision, ContentBlockType, MemorySource, MemoryScope, CommunicativeFunction]
     description: >
       Status hierarchies with owl:oneOf enumeration of named individuals.
       Closed value spaces for reasoning.
@@ -701,16 +962,19 @@ design_decisions:
 # ═══════════════════════════════════════════════════════════════════════
 
 summary:
-  total_classes: 56       # was 52, +4 (CommunicationChannel, ChannelType, Integration, IntegrationStatus)
+  total_classes: 91       # was 77, +14 (v0.6.0 Phase B: 10 pao-conversation, 4 pao-memory)
   by_module:
-    pao-core: 9           # was 7, +2 (Integration, IntegrationStatus)
+    pao-core: 9
     pao-event: 10
-    pao-conversation: 12  # was 10, +2 (CommunicationChannel, ChannelType)
-    pao-memory: 15
+    pao-conversation: 22  # was 12, +10 (ToolResult, ToolInvocationGroup, ContentBlock, ContentBlockType, DialogAct, CommunicativeFunction, CommonGround, GroundingAct, ClarificationRequest, AcceptanceEvidence)
+    pao-memory: 19        # was 15, +4 (MemorySource, MemoryScope, SharedMemoryArtifact, MemoryWriteConflict)
     pao-planning: 4
-    pao-governance: 6
-  data_properties: 18     # was 16, +2 (hasServiceName, hasEndpoint for Integration metadata CQ-078)
-  named_individuals: 30   # was 21, +10 (6 ChannelType + 4 IntegrationStatus), -1 (PersonalData deprecated in v0.2.0)
+    pao-governance: 14
+    pao-services: 8
+    pao-recovery: 5
+  object_properties: 109  # was 93, +16 Phase B
+  data_properties: 24     # was 23, +1 (blockSequenceIndex)
+  named_individuals: 59   # was 43, +16 (4 ContentBlockType, 3 MemorySource, 3 MemoryScope, 6 CommunicativeFunction)
   imported_classes: "~16 (from PROV-O, OWL-Time, FOAF, ODRL)"
-  disjoint_sets: 12       # was 10, +2 (ChannelType, IntegrationStatus added to Status disjoint set)
+  disjoint_sets: 18       # was 16, +2 (Phase B event types + Phase B GDCs added to existing disjoint sets; 4 VP types added to Status disjoint set)
   covering_axioms: 2

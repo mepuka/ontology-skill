@@ -49,9 +49,9 @@ TIME_DECL_IRI = URIRef("https://purl.org/pao/time-declarations")
 FOAF_DECL_IRI = URIRef("https://purl.org/pao/foaf-declarations")
 ODRL_DECL_IRI = URIRef("https://purl.org/pao/odrl-declarations")
 BFO_DECL_IRI = URIRef("https://purl.org/pao/bfo-declarations")
-TBOX_VERSION_IRI = URIRef("https://purl.org/pao/0.5.0")
-REF_VERSION_IRI = URIRef("https://purl.org/pao/reference-individuals/0.5.0")
-DATA_VERSION_IRI = URIRef("https://purl.org/pao/data/0.5.0")
+TBOX_VERSION_IRI = URIRef("https://purl.org/pao/0.6.0")
+REF_VERSION_IRI = URIRef("https://purl.org/pao/reference-individuals/0.6.0")
+DATA_VERSION_IRI = URIRef("https://purl.org/pao/data/0.6.0")
 
 # Ontology project root (ontologies/personal_agent_ontology/)
 PROJECT = Path(__file__).resolve().parent.parent
@@ -248,7 +248,7 @@ def build_tbox(glossary: list[dict[str, str]]) -> Graph:
             ),
         )
     )
-    g.add((TBOX_IRI, OWL.versionInfo, Literal("0.5.0")))
+    g.add((TBOX_IRI, OWL.versionInfo, Literal("0.6.0")))
     g.add((TBOX_IRI, DCTERMS.created, Literal("2026-02-20")))
     g.add((TBOX_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((TBOX_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
@@ -302,7 +302,7 @@ def build_tbox(glossary: list[dict[str, str]]) -> Graph:
 
 
 def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
-    """Declare all 56 PAO classes with labels, definitions, and subclass axioms."""
+    """Declare all 92 PAO classes with labels, definitions, and subclass axioms."""
     # Class hierarchy: (class_name, parent_uri, bfo_uri_or_none)
     class_defs: list[tuple[str, URIRef | None, URIRef | None]] = [
         # pao-core
@@ -370,6 +370,49 @@ def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
         # pao-core (v0.5.0)
         ("Integration", PROV.Entity, OBO.BFO_0000031),
         ("IntegrationStatus", PAO.Status, None),  # Value Partition
+        # pao-services (v0.6.0)
+        ("ExternalService", PROV.Entity, OBO.BFO_0000031),
+        ("ServiceConnection", PROV.Entity, OBO.BFO_0000031),
+        ("ServiceCapability", PROV.Entity, OBO.BFO_0000031),
+        ("ServiceToolCapability", PAO.ServiceCapability, None),
+        ("ServiceResourceCapability", PAO.ServiceCapability, None),
+        ("ServicePromptCapability", PAO.ServiceCapability, None),
+        ("CapabilityDiscoveryEvent", PAO.Event, None),  # inherits Process
+        ("ConnectionStatus", PAO.Status, None),  # Value Partition
+        # pao-governance (v0.6.0)
+        ("SandboxPolicy", PROV.Entity, OBO.BFO_0000031),
+        ("Hook", PROV.Entity, OBO.BFO_0000031),
+        ("HookExecution", PAO.Event, None),  # inherits Process
+        ("AuditLog", PROV.Entity, OBO.BFO_0000031),
+        ("AuditEntry", PROV.Entity, OBO.BFO_0000031),
+        ("PermissionMode", PAO.Status, None),  # Value Partition
+        ("AuthorizationDecision", PAO.Status, None),  # Value Partition
+        ("CheckpointDecision", PAO.Status, None),  # Value Partition
+        # pao-recovery (v0.6.0)
+        ("ErrorRecoveryEvent", PAO.Event, None),  # inherits Process
+        ("RetryAttempt", PAO.Event, None),  # inherits Process
+        ("ReplanEvent", PAO.Event, None),  # inherits Process
+        ("RollbackEvent", PAO.Event, None),  # inherits Process
+        ("Checkpoint", PROV.Entity, OBO.BFO_0000031),
+        # pao-conversation (v0.6.0 Phase B: Tool/Message Trace)
+        ("ToolResult", PROV.Entity, OBO.BFO_0000031),
+        ("ToolInvocationGroup", PROV.Entity, OBO.BFO_0000031),
+        ("ContentBlock", PROV.Entity, OBO.BFO_0000031),
+        ("ContentBlockType", PAO.Status, None),  # Value Partition
+        # pao-memory (v0.6.0 Phase B: Memory Control Plane)
+        ("MemorySource", PAO.Status, None),  # Value Partition
+        ("MemoryScope", PAO.Status, None),  # Value Partition
+        ("SharedMemoryArtifact", PROV.Entity, OBO.BFO_0000031),
+        ("MemoryWriteConflict", PAO.Event, None),  # inherits Process
+        # pao-conversation (v0.6.0 Phase B: Dialog Pragmatics)
+        ("DialogAct", PROV.Entity, OBO.BFO_0000031),
+        ("CommunicativeFunction", PAO.Status, None),  # Value Partition
+        ("CommonGround", PROV.Entity, OBO.BFO_0000031),
+        ("GroundingAct", PAO.Event, None),  # inherits Process
+        ("ClarificationRequest", PROV.Entity, OBO.BFO_0000031),
+        ("AcceptanceEvidence", PROV.Entity, OBO.BFO_0000031),
+        # pao-memory (v0.6.0 review: claimType migration)
+        ("ClaimType", PAO.Status, None),  # Value Partition
     ]
 
     # Additional parent axioms (multiple inheritance)
@@ -398,7 +441,7 @@ def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
 
 
 def _add_object_properties(g: Graph) -> None:
-    """Declare all 72 object properties."""
+    """Declare all 92 object properties."""
     # Each tuple: (name, domain, range, characteristics, definition)
     obj_props: list[tuple[str, URIRef | None, URIRef | None, list[str], str]] = [
         # pao-core: generic part-whole
@@ -570,7 +613,7 @@ def _add_object_properties(g: Graph) -> None:
         (
             "stores",
             PAO.MemoryTier,
-            None,
+            PAO.MemoryItem,
             [],
             "Links a memory tier to a memory item it currently holds.",
         ),
@@ -916,6 +959,279 @@ def _add_object_properties(g: Graph) -> None:
             ["functional"],
             "Links an integration to its current operational status.",
         ),
+        # v0.6.0: External Service Capability
+        (
+            "hasExternalService",
+            PAO.Agent,
+            PAO.ExternalService,
+            [],
+            "Links an agent to an external service it is configured to access.",
+        ),
+        (
+            "hasServiceConnection",
+            PAO.Agent,
+            PAO.ServiceConnection,
+            [],
+            "Links an agent to a runtime connection to an external service.",
+        ),
+        (
+            "connectsToService",
+            PAO.ServiceConnection,
+            PAO.ExternalService,
+            ["functional"],
+            "Links a service connection to the external service it connects to.",
+        ),
+        (
+            "hasConnectionStatus",
+            PAO.ServiceConnection,
+            PAO.ConnectionStatus,
+            ["functional"],
+            "Links a service connection to its runtime status.",
+        ),
+        (
+            "exposesCapability",
+            PAO.ExternalService,
+            PAO.ServiceCapability,
+            [],
+            "Links an external service to a capability it exposes.",
+        ),
+        (
+            "discoveredCapability",
+            PAO.CapabilityDiscoveryEvent,
+            PAO.ServiceCapability,
+            [],
+            "Links a capability discovery event to a capability it discovered.",
+        ),
+        (
+            "discoveryAgainstService",
+            PAO.CapabilityDiscoveryEvent,
+            PAO.ExternalService,
+            ["functional"],
+            "Links a capability discovery event to the service it queried.",
+        ),
+        # v0.6.0: Runtime Safety Control Plane
+        (
+            "operatesInMode",
+            PAO.AIAgent,
+            PAO.PermissionMode,
+            ["functional"],
+            "Links an AI agent to the permission mode it currently operates under.",
+        ),
+        (
+            "enforcedBySandboxPolicy",
+            PAO.AIAgent,
+            PAO.SandboxPolicy,
+            ["functional"],
+            "Links an AI agent to the sandbox policy that constrains its execution.",
+        ),
+        (
+            "hasHook",
+            PAO.AIAgent,
+            PAO.Hook,
+            [],
+            "Links an AI agent to a hook configured for tool invocation interception.",
+        ),
+        (
+            "hookTriggeredExecution",
+            PAO.Hook,
+            PAO.HookExecution,
+            [],
+            "Links a hook to an execution instance it triggered.",
+        ),
+        (
+            "interceptsInvocation",
+            PAO.HookExecution,
+            PAO.ToolInvocation,
+            ["functional"],
+            "Links a hook execution to the tool invocation it intercepted.",
+        ),
+        (
+            "writtenToAuditLog",
+            PAO.AuditEntry,
+            PAO.AuditLog,
+            ["functional"],
+            "Links an audit entry to the audit log it belongs to.",
+        ),
+        (
+            "recordsDecision",
+            PAO.AuditEntry,
+            PAO.AuthorizationDecision,
+            ["functional"],
+            "Links an audit entry to the authorization decision it records.",
+        ),
+        (
+            "auditForInvocation",
+            PAO.AuditEntry,
+            PAO.ToolInvocation,
+            ["functional"],
+            "Links an audit entry to the tool invocation it documents.",
+        ),
+        # v0.6.0: Recovery and Resilience
+        (
+            "recoveringFrom",
+            PAO.ErrorRecoveryEvent,
+            PAO.ToolInvocation,
+            ["functional"],
+            "Links an error recovery event to the failed tool invocation that triggered it.",
+        ),
+        (
+            "attemptedRetry",
+            PAO.ErrorRecoveryEvent,
+            PAO.RetryAttempt,
+            [],
+            "Links an error recovery event to a retry attempt it initiated.",
+        ),
+        (
+            "triggeredReplan",
+            PAO.ErrorRecoveryEvent,
+            PAO.ReplanEvent,
+            ["functional"],
+            "Links an error recovery event to the replan event it triggered.",
+        ),
+        (
+            "triggeredRollback",
+            PAO.ErrorRecoveryEvent,
+            PAO.RollbackEvent,
+            ["functional"],
+            "Links an error recovery event to the rollback event it triggered.",
+        ),
+        (
+            "checkpointForTask",
+            PAO.Checkpoint,
+            PAO.Task,
+            ["functional"],
+            "Links a checkpoint to the task it gates.",
+        ),
+        (
+            "checkpointDecision",
+            PAO.Checkpoint,
+            PAO.CheckpointDecision,
+            ["functional"],
+            "Links a checkpoint to the human decision recorded for it.",
+        ),
+        # v0.6.0 review: claimType migration (string → controlled vocab)
+        (
+            "claimType",
+            PAO.Claim,
+            PAO.ClaimType,
+            ["functional"],
+            "Links a claim to its type classifier.",
+        ),
+        # v0.6.0 Phase B: Tool/Message Trace Richness
+        (
+            "partOfInvocationGroup",
+            PAO.ToolInvocation,
+            PAO.ToolInvocationGroup,
+            [],
+            "Links a tool invocation to the parallel invocation group it belongs to.",
+        ),
+        (
+            "groupedInTurn",
+            PAO.ToolInvocationGroup,
+            PAO.Turn,
+            ["functional"],
+            "Links an invocation group to the turn in which it was executed.",
+        ),
+        (
+            "producedToolResult",
+            PAO.ToolInvocation,
+            PAO.ToolResult,
+            ["functional"],
+            "Links a tool invocation to the result artifact it produced.",
+        ),
+        (
+            "hasContentBlock",
+            PAO.Message,
+            PAO.ContentBlock,
+            [],
+            "Links a message to one of its typed content blocks.",
+        ),
+        (
+            "hasContentBlockType",
+            PAO.ContentBlock,
+            PAO.ContentBlockType,
+            ["functional"],
+            "Links a content block to its type classification.",
+        ),
+        # v0.6.0 Phase B: Memory Control Plane and Sharing
+        (
+            "hasMemorySource",
+            PAO.MemoryItem,
+            PAO.MemorySource,
+            ["functional"],
+            "Links a memory item to its origination source.",
+        ),
+        (
+            "hasMemoryScope",
+            PAO.MemoryItem,
+            PAO.MemoryScope,
+            ["functional"],
+            "Links a memory item to its visibility scope.",
+        ),
+        (
+            "sharedAcrossAgents",
+            PAO.SharedMemoryArtifact,
+            PAO.Agent,
+            [],
+            "Links a shared memory artifact to an agent that has access to it.",
+        ),
+        (
+            "writesByAgent",
+            PAO.MemoryWriteConflict,
+            PAO.Agent,
+            [],
+            "Links a memory write conflict to an agent involved in the concurrent write.",
+        ),
+        (
+            "conflictOnArtifact",
+            PAO.MemoryWriteConflict,
+            PAO.SharedMemoryArtifact,
+            ["functional"],
+            "Links a memory write conflict to the shared artifact in contention.",
+        ),
+        (
+            "resolvedByPolicy",
+            PAO.MemoryWriteConflict,
+            PAO.PermissionPolicy,
+            [],
+            "Links a memory write conflict to the policy that resolved it.",
+        ),
+        # v0.6.0 Phase B: Dialog Pragmatics and Grounding
+        (
+            "hasDialogAct",
+            PAO.Turn,
+            PAO.DialogAct,
+            [],
+            "Links a turn to a dialog act it performs.",
+        ),
+        (
+            "hasCommunicativeFunction",
+            PAO.DialogAct,
+            PAO.CommunicativeFunction,
+            ["functional"],
+            "Links a dialog act to its communicative function classification.",
+        ),
+        (
+            "contributesToCommonGround",
+            PAO.GroundingAct,
+            PAO.CommonGround,
+            ["functional"],
+            "Links a grounding act to the common ground it updates.",
+        ),
+        (
+            "providesAcceptanceEvidence",
+            PAO.GroundingAct,
+            PAO.AcceptanceEvidence,
+            [],
+            "Links a grounding act to evidence of acceptance or understanding.",
+        ),
+        (
+            "clarifiesTurn",
+            PAO.ClarificationRequest,
+            PAO.Turn,
+            ["functional"],
+            "Links a clarification request to the turn it seeks to clarify.",
+        ),
     ]
 
     for name, domain, range_, chars, defn in obj_props:
@@ -934,7 +1250,7 @@ def _add_object_properties(g: Graph) -> None:
 
 
 def _add_data_properties(g: Graph) -> None:
-    """Declare all 18 data properties."""
+    """Declare all 23 data properties."""
     data_props: list[tuple[str, URIRef | None, URIRef, list[str], str]] = [
         (
             "hasTimestamp",
@@ -963,13 +1279,6 @@ def _add_data_properties(g: Graph) -> None:
             XSD.decimal,
             ["functional"],
             "The confidence level of a claim, between 0.0 and 1.0.",
-        ),
-        (
-            "claimType",
-            PAO.Claim,
-            XSD.string,
-            ["functional"],
-            "A classifier string indicating the kind of claim.",
         ),
         # v0.2.0: Memory block properties
         (
@@ -1069,6 +1378,52 @@ def _add_data_properties(g: Graph) -> None:
             ["functional"],
             "The endpoint URI of the external service an integration connects to.",
         ),
+        # v0.6.0: External Service metadata
+        (
+            "hasServiceTransport",
+            PAO.ExternalService,
+            XSD.string,
+            ["functional"],
+            "The transport protocol of an external service (e.g. stdio, sse, http).",
+        ),
+        (
+            "hasServiceIdentifier",
+            PAO.ExternalService,
+            XSD.string,
+            ["functional"],
+            "A unique string identifier for an external service configuration.",
+        ),
+        # v0.6.0: Runtime Safety metadata
+        (
+            "hasDecisionReason",
+            PAO.AuditEntry,
+            XSD.string,
+            ["functional"],
+            "A textual justification for the authorization decision in an audit entry.",
+        ),
+        # v0.6.0: Recovery metadata
+        (
+            "hasAttemptCount",
+            PAO.ErrorRecoveryEvent,
+            XSD.nonNegativeInteger,
+            ["functional"],
+            "The number of retry attempts made during an error recovery event.",
+        ),
+        (
+            "hasRecoveryOutcome",
+            PAO.ErrorRecoveryEvent,
+            XSD.string,
+            ["functional"],
+            "The outcome of an error recovery event (e.g. resolved, escalated, abandoned).",
+        ),
+        # v0.6.0 Phase B: Tool/Message Trace
+        (
+            "blockSequenceIndex",
+            PAO.ContentBlock,
+            XSD.nonNegativeInteger,
+            ["functional"],
+            "The zero-based ordinal position of a content block within its message.",
+        ),
     ]
 
     for name, domain, range_, chars, defn in data_props:
@@ -1097,6 +1452,8 @@ def _add_property_hierarchy(g: Graph) -> None:
     # hasStatus hierarchy
     g.add((PAO.hasComplianceStatus, RDFS.subPropertyOf, PAO.hasStatus))
     g.add((PAO.hasIntegrationStatus, RDFS.subPropertyOf, PAO.hasStatus))
+    g.add((PAO.hasConnectionStatus, RDFS.subPropertyOf, PAO.hasStatus))
+    g.add((PAO.checkpointDecision, RDFS.subPropertyOf, PAO.hasStatus))
     # compactedItem is subPropertyOf prov:used
     g.add((PAO.compactedItem, RDFS.subPropertyOf, PROV.used))
 
@@ -1230,6 +1587,48 @@ def _add_existential_restrictions(g: Graph) -> None:
         (PAO.Integration, PAO.providesTool, PAO.ToolDefinition),
         # CQ-073: Integration has status
         (PAO.Integration, PAO.hasIntegrationStatus, PAO.IntegrationStatus),
+        # CQ-079: Agent has external service
+        (PAO.AIAgent, PAO.hasExternalService, PAO.ExternalService),
+        # CQ-080: ServiceConnection connects to service and has status
+        (PAO.ServiceConnection, PAO.connectsToService, PAO.ExternalService),
+        (PAO.ServiceConnection, PAO.hasConnectionStatus, PAO.ConnectionStatus),
+        # CQ-081: ExternalService exposes capabilities
+        (PAO.ExternalService, PAO.exposesCapability, PAO.ServiceCapability),
+        # CQ-082: CapabilityDiscoveryEvent discovers capability against service
+        (PAO.CapabilityDiscoveryEvent, PAO.discoveredCapability, PAO.ServiceCapability),
+        (PAO.CapabilityDiscoveryEvent, PAO.discoveryAgainstService, PAO.ExternalService),
+        # CQ-083: AIAgent operates in permission mode
+        (PAO.AIAgent, PAO.operatesInMode, PAO.PermissionMode),
+        # CQ-084: AIAgent has hooks
+        (PAO.AIAgent, PAO.hasHook, PAO.Hook),
+        # CQ-085: HookExecution intercepts invocation
+        (PAO.HookExecution, PAO.interceptsInvocation, PAO.ToolInvocation),
+        # CQ-086: AuditEntry records decision for invocation in log
+        (PAO.AuditEntry, PAO.writtenToAuditLog, PAO.AuditLog),
+        (PAO.AuditEntry, PAO.recordsDecision, PAO.AuthorizationDecision),
+        (PAO.AuditEntry, PAO.auditForInvocation, PAO.ToolInvocation),
+        # CQ-087: ErrorRecoveryEvent recovering from invocation
+        (PAO.ErrorRecoveryEvent, PAO.recoveringFrom, PAO.ToolInvocation),
+        # CQ-088: Checkpoint gates task with decision
+        (PAO.Checkpoint, PAO.checkpointForTask, PAO.Task),
+        (PAO.Checkpoint, PAO.checkpointDecision, PAO.CheckpointDecision),
+        # CQ-090: ToolInvocationGroup grouped in turn
+        (PAO.ToolInvocationGroup, PAO.groupedInTurn, PAO.Turn),
+        # CQ-091: ToolInvocation produces result
+        (PAO.ToolInvocation, PAO.producedToolResult, PAO.ToolResult),
+        # CQ-092: ContentBlock has type
+        (PAO.ContentBlock, PAO.hasContentBlockType, PAO.ContentBlockType),
+        # CQ-094: SharedMemoryArtifact shared across agents
+        (PAO.SharedMemoryArtifact, PAO.sharedAcrossAgents, PAO.Agent),
+        # CQ-095: MemoryWriteConflict on artifact by agent
+        (PAO.MemoryWriteConflict, PAO.conflictOnArtifact, PAO.SharedMemoryArtifact),
+        (PAO.MemoryWriteConflict, PAO.writesByAgent, PAO.Agent),
+        # CQ-096: DialogAct has communicative function
+        (PAO.DialogAct, PAO.hasCommunicativeFunction, PAO.CommunicativeFunction),
+        # CQ-097: GroundingAct contributes to common ground
+        (PAO.GroundingAct, PAO.contributesToCommonGround, PAO.CommonGround),
+        # CQ-098: ClarificationRequest clarifies turn
+        (PAO.ClarificationRequest, PAO.clarifiesTurn, PAO.Turn),
     ]
     for cls, prop, filler in restrictions:
         _add_existential(g, cls, prop, filler)
@@ -1264,6 +1663,16 @@ def _add_disjoint_unions(g: Graph) -> None:
             PAO.ProceduralMemory,
         ],
     )
+    # ServiceCapability DisjointUnionOf 3 subtypes (v0.6.0)
+    _add_disjoint_union(
+        g,
+        PAO.ServiceCapability,
+        [
+            PAO.ServiceToolCapability,
+            PAO.ServiceResourceCapability,
+            PAO.ServicePromptCapability,
+        ],
+    )
     # MemoryOperation DisjointUnionOf 5 subtypes
     _add_disjoint_union(
         g,
@@ -1282,7 +1691,7 @@ def _add_disjointness_axioms(g: Graph) -> None:
     """Add AllDisjointClasses axioms."""
     # Agent subtypes
     _add_all_disjoint_classes(g, [PAO.AIAgent, PAO.HumanUser, PAO.Organization])
-    # Event subtypes (9-way)
+    # Event subtypes (17-way)
     _add_all_disjoint_classes(
         g,
         [
@@ -1295,13 +1704,21 @@ def _add_disjointness_axioms(g: Graph) -> None:
             PAO.MemoryOperation,
             PAO.Observation,
             PAO.StatusTransition,
+            PAO.CapabilityDiscoveryEvent,
+            PAO.HookExecution,
+            PAO.ErrorRecoveryEvent,
+            PAO.RetryAttempt,
+            PAO.ReplanEvent,
+            PAO.RollbackEvent,
+            PAO.MemoryWriteConflict,  # v0.6.0 Phase B
+            PAO.GroundingAct,  # v0.6.0 Phase B
         ],
     )
     # StatusTransition subtypes
     _add_all_disjoint_classes(g, [PAO.SessionStatusTransition, PAO.TaskStatusTransition])
     # MemoryItem subtypes
     _add_all_disjoint_classes(g, [PAO.Episode, PAO.Claim, PAO.MemoryBlock])
-    # Status subtypes
+    # Status subtypes (15-way)
     _add_all_disjoint_classes(
         g,
         [
@@ -1312,12 +1729,29 @@ def _add_disjointness_axioms(g: Graph) -> None:
             PAO.ItemFate,
             PAO.ChannelType,
             PAO.IntegrationStatus,
+            PAO.ConnectionStatus,
+            PAO.PermissionMode,
+            PAO.AuthorizationDecision,
+            PAO.CheckpointDecision,
+            PAO.ContentBlockType,  # v0.6.0 Phase B
+            PAO.MemorySource,  # v0.6.0 Phase B
+            PAO.MemoryScope,  # v0.6.0 Phase B
+            PAO.CommunicativeFunction,  # v0.6.0 Phase B
+            PAO.ClaimType,  # v0.6.0 review
         ],
     )
-    # Governance types
+    # Governance types (7-way)
     _add_all_disjoint_classes(
         g,
-        [PAO.PermissionPolicy, PAO.SafetyConstraint, PAO.ConsentRecord, PAO.RetentionPolicy],
+        [
+            PAO.PermissionPolicy,
+            PAO.SafetyConstraint,
+            PAO.ConsentRecord,
+            PAO.RetentionPolicy,
+            PAO.SandboxPolicy,
+            PAO.Hook,
+            PAO.AuditLog,
+        ],
     )
     # Cross-module GDC disjointness: information artifacts
     _add_all_disjoint_classes(
@@ -1340,7 +1774,37 @@ def _add_disjointness_axioms(g: Graph) -> None:
             PAO.ContextWindow,
             PAO.CommunicationChannel,
             PAO.Integration,
+            PAO.ExternalService,
+            PAO.ServiceConnection,
+            PAO.ServiceCapability,
+            PAO.SandboxPolicy,
+            PAO.Hook,
+            PAO.AuditLog,
+            PAO.AuditEntry,
+            PAO.Checkpoint,
+            PAO.ToolResult,  # v0.6.0 Phase B
+            PAO.ToolInvocationGroup,  # v0.6.0 Phase B
+            PAO.ContentBlock,  # v0.6.0 Phase B
+            PAO.SharedMemoryArtifact,  # v0.6.0 Phase B
+            PAO.DialogAct,  # v0.6.0 Phase B
+            PAO.CommonGround,  # v0.6.0 Phase B
+            PAO.ClarificationRequest,  # v0.6.0 Phase B
+            PAO.AcceptanceEvidence,  # v0.6.0 Phase B
         ],
+    )
+    # ServiceCapability subtypes (covered by DisjointUnion, but explicit)
+    _add_all_disjoint_classes(
+        g,
+        [
+            PAO.ServiceToolCapability,
+            PAO.ServiceResourceCapability,
+            PAO.ServicePromptCapability,
+        ],
+    )
+    # Recovery event subtypes
+    _add_all_disjoint_classes(
+        g,
+        [PAO.RetryAttempt, PAO.ReplanEvent, PAO.RollbackEvent],
     )
     # MemoryTier subtypes (covered by DisjointUnion, but explicit for clarity)
     _add_all_disjoint_classes(
@@ -1417,7 +1881,7 @@ def build_reference_individuals(glossary: list[dict[str, str]]) -> Graph:
             ),
         )
     )
-    g.add((REF_IRI, OWL.versionInfo, Literal("0.5.0")))
+    g.add((REF_IRI, OWL.versionInfo, Literal("0.6.0")))
     g.add((REF_IRI, DCTERMS.created, Literal("2026-02-20")))
     g.add((REF_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((REF_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
@@ -1489,16 +1953,62 @@ def build_reference_individuals(glossary: list[dict[str, str]]) -> Graph:
     initializing = _add_individual("Initializing", PAO.IntegrationStatus)
     _add_all_different(g, [connected, disconnected, error_status, initializing])
 
-    # --- Classifier individuals (used as string property values) ---
-    # UserPreference is a reference label, NOT an instance of a domain class.
-    for cname in ("UserPreference",):
-        uri = PAO[cname]
-        g.add((uri, RDF.type, OWL.NamedIndividual))
-        g.add((uri, RDFS.label, Literal(to_label(cname), lang="en")))
-        if cname in ind_lookup:
-            defn = ind_lookup[cname].get("definition", "")
-            if defn:
-                g.add((uri, SKOS.definition, Literal(defn, lang="en")))
+    # --- Connection status individuals (v0.6.0) ---
+    conn_open = _add_individual("Open", PAO.ConnectionStatus)
+    conn_closed = _add_individual("Closed", PAO.ConnectionStatus)
+    reconnecting = _add_individual("Reconnecting", PAO.ConnectionStatus)
+    conn_failed = _add_individual("Failed", PAO.ConnectionStatus)
+    _add_all_different(g, [conn_open, conn_closed, reconnecting, conn_failed])
+
+    # --- Permission mode individuals (v0.6.0) ---
+    permissive = _add_individual("Permissive", PAO.PermissionMode)
+    standard = _add_individual("Standard", PAO.PermissionMode)
+    restrictive = _add_individual("Restrictive", PAO.PermissionMode)
+    _add_all_different(g, [permissive, standard, restrictive])
+
+    # --- Authorization decision individuals (v0.6.0) ---
+    allow = _add_individual("Allow", PAO.AuthorizationDecision)
+    deny = _add_individual("Deny", PAO.AuthorizationDecision)
+    require_approval = _add_individual("RequireApproval", PAO.AuthorizationDecision)
+    _add_all_different(g, [allow, deny, require_approval])
+
+    # --- Checkpoint decision individuals (v0.6.0) ---
+    approved = _add_individual("Approved", PAO.CheckpointDecision)
+    rejected = _add_individual("Rejected", PAO.CheckpointDecision)
+    deferred = _add_individual("Deferred", PAO.CheckpointDecision)
+    _add_all_different(g, [approved, rejected, deferred])
+
+    # --- Content block type individuals (v0.6.0 Phase B) ---
+    text_block = _add_individual("TextBlock", PAO.ContentBlockType)
+    tool_use_block = _add_individual("ToolUseBlock", PAO.ContentBlockType)
+    tool_result_block = _add_individual("ToolResultBlock", PAO.ContentBlockType)
+    image_block = _add_individual("ImageBlock", PAO.ContentBlockType)
+    _add_all_different(g, [text_block, tool_use_block, tool_result_block, image_block])
+
+    # --- Memory source individuals (v0.6.0 Phase B) ---
+    user_source = _add_individual("UserSource", PAO.MemorySource)
+    system_source = _add_individual("SystemSource", PAO.MemorySource)
+    agent_source = _add_individual("AgentSource", PAO.MemorySource)
+    _add_all_different(g, [user_source, system_source, agent_source])
+
+    # --- Memory scope individuals (v0.6.0 Phase B) ---
+    session_scope = _add_individual("SessionScope", PAO.MemoryScope)
+    project_scope = _add_individual("ProjectScope", PAO.MemoryScope)
+    global_scope = _add_individual("GlobalScope", PAO.MemoryScope)
+    _add_all_different(g, [session_scope, project_scope, global_scope])
+
+    # --- Communicative function individuals (v0.6.0 Phase B) ---
+    inform = _add_individual("Inform", PAO.CommunicativeFunction)
+    request = _add_individual("Request", PAO.CommunicativeFunction)
+    confirm = _add_individual("Confirm", PAO.CommunicativeFunction)
+    clarify = _add_individual("Clarify", PAO.CommunicativeFunction)
+    accept = _add_individual("Accept", PAO.CommunicativeFunction)
+    reject = _add_individual("Reject", PAO.CommunicativeFunction)
+    _add_all_different(g, [inform, request, confirm, clarify, accept, reject])
+
+    # --- Claim type individuals (v0.6.0 review: controlled vocab) ---
+    user_preference = _add_individual("UserPreference", PAO.ClaimType)
+    _add_all_different(g, [user_preference])
 
     # --- Enumeration axioms (owl:oneOf) ---
     # These are on the classes, so they go in the TBox conceptually,
@@ -1517,6 +2027,21 @@ def build_reference_individuals(glossary: list[dict[str, str]]) -> Graph:
     )
     _add_enumeration(
         g, PAO.IntegrationStatus, [connected, disconnected, error_status, initializing]
+    )
+    _add_enumeration(g, PAO.ConnectionStatus, [conn_open, conn_closed, reconnecting, conn_failed])
+    _add_enumeration(g, PAO.PermissionMode, [permissive, standard, restrictive])
+    _add_enumeration(g, PAO.AuthorizationDecision, [allow, deny, require_approval])
+    _add_enumeration(g, PAO.CheckpointDecision, [approved, rejected, deferred])
+    _add_enumeration(
+        g, PAO.ContentBlockType, [text_block, tool_use_block, tool_result_block, image_block]
+    )
+    _add_enumeration(g, PAO.ClaimType, [user_preference])
+    _add_enumeration(g, PAO.MemorySource, [user_source, system_source, agent_source])
+    _add_enumeration(g, PAO.MemoryScope, [session_scope, project_scope, global_scope])
+    _add_enumeration(
+        g,
+        PAO.CommunicativeFunction,
+        [inform, request, confirm, clarify, accept, reject],
     )
 
     return g
@@ -1556,7 +2081,7 @@ def build_abox_data() -> Graph:
             ),
         )
     )
-    g.add((DATA_IRI, OWL.versionInfo, Literal("0.5.0")))
+    g.add((DATA_IRI, OWL.versionInfo, Literal("0.6.0")))
     g.add((DATA_IRI, DCTERMS.created, Literal("2026-02-20")))
     g.add((DATA_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((DATA_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
@@ -1582,6 +2107,13 @@ def build_abox_data() -> Graph:
     _add_sample_context_window(g)
     _add_sample_channels(g)
     _add_sample_integrations(g)
+    _add_sample_external_services(g)
+    _add_sample_runtime_safety(g)
+    _add_sample_recovery(g)
+    _add_sample_tool_trace(g)
+    _add_sample_memory_control_plane(g)
+    _add_sample_dialog_pragmatics(g)
+    _ensure_temporal_extents(g)
 
     return g
 
@@ -1874,7 +2406,7 @@ def _add_sample_memory(g: Graph) -> None:
     g.add((claim1, RDFS.label, Literal("user preference: dark mode", lang="en")))
     g.add((claim1, PAO.hasContent, Literal("User prefers dark mode")))
     g.add((claim1, PAO.hasConfidence, Literal("0.9", datatype=XSD.decimal)))
-    g.add((claim1, PAO.claimType, Literal("UserPreference")))
+    g.add((claim1, PAO.claimType, PAO.UserPreference))
     g.add((claim1, PAO.hasTimestamp, Literal("2026-02-18T10:10:00", datatype=XSD.dateTime)))
     g.add((claim1, PAO.aboutAgent, PAO.alice_user))
     g.add((claim1, PAO.storedIn, sm))
@@ -1891,7 +2423,7 @@ def _add_sample_memory(g: Graph) -> None:
     g.add((claim2, RDFS.label, Literal("user preference: dark mode (revised)", lang="en")))
     g.add((claim2, PAO.hasContent, Literal("User strongly prefers dark mode with high contrast")))
     g.add((claim2, PAO.hasConfidence, Literal("0.95", datatype=XSD.decimal)))
-    g.add((claim2, PAO.claimType, Literal("UserPreference")))
+    g.add((claim2, PAO.claimType, PAO.UserPreference))
     g.add((claim2, PAO.aboutAgent, PAO.alice_user))
     g.add((claim2, PAO.storedIn, sm))
     g.add((claim2, PROV.wasAttributedTo, PAO.claude_agent))
@@ -2365,6 +2897,335 @@ def _add_sample_integrations(g: Graph) -> None:
     g.add((PAO.claude_agent, PAO.hasIntegration, int2))
 
 
+def _add_sample_external_services(g: Graph) -> None:
+    """Add sample external service individuals (CQ-079 through CQ-082)."""
+    # External service: GitHub MCP
+    svc1 = PAO.ext_svc_github
+    g.add((svc1, RDF.type, PAO.ExternalService))
+    g.add((svc1, RDF.type, OWL.NamedIndividual))
+    g.add((svc1, RDFS.label, Literal("GitHub MCP service", lang="en")))
+    g.add((svc1, PAO.hasServiceTransport, Literal("stdio")))
+    g.add((svc1, PAO.hasServiceIdentifier, Literal("github-mcp-server")))
+
+    # Tool capability exposed by service
+    cap1 = PAO.cap_github_read
+    g.add((cap1, RDF.type, PAO.ServiceToolCapability))
+    g.add((cap1, RDF.type, OWL.NamedIndividual))
+    g.add((cap1, RDFS.label, Literal("GitHub read capability", lang="en")))
+    g.add((svc1, PAO.exposesCapability, cap1))
+
+    # Resource capability
+    cap2 = PAO.cap_github_repo
+    g.add((cap2, RDF.type, PAO.ServiceResourceCapability))
+    g.add((cap2, RDF.type, OWL.NamedIndividual))
+    g.add((cap2, RDFS.label, Literal("GitHub repo resource capability", lang="en")))
+    g.add((svc1, PAO.exposesCapability, cap2))
+
+    # Prompt capability
+    cap3 = PAO.cap_github_prompt
+    g.add((cap3, RDF.type, PAO.ServicePromptCapability))
+    g.add((cap3, RDF.type, OWL.NamedIndividual))
+    g.add((cap3, RDFS.label, Literal("GitHub code-review prompt capability", lang="en")))
+    g.add((svc1, PAO.exposesCapability, cap3))
+
+    # Link agent to service (CQ-079)
+    g.add((PAO.claude_agent, PAO.hasExternalService, svc1))
+
+    # Service connection with status (CQ-080)
+    conn1 = PAO.svc_conn_github_01
+    g.add((conn1, RDF.type, PAO.ServiceConnection))
+    g.add((conn1, RDF.type, OWL.NamedIndividual))
+    g.add((conn1, RDFS.label, Literal("GitHub connection 01", lang="en")))
+    g.add((conn1, PAO.connectsToService, svc1))
+    g.add((conn1, PAO.hasConnectionStatus, PAO.Open))
+    g.add((PAO.claude_agent, PAO.hasServiceConnection, conn1))
+
+    # Capability discovery event (CQ-082)
+    disc1 = PAO.discovery_github_01
+    g.add((disc1, RDF.type, PAO.CapabilityDiscoveryEvent))
+    g.add((disc1, RDF.type, OWL.NamedIndividual))
+    g.add((disc1, RDFS.label, Literal("GitHub capability discovery 01", lang="en")))
+    g.add((disc1, PAO.discoveredCapability, cap1))
+    g.add((disc1, PAO.discoveredCapability, cap2))
+    g.add((disc1, PAO.discoveredCapability, cap3))
+    g.add((disc1, PAO.discoveryAgainstService, svc1))
+    g.add((disc1, PAO.hasTimestamp, Literal("2026-02-20T10:00:00Z", datatype=XSD.dateTime)))
+
+
+def _add_sample_runtime_safety(g: Graph) -> None:
+    """Add sample runtime safety individuals (CQ-083 through CQ-086)."""
+    # Permission mode (CQ-083)
+    g.add((PAO.claude_agent, PAO.operatesInMode, PAO.Standard))
+
+    # Sandbox policy (CQ-083)
+    sandbox = PAO.sandbox_default
+    g.add((sandbox, RDF.type, PAO.SandboxPolicy))
+    g.add((sandbox, RDF.type, OWL.NamedIndividual))
+    g.add((sandbox, RDFS.label, Literal("Default sandbox policy", lang="en")))
+    g.add((PAO.claude_agent, PAO.enforcedBySandboxPolicy, sandbox))
+
+    # Hook (CQ-084)
+    hook1 = PAO.hook_pre_tool
+    g.add((hook1, RDF.type, PAO.Hook))
+    g.add((hook1, RDF.type, OWL.NamedIndividual))
+    g.add((hook1, RDFS.label, Literal("Pre-tool invocation hook", lang="en")))
+    g.add((PAO.claude_agent, PAO.hasHook, hook1))
+
+    # Hook execution (CQ-085)
+    hook_exec1 = PAO.hook_exec_01
+    g.add((hook_exec1, RDF.type, PAO.HookExecution))
+    g.add((hook_exec1, RDF.type, OWL.NamedIndividual))
+    g.add((hook_exec1, RDFS.label, Literal("Hook execution 01", lang="en")))
+    g.add((hook1, PAO.hookTriggeredExecution, hook_exec1))
+    g.add((hook_exec1, PAO.interceptsInvocation, PAO.invocation_001))
+    g.add((hook_exec1, PAO.hasTimestamp, Literal("2026-02-20T10:30:00Z", datatype=XSD.dateTime)))
+
+    # Audit log + entry (CQ-086)
+    audit_log = PAO.audit_log_01
+    g.add((audit_log, RDF.type, PAO.AuditLog))
+    g.add((audit_log, RDF.type, OWL.NamedIndividual))
+    g.add((audit_log, RDFS.label, Literal("Primary audit log", lang="en")))
+
+    audit_entry = PAO.audit_entry_01
+    g.add((audit_entry, RDF.type, PAO.AuditEntry))
+    g.add((audit_entry, RDF.type, OWL.NamedIndividual))
+    g.add((audit_entry, RDFS.label, Literal("Audit entry 01", lang="en")))
+    g.add((audit_entry, PAO.writtenToAuditLog, audit_log))
+    g.add((audit_entry, PAO.recordsDecision, PAO.Allow))
+    g.add((audit_entry, PAO.auditForInvocation, PAO.invocation_001))
+    g.add((audit_entry, PAO.hasDecisionReason, Literal("Tool is in allowlist")))
+    g.add((audit_entry, PAO.hasTimestamp, Literal("2026-02-20T10:30:01Z", datatype=XSD.dateTime)))
+
+    # Second audit entry — denied operation (CQ-086)
+    denied_inv = PAO.invocation_denied_01
+    g.add((denied_inv, RDF.type, PAO.ToolInvocation))
+    g.add((denied_inv, RDF.type, OWL.NamedIndividual))
+    g.add((denied_inv, RDFS.label, Literal("Denied invocation 01", lang="en")))
+    g.add((denied_inv, PAO.invokesTool, PAO.bash_tool))
+    g.add((denied_inv, PAO.invokedBy, PAO.claude_agent))
+    g.add((denied_inv, PAO.performedBy, PAO.claude_agent))
+
+    audit_entry2 = PAO.audit_entry_02
+    g.add((audit_entry2, RDF.type, PAO.AuditEntry))
+    g.add((audit_entry2, RDF.type, OWL.NamedIndividual))
+    g.add((audit_entry2, RDFS.label, Literal("Audit entry 02", lang="en")))
+    g.add((audit_entry2, PAO.writtenToAuditLog, audit_log))
+    g.add((audit_entry2, PAO.recordsDecision, PAO.Deny))
+    g.add((audit_entry2, PAO.auditForInvocation, denied_inv))
+    g.add((audit_entry2, PAO.hasDecisionReason, Literal("Tool is in blocklist")))
+    g.add((audit_entry2, PAO.hasTimestamp, Literal("2026-02-20T10:31:00Z", datatype=XSD.dateTime)))
+
+
+def _add_sample_recovery(g: Graph) -> None:
+    """Add sample recovery individuals (CQ-087 through CQ-089)."""
+    # A failed invocation to recover from
+    failed_inv = PAO.invocation_failed_01
+    g.add((failed_inv, RDF.type, PAO.ToolInvocation))
+    g.add((failed_inv, RDF.type, OWL.NamedIndividual))
+    g.add((failed_inv, RDFS.label, Literal("Failed invocation 01", lang="en")))
+    g.add((failed_inv, PAO.invokesTool, PAO.bash_tool))
+    g.add((failed_inv, PAO.invokedBy, PAO.claude_agent))
+    g.add((failed_inv, PAO.performedBy, PAO.claude_agent))
+
+    # Error recovery event (CQ-087)
+    recovery = PAO.recovery_event_01
+    g.add((recovery, RDF.type, PAO.ErrorRecoveryEvent))
+    g.add((recovery, RDF.type, OWL.NamedIndividual))
+    g.add((recovery, RDFS.label, Literal("Recovery event 01", lang="en")))
+    g.add((recovery, PAO.recoveringFrom, failed_inv))
+    g.add((recovery, PAO.hasAttemptCount, Literal(2, datatype=XSD.nonNegativeInteger)))
+    g.add((recovery, PAO.hasRecoveryOutcome, Literal("resolved")))
+    g.add((recovery, PAO.hasTimestamp, Literal("2026-02-20T11:00:00Z", datatype=XSD.dateTime)))
+
+    # Retry attempt
+    retry = PAO.retry_01
+    g.add((retry, RDF.type, PAO.RetryAttempt))
+    g.add((retry, RDF.type, OWL.NamedIndividual))
+    g.add((retry, RDFS.label, Literal("Retry attempt 01", lang="en")))
+    g.add((retry, PAO.hasTimestamp, Literal("2026-02-20T11:00:05Z", datatype=XSD.dateTime)))
+    g.add((recovery, PAO.attemptedRetry, retry))
+
+    # Replan event
+    replan = PAO.replan_01
+    g.add((replan, RDF.type, PAO.ReplanEvent))
+    g.add((replan, RDF.type, OWL.NamedIndividual))
+    g.add((replan, RDFS.label, Literal("Replan event 01", lang="en")))
+    g.add((replan, PAO.hasTimestamp, Literal("2026-02-20T11:00:10Z", datatype=XSD.dateTime)))
+    g.add((recovery, PAO.triggeredReplan, replan))
+
+    # Checkpoint with decision (CQ-088/089)
+    checkpoint = PAO.checkpoint_01
+    g.add((checkpoint, RDF.type, PAO.Checkpoint))
+    g.add((checkpoint, RDF.type, OWL.NamedIndividual))
+    g.add((checkpoint, RDFS.label, Literal("Checkpoint 01", lang="en")))
+    g.add((checkpoint, PAO.checkpointForTask, PAO.task_001))
+    g.add((checkpoint, PAO.checkpointDecision, PAO.Approved))
+    g.add((checkpoint, PAO.hasTimestamp, Literal("2026-02-20T11:05:00Z", datatype=XSD.dateTime)))
+
+
+def _add_sample_tool_trace(g: Graph) -> None:
+    """Add sample tool trace individuals (CQ-090 through CQ-092)."""
+    # ToolInvocationGroup (CQ-090)
+    group = PAO.invocation_group_01
+    g.add((group, RDF.type, PAO.ToolInvocationGroup))
+    g.add((group, RDF.type, OWL.NamedIndividual))
+    g.add((group, RDFS.label, Literal("Invocation group 01", lang="en")))
+    g.add((group, PAO.groupedInTurn, PAO.turn_001))
+    # Link existing invocations to group
+    g.add((PAO.invocation_001, PAO.partOfInvocationGroup, group))
+
+    # ToolResult (CQ-091)
+    result = PAO.tool_result_01
+    g.add((result, RDF.type, PAO.ToolResult))
+    g.add((result, RDF.type, OWL.NamedIndividual))
+    g.add((result, RDFS.label, Literal("Tool result 01", lang="en")))
+    g.add((result, PAO.hasContent, Literal("File contents returned", lang="en")))
+    g.add((PAO.invocation_001, PAO.producedToolResult, result))
+
+    # ContentBlock (CQ-092)
+    block1 = PAO.content_block_01
+    g.add((block1, RDF.type, PAO.ContentBlock))
+    g.add((block1, RDF.type, OWL.NamedIndividual))
+    g.add((block1, RDFS.label, Literal("Content block 01", lang="en")))
+    g.add((block1, PAO.hasContentBlockType, PAO.TextBlock))
+    g.add((block1, PAO.blockSequenceIndex, Literal(0, datatype=XSD.nonNegativeInteger)))
+    g.add((PAO.msg_001, PAO.hasContentBlock, block1))
+
+    block2 = PAO.content_block_02
+    g.add((block2, RDF.type, PAO.ContentBlock))
+    g.add((block2, RDF.type, OWL.NamedIndividual))
+    g.add((block2, RDFS.label, Literal("Content block 02", lang="en")))
+    g.add((block2, PAO.hasContentBlockType, PAO.ToolUseBlock))
+    g.add((block2, PAO.blockSequenceIndex, Literal(1, datatype=XSD.nonNegativeInteger)))
+    g.add((PAO.msg_001, PAO.hasContentBlock, block2))
+
+
+def _add_sample_memory_control_plane(g: Graph) -> None:
+    """Add sample memory control plane individuals (CQ-093 through CQ-095)."""
+    # Memory source/scope on existing items (CQ-093)
+    g.add((PAO.claim_002, PAO.hasMemorySource, PAO.UserSource))
+    g.add((PAO.claim_002, PAO.hasMemoryScope, PAO.SessionScope))
+
+    # SharedMemoryArtifact (CQ-094)
+    shared = PAO.shared_memory_01
+    g.add((shared, RDF.type, PAO.SharedMemoryArtifact))
+    g.add((shared, RDF.type, OWL.NamedIndividual))
+    g.add((shared, RDFS.label, Literal("Shared memory artifact 01", lang="en")))
+    g.add((shared, PAO.sharedAcrossAgents, PAO.claude_agent))
+    g.add((shared, PAO.sharedAcrossAgents, PAO.search_subagent))
+
+    # MemoryWriteConflict (CQ-095)
+    conflict = PAO.write_conflict_01
+    g.add((conflict, RDF.type, PAO.MemoryWriteConflict))
+    g.add((conflict, RDF.type, OWL.NamedIndividual))
+    g.add((conflict, RDFS.label, Literal("Write conflict 01", lang="en")))
+    g.add((conflict, PAO.conflictOnArtifact, shared))
+    g.add((conflict, PAO.writesByAgent, PAO.claude_agent))
+    g.add((conflict, PAO.writesByAgent, PAO.search_subagent))
+    g.add((conflict, PAO.hasTimestamp, Literal("2026-02-20T12:00:00Z", datatype=XSD.dateTime)))
+
+
+def _add_sample_dialog_pragmatics(g: Graph) -> None:
+    """Add sample dialog pragmatics individuals (CQ-096 through CQ-098)."""
+    # DialogAct (CQ-096)
+    dialog_act = PAO.dialog_act_01
+    g.add((dialog_act, RDF.type, PAO.DialogAct))
+    g.add((dialog_act, RDF.type, OWL.NamedIndividual))
+    g.add((dialog_act, RDFS.label, Literal("Dialog act 01", lang="en")))
+    g.add((dialog_act, PAO.hasCommunicativeFunction, PAO.Inform))
+    g.add((PAO.turn_001, PAO.hasDialogAct, dialog_act))
+
+    # CommonGround and GroundingAct (CQ-097)
+    common_ground = PAO.common_ground_session_01
+    g.add((common_ground, RDF.type, PAO.CommonGround))
+    g.add((common_ground, RDF.type, OWL.NamedIndividual))
+    g.add((common_ground, RDFS.label, Literal("Common ground session 01", lang="en")))
+
+    grounding_act = PAO.grounding_act_01
+    g.add((grounding_act, RDF.type, PAO.GroundingAct))
+    g.add((grounding_act, RDF.type, OWL.NamedIndividual))
+    g.add((grounding_act, RDFS.label, Literal("Grounding act 01", lang="en")))
+    g.add((grounding_act, PAO.contributesToCommonGround, common_ground))
+    g.add((grounding_act, PAO.hasTimestamp, Literal("2026-02-20T12:05:00Z", datatype=XSD.dateTime)))
+
+    # AcceptanceEvidence
+    evidence = PAO.acceptance_evidence_01
+    g.add((evidence, RDF.type, PAO.AcceptanceEvidence))
+    g.add((evidence, RDF.type, OWL.NamedIndividual))
+    g.add((evidence, RDFS.label, Literal("Acceptance evidence 01", lang="en")))
+    g.add((grounding_act, PAO.providesAcceptanceEvidence, evidence))
+
+    # ClarificationRequest (CQ-098)
+    clarification = PAO.clarification_request_01
+    g.add((clarification, RDF.type, PAO.ClarificationRequest))
+    g.add((clarification, RDF.type, OWL.NamedIndividual))
+    g.add((clarification, RDFS.label, Literal("Clarification request 01", lang="en")))
+    g.add((clarification, PAO.clarifiesTurn, PAO.turn_001))
+
+
+def _ensure_temporal_extents(g: Graph) -> None:
+    """Add hasTemporalExtent to all Event instances that lack one.
+
+    Creates a time:Instant for each event with a timestamp derived from
+    the event's hasTimestamp (if present) or a default timestamp.
+    Events that already have hasTemporalExtent (e.g. Session, Episode)
+    are skipped.
+    """
+    # All known Event subclasses (direct and transitive)
+    event_classes: set[URIRef] = {
+        PAO.Event,
+        PAO.Action,
+        PAO.Conversation,
+        PAO.Session,
+        PAO.Turn,
+        PAO.CompactionEvent,
+        PAO.ErasureEvent,
+        PAO.MemoryOperation,
+        PAO.Encoding,
+        PAO.Retrieval,
+        PAO.Consolidation,
+        PAO.Forgetting,
+        PAO.Rehearsal,
+        PAO.Observation,
+        PAO.StatusTransition,
+        PAO.SessionStatusTransition,
+        PAO.TaskStatusTransition,
+        PAO.ToolInvocation,
+        PAO.CapabilityDiscoveryEvent,
+        PAO.HookExecution,
+        PAO.ErrorRecoveryEvent,
+        PAO.RetryAttempt,
+        PAO.ReplanEvent,
+        PAO.RollbackEvent,
+        PAO.MemoryWriteConflict,
+        PAO.GroundingAct,
+    }
+
+    # Find all event instances missing hasTemporalExtent
+    seen: set[URIRef] = set()
+    missing: list[URIRef] = []
+    for ec in event_classes:
+        for s in g.subjects(RDF.type, ec):
+            if s not in seen and not any(g.objects(s, PAO.hasTemporalExtent)):
+                seen.add(s)
+                missing.append(s)
+
+    # Base timestamp for events without their own
+    base_ts = "2026-02-18T10:00:00Z"
+
+    for individual in sorted(missing, key=str):
+        local_name = str(individual).replace(str(PAO), "")
+        instant_uri = PAO[f"{local_name}_time"]
+
+        # Try to reuse the individual's own timestamp if available
+        ts_val = g.value(individual, PAO.hasTimestamp)
+        ts_str = str(ts_val) if ts_val else base_ts
+
+        g.add((instant_uri, RDF.type, TIME.Instant))
+        g.add((instant_uri, TIME.inXSDDateTime, Literal(ts_str, datatype=XSD.dateTime)))
+        g.add((individual, PAO.hasTemporalExtent, instant_uri))
+
+
 # ---------------------------------------------------------------------------
 # SHACL Shapes Builder
 # ---------------------------------------------------------------------------
@@ -2376,6 +3237,16 @@ def build_shacl_shapes() -> Graph:
     bind_common_prefixes(g)
     bind_shacl_prefix(g)
 
+    # --- EventShape (v0.6.0 review: enforce temporal extent on all events) ---
+    _add_shape(
+        g,
+        PAO.EventShape,
+        PAO.Event,
+        [
+            _property_shape(g, PAO.hasTemporalExtent, min_count=1),
+        ],
+    )
+
     # --- SubAgentShape ---
     _add_shape(
         g,
@@ -2383,6 +3254,7 @@ def build_shacl_shapes() -> Graph:
         PAO.SubAgent,
         [
             _property_shape(g, PAO.spawnedBy, min_count=1, max_count=1, class_constraint=PAO.Agent),
+            _property_shape(g, PAO.delegatedTask, min_count=1, class_constraint=PAO.Task),
         ],
     )
 
@@ -2396,6 +3268,13 @@ def build_shacl_shapes() -> Graph:
                 g, PAO.hasAvailableTool, min_count=1, class_constraint=PAO.ToolDefinition
             ),
             _property_shape(g, PAO.hasAgentId, min_count=1, max_count=1, datatype=XSD.string),
+            _property_shape(g, PAO.hasPersona, max_count=1, class_constraint=PAO.Persona),
+            _property_shape(
+                g, PAO.operatesInMode, max_count=1, class_constraint=PAO.PermissionMode
+            ),
+            _property_shape(g, PAO.hasIntegration, class_constraint=PAO.Integration),
+            _property_shape(g, PAO.hasExternalService, class_constraint=PAO.ExternalService),
+            _property_shape(g, PAO.hasHook, class_constraint=PAO.Hook),
         ],
     )
 
@@ -2429,6 +3308,8 @@ def build_shacl_shapes() -> Graph:
                 g, PAO.hasStatus, min_count=1, max_count=1, class_constraint=PAO.SessionStatus
             ),
             _property_shape(g, PAO.hasSessionId, min_count=1, max_count=1, datatype=XSD.string),
+            _property_shape(g, PAO.hasParticipant, min_count=1, class_constraint=PAO.Agent),
+            _property_shape(g, PAO.hasTemporalExtent, min_count=1),
             _property_shape(
                 g, PAO.hasContextWindow, max_count=1, class_constraint=PAO.ContextWindow
             ),
@@ -2447,6 +3328,14 @@ def build_shacl_shapes() -> Graph:
             _property_shape(
                 g, PAO.partOfSession, min_count=1, max_count=1, class_constraint=PAO.Session
             ),
+            _property_shape(g, PAO.hasParticipant, min_count=1, class_constraint=PAO.Agent),
+            _property_shape(
+                g,
+                PAO.partOfConversation,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.Conversation,
+            ),
             _property_shape(
                 g, PAO.hasTurnIndex, min_count=1, max_count=1, datatype=XSD.nonNegativeInteger
             ),
@@ -2463,6 +3352,27 @@ def build_shacl_shapes() -> Graph:
                 g, PAO.invokesTool, min_count=1, max_count=1, class_constraint=PAO.ToolDefinition
             ),
             _property_shape(g, PAO.invokedBy, min_count=1, max_count=1, class_constraint=PAO.Agent),
+            _property_shape(g, PAO.inSession, max_count=1, class_constraint=PAO.Session),
+            _property_shape(
+                g,
+                PAO.governedByPolicy,
+                max_count=1,
+                class_constraint=PAO.PermissionPolicy,
+            ),
+            _property_shape(
+                g,
+                PAO.hasComplianceStatus,
+                max_count=1,
+                class_constraint=PAO.ComplianceStatus,
+            ),
+            _property_shape(g, PAO.hasInput),
+            _property_shape(g, PAO.hasOutput),
+            _property_shape(
+                g,
+                PAO.producedToolResult,
+                max_count=1,
+                class_constraint=PAO.ToolResult,
+            ),
         ],
     )
 
@@ -2493,6 +3403,13 @@ def build_shacl_shapes() -> Graph:
                 datatype=XSD.decimal,
                 min_inclusive="0.0",
                 max_inclusive="1.0",
+            ),
+            _property_shape(
+                g, PAO.storedIn, min_count=1, max_count=1, class_constraint=PAO.MemoryTier
+            ),
+            _property_shape(g, PAO.aboutAgent, min_count=1, class_constraint=PAO.Agent),
+            _property_shape(
+                g, PAO.claimType, min_count=0, max_count=1, class_constraint=PAO.ClaimType
             ),
         ],
     )
@@ -2636,6 +3553,8 @@ def build_shacl_shapes() -> Graph:
             _property_shape(
                 g, PAO.storedIn, min_count=1, max_count=1, class_constraint=PAO.MemoryTier
             ),
+            _property_shape(g, PROV.wasAttributedTo, min_count=1, class_constraint=PAO.Agent),
+            _property_shape(g, PROV.wasGeneratedBy, min_count=1),
             _property_shape(
                 g,
                 PAO.hasSensitivityLevel,
@@ -2653,8 +3572,8 @@ def build_shacl_shapes() -> Graph:
         PAO.EpisodeShape,
         PAO.Episode,
         [
-            _property_shape(g, PAO.hasTemporalExtent, min_count=1),
-            _property_shape(g, PAO.hasTopic, min_count=1),
+            _property_shape(g, PAO.hasTemporalExtent, min_count=1, class_constraint=TIME.Interval),
+            _property_shape(g, PAO.hasTopic, min_count=1, class_constraint=SKOS.Concept),
         ],
     )
 
@@ -2664,7 +3583,11 @@ def build_shacl_shapes() -> Graph:
         PAO.CompactionEventShape,
         PAO.CompactionEvent,
         [
+            _property_shape(
+                g, PAO.inConversation, min_count=1, max_count=1, class_constraint=PAO.Conversation
+            ),
             _property_shape(g, PAO.producedSummary, min_count=1, class_constraint=PAO.MemoryItem),
+            _property_shape(g, PAO.compactedItem, min_count=1),
             _property_shape(
                 g, PAO.compactedContextOf, max_count=1, class_constraint=PAO.ContextWindow
             ),
@@ -2785,6 +3708,261 @@ def build_shacl_shapes() -> Graph:
             ),
             _property_shape(g, PAO.hasServiceName, min_count=1, max_count=1, datatype=XSD.string),
             _property_shape(g, PAO.hasEndpoint, max_count=1, datatype=XSD.anyURI),
+        ],
+    )
+
+    # --- ExternalServiceShape (v0.6.0) ---
+    _add_shape(
+        g,
+        PAO.ExternalServiceShape,
+        PAO.ExternalService,
+        [
+            _property_shape(
+                g, PAO.exposesCapability, min_count=1, class_constraint=PAO.ServiceCapability
+            ),
+            _property_shape(
+                g, PAO.hasServiceTransport, min_count=1, max_count=1, datatype=XSD.string
+            ),
+            _property_shape(
+                g, PAO.hasServiceIdentifier, min_count=1, max_count=1, datatype=XSD.string
+            ),
+        ],
+    )
+
+    # --- ServiceConnectionShape (v0.6.0) ---
+    _add_shape(
+        g,
+        PAO.ServiceConnectionShape,
+        PAO.ServiceConnection,
+        [
+            _property_shape(
+                g,
+                PAO.connectsToService,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.ExternalService,
+            ),
+            _property_shape(
+                g,
+                PAO.hasConnectionStatus,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.ConnectionStatus,
+            ),
+        ],
+    )
+
+    # --- HookExecutionShape (v0.6.0) ---
+    _add_shape(
+        g,
+        PAO.HookExecutionShape,
+        PAO.HookExecution,
+        [
+            _property_shape(
+                g,
+                PAO.interceptsInvocation,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.ToolInvocation,
+            ),
+        ],
+    )
+
+    # --- AuditEntryShape (v0.6.0) ---
+    _add_shape(
+        g,
+        PAO.AuditEntryShape,
+        PAO.AuditEntry,
+        [
+            _property_shape(
+                g, PAO.writtenToAuditLog, min_count=1, max_count=1, class_constraint=PAO.AuditLog
+            ),
+            _property_shape(
+                g,
+                PAO.recordsDecision,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.AuthorizationDecision,
+            ),
+            _property_shape(
+                g,
+                PAO.auditForInvocation,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.ToolInvocation,
+            ),
+            _property_shape(g, PAO.hasDecisionReason, max_count=1, datatype=XSD.string),
+        ],
+    )
+
+    # --- ErrorRecoveryEventShape (v0.6.0) ---
+    _add_shape(
+        g,
+        PAO.ErrorRecoveryEventShape,
+        PAO.ErrorRecoveryEvent,
+        [
+            _property_shape(
+                g,
+                PAO.recoveringFrom,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.ToolInvocation,
+            ),
+            _property_shape(
+                g,
+                PAO.hasAttemptCount,
+                max_count=1,
+                datatype=XSD.nonNegativeInteger,
+            ),
+            _property_shape(g, PAO.hasRecoveryOutcome, max_count=1, datatype=XSD.string),
+        ],
+    )
+
+    # --- CheckpointShape (v0.6.0) ---
+    _add_shape(
+        g,
+        PAO.CheckpointShape,
+        PAO.Checkpoint,
+        [
+            _property_shape(
+                g, PAO.checkpointForTask, min_count=1, max_count=1, class_constraint=PAO.Task
+            ),
+            _property_shape(
+                g,
+                PAO.checkpointDecision,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.CheckpointDecision,
+            ),
+        ],
+    )
+
+    # --- PermissionPolicyShape (v0.6.0) ---
+    _add_shape(
+        g,
+        PAO.PermissionPolicyShape,
+        PAO.PermissionPolicy,
+        [
+            _property_shape(g, PAO.appliesTo, min_count=1, class_constraint=PAO.Agent),
+            _property_shape(g, PAO.grantsPermission, min_count=1, class_constraint=ODRL.Permission),
+            _property_shape(
+                g,
+                PAO.restrictsToolUse,
+                min_count=1,
+                class_constraint=PAO.ToolDefinition,
+            ),
+        ],
+    )
+
+    # --- SafetyConstraintShape (v0.6.0) ---
+    _add_shape(
+        g,
+        PAO.SafetyConstraintShape,
+        PAO.SafetyConstraint,
+        [
+            _property_shape(g, PAO.appliesTo, min_count=1, class_constraint=PAO.Agent),
+        ],
+    )
+
+    # --- ToolInvocationGroupShape (v0.6.0 Phase B) ---
+    _add_shape(
+        g,
+        PAO.ToolInvocationGroupShape,
+        PAO.ToolInvocationGroup,
+        [
+            _property_shape(
+                g, PAO.groupedInTurn, min_count=1, max_count=1, class_constraint=PAO.Turn
+            ),
+        ],
+    )
+
+    # --- ContentBlockShape (v0.6.0 Phase B) ---
+    _add_shape(
+        g,
+        PAO.ContentBlockShape,
+        PAO.ContentBlock,
+        [
+            _property_shape(
+                g,
+                PAO.hasContentBlockType,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.ContentBlockType,
+            ),
+            _property_shape(
+                g, PAO.blockSequenceIndex, max_count=1, datatype=XSD.nonNegativeInteger
+            ),
+        ],
+    )
+
+    # --- SharedMemoryArtifactShape (v0.6.0 Phase B) ---
+    _add_shape(
+        g,
+        PAO.SharedMemoryArtifactShape,
+        PAO.SharedMemoryArtifact,
+        [
+            _property_shape(g, PAO.sharedAcrossAgents, min_count=2, class_constraint=PAO.Agent),
+        ],
+    )
+
+    # --- MemoryWriteConflictShape (v0.6.0 Phase B) ---
+    _add_shape(
+        g,
+        PAO.MemoryWriteConflictShape,
+        PAO.MemoryWriteConflict,
+        [
+            _property_shape(
+                g,
+                PAO.conflictOnArtifact,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.SharedMemoryArtifact,
+            ),
+            _property_shape(g, PAO.writesByAgent, min_count=2, class_constraint=PAO.Agent),
+        ],
+    )
+
+    # --- DialogActShape (v0.6.0 Phase B) ---
+    _add_shape(
+        g,
+        PAO.DialogActShape,
+        PAO.DialogAct,
+        [
+            _property_shape(
+                g,
+                PAO.hasCommunicativeFunction,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.CommunicativeFunction,
+            ),
+        ],
+    )
+
+    # --- GroundingActShape (v0.6.0 Phase B) ---
+    _add_shape(
+        g,
+        PAO.GroundingActShape,
+        PAO.GroundingAct,
+        [
+            _property_shape(
+                g,
+                PAO.contributesToCommonGround,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.CommonGround,
+            ),
+        ],
+    )
+
+    # --- ClarificationRequestShape (v0.6.0 Phase B) ---
+    _add_shape(
+        g,
+        PAO.ClarificationRequestShape,
+        PAO.ClarificationRequest,
+        [
+            _property_shape(
+                g, PAO.clarifiesTurn, min_count=1, max_count=1, class_constraint=PAO.Turn
+            ),
         ],
     )
 

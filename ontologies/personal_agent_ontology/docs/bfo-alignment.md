@@ -24,12 +24,12 @@ independently and note the PROV-O relationship.
 | BFO Category | PAO Classes |
 |---|---|
 | Object (BFO:0000030) | HumanUser, Organization |
-| Generically Dependent Continuant (BFO:0000031) | AIAgent, SubAgent, ToolDefinition, Message, MemoryItem, MemoryTier, WorkingMemory, EpisodicMemory, SemanticMemory, ProceduralMemory, Episode, Claim, MemoryBlock, Goal, Plan, Task, Persona, Intention, PermissionPolicy, SafetyConstraint, ConsentRecord, RetentionPolicy, CompactionDisposition, ContextWindow, CommunicationChannel, Integration, Status, SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate, ChannelType, IntegrationStatus |
+| Generically Dependent Continuant (BFO:0000031) | AIAgent, SubAgent, ToolDefinition, Message, MemoryItem, MemoryTier, WorkingMemory, EpisodicMemory, SemanticMemory, ProceduralMemory, Episode, Claim, MemoryBlock, Goal, Plan, Task, Persona, Intention, PermissionPolicy, SafetyConstraint, ConsentRecord, RetentionPolicy, CompactionDisposition, ContextWindow, CommunicationChannel, Integration, ExternalService, ServiceConnection, ServiceCapability, ServiceToolCapability, ServiceResourceCapability, ServicePromptCapability, SandboxPolicy, Hook, AuditLog, AuditEntry, Checkpoint, ToolResult, ToolInvocationGroup, ContentBlock, SharedMemoryArtifact, DialogAct, CommonGround, ClarificationRequest, AcceptanceEvidence, Status, SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate, ChannelType, IntegrationStatus, ConnectionStatus, PermissionMode, AuthorizationDecision, CheckpointDecision, ContentBlockType, MemorySource, MemoryScope, CommunicativeFunction |
 | Role (BFO:0000023) | AgentRole |
-| Process (BFO:0000015) | Conversation, Session, Turn, ToolInvocation, CompactionEvent, ErasureEvent, Event, Action, MemoryOperation, Encoding, Retrieval, Consolidation, Forgetting, Observation, Rehearsal, StatusTransition, SessionStatusTransition, TaskStatusTransition |
+| Process (BFO:0000015) | Conversation, Session, Turn, ToolInvocation, CompactionEvent, ErasureEvent, Event, Action, MemoryOperation, Encoding, Retrieval, Consolidation, Forgetting, Observation, Rehearsal, StatusTransition, SessionStatusTransition, TaskStatusTransition, CapabilityDiscoveryEvent, HookExecution, ErrorRecoveryEvent, RetryAttempt, ReplanEvent, RollbackEvent, MemoryWriteConflict, GroundingAct |
 | Cross-cutting (documented) | Agent (umbrella for Object + GDC subtypes) |
 | *(Status subtypes listed under GDC above — Value Partition ODP-6)* | |
-| Named Individuals | Active, Ended, Interrupted, Pending, InProgress, Completed, Blocked, Compliant, NonCompliant, AssistantRole, UserRole, UserPreference, Public, Internal, Confidential, Restricted, Preserved, Dropped, Summarized, Archived, CLI, Messaging, WebChat, APIChannel, VoiceChannel, EmailChannel, Connected, Disconnected, Error, Initializing |
+| Named Individuals | Active, Ended, Interrupted, Pending, InProgress, Completed, Blocked, Compliant, NonCompliant, AssistantRole, UserRole, UserPreference, Public, Internal, Confidential, Restricted, Preserved, Dropped, Summarized, Archived, CLI, Messaging, WebChat, APIChannel, VoiceChannel, EmailChannel, Connected, Disconnected, Error, Initializing, Open, Closed, Reconnecting, Failed, Permissive, Standard, Restrictive, Allow, Deny, RequireApproval, Approved, Rejected, Deferred, TextBlock, ToolUseBlock, ToolResultBlock, ImageBlock, UserSource, SystemSource, AgentSource, SessionScope, ProjectScope, GlobalScope, Inform, Request, Confirm, Clarify, Accept, Reject |
 
 ---
 
@@ -617,6 +617,353 @@ server pattern where a single server provides multiple tools.
 Initializing) are a controlled vocabulary classifying the operational state
 of an integration connection. Like other Status types, they follow the Value
 Partition pattern (ODP-6) with `owl:oneOf` enumeration.
+
+---
+
+### 44. ExternalService -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: An external service is an information artifact that describes
+a configured service endpoint with identity, transport, and capability metadata.
+Richer than Integration, it models MCP-grade service topology including capability
+discovery. It can be described, versioned, and transferred between environments.
+
+**Decision path**: Continuant > Dependent Continuant > GDC.
+
+---
+
+### 45. ServiceConnection -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A service connection is an information entity representing the
+runtime link between an agent and an external service. It carries connection
+status and metadata. While connections have temporal aspects, the entity itself
+is an information record of the connection state, not the process of connecting.
+
+---
+
+### 46. ServiceCapability -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A capability specification is an information artifact describing
+what a service can do (provide tools, resources, or prompts). It is a
+description that can be discovered, listed, and compared.
+
+**Subclasses**: ServiceToolCapability, ServiceResourceCapability,
+ServicePromptCapability — all GDCs, forming a DisjointUnion under
+ServiceCapability (MCP capability types).
+
+---
+
+### 47-49. ServiceToolCapability, ServiceResourceCapability, ServicePromptCapability -> GDC (BFO:0000031)
+
+**Decision**: GDC (inherit from ServiceCapability)
+
+**Rationale**: Each is a specialized capability description. Tool capabilities
+expose callable functions, resource capabilities expose readable data, prompt
+capabilities expose templates. All are information specifications.
+
+---
+
+### 50. CapabilityDiscoveryEvent -> Process (BFO:0000015)
+
+**Decision**: Process (subclass of Event)
+
+**Rationale**: Capability discovery is something that happens — an agent
+queries a service, receives capability listings, and records them. It unfolds
+in time and produces results.
+
+**Decision path**: Occurrent > Process.
+
+---
+
+### 51. ConnectionStatus -> Value Partition (no BFO parent)
+
+**Decision**: Value Partition with named individuals
+
+**Rationale**: Connection status values (Open, Closed, Reconnecting, Failed)
+are a controlled vocabulary for runtime service connection state. Follows
+ODP-6 with `owl:oneOf` enumeration.
+
+---
+
+### 52. SandboxPolicy -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A sandbox policy is an information artifact specifying filesystem
+and network restrictions imposed on an agent. It is a configuration entity
+that can be described, versioned, and applied to multiple agents.
+
+---
+
+### 53. Hook -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A hook is a configured interceptor definition — it specifies
+trigger conditions and actions for tool invocation interception. It is an
+information entity distinct from the execution of the hook.
+
+---
+
+### 54. HookExecution -> Process (BFO:0000015)
+
+**Decision**: Process (subclass of Event)
+
+**Rationale**: A hook execution is something that happens — a hook fires,
+intercepts an invocation, and produces a result (allow/block/modify). It
+unfolds in time and has temporal extent.
+
+---
+
+### 55. AuditLog -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: An audit log is a container for audit entries — an information
+artifact that aggregates authorization decision records. It can be stored,
+queried, and archived.
+
+---
+
+### 56. AuditEntry -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: An audit entry is an information record of an authorization
+decision for a specific tool invocation. It carries the decision outcome,
+rationale, and timestamp. It is a record, not the decision process itself.
+
+---
+
+### 57. PermissionMode -> Value Partition (no BFO parent)
+
+**Decision**: Value Partition with named individuals
+
+**Rationale**: Permission mode values (Permissive, Standard, Restrictive)
+are a controlled vocabulary classifying how strictly an agent's tool
+invocations are gated. Follows ODP-6.
+
+---
+
+### 58. AuthorizationDecision -> Value Partition (no BFO parent)
+
+**Decision**: Value Partition with named individuals
+
+**Rationale**: Authorization decision values (Allow, Deny, RequireApproval)
+classify the outcome recorded in an audit entry. Follows ODP-6.
+
+---
+
+### 59. CheckpointDecision -> Value Partition (no BFO parent)
+
+**Decision**: Value Partition with named individuals
+
+**Rationale**: Checkpoint decision values (Approved, Rejected, Deferred)
+classify human decisions at task checkpoints. Follows ODP-6.
+
+---
+
+### 60. ErrorRecoveryEvent -> Process (BFO:0000015)
+
+**Decision**: Process (subclass of Event)
+
+**Rationale**: An error recovery event is something that happens — an agent
+detects a failure and initiates a recovery sequence. It unfolds in time
+and may trigger retry, replan, or rollback sub-events.
+
+---
+
+### 61. RetryAttempt -> Process (BFO:0000015)
+
+**Decision**: Process (subclass of Event)
+
+**Rationale**: A retry attempt is a re-execution of a failed operation. It
+unfolds in time and has a result (success or failure).
+
+---
+
+### 62. ReplanEvent -> Process (BFO:0000015)
+
+**Decision**: Process (subclass of Event)
+
+**Rationale**: A replan event is the process by which an agent generates a
+new plan after a failure. It produces a new Plan as output.
+
+---
+
+### 63. RollbackEvent -> Process (BFO:0000015)
+
+**Decision**: Process (subclass of Event)
+
+**Rationale**: A rollback event is the process of reverting changes from a
+failed operation. It undoes side effects and restores prior state.
+
+---
+
+### 64. Checkpoint -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A checkpoint is an information entity representing a decision
+point in a task workflow where human approval may be required. It records the
+task, the decision, and the rationale. It is a record/specification, not the
+process of deciding.
+
+---
+
+## v0.6.0 Phase B Alignment Decisions
+
+### 65. ToolResult -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A tool result is the typed output artifact produced by a tool
+invocation. It is information content (text, JSON, error messages) that can
+be stored, transmitted, and referenced. Distinct from the ToolInvocation
+process that produced it.
+
+---
+
+### 66. ToolInvocationGroup -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A tool invocation group is an organizational entity that groups
+parallel tool invocations within a single turn. It is a structural grouping
+artifact, not a process itself. The invocations within it are processes; the
+group is an information record of their co-occurrence.
+
+---
+
+### 67. ContentBlock -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A content block is a typed segment of a message's content
+(text, tool use, tool result, image). It is an information artifact that
+carries content and has a type classification and sequence position.
+
+---
+
+### 68. ContentBlockType -> Value Partition (no BFO parent)
+
+**Decision**: Value Partition with named individuals
+
+**Rationale**: Content block types (TextBlock, ToolUseBlock, ToolResultBlock,
+ImageBlock) are a controlled vocabulary classifying message content segments.
+Follows ODP-6 with `owl:oneOf` enumeration.
+
+---
+
+### 69. MemorySource -> Value Partition (no BFO parent)
+
+**Decision**: Value Partition with named individuals
+
+**Rationale**: Memory source values (UserSource, SystemSource, AgentSource)
+classify the origin of a memory item. Follows ODP-6 with `owl:oneOf`
+enumeration.
+
+---
+
+### 70. MemoryScope -> Value Partition (no BFO parent)
+
+**Decision**: Value Partition with named individuals
+
+**Rationale**: Memory scope values (SessionScope, ProjectScope, GlobalScope)
+classify the visibility of a memory item. Follows ODP-6 with `owl:oneOf`
+enumeration.
+
+---
+
+### 71. SharedMemoryArtifact -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A shared memory artifact is an information entity accessible
+to multiple agents for collaborative read/write. It is not a subclass of
+MemoryItem (which would create disjointness issues with Episode/Claim/MemoryBlock)
+but a standalone GDC that links to agents via `sharedAcrossAgents`.
+
+---
+
+### 72. MemoryWriteConflict -> Process (BFO:0000015)
+
+**Decision**: Process (subclass of Event)
+
+**Rationale**: A memory write conflict is something that happens — multiple
+agents attempt concurrent writes to the same shared memory artifact. It
+unfolds in time and has a resolution outcome. It is an event, not an
+information record.
+
+---
+
+### 73. DialogAct -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A dialog act is an information entity representing the pragmatic
+classification of a turn's communicative intent. Inspired by DIT++ and ISO
+24617-2. It is a classification record, not the communicative process itself
+(which is the Turn).
+
+---
+
+### 74. CommunicativeFunction -> Value Partition (no BFO parent)
+
+**Decision**: Value Partition with named individuals
+
+**Rationale**: Communicative function values (Inform, Request, Confirm, Clarify,
+Accept, Reject) are a curated subset from DIT++/ISO 24617-2 classifying the
+illocutionary force of dialog acts. Follows ODP-6 with `owl:oneOf` enumeration.
+
+---
+
+### 75. CommonGround -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: Common ground is an information entity representing the accumulated
+shared knowledge state between conversation participants (Clark & Schaefer 1989).
+It is a knowledge structure that grows through grounding acts, not a process
+itself.
+
+---
+
+### 76. GroundingAct -> Process (BFO:0000015)
+
+**Decision**: Process (subclass of Event)
+
+**Rationale**: A grounding act is something that happens — a participant
+contributes evidence to the common ground. It produces AcceptanceEvidence
+and updates CommonGround. Like other Event subclasses, it has temporal
+extent and participants.
+
+---
+
+### 77. ClarificationRequest -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A clarification request is an information entity recording a
+request for additional information to resolve ambiguity. It references the
+turn being clarified via `clarifiesTurn`. It is a record of the request,
+not the act of requesting itself.
+
+---
+
+### 78. AcceptanceEvidence -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: Acceptance evidence is an information entity recording evidence
+that a participant has accepted or understood a proposition. Produced by
+GroundingActs and contributed to CommonGround. It is a record, not the
+acceptance process.
 
 ---
 
