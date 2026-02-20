@@ -478,3 +478,87 @@ cq_tests:
     type: SELECT
     expected: non_empty
     requires_abox: true
+
+  # --- v0.3.0 Additions: Compaction, Memory Lifecycle, Session Continuity,
+  #     Identifiers, Status Transitions ---
+
+  - id: cq-052
+    file: cq-052.sparql
+    cq: CQ-052
+    module: conversation_interaction
+    question: "What items were dropped during a compaction event?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-053
+    file: cq-053.sparql
+    cq: CQ-053
+    module: conversation_interaction
+    question: "What fraction of items were preserved during compaction?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-054
+    file: cq-054.sparql
+    cq: CQ-054
+    module: memory
+    question: "When was a memory item last accessed?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-055
+    file: cq-055.sparql
+    cq: CQ-055
+    module: memory
+    question: "Which memory items in a given tier are eligible for eviction?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-056
+    file: cq-056.sparql
+    cq: CQ-056
+    module: conversation_interaction
+    question: "Which session continued from a given prior session?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-057
+    file: cq-057.sparql
+    cq: CQ-057
+    module: identity_actors
+    question: "What is the unique identifier for a given agent, session, or conversation?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-058
+    file: cq-058.sparql
+    cq: CQ-058
+    module: goals_plans_tasks
+    question: "What status transitions has a task undergone?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-059
+    file: cq-059.sparql
+    cq: CQ-059
+    module: conversation_interaction
+    question: "What was the previous status of a session before it ended?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-060
+    file: cq-060.sparql
+    cq: CQ-060
+    module: goals_plans_tasks
+    question: "What event triggered a given status transition?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true

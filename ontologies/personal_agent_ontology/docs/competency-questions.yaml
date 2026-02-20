@@ -1553,3 +1553,255 @@ competency_questions:
       - retentionPeriodDays
       - hasTimestamp
     required_axioms: []
+
+  # ═══════════════════════════════════════════════════════════════════
+  # v0.3.0 ADDITIONS — Compaction, Memory Lifecycle, Session Continuity,
+  #                     Identifiers, Status Transitions
+  # ═══════════════════════════════════════════════════════════════════
+
+  - id: CQ-052
+    source_use_case: UC-006
+    natural_language: "What items were dropped during a compaction event?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - compaction: pao:Compaction_001
+        item: pao:Turn_042
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Compaction algorithm internals"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      PREFIX prov: <http://www.w3.org/ns/prov#>
+      SELECT ?compaction ?item WHERE {
+        ?compaction a pao:CompactionEvent .
+        ?item prov:wasInvalidatedBy ?compaction .
+      }
+    expected_result: non_empty
+    required_classes:
+      - CompactionEvent
+    required_properties: []
+    required_axioms:
+      - "CompactionEvent rdfs:subClassOf prov:Activity"
+
+  - id: CQ-053
+    source_use_case: UC-006
+    natural_language: "What fraction of items were preserved during compaction?"
+    type: quantitative
+    priority: should_have
+    sample_answer:
+      - compaction: pao:Compaction_001
+        total: 20
+        droppedCount: 12
+    derivation_method: aggregation
+    out_of_scope:
+      - "Compaction quality metrics"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      PREFIX prov: <http://www.w3.org/ns/prov#>
+      SELECT ?compaction (COUNT(?item) AS ?total) (COUNT(?dropped) AS ?droppedCount) WHERE {
+        ?compaction a pao:CompactionEvent ;
+                    pao:compactedItem ?item .
+        OPTIONAL {
+          ?item prov:wasInvalidatedBy ?compaction .
+          BIND(?item AS ?dropped)
+        }
+      }
+      GROUP BY ?compaction
+    expected_result: non_empty
+    required_classes:
+      - CompactionEvent
+    required_properties:
+      - compactedItem
+    required_axioms: []
+
+  - id: CQ-054
+    source_use_case: UC-011
+    natural_language: "When was a memory item last accessed?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - item: pao:Memory_001
+        lastAccess: "2026-02-18T14:30:00Z"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Access frequency statistics"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+      SELECT ?item ?lastAccess WHERE {
+        ?item a pao:MemoryItem ;
+              pao:hasLastAccessTime ?lastAccess .
+      }
+    expected_result: non_empty
+    required_classes:
+      - MemoryItem
+    required_properties:
+      - hasLastAccessTime
+    required_axioms: []
+
+  - id: CQ-055
+    source_use_case: UC-011
+    natural_language: "Which memory items in a given tier are eligible for eviction?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - item: pao:Memory_003
+        tier: pao:EpisodicMemory
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Eviction policy algorithms"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+      SELECT ?item ?tier WHERE {
+        ?item a pao:MemoryItem ;
+              pao:storedIn ?tier ;
+              pao:isEvictionCandidate true .
+      }
+    expected_result: non_empty
+    required_classes:
+      - MemoryItem
+    required_properties:
+      - storedIn
+      - isEvictionCandidate
+    required_axioms: []
+
+  - id: CQ-056
+    source_use_case: UC-016
+    natural_language: "Which session continued from a given prior session?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - session: pao:Session_xyz789
+        prior: pao:Session_abc123
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Session state transfer mechanics"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?session ?prior WHERE {
+        ?session a pao:Session ;
+                 pao:continuedFrom ?prior .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Session
+    required_properties:
+      - continuedFrom
+    required_axioms: []
+
+  - id: CQ-057
+    source_use_case: UC-001
+    natural_language: "What is the unique identifier for a given agent, session, or conversation?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - entity: pao:ClaudeCodeAgent_01
+        id: "agent-claude-01"
+      - entity: pao:Session_abc123
+        id: "sess-abc123"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Identifier generation algorithms"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?entity ?id WHERE {
+        { ?entity a pao:AIAgent ; pao:hasAgentId ?id . }
+        UNION
+        { ?entity a pao:Session ; pao:hasSessionId ?id . }
+        UNION
+        { ?entity a pao:Conversation ; pao:hasConversationId ?id . }
+      }
+    expected_result: non_empty
+    required_classes:
+      - AIAgent
+      - Session
+      - Conversation
+    required_properties:
+      - hasAgentId
+      - hasSessionId
+      - hasConversationId
+    required_axioms: []
+
+  - id: CQ-058
+    source_use_case: UC-016
+    natural_language: "What status transitions has a task undergone?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - task: pao:Task_001
+        transition: pao:TaskTransition_001
+        from: pao:Pending
+        to: pao:InProgress
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Transition timing constraints"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?task ?transition ?from ?to WHERE {
+        ?transition a pao:TaskStatusTransition ;
+                    pao:transitionSubject ?task ;
+                    pao:fromStatus ?from ;
+                    pao:toStatus ?to .
+      }
+    expected_result: non_empty
+    required_classes:
+      - TaskStatusTransition
+    required_properties:
+      - transitionSubject
+      - fromStatus
+      - toStatus
+    required_axioms: []
+
+  - id: CQ-059
+    source_use_case: UC-003
+    natural_language: "What was the previous status of a session before it ended?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - session: pao:Session_abc123
+        prevStatus: pao:Active
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Session end reason classification"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?session ?prevStatus WHERE {
+        ?transition a pao:SessionStatusTransition ;
+                    pao:transitionSubject ?session ;
+                    pao:toStatus pao:Ended ;
+                    pao:fromStatus ?prevStatus .
+      }
+    expected_result: non_empty
+    required_classes:
+      - SessionStatusTransition
+    required_properties:
+      - transitionSubject
+      - fromStatus
+      - toStatus
+    required_axioms: []
+
+  - id: CQ-060
+    source_use_case: UC-016
+    natural_language: "What event triggered a given status transition?"
+    type: relational
+    priority: could_have
+    sample_answer:
+      - transition: pao:TaskTransition_001
+        trigger: pao:ToolInv_042
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Causal reasoning over event chains"
+    sparql: |
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?transition ?trigger WHERE {
+        ?transition a pao:StatusTransition ;
+                    pao:triggeredBy ?trigger .
+      }
+    expected_result: non_empty
+    required_classes:
+      - StatusTransition
+    required_properties:
+      - triggeredBy
+    required_axioms: []

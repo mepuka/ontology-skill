@@ -50,3 +50,12 @@ stakeholder_need,use_case_id,cq_id,ontology_terms,sparql_test
 "Verify consent records",UC-026,CQ-049,"ConsentRecord;Agent;consentSubject;consentPurpose",ontologies/personal_agent_ontology/tests/cq-049.sparql
 "Query retention policies",UC-026,CQ-050,"MemoryItem;RetentionPolicy;governedByRetention",ontologies/personal_agent_ontology/tests/cq-050.sparql
 "Detect expired retention items",UC-026,CQ-051,"MemoryItem;RetentionPolicy;retentionPeriodDays;hasTimestamp",ontologies/personal_agent_ontology/tests/cq-051.sparql
+"Track compaction item fate",UC-006,CQ-052,"CompactionEvent;CompactionDisposition;ItemFate",ontologies/personal_agent_ontology/tests/cq-052.sparql
+"Track compaction preservation rate",UC-006,CQ-053,"CompactionEvent;compactedItem",ontologies/personal_agent_ontology/tests/cq-053.sparql
+"Track memory access recency",UC-011,CQ-054,"MemoryItem;hasLastAccessTime",ontologies/personal_agent_ontology/tests/cq-054.sparql
+"Identify eviction candidates",UC-011,CQ-055,"MemoryItem;isEvictionCandidate",ontologies/personal_agent_ontology/tests/cq-055.sparql
+"Track cross-session continuity",UC-016,CQ-056,"Session;continuedFrom",ontologies/personal_agent_ontology/tests/cq-056.sparql
+"Identify entities by unique ID",UC-001,CQ-057,"AIAgent;Session;Conversation;hasAgentId;hasSessionId;hasConversationId",ontologies/personal_agent_ontology/tests/cq-057.sparql
+"Track task lifecycle transitions",UC-016,CQ-058,"TaskStatusTransition;fromStatus;toStatus",ontologies/personal_agent_ontology/tests/cq-058.sparql
+"Query previous session status",UC-003,CQ-059,"SessionStatusTransition;fromStatus",ontologies/personal_agent_ontology/tests/cq-059.sparql
+"Track transition triggers",UC-016,CQ-060,"StatusTransition;triggeredBy",ontologies/personal_agent_ontology/tests/cq-060.sparql

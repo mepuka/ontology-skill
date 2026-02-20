@@ -1,0 +1,8 @@
+PREFIX pao: <https://purl.org/pao/>
+
+# CQ-060: What event triggered a given status transition?
+# Expected: non-empty result set
+SELECT ?transition ?trigger WHERE {
+  ?transition a pao:StatusTransition ;
+              pao:triggeredBy ?trigger .
+}
