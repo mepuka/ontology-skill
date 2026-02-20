@@ -1,7 +1,7 @@
 # Validation Report: Personal Agent Ontology (PAO)
 
 Date: 2026-02-19
-Version: 0.2.0
+Version: 0.3.0
 Validator: ontology-validator skill
 Reasoners: ELK 0.6.0 (via ROBOT 1.9.8), HermiT 1.4.5 (via ROBOT 1.9.8)
 
@@ -9,9 +9,9 @@ Reasoners: ELK 0.6.0 (via ROBOT 1.9.8), HermiT 1.4.5 (via ROBOT 1.9.8)
 
 - **Overall: PASS**
 - Blocking issues: 0
-- ROBOT report ERRORs: **0** (all resolved)
+- ROBOT report ERRORs: **0**
 - ROBOT report WARNs: 29 (external imported terms missing IAO definitions)
-- Recommendations: 3 (all resolved)
+- Recommendations: 3 (all resolved in v0.2.0)
 
 ## Level 1: Logical Consistency
 
@@ -21,9 +21,9 @@ Reasoners: ELK 0.6.0 (via ROBOT 1.9.8), HermiT 1.4.5 (via ROBOT 1.9.8)
 - Unsatisfiable classes: **0**
 
 Both the ELK (EL profile, fast) and HermiT (full OWL DL, complete) reasoners
-confirm the ontology is logically consistent. The domain fixes applied in the
-post-review (removing overly narrow `rdfs:domain` from `storedIn`,
-`hasTimestamp`, `hasTemporalExtent`) resolved all prior DL consistency risks.
+confirm the ontology is logically consistent. The v0.3.0 additions (5 new
+classes, 18 new properties, HasKey axioms, State Transition ODP) introduce no
+new inconsistencies.
 
 ## Level 2: ROBOT Quality Report
 
@@ -32,81 +32,71 @@ post-review (removing overly narrow `rdfs:domain` from `storedIn`,
 - WARNs: 29 (external imported terms)
 - INFOs: 14
 
-### ERRORs resolved
-
-All 7 original ERRORs have been resolved:
-- **3 missing BFO stub metadata**: Added `dcterms:title`, `dcterms:description`,
-  and `dcterms:license` to `imports/bfo-declarations.ttl`.
-- **2 duplicate prov:Person / foaf:Person labels**: Disambiguated PROV stub
-  label to "Person (PROV-O)".
-- **2 duplicate prov:agent / pao:Agent labels**: Disambiguated PROV stub
-  property label to "prov agent".
-
 ### WARNs (29 total)
 
 The 29 remaining warnings are `missing_definition` for `obo:IAO_0000115` on
 **external imported terms** only (BFO, PROV-O, OWL-Time, FOAF, ODRL stub
-terms). All 46 PAO classes and 60 PAO properties have both `skos:definition`
+terms). All 51 PAO classes and 78 PAO properties have both `skos:definition`
 and `obo:IAO_0000115` — verified at 100% coverage (see Level 5).
 
 ## Level 3: SHACL Validation
 
 - **Status: PASS**
 - Violations: **0** (with RDFS inference on merged graph)
-- Shapes validated: 24 NodeShapes
+- Shapes validated: 26 NodeShapes
 
-All 24 SHACL shapes pass when the full graph (TBox + reference individuals +
-ABox data + import stubs) is validated with RDFS inference enabled. The RDFS
-inference is necessary for `sh:class pao:Agent` constraints to recognize
-individuals typed as `pao:AIAgent` or `pao:HumanUser` (subclasses of Agent).
-
-**Note**: Running pyshacl with separate `-e` extra ontology flags does NOT
-propagate inference correctly. Always merge all graphs before SHACL validation.
+All 26 SHACL shapes pass when the full graph (TBox + reference individuals +
+ABox data + import stubs) is validated with RDFS inference enabled. Two new
+shapes added in v0.3.0: StatusTransitionShape, CompactionDispositionShape.
+MemoryItemShape updated with hasLastAccessTime constraint.
 
 ## Level 4: CQ Test Suite
 
 - **Status: PASS**
-- Total tests: **480**
-- Passed: **480**
+- Total tests: **577**
+- Passed: **577**
 - Failed: **0**
 
 ### Breakdown
 
 | Test Category | Count | Status |
 |--------------|-------|--------|
-| Class declarations (46 classes) | 46 | PASS |
-| Labels and definitions | 92 | PASS |
-| Class hierarchy (SubClassOf) | 34 | PASS |
-| BFO alignment | 17 | PASS |
-| Object property declarations | 52 | PASS |
-| Datatype property declarations | 8 | PASS |
-| Functional properties | 24 | PASS |
+| Class declarations (51 classes) | 51 | PASS |
+| Labels and definitions | 102 | PASS |
+| Class hierarchy (SubClassOf) | 39 | PASS |
+| BFO alignment | 18 | PASS |
+| Object property declarations | 64 | PASS |
+| Datatype property declarations | 14 | PASS |
+| Functional properties | 37 | PASS |
 | Transitive properties | 2 | PASS |
-| Inverse pairs | 10 | PASS |
+| Inverse pairs | 12 | PASS |
 | Property hierarchy | 7 | PASS |
-| Domain/range checks | 26 | PASS |
-| Existential restrictions | 45 | PASS |
+| Domain/range checks | 44 | PASS |
+| Existential restrictions | 51 | PASS |
 | Universal restrictions | 1 | PASS |
 | Cardinality restrictions | 3 | PASS |
 | DisjointUnion axioms | 2 | PASS |
-| AllDisjointClasses | 9 | PASS |
+| AllDisjointClasses | 10 | PASS |
 | Reference individuals | 5 | PASS |
-| Enumerations (owl:oneOf) | 5 | PASS |
-| AllDifferent axioms | 5 | PASS |
+| Enumerations (owl:oneOf) | 6 | PASS |
+| AllDifferent axioms | 6 | PASS |
 | SensitivityLevel individuals | 1 | PASS |
+| ItemFate individuals | 3 | PASS |
+| HasKey axioms | 3 | PASS |
+| compactedItem subPropertyOf | 1 | PASS |
 | PROV-O alignment | 5 | PASS |
 | Ontology header | 3 | PASS |
-| CQ SPARQL (SELECT non-empty) | 44 | PASS |
+| CQ SPARQL (SELECT non-empty) | 53 | PASS |
 | CQ SPARQL (ASK true) | 4 | PASS |
 | CQ SPARQL (constraint zero-rows) | 2 | PASS |
 | SHACL conformance | 1 | PASS |
-| SHACL shape structure | 25 | PASS |
+| SHACL shape structure | 27 | PASS |
 
 ### CQ Coverage
 
-- 51 competency questions formalized as SPARQL
-- 50 tested (CQ-022 skipped — "could have" priority)
-- 44 SELECT queries return non-empty results
+- 60 competency questions formalized as SPARQL
+- 59 tested (CQ-022 skipped — "could have" priority)
+- 53 SELECT queries return non-empty results
 - 4 ASK queries return true
 - 2 constraint queries return zero violations
 
@@ -114,56 +104,53 @@ propagate inference correctly. Always merge all graphs before SHACL validation.
 
 | Metric | Value | Target | Status |
 |--------|-------|--------|--------|
-| Class label coverage | 46/46 (100%) | 100% | PASS |
-| Class definition coverage | 46/46 (100%) | >= 80% | PASS |
-| Property label coverage | 60/60 (100%) | 100% | PASS |
-| Property definition coverage | 60/60 (100%) | >= 80% | PASS |
+| Class label coverage | 51/51 (100%) | 100% | PASS |
+| Class definition coverage | 51/51 (100%) | >= 80% | PASS |
+| Property label coverage | 78/78 (100%) | 100% | PASS |
+| Property definition coverage | 78/78 (100%) | >= 80% | PASS |
 | Orphan classes | 1 (Status) | 0 | PASS (intentional) |
 | Unsatisfiable classes | 0 | 0 | PASS |
 | Naming convention issues | 0 | 0 | PASS |
 | Redundant subclass assertions | 0 | 0 | PASS |
 | Individuals in TBox | 0 | 0 | PASS |
 | Class/individual mixing | 0 | 0 | PASS |
-| AllDisjointClasses axioms | 9 | >= 5 | PASS |
-| Covered disjoint pairs | 120+ | — | Good |
+| AllDisjointClasses axioms | 10 | >= 5 | PASS |
+| Covered disjoint pairs | 140+ | — | Good |
 
 ### Ontology Size
 
 | Artifact | Triples |
 |----------|---------|
-| TBox | 999 |
-| Reference individuals | 151 |
-| ABox sample data | 394 |
-| SHACL shapes | 205 |
-| **Total** | **1,749** |
+| TBox | 1,194 |
+| Reference individuals | 187 |
+| ABox sample data | 448 |
+| SHACL shapes | 236 |
+| **Total** | **2,065** |
 
 ### Entity Counts
 
 | Entity Type | Count |
 |------------|-------|
-| PAO classes | 46 |
-| PAO object properties | 52 |
-| PAO data properties | 8 |
-| Named individuals (ref) | 17 |
-| Named individuals (ABox) | 48 |
-| Total individuals | 65 |
+| PAO classes | 51 |
+| PAO object properties | 64 |
+| PAO data properties | 14 |
+| Named individuals (ref) | 21 |
+| Named individuals (ABox) | 55+ |
+| Total individuals | 76+ |
 
 ### Anti-Pattern Detection
 
 | Anti-Pattern | Findings | Assessment |
 |-------------|----------|------------|
 | #1 Singleton hierarchy | 2 | Intentional: AIAgent->SubAgent, Action->ToolInvocation. Both have meaningful distinctions; more subtypes expected as domain grows. |
-| #4 Missing disjointness | None detected | 8 AllDisjointClasses axioms cover all sibling groups. |
-| #10 Leaf-class domain/range | 60 properties | Most are intentionally specific (e.g., hasTurnIndex on Turn). The three problematic cases (storedIn, hasTimestamp, hasTemporalExtent) were fixed in v0.1.0 post-review. |
+| #4 Missing disjointness | None detected | 10 AllDisjointClasses axioms cover all sibling groups. |
+| #10 Leaf-class domain/range | 78 properties | Most are intentionally specific (e.g., hasTurnIndex on Turn). The three problematic cases (storedIn, hasTimestamp, hasTemporalExtent) were fixed in v0.1.0 post-review. |
 | #11 Individuals in TBox | 0 | Clean T-box/A-box separation. |
 | #16 Class/individual mixing | 0 | No punning detected. |
 
 ### Minor Observations
 
-1. **Duplicate labels**: Resolved — memory tier instance labels now
-   disambiguated (e.g., "working memory instance" vs class "working memory").
-
-2. **Orphan class**: `pao:Status` has no named superclass (by design — it's
+1. **Orphan class**: `pao:Status` has no named superclass (by design — it's
    a value partition root with no BFO alignment since status values cross-cut
    BFO categories).
 
@@ -173,23 +160,25 @@ propagate inference correctly. Always merge all graphs before SHACL validation.
 
 - **Expressivity**: OWL 2 DL with EL-compatible core. Uses existential
   restrictions, qualified cardinality, value partitions (owl:oneOf),
-  disjoint unions, and property hierarchy. Sufficient for all 51 CQs.
-- **Complexity**: Moderate (46 classes, 60 properties). Taxonomy depth is
-  shallow (max 4 levels: Thing -> Event -> Action -> ToolInvocation), keeping
-  the model navigable.
+  disjoint unions, property hierarchy, HasKey axioms, and subPropertyOf
+  chains (compactedItem subPropertyOf prov:used). Sufficient for all 60 CQs.
+- **Complexity**: Moderate (51 classes, 78 properties). Taxonomy depth is
+  shallow (max 4 levels), keeping the model navigable.
 - **Granularity**: Appropriate for the scope. Six modules (core, conversation,
   memory, planning, governance, events) cover the AI agent architecture
   domain without over-specification.
 - **Epistemological adequacy**: Grounded in established standards (PROV-O for
   provenance, OWL-Time for temporal reasoning, ODRL for permissions, BFO for
   upper-level alignment). Memory architecture influenced by cognitive science
-  (episodic/semantic/procedural/working memory model).
+  (episodic/semantic/procedural/working memory model). v0.3.0 adds lifecycle
+  semantics via State Transition ODP and PROV-O compaction trace.
 
 ### Functional Assessment
 
-- **CQ relevance**: All 50 tested CQs return meaningful results. The ontology
+- **CQ relevance**: All 59 tested CQs return meaningful results. The ontology
   answers questions about agent identity, conversation structure, memory
-  management, planning, and governance.
+  management, planning, governance, compaction traces, eviction eligibility,
+  session continuity, and lifecycle transitions.
 - **Rigor**: Every class has a genus-differentia definition. Every property
   has domain/range documentation. BFO alignment is explicit and justified.
 - **Automation**: Build is fully programmatic (build.py). No hand-edited
@@ -204,23 +193,46 @@ propagate inference correctly. Always merge all graphs before SHACL validation.
 - **Formality level**: High — full OWL 2 DL with DL reasoner validation,
   SHACL structural shapes, and SPARQL acceptance tests.
 
-## Recommendations (all resolved)
+## v0.3.0 Changes from v0.2.0
 
-1. **BFO stub metadata** — RESOLVED: Added `dcterms:title`,
-   `dcterms:description`, and `dcterms:license` to
-   `imports/bfo-declarations.ttl`.
+### New Classes (5)
+- CompactionDisposition, ItemFate, StatusTransition, SessionStatusTransition,
+  TaskStatusTransition
 
-2. **Memory tier instance labels** — RESOLVED: Disambiguated ABox labels
-   to "working memory instance", "episodic memory instance", etc.
+### New Object Properties (12)
+- compactedItem, continuedBy, continuedFrom, dispositionOf, fromStatus,
+  hasCompactionDisposition, hasItemFate, nextTransition, previousTransition,
+  toStatus, transitionSubject, triggeredBy
 
-3. **IAO_0000115 definition aliases** — RESOLVED: Build script now copies
-   all `skos:definition` annotations to `obo:IAO_0000115` for OBO tool
-   compatibility. All PAO classes and properties have both.
+### New Data Properties (6)
+- fateReason, hasAgentId, hasConversationId, hasLastAccessTime, hasSessionId,
+  isEvictionCandidate
+
+### New Reference Individuals (4)
+- Preserved, Dropped, Summarized, Archived (ItemFate enumeration)
+
+### New SHACL Shapes (2)
+- StatusTransitionShape, CompactionDispositionShape
+- Updated: MemoryItemShape (added hasLastAccessTime constraint)
+
+### New CQs (9)
+- CQ-052 through CQ-060 covering compaction trace, eviction, session
+  continuation, identity keys, and lifecycle transitions
+
+### Key Design Decisions
+- State Transition ODP uses Reified Event pattern (StatusTransition as Event
+  subclass aligned to BFO:Process)
+- Compaction trace uses PROV-O (prov:used, prov:wasInvalidatedBy,
+  prov:wasDerivedFrom) with CompactionDisposition n-ary reification
+- HasKey identity contracts on AIAgent, Session, Conversation
+- compactedItem declared as subPropertyOf prov:used for PROV-O interop
 
 ## Conclusion
 
-The Personal Agent Ontology v0.2.0 **passes all required validation levels**.
-It is logically consistent (ELK + HermiT), structurally valid (24 SHACL shapes),
-functionally complete (480/480 tests, 50/51 CQs), and follows established
-naming and modeling conventions. The ontology is ready for the next pipeline
-phase (mapping or release).
+The Personal Agent Ontology v0.3.0 **passes all required validation levels**.
+It is logically consistent (ELK + HermiT), structurally valid (26 SHACL shapes),
+functionally complete (577/577 tests, 59/60 CQs), and follows established
+naming and modeling conventions. The v0.3.0 release addresses all 5 backlog
+items from the v0.2.0 design review: compaction preservation/loss trace,
+eviction eligibility, cross-session resume, HasKey identity contracts, and
+lifecycle transition semantics.
