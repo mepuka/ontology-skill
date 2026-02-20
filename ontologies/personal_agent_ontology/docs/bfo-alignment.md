@@ -23,13 +23,13 @@ independently and note the PROV-O relationship.
 
 | BFO Category | PAO Classes |
 |---|---|
-| Object (BFO:0000030) | HumanUser |
-| Generically Dependent Continuant (BFO:0000031) | AIAgent, SubAgent, ToolDefinition, Message, MemoryItem, MemoryTier, WorkingMemory, EpisodicMemory, SemanticMemory, ProceduralMemory, Episode, Claim, Goal, Plan, Task, PermissionPolicy, SafetyConstraint |
+| Object (BFO:0000030) | HumanUser, Organization |
+| Generically Dependent Continuant (BFO:0000031) | AIAgent, SubAgent, ToolDefinition, Message, MemoryItem, MemoryTier, WorkingMemory, EpisodicMemory, SemanticMemory, ProceduralMemory, Episode, Claim, MemoryBlock, Goal, Plan, Task, Persona, Intention, PermissionPolicy, SafetyConstraint, ConsentRecord, RetentionPolicy |
 | Role (BFO:0000023) | AgentRole |
-| Process (BFO:0000015) | Conversation, Session, Turn, ToolInvocation, CompactionEvent, ErasureEvent, Event, Action, MemoryOperation, Encoding, Retrieval, Consolidation, Forgetting |
+| Process (BFO:0000015) | Conversation, Session, Turn, ToolInvocation, CompactionEvent, ErasureEvent, Event, Action, MemoryOperation, Encoding, Retrieval, Consolidation, Forgetting, Observation, Rehearsal |
 | Cross-cutting (documented) | Agent (umbrella for Object + GDC subtypes) |
-| Value Partition (no BFO parent) | Status, SessionStatus, TaskStatus, ComplianceStatus |
-| Named Individuals | Active, Ended, Interrupted, Pending, InProgress, Completed, Blocked, Compliant, NonCompliant, AssistantRole, UserRole, UserPreference, PersonalData |
+| Value Partition (no BFO parent) | Status, SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel |
+| Named Individuals | Active, Ended, Interrupted, Pending, InProgress, Completed, Blocked, Compliant, NonCompliant, AssistantRole, UserRole, UserPreference, PersonalData, Public, Internal, Confidential, Restricted |
 
 ---
 
@@ -391,6 +391,110 @@ qualified association pattern (ODP-2):
 This eliminates a custom reification class in favor of standard PROV-O
 vocabulary. CQ-004 ("What role does each agent play?") is still answerable
 via the PROV-O pattern.
+
+---
+
+### 27. Organization -> Object (BFO:0000030)
+
+**Decision**: Material Entity > Object
+
+**Rationale**: An organization is a group of people -- a social entity with
+material participants. While organizations have abstract aspects, their primary
+BFO alignment is as Objects (maximally self-connected entities) following
+the same pattern as HumanUser. This is consistent with BFO's treatment of
+organizations as material entities.
+
+**Decision path**: Continuant > Independent Continuant > Material Entity > Object.
+
+**Note**: Organization is also aligned with prov:Organization for provenance
+tracking. It is a subclass of Agent (cross-cutting, like HumanUser).
+
+---
+
+### 28. Persona -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A persona is an information artifact specifying an agent's
+configured identity, behavior, and system prompt. It can be shared, versioned,
+and transferred between agents. This follows the same GDC pattern as other
+configuration entities (ToolDefinition, Plan).
+
+---
+
+### 29. Observation -> Process (BFO:0000015)
+
+**Decision**: Process (subclass of Event)
+
+**Rationale**: An observation is an event in which an agent receives
+environmental feedback. It unfolds in time and is situated within a session.
+Follows the same pattern as other Event subclasses.
+
+---
+
+### 30. Rehearsal -> Process (BFO:0000015)
+
+**Decision**: Process (subclass of MemoryOperation)
+
+**Rationale**: A rehearsal is a memory operation that strengthens a memory
+item through repeated access. Like other memory operations (Encoding,
+Retrieval, Consolidation, Forgetting), it is a process that acts on memory
+items over time.
+
+---
+
+### 31. MemoryBlock -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC (subclass of MemoryItem)
+
+**Rationale**: A memory block is a memory item that stores structured
+key-value data (following the Letta core memory pattern). As an information
+artifact stored in agent memory, it inherits the GDC classification from
+MemoryItem.
+
+---
+
+### 32. Intention -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: In the BDI model, an intention is an agent's commitment to
+execute a plan derived from a goal. In PAO, it is modeled as an information
+content entity -- a record of the agent's committed course of action. Like
+Goal and Plan, it is a GDC rather than a Realizable Entity (see DD-04 for
+Goal rationale).
+
+---
+
+### 33. SensitivityLevel -> Value Partition (no BFO parent)
+
+**Decision**: Value Partition with named individuals
+
+**Rationale**: Sensitivity levels (Public, Internal, Confidential, Restricted)
+are a controlled vocabulary for privacy classification. Like other Status
+types (SessionStatus, TaskStatus, ComplianceStatus), they follow the Value
+Partition pattern (ODP-6) with owl:oneOf enumeration.
+
+---
+
+### 34. ConsentRecord -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A consent record is an information artifact that documents
+a data subject's consent for a specific processing purpose. It is a
+record/document, not a process or physical entity. Similar to
+PermissionPolicy in nature.
+
+---
+
+### 35. RetentionPolicy -> Generically Dependent Continuant (BFO:0000031)
+
+**Decision**: GDC
+
+**Rationale**: A retention policy is an information artifact specifying how
+long memory items should be retained before deletion. Like PermissionPolicy
+and SafetyConstraint, it is a governance rule document.
 
 ---
 

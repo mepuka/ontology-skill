@@ -264,7 +264,7 @@ def build_tbox(glossary: list[dict[str, str]]) -> Graph:
     # Build glossary lookup
     class_glossary = {row["term"]: row for row in glossary if row["category"] == "class"}
 
-    # --- Declare all 37 classes ---
+    # --- Declare all 46 classes ---
     _add_classes(g, class_glossary)
 
     # --- Declare all properties ---
@@ -299,7 +299,7 @@ def build_tbox(glossary: list[dict[str, str]]) -> Graph:
 
 
 def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
-    """Declare all 37 PAO classes with labels, definitions, and subclass axioms."""
+    """Declare all 46 PAO classes with labels, definitions, and subclass axioms."""
     # Class hierarchy: (class_name, parent_uri, bfo_uri_or_none)
     class_defs: list[tuple[str, URIRef | None, URIRef | None]] = [
         # pao-core
@@ -308,6 +308,8 @@ def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
         ("HumanUser", PAO.Agent, OBO.BFO_0000030),
         ("SubAgent", PAO.AIAgent, None),  # inherits GDC from AIAgent
         ("AgentRole", PROV.Role, OBO.BFO_0000023),
+        ("Organization", PAO.Agent, OBO.BFO_0000030),
+        ("Persona", PROV.Entity, OBO.BFO_0000031),
         # pao-event
         ("Event", PROV.Activity, OBO.BFO_0000015),
         ("Action", PAO.Event, None),
@@ -323,6 +325,7 @@ def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
         ("ToolDefinition", PROV.Entity, OBO.BFO_0000031),
         ("ToolInvocation", PAO.Action, None),
         ("CompactionEvent", PAO.Event, None),
+        ("Observation", PAO.Event, None),  # inherits Process from Event
         # pao-memory
         ("MemoryItem", PROV.Entity, OBO.BFO_0000031),
         ("MemoryTier", PROV.Entity, OBO.BFO_0000031),
@@ -337,14 +340,20 @@ def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
         ("Retrieval", PAO.MemoryOperation, None),
         ("Consolidation", PAO.MemoryOperation, None),
         ("Forgetting", PAO.MemoryOperation, None),
+        ("Rehearsal", PAO.MemoryOperation, None),
+        ("MemoryBlock", PAO.MemoryItem, None),
         # pao-planning
         ("Goal", PROV.Entity, OBO.BFO_0000031),
         ("Plan", PROV.Plan, None),  # prov:Plan is subclass of prov:Entity
         ("Task", PROV.Entity, OBO.BFO_0000031),
+        ("Intention", PROV.Entity, OBO.BFO_0000031),
         # pao-governance
         ("PermissionPolicy", ODRL.Policy, OBO.BFO_0000031),
         ("SafetyConstraint", PROV.Entity, OBO.BFO_0000031),
         ("ErasureEvent", PAO.Event, None),
+        ("SensitivityLevel", PAO.Status, None),  # Value Partition
+        ("ConsentRecord", PROV.Entity, OBO.BFO_0000031),
+        ("RetentionPolicy", PROV.Entity, OBO.BFO_0000031),
     ]
 
     # Additional parent axioms (multiple inheritance)
@@ -373,7 +382,7 @@ def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
 
 
 def _add_object_properties(g: Graph) -> None:
-    """Declare all 42 object properties."""
+    """Declare all 52 object properties."""
     # Each tuple: (name, domain, range, characteristics, definition)
     obj_props: list[tuple[str, URIRef | None, URIRef | None, list[str], str]] = [
         # pao-core: generic part-whole
@@ -658,6 +667,13 @@ def _add_object_properties(g: Graph) -> None:
             "Links a tool invocation to its compliance status.",
         ),
         (
+            "governedByPolicy",
+            PAO.ToolInvocation,
+            PAO.PermissionPolicy,
+            [],
+            "Links a tool invocation to the permission policy that governed it.",
+        ),
+        (
             "restrictsToolUse",
             PAO.PermissionPolicy,
             PAO.ToolDefinition,
@@ -670,6 +686,73 @@ def _add_object_properties(g: Graph) -> None:
             PAO.Agent,
             ["functional"],
             "Links an erasure event to the agent who requested deletion.",
+        ),
+        # v0.2.0: Identity additions
+        (
+            "belongsTo",
+            PAO.Agent,
+            PAO.Organization,
+            ["functional"],
+            "Links an agent to the organization it belongs to.",
+        ),
+        (
+            "hasMember",
+            PAO.Organization,
+            PAO.Agent,
+            [],
+            "Links an organization to its member agents.",
+        ),
+        (
+            "hasPersona",
+            PAO.AIAgent,
+            PAO.Persona,
+            ["functional"],
+            "Links an AI agent to its configured persona.",
+        ),
+        # v0.2.0: Planning additions
+        (
+            "intendedBy",
+            PAO.Intention,
+            PAO.Agent,
+            [],
+            "Links an intention to the agent that holds it.",
+        ),
+        (
+            "derivedFromGoal",
+            PAO.Intention,
+            PAO.Goal,
+            [],
+            "Links an intention to the goal it was derived from.",
+        ),
+        # v0.2.0: Governance additions
+        (
+            "consentSubject",
+            PAO.ConsentRecord,
+            PAO.Agent,
+            ["functional"],
+            "Links a consent record to the data subject agent.",
+        ),
+        (
+            "consentPurpose",
+            PAO.ConsentRecord,
+            PROV.Entity,
+            [],
+            "Links a consent record to the entity describing the purpose.",
+        ),
+        (
+            "governedByRetention",
+            PAO.MemoryItem,
+            PAO.RetentionPolicy,
+            [],
+            "Links a memory item to the retention policy that governs it.",
+        ),
+        # v0.2.0: hasSensitivityLevel migrated from DataProperty
+        (
+            "hasSensitivityLevel",
+            PAO.MemoryItem,
+            PAO.SensitivityLevel,
+            ["functional"],
+            "Links a memory item to its privacy sensitivity classification.",
         ),
     ]
 
@@ -689,7 +772,7 @@ def _add_object_properties(g: Graph) -> None:
 
 
 def _add_data_properties(g: Graph) -> None:
-    """Declare all 6 data properties."""
+    """Declare all 8 data properties."""
     data_props: list[tuple[str, URIRef | None, URIRef, list[str], str]] = [
         (
             "hasTimestamp",
@@ -726,12 +809,28 @@ def _add_data_properties(g: Graph) -> None:
             ["functional"],
             "A classifier string indicating the kind of claim.",
         ),
+        # v0.2.0: Memory block properties
         (
-            "hasSensitivityLevel",
-            PAO.MemoryItem,
+            "hasBlockKey",
+            PAO.MemoryBlock,
             XSD.string,
+            [],
+            "A key in a memory block's key-value store.",
+        ),
+        (
+            "hasBlockValue",
+            PAO.MemoryBlock,
+            XSD.string,
+            [],
+            "A value in a memory block's key-value store.",
+        ),
+        # v0.2.0: Governance properties
+        (
+            "retentionPeriodDays",
+            PAO.RetentionPolicy,
+            XSD.nonNegativeInteger,
             ["functional"],
-            "The privacy sensitivity classification of a memory item.",
+            "The number of days a memory item should be retained.",
         ),
     ]
 
@@ -774,6 +873,7 @@ def _add_inverse_pairs(g: Graph) -> None:
         (PAO.pursuedBy, PAO.pursuesGoal),
         (PAO.partOfPlan, PAO.hasTask),
         (PAO.blockedBy, PAO.blocks),
+        (PAO.belongsTo, PAO.hasMember),
         (PAO.achievesGoal, None),  # no inverse defined
     ]
     for p1, p2 in pairs:
@@ -841,6 +941,8 @@ def _add_existential_restrictions(g: Graph) -> None:
         (PAO.PermissionPolicy, PAO.grantsPermission, ODRL.Permission),
         # CQ-031: ToolInvocation compliance
         (PAO.ToolInvocation, PAO.hasComplianceStatus, PAO.ComplianceStatus),
+        # CQ-031: ToolInvocation governed by policy
+        (PAO.ToolInvocation, PAO.governedByPolicy, PAO.PermissionPolicy),
         # CQ-034: ErasureEvent
         (PAO.ErasureEvent, PAO.requestedBy, PAO.Agent),
         # CQ-035: SafetyConstraint
@@ -849,6 +951,22 @@ def _add_existential_restrictions(g: Graph) -> None:
         (PAO.Session, PAO.hasStatus, PAO.SessionStatus),
         # CQ-039: PermissionPolicy restricts tools
         (PAO.PermissionPolicy, PAO.restrictsToolUse, PAO.ToolDefinition),
+        # CQ-041: Organization has members
+        (PAO.Organization, PAO.hasMember, PAO.Agent),
+        # CQ-042: AIAgent has persona
+        (PAO.AIAgent, PAO.hasPersona, PAO.Persona),
+        # CQ-043: Observation in session
+        (PAO.Observation, PAO.inSession, PAO.Session),
+        # CQ-046: Intention has intender
+        (PAO.Intention, PAO.intendedBy, PAO.Agent),
+        # CQ-047: Intention derived from goal
+        (PAO.Intention, PAO.derivedFromGoal, PAO.Goal),
+        # CQ-048: MemoryItem has sensitivity level (migrated)
+        (PAO.MemoryItem, PAO.hasSensitivityLevel, PAO.SensitivityLevel),
+        # CQ-049: ConsentRecord has subject
+        (PAO.ConsentRecord, PAO.consentSubject, PAO.Agent),
+        # CQ-050: MemoryItem governed by retention
+        (PAO.MemoryItem, PAO.governedByRetention, PAO.RetentionPolicy),
     ]
     for cls, prop, filler in restrictions:
         _add_existential(g, cls, prop, filler)
@@ -883,7 +1001,7 @@ def _add_disjoint_unions(g: Graph) -> None:
             PAO.ProceduralMemory,
         ],
     )
-    # MemoryOperation DisjointUnionOf 4 subtypes
+    # MemoryOperation DisjointUnionOf 5 subtypes
     _add_disjoint_union(
         g,
         PAO.MemoryOperation,
@@ -892,6 +1010,7 @@ def _add_disjoint_unions(g: Graph) -> None:
             PAO.Retrieval,
             PAO.Consolidation,
             PAO.Forgetting,
+            PAO.Rehearsal,
         ],
     )
 
@@ -899,8 +1018,8 @@ def _add_disjoint_unions(g: Graph) -> None:
 def _add_disjointness_axioms(g: Graph) -> None:
     """Add AllDisjointClasses axioms."""
     # Agent subtypes
-    _add_all_disjoint_classes(g, [PAO.AIAgent, PAO.HumanUser])
-    # Event subtypes (7-way)
+    _add_all_disjoint_classes(g, [PAO.AIAgent, PAO.HumanUser, PAO.Organization])
+    # Event subtypes (8-way)
     _add_all_disjoint_classes(
         g,
         [
@@ -911,14 +1030,21 @@ def _add_disjointness_axioms(g: Graph) -> None:
             PAO.CompactionEvent,
             PAO.ErasureEvent,
             PAO.MemoryOperation,
+            PAO.Observation,
         ],
     )
     # MemoryItem subtypes
-    _add_all_disjoint_classes(g, [PAO.Episode, PAO.Claim])
+    _add_all_disjoint_classes(g, [PAO.Episode, PAO.Claim, PAO.MemoryBlock])
     # Status subtypes
-    _add_all_disjoint_classes(g, [PAO.SessionStatus, PAO.TaskStatus, PAO.ComplianceStatus])
+    _add_all_disjoint_classes(
+        g,
+        [PAO.SessionStatus, PAO.TaskStatus, PAO.ComplianceStatus, PAO.SensitivityLevel],
+    )
     # Governance types
-    _add_all_disjoint_classes(g, [PAO.PermissionPolicy, PAO.SafetyConstraint])
+    _add_all_disjoint_classes(
+        g,
+        [PAO.PermissionPolicy, PAO.SafetyConstraint, PAO.ConsentRecord, PAO.RetentionPolicy],
+    )
     # Cross-module GDC disjointness: information artifacts
     _add_all_disjoint_classes(
         g,
@@ -932,6 +1058,10 @@ def _add_disjointness_axioms(g: Graph) -> None:
             PAO.Task,
             PAO.PermissionPolicy,
             PAO.SafetyConstraint,
+            PAO.Persona,
+            PAO.Intention,
+            PAO.ConsentRecord,
+            PAO.RetentionPolicy,
         ],
     )
     # MemoryTier subtypes (covered by DisjointUnion, but explicit for clarity)
@@ -952,6 +1082,7 @@ def _add_disjointness_axioms(g: Graph) -> None:
             PAO.Retrieval,
             PAO.Consolidation,
             PAO.Forgetting,
+            PAO.Rehearsal,
         ],
     )
 
@@ -1038,10 +1169,16 @@ def build_reference_individuals(glossary: list[dict[str, str]]) -> Graph:
     user_role = _add_individual("UserRole", PAO.AgentRole)
     _add_all_different(g, [assistant_role, user_role])
 
+    # --- Sensitivity level individuals (v0.2.0) ---
+    public = _add_individual("Public", PAO.SensitivityLevel)
+    internal = _add_individual("Internal", PAO.SensitivityLevel)
+    confidential = _add_individual("Confidential", PAO.SensitivityLevel)
+    restricted = _add_individual("Restricted", PAO.SensitivityLevel)
+    _add_all_different(g, [public, internal, confidential, restricted])
+
     # --- Classifier individuals (used as string property values) ---
-    # These are reference labels, NOT instances of domain classes.
-    # We add them directly to avoid assigning a domain class type.
-    for cname in ("UserPreference", "PersonalData"):
+    # UserPreference is a reference label, NOT an instance of a domain class.
+    for cname in ("UserPreference",):
         uri = PAO[cname]
         g.add((uri, RDF.type, OWL.NamedIndividual))
         g.add((uri, RDFS.label, Literal(to_label(cname), lang="en")))
@@ -1058,6 +1195,7 @@ def build_reference_individuals(glossary: list[dict[str, str]]) -> Graph:
     _add_enumeration(g, PAO.TaskStatus, [pending, in_progress, completed, blocked])
     _add_enumeration(g, PAO.ComplianceStatus, [compliant, non_compliant])
     _add_enumeration(g, PAO.AgentRole, [assistant_role, user_role])
+    _add_enumeration(g, PAO.SensitivityLevel, [public, internal, confidential, restricted])
 
     return g
 
@@ -1107,6 +1245,13 @@ def build_abox_data() -> Graph:
     _add_sample_memory(g)
     _add_sample_planning(g)
     _add_sample_governance(g)
+    _add_sample_organization(g)
+    _add_sample_persona(g)
+    _add_sample_observation(g)
+    _add_sample_rehearsal(g)
+    _add_sample_memory_block(g)
+    _add_sample_intention(g)
+    _add_sample_governance_v2(g)
 
     return g
 
@@ -1310,6 +1455,10 @@ def _add_sample_conversation(g: Graph) -> None:
     g.add((inv2, PAO.hasTimestamp, Literal("2026-02-18T10:03:00", datatype=XSD.dateTime)))
     g.add((inv2, PAO.hasComplianceStatus, PAO.Compliant))
 
+    # Governance links (CQ-031: governedByPolicy)
+    g.add((inv1, PAO.governedByPolicy, PAO.policy_001))
+    g.add((inv2, PAO.governedByPolicy, PAO.policy_001))
+
     # CompactionEvent (CQ-010)
     comp = PAO.compaction_001
     g.add((comp, RDF.type, PAO.CompactionEvent))
@@ -1403,7 +1552,6 @@ def _add_sample_memory(g: Graph) -> None:
     g.add((claim1, PROV.wasGeneratedBy, PAO.conv_001))
     g.add((claim1, PROV.wasDerivedFrom, ep))
     g.add((claim1, PAO.hasEvidence, ep))
-    g.add((claim1, PAO.hasSensitivityLevel, Literal("PersonalData")))
 
     # Revised claim for CQ-017
     claim2 = PAO.claim_002
@@ -1421,7 +1569,6 @@ def _add_sample_memory(g: Graph) -> None:
     g.add((claim2, PROV.wasRevisionOf, claim1))
     g.add((claim2, PROV.wasDerivedFrom, claim1))
     g.add((claim2, PAO.hasTimestamp, Literal("2026-02-18T11:00:00", datatype=XSD.dateTime)))
-    g.add((claim2, PAO.hasSensitivityLevel, Literal("PersonalData")))
 
     # Memory operations (CQ-019)
     enc = PAO.encoding_001
@@ -1567,6 +1714,144 @@ def _add_sample_governance(g: Graph) -> None:
     # CQ-036: agent generated memory item through activity
     g.add((PAO.claim_001, PROV.wasGeneratedBy, PAO.conv_001))
     g.add((PAO.conv_001, PROV.wasAssociatedWith, PAO.claude_agent))
+
+
+def _add_sample_organization(g: Graph) -> None:
+    """Add organization and membership data (CQ-041)."""
+    org = PAO.acme_corp
+    g.add((org, RDF.type, PAO.Organization))
+    g.add((org, RDF.type, OWL.NamedIndividual))
+    g.add((org, RDFS.label, Literal("Acme Corp", lang="en")))
+    g.add((PAO.claude_agent, PAO.belongsTo, org))
+    g.add((PAO.alice_user, PAO.belongsTo, org))
+    # Explicit inverse for SHACL (SHACL doesn't infer owl:inverseOf)
+    g.add((org, PAO.hasMember, PAO.claude_agent))
+    g.add((org, PAO.hasMember, PAO.alice_user))
+
+
+def _add_sample_persona(g: Graph) -> None:
+    """Add persona data (CQ-042)."""
+    persona = PAO.persona_claude
+    g.add((persona, RDF.type, PAO.Persona))
+    g.add((persona, RDF.type, OWL.NamedIndividual))
+    g.add((persona, RDFS.label, Literal("Claude coding assistant persona", lang="en")))
+    g.add((persona, PAO.hasContent, Literal("You are a helpful coding assistant.")))
+    g.add((persona, PROV.wasAttributedTo, PAO.alice_user))
+    g.add((persona, PAO.storedIn, PAO.procedural_memory_instance))
+    g.add((persona, PROV.wasGeneratedBy, PAO.conv_001))
+    g.add((PAO.claude_agent, PAO.hasPersona, persona))
+
+
+def _add_sample_observation(g: Graph) -> None:
+    """Add observation data (CQ-043)."""
+    obs = PAO.observation_001
+    g.add((obs, RDF.type, PAO.Observation))
+    g.add((obs, RDF.type, OWL.NamedIndividual))
+    g.add((obs, RDFS.label, Literal("observation 001", lang="en")))
+    g.add((obs, PAO.inSession, PAO.session_001))
+    g.add((obs, PAO.hasTimestamp, Literal("2026-02-18T10:04:00", datatype=XSD.dateTime)))
+    g.add((obs, PAO.hasContent, Literal("User appears to prefer concise responses")))
+
+
+def _add_sample_rehearsal(g: Graph) -> None:
+    """Add rehearsal data (CQ-044)."""
+    reh = PAO.rehearsal_001
+    g.add((reh, RDF.type, PAO.Rehearsal))
+    g.add((reh, RDF.type, PAO.MemoryOperation))
+    g.add((reh, RDF.type, OWL.NamedIndividual))
+    g.add((reh, RDFS.label, Literal("rehearsal 001", lang="en")))
+    g.add((reh, PAO.operatesOn, PAO.claim_001))
+    g.add((reh, PAO.hasTimestamp, Literal("2026-02-18T10:40:00", datatype=XSD.dateTime)))
+
+    reh2 = PAO.rehearsal_002
+    g.add((reh2, RDF.type, PAO.Rehearsal))
+    g.add((reh2, RDF.type, PAO.MemoryOperation))
+    g.add((reh2, RDF.type, OWL.NamedIndividual))
+    g.add((reh2, RDFS.label, Literal("rehearsal 002", lang="en")))
+    g.add((reh2, PAO.operatesOn, PAO.claim_001))
+    g.add((reh2, PAO.hasTimestamp, Literal("2026-02-18T11:30:00", datatype=XSD.dateTime)))
+
+
+def _add_sample_memory_block(g: Graph) -> None:
+    """Add memory block data (CQ-045)."""
+    block = PAO.memory_block_001
+    g.add((block, RDF.type, PAO.MemoryBlock))
+    g.add((block, RDF.type, PAO.MemoryItem))
+    g.add((block, RDF.type, OWL.NamedIndividual))
+    g.add((block, RDFS.label, Literal("core memory block", lang="en")))
+    g.add((block, PAO.hasBlockKey, Literal("user_name")))
+    g.add((block, PAO.hasBlockValue, Literal("Alice")))
+    g.add((block, PAO.storedIn, PAO.working_memory_instance))
+    g.add((block, PROV.wasAttributedTo, PAO.claude_agent))
+    g.add((block, PROV.wasGeneratedBy, PAO.conv_001))
+    g.add((block, PAO.hasSensitivityLevel, PAO.Internal))
+
+
+def _add_sample_intention(g: Graph) -> None:
+    """Add intention data (CQ-046, CQ-047)."""
+    intention = PAO.intention_001
+    g.add((intention, RDF.type, PAO.Intention))
+    g.add((intention, RDF.type, OWL.NamedIndividual))
+    g.add((intention, RDFS.label, Literal("implement dark mode intention", lang="en")))
+    g.add((intention, PAO.intendedBy, PAO.claude_agent))
+    g.add((intention, PAO.derivedFromGoal, PAO.goal_001))
+    g.add((intention, PROV.wasAttributedTo, PAO.claude_agent))
+    g.add((intention, PAO.storedIn, PAO.semantic_memory_instance))
+    g.add((intention, PROV.wasGeneratedBy, PAO.conv_001))
+
+
+def _add_sample_governance_v2(g: Graph) -> None:
+    """Add v0.2.0 governance data: consent, retention, migrated sensitivity (CQ-048--CQ-051)."""
+    # Migrate existing sensitivity levels from strings to individuals
+    # Update claim_001 and claim_002 to use SensitivityLevel individuals
+    # (The old string literals are replaced by adding the object property)
+    g.add((PAO.claim_001, PAO.hasSensitivityLevel, PAO.Confidential))
+    g.add((PAO.claim_002, PAO.hasSensitivityLevel, PAO.Confidential))
+    g.add((PAO.summary_001, PAO.hasSensitivityLevel, PAO.Public))
+
+    # ConsentRecord (CQ-049)
+    consent = PAO.consent_001
+    g.add((consent, RDF.type, PAO.ConsentRecord))
+    g.add((consent, RDF.type, OWL.NamedIndividual))
+    g.add((consent, RDFS.label, Literal("memory storage consent", lang="en")))
+    g.add((consent, PAO.consentSubject, PAO.alice_user))
+    # Purpose: memory storage (using a generic entity as purpose)
+    purpose = PAO.purpose_memory_storage
+    g.add((purpose, RDF.type, PROV.Entity))
+    g.add((purpose, RDF.type, OWL.NamedIndividual))
+    g.add((purpose, RDFS.label, Literal("memory storage", lang="en")))
+    g.add((consent, PAO.consentPurpose, purpose))
+    g.add((consent, PROV.wasAttributedTo, PAO.alice_user))
+    g.add((consent, PAO.storedIn, PAO.procedural_memory_instance))
+    g.add((consent, PROV.wasGeneratedBy, PAO.conv_001))
+
+    # RetentionPolicy (CQ-050, CQ-051)
+    retention = PAO.retention_policy_30day
+    g.add((retention, RDF.type, PAO.RetentionPolicy))
+    g.add((retention, RDF.type, OWL.NamedIndividual))
+    g.add((retention, RDFS.label, Literal("30-day retention policy", lang="en")))
+    g.add((retention, PAO.retentionPeriodDays, Literal(30, datatype=XSD.nonNegativeInteger)))
+    g.add((retention, PROV.wasAttributedTo, PAO.alice_user))
+    g.add((retention, PAO.storedIn, PAO.procedural_memory_instance))
+    g.add((retention, PROV.wasGeneratedBy, PAO.conv_001))
+
+    # Link memory items to retention policy
+    g.add((PAO.claim_001, PAO.governedByRetention, retention))
+    g.add((PAO.claim_002, PAO.governedByRetention, retention))
+
+    # Expired item for CQ-051 (old timestamp that exceeds 30-day retention)
+    expired = PAO.expired_memory_001
+    g.add((expired, RDF.type, PAO.MemoryItem))
+    g.add((expired, RDF.type, OWL.NamedIndividual))
+    g.add((expired, RDFS.label, Literal("expired memory item", lang="en")))
+    g.add((expired, PAO.hasContent, Literal("Old data that should be deleted")))
+    g.add((expired, PAO.storedIn, PAO.semantic_memory_instance))
+    g.add((expired, PROV.wasAttributedTo, PAO.claude_agent))
+    g.add((expired, PROV.wasGeneratedBy, PAO.conv_001))
+    g.add((expired, PAO.hasSensitivityLevel, PAO.Restricted))
+    g.add((expired, PAO.governedByRetention, retention))
+    # Timestamp 60 days ago to ensure it's expired under 30-day policy
+    g.add((expired, PAO.hasTimestamp, Literal("2025-12-20T10:00:00", datatype=XSD.dateTime)))
 
 
 # ---------------------------------------------------------------------------
@@ -1732,6 +2017,151 @@ def build_shacl_shapes() -> Graph:
             _property_shape(
                 g, PAO.requestedBy, min_count=1, max_count=1, class_constraint=PAO.Agent
             ),
+        ],
+    )
+
+    # --- OrganizationShape (v0.2.0) ---
+    _add_shape(
+        g,
+        PAO.OrganizationShape,
+        PAO.Organization,
+        [
+            _property_shape(g, PAO.hasMember, min_count=1, class_constraint=PAO.Agent),
+        ],
+    )
+
+    # --- ObservationShape (v0.2.0) ---
+    _add_shape(
+        g,
+        PAO.ObservationShape,
+        PAO.Observation,
+        [
+            _property_shape(
+                g, PAO.inSession, min_count=1, max_count=1, class_constraint=PAO.Session
+            ),
+        ],
+    )
+
+    # --- MemoryBlockShape (v0.2.0) ---
+    _add_shape(
+        g,
+        PAO.MemoryBlockShape,
+        PAO.MemoryBlock,
+        [
+            _property_shape(g, PAO.hasBlockKey, min_count=1, datatype=XSD.string),
+            _property_shape(g, PAO.hasBlockValue, min_count=1, datatype=XSD.string),
+        ],
+    )
+
+    # --- IntentionShape (v0.2.0) ---
+    _add_shape(
+        g,
+        PAO.IntentionShape,
+        PAO.Intention,
+        [
+            _property_shape(g, PAO.intendedBy, min_count=1, class_constraint=PAO.Agent),
+            _property_shape(g, PAO.derivedFromGoal, min_count=1, class_constraint=PAO.Goal),
+        ],
+    )
+
+    # --- ConsentRecordShape (v0.2.0) ---
+    _add_shape(
+        g,
+        PAO.ConsentRecordShape,
+        PAO.ConsentRecord,
+        [
+            _property_shape(
+                g, PAO.consentSubject, min_count=1, max_count=1, class_constraint=PAO.Agent
+            ),
+        ],
+    )
+
+    # --- RetentionPolicyShape (v0.2.0) ---
+    _add_shape(
+        g,
+        PAO.RetentionPolicyShape,
+        PAO.RetentionPolicy,
+        [
+            _property_shape(
+                g,
+                PAO.retentionPeriodDays,
+                min_count=1,
+                max_count=1,
+                datatype=XSD.nonNegativeInteger,
+            ),
+        ],
+    )
+
+    # --- GoalShape (v0.2.0) ---
+    _add_shape(
+        g,
+        PAO.GoalShape,
+        PAO.Goal,
+        [
+            _property_shape(g, PAO.pursuedBy, min_count=1, class_constraint=PAO.Agent),
+            _property_shape(
+                g, PAO.hasStatus, min_count=1, max_count=1, class_constraint=PAO.TaskStatus
+            ),
+        ],
+    )
+
+    # --- MemoryItemShape (v0.2.0) ---
+    _add_shape(
+        g,
+        PAO.MemoryItemShape,
+        PAO.MemoryItem,
+        [
+            _property_shape(
+                g, PAO.storedIn, min_count=1, max_count=1, class_constraint=PAO.MemoryTier
+            ),
+            _property_shape(
+                g,
+                PAO.hasSensitivityLevel,
+                min_count=0,
+                max_count=1,
+                class_constraint=PAO.SensitivityLevel,
+            ),
+        ],
+    )
+
+    # --- EpisodeShape (v0.2.0) ---
+    _add_shape(
+        g,
+        PAO.EpisodeShape,
+        PAO.Episode,
+        [
+            _property_shape(g, PAO.hasTemporalExtent, min_count=1),
+            _property_shape(g, PAO.hasTopic, min_count=1),
+        ],
+    )
+
+    # --- CompactionEventShape (v0.2.0) ---
+    _add_shape(
+        g,
+        PAO.CompactionEventShape,
+        PAO.CompactionEvent,
+        [
+            _property_shape(g, PAO.producedSummary, min_count=1, class_constraint=PAO.MemoryItem),
+        ],
+    )
+
+    # --- MessageShape (v0.2.0) ---
+    _add_shape(
+        g,
+        PAO.MessageShape,
+        PAO.Message,
+        [
+            _property_shape(g, PAO.hasContent, min_count=1, max_count=1, datatype=XSD.string),
+        ],
+    )
+
+    # --- PersonaShape (v0.2.0) ---
+    _add_shape(
+        g,
+        PAO.PersonaShape,
+        PAO.Persona,
+        [
+            _property_shape(g, PAO.hasContent, min_count=1, max_count=1, datatype=XSD.string),
         ],
     )
 

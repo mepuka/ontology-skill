@@ -49,3 +49,16 @@ AssistantRole,"AI role, assistant","The role of the AI assistant in a conversati
 UserRole,"human role, user","The role of the human user in a conversation.",individual,CQ-004,AgentRole instance,Named individual of AgentRole.
 UserPreference,"preference, user setting","A claim type indicating the claim records a user preference.",individual,CQ-015,Claim classifier,Used as a value for claimType property.
 PersonalData,"PII, sensitive data","A sensitivity level indicating the memory item contains personal data.",individual,CQ-033,Sensitivity classifier,Used as a value for hasSensitivityLevel.
+Organization,"org, formal body, group","An agent that is a formal body or group of people.",class,CQ-041,Object (BFO:0000030),Aligns with prov:Organization. Subclass of Agent.
+Persona,"system prompt, agent identity, configured persona","A GDC that specifies an agent's configured identity behavior and system prompt.",class,CQ-042,GDC (BFO:0000031),Linked to AIAgent via hasPersona.
+Observation,"environmental feedback, percept","An event in which an agent receives environmental feedback.",class,CQ-043,Process (BFO:0000015),Subclass of Event. Linked to Session via inSession.
+Rehearsal,"memory rehearsal, spaced repetition","A memory operation that strengthens a memory item via repeated access.",class,CQ-044,Process (BFO:0000015),Subclass of MemoryOperation. Added to DisjointUnion.
+MemoryBlock,"core memory block, key-value memory, Letta block","A memory item that stores structured key-value data (Letta core memory pattern).",class,CQ-045,GDC (BFO:0000031),Subclass of MemoryItem. Has hasBlockKey and hasBlockValue.
+Intention,"commitment, BDI intention","A GDC representing an agent's commitment to execute a plan (BDI model).",class,"CQ-046,CQ-047",GDC (BFO:0000031),Linked to Goal via derivedFromGoal and to Agent via intendedBy.
+SensitivityLevel,"privacy level, data classification","A status class whose individuals classify privacy sensitivity.",class,CQ-048,Value Partition,ODP-6 pattern. Replaces string-based hasSensitivityLevel.
+ConsentRecord,"consent, data consent, GDPR consent","A GDC that records a data subject's consent for a specific purpose.",class,CQ-049,GDC (BFO:0000031),Has consentSubject and consentPurpose.
+RetentionPolicy,"data retention, retention rule","A GDC specifying how long memory items should be retained before deletion.",class,"CQ-050,CQ-051",GDC (BFO:0000031),Has retentionPeriodDays. Linked via governedByRetention.
+Public,"unrestricted, open","Sensitivity level: unrestricted data.",individual,CQ-048,SensitivityLevel instance,Named individual of SensitivityLevel.
+Internal,"org-internal, internal-only","Sensitivity level: organization-internal data.",individual,CQ-048,SensitivityLevel instance,Named individual of SensitivityLevel.
+Confidential,"restricted, private","Sensitivity level: restricted personal data.",individual,CQ-048,SensitivityLevel instance,Named individual of SensitivityLevel.
+Restricted,"highly sensitive, classified","Sensitivity level: highly sensitive data requiring special controls.",individual,CQ-048,SensitivityLevel instance,Named individual of SensitivityLevel.

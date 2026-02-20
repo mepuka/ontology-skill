@@ -15,5 +15,5 @@ SELECT ?goal ?description ?status WHERE {
         pao:pursuedBy ?agent ;
         rdfs:label ?description ;
         pao:hasStatus ?status .
-  FILTER (?status IN (pao:Active, pao:InProgress))
+  FILTER (?status IN (pao:Pending, pao:InProgress))
 }

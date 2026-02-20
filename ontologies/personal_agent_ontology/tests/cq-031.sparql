@@ -12,5 +12,7 @@ PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 
 ASK {
   ?invocation a pao:ToolInvocation ;
+              pao:governedByPolicy ?policy ;
               pao:hasComplianceStatus pao:Compliant .
+  ?policy a pao:PermissionPolicy .
 }

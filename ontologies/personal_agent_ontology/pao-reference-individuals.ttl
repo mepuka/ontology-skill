@@ -5,10 +5,6 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 
-pao:PersonalData a owl:NamedIndividual ;
-    rdfs:label "personal data"@en ;
-    skos:definition "A sensitivity level indicating the memory item contains personal data."@en .
-
 pao:UserPreference a owl:NamedIndividual ;
     rdfs:label "user preference"@en ;
     skos:definition "A claim type indicating the claim records a user preference."@en .
@@ -51,6 +47,11 @@ pao:Compliant a owl:NamedIndividual,
     rdfs:label "compliant"@en ;
     skos:definition "Compliance status: a tool invocation followed all applicable policies."@en .
 
+pao:Confidential a owl:NamedIndividual,
+        pao:SensitivityLevel ;
+    rdfs:label "confidential"@en ;
+    skos:definition "Sensitivity level: restricted personal data."@en .
+
 pao:Ended a owl:NamedIndividual,
         pao:SessionStatus ;
     rdfs:label "ended"@en ;
@@ -60,6 +61,11 @@ pao:InProgress a owl:NamedIndividual,
         pao:TaskStatus ;
     rdfs:label "in progress"@en ;
     skos:definition "Status value: a task is currently being worked on."@en .
+
+pao:Internal a owl:NamedIndividual,
+        pao:SensitivityLevel ;
+    rdfs:label "internal"@en ;
+    skos:definition "Sensitivity level: organization-internal data."@en .
 
 pao:Interrupted a owl:NamedIndividual,
         pao:SessionStatus ;
@@ -76,6 +82,16 @@ pao:Pending a owl:NamedIndividual,
     rdfs:label "pending"@en ;
     skos:definition "Status value: a task has not yet started."@en .
 
+pao:Public a owl:NamedIndividual,
+        pao:SensitivityLevel ;
+    rdfs:label "public"@en ;
+    skos:definition "Sensitivity level: unrestricted data."@en .
+
+pao:Restricted a owl:NamedIndividual,
+        pao:SensitivityLevel ;
+    rdfs:label "restricted"@en ;
+    skos:definition "Sensitivity level: highly sensitive data requiring special controls."@en .
+
 pao:UserRole a owl:NamedIndividual,
         pao:AgentRole ;
     rdfs:label "user role"@en ;
@@ -83,16 +99,21 @@ pao:UserRole a owl:NamedIndividual,
 
 pao:SessionStatus owl:equivalentClass [ owl:oneOf ( pao:Active pao:Ended pao:Interrupted ) ] .
 
-pao:TaskStatus owl:equivalentClass [ owl:oneOf ( pao:Pending pao:InProgress pao:Completed pao:Blocked ) ] .
+pao:SensitivityLevel owl:equivalentClass [ owl:oneOf ( pao:Public pao:Internal pao:Confidential pao:Restricted ) ] .
 
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Active pao:Ended pao:Interrupted ) .
+pao:TaskStatus owl:equivalentClass [ owl:oneOf ( pao:Pending pao:InProgress pao:Completed pao:Blocked ) ] .
 
 [] a owl:AllDifferent ;
     owl:distinctMembers ( pao:AssistantRole pao:UserRole ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Compliant pao:NonCompliant ) .
+    owl:distinctMembers ( pao:Active pao:Ended pao:Interrupted ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Public pao:Internal pao:Confidential pao:Restricted ) .
 
 [] a owl:AllDifferent ;
     owl:distinctMembers ( pao:Pending pao:InProgress pao:Completed pao:Blocked ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Compliant pao:NonCompliant ) .

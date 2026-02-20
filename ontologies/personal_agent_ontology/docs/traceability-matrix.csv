@@ -2,7 +2,7 @@ stakeholder_need,use_case_id,cq_id,ontology_terms,sparql_test
 "Know what agents exist and their types",UC-001,CQ-001,"Agent;AIAgent;HumanUser",ontologies/personal_agent_ontology/tests/cq-001.sparql
 "Know what tools an agent can use",UC-001,CQ-002,"Agent;ToolDefinition;hasAvailableTool",ontologies/personal_agent_ontology/tests/cq-002.sparql
 "Track sub-agent delegation",UC-002,CQ-003,"Agent;SubAgent;Task;spawnedBy;delegatedTask",ontologies/personal_agent_ontology/tests/cq-003.sparql
-"Know agent roles in conversations",UC-001,CQ-004,"ConversationParticipation;AgentRole;hasParticipant;hasRole",ontologies/personal_agent_ontology/tests/cq-004.sparql
+"Know agent roles in conversations",UC-001,CQ-004,"Conversation;Agent;AgentRole;prov:qualifiedAssociation;prov:hadRole",ontologies/personal_agent_ontology/tests/cq-004.sparql
 "Track sessions within conversations",UC-003,CQ-005,"Conversation;Session;partOfConversation;hasTemporalExtent",ontologies/personal_agent_ontology/tests/cq-005.sparql
 "Reconstruct conversation turn sequence",UC-004,CQ-006,"Turn;Conversation;partOfConversation;hasTurnIndex;hasTimestamp",ontologies/personal_agent_ontology/tests/cq-006.sparql
 "Audit tool invocations in sessions",UC-005,CQ-007,"ToolInvocation;ToolDefinition;Session;invokesTool;invokedBy;inSession",ontologies/personal_agent_ontology/tests/cq-007.sparql
@@ -20,15 +20,16 @@ stakeholder_need,use_case_id,cq_id,ontology_terms,sparql_test
 "Track memory operations",UC-011,CQ-019,"MemoryOperation;Encoding;Retrieval;Consolidation;Forgetting;operatesOn",ontologies/personal_agent_ontology/tests/cq-019.sparql
 "Order events in session",UC-013,CQ-020,"Event;Session;inSession;hasTimestamp",ontologies/personal_agent_ontology/tests/cq-020.sparql
 "Determine temporal ordering of events",UC-014,CQ-021,"Event;hasTemporalExtent;time:Interval",ontologies/personal_agent_ontology/tests/cq-021.sparql
+"Track overlapping sessions",UC-005,CQ-022,"Session;hasTemporalExtent;time:Interval;time:before;time:after",ontologies/personal_agent_ontology/tests/cq-022.sparql (deferred - requires temporal reasoning)
 "Find actions by agent in time period",UC-013,CQ-023,"Action;Agent;performedBy;hasTimestamp",ontologies/personal_agent_ontology/tests/cq-023.sparql
 "Classify events by type",UC-013,CQ-024,"Event;Turn;ToolInvocation;MemoryOperation",ontologies/personal_agent_ontology/tests/cq-024.sparql
-"List events in an episode",UC-007,CQ-025,"Episode;Event;partOfEpisode",ontologies/personal_agent_ontology/tests/cq-025.sparql
+"List events in an episode",UC-007,CQ-025,"Episode;Event;recordedInEpisode",ontologies/personal_agent_ontology/tests/cq-025.sparql
 "Track agent goals",UC-015,CQ-026,"Goal;Agent;pursuedBy;hasStatus",ontologies/personal_agent_ontology/tests/cq-026.sparql
 "Examine plan tasks and dependencies",UC-015,CQ-027,"Plan;Task;partOfPlan;blockedBy;hasStatus",ontologies/personal_agent_ontology/tests/cq-027.sparql
 "Link plans to goals",UC-015,CQ-028,"Plan;Goal;achievesGoal",ontologies/personal_agent_ontology/tests/cq-028.sparql
 "Track task status in plans",UC-016,CQ-029,"Task;Plan;partOfPlan;hasStatus",ontologies/personal_agent_ontology/tests/cq-029.sparql
 "Know permission policies for agents",UC-017,CQ-030,"PermissionPolicy;Agent;appliesTo;grantsPermission",ontologies/personal_agent_ontology/tests/cq-030.sparql
-"Verify tool invocation compliance",UC-017,CQ-031,"ToolInvocation;hasComplianceStatus;Compliant",ontologies/personal_agent_ontology/tests/cq-031.sparql
+"Verify tool invocation compliance",UC-017,CQ-031,"ToolInvocation;PermissionPolicy;governedByPolicy;hasComplianceStatus;Compliant",ontologies/personal_agent_ontology/tests/cq-031.sparql
 "Find derived memory items for deletion",UC-018,CQ-032,"MemoryItem;prov:wasDerivedFrom",ontologies/personal_agent_ontology/tests/cq-032.sparql
 "Check sensitivity classification",UC-019,CQ-033,"MemoryItem;hasSensitivityLevel",ontologies/personal_agent_ontology/tests/cq-033.sparql
 "Audit erasure events",UC-018,CQ-034,"ErasureEvent;requestedBy;hasTimestamp",ontologies/personal_agent_ontology/tests/cq-034.sparql
@@ -38,3 +39,14 @@ stakeholder_need,use_case_id,cq_id,ontology_terms,sparql_test
 "Check session active status",UC-003,CQ-038,"Session;hasStatus;Active",ontologies/personal_agent_ontology/tests/cq-038.sparql
 "Detect policy violations",UC-017,CQ-039,"ToolInvocation;PermissionPolicy;hasComplianceStatus;NonCompliant",ontologies/personal_agent_ontology/tests/cq-039.sparql
 "Detect unattributed memory items",UC-010,CQ-040,"MemoryItem;prov:wasAttributedTo",ontologies/personal_agent_ontology/tests/cq-040.sparql
+"Identify organizational affiliation",UC-020,CQ-041,"Agent;Organization;belongsTo",ontologies/personal_agent_ontology/tests/cq-041.sparql
+"Query agent persona assignment",UC-021,CQ-042,"AIAgent;Persona;hasPersona",ontologies/personal_agent_ontology/tests/cq-042.sparql
+"Record and query observations",UC-022,CQ-043,"Observation;Session;inSession",ontologies/personal_agent_ontology/tests/cq-043.sparql
+"Track memory rehearsals",UC-023,CQ-044,"Rehearsal;MemoryItem;operatesOn",ontologies/personal_agent_ontology/tests/cq-044.sparql
+"Query memory block key-values",UC-024,CQ-045,"MemoryBlock;hasBlockKey;hasBlockValue",ontologies/personal_agent_ontology/tests/cq-045.sparql
+"Track agent intentions",UC-025,CQ-046,"Intention;Agent;intendedBy",ontologies/personal_agent_ontology/tests/cq-046.sparql
+"Link intentions to goals",UC-025,CQ-047,"Intention;Goal;derivedFromGoal",ontologies/personal_agent_ontology/tests/cq-047.sparql
+"Classify sensitivity (controlled vocab)",UC-026,CQ-048,"MemoryItem;SensitivityLevel;hasSensitivityLevel",ontologies/personal_agent_ontology/tests/cq-048.sparql
+"Verify consent records",UC-026,CQ-049,"ConsentRecord;Agent;consentSubject;consentPurpose",ontologies/personal_agent_ontology/tests/cq-049.sparql
+"Query retention policies",UC-026,CQ-050,"MemoryItem;RetentionPolicy;governedByRetention",ontologies/personal_agent_ontology/tests/cq-050.sparql
+"Detect expired retention items",UC-026,CQ-051,"MemoryItem;RetentionPolicy;retentionPeriodDays;hasTimestamp",ontologies/personal_agent_ontology/tests/cq-051.sparql

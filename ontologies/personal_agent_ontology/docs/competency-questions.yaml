@@ -124,20 +124,22 @@ competency_questions:
     sparql: |
       PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
       PREFIX pao: <https://purl.org/pao/>
+      PREFIX prov: <http://www.w3.org/ns/prov#>
       SELECT ?agent ?conversation ?role WHERE {
-        ?participation a pao:ConversationParticipation ;
-                       pao:hasParticipant ?agent ;
-                       pao:inConversation ?conversation ;
-                       pao:hasRole ?role .
+        ?conversation a pao:Conversation ;
+                      prov:qualifiedAssociation ?assoc .
+        ?assoc prov:agent ?agent ;
+               prov:hadRole ?role .
       }
     expected_result: non_empty
     required_classes:
-      - ConversationParticipation
+      - Conversation
+      - Agent
       - AgentRole
     required_properties:
-      - hasParticipant
-      - inConversation
-      - hasRole
+      - prov:qualifiedAssociation
+      - prov:agent
+      - prov:hadRole
     required_axioms: []
 
   # ═══════════════════════════════════════════════════════════════════
@@ -800,14 +802,14 @@ competency_questions:
     sparql: |
       PREFIX pao: <https://purl.org/pao/>
       SELECT ?episode ?event WHERE {
-        ?event pao:partOfEpisode ?episode .
+        ?event pao:recordedInEpisode ?episode .
       }
     expected_result: non_empty
     required_classes:
       - Episode
       - Event
     required_properties:
-      - partOfEpisode
+      - recordedInEpisode
     required_axioms: []
 
   # ═══════════════════════════════════════════════════════════════════
@@ -823,7 +825,7 @@ competency_questions:
       - agent: pao:ClaudeCodeAgent_01
         goal: pao:Goal_001
         description: "Build personal agent ontology"
-        status: pao:Active
+        status: pao:InProgress
     derivation_method: direct_lookup
     out_of_scope:
       - "Goal priority ranking"
@@ -836,7 +838,7 @@ competency_questions:
               pao:pursuedBy ?agent ;
               rdfs:label ?description ;
               pao:hasStatus ?status .
-        FILTER (?status IN (pao:Active, pao:InProgress))
+        FILTER (?status IN (pao:Pending, pao:InProgress))
       }
     expected_result: non_empty
     required_classes:
@@ -983,12 +985,16 @@ competency_questions:
       PREFIX pao: <https://purl.org/pao/>
       ASK {
         ?invocation a pao:ToolInvocation ;
+                    pao:governedByPolicy ?policy ;
                     pao:hasComplianceStatus pao:Compliant .
+        ?policy a pao:PermissionPolicy .
       }
     expected_result: "true"
     required_classes:
       - ToolInvocation
+      - PermissionPolicy
     required_properties:
+      - governedByPolicy
       - hasComplianceStatus
     required_axioms: []
 
@@ -1236,3 +1242,310 @@ competency_questions:
     required_properties: []
     required_axioms:
       - "MemoryItem rdfs:subClassOf prov:Entity"
+
+  # ═══════════════════════════════════════════════════════════════════
+  # v0.2.0 ADDITIONS — Identity, Memory, Planning, Governance
+  # ═══════════════════════════════════════════════════════════════════
+
+  - id: CQ-041
+    source_use_case: UC-020
+    natural_language: "What organization does an agent belong to?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - agent: pao:ClaudeCodeAgent_01
+        organization: pao:AcmeCorp_01
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Organizational hierarchy (parent orgs, subsidiaries)"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?agent ?org WHERE {
+        ?agent pao:belongsTo ?org .
+        ?org a pao:Organization .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Agent
+      - Organization
+    required_properties:
+      - belongsTo
+    required_axioms: []
+
+  - id: CQ-042
+    source_use_case: UC-021
+    natural_language: "What persona/system prompt is assigned to an agent?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - agent: pao:ClaudeCodeAgent_01
+        persona: pao:Persona_Claude
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Persona versioning or history"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?agent ?persona WHERE {
+        ?agent pao:hasPersona ?persona .
+        ?persona a pao:Persona .
+      }
+    expected_result: non_empty
+    required_classes:
+      - AIAgent
+      - Persona
+    required_properties:
+      - hasPersona
+    required_axioms: []
+
+  - id: CQ-043
+    source_use_case: UC-022
+    natural_language: "What observations were recorded during a session?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - observation: pao:Observation_01
+        session: pao:Session_abc123
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Observation content analysis"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?obs ?session WHERE {
+        ?obs a pao:Observation ;
+             pao:inSession ?session .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Observation
+      - Session
+    required_properties:
+      - inSession
+    required_axioms: []
+
+  - id: CQ-044
+    source_use_case: UC-023
+    natural_language: "Which memory items have been rehearsed and how many times?"
+    type: quantitative
+    priority: could_have
+    sample_answer:
+      - item: pao:Memory_001
+        rehearsalCount: 3
+    derivation_method: aggregation
+    out_of_scope:
+      - "Rehearsal effectiveness or spacing algorithms"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?item (COUNT(?r) AS ?count) WHERE {
+        ?r a pao:Rehearsal ;
+           pao:operatesOn ?item .
+      }
+      GROUP BY ?item
+    expected_result: non_empty
+    required_classes:
+      - Rehearsal
+      - MemoryItem
+    required_properties:
+      - operatesOn
+    required_axioms: []
+
+  - id: CQ-045
+    source_use_case: UC-024
+    natural_language: "What memory blocks exist and what key-value pairs do they contain?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - block: pao:MemoryBlock_01
+        key: "user_name"
+        value: "Alice"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Block versioning or history"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?block ?key ?value WHERE {
+        ?block a pao:MemoryBlock ;
+               pao:hasBlockKey ?key ;
+               pao:hasBlockValue ?value .
+      }
+    expected_result: non_empty
+    required_classes:
+      - MemoryBlock
+    required_properties:
+      - hasBlockKey
+      - hasBlockValue
+    required_axioms: []
+
+  - id: CQ-046
+    source_use_case: UC-025
+    natural_language: "What intentions has an agent committed to?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - agent: pao:ClaudeCodeAgent_01
+        intention: pao:Intention_01
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Intention prioritization or scheduling"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?agent ?intention WHERE {
+        ?intention a pao:Intention ;
+                   pao:intendedBy ?agent .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Intention
+      - Agent
+    required_properties:
+      - intendedBy
+    required_axioms: []
+
+  - id: CQ-047
+    source_use_case: UC-025
+    natural_language: "Which intentions are derived from which goals?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - intention: pao:Intention_01
+        goal: pao:Goal_001
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Goal-intention mapping cardinality constraints"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?intention ?goal WHERE {
+        ?intention a pao:Intention ;
+                   pao:derivedFromGoal ?goal .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Intention
+      - Goal
+    required_properties:
+      - derivedFromGoal
+    required_axioms: []
+
+  - id: CQ-048
+    source_use_case: UC-026
+    natural_language: "What sensitivity level is assigned to a memory item? (upgraded from string to controlled vocabulary)"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - item: pao:Memory_001
+        level: pao:Confidential
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Sensitivity classification algorithms"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?item ?level WHERE {
+        ?item a pao:MemoryItem ;
+              pao:hasSensitivityLevel ?level .
+        ?level a pao:SensitivityLevel .
+      }
+    expected_result: non_empty
+    required_classes:
+      - MemoryItem
+      - SensitivityLevel
+    required_properties:
+      - hasSensitivityLevel
+    required_axioms:
+      - "hasSensitivityLevel range SensitivityLevel (migrated from xsd:string)"
+
+  - id: CQ-049
+    source_use_case: UC-026
+    natural_language: "Does a consent record exist for a given data subject and purpose?"
+    type: boolean
+    priority: should_have
+    sample_answer:
+      - subject: pao:User_Alice
+        purpose: pao:MemoryStorage
+        consentExists: true
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Consent revocation history"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      ASK {
+        ?consent a pao:ConsentRecord ;
+                 pao:consentSubject ?agent ;
+                 pao:consentPurpose ?purpose .
+      }
+    expected_result: "true"
+    required_classes:
+      - ConsentRecord
+      - Agent
+    required_properties:
+      - consentSubject
+      - consentPurpose
+    required_axioms: []
+
+  - id: CQ-050
+    source_use_case: UC-026
+    natural_language: "What retention policy governs a memory item?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - item: pao:Memory_001
+        policy: pao:RetentionPolicy_30Day
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Retention enforcement mechanics"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?item ?policy WHERE {
+        ?item a pao:MemoryItem ;
+              pao:governedByRetention ?policy .
+        ?policy a pao:RetentionPolicy .
+      }
+    expected_result: non_empty
+    required_classes:
+      - MemoryItem
+      - RetentionPolicy
+    required_properties:
+      - governedByRetention
+    required_axioms: []
+
+  - id: CQ-051
+    source_use_case: UC-026
+    natural_language: "Which memory items have exceeded their retention period?"
+    type: constraint
+    priority: should_have
+    sample_answer:
+      - item: pao:Memory_ExpiredItem_01
+        policy: pao:RetentionPolicy_30Day
+        expiry: "30"
+    derivation_method: inference
+    out_of_scope:
+      - "Automatic deletion mechanics"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?item ?policy ?days WHERE {
+        ?item pao:governedByRetention ?policy ;
+              pao:hasTimestamp ?ts .
+        ?policy pao:retentionPeriodDays ?days .
+        BIND(NOW() AS ?now)
+        FILTER(?now > ?ts + ?days * "P1D"^^xsd:duration)
+      }
+    expected_result: non_empty
+    required_classes:
+      - MemoryItem
+      - RetentionPolicy
+    required_properties:
+      - governedByRetention
+      - retentionPeriodDays
+      - hasTimestamp
+    required_axioms: []

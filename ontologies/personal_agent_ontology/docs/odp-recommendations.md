@@ -22,7 +22,7 @@ specification.
 validity interval) to claims and beliefs. Binary RDF triples cannot express
 "this claim has confidence 0.85 and was derived from Episode_003."
 
-**Applies to**: `Claim`, `ConversationParticipation`, `ToolInvocation`
+**Applies to**: `Claim`, `ToolInvocation`
 
 **Pattern**: Create a reified class representing the relation, with properties
 linking to each participant and to metadata.
@@ -53,25 +53,10 @@ pao:hasEvidence a owl:ObjectProperty ;
     rdfs:range prov:Entity .
 ```
 
-**Instantiation for ConversationParticipation**:
-
-```turtle
-pao:ConversationParticipation a owl:Class ;
-    skos:definition "An n-ary relation linking an agent to a conversation "
-        "with a specific role."@en .
-
-pao:hasParticipant a owl:ObjectProperty ;
-    rdfs:domain pao:ConversationParticipation ;
-    rdfs:range pao:Agent .
-
-pao:inConversation a owl:ObjectProperty ;
-    rdfs:domain pao:ConversationParticipation ;
-    rdfs:range pao:Conversation .
-
-pao:hasRole a owl:ObjectProperty ;
-    rdfs:domain pao:ConversationParticipation ;
-    rdfs:range pao:AgentRole .
-```
+**Note on ConversationParticipation**: Originally planned as an N-ary
+relation class, this was replaced during formalization by PROV-O's
+`prov:qualifiedAssociation` pattern, which provides the same agent-role-
+conversation linkage using a W3C standard vocabulary. See ODP-2 below.
 
 **CQs served**: CQ-004, CQ-013, CQ-015, CQ-017
 
@@ -288,7 +273,7 @@ pao:hasStatus a owl:ObjectProperty ;
 
 | ODP | Pattern | PAO Classes | CQs Served |
 |-----|---------|------------|------------|
-| ODP-1 | N-ary Relation | Claim, ConversationParticipation, ToolInvocation | CQ-004, CQ-013, CQ-015, CQ-017 |
+| ODP-1 | N-ary Relation | Claim, ToolInvocation (ConversationParticipation replaced by PROV-O pattern) | CQ-004, CQ-013, CQ-015, CQ-017 |
 | ODP-2 | Participation (PROV-O qualified) | Agent participation in activities | CQ-004, CQ-023, CQ-036 |
 | ODP-3 | Part-Whole | Episode/Event, Plan/Task, Conversation/Session | CQ-005, CQ-006, CQ-025, CQ-027 |
 | ODP-4 | Information Realization | MemoryItem, Claim, Episode, Message | CQ-011, CQ-018, CQ-032, CQ-040 |
@@ -300,8 +285,8 @@ pao:hasStatus a owl:ObjectProperty ;
 ## Handoff
 
 The conceptualizer should:
-1. Apply ODP-1 when designing the Claim class and ConversationParticipation
-2. Apply ODP-2 using PROV-O qualified associations for agent-activity links
+1. Apply ODP-1 when designing the Claim class (ConversationParticipation was replaced by PROV-O qualified associations -- see ODP-2)
+2. Apply ODP-2 using PROV-O qualified associations for agent-activity links (including conversation roles)
 3. Apply ODP-3 for all compositional relationships
 4. Apply ODP-4 when placing MemoryItem in the BFO hierarchy
 5. Apply ODP-5 consistently across all event-like classes

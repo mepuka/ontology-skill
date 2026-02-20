@@ -959,16 +959,210 @@ axiom_plan:
       complementary enforcement mechanisms. A SHACL shape (sh:minCount 1
       on prov:wasAttributedTo) can also enforce this at validation time.
 
+  # ═══════════════════════════════════════════════════════════════════════
+  # v0.2.0 ADDITIONS — Identity, Memory, Planning, Governance
+  # ═══════════════════════════════════════════════════════════════════════
+
+  - cq_id: CQ-041
+    natural_language: "What organization does an agent belong to?"
+    priority: should_have
+    module: pao-core
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "Organization SubClassOf Agent"
+        note: "Organization is a type of Agent"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "Organization SubClassOf hasMember some Agent"
+        note: "Every organization has at least one member"
+      - pattern: "5. Disjoint Classes"
+        axiom_sketch: "DisjointClasses: AIAgent, HumanUser, Organization"
+        note: "Agent subtypes are pairwise disjoint"
+    tbox_requirements:
+      - "Organization class declaration"
+      - "belongsTo ObjectProperty with domain Agent, range Organization"
+      - "hasMember ObjectProperty (inverse of belongsTo)"
+    abox_requirements:
+      - "Organization individual with member agents linked via belongsTo"
+
+  - cq_id: CQ-042
+    natural_language: "What persona/system prompt is assigned to an agent?"
+    priority: should_have
+    module: pao-core
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "Persona SubClassOf prov:Entity"
+        note: "Persona is a GDC (information content entity)"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "AIAgent SubClassOf hasPersona some Persona"
+        note: "Every AI agent has a configured persona"
+    tbox_requirements:
+      - "Persona class declaration"
+      - "hasPersona ObjectProperty with domain AIAgent, range Persona"
+    abox_requirements:
+      - "Persona individual linked to an AIAgent"
+
+  - cq_id: CQ-043
+    natural_language: "What observations were recorded during a session?"
+    priority: should_have
+    module: pao-conversation
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "Observation SubClassOf Event"
+        note: "Observation is a process subclass of Event"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "Observation SubClassOf inSession some Session"
+        note: "Every observation occurs within a session"
+    tbox_requirements:
+      - "Observation class declaration"
+      - "inSession ObjectProperty (reused)"
+    abox_requirements:
+      - "Observation individual linked to a Session"
+
+  - cq_id: CQ-044
+    natural_language: "Which memory items have been rehearsed and how many times?"
+    priority: could_have
+    module: pao-memory
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "Rehearsal SubClassOf MemoryOperation"
+        note: "Rehearsal is a type of memory operation"
+      - pattern: "6. Covering Axiom (DisjointUnion)"
+        axiom_sketch: "MemoryOperation DisjointUnionOf Encoding, Retrieval, Consolidation, Forgetting, Rehearsal"
+        note: "Updated to include Rehearsal as 5th subtype"
+    tbox_requirements:
+      - "Rehearsal class declaration"
+      - "Updated DisjointUnion on MemoryOperation"
+    abox_requirements:
+      - "Rehearsal individual linked to a MemoryItem via operatesOn"
+
+  - cq_id: CQ-045
+    natural_language: "What memory blocks exist and what key-value pairs do they contain?"
+    priority: should_have
+    module: pao-memory
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "MemoryBlock SubClassOf MemoryItem"
+        note: "MemoryBlock is a type of memory item"
+      - pattern: "5. Disjoint Classes"
+        axiom_sketch: "DisjointClasses: Episode, Claim, MemoryBlock"
+        note: "Memory item subtypes are pairwise disjoint"
+    tbox_requirements:
+      - "MemoryBlock class declaration"
+      - "hasBlockKey DataProperty with domain MemoryBlock, range xsd:string"
+      - "hasBlockValue DataProperty with domain MemoryBlock, range xsd:string"
+    abox_requirements:
+      - "MemoryBlock individual with key-value pairs"
+
+  - cq_id: CQ-046
+    natural_language: "What intentions has an agent committed to?"
+    priority: should_have
+    module: pao-planning
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "Intention SubClassOf prov:Entity"
+        note: "Intention is a GDC (BDI concept)"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "Intention SubClassOf intendedBy some Agent"
+        note: "Every intention has an agent that holds it"
+    tbox_requirements:
+      - "Intention class declaration"
+      - "intendedBy ObjectProperty with domain Intention, range Agent"
+    abox_requirements:
+      - "Intention individual linked to an Agent"
+
+  - cq_id: CQ-047
+    natural_language: "Which intentions are derived from which goals?"
+    priority: should_have
+    module: pao-planning
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "Intention SubClassOf derivedFromGoal some Goal"
+        note: "Every intention is derived from at least one goal"
+    tbox_requirements:
+      - "derivedFromGoal ObjectProperty with domain Intention, range Goal"
+    abox_requirements:
+      - "Intention individual linked to a Goal via derivedFromGoal"
+
+  - cq_id: CQ-048
+    natural_language: "What sensitivity level is assigned to a memory item? (upgraded to controlled vocab)"
+    priority: must_have
+    module: pao-governance
+    axiom_patterns:
+      - pattern: "8. Value Partition"
+        axiom_sketch: "SensitivityLevel EquivalentTo {Public, Internal, Confidential, Restricted}"
+        note: "ODP-6: Controlled vocabulary replaces string-based hasSensitivityLevel"
+      - pattern: "15. Enumeration (owl:oneOf)"
+        axiom_sketch: "SensitivityLevel EquivalentTo {Public, Internal, Confidential, Restricted}"
+        note: "Closed set of sensitivity levels"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "MemoryItem SubClassOf hasSensitivityLevel some SensitivityLevel"
+        note: "Migrated from DataProperty to ObjectProperty"
+    tbox_requirements:
+      - "SensitivityLevel class with owl:oneOf enumeration"
+      - "hasSensitivityLevel migrated to ObjectProperty with range SensitivityLevel"
+      - "Public, Internal, Confidential, Restricted named individuals"
+    abox_requirements:
+      - "MemoryItem individuals with SensitivityLevel individuals as values"
+
+  - cq_id: CQ-049
+    natural_language: "Does a consent record exist for a given data subject and purpose?"
+    priority: should_have
+    module: pao-governance
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "ConsentRecord SubClassOf prov:Entity"
+        note: "ConsentRecord is a GDC"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "ConsentRecord SubClassOf consentSubject some Agent"
+        note: "Every consent record has a data subject"
+    tbox_requirements:
+      - "ConsentRecord class declaration"
+      - "consentSubject ObjectProperty with domain ConsentRecord, range Agent"
+      - "consentPurpose ObjectProperty with domain ConsentRecord, range prov:Entity"
+    abox_requirements:
+      - "ConsentRecord individual with subject and purpose"
+
+  - cq_id: CQ-050
+    natural_language: "What retention policy governs a memory item?"
+    priority: should_have
+    module: pao-governance
+    axiom_patterns:
+      - pattern: "1. Simple SubClassOf"
+        axiom_sketch: "RetentionPolicy SubClassOf prov:Entity"
+        note: "RetentionPolicy is a GDC"
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "MemoryItem SubClassOf governedByRetention some RetentionPolicy"
+        note: "Memory items can be governed by retention policies"
+    tbox_requirements:
+      - "RetentionPolicy class declaration"
+      - "governedByRetention ObjectProperty with domain MemoryItem, range RetentionPolicy"
+    abox_requirements:
+      - "RetentionPolicy individual linked to a MemoryItem"
+
+  - cq_id: CQ-051
+    natural_language: "Which memory items have exceeded their retention period?"
+    priority: should_have
+    module: pao-governance
+    axiom_patterns:
+      - pattern: "2. Existential Restriction"
+        axiom_sketch: "(no additional TBox axiom; SPARQL handles temporal comparison)"
+        note: "Retention period comparison is a SPARQL computation, not an OWL axiom"
+    tbox_requirements:
+      - "retentionPeriodDays DataProperty with domain RetentionPolicy, range xsd:nonNegativeInteger"
+      - "hasTimestamp DataProperty (reused)"
+    abox_requirements:
+      - "MemoryItem with old timestamp and RetentionPolicy with short retention period"
+
 # ═══════════════════════════════════════════════════════════════════════
 # AXIOM PATTERN SUMMARY
 # ═══════════════════════════════════════════════════════════════════════
 
 summary:
-  total_cqs: 40
+  total_cqs: 51
   by_priority:
-    must_have: 29
-    should_have: 10
-    could_have: 1  # CQ-022 (deferred)
+    must_have: 30
+    should_have: 19
+    could_have: 2
 
   patterns_used:
     - pattern: "1. Simple SubClassOf"
@@ -1027,26 +1221,24 @@ summary:
   design_notes:
     - id: DN-01
       title: "CQ-004 SPARQL needs update"
+      status: resolved
       note: >
-        The SPARQL for CQ-004 still references ConversationParticipation,
-        but DD-03 removed this class in favor of PROV-O qualified
-        associations. The SPARQL should be updated to use
-        prov:qualifiedAssociation / prov:Association pattern in a future
-        competency-questions.yaml revision.
+        Fixed in v0.1.0 remediation -- CQ-004 SPARQL updated to PROV-O
+        pattern (prov:qualifiedAssociation / prov:Association with
+        prov:agent and prov:hadRole).
     - id: DN-02
       title: "Goal status overlap with TaskStatus"
+      status: resolved
       note: >
-        CQ-026 SPARQL filters on pao:Active and pao:InProgress, but Active
-        is defined as a SessionStatus individual, not TaskStatus. Either
-        introduce a GoalStatus value partition or reuse TaskStatus for goals
-        (mapping InProgress to 'currently pursued'). Resolve during
-        formalization.
+        Fixed in v0.1.0 remediation -- CQ-026 FILTER changed from
+        pao:Active to pao:Pending. Goals reuse TaskStatus values
+        (Pending, InProgress, Completed, Blocked).
     - id: DN-03
       title: "CQ-025 uses partOfEpisode in SPARQL despite DD-06"
+      status: resolved
       note: >
-        The SPARQL for CQ-025 uses pao:partOfEpisode but DD-06 established
-        recordedInEpisode as the correct property name. The axiom plan uses
-        recordedInEpisode; the CQ SPARQL should be updated accordingly.
+        Fixed in v0.1.0 remediation -- CQ-025 SPARQL uses
+        recordedInEpisode as specified in DD-06.
     - id: DN-04
       title: "Equivalent classes deferred"
       note: >

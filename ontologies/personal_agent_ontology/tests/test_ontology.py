@@ -78,7 +78,7 @@ def shapes() -> Graph:
 
 
 # ---------------------------------------------------------------------------
-# Class declarations (37 classes)
+# Class declarations (46 classes)
 # ---------------------------------------------------------------------------
 
 EXPECTED_CLASSES = [
@@ -87,6 +87,8 @@ EXPECTED_CLASSES = [
     "AIAgent",
     "HumanUser",
     "SubAgent",
+    "Organization",
+    "Persona",
     # pao-conversation: Interaction
     "Event",
     "Action",
@@ -95,10 +97,12 @@ EXPECTED_CLASSES = [
     "Turn",
     "CompactionEvent",
     "ErasureEvent",
+    "Observation",
     # pao-memory: Memory system
     "MemoryItem",
     "Episode",
     "Claim",
+    "MemoryBlock",
     "Message",
     "MemoryTier",
     "WorkingMemory",
@@ -110,6 +114,7 @@ EXPECTED_CLASSES = [
     "Retrieval",
     "Consolidation",
     "Forgetting",
+    "Rehearsal",
     # pao-tools: Tool infrastructure
     "ToolDefinition",
     "ToolInvocation",
@@ -117,14 +122,18 @@ EXPECTED_CLASSES = [
     "Goal",
     "Plan",
     "Task",
+    "Intention",
     # pao-governance: Safety and permissions
     "PermissionPolicy",
     "SafetyConstraint",
+    "ConsentRecord",
+    "RetentionPolicy",
     # Status types
     "Status",
     "SessionStatus",
     "TaskStatus",
     "ComplianceStatus",
+    "SensitivityLevel",
     # Roles
     "AgentRole",
 ]
@@ -137,10 +146,10 @@ def test_class_declared(tbox: Graph, cls_name: str) -> None:
 
 
 def test_class_count(tbox: Graph) -> None:
-    """Exactly 37 PAO classes are declared."""
+    """Exactly 46 PAO classes are declared."""
     pao_classes = {s for s in tbox.subjects(RDF.type, OWL.Class) if str(s).startswith(str(PAO))}
-    assert len(pao_classes) == 37, (
-        f"Expected 37 PAO classes, found {len(pao_classes)}: {pao_classes}"
+    assert len(pao_classes) == 46, (
+        f"Expected 46 PAO classes, found {len(pao_classes)}: {pao_classes}"
     )
 
 
@@ -200,6 +209,16 @@ HIERARCHY_CHECKS = [
     ("ComplianceStatus", PAO.Status),
     # ToolInvocation -> Action
     ("ToolInvocation", PAO.Action),
+    # v0.2.0 additions
+    ("Organization", PAO.Agent),
+    ("Persona", PROV.Entity),
+    ("Observation", PAO.Event),
+    ("Rehearsal", PAO.MemoryOperation),
+    ("MemoryBlock", PAO.MemoryItem),
+    ("Intention", PROV.Entity),
+    ("SensitivityLevel", PAO.Status),
+    ("ConsentRecord", PROV.Entity),
+    ("RetentionPolicy", PROV.Entity),
 ]
 
 
@@ -230,6 +249,12 @@ BFO_ALIGNMENT = [
     ("PermissionPolicy", OBO["BFO_0000031"]),
     ("SafetyConstraint", OBO["BFO_0000031"]),
     ("Message", OBO["BFO_0000031"]),
+    # v0.2.0 additions
+    ("Organization", OBO["BFO_0000030"]),  # Object
+    ("Persona", OBO["BFO_0000031"]),  # GDC
+    ("Intention", OBO["BFO_0000031"]),  # GDC
+    ("ConsentRecord", OBO["BFO_0000031"]),  # GDC
+    ("RetentionPolicy", OBO["BFO_0000031"]),  # GDC
 ]
 
 
@@ -244,7 +269,7 @@ def test_bfo_alignment(tbox: Graph, cls_name: str, bfo_class: URIRef) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Object property declarations (42 properties)
+# Object property declarations (52 properties)
 # ---------------------------------------------------------------------------
 
 EXPECTED_OBJ_PROPS = [
@@ -252,24 +277,34 @@ EXPECTED_OBJ_PROPS = [
     "achievesGoal",
     "appliesTo",
     "availableToAgent",
+    "belongsTo",
     "blockedBy",
     "blocks",
+    "consentPurpose",
+    "consentSubject",
     "delegatedTask",
+    "derivedFromGoal",
+    "governedByPolicy",
+    "governedByRetention",
     "grantsPermission",
     "hasAvailableTool",
     "hasComplianceStatus",
     "hasEvidence",
     "hasInput",
+    "hasMember",
     "hasOutput",
     "hasPart",
     "hasParticipant",
+    "hasPersona",
     "hasRole",
+    "hasSensitivityLevel",
     "hasStatus",
     "hasTask",
     "hasTemporalExtent",
     "hasTopic",
     "inConversation",
     "inSession",
+    "intendedBy",
     "invokedBy",
     "invokedIn",
     "invokesTool",
@@ -300,16 +335,18 @@ def test_object_property_declared(tbox: Graph, prop_name: str) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Datatype property declarations (6 properties)
+# Datatype property declarations (8 properties)
 # ---------------------------------------------------------------------------
 
 EXPECTED_DATA_PROPS = [
     "claimType",
+    "hasBlockKey",
+    "hasBlockValue",
     "hasConfidence",
     "hasContent",
-    "hasSensitivityLevel",
     "hasTimestamp",
     "hasTurnIndex",
+    "retentionPeriodDays",
 ]
 
 
@@ -324,15 +361,18 @@ def test_datatype_property_declared(tbox: Graph, prop_name: str) -> None:
 # ---------------------------------------------------------------------------
 
 EXPECTED_FUNCTIONAL = [
+    "belongsTo",
     "claimType",
+    "consentSubject",
+    "hasComplianceStatus",
     "hasConfidence",
     "hasContent",
+    "hasPersona",
     "hasSensitivityLevel",
-    "hasTimestamp",
-    "hasTurnIndex",
-    "hasComplianceStatus",
     "hasStatus",
     "hasTemporalExtent",
+    "hasTimestamp",
+    "hasTurnIndex",
     "inConversation",
     "inSession",
     "invokedBy",
@@ -343,6 +383,7 @@ EXPECTED_FUNCTIONAL = [
     "performedBy",
     "producedSummary",
     "requestedBy",
+    "retentionPeriodDays",
     "spawnedBy",
 ]
 
@@ -382,6 +423,7 @@ INVERSE_PAIRS = [
     ("pursuedBy", "pursuesGoal"),
     ("partOfPlan", "hasTask"),
     ("blockedBy", "blocks"),
+    ("belongsTo", "hasMember"),
 ]
 
 
@@ -434,6 +476,7 @@ DOMAIN_RANGE_CHECKS: list[tuple[str, URIRef | None, URIRef]] = [
     ("hasTurnIndex", PAO.Turn, XSD.nonNegativeInteger),
     ("hasConfidence", PAO.Claim, XSD.decimal),
     ("claimType", PAO.Claim, XSD.string),
+    ("governedByPolicy", PAO.ToolInvocation, PAO.PermissionPolicy),
     ("invokesTool", PAO.ToolInvocation, PAO.ToolDefinition),
     ("invokedBy", PAO.ToolInvocation, PAO.Agent),
     ("partOfPlan", PAO.Task, PAO.Plan),
@@ -441,6 +484,18 @@ DOMAIN_RANGE_CHECKS: list[tuple[str, URIRef | None, URIRef]] = [
     ("spawnedBy", PAO.SubAgent, PAO.Agent),
     ("requestedBy", PAO.ErasureEvent, PAO.Agent),
     ("hasRole", PAO.Agent, PAO.AgentRole),
+    # v0.2.0 additions
+    ("belongsTo", PAO.Agent, PAO.Organization),
+    ("hasPersona", PAO.AIAgent, PAO.Persona),
+    ("hasMember", PAO.Organization, PAO.Agent),
+    ("intendedBy", PAO.Intention, PAO.Agent),
+    ("derivedFromGoal", PAO.Intention, PAO.Goal),
+    ("consentSubject", PAO.ConsentRecord, PAO.Agent),
+    ("governedByRetention", PAO.MemoryItem, PAO.RetentionPolicy),
+    ("hasSensitivityLevel", PAO.MemoryItem, PAO.SensitivityLevel),
+    ("hasBlockKey", PAO.MemoryBlock, XSD.string),
+    ("hasBlockValue", PAO.MemoryBlock, XSD.string),
+    ("retentionPeriodDays", PAO.RetentionPolicy, XSD.nonNegativeInteger),
 ]
 
 
@@ -499,6 +554,7 @@ EXISTENTIAL_CHECKS = [
     ("ToolInvocation", "hasInput", None),  # prov:Entity
     ("ToolInvocation", "hasOutput", None),  # prov:Entity
     ("ToolInvocation", "hasComplianceStatus", "ComplianceStatus"),
+    ("ToolInvocation", "governedByPolicy", "PermissionPolicy"),
     ("MemoryItem", "storedIn", "MemoryTier"),
     ("Episode", "storedIn", "MemoryTier"),
     ("Episode", "hasTopic", None),  # skos:Concept
@@ -516,6 +572,15 @@ EXISTENTIAL_CHECKS = [
     ("PermissionPolicy", "grantsPermission", None),  # odrl:Permission
     ("PermissionPolicy", "restrictsToolUse", "ToolDefinition"),
     ("SafetyConstraint", "appliesTo", "Agent"),
+    # v0.2.0 additions
+    ("Organization", "hasMember", "Agent"),
+    ("AIAgent", "hasPersona", "Persona"),
+    ("Observation", "inSession", "Session"),
+    ("Intention", "intendedBy", "Agent"),
+    ("Intention", "derivedFromGoal", "Goal"),
+    ("MemoryItem", "hasSensitivityLevel", "SensitivityLevel"),
+    ("ConsentRecord", "consentSubject", "Agent"),
+    ("MemoryItem", "governedByRetention", "RetentionPolicy"),
 ]
 
 
@@ -641,9 +706,9 @@ def test_memory_tier_disjoint_union(tbox: Graph) -> None:
 
 
 def test_memory_operation_disjoint_union(tbox: Graph) -> None:
-    """MemoryOperation owl:disjointUnionOf (Encoding, Retrieval, Consolidation, Forgetting)."""
+    """MemoryOperation disjointUnionOf 5 subtypes including Rehearsal."""
     members = _get_disjoint_union_members(tbox, PAO.MemoryOperation)
-    expected = {PAO.Encoding, PAO.Retrieval, PAO.Consolidation, PAO.Forgetting}
+    expected = {PAO.Encoding, PAO.Retrieval, PAO.Consolidation, PAO.Forgetting, PAO.Rehearsal}
     assert members == expected, f"MemoryOperation DisjointUnion: expected {expected}, got {members}"
 
 
@@ -669,7 +734,7 @@ def test_all_disjoint_classes_count(tbox: Graph) -> None:
 
 
 DISJOINT_GROUP_CHECKS = [
-    ({PAO.AIAgent, PAO.HumanUser}, "Agent subtypes"),
+    ({PAO.AIAgent, PAO.HumanUser, PAO.Organization}, "Agent subtypes"),
     (
         {
             PAO.Action,
@@ -679,19 +744,44 @@ DISJOINT_GROUP_CHECKS = [
             PAO.CompactionEvent,
             PAO.ErasureEvent,
             PAO.MemoryOperation,
+            PAO.Observation,
         },
         "Event subtypes",
     ),
-    ({PAO.Episode, PAO.Claim}, "MemoryItem subtypes"),
-    ({PAO.SessionStatus, PAO.TaskStatus, PAO.ComplianceStatus}, "Status subtypes"),
-    ({PAO.PermissionPolicy, PAO.SafetyConstraint}, "Governance types"),
+    ({PAO.Episode, PAO.Claim, PAO.MemoryBlock}, "MemoryItem subtypes"),
+    (
+        {PAO.SessionStatus, PAO.TaskStatus, PAO.ComplianceStatus, PAO.SensitivityLevel},
+        "Status subtypes",
+    ),
+    (
+        {PAO.PermissionPolicy, PAO.SafetyConstraint, PAO.ConsentRecord, PAO.RetentionPolicy},
+        "Governance types",
+    ),
     (
         {PAO.WorkingMemory, PAO.EpisodicMemory, PAO.SemanticMemory, PAO.ProceduralMemory},
         "MemoryTier subtypes",
     ),
     (
-        {PAO.Encoding, PAO.Retrieval, PAO.Consolidation, PAO.Forgetting},
+        {PAO.Encoding, PAO.Retrieval, PAO.Consolidation, PAO.Forgetting, PAO.Rehearsal},
         "MemoryOperation subtypes",
+    ),
+    (
+        {
+            PAO.Message,
+            PAO.ToolDefinition,
+            PAO.MemoryItem,
+            PAO.MemoryTier,
+            PAO.Goal,
+            PAO.Plan,
+            PAO.Task,
+            PAO.PermissionPolicy,
+            PAO.SafetyConstraint,
+            PAO.Persona,
+            PAO.Intention,
+            PAO.ConsentRecord,
+            PAO.RetentionPolicy,
+        },
+        "Cross-module GDC disjointness",
     ),
 ]
 
@@ -740,9 +830,27 @@ def test_agent_role_individuals(ref: Graph) -> None:
 
 
 def test_classifier_individuals(ref: Graph) -> None:
-    """UserPreference and PersonalData are named individuals."""
+    """UserPreference is a named individual."""
     assert (PAO.UserPreference, RDF.type, OWL.NamedIndividual) in ref
-    assert (PAO.PersonalData, RDF.type, OWL.NamedIndividual) in ref
+
+
+def test_sensitivity_level_individuals(ref: Graph) -> None:
+    """Public, Internal, Confidential, Restricted are SensitivityLevel individuals."""
+    for name in ["Public", "Internal", "Confidential", "Restricted"]:
+        assert (PAO[name], RDF.type, PAO.SensitivityLevel) in ref
+
+
+def test_sensitivity_level_enumeration(ref: Graph) -> None:
+    """SensitivityLevel owl:oneOf (Public, Internal, Confidential, Restricted)."""
+    members = _get_one_of_members(ref, PAO.SensitivityLevel)
+    assert members == {PAO.Public, PAO.Internal, PAO.Confidential, PAO.Restricted}
+
+
+def test_all_different_sensitivity_level(ref: Graph) -> None:
+    """AllDifferent for SensitivityLevel individuals."""
+    assert _find_all_different_containing(
+        ref, {PAO.Public, PAO.Internal, PAO.Confidential, PAO.Restricted}
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -911,6 +1019,16 @@ CQ_SELECT_NON_EMPTY = [
     "cq-035.sparql",
     "cq-036.sparql",
     "cq-037.sparql",
+    "cq-041.sparql",
+    "cq-042.sparql",
+    "cq-043.sparql",
+    "cq-044.sparql",
+    "cq-045.sparql",
+    "cq-046.sparql",
+    "cq-047.sparql",
+    "cq-048.sparql",
+    "cq-050.sparql",
+    "cq-051.sparql",
 ]
 
 
@@ -930,6 +1048,7 @@ CQ_ASK_TRUE = [
     "cq-021.sparql",  # Does event A occur before event B?
     "cq-031.sparql",  # Did a tool invocation comply?
     "cq-038.sparql",  # Is a session active?
+    "cq-049.sparql",  # Does a consent record exist for a subject?
 ]
 
 
@@ -987,19 +1106,31 @@ def test_shacl_conformance(shapes: Graph) -> None:
 
 
 def test_shacl_shape_count(shapes: Graph) -> None:
-    """At least 12 NodeShapes exist."""
+    """At least 24 NodeShapes exist."""
     node_shapes = set(shapes.subjects(RDF.type, SH.NodeShape))
-    assert len(node_shapes) >= 12, f"Expected >=12 NodeShapes, got {len(node_shapes)}"
+    assert len(node_shapes) >= 24, f"Expected >=24 NodeShapes, got {len(node_shapes)}"
 
 
 EXPECTED_SHAPE_TARGETS = [
     "AIAgent",
     "Action",
     "Claim",
+    "CompactionEvent",
+    "ConsentRecord",
     "Conversation",
+    "Episode",
     "ErasureEvent",
+    "Goal",
+    "Intention",
+    "MemoryBlock",
+    "MemoryItem",
     "MemoryOperation",
+    "Message",
+    "Observation",
+    "Organization",
+    "Persona",
     "Plan",
+    "RetentionPolicy",
     "Session",
     "SubAgent",
     "Task",

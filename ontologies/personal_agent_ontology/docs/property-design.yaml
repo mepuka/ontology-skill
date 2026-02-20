@@ -665,9 +665,9 @@ properties:
     constraint_note: "Domain is narrow (MemoryOperation) because the inference is correct. SHACL: min 1 operatesOn per MemoryOperation."
 
   - name: hasSensitivityLevel
-    type: DataProperty
+    type: ObjectProperty
     domain: MemoryItem
-    range: "xsd:string"
+    range: SensitivityLevel
     cardinality:
       min: 0
       max: 1
@@ -675,10 +675,10 @@ properties:
     inverse: null
     sub_property_of: null
     bfo_ro_relation: null
-    module: pao-memory
-    source_cq: "CQ-033"
-    definition: "The privacy sensitivity classification of a memory item (e.g., PersonalData, Public)."
-    constraint_note: "Functional. Consider migrating to an ObjectProperty with controlled vocabulary in a future version. Named individuals (PersonalData, etc.) are defined in the glossary."
+    module: pao-governance
+    source_cq: "CQ-033,CQ-048"
+    definition: "Links a memory item to its privacy sensitivity classification."
+    constraint_note: "Migrated from DataProperty(xsd:string) to ObjectProperty(SensitivityLevel) in v0.2.0. ODP-6 value partition pattern."
 
   # ─────────────────────────────────────────────────────────────────────
   # pao-planning: Goals, Plans & Tasks
@@ -880,6 +880,198 @@ properties:
     definition: "Links an erasure event to the agent who requested the data deletion."
     constraint_note: "Functional: each erasure event has exactly one requesting agent. Domain is narrow (ErasureEvent) because the inference is correct."
 
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.2.0: Identity & Actors additions
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: belongsTo
+    type: ObjectProperty
+    domain: Agent
+    range: Organization
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: hasMember
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-core
+    source_cq: "CQ-041"
+    definition: "Links an agent to the organization it belongs to."
+    constraint_note: "Functional: each agent belongs to at most one organization."
+
+  - name: hasMember
+    type: ObjectProperty
+    domain: Organization
+    range: Agent
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: belongsTo
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-core
+    source_cq: "CQ-041"
+    definition: "Links an organization to its member agents."
+    constraint_note: "Inverse of belongsTo. Query convenience property."
+
+  - name: hasPersona
+    type: ObjectProperty
+    domain: AIAgent
+    range: Persona
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-core
+    source_cq: "CQ-042"
+    definition: "Links an AI agent to its configured persona."
+    constraint_note: "Functional: each AI agent has at most one active persona."
+
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.2.0: Planning additions
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: intendedBy
+    type: ObjectProperty
+    domain: Intention
+    range: Agent
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-planning
+    source_cq: "CQ-046"
+    definition: "Links an intention to the agent that holds it."
+    constraint_note: ""
+
+  - name: derivedFromGoal
+    type: ObjectProperty
+    domain: Intention
+    range: Goal
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-planning
+    source_cq: "CQ-047"
+    definition: "Links an intention to the goal it was derived from."
+    constraint_note: ""
+
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.2.0: Governance additions
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: consentSubject
+    type: ObjectProperty
+    domain: ConsentRecord
+    range: Agent
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-governance
+    source_cq: "CQ-049"
+    definition: "Links a consent record to the data subject agent."
+    constraint_note: "Functional: each consent record has exactly one data subject."
+
+  - name: consentPurpose
+    type: ObjectProperty
+    domain: ConsentRecord
+    range: "prov:Entity"
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-governance
+    source_cq: "CQ-049"
+    definition: "Links a consent record to the entity describing the processing purpose."
+    constraint_note: "Range is broad (prov:Entity) to accommodate various purpose descriptions."
+
+  - name: governedByRetention
+    type: ObjectProperty
+    domain: MemoryItem
+    range: RetentionPolicy
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-governance
+    source_cq: "CQ-050"
+    definition: "Links a memory item to the retention policy that governs it."
+    constraint_note: ""
+
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.2.0: Memory additions (data properties)
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: hasBlockKey
+    type: DataProperty
+    domain: MemoryBlock
+    range: "xsd:string"
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-memory
+    source_cq: "CQ-045"
+    definition: "A key in a memory block's key-value store."
+    constraint_note: ""
+
+  - name: hasBlockValue
+    type: DataProperty
+    domain: MemoryBlock
+    range: "xsd:string"
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-memory
+    source_cq: "CQ-045"
+    definition: "A value in a memory block's key-value store."
+    constraint_note: ""
+
+  - name: retentionPeriodDays
+    type: DataProperty
+    domain: RetentionPolicy
+    range: "xsd:nonNegativeInteger"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-governance
+    source_cq: "CQ-051"
+    definition: "The number of days a memory item should be retained."
+    constraint_note: "Functional: each retention policy has at most one period."
+
 # ═══════════════════════════════════════════════════════════════════════
 # PROPERTY HIERARCHY SUMMARY
 # ═══════════════════════════════════════════════════════════════════════
@@ -898,6 +1090,8 @@ properties:
 #
 # hasStatus
 #   └── hasComplianceStatus  (ToolInvocation -> ComplianceStatus)
+#
+# belongsTo <-> hasMember (inverse pair)
 #
 # Note: recordedInEpisode is NOT a sub-property of partOf (DD-06)
 
@@ -955,16 +1149,16 @@ properties:
 # ═══════════════════════════════════════════════════════════════════════
 
 summary:
-  total_properties: 48
-  object_properties: 42
-  data_properties: 6
+  total_properties: 60
+  object_properties: 51
+  data_properties: 9
   by_module:
-    pao-core: 9       # partOf, hasPart, hasAvailableTool, availableToAgent, spawnedBy, hasParticipant, participatesIn, hasRole, performedBy
+    pao-core: 12      # partOf, hasPart, hasAvailableTool, availableToAgent, spawnedBy, hasParticipant, participatesIn, hasRole, performedBy, belongsTo, hasMember, hasPersona
     pao-event: 3      # hasTemporalExtent, hasStatus, hasTimestamp
     pao-conversation: 13  # partOfConversation, inConversation, partOfSession, inSession, hasTurnIndex, hasContent, invokesTool, invokedIn, invokedBy, hasInput, hasOutput, producedSummary, delegatedTask
-    pao-memory: 11    # storedIn, stores, hasTopic, aboutAgent, hasConfidence, claimType, hasEvidence, recordedInEpisode, recordsEvent, operatesOn, hasSensitivityLevel
-    pao-planning: 7   # pursuedBy, pursuesGoal, achievesGoal, partOfPlan, hasTask, blockedBy, blocks
-    pao-governance: 5 # appliesTo, grantsPermission, hasComplianceStatus, restrictsToolUse, requestedBy
+    pao-memory: 13    # storedIn, stores, hasTopic, aboutAgent, hasConfidence, claimType, hasEvidence, recordedInEpisode, recordsEvent, operatesOn, hasBlockKey, hasBlockValue, hasSensitivityLevel(moved to governance)
+    pao-planning: 9   # pursuedBy, pursuesGoal, achievesGoal, partOfPlan, hasTask, blockedBy, blocks, intendedBy, derivedFromGoal
+    pao-governance: 10 # appliesTo, grantsPermission, hasComplianceStatus, restrictsToolUse, requestedBy, hasSensitivityLevel, consentSubject, consentPurpose, governedByRetention, retentionPeriodDays
   imported_property_sets: 2  # PROV-O (10 properties), OWL-Time (5 properties)
   sub_property_chains:
     - "partOfConversation, partOfSession, partOfPlan -> partOf"

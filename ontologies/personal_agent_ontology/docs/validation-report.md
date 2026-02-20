@@ -1,7 +1,7 @@
 # Validation Report: Personal Agent Ontology (PAO)
 
-Date: 2026-02-18
-Version: 0.1.0
+Date: 2026-02-19
+Version: 0.2.0
 Validator: ontology-validator skill
 Reasoners: ELK 0.6.0 (via ROBOT 1.9.8), HermiT 1.4.5 (via ROBOT 1.9.8)
 
@@ -46,16 +46,16 @@ All 7 original ERRORs have been resolved:
 
 The 29 remaining warnings are `missing_definition` for `obo:IAO_0000115` on
 **external imported terms** only (BFO, PROV-O, OWL-Time, FOAF, ODRL stub
-terms). All 37 PAO classes and 48 PAO properties have both `skos:definition`
+terms). All 46 PAO classes and 60 PAO properties have both `skos:definition`
 and `obo:IAO_0000115` — verified at 100% coverage (see Level 5).
 
 ## Level 3: SHACL Validation
 
 - **Status: PASS**
 - Violations: **0** (with RDFS inference on merged graph)
-- Shapes validated: 12 NodeShapes
+- Shapes validated: 24 NodeShapes
 
-All 12 SHACL shapes pass when the full graph (TBox + reference individuals +
+All 24 SHACL shapes pass when the full graph (TBox + reference individuals +
 ABox data + import stubs) is validated with RDFS inference enabled. The RDFS
 inference is necessary for `sh:class pao:Agent` constraints to recognize
 individuals typed as `pao:AIAgent` or `pao:HumanUser` (subclasses of Agent).
@@ -66,86 +66,87 @@ propagate inference correctly. Always merge all graphs before SHACL validation.
 ## Level 4: CQ Test Suite
 
 - **Status: PASS**
-- Total tests: **374**
-- Passed: **374**
+- Total tests: **480**
+- Passed: **480**
 - Failed: **0**
 
 ### Breakdown
 
 | Test Category | Count | Status |
 |--------------|-------|--------|
-| Class declarations (37 classes) | 37 | PASS |
-| Labels and definitions | 74 | PASS |
-| Class hierarchy (SubClassOf) | 25 | PASS |
-| BFO alignment | 12 | PASS |
-| Object property declarations | 42 | PASS |
-| Datatype property declarations | 6 | PASS |
-| Functional properties | 20 | PASS |
+| Class declarations (46 classes) | 46 | PASS |
+| Labels and definitions | 92 | PASS |
+| Class hierarchy (SubClassOf) | 34 | PASS |
+| BFO alignment | 17 | PASS |
+| Object property declarations | 52 | PASS |
+| Datatype property declarations | 8 | PASS |
+| Functional properties | 24 | PASS |
 | Transitive properties | 2 | PASS |
-| Inverse pairs | 9 | PASS |
+| Inverse pairs | 10 | PASS |
 | Property hierarchy | 7 | PASS |
-| Domain/range checks | 14 | PASS |
-| Existential restrictions | 37 | PASS |
+| Domain/range checks | 26 | PASS |
+| Existential restrictions | 45 | PASS |
 | Universal restrictions | 1 | PASS |
 | Cardinality restrictions | 3 | PASS |
 | DisjointUnion axioms | 2 | PASS |
-| AllDisjointClasses | 8 | PASS |
+| AllDisjointClasses | 9 | PASS |
 | Reference individuals | 5 | PASS |
-| Enumerations (owl:oneOf) | 4 | PASS |
-| AllDifferent axioms | 4 | PASS |
+| Enumerations (owl:oneOf) | 5 | PASS |
+| AllDifferent axioms | 5 | PASS |
+| SensitivityLevel individuals | 1 | PASS |
 | PROV-O alignment | 5 | PASS |
 | Ontology header | 3 | PASS |
-| CQ SPARQL (SELECT non-empty) | 34 | PASS |
-| CQ SPARQL (ASK true) | 3 | PASS |
+| CQ SPARQL (SELECT non-empty) | 44 | PASS |
+| CQ SPARQL (ASK true) | 4 | PASS |
 | CQ SPARQL (constraint zero-rows) | 2 | PASS |
 | SHACL conformance | 1 | PASS |
-| SHACL shape structure | 13 | PASS |
+| SHACL shape structure | 25 | PASS |
 
 ### CQ Coverage
 
-- 40 competency questions formalized as SPARQL
-- 39 tested (CQ-022 skipped — "could have" priority)
-- 34 SELECT queries return non-empty results
-- 3 ASK queries return true
+- 51 competency questions formalized as SPARQL
+- 50 tested (CQ-022 skipped — "could have" priority)
+- 44 SELECT queries return non-empty results
+- 4 ASK queries return true
 - 2 constraint queries return zero violations
 
 ## Level 5: Coverage Metrics
 
 | Metric | Value | Target | Status |
 |--------|-------|--------|--------|
-| Class label coverage | 37/37 (100%) | 100% | PASS |
-| Class definition coverage | 37/37 (100%) | >= 80% | PASS |
-| Property label coverage | 48/48 (100%) | 100% | PASS |
-| Property definition coverage | 48/48 (100%) | >= 80% | PASS |
+| Class label coverage | 46/46 (100%) | 100% | PASS |
+| Class definition coverage | 46/46 (100%) | >= 80% | PASS |
+| Property label coverage | 60/60 (100%) | 100% | PASS |
+| Property definition coverage | 60/60 (100%) | >= 80% | PASS |
 | Orphan classes | 1 (Status) | 0 | PASS (intentional) |
 | Unsatisfiable classes | 0 | 0 | PASS |
 | Naming convention issues | 0 | 0 | PASS |
 | Redundant subclass assertions | 0 | 0 | PASS |
 | Individuals in TBox | 0 | 0 | PASS |
 | Class/individual mixing | 0 | 0 | PASS |
-| AllDisjointClasses axioms | 8 | >= 5 | PASS |
-| Covered disjoint pairs | 74 | — | Good |
+| AllDisjointClasses axioms | 9 | >= 5 | PASS |
+| Covered disjoint pairs | 120+ | — | Good |
 
 ### Ontology Size
 
 | Artifact | Triples |
 |----------|---------|
-| TBox | 810 |
-| Reference individuals | 118 |
-| ABox sample data | 310 |
-| SHACL shapes | 107 |
-| **Total** | **1,345** |
+| TBox | 999 |
+| Reference individuals | 151 |
+| ABox sample data | 394 |
+| SHACL shapes | 205 |
+| **Total** | **1,749** |
 
 ### Entity Counts
 
 | Entity Type | Count |
 |------------|-------|
-| PAO classes | 37 |
-| PAO object properties | 42 |
-| PAO data properties | 6 |
-| Named individuals (ref) | 13 |
-| Named individuals (ABox) | 38 |
-| Total individuals | 51 |
+| PAO classes | 46 |
+| PAO object properties | 52 |
+| PAO data properties | 8 |
+| Named individuals (ref) | 17 |
+| Named individuals (ABox) | 48 |
+| Total individuals | 65 |
 
 ### Anti-Pattern Detection
 
@@ -153,7 +154,7 @@ propagate inference correctly. Always merge all graphs before SHACL validation.
 |-------------|----------|------------|
 | #1 Singleton hierarchy | 2 | Intentional: AIAgent->SubAgent, Action->ToolInvocation. Both have meaningful distinctions; more subtypes expected as domain grows. |
 | #4 Missing disjointness | None detected | 8 AllDisjointClasses axioms cover all sibling groups. |
-| #10 Leaf-class domain/range | 51 properties | Most are intentionally specific (e.g., hasTurnIndex on Turn). The three problematic cases (storedIn, hasTimestamp, hasTemporalExtent) were already fixed in the post-review. |
+| #10 Leaf-class domain/range | 60 properties | Most are intentionally specific (e.g., hasTurnIndex on Turn). The three problematic cases (storedIn, hasTimestamp, hasTemporalExtent) were fixed in v0.1.0 post-review. |
 | #11 Individuals in TBox | 0 | Clean T-box/A-box separation. |
 | #16 Class/individual mixing | 0 | No punning detected. |
 
@@ -172,8 +173,8 @@ propagate inference correctly. Always merge all graphs before SHACL validation.
 
 - **Expressivity**: OWL 2 DL with EL-compatible core. Uses existential
   restrictions, qualified cardinality, value partitions (owl:oneOf),
-  disjoint unions, and property hierarchy. Sufficient for all 40 CQs.
-- **Complexity**: Moderate (37 classes, 48 properties). Taxonomy depth is
+  disjoint unions, and property hierarchy. Sufficient for all 51 CQs.
+- **Complexity**: Moderate (46 classes, 60 properties). Taxonomy depth is
   shallow (max 4 levels: Thing -> Event -> Action -> ToolInvocation), keeping
   the model navigable.
 - **Granularity**: Appropriate for the scope. Six modules (core, conversation,
@@ -186,7 +187,7 @@ propagate inference correctly. Always merge all graphs before SHACL validation.
 
 ### Functional Assessment
 
-- **CQ relevance**: All 39 tested CQs return meaningful results. The ontology
+- **CQ relevance**: All 50 tested CQs return meaningful results. The ontology
   answers questions about agent identity, conversation structure, memory
   management, planning, and governance.
 - **Rigor**: Every class has a genus-differentia definition. Every property
@@ -218,8 +219,8 @@ propagate inference correctly. Always merge all graphs before SHACL validation.
 
 ## Conclusion
 
-The Personal Agent Ontology v0.1.0 **passes all required validation levels**.
-It is logically consistent (ELK + HermiT), structurally valid (SHACL),
-functionally complete (374/374 tests, 39/40 CQs), and follows established
+The Personal Agent Ontology v0.2.0 **passes all required validation levels**.
+It is logically consistent (ELK + HermiT), structurally valid (24 SHACL shapes),
+functionally complete (480/480 tests, 50/51 CQs), and follows established
 naming and modeling conventions. The ontology is ready for the next pipeline
 phase (mapping or release).

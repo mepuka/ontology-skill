@@ -94,6 +94,8 @@ modules:
       - HumanUser
       - SubAgent
       - AgentRole
+      - Organization
+      - Persona
 
   - id: pao-event
     name: "Actions, Events & Time"
@@ -130,6 +132,7 @@ modules:
       - ToolDefinition
       - ToolInvocation
       - CompactionEvent
+      - Observation
 
   - id: pao-memory
     name: Memory
@@ -155,6 +158,8 @@ modules:
       - Retrieval
       - Consolidation
       - Forgetting
+      - Rehearsal
+      - MemoryBlock
 
   - id: pao-planning
     name: "Goals, Plans & Tasks"
@@ -169,6 +174,7 @@ modules:
       - Goal
       - Plan
       - Task
+      - Intention
 
   - id: pao-governance
     name: "Governance & Safety"
@@ -184,6 +190,9 @@ modules:
       - PermissionPolicy
       - SafetyConstraint
       - ErasureEvent
+      - SensitivityLevel
+      - ConsentRecord
+      - RetentionPolicy
 
 # ═══════════════════════════════════════════════════════════════════════
 # ARCHITECTURE LAYERS
@@ -248,10 +257,13 @@ taxonomy:
         bfo: "Object (BFO:0000030)"
         module: pao-core
         additional_parents: ["prov:Person", "foaf:Person"]
+      - class: Organization
+        parent: Agent
+        bfo: "Object (BFO:0000030)"
+        module: pao-core
 
-  # Disjointness: AIAgent and HumanUser are disjoint with each other,
-  # but Agent is not a disjoint union because future agent types may
-  # be added. See axiom-plan.yaml for all 8 AllDisjointClasses axioms.
+  # Disjointness: AIAgent, HumanUser, and Organization are pairwise disjoint
+  # under Agent (not exhaustive -- future agent types may be added).
 
   # --- Role (pao-core) ---
   - class: AgentRole
@@ -263,6 +275,12 @@ taxonomy:
       - UserRole
     enumeration: true
     note: "owl:oneOf closed set; extensible by adding new individuals"
+
+  - class: Persona
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-core
+    note: "Specifies an agent's configured identity, behavior, and system prompt"
 
   # --- Event Hierarchy (pao-event + pao-conversation + pao-memory + pao-governance) ---
   - class: Event
@@ -304,6 +322,11 @@ taxonomy:
         parent: Event
         bfo: "Process (BFO:0000015)"
         module: pao-governance
+      - class: Observation
+        parent: Event
+        bfo: "Process (BFO:0000015)"
+        module: pao-conversation
+        note: "Environmental feedback received by an agent during a session"
       - class: MemoryOperation
         parent: Event
         bfo: "Process (BFO:0000015)"
@@ -325,10 +348,14 @@ taxonomy:
             parent: MemoryOperation
             bfo: "Process (BFO:0000015)"
             module: pao-memory
+          - class: Rehearsal
+            parent: MemoryOperation
+            bfo: "Process (BFO:0000015)"
+            module: pao-memory
 
   # Disjointness (events):
   # - [Action, Conversation, Session, Turn, CompactionEvent, ErasureEvent, MemoryOperation] pairwise disjoint under Event
-  # - [Encoding, Retrieval, Consolidation, Forgetting] DisjointUnion under MemoryOperation
+  # - [Encoding, Retrieval, Consolidation, Forgetting, Rehearsal] DisjointUnion under MemoryOperation
 
   # --- Information Artifacts (prov:Entity / BFO:GDC) ---
   # These classes are subclasses of prov:Entity. No PAO intermediate
@@ -351,8 +378,13 @@ taxonomy:
         bfo: "GDC (BFO:0000031)"
         module: pao-memory
         note: "N-ary: has confidence, evidence, provenance, content"
+      - class: MemoryBlock
+        parent: MemoryItem
+        bfo: "GDC (BFO:0000031)"
+        module: pao-memory
+        note: "Stores structured key-value data (Letta core memory pattern)"
 
-  # Disjointness (memory items): [Episode, Claim] pairwise disjoint under MemoryItem (not exhaustive)
+  # Disjointness (memory items): [Episode, Claim, MemoryBlock] pairwise disjoint under MemoryItem (not exhaustive)
 
   - class: Message
     parent: "prov:Entity"
@@ -384,6 +416,12 @@ taxonomy:
     module: pao-planning
     note: "Concrete work item within a Plan"
 
+  - class: Intention
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-planning
+    note: "BDI intention: agent's commitment to execute a plan derived from a goal"
+
   - class: PermissionPolicy
     parent: "odrl:Policy"
     bfo: "GDC (BFO:0000031)"
@@ -396,7 +434,19 @@ taxonomy:
     module: pao-governance
     note: "Non-negotiable behavioral limit; stronger than PermissionPolicy"
 
-  # Disjointness (governance): [PermissionPolicy, SafetyConstraint] pairwise disjoint
+  - class: ConsentRecord
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-governance
+    note: "Records a data subject's consent for a specific purpose"
+
+  - class: RetentionPolicy
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-governance
+    note: "Specifies how long memory items should be retained"
+
+  # Disjointness (governance): [PermissionPolicy, SafetyConstraint, ConsentRecord, RetentionPolicy] pairwise disjoint
 
   # --- Memory Tiers ---
   - class: MemoryTier
@@ -449,8 +499,14 @@ taxonomy:
         module: pao-event
         individuals: [Compliant, NonCompliant]
         enumeration: true
+      - class: SensitivityLevel
+        parent: Status
+        bfo: "Value Partition"
+        module: pao-governance
+        individuals: [Public, Internal, Confidential, Restricted]
+        enumeration: true
 
-  # Disjointness (status): [SessionStatus, TaskStatus, ComplianceStatus] pairwise disjoint under Status (not exhaustive)
+  # Disjointness (status): [SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel] pairwise disjoint under Status (not exhaustive)
 
 # ═══════════════════════════════════════════════════════════════════════
 # DESIGN PATTERNS APPLIED
@@ -572,15 +628,15 @@ design_decisions:
 # ═══════════════════════════════════════════════════════════════════════
 
 summary:
-  total_classes: 37
+  total_classes: 46
   by_module:
-    pao-core: 5
+    pao-core: 7
     pao-event: 6
-    pao-conversation: 7
-    pao-memory: 13
-    pao-planning: 3
-    pao-governance: 3
-  named_individuals: 13
+    pao-conversation: 8
+    pao-memory: 15
+    pao-planning: 4
+    pao-governance: 6
+  named_individuals: 17
   imported_classes: "~15 (from PROV-O, OWL-Time, FOAF, ODRL)"
   disjoint_sets: 8
   covering_axioms: 2

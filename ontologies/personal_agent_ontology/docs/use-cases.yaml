@@ -312,3 +312,127 @@ use_cases:
     related_scenarios: [S5]
     related_cqs: []
     priority: should_have
+
+  # ── Module 1: Identity & Actors (continued) ────────────────────────
+
+  - id: UC-020
+    name: "Identify organizational affiliation of agents"
+    actor: "Agent Developer"
+    goal: "Determine which organization an agent belongs to"
+    preconditions:
+      - "Agent is registered with an organizational affiliation"
+    main_flow:
+      - "Developer queries the ontology for an agent's organization"
+      - "System returns the organization and its member agents"
+    postconditions:
+      - "Developer understands the organizational context of agents"
+    related_scenarios: [S3, S7]
+    related_cqs: [CQ-041]
+    priority: should_have
+
+  - id: UC-021
+    name: "Configure agent persona and system prompt"
+    actor: "Agent Developer"
+    goal: "Assign and query a persona (identity, behavior, system prompt) for an AI agent"
+    preconditions:
+      - "AI agent is registered in the system"
+    main_flow:
+      - "Developer assigns a persona to an AI agent"
+      - "System records the persona with its configuration content"
+      - "Developer queries which persona is assigned to a given agent"
+    postconditions:
+      - "Agent persona is queryable and linked to the agent"
+    related_scenarios: [S3, S7]
+    related_cqs: [CQ-042]
+    priority: should_have
+
+  # ── Module 2: Conversation & Interaction (continued) ───────────────
+
+  - id: UC-022
+    name: "Record and query environmental observations"
+    actor: "AI Agent"
+    goal: "Record observations received during a session and query them later"
+    preconditions:
+      - "Agent is operating within an active session"
+      - "Agent receives environmental feedback (tool results, user signals)"
+    main_flow:
+      - "Agent records an observation event linked to the current session"
+      - "System stores the observation with its temporal context"
+      - "Agent or reviewer queries observations for a given session"
+    postconditions:
+      - "All observations are recorded and queryable by session"
+    related_scenarios: [S1, S3]
+    related_cqs: [CQ-043]
+    priority: should_have
+
+  # ── Module 3: Memory (continued) ───────────────────────────────────
+
+  - id: UC-023
+    name: "Rehearse and strengthen memory items"
+    actor: "AI Agent"
+    goal: "Strengthen memory items through repeated access (rehearsal)"
+    preconditions:
+      - "Memory items exist in the agent's memory store"
+    main_flow:
+      - "Agent performs a rehearsal operation on a memory item"
+      - "System records the rehearsal event with timestamp"
+      - "Agent queries how many times a memory item has been rehearsed"
+    postconditions:
+      - "Rehearsal count is available for memory prioritization"
+    related_scenarios: [S2, S4]
+    related_cqs: [CQ-044]
+    priority: could_have
+
+  - id: UC-024
+    name: "Manage structured memory blocks"
+    actor: "System Architect"
+    goal: "Store and retrieve structured key-value data in memory blocks (Letta core memory pattern)"
+    preconditions:
+      - "Agent has a working memory or core memory area"
+    main_flow:
+      - "Architect creates a memory block with key-value pairs"
+      - "System stores the block as a MemoryItem with structured content"
+      - "Agent queries blocks by key or retrieves all key-value pairs"
+    postconditions:
+      - "Structured memory blocks are queryable by key"
+    related_scenarios: [S2, S4]
+    related_cqs: [CQ-045]
+    priority: should_have
+
+  # ── Module 5: Goals, Plans, and Tasks (continued) ──────────────────
+
+  - id: UC-025
+    name: "Track agent intentions (BDI)"
+    actor: "AI Agent"
+    goal: "Record and query agent intentions — commitments to execute plans derived from goals"
+    preconditions:
+      - "Agent has goals and has formed intentions to achieve them"
+    main_flow:
+      - "Agent creates an intention linked to a goal"
+      - "System records which agent holds the intention"
+      - "Reviewer queries intentions and their goal derivation"
+    postconditions:
+      - "Agent intentions are queryable with goal provenance"
+    related_scenarios: [S6]
+    related_cqs: [CQ-046, CQ-047]
+    priority: should_have
+
+  # ── Module 6: Governance & Safety (continued) ──────────────────────
+
+  - id: UC-026
+    name: "Enforce consent and retention governance"
+    actor: "Compliance/Governance"
+    goal: "Record consent, enforce retention policies, and classify data sensitivity"
+    preconditions:
+      - "Memory items exist that require governance metadata"
+      - "Consent and retention policies are defined"
+    main_flow:
+      - "System assigns sensitivity levels (controlled vocabulary) to memory items"
+      - "Consent records are created linking data subjects to purposes"
+      - "Retention policies specify how long items should be retained"
+      - "Reviewer queries items that have exceeded their retention period"
+    postconditions:
+      - "All governance metadata is queryable; expired items are identifiable"
+    related_scenarios: [S5]
+    related_cqs: [CQ-048, CQ-049, CQ-050, CQ-051]
+    priority: should_have

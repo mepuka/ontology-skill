@@ -377,3 +377,104 @@ cq_tests:
     type: SELECT
     expected: zero_rows
     requires_abox: true
+
+  # --- v0.2.0 Additions: Identity, Memory, Planning, Governance ---
+
+  - id: cq-041
+    file: cq-041.sparql
+    cq: CQ-041
+    module: identity_actors
+    question: "What organization does an agent belong to?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-042
+    file: cq-042.sparql
+    cq: CQ-042
+    module: identity_actors
+    question: "What persona/system prompt is assigned to an agent?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-043
+    file: cq-043.sparql
+    cq: CQ-043
+    module: conversation_interaction
+    question: "What observations were recorded during a session?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-044
+    file: cq-044.sparql
+    cq: CQ-044
+    module: memory
+    question: "Which memory items have been rehearsed and how many times?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-045
+    file: cq-045.sparql
+    cq: CQ-045
+    module: memory
+    question: "What memory blocks exist and what key-value pairs do they contain?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-046
+    file: cq-046.sparql
+    cq: CQ-046
+    module: goals_plans_tasks
+    question: "What intentions has an agent committed to?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-047
+    file: cq-047.sparql
+    cq: CQ-047
+    module: goals_plans_tasks
+    question: "Which intentions are derived from which goals?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-048
+    file: cq-048.sparql
+    cq: CQ-048
+    module: governance_safety
+    question: "What sensitivity level is assigned to a memory item? (upgraded to controlled vocab)"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-049
+    file: cq-049.sparql
+    cq: CQ-049
+    module: governance_safety
+    question: "Does a consent record exist for a given data subject and purpose?"
+    type: ASK
+    expected: true
+    requires_abox: true
+
+  - id: cq-050
+    file: cq-050.sparql
+    cq: CQ-050
+    module: governance_safety
+    question: "What retention policy governs a memory item?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-051
+    file: cq-051.sparql
+    cq: CQ-051
+    module: governance_safety
+    question: "Which memory items have exceeded their retention period?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
