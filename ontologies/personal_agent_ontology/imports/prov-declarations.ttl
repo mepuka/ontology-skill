@@ -35,3 +35,16 @@ prov:agent a owl:ObjectProperty ; rdfs:label "prov agent"@en ;
     rdfs:domain prov:Association ; rdfs:range prov:Agent .
 prov:hadRole a owl:ObjectProperty ; rdfs:label "had role"@en ;
     rdfs:domain prov:Association ; rdfs:range prov:Role .
+
+# Additional PROV-O terms for v0.3.0
+prov:used a owl:ObjectProperty ; rdfs:label "used"@en ;
+    rdfs:domain prov:Activity ; rdfs:range prov:Entity .
+prov:wasInvalidatedBy a owl:ObjectProperty ; rdfs:label "was invalidated by"@en ;
+    rdfs:domain prov:Entity ; rdfs:range prov:Activity .
+prov:Derivation a owl:Class ; rdfs:label "Derivation"@en .
+prov:qualifiedDerivation a owl:ObjectProperty ; rdfs:label "qualified derivation"@en ;
+    rdfs:domain prov:Entity ; rdfs:range prov:Derivation .
+prov:entity a owl:ObjectProperty ; rdfs:label "prov entity"@en ;
+    rdfs:domain prov:Derivation ; rdfs:range prov:Entity .
+prov:hadActivity a owl:ObjectProperty ; rdfs:label "had activity"@en ;
+    rdfs:domain prov:Derivation ; rdfs:range prov:Activity .

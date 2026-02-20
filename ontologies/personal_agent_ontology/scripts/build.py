@@ -264,7 +264,7 @@ def build_tbox(glossary: list[dict[str, str]]) -> Graph:
     # Build glossary lookup
     class_glossary = {row["term"]: row for row in glossary if row["category"] == "class"}
 
-    # --- Declare all 46 classes ---
+    # --- Declare all 51 classes ---
     _add_classes(g, class_glossary)
 
     # --- Declare all properties ---
@@ -292,6 +292,9 @@ def build_tbox(glossary: list[dict[str, str]]) -> Graph:
     # --- AllDisjointClasses axioms ---
     _add_disjointness_axioms(g)
 
+    # --- HasKey identity contracts ---
+    _add_has_key_axioms(g)
+
     # --- Add IAO_0000115 aliases for OBO tool compatibility ---
     _add_iao_definitions(g)
 
@@ -299,7 +302,7 @@ def build_tbox(glossary: list[dict[str, str]]) -> Graph:
 
 
 def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
-    """Declare all 46 PAO classes with labels, definitions, and subclass axioms."""
+    """Declare all 51 PAO classes with labels, definitions, and subclass axioms."""
     # Class hierarchy: (class_name, parent_uri, bfo_uri_or_none)
     class_defs: list[tuple[str, URIRef | None, URIRef | None]] = [
         # pao-core
@@ -317,6 +320,7 @@ def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
         ("SessionStatus", PAO.Status, None),
         ("TaskStatus", PAO.Status, None),
         ("ComplianceStatus", PAO.Status, None),
+        ("ItemFate", PAO.Status, None),  # Value Partition
         # pao-conversation
         ("Conversation", PAO.Event, None),
         ("Session", PAO.Event, None),
@@ -325,7 +329,11 @@ def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
         ("ToolDefinition", PROV.Entity, OBO.BFO_0000031),
         ("ToolInvocation", PAO.Action, None),
         ("CompactionEvent", PAO.Event, None),
+        ("CompactionDisposition", PROV.Entity, OBO.BFO_0000031),
         ("Observation", PAO.Event, None),  # inherits Process from Event
+        ("StatusTransition", PAO.Event, None),  # inherits Process from Event
+        ("SessionStatusTransition", PAO.StatusTransition, None),
+        ("TaskStatusTransition", PAO.StatusTransition, None),
         # pao-memory
         ("MemoryItem", PROV.Entity, OBO.BFO_0000031),
         ("MemoryTier", PROV.Entity, OBO.BFO_0000031),
@@ -382,7 +390,7 @@ def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
 
 
 def _add_object_properties(g: Graph) -> None:
-    """Declare all 52 object properties."""
+    """Declare all 64 object properties."""
     # Each tuple: (name, domain, range, characteristics, definition)
     obj_props: list[tuple[str, URIRef | None, URIRef | None, list[str], str]] = [
         # pao-core: generic part-whole
@@ -754,6 +762,93 @@ def _add_object_properties(g: Graph) -> None:
             ["functional"],
             "Links a memory item to its privacy sensitivity classification.",
         ),
+        # v0.3.0: Compaction trace
+        (
+            "compactedItem",
+            PAO.CompactionEvent,
+            PROV.Entity,
+            [],
+            "Links a compaction event to an item that was in scope for compaction.",
+        ),
+        (
+            "hasCompactionDisposition",
+            PAO.CompactionEvent,
+            PAO.CompactionDisposition,
+            [],
+            "Links a compaction event to a disposition record for one of its items.",
+        ),
+        (
+            "dispositionOf",
+            PAO.CompactionDisposition,
+            PROV.Entity,
+            ["functional"],
+            "Links a compaction disposition to the item it describes.",
+        ),
+        (
+            "hasItemFate",
+            PAO.CompactionDisposition,
+            PAO.ItemFate,
+            ["functional"],
+            "Links a compaction disposition to the fate of the item.",
+        ),
+        # v0.3.0: Cross-session resume
+        (
+            "continuedFrom",
+            PAO.Session,
+            PAO.Session,
+            ["functional"],
+            "Links a session to the prior session it continues.",
+        ),
+        (
+            "continuedBy",
+            PAO.Session,
+            PAO.Session,
+            [],
+            "Links a session to a subsequent session that continues its work.",
+        ),
+        # v0.3.0: Lifecycle transitions
+        (
+            "fromStatus",
+            PAO.StatusTransition,
+            PAO.Status,
+            ["functional"],
+            "The status value before the transition.",
+        ),
+        (
+            "toStatus",
+            PAO.StatusTransition,
+            PAO.Status,
+            ["functional"],
+            "The status value after the transition.",
+        ),
+        (
+            "transitionSubject",
+            PAO.StatusTransition,
+            OWL.Thing,
+            ["functional"],
+            "The entity whose status changed in this transition.",
+        ),
+        (
+            "triggeredBy",
+            PAO.StatusTransition,
+            PAO.Event,
+            [],
+            "The event that caused this status transition.",
+        ),
+        (
+            "previousTransition",
+            PAO.StatusTransition,
+            PAO.StatusTransition,
+            ["functional"],
+            "Links to the preceding status transition for the same subject.",
+        ),
+        (
+            "nextTransition",
+            PAO.StatusTransition,
+            PAO.StatusTransition,
+            ["functional"],
+            "Links to the following status transition for the same subject.",
+        ),
     ]
 
     for name, domain, range_, chars, defn in obj_props:
@@ -772,7 +867,7 @@ def _add_object_properties(g: Graph) -> None:
 
 
 def _add_data_properties(g: Graph) -> None:
-    """Declare all 8 data properties."""
+    """Declare all 14 data properties."""
     data_props: list[tuple[str, URIRef | None, URIRef, list[str], str]] = [
         (
             "hasTimestamp",
@@ -832,6 +927,51 @@ def _add_data_properties(g: Graph) -> None:
             ["functional"],
             "The number of days a memory item should be retained.",
         ),
+        # v0.3.0: Compaction trace
+        (
+            "fateReason",
+            PAO.CompactionDisposition,
+            XSD.string,
+            [],
+            "A textual reason for the compaction disposition decision.",
+        ),
+        # v0.3.0: Eviction eligibility
+        (
+            "hasLastAccessTime",
+            PAO.MemoryItem,
+            XSD.dateTime,
+            ["functional"],
+            "The timestamp of the most recent access to this memory item.",
+        ),
+        (
+            "isEvictionCandidate",
+            PAO.MemoryItem,
+            XSD.boolean,
+            ["functional"],
+            "Whether this memory item is eligible for eviction from its tier.",
+        ),
+        # v0.3.0: HasKey identity
+        (
+            "hasAgentId",
+            PAO.AIAgent,
+            XSD.string,
+            ["functional"],
+            "The unique string identifier for this AI agent.",
+        ),
+        (
+            "hasSessionId",
+            PAO.Session,
+            XSD.string,
+            ["functional"],
+            "The unique string identifier for this session.",
+        ),
+        (
+            "hasConversationId",
+            PAO.Conversation,
+            XSD.string,
+            ["functional"],
+            "The unique string identifier for this conversation.",
+        ),
     ]
 
     for name, domain, range_, chars, defn in data_props:
@@ -859,6 +999,8 @@ def _add_property_hierarchy(g: Graph) -> None:
     g.add((PAO.invokedBy, RDFS.subPropertyOf, PAO.performedBy))
     # hasStatus hierarchy
     g.add((PAO.hasComplianceStatus, RDFS.subPropertyOf, PAO.hasStatus))
+    # compactedItem is subPropertyOf prov:used
+    g.add((PAO.compactedItem, RDFS.subPropertyOf, PROV.used))
 
 
 def _add_inverse_pairs(g: Graph) -> None:
@@ -874,6 +1016,8 @@ def _add_inverse_pairs(g: Graph) -> None:
         (PAO.partOfPlan, PAO.hasTask),
         (PAO.blockedBy, PAO.blocks),
         (PAO.belongsTo, PAO.hasMember),
+        (PAO.continuedFrom, PAO.continuedBy),
+        (PAO.previousTransition, PAO.nextTransition),
         (PAO.achievesGoal, None),  # no inverse defined
     ]
     for p1, p2 in pairs:
@@ -967,6 +1111,15 @@ def _add_existential_restrictions(g: Graph) -> None:
         (PAO.ConsentRecord, PAO.consentSubject, PAO.Agent),
         # CQ-050: MemoryItem governed by retention
         (PAO.MemoryItem, PAO.governedByRetention, PAO.RetentionPolicy),
+        # CQ-052: CompactionEvent uses items
+        (PAO.CompactionEvent, PAO.compactedItem, PROV.Entity),
+        # CQ-058: StatusTransition has from/to/subject
+        (PAO.StatusTransition, PAO.fromStatus, PAO.Status),
+        (PAO.StatusTransition, PAO.toStatus, PAO.Status),
+        (PAO.StatusTransition, PAO.transitionSubject, OWL.Thing),
+        # CQ-052: CompactionDisposition has item and fate
+        (PAO.CompactionDisposition, PAO.dispositionOf, PROV.Entity),
+        (PAO.CompactionDisposition, PAO.hasItemFate, PAO.ItemFate),
     ]
     for cls, prop, filler in restrictions:
         _add_existential(g, cls, prop, filler)
@@ -1019,7 +1172,7 @@ def _add_disjointness_axioms(g: Graph) -> None:
     """Add AllDisjointClasses axioms."""
     # Agent subtypes
     _add_all_disjoint_classes(g, [PAO.AIAgent, PAO.HumanUser, PAO.Organization])
-    # Event subtypes (8-way)
+    # Event subtypes (9-way)
     _add_all_disjoint_classes(
         g,
         [
@@ -1031,14 +1184,23 @@ def _add_disjointness_axioms(g: Graph) -> None:
             PAO.ErasureEvent,
             PAO.MemoryOperation,
             PAO.Observation,
+            PAO.StatusTransition,
         ],
     )
+    # StatusTransition subtypes
+    _add_all_disjoint_classes(g, [PAO.SessionStatusTransition, PAO.TaskStatusTransition])
     # MemoryItem subtypes
     _add_all_disjoint_classes(g, [PAO.Episode, PAO.Claim, PAO.MemoryBlock])
     # Status subtypes
     _add_all_disjoint_classes(
         g,
-        [PAO.SessionStatus, PAO.TaskStatus, PAO.ComplianceStatus, PAO.SensitivityLevel],
+        [
+            PAO.SessionStatus,
+            PAO.TaskStatus,
+            PAO.ComplianceStatus,
+            PAO.SensitivityLevel,
+            PAO.ItemFate,
+        ],
     )
     # Governance types
     _add_all_disjoint_classes(
@@ -1062,6 +1224,7 @@ def _add_disjointness_axioms(g: Graph) -> None:
             PAO.Intention,
             PAO.ConsentRecord,
             PAO.RetentionPolicy,
+            PAO.CompactionDisposition,
         ],
     )
     # MemoryTier subtypes (covered by DisjointUnion, but explicit for clarity)
@@ -1085,6 +1248,18 @@ def _add_disjointness_axioms(g: Graph) -> None:
             PAO.Rehearsal,
         ],
     )
+
+
+def _add_has_key_axioms(g: Graph) -> None:
+    """Add owl:hasKey axioms for identity contracts (DN-05)."""
+    for cls, key_prop in [
+        (PAO.AIAgent, PAO.hasAgentId),
+        (PAO.Session, PAO.hasSessionId),
+        (PAO.Conversation, PAO.hasConversationId),
+    ]:
+        key_list = BNode()
+        Collection(g, key_list, [key_prop])
+        g.add((cls, OWL.hasKey, key_list))
 
 
 def _add_iao_definitions(g: Graph) -> None:
