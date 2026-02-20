@@ -48,7 +48,9 @@ and `obo:IAO_0000115` — verified at 100% coverage (see Level 5).
 All 26 SHACL shapes pass when the full graph (TBox + reference individuals +
 ABox data + import stubs) is validated with RDFS inference enabled. Two new
 shapes added in v0.3.0: StatusTransitionShape, CompactionDispositionShape.
-MemoryItemShape updated with hasLastAccessTime constraint.
+MemoryItemShape updated with hasLastAccessTime constraint. AIAgentShape,
+SessionShape, and ConversationShape updated with HasKey ID field requirements
+(hasAgentId, hasSessionId, hasConversationId).
 
 ## Level 4: CQ Test Suite
 
@@ -123,9 +125,9 @@ MemoryItemShape updated with hasLastAccessTime constraint.
 |----------|---------|
 | TBox | 1,194 |
 | Reference individuals | 187 |
-| ABox sample data | 448 |
-| SHACL shapes | 236 |
-| **Total** | **2,065** |
+| ABox sample data | 449 |
+| SHACL shapes | 251 |
+| **Total** | **2,081** |
 
 ### Entity Counts
 

@@ -4,6 +4,58 @@ All notable changes to the Personal Agent Ontology will be documented here.
 
 This project uses [Semantic Versioning](https://semver.org/).
 
+## [0.3.0] - 2026-02-19
+
+### Added
+
+**5 New Classes**
+- Events: StatusTransition, SessionStatusTransition, TaskStatusTransition (State Transition ODP)
+- Memory: CompactionDisposition (n-ary reification for compaction trace)
+- Governance: ItemFate (controlled vocabulary for compaction outcomes)
+
+**18 New Properties**
+- Object properties: compactedItem, continuedBy, continuedFrom, dispositionOf,
+  fromStatus, hasCompactionDisposition, hasItemFate, nextTransition,
+  previousTransition, toStatus, transitionSubject, triggeredBy
+- Data properties: fateReason, hasAgentId, hasConversationId, hasLastAccessTime,
+  hasSessionId, isEvictionCandidate
+
+**4 New Reference Individuals**
+- ItemFate enumeration: Preserved, Dropped, Summarized, Archived
+
+**9 New Competency Questions (CQ-052 through CQ-060)**
+- Compaction trace: dropped items (CQ-052), preservation fraction (CQ-053)
+- Eviction: last access time (CQ-054), eviction eligibility (CQ-055)
+- Session continuity: cross-session resume (CQ-056)
+- Identity: unique identifiers (CQ-057)
+- Lifecycle: status transitions (CQ-058), prior status (CQ-059), trigger events (CQ-060)
+
+**3 New Use Cases (UC-027 through UC-029)**
+
+### Changed
+
+- owl:hasKey identity contracts on AIAgent, Session, Conversation
+- compactedItem declared as subPropertyOf prov:used for PROV-O interop
+- SHACL shapes expanded from 24 to 26 NodeShapes (StatusTransition, CompactionDisposition)
+- MemoryItemShape updated with hasLastAccessTime constraint
+- AIAgentShape, SessionShape, ConversationShape updated with ID field requirements
+- AllDisjointClasses axioms expanded to 10 groups
+- Event DisjointUnion expanded to 9 subtypes (added StatusTransition)
+- Status subtypes expanded to 5 (added ItemFate)
+
+### Metrics
+
+| Metric | v0.2.0 | v0.3.0 |
+|--------|--------|--------|
+| Classes | 46 | 51 |
+| Object properties | 52 | 64 |
+| Data properties | 8 | 14 |
+| SHACL shapes | 24 | 26 |
+| Named individuals | 17 | 21 |
+| CQ tests | 50 | 59 |
+| Total tests | 480 | 577 |
+| TBox triples | 999 | 1,194 |
+
 ## [0.2.0] - 2026-02-19
 
 ### Added

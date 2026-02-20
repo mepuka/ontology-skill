@@ -3,7 +3,7 @@
 **Ontology Name**: Personal Agent Ontology
 **Prefix**: `pao:`
 **Namespace**: `https://purl.org/pao/`
-**Version**: 0.2.0
+**Version**: 0.3.0
 **Date**: 2026-02-19
 **Upper Ontology**: BFO 2020 (ISO 21838-2)
 

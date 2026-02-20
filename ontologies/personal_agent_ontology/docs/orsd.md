@@ -2,7 +2,7 @@
 
 ## Personal Agent Ontology (PAO)
 
-**Version**: 0.2.0
+**Version**: 0.3.0
 **Date**: 2026-02-19
 **Status**: Draft (Specification Phase)
 **Authors**: Ontology Engineering Workspace
@@ -81,34 +81,34 @@ and 7 motivating scenarios (S1-S7 from scope.md).
 
 ## 5. Competency Questions
 
-51 competency questions are defined in `competency-questions.yaml`.
+60 competency questions are defined in `competency-questions.yaml`.
 
 ### Priority Distribution (MoSCoW)
 
 | Priority | Count | CQ IDs |
 |----------|-------|--------|
-| Must Have | 30 | CQ-001 to CQ-009, CQ-011 to CQ-016, CQ-018, CQ-020, CQ-023 to CQ-028, CQ-030 to CQ-032, CQ-034, CQ-036, CQ-038 to CQ-040 |
-| Should Have | 19 | CQ-003, CQ-004, CQ-010, CQ-017, CQ-019, CQ-021, CQ-029, CQ-033, CQ-035, CQ-037 |
-| Could Have | 2 | CQ-022 |
+| Must Have | 30 | CQ-001 to CQ-009, CQ-011 to CQ-016, CQ-018, CQ-020, CQ-023 to CQ-028, CQ-030 to CQ-032, CQ-034, CQ-036, CQ-038 to CQ-040, CQ-048 |
+| Should Have | 27 | CQ-003, CQ-004, CQ-010, CQ-017, CQ-019, CQ-021, CQ-029, CQ-033, CQ-035, CQ-037, CQ-041 to CQ-043, CQ-045 to CQ-047, CQ-049 to CQ-059 |
+| Could Have | 3 | CQ-022, CQ-044, CQ-060 |
 | Won't Have | 0 | (none) |
 
 ### CQ Type Distribution
 
 | Type | Count | CQ IDs |
 |------|-------|--------|
-| Enumerative | 17 | CQ-001, CQ-005, CQ-006, CQ-007, CQ-011, CQ-012, CQ-013, CQ-015, CQ-019, CQ-020, CQ-023, CQ-024, CQ-026, CQ-029, CQ-034, CQ-035, CQ-037 |
-| Relational | 15 | CQ-002, CQ-003, CQ-004, CQ-008, CQ-009, CQ-010, CQ-014, CQ-016, CQ-017, CQ-018, CQ-022, CQ-025, CQ-028, CQ-032, CQ-033, CQ-036 |
-| Boolean | 3 | CQ-021, CQ-031, CQ-038 |
-| Quantitative | 1 | CQ-037 |
-| Constraint | 2 | CQ-039, CQ-040 |
+| Enumerative | 23 | CQ-001, CQ-005 to CQ-007, CQ-011 to CQ-013, CQ-015, CQ-019, CQ-020, CQ-023, CQ-024, CQ-026, CQ-029, CQ-034, CQ-035, CQ-037, CQ-043, CQ-045, CQ-046, CQ-052, CQ-055, CQ-058 |
+| Relational | 25 | CQ-002 to CQ-004, CQ-008 to CQ-010, CQ-014, CQ-016 to CQ-018, CQ-022, CQ-025, CQ-028, CQ-032, CQ-033, CQ-036, CQ-041, CQ-042, CQ-047, CQ-048, CQ-050, CQ-054, CQ-056, CQ-057, CQ-059, CQ-060 |
+| Boolean | 4 | CQ-021, CQ-031, CQ-038, CQ-049 |
+| Quantitative | 3 | CQ-037, CQ-044, CQ-053 |
+| Constraint | 3 | CQ-039, CQ-040, CQ-051 |
 
 ### Derivation Method Distribution
 
 | Method | Count |
 |--------|-------|
-| direct_lookup | 28 |
-| inference | 9 |
-| aggregation | 2 |
+| direct_lookup | 40 |
+| inference | 12 |
+| aggregation | 8 |
 
 ---
 
@@ -202,14 +202,14 @@ MemoryOperation, Encoding, Retrieval, Consolidation, Forgetting
 
 ## 9. Test Suite
 
-50 SPARQL test queries are generated in `tests/cq-*.sparql` (CQ-022 skipped
+59 SPARQL test queries are generated in `tests/cq-*.sparql` (CQ-022 skipped
 as could-have priority). The test manifest is at `tests/cq-test-manifest.yaml`.
 
 ### Test Categories
 
 | Category | Count | Expectations |
 |----------|-------|-------------|
-| SELECT (non-empty) | 44 | Result set must have >= 1 row |
+| SELECT (non-empty) | 53 | Result set must have >= 1 row |
 | ASK (boolean) | 4 | Must return true |
 | SELECT (zero rows) | 2 | Result set must be empty (constraint tests) |
 

@@ -1593,21 +1593,28 @@ competency_questions:
       - compaction: pao:Compaction_001
         total: 20
         droppedCount: 12
+        preservedCount: 8
+        fractionPreserved: 0.4
     derivation_method: aggregation
     out_of_scope:
       - "Compaction quality metrics"
     sparql: |
       PREFIX pao: <https://purl.org/pao/>
       PREFIX prov: <http://www.w3.org/ns/prov#>
-      SELECT ?compaction (COUNT(?item) AS ?total) (COUNT(?dropped) AS ?droppedCount) WHERE {
-        ?compaction a pao:CompactionEvent ;
-                    pao:compactedItem ?item .
-        OPTIONAL {
-          ?item prov:wasInvalidatedBy ?compaction .
-          BIND(?item AS ?dropped)
+      SELECT ?compaction ?total ?droppedCount ((?total - ?droppedCount) AS ?preservedCount)
+             (IF(?total > 0, ((?total - ?droppedCount) / ?total), 0) AS ?fractionPreserved) WHERE {
+        {
+          SELECT ?compaction (COUNT(?item) AS ?total) (COUNT(?dropped) AS ?droppedCount) WHERE {
+            ?compaction a pao:CompactionEvent ;
+                        pao:compactedItem ?item .
+            OPTIONAL {
+              ?item prov:wasInvalidatedBy ?compaction .
+              BIND(?item AS ?dropped)
+            }
+          }
+          GROUP BY ?compaction
         }
       }
-      GROUP BY ?compaction
     expected_result: non_empty
     required_classes:
       - CompactionEvent

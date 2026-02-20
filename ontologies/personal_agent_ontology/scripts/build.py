@@ -49,9 +49,9 @@ TIME_DECL_IRI = URIRef("https://purl.org/pao/time-declarations")
 FOAF_DECL_IRI = URIRef("https://purl.org/pao/foaf-declarations")
 ODRL_DECL_IRI = URIRef("https://purl.org/pao/odrl-declarations")
 BFO_DECL_IRI = URIRef("https://purl.org/pao/bfo-declarations")
-TBOX_VERSION_IRI = URIRef("https://purl.org/pao/0.2.0")
-REF_VERSION_IRI = URIRef("https://purl.org/pao/reference-individuals/0.2.0")
-DATA_VERSION_IRI = URIRef("https://purl.org/pao/data/0.2.0")
+TBOX_VERSION_IRI = URIRef("https://purl.org/pao/0.3.0")
+REF_VERSION_IRI = URIRef("https://purl.org/pao/reference-individuals/0.3.0")
+DATA_VERSION_IRI = URIRef("https://purl.org/pao/data/0.3.0")
 
 # Ontology project root (ontologies/personal_agent_ontology/)
 PROJECT = Path(__file__).resolve().parent.parent
@@ -248,7 +248,7 @@ def build_tbox(glossary: list[dict[str, str]]) -> Graph:
             ),
         )
     )
-    g.add((TBOX_IRI, OWL.versionInfo, Literal("0.2.0")))
+    g.add((TBOX_IRI, OWL.versionInfo, Literal("0.3.0")))
     g.add((TBOX_IRI, DCTERMS.created, Literal("2026-02-19")))
     g.add((TBOX_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((TBOX_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
@@ -1302,7 +1302,7 @@ def build_reference_individuals(glossary: list[dict[str, str]]) -> Graph:
             ),
         )
     )
-    g.add((REF_IRI, OWL.versionInfo, Literal("0.2.0")))
+    g.add((REF_IRI, OWL.versionInfo, Literal("0.3.0")))
     g.add((REF_IRI, DCTERMS.created, Literal("2026-02-19")))
     g.add((REF_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((REF_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
@@ -1417,7 +1417,7 @@ def build_abox_data() -> Graph:
             ),
         )
     )
-    g.add((DATA_IRI, OWL.versionInfo, Literal("0.2.0")))
+    g.add((DATA_IRI, OWL.versionInfo, Literal("0.3.0")))
     g.add((DATA_IRI, DCTERMS.created, Literal("2026-02-19")))
     g.add((DATA_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((DATA_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
@@ -2102,6 +2102,7 @@ def _add_sample_session_continuation(g: Graph) -> None:
 def _add_sample_identity(g: Graph) -> None:
     """Add unique identifiers to key entities (CQ-057)."""
     g.add((PAO.claude_agent, PAO.hasAgentId, Literal("agent-claude-001")))
+    g.add((PAO.search_subagent, PAO.hasAgentId, Literal("agent-search-sub-001")))
     g.add((PAO.session_001, PAO.hasSessionId, Literal("sess-001")))
     g.add((PAO.session_002, PAO.hasSessionId, Literal("sess-002")))
     g.add((PAO.conv_001, PAO.hasConversationId, Literal("conv-001")))
@@ -2170,6 +2171,7 @@ def build_shacl_shapes() -> Graph:
             _property_shape(
                 g, PAO.hasAvailableTool, min_count=1, class_constraint=PAO.ToolDefinition
             ),
+            _property_shape(g, PAO.hasAgentId, min_count=1, max_count=1, datatype=XSD.string),
         ],
     )
 
@@ -2180,6 +2182,9 @@ def build_shacl_shapes() -> Graph:
         PAO.Conversation,
         [
             _property_shape(g, PAO.hasParticipant, min_count=1, class_constraint=PAO.Agent),
+            _property_shape(
+                g, PAO.hasConversationId, min_count=1, max_count=1, datatype=XSD.string
+            ),
         ],
     )
 
@@ -2199,6 +2204,7 @@ def build_shacl_shapes() -> Graph:
             _property_shape(
                 g, PAO.hasStatus, min_count=1, max_count=1, class_constraint=PAO.SessionStatus
             ),
+            _property_shape(g, PAO.hasSessionId, min_count=1, max_count=1, datatype=XSD.string),
         ],
     )
 
