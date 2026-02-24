@@ -2473,3 +2473,129 @@ summary:
         explicit event-time snapshot or threshold assertion to prove the
         trigger condition historically. Future work could add a reified
         trigger event or temporal snapshot pattern.
+
+  # ═══════════════════════════════════════════════════════════════════
+  # v0.8.0: SCHEDULING & AUTOMATION (CQ-114 through CQ-128)
+  # ═══════════════════════════════════════════════════════════════════
+
+# v0.8.0 CQs (top-level, outside summary block)
+scheduling_automation:
+  - cq: CQ-114
+    question: "What schedules are defined in the system?"
+    axiom_pattern: "class_declaration"
+    axiom_description: "Declare Schedule class with rdfs:label and skos:definition"
+    required_classes: [Schedule]
+    required_properties: []
+    notes: "Simple class existence query"
+
+  - cq: CQ-115
+    question: "What recurrence pattern does a given schedule use?"
+    axiom_pattern: "existential_restriction"
+    axiom_description: "Schedule SubClassOf hasRecurrencePattern some RecurrencePattern"
+    required_classes: [Schedule, RecurrencePattern]
+    required_properties: [hasRecurrencePattern, hasCronExpression]
+    notes: "Links schedule to its temporal recurrence specification"
+
+  - cq: CQ-116
+    question: "What action does a schedule specify?"
+    axiom_pattern: "existential_restriction"
+    axiom_description: "Schedule SubClassOf schedulesAction some prov:Entity"
+    required_classes: [Schedule]
+    required_properties: [schedulesAction]
+    notes: "Range is prov:Entity for flexibility (Plan, Goal, or custom action spec)"
+
+  - cq: CQ-117
+    question: "What is the lifecycle status of a given schedule?"
+    axiom_pattern: "existential_restriction + value_partition"
+    axiom_description: "Schedule SubClassOf hasScheduleStatus some ScheduleStatus; ScheduleStatus owl:oneOf (Active, Paused, Expired, Disabled)"
+    required_classes: [Schedule, ScheduleStatus]
+    required_properties: [hasScheduleStatus]
+    notes: "VP pattern with 4 individuals"
+
+  - cq: CQ-118
+    question: "What executions have occurred for a given schedule?"
+    axiom_pattern: "existential_restriction"
+    axiom_description: "ScheduledExecution SubClassOf executionOf some Schedule"
+    required_classes: [ScheduledExecution, Schedule]
+    required_properties: [executionOf]
+    notes: "Links execution instance to originating schedule"
+
+  - cq: CQ-119
+    question: "What was the outcome of a scheduled execution?"
+    axiom_pattern: "existential_restriction + value_partition"
+    axiom_description: "ScheduledExecution SubClassOf hasExecutionOutcome some ExecutionOutcome; ExecutionOutcome owl:oneOf (Succeeded, Failed, Skipped)"
+    required_classes: [ScheduledExecution, ExecutionOutcome]
+    required_properties: [hasExecutionOutcome]
+    notes: "VP pattern with 3 individuals"
+
+  - cq: CQ-120
+    question: "When did a scheduled execution start and end?"
+    axiom_pattern: "existential_restriction"
+    axiom_description: "ScheduledExecution SubClassOf hasTemporalExtent some time:Interval (inherited from Event)"
+    required_classes: [ScheduledExecution]
+    required_properties: [hasTemporalExtent]
+    notes: "Temporal extent inherited from Event; ABox provides actual instants"
+
+  - cq: CQ-121
+    question: "What concurrency policy does a schedule have?"
+    axiom_pattern: "existential_restriction + value_partition"
+    axiom_description: "Schedule SubClassOf hasConcurrencyPolicy some ConcurrencyPolicy; ConcurrencyPolicy owl:oneOf (Allow, Forbid, Replace)"
+    required_classes: [Schedule, ConcurrencyPolicy]
+    required_properties: [hasConcurrencyPolicy]
+    notes: "VP pattern with 3 individuals. Inspired by K8s CronJob concurrencyPolicy."
+
+  - cq: CQ-122
+    question: "Were any scheduled executions skipped due to concurrency?"
+    axiom_pattern: "instance_query"
+    axiom_description: "Query ScheduledExecution instances with hasExecutionOutcome = Skipped"
+    required_classes: [ScheduledExecution, ExecutionOutcome]
+    required_properties: [hasExecutionOutcome, executionOf]
+    notes: "ABox query filtering by specific VP individual"
+
+  - cq: CQ-123
+    question: "Does a schedule allow catch-up of missed executions?"
+    axiom_pattern: "datatype_property"
+    axiom_description: "Schedule has functional datatype property allowsCatchUp : xsd:boolean"
+    required_classes: [Schedule]
+    required_properties: [allowsCatchUp]
+    notes: "Boolean flag for catch-up semantics after downtime"
+
+  - cq: CQ-124
+    question: "What trigger type activates a given schedule?"
+    axiom_pattern: "existential_restriction"
+    axiom_description: "Schedule SubClassOf activatedBy some Trigger"
+    required_classes: [Schedule, Trigger, CronTrigger, IntervalTrigger, EventTrigger]
+    required_properties: [activatedBy]
+    notes: "Trigger hierarchy with DisjointUnion covering axiom"
+
+  - cq: CQ-125
+    question: "What schedules are activated by a specific trigger type?"
+    axiom_pattern: "instance_query"
+    axiom_description: "Query schedules where activatedBy links to a CronTrigger instance"
+    required_classes: [Schedule, CronTrigger]
+    required_properties: [activatedBy]
+    notes: "Filtering by trigger subclass type"
+
+  - cq: CQ-126
+    question: "Which goal does a schedule serve?"
+    axiom_pattern: "object_property"
+    axiom_description: "servesGoal: Schedule -> Goal (not functional, not existential)"
+    required_classes: [Schedule, Goal]
+    required_properties: [servesGoal]
+    notes: "Optional link; not every schedule serves a named goal"
+
+  - cq: CQ-127
+    question: "Which agent owns a given schedule?"
+    axiom_pattern: "existential_restriction"
+    axiom_description: "Schedule SubClassOf ownedByAgent some AIAgent"
+    required_classes: [Schedule, AIAgent]
+    required_properties: [ownedByAgent]
+    notes: "Every schedule has exactly one owning agent"
+
+  - cq: CQ-128
+    question: "Which session was initiated by a scheduled execution?"
+    axiom_pattern: "object_property"
+    axiom_description: "initiatedSession: ScheduledExecution -> Session (functional, not existential)"
+    required_classes: [ScheduledExecution, Session]
+    required_properties: [initiatedSession]
+    notes: "Optional link; not every execution initiates a new session"

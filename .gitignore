@@ -49,3 +49,7 @@ htmlcov/
 .env
 .env.*
 !.env.example
+
+# Large reference PDFs (copyrighted)
+docs/*.pdf
+ontologies/*/release/pao-docs.html

@@ -3,8 +3,8 @@
 **Ontology Name**: Personal Agent Ontology
 **Prefix**: `pao:`
 **Namespace**: `https://purl.org/pao/`
-**Version**: 0.7.0
-**Date**: 2026-02-19
+**Version**: 0.8.0
+**Date**: 2026-02-21
 **Upper Ontology**: BFO 2020 (ISO 21838-2)
 
 ---
@@ -103,6 +103,15 @@ The domain covers the **control architecture** of a personal AI agent:
 - Metric observations: timestamped measurement data points for system components
 - Reliability incidents: failure or degradation events linked to recovery workflows
 
+### Module 9: Scheduling & Automation
+- Schedules: named schedule definitions that bind a recurrence pattern to an action specification
+- Recurrence patterns: temporal recurrence rules (cron expressions, interval-based, calendar-based) specifying when scheduled actions fire
+- Triggers: event-driven or time-driven activation conditions (cron trigger, interval trigger, event trigger, webhook trigger)
+- Scheduled executions: individual execution instances of a schedule, tracking start/end time, outcome, and provenance
+- Concurrency policies: rules governing what happens when a new execution is due while a prior one is still running (allow, forbid, replace)
+- Catch-up / backfill: policies for handling missed executions after agent downtime
+- Schedule lifecycle: active, paused, expired, disabled states
+
 ---
 
 ## 4. Out of Scope
@@ -192,6 +201,14 @@ execution outcomes.
 specialized task. The ontology must model the parent-child relationship,
 the delegated task, the sub-agent's session, and the results passed back.
 
+**S8 -- Scheduled Task Execution**: An agent is configured to run a daily
+summary of unread messages at 08:00, a weekly report every Monday at 09:00,
+and a one-time reminder 30 minutes after a user request. The ontology must
+represent the schedule definitions (cron expression, interval, one-shot),
+their trigger conditions, the individual execution instances with outcomes,
+and the concurrency policy when a scheduled execution overlaps with an
+ongoing conversation.
+
 ---
 
 ## 7. Related Research
@@ -213,7 +230,7 @@ This scope document is informed by 6 research documents:
 
 The ontology specification phase is complete when:
 
-1. All motivating scenarios (S1-S7) are covered by competency questions
+1. All motivating scenarios (S1-S8) are covered by competency questions
 2. Every Must-Have CQ has a formalized SPARQL query
 3. The pre-glossary covers all terms mentioned in CQs
 4. The traceability matrix links stakeholder needs to use cases to CQs to tests

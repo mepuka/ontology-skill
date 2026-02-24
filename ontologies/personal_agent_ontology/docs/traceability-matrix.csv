@@ -121,3 +121,18 @@ stakeholder_need,use_case_id,cq_id,ontology_terms,sparql_test
 "Query agent desires",UC-046,CQ-111,"Agent;Desire;holdsDesire",ontologies/personal_agent_ontology/tests/cq-111.sparql
 "Trace deliberation inputs",UC-046,CQ-112,"Deliberation;Belief;Desire;considersBelief;considersDesire",ontologies/personal_agent_ontology/tests/cq-112.sparql
 "Audit intention justifications",UC-047,CQ-113,"Justification;Intention;justifiesIntention",ontologies/personal_agent_ontology/tests/cq-113.sparql
+"List defined schedules",UC-048,CQ-114,"Schedule",ontologies/personal_agent_ontology/tests/cq-114.sparql
+"Query schedule recurrence pattern",UC-048,CQ-115,"Schedule;RecurrencePattern;hasRecurrencePattern;hasCronExpression",ontologies/personal_agent_ontology/tests/cq-115.sparql
+"Query scheduled action",UC-048,CQ-116,"Schedule;schedulesAction",ontologies/personal_agent_ontology/tests/cq-116.sparql
+"Query schedule lifecycle status",UC-048,CQ-117,"Schedule;ScheduleStatus;hasScheduleStatus",ontologies/personal_agent_ontology/tests/cq-117.sparql
+"List schedule execution history",UC-049,CQ-118,"ScheduledExecution;Schedule;executionOf",ontologies/personal_agent_ontology/tests/cq-118.sparql
+"Query execution outcome",UC-049,CQ-119,"ScheduledExecution;ExecutionOutcome;hasExecutionOutcome",ontologies/personal_agent_ontology/tests/cq-119.sparql
+"Query execution timing",UC-049,CQ-120,"ScheduledExecution;hasTemporalExtent;time:Interval",ontologies/personal_agent_ontology/tests/cq-120.sparql
+"Query concurrency policy",UC-050,CQ-121,"Schedule;ConcurrencyPolicy;hasConcurrencyPolicy",ontologies/personal_agent_ontology/tests/cq-121.sparql
+"Find skipped executions",UC-050,CQ-122,"ScheduledExecution;ExecutionOutcome;hasExecutionOutcome;executionOf",ontologies/personal_agent_ontology/tests/cq-122.sparql
+"Query catch-up policy",UC-051,CQ-123,"Schedule;allowsCatchUp",ontologies/personal_agent_ontology/tests/cq-123.sparql
+"Query trigger type for schedule",UC-052,CQ-124,"Schedule;Trigger;activatedBy",ontologies/personal_agent_ontology/tests/cq-124.sparql
+"Find schedules by trigger type",UC-052,CQ-125,"Schedule;CronTrigger;activatedBy",ontologies/personal_agent_ontology/tests/cq-125.sparql
+"Link schedule to goal",UC-053,CQ-126,"Schedule;Goal;servesGoal",ontologies/personal_agent_ontology/tests/cq-126.sparql
+"Query schedule owner agent",UC-053,CQ-127,"Schedule;AIAgent;ownedByAgent",ontologies/personal_agent_ontology/tests/cq-127.sparql
+"Trace execution to session",UC-053,CQ-128,"ScheduledExecution;Session;initiatedSession",ontologies/personal_agent_ontology/tests/cq-128.sparql

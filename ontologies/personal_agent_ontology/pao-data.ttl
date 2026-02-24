@@ -83,15 +83,15 @@ pao:consolidation_001 a owl:NamedIndividual,
     pao:operatesOn pao:episode_001 .
 
 pao:data a owl:Ontology ;
-    dcterms:created "2026-02-20" ;
+    dcterms:created "2026-02-21" ;
     dcterms:creator "ontology-architect skill" ;
     dcterms:description "Representative ABox individuals for CQ/SPARQL test execution."@en ;
     dcterms:license <https://spdx.org/licenses/MIT> ;
     dcterms:title "Personal Agent Ontology — Sample Data"@en ;
     owl:imports pao: ;
-    owl:priorVersion <https://purl.org/pao/data/0.6.0> ;
-    owl:versionIRI <https://purl.org/pao/data/0.7.0> ;
-    owl:versionInfo "0.7.0" .
+    owl:priorVersion <https://purl.org/pao/data/0.7.0> ;
+    owl:versionIRI <https://purl.org/pao/data/0.8.0> ;
+    owl:versionInfo "0.8.0" .
 
 pao:deliberation_01 a owl:NamedIndividual,
         pao:Deliberation ;
@@ -253,6 +253,42 @@ pao:safety_001 a owl:NamedIndividual,
     pao:hasContent "Never run rm -rf or similar destructive commands" ;
     pao:storedIn pao:procedural_memory_instance .
 
+pao:sched_exec_01 a owl:NamedIndividual,
+        pao:ScheduledExecution ;
+    rdfs:label "Scheduled execution 01"@en ;
+    pao:executionOf pao:schedule_daily_summary ;
+    pao:hasExecutionOutcome pao:ExecutionSucceeded ;
+    pao:hasTemporalExtent pao:sched_exec_01_interval ;
+    pao:hasTimestamp "2026-02-21T08:00:00+00:00"^^xsd:dateTime ;
+    pao:initiatedSession pao:session_001 .
+
+pao:sched_exec_02 a owl:NamedIndividual,
+        pao:ScheduledExecution ;
+    rdfs:label "Scheduled execution 02 (skipped)"@en ;
+    pao:executionOf pao:schedule_daily_summary ;
+    pao:hasExecutionOutcome pao:ExecutionSkipped ;
+    pao:hasTemporalExtent pao:sched_exec_02_interval ;
+    pao:hasTimestamp "2026-02-21T08:00:05+00:00"^^xsd:dateTime .
+
+pao:sched_exec_03 a owl:NamedIndividual,
+        pao:ScheduledExecution ;
+    rdfs:label "Health check execution 01"@en ;
+    pao:executionOf pao:schedule_health_check ;
+    pao:hasExecutionOutcome pao:ExecutionSucceeded ;
+    pao:hasTemporalExtent pao:sched_exec_03_interval ;
+    pao:hasTimestamp "2026-02-21T09:30:00+00:00"^^xsd:dateTime .
+
+pao:schedule_notification a owl:NamedIndividual,
+        pao:Schedule ;
+    rdfs:label "Notification schedule"@en ;
+    pao:activatedBy pao:event_trigger_01 ;
+    pao:allowsCatchUp false ;
+    pao:hasConcurrencyPolicy pao:ConcurrencyReplace ;
+    pao:hasRecurrencePattern pao:recurrence_pattern_03 ;
+    pao:hasScheduleStatus pao:SchedulePaused ;
+    pao:ownedByAgent pao:claude_agent ;
+    pao:schedulesAction pao:action_notification .
+
 pao:session_transition_001 a owl:NamedIndividual,
         pao:SessionStatusTransition ;
     rdfs:label "session transition 001"@en ;
@@ -289,6 +325,33 @@ pao:acceptance_evidence_01 a owl:NamedIndividual,
 pao:action_001_time a time:Instant ;
     time:inXSDDateTime "2026-02-18T10:05:00"^^xsd:dateTime .
 
+pao:action_daily_summary a owl:NamedIndividual,
+        pao:Action ;
+    rdfs:label "Daily summary action"@en ;
+    pao:hasTemporalExtent pao:action_daily_summary_time ;
+    pao:performedBy pao:claude_agent .
+
+pao:action_daily_summary_time a time:Instant ;
+    time:inXSDDateTime "2026-02-18T10:00:00+00:00"^^xsd:dateTime .
+
+pao:action_health_check a owl:NamedIndividual,
+        pao:Action ;
+    rdfs:label "Health check action"@en ;
+    pao:hasTemporalExtent pao:action_health_check_time ;
+    pao:performedBy pao:claude_agent .
+
+pao:action_health_check_time a time:Instant ;
+    time:inXSDDateTime "2026-02-18T10:00:00+00:00"^^xsd:dateTime .
+
+pao:action_notification a owl:NamedIndividual,
+        pao:Action ;
+    rdfs:label "Notification action"@en ;
+    pao:hasTemporalExtent pao:action_notification_time ;
+    pao:performedBy pao:claude_agent .
+
+pao:action_notification_time a time:Instant ;
+    time:inXSDDateTime "2026-02-18T10:00:00+00:00"^^xsd:dateTime .
+
 pao:channel_web_001 a owl:NamedIndividual,
         pao:CommunicationChannel ;
     rdfs:label "web chat channel 001"@en ;
@@ -324,6 +387,10 @@ pao:context_window_002 a owl:NamedIndividual,
 
 pao:conv_001_time a time:Instant ;
     time:inXSDDateTime "2026-02-18T10:00:00"^^xsd:dateTime .
+
+pao:cron_trigger_01 a owl:NamedIndividual,
+        pao:CronTrigger ;
+    rdfs:label "Daily 08:00 cron trigger"@en .
 
 pao:deliberation_01_time a time:Instant ;
     time:inXSDDateTime "2026-02-20T10:05:00+00:00"^^xsd:dateTime .
@@ -371,6 +438,10 @@ pao:episodic_memory_instance a owl:NamedIndividual,
 pao:erasure_001_time a time:Instant ;
     time:inXSDDateTime "2026-02-18T14:00:00"^^xsd:dateTime .
 
+pao:event_trigger_01 a owl:NamedIndividual,
+        pao:EventTrigger ;
+    rdfs:label "On-message event trigger"@en .
+
 pao:gen_config_01 a owl:NamedIndividual,
         pao:GenerationConfiguration ;
     rdfs:label "Generation config 01"@en ;
@@ -403,6 +474,10 @@ pao:integration_notion_001 a owl:NamedIndividual,
     pao:hasIntegrationStatus pao:Error ;
     pao:hasServiceName "Notion" ;
     pao:providesTool pao:notion_search_tool .
+
+pao:interval_trigger_01 a owl:NamedIndividual,
+        pao:IntervalTrigger ;
+    rdfs:label "30-minute interval trigger"@en .
 
 pao:invocation_001_input a owl:NamedIndividual,
         prov:Entity ;
@@ -539,6 +614,21 @@ pao:recovery_event_01 a owl:NamedIndividual,
 pao:recovery_event_01_time a time:Instant ;
     time:inXSDDateTime "2026-02-20T11:00:00+00:00"^^xsd:dateTime .
 
+pao:recurrence_pattern_01 a owl:NamedIndividual,
+        pao:RecurrencePattern ;
+    rdfs:label "Daily at 08:00"@en ;
+    pao:hasCronExpression "0 8 * * *" .
+
+pao:recurrence_pattern_02 a owl:NamedIndividual,
+        pao:RecurrencePattern ;
+    rdfs:label "Every 30 minutes"@en ;
+    pao:hasIntervalSeconds "1800"^^xsd:nonNegativeInteger .
+
+pao:recurrence_pattern_03 a owl:NamedIndividual,
+        pao:RecurrencePattern ;
+    rdfs:label "On every incoming message"@en ;
+    pao:hasIntervalSeconds "0"^^xsd:nonNegativeInteger .
+
 pao:rehearsal_001_time a time:Instant ;
     time:inXSDDateTime "2026-02-18T10:40:00"^^xsd:dateTime .
 
@@ -569,6 +659,47 @@ pao:retry_01_time a time:Instant ;
 pao:sandbox_default a owl:NamedIndividual,
         pao:SandboxPolicy ;
     rdfs:label "Default sandbox policy"@en .
+
+pao:sched_exec_01_begin a time:Instant ;
+    time:inXSDDateTime "2026-02-21T08:00:00+00:00"^^xsd:dateTime .
+
+pao:sched_exec_01_end a time:Instant ;
+    time:inXSDDateTime "2026-02-21T08:05:00+00:00"^^xsd:dateTime .
+
+pao:sched_exec_01_interval a time:Interval ;
+    time:hasBeginning pao:sched_exec_01_begin ;
+    time:hasEnd pao:sched_exec_01_end .
+
+pao:sched_exec_02_begin a time:Instant ;
+    time:inXSDDateTime "2026-02-21T08:00:05+00:00"^^xsd:dateTime .
+
+pao:sched_exec_02_end a time:Instant ;
+    time:inXSDDateTime "2026-02-21T08:00:05+00:00"^^xsd:dateTime .
+
+pao:sched_exec_02_interval a time:Interval ;
+    time:hasBeginning pao:sched_exec_02_begin ;
+    time:hasEnd pao:sched_exec_02_end .
+
+pao:sched_exec_03_begin a time:Instant ;
+    time:inXSDDateTime "2026-02-21T09:30:00+00:00"^^xsd:dateTime .
+
+pao:sched_exec_03_end a time:Instant ;
+    time:inXSDDateTime "2026-02-21T09:30:02+00:00"^^xsd:dateTime .
+
+pao:sched_exec_03_interval a time:Interval ;
+    time:hasBeginning pao:sched_exec_03_begin ;
+    time:hasEnd pao:sched_exec_03_end .
+
+pao:schedule_health_check a owl:NamedIndividual,
+        pao:Schedule ;
+    rdfs:label "Health check schedule"@en ;
+    pao:activatedBy pao:interval_trigger_01 ;
+    pao:allowsCatchUp false ;
+    pao:hasConcurrencyPolicy pao:ConcurrencyAllow ;
+    pao:hasRecurrencePattern pao:recurrence_pattern_02 ;
+    pao:hasScheduleStatus pao:ScheduleActive ;
+    pao:ownedByAgent pao:claude_agent ;
+    pao:schedulesAction pao:action_health_check .
 
 pao:session_001_begin a time:Instant ;
     time:inXSDDateTime "2026-02-18T10:00:00+00:00"^^xsd:dateTime .
@@ -734,15 +865,6 @@ pao:desire_01 a owl:NamedIndividual,
         pao:Desire ;
     rdfs:label "Complete user task efficiently"@en .
 
-pao:goal_001 a owl:NamedIndividual,
-        pao:Goal ;
-    rdfs:label "implement dark mode"@en ;
-    prov:wasAttributedTo pao:alice_user ;
-    prov:wasGeneratedBy pao:conv_001 ;
-    pao:hasStatus pao:InProgress ;
-    pao:pursuedBy pao:claude_agent ;
-    pao:storedIn pao:semantic_memory_instance .
-
 pao:hook_pre_tool a owl:NamedIndividual,
         pao:Hook ;
     rdfs:label "Pre-tool invocation hook"@en ;
@@ -798,6 +920,18 @@ pao:persona_claude a owl:NamedIndividual,
     pao:hasContent "You are a helpful coding assistant." ;
     pao:storedIn pao:procedural_memory_instance .
 
+pao:schedule_daily_summary a owl:NamedIndividual,
+        pao:Schedule ;
+    rdfs:label "Daily summary schedule"@en ;
+    pao:activatedBy pao:cron_trigger_01 ;
+    pao:allowsCatchUp true ;
+    pao:hasConcurrencyPolicy pao:ConcurrencyForbid ;
+    pao:hasRecurrencePattern pao:recurrence_pattern_01 ;
+    pao:hasScheduleStatus pao:ScheduleActive ;
+    pao:ownedByAgent pao:claude_agent ;
+    pao:schedulesAction pao:action_daily_summary ;
+    pao:servesGoal pao:goal_001 .
+
 pao:search_subagent a owl:NamedIndividual,
         pao:SubAgent ;
     rdfs:label "search subagent"@en ;
@@ -829,6 +963,15 @@ pao:channel_cli_001 a owl:NamedIndividual,
         pao:CommunicationChannel ;
     rdfs:label "CLI channel 001"@en ;
     pao:hasChannelType pao:CLI .
+
+pao:goal_001 a owl:NamedIndividual,
+        pao:Goal ;
+    rdfs:label "implement dark mode"@en ;
+    prov:wasAttributedTo pao:alice_user ;
+    prov:wasGeneratedBy pao:conv_001 ;
+    pao:hasStatus pao:InProgress ;
+    pao:pursuedBy pao:claude_agent ;
+    pao:storedIn pao:semantic_memory_instance .
 
 pao:plan_001 a owl:NamedIndividual,
         pao:Plan ;
@@ -985,11 +1128,11 @@ pao:conv_001 a owl:NamedIndividual,
         pao:Conversation ;
     rdfs:label "conversation 001"@en ;
     prov:qualifiedAssociation [ a prov:Association ;
-            prov:agent pao:claude_agent ;
-            prov:hadRole pao:AssistantRole ],
-        [ a prov:Association ;
             prov:agent pao:alice_user ;
-            prov:hadRole pao:UserRole ] ;
+            prov:hadRole pao:UserRole ],
+        [ a prov:Association ;
+            prov:agent pao:claude_agent ;
+            prov:hadRole pao:AssistantRole ] ;
     prov:wasAssociatedWith pao:claude_agent ;
     pao:hasConversationId "conv-001" ;
     pao:hasParticipant pao:alice_user,

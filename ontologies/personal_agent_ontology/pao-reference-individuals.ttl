@@ -6,14 +6,14 @@
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 
 pao:reference-individuals a owl:Ontology ;
-    dcterms:created "2026-02-20" ;
+    dcterms:created "2026-02-21" ;
     dcterms:creator "ontology-architect skill" ;
     dcterms:description "Named individuals for status values, agent roles, and classifiers."@en ;
     dcterms:license <https://spdx.org/licenses/MIT> ;
     dcterms:title "Personal Agent Ontology — Reference Individuals"@en ;
-    owl:priorVersion <https://purl.org/pao/reference-individuals/0.6.0> ;
-    owl:versionIRI <https://purl.org/pao/reference-individuals/0.7.0> ;
-    owl:versionInfo "0.7.0" .
+    owl:priorVersion <https://purl.org/pao/reference-individuals/0.7.0> ;
+    owl:versionIRI <https://purl.org/pao/reference-individuals/0.8.0> ;
+    owl:versionInfo "0.8.0" .
 
 pao:ClaimType owl:equivalentClass [ owl:oneOf ( pao:UserPreference ) ] .
 
@@ -96,6 +96,21 @@ pao:Compliant a owl:NamedIndividual,
     rdfs:label "compliant"@en ;
     skos:definition "Compliance status: a tool invocation followed all applicable policies."@en .
 
+pao:ConcurrencyAllow a owl:NamedIndividual,
+        pao:ConcurrencyPolicy ;
+    rdfs:label "concurrency allow"@en ;
+    skos:definition "Concurrency policy: allow parallel executions."@en .
+
+pao:ConcurrencyForbid a owl:NamedIndividual,
+        pao:ConcurrencyPolicy ;
+    rdfs:label "concurrency forbid"@en ;
+    skos:definition "Concurrency policy: skip new execution if prior is still running."@en .
+
+pao:ConcurrencyReplace a owl:NamedIndividual,
+        pao:ConcurrencyPolicy ;
+    rdfs:label "concurrency replace"@en ;
+    skos:definition "Concurrency policy: cancel running execution and start new one."@en .
+
 pao:Confidential a owl:NamedIndividual,
         pao:SensitivityLevel ;
     rdfs:label "confidential"@en ;
@@ -155,6 +170,21 @@ pao:Error a owl:NamedIndividual,
         pao:IntegrationStatus ;
     rdfs:label "error"@en ;
     skos:definition "Integration status: the integration has encountered an error."@en .
+
+pao:ExecutionFailed a owl:NamedIndividual,
+        pao:ExecutionOutcome ;
+    rdfs:label "execution failed"@en ;
+    skos:definition "Execution outcome: the scheduled execution failed."@en .
+
+pao:ExecutionSkipped a owl:NamedIndividual,
+        pao:ExecutionOutcome ;
+    rdfs:label "execution skipped"@en ;
+    skos:definition "Execution outcome: the scheduled execution was skipped due to concurrency policy."@en .
+
+pao:ExecutionSucceeded a owl:NamedIndividual,
+        pao:ExecutionOutcome ;
+    rdfs:label "execution succeeded"@en ;
+    skos:definition "Execution outcome: the scheduled execution completed successfully."@en .
 
 pao:Failed a owl:NamedIndividual,
         pao:ConnectionStatus ;
@@ -281,6 +311,26 @@ pao:Restrictive a owl:NamedIndividual,
     rdfs:label "restrictive"@en ;
     skos:definition "Permission mode: tools are denied unless explicitly allowed."@en .
 
+pao:ScheduleActive a owl:NamedIndividual,
+        pao:ScheduleStatus ;
+    rdfs:label "schedule active"@en ;
+    skos:definition "Schedule status: the schedule is active and will fire on its next trigger."@en .
+
+pao:ScheduleDisabled a owl:NamedIndividual,
+        pao:ScheduleStatus ;
+    rdfs:label "schedule disabled"@en ;
+    skos:definition "Schedule status: the schedule is permanently disabled."@en .
+
+pao:ScheduleExpired a owl:NamedIndividual,
+        pao:ScheduleStatus ;
+    rdfs:label "schedule expired"@en ;
+    skos:definition "Schedule status: the schedule has passed its end date."@en .
+
+pao:SchedulePaused a owl:NamedIndividual,
+        pao:ScheduleStatus ;
+    rdfs:label "schedule paused"@en ;
+    skos:definition "Schedule status: the schedule is temporarily paused."@en .
+
 pao:SessionScope a owl:NamedIndividual,
         pao:MemoryScope ;
     rdfs:label "session scope"@en ;
@@ -350,6 +400,10 @@ pao:AuthorizationDecision owl:equivalentClass [ owl:oneOf ( pao:Allow pao:Deny p
 
 pao:CheckpointDecision owl:equivalentClass [ owl:oneOf ( pao:Approved pao:Rejected pao:Deferred ) ] .
 
+pao:ConcurrencyPolicy owl:equivalentClass [ owl:oneOf ( pao:ConcurrencyAllow pao:ConcurrencyForbid pao:ConcurrencyReplace ) ] .
+
+pao:ExecutionOutcome owl:equivalentClass [ owl:oneOf ( pao:ExecutionSucceeded pao:ExecutionFailed pao:ExecutionSkipped ) ] .
+
 pao:MemoryScope owl:equivalentClass [ owl:oneOf ( pao:SessionScope pao:ProjectScope pao:GlobalScope ) ] .
 
 pao:MemorySource owl:equivalentClass [ owl:oneOf ( pao:UserSource pao:SystemSource pao:AgentSource ) ] .
@@ -366,6 +420,8 @@ pao:IntegrationStatus owl:equivalentClass [ owl:oneOf ( pao:Connected pao:Discon
 
 pao:ItemFate owl:equivalentClass [ owl:oneOf ( pao:Preserved pao:Dropped pao:Summarized pao:Archived ) ] .
 
+pao:ScheduleStatus owl:equivalentClass [ owl:oneOf ( pao:ScheduleActive pao:SchedulePaused pao:ScheduleExpired pao:ScheduleDisabled ) ] .
+
 pao:SensitivityLevel owl:equivalentClass [ owl:oneOf ( pao:Public pao:Internal pao:Confidential pao:Restricted ) ] .
 
 pao:TaskStatus owl:equivalentClass [ owl:oneOf ( pao:Pending pao:InProgress pao:Completed pao:Blocked ) ] .
@@ -377,40 +433,43 @@ pao:CommunicativeFunction owl:equivalentClass [ owl:oneOf ( pao:Inform pao:Reque
 pao:FailureType owl:equivalentClass [ owl:oneOf ( pao:Timeout pao:AuthenticationFailure pao:RateLimited pao:DependencyFailure pao:ConfigurationError pao:NetworkError ) ] .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Pending pao:InProgress pao:Completed pao:Blocked ) .
+    owl:distinctMembers ( pao:Inform pao:Request pao:Confirm pao:Clarify pao:Accept pao:Reject ) .
 
 [] a owl:AllDifferent ;
     owl:distinctMembers ( pao:UserSource pao:SystemSource pao:AgentSource ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Connected pao:Disconnected pao:Error pao:Initializing ) .
+    owl:distinctMembers ( pao:CLI pao:Messaging pao:WebChat pao:APIChannel pao:VoiceChannel pao:EmailChannel ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Pending pao:InProgress pao:Completed pao:Blocked ) .
 
 [] a owl:AllDifferent ;
     owl:distinctMembers ( pao:Timeout pao:AuthenticationFailure pao:RateLimited pao:DependencyFailure pao:ConfigurationError pao:NetworkError ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:CLI pao:Messaging pao:WebChat pao:APIChannel pao:VoiceChannel pao:EmailChannel ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Open pao:Closed pao:Reconnecting pao:Failed ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:TextBlock pao:ToolUseBlock pao:ToolResultBlock pao:ImageBlock ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Public pao:Internal pao:Confidential pao:Restricted ) .
+    owl:distinctMembers ( pao:Approved pao:Rejected pao:Deferred ) .
 
 [] a owl:AllDifferent ;
     owl:distinctMembers ( pao:Allow pao:Deny pao:RequireApproval ) .
 
 [] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:AssistantRole pao:UserRole ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Public pao:Internal pao:Confidential pao:Restricted ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:ScheduleActive pao:SchedulePaused pao:ScheduleExpired pao:ScheduleDisabled ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:TextBlock pao:ToolUseBlock pao:ToolResultBlock pao:ImageBlock ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:ExecutionSucceeded pao:ExecutionFailed pao:ExecutionSkipped ) .
+
+[] a owl:AllDifferent ;
     owl:distinctMembers ( pao:Preserved pao:Dropped pao:Summarized pao:Archived ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Approved pao:Rejected pao:Deferred ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Compliant pao:NonCompliant ) .
 
 [] a owl:AllDifferent ;
     owl:distinctMembers ( pao:UserPreference ) .
@@ -419,13 +478,19 @@ pao:FailureType owl:equivalentClass [ owl:oneOf ( pao:Timeout pao:Authentication
     owl:distinctMembers ( pao:SessionScope pao:ProjectScope pao:GlobalScope ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:AssistantRole pao:UserRole ) .
-
-[] a owl:AllDifferent ;
     owl:distinctMembers ( pao:Active pao:Ended pao:Interrupted ) .
 
 [] a owl:AllDifferent ;
-    owl:distinctMembers ( pao:Inform pao:Request pao:Confirm pao:Clarify pao:Accept pao:Reject ) .
+    owl:distinctMembers ( pao:Connected pao:Disconnected pao:Error pao:Initializing ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:ConcurrencyAllow pao:ConcurrencyForbid pao:ConcurrencyReplace ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Compliant pao:NonCompliant ) .
 
 [] a owl:AllDifferent ;
     owl:distinctMembers ( pao:Permissive pao:Standard pao:Restrictive ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( pao:Open pao:Closed pao:Reconnecting pao:Failed ) .

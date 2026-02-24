@@ -216,3 +216,24 @@ RateLimited,"rate limit, throttled","Failure type: the request was rejected due 
 DependencyFailure,"upstream failure, dependency error","Failure type: a required upstream dependency was unavailable.",individual,CQ-108,FailureType instance,Named individual of FailureType.
 ConfigurationError,"config error, misconfiguration","Failure type: the system was misconfigured.",individual,CQ-108,FailureType instance,Named individual of FailureType.
 NetworkError,"network failure, connectivity error","Failure type: a network connectivity issue occurred.",individual,CQ-108,FailureType instance,Named individual of FailureType.
+# --- PAO v0.8.0 additions (scheduling module: 10 classes + 10 individuals) ---
+Schedule,"agent schedule, scheduled task","A named definition that binds a recurrence pattern and trigger to an action specification, governing when an agent should perform automated work.",class,"CQ-114,CQ-115,CQ-116,CQ-117",GDC (BFO:0000031),Core scheduling entity. Subclass of prov:Entity.
+RecurrencePattern,"recurrence rule, cron schedule, repetition pattern","A temporal specification defining when a schedule should fire, expressed as a cron expression, fixed interval, or calendar rule.",class,CQ-115,GDC (BFO:0000031),Inspired by iCal RRULE and Schema.org Schedule.
+Trigger,"activation trigger, schedule trigger","A condition that activates a schedule, such as a time-based cron expression, a fixed interval, or an external event.",class,"CQ-124,CQ-125",GDC (BFO:0000031),Abstract parent class for trigger types.
+CronTrigger,"cron trigger, time-based trigger","A trigger that activates on a cron schedule expression.",class,"CQ-124,CQ-125",GDC (BFO:0000031),Subclass of Trigger.
+IntervalTrigger,"periodic trigger, interval-based trigger","A trigger that activates at fixed time intervals.",class,CQ-124,GDC (BFO:0000031),Subclass of Trigger.
+EventTrigger,"event-based trigger, reactive trigger","A trigger that activates in response to an external event or webhook.",class,CQ-124,GDC (BFO:0000031),Subclass of Trigger. ECA pattern.
+ScheduledExecution,"execution instance, schedule run","An individual execution instance of a schedule, recording when it ran, what it produced, and whether it succeeded.",class,"CQ-118,CQ-119,CQ-120",Process (BFO:0000015),Subclass of Event. Temporal process with outcome.
+ScheduleStatus,"schedule state, schedule lifecycle status","A controlled vocabulary for the lifecycle state of a schedule.",class,CQ-117,VP (via Status),Value partition: Active; Paused; Expired; Disabled.
+ExecutionOutcome,"execution result, run outcome","A controlled vocabulary for the outcome of a scheduled execution.",class,"CQ-119,CQ-122",VP (via Status),Value partition: Succeeded; Failed; Skipped.
+ConcurrencyPolicy,"overlap policy, concurrency mode","A controlled vocabulary for how a schedule handles overlapping executions.",class,CQ-121,VP (via Status),Value partition: Allow; Forbid; Replace.
+ScheduleActive,"active schedule","Schedule status: the schedule is active and will fire on its next trigger.",individual,CQ-117,ScheduleStatus instance,Named individual of ScheduleStatus. Qualified name avoids collision with SessionStatus Active.
+SchedulePaused,"paused schedule, suspended","Schedule status: the schedule is temporarily paused.",individual,CQ-117,ScheduleStatus instance,Named individual of ScheduleStatus.
+ScheduleExpired,"expired schedule","Schedule status: the schedule has passed its end date.",individual,CQ-117,ScheduleStatus instance,Named individual of ScheduleStatus.
+ScheduleDisabled,"disabled schedule","Schedule status: the schedule is permanently disabled.",individual,CQ-117,ScheduleStatus instance,Named individual of ScheduleStatus.
+ExecutionSucceeded,"success, completed","Execution outcome: the scheduled execution completed successfully.",individual,CQ-119,ExecutionOutcome instance,Named individual of ExecutionOutcome.
+ExecutionFailed,"failure, error","Execution outcome: the scheduled execution failed.",individual,CQ-119,ExecutionOutcome instance,Named individual of ExecutionOutcome. Qualified name avoids collision with ConnectionStatus Failed.
+ExecutionSkipped,"skipped execution, dropped","Execution outcome: the scheduled execution was skipped due to concurrency policy.",individual,"CQ-119,CQ-122",ExecutionOutcome instance,Named individual of ExecutionOutcome.
+ConcurrencyAllow,"allow parallel","Concurrency policy: allow parallel executions.",individual,CQ-121,ConcurrencyPolicy instance,Named individual of ConcurrencyPolicy. Qualified name avoids collision with AuthorizationDecision Allow.
+ConcurrencyForbid,"forbid overlap, skip new","Concurrency policy: skip new execution if prior is still running.",individual,CQ-121,ConcurrencyPolicy instance,Named individual of ConcurrencyPolicy.
+ConcurrencyReplace,"replace running, cancel old","Concurrency policy: cancel running execution and start new one.",individual,CQ-121,ConcurrencyPolicy instance,Named individual of ConcurrencyPolicy.

@@ -818,3 +818,105 @@ use_cases:
     related_scenarios: [S3, S6]
     related_cqs: [CQ-113]
     priority: should_have
+
+  # ── Module 9: Scheduling & Automation ─────────────────────────────
+
+  - id: UC-048
+    name: "Define and manage agent schedules"
+    actor: "Agent Developer"
+    goal: "Create, query, and manage schedule definitions that specify when an agent should perform recurring or one-time actions"
+    preconditions:
+      - "Agent system supports scheduled execution"
+      - "Time-based triggers are available"
+    main_flow:
+      - "Developer defines a schedule with a recurrence pattern (cron, interval, or one-shot)"
+      - "Developer assigns an action specification to the schedule"
+      - "Developer queries all active schedules for an agent"
+      - "Developer pauses or disables a schedule"
+    postconditions:
+      - "Schedule definitions are queryable with recurrence, action, and lifecycle state"
+    related_scenarios: [S8]
+    related_cqs: [CQ-114, CQ-115, CQ-116, CQ-117]
+    priority: must_have
+
+  - id: UC-049
+    name: "Track execution history of scheduled tasks"
+    actor: "System Architect"
+    goal: "Query the execution history of a schedule to understand when it ran, what it produced, and whether executions succeeded or failed"
+    preconditions:
+      - "A schedule has been active and has executed at least once"
+    main_flow:
+      - "Architect queries all executions for a given schedule"
+      - "System returns execution instances with start time, end time, and outcome"
+      - "Architect filters executions by outcome (success, failure, skipped)"
+    postconditions:
+      - "Complete execution history is available with temporal and outcome data"
+    related_scenarios: [S8]
+    related_cqs: [CQ-118, CQ-119, CQ-120]
+    priority: must_have
+
+  - id: UC-050
+    name: "Handle schedule concurrency and overlap"
+    actor: "System Architect"
+    goal: "Define and query the concurrency policy for a schedule to control behavior when executions overlap"
+    preconditions:
+      - "A schedule fires while a prior execution is still running"
+    main_flow:
+      - "Architect queries the concurrency policy for a schedule"
+      - "System returns the policy (allow parallel, forbid/skip, replace running)"
+      - "Architect verifies that skipped executions are recorded"
+    postconditions:
+      - "Concurrency behavior is explicit and queryable per schedule"
+    related_scenarios: [S8]
+    related_cqs: [CQ-121, CQ-122]
+    priority: should_have
+
+  - id: UC-051
+    name: "Catch up missed scheduled executions"
+    actor: "AI Agent"
+    goal: "Detect and handle executions that were missed during agent downtime"
+    preconditions:
+      - "Agent was offline during one or more scheduled firing times"
+      - "Schedule has a catch-up policy defined"
+    main_flow:
+      - "Agent comes online and evaluates missed execution windows"
+      - "Agent applies catch-up policy (run all missed, run latest only, skip)"
+      - "Catch-up executions are recorded with provenance linking to original schedule time"
+    postconditions:
+      - "Missed executions are handled per policy and auditable"
+    related_scenarios: [S8]
+    related_cqs: [CQ-123]
+    priority: should_have
+
+  - id: UC-052
+    name: "Configure trigger-based agent activation"
+    actor: "Agent Developer"
+    goal: "Define triggers that activate agent actions in response to events, webhooks, or time conditions"
+    preconditions:
+      - "Trigger sources are available (cron, interval, event, webhook)"
+    main_flow:
+      - "Developer defines triggers of various types for a schedule"
+      - "Developer queries what trigger type activates a given schedule"
+      - "Developer lists all schedules activated by a specific trigger type"
+    postconditions:
+      - "Trigger types are classifiable and queryable per schedule"
+    related_scenarios: [S8]
+    related_cqs: [CQ-124, CQ-125]
+    priority: must_have
+
+  - id: UC-053
+    name: "Link scheduled executions to agent goals and plans"
+    actor: "System Architect"
+    goal: "Trace how scheduled executions connect to the agent's goal/plan hierarchy and conversation context"
+    preconditions:
+      - "Scheduled actions achieve or contribute to agent goals"
+      - "Executions may initiate conversations or sessions"
+    main_flow:
+      - "Architect queries which goal a schedule serves"
+      - "Architect traces from execution to the session it initiated"
+      - "Architect identifies schedules owned by a specific agent"
+    postconditions:
+      - "Schedule-to-goal and execution-to-session linkages are queryable"
+    related_scenarios: [S6, S8]
+    related_cqs: [CQ-126, CQ-127, CQ-128]
+    priority: should_have

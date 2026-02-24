@@ -4,6 +4,61 @@ All notable changes to the Personal Agent Ontology will be documented here.
 
 This project uses [Semantic Versioning](https://semver.org/).
 
+## [0.8.0] - 2026-02-21
+
+### Added
+
+**10 New Classes — Module 9: Scheduling & Automation**
+- Schedule, RecurrencePattern, Trigger (with DisjointUnion subtypes:
+  CronTrigger, IntervalTrigger, EventTrigger), ScheduledExecution,
+  ScheduleStatus, ExecutionOutcome, ConcurrencyPolicy
+
+**13 New Properties (10 object, 3 data)**
+- Object: hasRecurrencePattern, schedulesAction, hasScheduleStatus,
+  executionOf, hasExecutionOutcome, hasConcurrencyPolicy, activatedBy,
+  servesGoal, ownedByAgent, initiatedSession
+- Data: hasCronExpression, hasIntervalSeconds, allowsCatchUp
+
+**15 New Competency Questions (CQ-114 through CQ-128)**
+- Schedule definitions and trigger types (CQ-114 to CQ-116)
+- Schedule lifecycle and status (CQ-117, CQ-118)
+- Execution tracking and outcomes (CQ-119 to CQ-122)
+- Concurrency control (CQ-123, CQ-124)
+- Catch-up/backfill policies (CQ-125)
+- Goal linkage and agent ownership (CQ-126 to CQ-128)
+
+**6 New Use Cases (UC-048 through UC-053)**
+
+**10 New Reference Individuals (3 VP groups)**
+- ScheduleStatus: ScheduleActive, SchedulePaused, ScheduleExpired,
+  ScheduleDisabled
+- ExecutionOutcome: ExecutionSucceeded, ExecutionFailed, ExecutionSkipped
+- ConcurrencyPolicy: ConcurrencyAllow, ConcurrencyForbid, ConcurrencyReplace
+
+### Changed
+
+- SHACL shapes expanded from 57 to 60 NodeShapes
+- AllDisjointClasses: Event subtypes expanded to 21-way, Status subtypes
+  to 20-way, cross-module GDC to 44-way
+- New Trigger DisjointUnion (CronTrigger, IntervalTrigger, EventTrigger)
+- Property hierarchy: hasScheduleStatus, hasExecutionOutcome,
+  hasConcurrencyPolicy all subPropertyOf hasStatus
+- Individual URIs use qualified names (ScheduleActive, ExecutionFailed,
+  ConcurrencyAllow) to avoid collisions with existing Status individuals
+
+### Metrics
+
+| Metric | v0.7.0 | v0.8.0 |
+|--------|--------|--------|
+| Classes | 105 | 115 |
+| Object properties | 128 | 138 |
+| Data properties | 32 | 35 |
+| SHACL shapes | 57 | 60 |
+| Named individuals | 65 | 75 |
+| CQ tests | 113 | 128 |
+| Total tests | 1,212 | 1,332 |
+| TBox triples | 2,354 | 2,564 |
+
 ## [0.7.0] - 2026-02-20
 
 ### Added

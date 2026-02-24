@@ -205,6 +205,17 @@ EXPECTED_CLASSES = [
     "Desire",
     "Justification",
     "Deliberation",
+    # v0.8.0: Scheduling & Automation
+    "Schedule",
+    "RecurrencePattern",
+    "Trigger",
+    "CronTrigger",
+    "IntervalTrigger",
+    "EventTrigger",
+    "ScheduledExecution",
+    "ScheduleStatus",
+    "ExecutionOutcome",
+    "ConcurrencyPolicy",
 ]
 
 
@@ -215,10 +226,10 @@ def test_class_declared(tbox: Graph, cls_name: str) -> None:
 
 
 def test_class_count(tbox: Graph) -> None:
-    """Exactly 105 PAO classes are declared."""
+    """Exactly 115 PAO classes are declared."""
     pao_classes = {s for s in tbox.subjects(RDF.type, OWL.Class) if str(s).startswith(str(PAO))}
-    assert len(pao_classes) == 105, (
-        f"Expected 105 PAO classes, found {len(pao_classes)}: {pao_classes}"
+    assert len(pao_classes) == 115, (
+        f"Expected 115 PAO classes, found {len(pao_classes)}: {pao_classes}"
     )
 
 
@@ -361,6 +372,17 @@ HIERARCHY_CHECKS = [
     ("Desire", PROV.Entity),
     ("Justification", PROV.Entity),
     ("Deliberation", PAO.Event),
+    # v0.8.0: Scheduling & Automation
+    ("Schedule", PROV.Entity),
+    ("RecurrencePattern", PROV.Entity),
+    ("Trigger", PROV.Entity),
+    ("CronTrigger", PAO.Trigger),
+    ("IntervalTrigger", PAO.Trigger),
+    ("EventTrigger", PAO.Trigger),
+    ("ScheduledExecution", PAO.Event),
+    ("ScheduleStatus", PAO.Status),
+    ("ExecutionOutcome", PAO.Status),
+    ("ConcurrencyPolicy", PAO.Status),
 ]
 
 
@@ -432,6 +454,10 @@ BFO_ALIGNMENT = [
     ("Belief", OBO["BFO_0000031"]),  # GDC
     ("Desire", OBO["BFO_0000031"]),  # GDC
     ("Justification", OBO["BFO_0000031"]),  # GDC
+    # v0.8.0: Scheduling & Automation
+    ("Schedule", OBO["BFO_0000031"]),  # GDC
+    ("RecurrencePattern", OBO["BFO_0000031"]),  # GDC
+    ("Trigger", OBO["BFO_0000031"]),  # GDC
 ]
 
 
@@ -452,6 +478,7 @@ def test_bfo_alignment(tbox: Graph, cls_name: str, bfo_class: URIRef) -> None:
 EXPECTED_OBJ_PROPS = [
     "aboutAgent",
     "achievesGoal",
+    "activatedBy",
     "appliesTo",
     "attemptedRetry",
     "auditForInvocation",
@@ -478,6 +505,7 @@ EXPECTED_OBJ_PROPS = [
     "discoveryAgainstService",
     "dispositionOf",
     "enforcedBySandboxPolicy",
+    "executionOf",
     "exposesCapability",
     "governedByPolicy",
     "governedByRetention",
@@ -487,6 +515,7 @@ EXPECTED_OBJ_PROPS = [
     "hasAvailableTool",
     "hasChannelType",
     "hasCommunicativeFunction",
+    "hasConcurrencyPolicy",
     "hasCompactionDisposition",
     "hasComplianceStatus",
     "hasConnectionStatus",
@@ -495,6 +524,7 @@ EXPECTED_OBJ_PROPS = [
     "hasContextWindow",
     "hasDialogAct",
     "hasEvidence",
+    "hasExecutionOutcome",
     "hasExternalService",
     "hasHook",
     "hasIntegration",
@@ -508,8 +538,10 @@ EXPECTED_OBJ_PROPS = [
     "hasPart",
     "hasParticipant",
     "hasPersona",
+    "hasRecurrencePattern",
     "hasRole",
     "hasSensitivityLevel",
+    "hasScheduleStatus",
     "hasServiceConnection",
     "hasStatus",
     "hasTask",
@@ -518,6 +550,7 @@ EXPECTED_OBJ_PROPS = [
     "hookTriggeredExecution",
     "inConversation",
     "inSession",
+    "initiatedSession",
     "intendedBy",
     "interceptsInvocation",
     "invokedBy",
@@ -526,6 +559,7 @@ EXPECTED_OBJ_PROPS = [
     "nextTransition",
     "operatesInMode",
     "operatesOn",
+    "ownedByAgent",
     "participatesIn",
     "partOf",
     "partOfConversation",
@@ -547,7 +581,9 @@ EXPECTED_OBJ_PROPS = [
     "requestedBy",
     "resolvedByPolicy",
     "restrictsToolUse",
+    "schedulesAction",
     "sentViaChannel",
+    "servesGoal",
     "sharedAcrossAgents",
     "spawnedBy",
     "storedIn",
@@ -596,6 +632,7 @@ def test_object_property_declared(tbox: Graph, prop_name: str) -> None:
 # ---------------------------------------------------------------------------
 
 EXPECTED_DATA_PROPS = [
+    "allowsCatchUp",
     "blockSequenceIndex",
     "fateReason",
     "hasAgentId",
@@ -605,8 +642,10 @@ EXPECTED_DATA_PROPS = [
     "hasConfidence",
     "hasContent",
     "hasConversationId",
+    "hasCronExpression",
     "hasDecisionReason",
     "hasEndpoint",
+    "hasIntervalSeconds",
     "hasLastAccessTime",
     "hasRecoveryOutcome",
     "hasServiceIdentifier",
@@ -738,6 +777,18 @@ EXPECTED_FUNCTIONAL = [
     "hasMetricValue",
     # v0.7.0: Failure Taxonomy
     "hasFailureType",
+    # v0.8.0: Scheduling & Automation
+    "activatedBy",
+    "allowsCatchUp",
+    "executionOf",
+    "hasConcurrencyPolicy",
+    "hasCronExpression",
+    "hasExecutionOutcome",
+    "hasIntervalSeconds",
+    "hasRecurrencePattern",
+    "hasScheduleStatus",
+    "ownedByAgent",
+    "schedulesAction",
 ]
 
 
@@ -811,6 +862,10 @@ SUBPROPERTY_CHECKS = [
     ("hasIntegrationStatus", "hasStatus"),
     ("hasConnectionStatus", "hasStatus"),
     ("checkpointDecision", "hasStatus"),
+    # v0.8.0: Scheduling & Automation
+    ("hasScheduleStatus", "hasStatus"),
+    ("hasExecutionOutcome", "hasStatus"),
+    ("hasConcurrencyPolicy", "hasStatus"),
 ]
 
 
@@ -975,6 +1030,20 @@ DOMAIN_RANGE_CHECKS: list[tuple[str, URIRef | None, URIRef]] = [
     ("producesIntention", PAO.Deliberation, PAO.Intention),
     ("considersBelief", PAO.Deliberation, PAO.Belief),
     ("considersDesire", PAO.Deliberation, PAO.Desire),
+    # v0.8.0: Scheduling & Automation
+    ("hasRecurrencePattern", PAO.Schedule, PAO.RecurrencePattern),
+    ("schedulesAction", PAO.Schedule, PAO.Action),
+    ("hasScheduleStatus", PAO.Schedule, PAO.ScheduleStatus),
+    ("executionOf", PAO.ScheduledExecution, PAO.Schedule),
+    ("hasExecutionOutcome", PAO.ScheduledExecution, PAO.ExecutionOutcome),
+    ("hasConcurrencyPolicy", PAO.Schedule, PAO.ConcurrencyPolicy),
+    ("activatedBy", PAO.Schedule, PAO.Trigger),
+    ("servesGoal", PAO.Schedule, PAO.Goal),
+    ("ownedByAgent", PAO.Schedule, PAO.Agent),
+    ("initiatedSession", PAO.ScheduledExecution, PAO.Session),
+    ("hasCronExpression", PAO.RecurrencePattern, XSD.string),
+    ("hasIntervalSeconds", PAO.RecurrencePattern, XSD.nonNegativeInteger),
+    ("allowsCatchUp", PAO.Schedule, XSD.boolean),
 ]
 
 
@@ -1121,6 +1190,15 @@ EXISTENTIAL_CHECKS = [
     ("Deliberation", "considersDesire", "Desire"),
     ("Deliberation", "producesIntention", "Intention"),
     ("Justification", "justifiesIntention", "Intention"),
+    # v0.8.0: Scheduling & Automation
+    ("Schedule", "hasRecurrencePattern", "RecurrencePattern"),
+    ("Schedule", "schedulesAction", "Action"),
+    ("Schedule", "hasScheduleStatus", "ScheduleStatus"),
+    ("Schedule", "activatedBy", "Trigger"),
+    ("Schedule", "ownedByAgent", "Agent"),
+    ("Schedule", "hasConcurrencyPolicy", "ConcurrencyPolicy"),
+    ("ScheduledExecution", "executionOf", "Schedule"),
+    ("ScheduledExecution", "hasExecutionOutcome", "ExecutionOutcome"),
 ]
 
 
@@ -1265,6 +1343,13 @@ def test_service_capability_disjoint_union(tbox: Graph) -> None:
     )
 
 
+def test_trigger_disjoint_union(tbox: Graph) -> None:
+    """Trigger disjointUnionOf CronTrigger, IntervalTrigger, EventTrigger."""
+    members = _get_disjoint_union_members(tbox, PAO.Trigger)
+    expected = {PAO.CronTrigger, PAO.IntervalTrigger, PAO.EventTrigger}
+    assert members == expected, f"Trigger DisjointUnion: expected {expected}, got {members}"
+
+
 # ---------------------------------------------------------------------------
 # AllDisjointClasses axioms (8 axioms)
 # ---------------------------------------------------------------------------
@@ -1281,9 +1366,9 @@ def _collect_all_disjoint_groups(g: Graph) -> list[set[URIRef]]:
 
 
 def test_all_disjoint_classes_count(tbox: Graph) -> None:
-    """At least 11 AllDisjointClasses axioms exist."""
+    """At least 12 AllDisjointClasses axioms exist."""
     groups = _collect_all_disjoint_groups(tbox)
-    assert len(groups) >= 11, f"Expected >=11 AllDisjointClasses, got {len(groups)}"
+    assert len(groups) >= 12, f"Expected >=12 AllDisjointClasses, got {len(groups)}"
 
 
 DISJOINT_GROUP_CHECKS = [
@@ -1310,6 +1395,7 @@ DISJOINT_GROUP_CHECKS = [
             PAO.ModelInvocation,
             PAO.ReliabilityIncident,
             PAO.Deliberation,
+            PAO.ScheduledExecution,
         },
         "Event subtypes",
     ),
@@ -1333,6 +1419,9 @@ DISJOINT_GROUP_CHECKS = [
             PAO.CommunicativeFunction,
             PAO.ClaimType,
             PAO.FailureType,
+            PAO.ScheduleStatus,
+            PAO.ExecutionOutcome,
+            PAO.ConcurrencyPolicy,
         },
         "Status subtypes",
     ),
@@ -1400,6 +1489,9 @@ DISJOINT_GROUP_CHECKS = [
             PAO.Belief,
             PAO.Desire,
             PAO.Justification,
+            PAO.Schedule,
+            PAO.RecurrencePattern,
+            PAO.Trigger,
         },
         "Cross-module GDC disjointness",
     ),
@@ -1414,6 +1506,11 @@ DISJOINT_GROUP_CHECKS = [
     (
         {PAO.RetryAttempt, PAO.ReplanEvent, PAO.RollbackEvent},
         "Recovery event subtypes",
+    ),
+    # v0.8.0: Scheduling & Automation
+    (
+        {PAO.CronTrigger, PAO.IntervalTrigger, PAO.EventTrigger},
+        "Trigger subtypes",
     ),
 ]
 
@@ -1788,6 +1885,69 @@ def test_all_different_failure_type(ref: Graph) -> None:
     )
 
 
+def test_schedule_status_individuals(ref: Graph) -> None:
+    """ScheduleStatus individuals exist."""
+    for name in ["ScheduleActive", "SchedulePaused", "ScheduleExpired", "ScheduleDisabled"]:
+        assert (PAO[name], RDF.type, PAO.ScheduleStatus) in ref
+
+
+def test_schedule_status_enumeration(ref: Graph) -> None:
+    """ScheduleStatus owl:oneOf contains all 4 members."""
+    members = _get_one_of_members(ref, PAO.ScheduleStatus)
+    assert members == {
+        PAO.ScheduleActive,
+        PAO.SchedulePaused,
+        PAO.ScheduleExpired,
+        PAO.ScheduleDisabled,
+    }
+
+
+def test_all_different_schedule_status(ref: Graph) -> None:
+    """AllDifferent for ScheduleStatus individuals."""
+    assert _find_all_different_containing(
+        ref,
+        {PAO.ScheduleActive, PAO.SchedulePaused, PAO.ScheduleExpired, PAO.ScheduleDisabled},
+    )
+
+
+def test_execution_outcome_individuals(ref: Graph) -> None:
+    """ExecutionOutcome individuals exist."""
+    for name in ["ExecutionSucceeded", "ExecutionFailed", "ExecutionSkipped"]:
+        assert (PAO[name], RDF.type, PAO.ExecutionOutcome) in ref
+
+
+def test_execution_outcome_enumeration(ref: Graph) -> None:
+    """ExecutionOutcome owl:oneOf contains all 3 members."""
+    members = _get_one_of_members(ref, PAO.ExecutionOutcome)
+    assert members == {PAO.ExecutionSucceeded, PAO.ExecutionFailed, PAO.ExecutionSkipped}
+
+
+def test_all_different_execution_outcome(ref: Graph) -> None:
+    """AllDifferent for ExecutionOutcome individuals."""
+    assert _find_all_different_containing(
+        ref, {PAO.ExecutionSucceeded, PAO.ExecutionFailed, PAO.ExecutionSkipped}
+    )
+
+
+def test_concurrency_policy_individuals(ref: Graph) -> None:
+    """ConcurrencyPolicy individuals exist."""
+    for name in ["ConcurrencyAllow", "ConcurrencyForbid", "ConcurrencyReplace"]:
+        assert (PAO[name], RDF.type, PAO.ConcurrencyPolicy) in ref
+
+
+def test_concurrency_policy_enumeration(ref: Graph) -> None:
+    """ConcurrencyPolicy owl:oneOf contains all 3 members."""
+    members = _get_one_of_members(ref, PAO.ConcurrencyPolicy)
+    assert members == {PAO.ConcurrencyAllow, PAO.ConcurrencyForbid, PAO.ConcurrencyReplace}
+
+
+def test_all_different_concurrency_policy(ref: Graph) -> None:
+    """AllDifferent for ConcurrencyPolicy individuals."""
+    assert _find_all_different_containing(
+        ref, {PAO.ConcurrencyAllow, PAO.ConcurrencyForbid, PAO.ConcurrencyReplace}
+    )
+
+
 # ---------------------------------------------------------------------------
 # owl:oneOf enumerations
 # ---------------------------------------------------------------------------
@@ -2031,6 +2191,22 @@ CQ_SELECT_NON_EMPTY = [
     "cq-111.sparql",
     "cq-112.sparql",
     "cq-113.sparql",
+    # v0.8.0: Scheduling & Automation
+    "cq-114.sparql",
+    "cq-115.sparql",
+    "cq-116.sparql",
+    "cq-117.sparql",
+    "cq-118.sparql",
+    "cq-119.sparql",
+    "cq-120.sparql",
+    "cq-121.sparql",
+    "cq-122.sparql",
+    "cq-123.sparql",
+    "cq-124.sparql",
+    "cq-125.sparql",
+    "cq-126.sparql",
+    "cq-127.sparql",
+    "cq-128.sparql",
 ]
 
 
@@ -2108,9 +2284,9 @@ def test_shacl_conformance(shapes: Graph) -> None:
 
 
 def test_shacl_shape_count(shapes: Graph) -> None:
-    """At least 57 NodeShapes exist."""
+    """At least 60 NodeShapes exist."""
     node_shapes = set(shapes.subjects(RDF.type, SH.NodeShape))
-    assert len(node_shapes) >= 57, f"Expected >=57 NodeShapes, got {len(node_shapes)}"
+    assert len(node_shapes) >= 60, f"Expected >=60 NodeShapes, got {len(node_shapes)}"
 
 
 EXPECTED_SHAPE_TARGETS = [
@@ -2174,6 +2350,10 @@ EXPECTED_SHAPE_TARGETS = [
     "Desire",
     "Deliberation",
     "Justification",
+    # v0.8.0: Scheduling & Automation
+    "Schedule",
+    "ScheduledExecution",
+    "RecurrencePattern",
 ]
 
 

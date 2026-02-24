@@ -49,9 +49,9 @@ TIME_DECL_IRI = URIRef("https://purl.org/pao/time-declarations")
 FOAF_DECL_IRI = URIRef("https://purl.org/pao/foaf-declarations")
 ODRL_DECL_IRI = URIRef("https://purl.org/pao/odrl-declarations")
 BFO_DECL_IRI = URIRef("https://purl.org/pao/bfo-declarations")
-TBOX_VERSION_IRI = URIRef("https://purl.org/pao/0.7.0")
-REF_VERSION_IRI = URIRef("https://purl.org/pao/reference-individuals/0.7.0")
-DATA_VERSION_IRI = URIRef("https://purl.org/pao/data/0.7.0")
+TBOX_VERSION_IRI = URIRef("https://purl.org/pao/0.8.0")
+REF_VERSION_IRI = URIRef("https://purl.org/pao/reference-individuals/0.8.0")
+DATA_VERSION_IRI = URIRef("https://purl.org/pao/data/0.8.0")
 
 # Ontology project root (ontologies/personal_agent_ontology/)
 PROJECT = Path(__file__).resolve().parent.parent
@@ -248,9 +248,9 @@ def build_tbox(glossary: list[dict[str, str]]) -> Graph:
             ),
         )
     )
-    g.add((TBOX_IRI, OWL.versionInfo, Literal("0.7.0")))
-    g.add((TBOX_IRI, OWL.priorVersion, URIRef("https://purl.org/pao/0.6.0")))
-    g.add((TBOX_IRI, DCTERMS.created, Literal("2026-02-20")))
+    g.add((TBOX_IRI, OWL.versionInfo, Literal("0.8.0")))
+    g.add((TBOX_IRI, OWL.priorVersion, URIRef("https://purl.org/pao/0.7.0")))
+    g.add((TBOX_IRI, DCTERMS.created, Literal("2026-02-21")))
     g.add((TBOX_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((TBOX_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
     g.add((TBOX_IRI, DCTERMS.rights, Literal("MIT License")))
@@ -258,7 +258,7 @@ def build_tbox(glossary: list[dict[str, str]]) -> Graph:
         (
             TBOX_IRI,
             PROV.generatedAtTime,
-            Literal("2026-02-18T00:00:00Z", datatype=XSD.dateTime),
+            Literal("2026-02-21T00:00:00Z", datatype=XSD.dateTime),
         )
     )
 
@@ -303,7 +303,7 @@ def build_tbox(glossary: list[dict[str, str]]) -> Graph:
 
 
 def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
-    """Declare all 105 PAO classes with labels, definitions, and subclass axioms."""
+    """Declare all 115 PAO classes with labels, definitions, and subclass axioms."""
     # Class hierarchy: (class_name, parent_uri, bfo_uri_or_none)
     class_defs: list[tuple[str, URIRef | None, URIRef | None]] = [
         # pao-core
@@ -431,6 +431,17 @@ def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
         ("Desire", PROV.Entity, OBO.BFO_0000031),
         ("Justification", PROV.Entity, OBO.BFO_0000031),
         ("Deliberation", PAO.Event, None),  # inherits Process via Event
+        # pao-scheduling (v0.8.0)
+        ("Schedule", PROV.Entity, OBO.BFO_0000031),
+        ("RecurrencePattern", PROV.Entity, OBO.BFO_0000031),
+        ("Trigger", PROV.Entity, OBO.BFO_0000031),
+        ("CronTrigger", PAO.Trigger, None),  # inherits GDC from Trigger
+        ("IntervalTrigger", PAO.Trigger, None),  # inherits GDC from Trigger
+        ("EventTrigger", PAO.Trigger, None),  # inherits GDC from Trigger
+        ("ScheduledExecution", PAO.Event, None),  # inherits Process via Event
+        ("ScheduleStatus", PAO.Status, None),  # Value Partition
+        ("ExecutionOutcome", PAO.Status, None),  # Value Partition
+        ("ConcurrencyPolicy", PAO.Status, None),  # Value Partition
     ]
 
     # Additional parent axioms (multiple inheritance)
@@ -459,7 +470,7 @@ def _add_classes(g: Graph, class_glossary: dict[str, dict[str, str]]) -> None:
 
 
 def _add_object_properties(g: Graph) -> None:
-    """Declare all 128 object properties."""
+    """Declare all 138 object properties."""
     # Each tuple: (name, domain, range, characteristics, definition)
     obj_props: list[tuple[str, URIRef | None, URIRef | None, list[str], str]] = [
         # pao-core: generic part-whole
@@ -1380,6 +1391,77 @@ def _add_object_properties(g: Graph) -> None:
             [],
             "Links a deliberation to a desire it considers.",
         ),
+        # pao-scheduling (v0.8.0)
+        (
+            "hasRecurrencePattern",
+            PAO.Schedule,
+            PAO.RecurrencePattern,
+            ["functional"],
+            "Links a schedule to its recurrence pattern.",
+        ),
+        (
+            "schedulesAction",
+            PAO.Schedule,
+            PAO.Action,
+            ["functional"],
+            "Links a schedule to the action it specifies for execution.",
+        ),
+        (
+            "hasScheduleStatus",
+            PAO.Schedule,
+            PAO.ScheduleStatus,
+            ["functional"],
+            "Links a schedule to its current lifecycle status.",
+        ),
+        (
+            "executionOf",
+            PAO.ScheduledExecution,
+            PAO.Schedule,
+            ["functional"],
+            "Links a scheduled execution to the schedule it instantiates.",
+        ),
+        (
+            "hasExecutionOutcome",
+            PAO.ScheduledExecution,
+            PAO.ExecutionOutcome,
+            ["functional"],
+            "Links a scheduled execution to its outcome.",
+        ),
+        (
+            "hasConcurrencyPolicy",
+            PAO.Schedule,
+            PAO.ConcurrencyPolicy,
+            ["functional"],
+            "Links a schedule to its concurrency policy.",
+        ),
+        (
+            "activatedBy",
+            PAO.Schedule,
+            PAO.Trigger,
+            ["functional"],
+            "Links a schedule to the trigger that activates it.",
+        ),
+        (
+            "servesGoal",
+            PAO.Schedule,
+            PAO.Goal,
+            [],
+            "Links a schedule to a goal it serves.",
+        ),
+        (
+            "ownedByAgent",
+            PAO.Schedule,
+            PAO.Agent,
+            ["functional"],
+            "Links a schedule to the agent that owns it.",
+        ),
+        (
+            "initiatedSession",
+            PAO.ScheduledExecution,
+            PAO.Session,
+            [],
+            "Links a scheduled execution to a session it initiated.",
+        ),
     ]
 
     for name, domain, range_, chars, defn in obj_props:
@@ -1398,7 +1480,7 @@ def _add_object_properties(g: Graph) -> None:
 
 
 def _add_data_properties(g: Graph) -> None:
-    """Declare all 32 data properties."""
+    """Declare all 35 data properties."""
     data_props: list[tuple[str, URIRef | None, URIRef, list[str], str]] = [
         (
             "hasTimestamp",
@@ -1637,6 +1719,28 @@ def _add_data_properties(g: Graph) -> None:
             ["functional"],
             "The measured value of a metric observation.",
         ),
+        # pao-scheduling (v0.8.0)
+        (
+            "hasCronExpression",
+            PAO.RecurrencePattern,
+            XSD.string,
+            ["functional"],
+            "The cron expression defining when a recurrence pattern fires.",
+        ),
+        (
+            "hasIntervalSeconds",
+            PAO.RecurrencePattern,
+            XSD.nonNegativeInteger,
+            ["functional"],
+            "The interval in seconds between recurring firings.",
+        ),
+        (
+            "allowsCatchUp",
+            PAO.Schedule,
+            XSD.boolean,
+            ["functional"],
+            "Whether a schedule allows catch-up of missed executions after downtime.",
+        ),
     ]
 
     for name, domain, range_, chars, defn in data_props:
@@ -1667,6 +1771,10 @@ def _add_property_hierarchy(g: Graph) -> None:
     g.add((PAO.hasIntegrationStatus, RDFS.subPropertyOf, PAO.hasStatus))
     g.add((PAO.hasConnectionStatus, RDFS.subPropertyOf, PAO.hasStatus))
     g.add((PAO.checkpointDecision, RDFS.subPropertyOf, PAO.hasStatus))
+    # v0.8.0: scheduling status hierarchy
+    g.add((PAO.hasScheduleStatus, RDFS.subPropertyOf, PAO.hasStatus))
+    g.add((PAO.hasExecutionOutcome, RDFS.subPropertyOf, PAO.hasStatus))
+    g.add((PAO.hasConcurrencyPolicy, RDFS.subPropertyOf, PAO.hasStatus))
     # compactedItem is subPropertyOf prov:used
     g.add((PAO.compactedItem, RDFS.subPropertyOf, PROV.used))
 
@@ -1861,6 +1969,17 @@ def _add_existential_restrictions(g: Graph) -> None:
         (PAO.Deliberation, PAO.considersDesire, PAO.Desire),
         (PAO.Deliberation, PAO.producesIntention, PAO.Intention),
         (PAO.Justification, PAO.justifiesIntention, PAO.Intention),
+        # CQ-114/115/116/117: Schedule core (v0.8.0)
+        (PAO.Schedule, PAO.hasRecurrencePattern, PAO.RecurrencePattern),
+        (PAO.Schedule, PAO.schedulesAction, PAO.Action),
+        (PAO.Schedule, PAO.hasScheduleStatus, PAO.ScheduleStatus),
+        (PAO.Schedule, PAO.activatedBy, PAO.Trigger),
+        (PAO.Schedule, PAO.ownedByAgent, PAO.Agent),
+        (PAO.Schedule, PAO.hasConcurrencyPolicy, PAO.ConcurrencyPolicy),
+        # CQ-118/119/120: ScheduledExecution (v0.8.0)
+        (PAO.ScheduledExecution, PAO.executionOf, PAO.Schedule),
+        (PAO.ScheduledExecution, PAO.hasExecutionOutcome, PAO.ExecutionOutcome),
+        (PAO.ScheduledExecution, PAO.hasTemporalExtent, TIME.Interval),
     ]
     for cls, prop, filler in restrictions:
         _add_existential(g, cls, prop, filler)
@@ -1913,6 +2032,16 @@ def _add_disjoint_unions(g: Graph) -> None:
             PAO.ServicePromptCapability,
         ],
     )
+    # Trigger DisjointUnionOf 3 subtypes (v0.8.0)
+    _add_disjoint_union(
+        g,
+        PAO.Trigger,
+        [
+            PAO.CronTrigger,
+            PAO.IntervalTrigger,
+            PAO.EventTrigger,
+        ],
+    )
     # MemoryOperation DisjointUnionOf 5 subtypes
     _add_disjoint_union(
         g,
@@ -1955,6 +2084,7 @@ def _add_disjointness_axioms(g: Graph) -> None:
             PAO.ModelInvocation,  # v0.7.0
             PAO.ReliabilityIncident,  # v0.7.0
             PAO.Deliberation,  # v0.7.0
+            PAO.ScheduledExecution,  # v0.8.0
         ],
     )
     # StatusTransition subtypes
@@ -1982,6 +2112,9 @@ def _add_disjointness_axioms(g: Graph) -> None:
             PAO.CommunicativeFunction,  # v0.6.0 Phase B
             PAO.ClaimType,  # v0.6.0 review
             PAO.FailureType,  # v0.7.0
+            PAO.ScheduleStatus,  # v0.8.0
+            PAO.ExecutionOutcome,  # v0.8.0
+            PAO.ConcurrencyPolicy,  # v0.8.0
         ],
     )
     # Governance types (7-way)
@@ -2043,6 +2176,9 @@ def _add_disjointness_axioms(g: Graph) -> None:
             PAO.Belief,  # v0.7.0
             PAO.Desire,  # v0.7.0
             PAO.Justification,  # v0.7.0
+            PAO.Schedule,  # v0.8.0
+            PAO.RecurrencePattern,  # v0.8.0
+            PAO.Trigger,  # v0.8.0
         ],
     )
     # ServiceCapability subtypes (covered by DisjointUnion, but explicit)
@@ -2058,6 +2194,11 @@ def _add_disjointness_axioms(g: Graph) -> None:
     _add_all_disjoint_classes(
         g,
         [PAO.RetryAttempt, PAO.ReplanEvent, PAO.RollbackEvent],
+    )
+    # Trigger subtypes (covered by DisjointUnion, but explicit for clarity)
+    _add_all_disjoint_classes(
+        g,
+        [PAO.CronTrigger, PAO.IntervalTrigger, PAO.EventTrigger],
     )
     # MemoryTier subtypes (covered by DisjointUnion, but explicit for clarity)
     _add_all_disjoint_classes(
@@ -2135,9 +2276,9 @@ def build_reference_individuals(glossary: list[dict[str, str]]) -> Graph:
             ),
         )
     )
-    g.add((REF_IRI, OWL.versionInfo, Literal("0.7.0")))
-    g.add((REF_IRI, OWL.priorVersion, URIRef("https://purl.org/pao/reference-individuals/0.6.0")))
-    g.add((REF_IRI, DCTERMS.created, Literal("2026-02-20")))
+    g.add((REF_IRI, OWL.versionInfo, Literal("0.8.0")))
+    g.add((REF_IRI, OWL.priorVersion, URIRef("https://purl.org/pao/reference-individuals/0.7.0")))
+    g.add((REF_IRI, DCTERMS.created, Literal("2026-02-21")))
     g.add((REF_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((REF_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
 
@@ -2276,6 +2417,25 @@ def build_reference_individuals(glossary: list[dict[str, str]]) -> Graph:
         g, [timeout, auth_failure, rate_limited, dependency_failure, config_error, network_error]
     )
 
+    # --- Schedule status individuals (v0.8.0) ---
+    sched_active = _add_individual("ScheduleActive", PAO.ScheduleStatus)
+    sched_paused = _add_individual("SchedulePaused", PAO.ScheduleStatus)
+    sched_expired = _add_individual("ScheduleExpired", PAO.ScheduleStatus)
+    sched_disabled = _add_individual("ScheduleDisabled", PAO.ScheduleStatus)
+    _add_all_different(g, [sched_active, sched_paused, sched_expired, sched_disabled])
+
+    # --- Execution outcome individuals (v0.8.0) ---
+    exec_succeeded = _add_individual("ExecutionSucceeded", PAO.ExecutionOutcome)
+    exec_failed = _add_individual("ExecutionFailed", PAO.ExecutionOutcome)
+    exec_skipped = _add_individual("ExecutionSkipped", PAO.ExecutionOutcome)
+    _add_all_different(g, [exec_succeeded, exec_failed, exec_skipped])
+
+    # --- Concurrency policy individuals (v0.8.0) ---
+    conc_allow = _add_individual("ConcurrencyAllow", PAO.ConcurrencyPolicy)
+    conc_forbid = _add_individual("ConcurrencyForbid", PAO.ConcurrencyPolicy)
+    conc_replace = _add_individual("ConcurrencyReplace", PAO.ConcurrencyPolicy)
+    _add_all_different(g, [conc_allow, conc_forbid, conc_replace])
+
     # --- Enumeration axioms (owl:oneOf) ---
     # These are on the classes, so they go in the TBox conceptually,
     # but individuals must exist first. We add the equivalentClass axioms here
@@ -2314,6 +2474,13 @@ def build_reference_individuals(glossary: list[dict[str, str]]) -> Graph:
         PAO.FailureType,
         [timeout, auth_failure, rate_limited, dependency_failure, config_error, network_error],
     )
+    _add_enumeration(
+        g,
+        PAO.ScheduleStatus,
+        [sched_active, sched_paused, sched_expired, sched_disabled],
+    )
+    _add_enumeration(g, PAO.ExecutionOutcome, [exec_succeeded, exec_failed, exec_skipped])
+    _add_enumeration(g, PAO.ConcurrencyPolicy, [conc_allow, conc_forbid, conc_replace])
 
     return g
 
@@ -2352,9 +2519,9 @@ def build_abox_data() -> Graph:
             ),
         )
     )
-    g.add((DATA_IRI, OWL.versionInfo, Literal("0.7.0")))
-    g.add((DATA_IRI, OWL.priorVersion, URIRef("https://purl.org/pao/data/0.6.0")))
-    g.add((DATA_IRI, DCTERMS.created, Literal("2026-02-20")))
+    g.add((DATA_IRI, OWL.versionInfo, Literal("0.8.0")))
+    g.add((DATA_IRI, OWL.priorVersion, URIRef("https://purl.org/pao/data/0.7.0")))
+    g.add((DATA_IRI, DCTERMS.created, Literal("2026-02-21")))
     g.add((DATA_IRI, DCTERMS.creator, Literal("ontology-architect skill")))
     g.add((DATA_IRI, DCTERMS.license, URIRef("https://spdx.org/licenses/MIT")))
 
@@ -2388,6 +2555,7 @@ def build_abox_data() -> Graph:
     _add_sample_model_identity(g)
     _add_sample_observability(g)
     _add_sample_bdi(g)
+    _add_sample_scheduling(g)
     _ensure_temporal_extents(g)
 
     return g
@@ -3619,6 +3787,170 @@ def _add_sample_bdi(g: Graph) -> None:
     g.add((justification, PAO.justifiesIntention, PAO.intention_001))
 
 
+def _add_sample_scheduling(g: Graph) -> None:
+    """Add sample scheduling individuals (CQ-114 through CQ-128)."""
+    # --- CronTrigger individual for CQ-124/125 ---
+    cron_trigger = PAO.cron_trigger_01
+    g.add((cron_trigger, RDF.type, PAO.CronTrigger))
+    g.add((cron_trigger, RDF.type, OWL.NamedIndividual))
+    g.add((cron_trigger, RDFS.label, Literal("Daily 08:00 cron trigger", lang="en")))
+
+    # --- RecurrencePattern individual for CQ-115 ---
+    pattern = PAO.recurrence_pattern_01
+    g.add((pattern, RDF.type, PAO.RecurrencePattern))
+    g.add((pattern, RDF.type, OWL.NamedIndividual))
+    g.add((pattern, RDFS.label, Literal("Daily at 08:00", lang="en")))
+    g.add((pattern, PAO.hasCronExpression, Literal("0 8 * * *")))
+
+    # --- Action individual (reuse existing or create a generic one) ---
+    sched_action = PAO.action_daily_summary
+    g.add((sched_action, RDF.type, PAO.Action))
+    g.add((sched_action, RDF.type, OWL.NamedIndividual))
+    g.add((sched_action, RDFS.label, Literal("Daily summary action", lang="en")))
+    g.add((sched_action, PAO.performedBy, PAO.claude_agent))
+
+    # --- Schedule individual for CQ-114/115/116/117/121/123/124/126/127 ---
+    schedule = PAO.schedule_daily_summary
+    g.add((schedule, RDF.type, PAO.Schedule))
+    g.add((schedule, RDF.type, OWL.NamedIndividual))
+    g.add((schedule, RDFS.label, Literal("Daily summary schedule", lang="en")))
+    g.add((schedule, PAO.hasRecurrencePattern, pattern))
+    g.add((schedule, PAO.schedulesAction, sched_action))
+    g.add((schedule, PAO.hasScheduleStatus, PAO.ScheduleActive))
+    g.add((schedule, PAO.activatedBy, cron_trigger))
+    g.add((schedule, PAO.ownedByAgent, PAO.claude_agent))
+    g.add((schedule, PAO.hasConcurrencyPolicy, PAO.ConcurrencyForbid))
+    g.add((schedule, PAO.allowsCatchUp, Literal(True, datatype=XSD.boolean)))
+    g.add((schedule, PAO.servesGoal, PAO.goal_001))
+
+    # --- ScheduledExecution individual for CQ-118/119/120/128 ---
+    execution = PAO.sched_exec_01
+    g.add((execution, RDF.type, PAO.ScheduledExecution))
+    g.add((execution, RDF.type, OWL.NamedIndividual))
+    g.add((execution, RDFS.label, Literal("Scheduled execution 01", lang="en")))
+    g.add((execution, PAO.executionOf, schedule))
+    g.add((execution, PAO.hasExecutionOutcome, PAO.ExecutionSucceeded))
+    g.add((execution, PAO.hasTimestamp, Literal("2026-02-21T08:00:00Z", datatype=XSD.dateTime)))
+    g.add((execution, PAO.initiatedSession, PAO.session_001))
+
+    # Temporal extent for execution (CQ-120)
+    exec_interval = PAO.sched_exec_01_interval
+    g.add((exec_interval, RDF.type, TIME.Interval))
+    g.add((execution, PAO.hasTemporalExtent, exec_interval))
+    exec_begin = PAO.sched_exec_01_begin
+    g.add((exec_begin, RDF.type, TIME.Instant))
+    g.add((exec_begin, TIME.inXSDDateTime, Literal("2026-02-21T08:00:00Z", datatype=XSD.dateTime)))
+    exec_end = PAO.sched_exec_01_end
+    g.add((exec_end, RDF.type, TIME.Instant))
+    g.add((exec_end, TIME.inXSDDateTime, Literal("2026-02-21T08:05:00Z", datatype=XSD.dateTime)))
+    g.add((exec_interval, TIME.hasBeginning, exec_begin))
+    g.add((exec_interval, TIME.hasEnd, exec_end))
+
+    # --- Second execution (skipped) for CQ-122 ---
+    execution2 = PAO.sched_exec_02
+    g.add((execution2, RDF.type, PAO.ScheduledExecution))
+    g.add((execution2, RDF.type, OWL.NamedIndividual))
+    g.add((execution2, RDFS.label, Literal("Scheduled execution 02 (skipped)", lang="en")))
+    g.add((execution2, PAO.executionOf, schedule))
+    g.add((execution2, PAO.hasExecutionOutcome, PAO.ExecutionSkipped))
+    g.add((execution2, PAO.hasTimestamp, Literal("2026-02-21T08:00:05Z", datatype=XSD.dateTime)))
+
+    # Temporal extent for skipped execution
+    exec2_interval = PAO.sched_exec_02_interval
+    g.add((exec2_interval, RDF.type, TIME.Interval))
+    g.add((execution2, PAO.hasTemporalExtent, exec2_interval))
+    exec2_begin = PAO.sched_exec_02_begin
+    g.add((exec2_begin, RDF.type, TIME.Instant))
+    g.add((exec2_begin, TIME.inXSDDateTime, Literal("2026-02-21T08:00:05Z", datatype=XSD.dateTime)))
+    exec2_end = PAO.sched_exec_02_end
+    g.add((exec2_end, RDF.type, TIME.Instant))
+    g.add((exec2_end, TIME.inXSDDateTime, Literal("2026-02-21T08:00:05Z", datatype=XSD.dateTime)))
+    g.add((exec2_interval, TIME.hasBeginning, exec2_begin))
+    g.add((exec2_interval, TIME.hasEnd, exec2_end))
+
+    # --- IntervalTrigger individual for CQ-124/125 variety ---
+    interval_trigger = PAO.interval_trigger_01
+    g.add((interval_trigger, RDF.type, PAO.IntervalTrigger))
+    g.add((interval_trigger, RDF.type, OWL.NamedIndividual))
+    g.add((interval_trigger, RDFS.label, Literal("30-minute interval trigger", lang="en")))
+
+    # --- RecurrencePattern with interval for the interval trigger ---
+    pattern2 = PAO.recurrence_pattern_02
+    g.add((pattern2, RDF.type, PAO.RecurrencePattern))
+    g.add((pattern2, RDF.type, OWL.NamedIndividual))
+    g.add((pattern2, RDFS.label, Literal("Every 30 minutes", lang="en")))
+    g.add((pattern2, PAO.hasIntervalSeconds, Literal(1800, datatype=XSD.nonNegativeInteger)))
+
+    # --- Interval-based schedule (linked end-to-end) ---
+    action_health = PAO.action_health_check
+    g.add((action_health, RDF.type, PAO.Action))
+    g.add((action_health, RDF.type, OWL.NamedIndividual))
+    g.add((action_health, RDFS.label, Literal("Health check action", lang="en")))
+    g.add((action_health, PAO.performedBy, PAO.claude_agent))
+
+    schedule2 = PAO.schedule_health_check
+    g.add((schedule2, RDF.type, PAO.Schedule))
+    g.add((schedule2, RDF.type, OWL.NamedIndividual))
+    g.add((schedule2, RDFS.label, Literal("Health check schedule", lang="en")))
+    g.add((schedule2, PAO.hasRecurrencePattern, pattern2))
+    g.add((schedule2, PAO.schedulesAction, action_health))
+    g.add((schedule2, PAO.hasScheduleStatus, PAO.ScheduleActive))
+    g.add((schedule2, PAO.activatedBy, interval_trigger))
+    g.add((schedule2, PAO.ownedByAgent, PAO.claude_agent))
+    g.add((schedule2, PAO.hasConcurrencyPolicy, PAO.ConcurrencyAllow))
+    g.add((schedule2, PAO.allowsCatchUp, Literal(False, datatype=XSD.boolean)))
+
+    sched_exec_03 = PAO.sched_exec_03
+    g.add((sched_exec_03, RDF.type, PAO.ScheduledExecution))
+    g.add((sched_exec_03, RDF.type, OWL.NamedIndividual))
+    g.add((sched_exec_03, RDFS.label, Literal("Health check execution 01", lang="en")))
+    g.add((sched_exec_03, PAO.executionOf, schedule2))
+    g.add((sched_exec_03, PAO.hasExecutionOutcome, PAO.ExecutionSucceeded))
+    g.add((sched_exec_03, PAO.hasTimestamp, Literal("2026-02-21T09:30:00Z", datatype=XSD.dateTime)))
+    exec3_interval = PAO.sched_exec_03_interval
+    g.add((exec3_interval, RDF.type, TIME.Interval))
+    g.add((sched_exec_03, PAO.hasTemporalExtent, exec3_interval))
+    exec3_begin = PAO.sched_exec_03_begin
+    g.add((exec3_begin, RDF.type, TIME.Instant))
+    g.add((exec3_begin, TIME.inXSDDateTime, Literal("2026-02-21T09:30:00Z", datatype=XSD.dateTime)))
+    exec3_end = PAO.sched_exec_03_end
+    g.add((exec3_end, RDF.type, TIME.Instant))
+    g.add((exec3_end, TIME.inXSDDateTime, Literal("2026-02-21T09:30:02Z", datatype=XSD.dateTime)))
+    g.add((exec3_interval, TIME.hasBeginning, exec3_begin))
+    g.add((exec3_interval, TIME.hasEnd, exec3_end))
+
+    # --- EventTrigger individual (end-to-end) ---
+    event_trigger = PAO.event_trigger_01
+    g.add((event_trigger, RDF.type, PAO.EventTrigger))
+    g.add((event_trigger, RDF.type, OWL.NamedIndividual))
+    g.add((event_trigger, RDFS.label, Literal("On-message event trigger", lang="en")))
+
+    pattern3 = PAO.recurrence_pattern_03
+    g.add((pattern3, RDF.type, PAO.RecurrencePattern))
+    g.add((pattern3, RDF.type, OWL.NamedIndividual))
+    g.add((pattern3, RDFS.label, Literal("On every incoming message", lang="en")))
+    # Event-driven patterns use interval=0 to indicate "on each event"
+    g.add((pattern3, PAO.hasIntervalSeconds, Literal(0, datatype=XSD.nonNegativeInteger)))
+
+    action_notify = PAO.action_notification
+    g.add((action_notify, RDF.type, PAO.Action))
+    g.add((action_notify, RDF.type, OWL.NamedIndividual))
+    g.add((action_notify, RDFS.label, Literal("Notification action", lang="en")))
+    g.add((action_notify, PAO.performedBy, PAO.claude_agent))
+
+    schedule3 = PAO.schedule_notification
+    g.add((schedule3, RDF.type, PAO.Schedule))
+    g.add((schedule3, RDF.type, OWL.NamedIndividual))
+    g.add((schedule3, RDFS.label, Literal("Notification schedule", lang="en")))
+    g.add((schedule3, PAO.hasRecurrencePattern, pattern3))
+    g.add((schedule3, PAO.schedulesAction, action_notify))
+    g.add((schedule3, PAO.hasScheduleStatus, PAO.SchedulePaused))
+    g.add((schedule3, PAO.activatedBy, event_trigger))
+    g.add((schedule3, PAO.ownedByAgent, PAO.claude_agent))
+    g.add((schedule3, PAO.hasConcurrencyPolicy, PAO.ConcurrencyReplace))
+    g.add((schedule3, PAO.allowsCatchUp, Literal(False, datatype=XSD.boolean)))
+
+
 def _ensure_temporal_extents(g: Graph) -> None:
     """Add hasTemporalExtent to all Event instances that lack one.
 
@@ -3658,6 +3990,7 @@ def _ensure_temporal_extents(g: Graph) -> None:
         PAO.ModelInvocation,  # v0.7.0
         PAO.ReliabilityIncident,  # v0.7.0
         PAO.Deliberation,  # v0.7.0
+        PAO.ScheduledExecution,  # v0.8.0
     }
 
     # Find all event instances missing hasTemporalExtent
@@ -4616,6 +4949,86 @@ def build_shacl_shapes() -> Graph:
             _property_shape(g, PAO.justifiesIntention, min_count=1, class_constraint=PAO.Intention),
         ],
     )
+
+    # --- ScheduleShape (v0.8.0) ---
+    _add_shape(
+        g,
+        PAO.ScheduleShape,
+        PAO.Schedule,
+        [
+            _property_shape(
+                g,
+                PAO.hasRecurrencePattern,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.RecurrencePattern,
+            ),
+            _property_shape(
+                g, PAO.schedulesAction, min_count=1, max_count=1, class_constraint=PAO.Action
+            ),
+            _property_shape(
+                g,
+                PAO.hasScheduleStatus,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.ScheduleStatus,
+            ),
+            _property_shape(
+                g, PAO.activatedBy, min_count=1, max_count=1, class_constraint=PAO.Trigger
+            ),
+            _property_shape(
+                g, PAO.ownedByAgent, min_count=1, max_count=1, class_constraint=PAO.Agent
+            ),
+            _property_shape(
+                g,
+                PAO.hasConcurrencyPolicy,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.ConcurrencyPolicy,
+            ),
+            _property_shape(g, PAO.allowsCatchUp, max_count=1, datatype=XSD.boolean),
+        ],
+    )
+
+    # --- ScheduledExecutionShape (v0.8.0) ---
+    _add_shape(
+        g,
+        PAO.ScheduledExecutionShape,
+        PAO.ScheduledExecution,
+        [
+            _property_shape(
+                g, PAO.executionOf, min_count=1, max_count=1, class_constraint=PAO.Schedule
+            ),
+            _property_shape(
+                g,
+                PAO.hasExecutionOutcome,
+                min_count=1,
+                max_count=1,
+                class_constraint=PAO.ExecutionOutcome,
+            ),
+            _property_shape(g, PAO.hasTemporalExtent, min_count=1, class_constraint=TIME.Interval),
+        ],
+    )
+
+    # --- RecurrencePatternShape (v0.8.0) ---
+    # sh:or — at least one of hasCronExpression or hasIntervalSeconds
+    cron_branch = BNode()
+    g.add((cron_branch, SH.path, PAO.hasCronExpression))
+    g.add((cron_branch, SH.minCount, Literal(1)))
+    interval_branch = BNode()
+    g.add((interval_branch, SH.path, PAO.hasIntervalSeconds))
+    g.add((interval_branch, SH.minCount, Literal(1)))
+    or_shape_a = BNode()
+    g.add((or_shape_a, SH.property, cron_branch))
+    or_shape_b = BNode()
+    g.add((or_shape_b, SH.property, interval_branch))
+    or_list = BNode()
+    Collection(g, or_list, [or_shape_a, or_shape_b])
+    recurrence_shape = PAO.RecurrencePatternShape
+    g.add((recurrence_shape, RDF.type, SH.NodeShape))
+    g.add((recurrence_shape, SH.targetClass, PAO.RecurrencePattern))
+    g.add((recurrence_shape, SH.property, _property_shape(g, RDFS.label, min_count=1)))
+    g.add((recurrence_shape, SH["or"], or_list))
 
     return g
 

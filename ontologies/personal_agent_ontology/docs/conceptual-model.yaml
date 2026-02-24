@@ -7,7 +7,7 @@ ontology:
   name: Personal Agent Ontology
   prefix: pao
   namespace: "https://purl.org/pao/"
-  version: "0.7.0"
+  version: "0.8.0"
   owl_profile: OWL 2 DL
   upper_ontology: BFO 2020 (ISO 21838-2)
 
@@ -261,6 +261,25 @@ modules:
       - MetricObservation
       - ReliabilityIncident
 
+  - id: pao-scheduling
+    name: "Scheduling & Automation"
+    layer: problem_specific
+    description: >
+      Schedule definitions, recurrence patterns, triggers, execution tracking,
+      concurrency policies, and catch-up semantics for automated agent tasks.
+    depends_on:
+      - pao-core
+      - pao-event
+      - pao-planning
+    classes:
+      - Schedule
+      - RecurrencePattern
+      - Trigger
+      - CronTrigger
+      - IntervalTrigger
+      - EventTrigger
+      - ScheduledExecution
+
 # ═══════════════════════════════════════════════════════════════════════
 # ARCHITECTURE LAYERS
 # ═══════════════════════════════════════════════════════════════════════
@@ -288,7 +307,7 @@ architecture_layers:
   - layer: problem_specific
     description: "PAO modules tailored to agent architecture CQs"
     ontologies:
-      - {prefix: pao, modules: [pao-core, pao-event, pao-conversation, pao-memory, pao-planning, pao-governance, pao-model, pao-observability]}
+      - {prefix: pao, modules: [pao-core, pao-event, pao-conversation, pao-memory, pao-planning, pao-governance, pao-model, pao-observability, pao-scheduling]}
 
 # ═══════════════════════════════════════════════════════════════════════
 # TAXONOMY (asserted class hierarchy)
@@ -419,6 +438,11 @@ taxonomy:
         bfo: "Process (BFO:0000015)"
         module: pao-observability
         note: "A failure or degradation event for a service or component"
+      - class: ScheduledExecution
+        parent: Event
+        bfo: "Process (BFO:0000015)"
+        module: pao-scheduling
+        note: "An individual execution instance of a schedule with outcome tracking"
       - class: StatusTransition
         parent: Event
         bfo: "Process (BFO:0000015)"
@@ -460,7 +484,7 @@ taxonomy:
             module: pao-memory
 
   # Disjointness (events):
-  # - [Action, Conversation, Session, Turn, CompactionEvent, ErasureEvent, MemoryOperation, Observation, StatusTransition, MemoryWriteConflict, GroundingAct, Deliberation, ModelInvocation, ReliabilityIncident] pairwise disjoint under Event
+  # - [Action, Conversation, Session, Turn, CompactionEvent, ErasureEvent, MemoryOperation, Observation, StatusTransition, MemoryWriteConflict, GroundingAct, Deliberation, ModelInvocation, ReliabilityIncident, ScheduledExecution, CapabilityDiscoveryEvent, HookExecution, ErrorRecoveryEvent, RetryAttempt, ReplanEvent, RollbackEvent, ServiceFailureEvent] pairwise disjoint under Event
   # - [Encoding, Retrieval, Consolidation, Forgetting, Rehearsal] DisjointUnion under MemoryOperation
   # - [SessionStatusTransition, TaskStatusTransition] pairwise disjoint under StatusTransition
 
@@ -546,6 +570,41 @@ taxonomy:
     bfo: "GDC (BFO:0000031)"
     module: pao-planning
     note: "Evidence supporting an agent's intention"
+
+  # --- v0.8.0: Scheduling & Automation (pao-scheduling) ---
+
+  - class: Schedule
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-scheduling
+    note: "Named schedule definition binding recurrence pattern to action specification"
+
+  - class: RecurrencePattern
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-scheduling
+    note: "Temporal specification for when a schedule fires (cron, interval, calendar)"
+
+  - class: Trigger
+    parent: "prov:Entity"
+    bfo: "GDC (BFO:0000031)"
+    module: pao-scheduling
+    note: "Abstract parent for activation conditions"
+    children:
+      - class: CronTrigger
+        parent: Trigger
+        bfo: "GDC (BFO:0000031)"
+        module: pao-scheduling
+      - class: IntervalTrigger
+        parent: Trigger
+        bfo: "GDC (BFO:0000031)"
+        module: pao-scheduling
+      - class: EventTrigger
+        parent: Trigger
+        bfo: "GDC (BFO:0000031)"
+        module: pao-scheduling
+
+  # Disjointness (triggers): [CronTrigger, IntervalTrigger, EventTrigger] DisjointUnion under Trigger
 
   - class: PermissionPolicy
     parent: "odrl:Policy"
@@ -960,6 +1019,25 @@ taxonomy:
         individuals: [TransientError, PermanentError, TimeoutError, AuthenticationError, ResourceExhausted, ValidationError]
         enumeration: true
         note: "Classifies error categories for recovery workflows"
+      # v0.8.0 additions
+      - class: ScheduleStatus
+        parent: Status
+        bfo: "VP"
+        module: pao-scheduling
+        individuals: [Active, Paused, Expired, Disabled]
+        enumeration: true
+      - class: ExecutionOutcome
+        parent: Status
+        bfo: "VP"
+        module: pao-scheduling
+        individuals: [Succeeded, Failed, Skipped]
+        enumeration: true
+      - class: ConcurrencyPolicy
+        parent: Status
+        bfo: "VP"
+        module: pao-scheduling
+        individuals: [Allow, Forbid, Replace]
+        enumeration: true
 
   # Disjointness (status): [SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate, ChannelType, IntegrationStatus, ConnectionStatus, PermissionMode, AuthorizationDecision, CheckpointDecision, ContentBlockType, MemorySource, MemoryScope, CommunicativeFunction, FailureType] pairwise disjoint under Status (not exhaustive)
 

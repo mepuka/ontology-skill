@@ -2763,6 +2763,222 @@ properties:
     definition: "The numeric value of a metric observation."
     constraint_note: "Functional: each observation has at most one value."
 
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.8.0: Scheduling & Automation object properties (pao-scheduling)
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: hasRecurrencePattern
+    type: ObjectProperty
+    domain: Schedule
+    range: RecurrencePattern
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-scheduling
+    source_cq: CQ-115
+    definition: "Links a schedule to its recurrence pattern. Functional: one pattern per schedule."
+    constraint_note: "Functional: one pattern per schedule."
+
+  - name: schedulesAction
+    type: ObjectProperty
+    domain: Schedule
+    range: "prov:Entity"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-scheduling
+    source_cq: CQ-116
+    definition: "Links a schedule to the action specification it will execute. Range is prov:Entity to allow Plan, Goal, or any action spec."
+    constraint_note: "Functional: one action spec per schedule."
+
+  - name: hasScheduleStatus
+    type: ObjectProperty
+    domain: Schedule
+    range: ScheduleStatus
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: hasStatus
+    bfo_ro_relation: null
+    module: pao-scheduling
+    source_cq: CQ-117
+    definition: "Links a schedule to its current lifecycle status. Functional: one status at a time."
+    constraint_note: "Functional: one status at a time."
+
+  - name: executionOf
+    type: ObjectProperty
+    domain: ScheduledExecution
+    range: Schedule
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-scheduling
+    source_cq: CQ-118
+    definition: "Links an execution instance to its originating schedule. Functional: each execution belongs to one schedule."
+    constraint_note: "Functional: each execution belongs to one schedule."
+
+  - name: hasExecutionOutcome
+    type: ObjectProperty
+    domain: ScheduledExecution
+    range: ExecutionOutcome
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-scheduling
+    source_cq: CQ-119
+    definition: "Links an execution to its outcome (Succeeded, Failed, Skipped). Functional: one outcome per execution."
+    constraint_note: "Functional: one outcome per execution."
+
+  - name: hasConcurrencyPolicy
+    type: ObjectProperty
+    domain: Schedule
+    range: ConcurrencyPolicy
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-scheduling
+    source_cq: CQ-121
+    definition: "Links a schedule to its concurrency/overlap policy. Functional: one policy per schedule."
+    constraint_note: "Functional: one policy per schedule."
+
+  - name: activatedBy
+    type: ObjectProperty
+    domain: Schedule
+    range: Trigger
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-scheduling
+    source_cq: CQ-124
+    definition: "Links a schedule to the trigger(s) that activate it. Not functional: a schedule may have multiple triggers."
+    constraint_note: ""
+
+  - name: servesGoal
+    type: ObjectProperty
+    domain: Schedule
+    range: Goal
+    cardinality:
+      min: 0
+      max: "*"
+    characteristics: []
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-scheduling
+    source_cq: CQ-126
+    definition: "Links a schedule to the goal it serves. Not functional: a schedule could serve multiple goals."
+    constraint_note: ""
+
+  - name: ownedByAgent
+    type: ObjectProperty
+    domain: Schedule
+    range: AIAgent
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-scheduling
+    source_cq: CQ-127
+    definition: "Links a schedule to its owning agent. Functional: one agent owns each schedule."
+    constraint_note: "Functional: one agent owns each schedule."
+
+  - name: initiatedSession
+    type: ObjectProperty
+    domain: ScheduledExecution
+    range: Session
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-scheduling
+    source_cq: CQ-128
+    definition: "Links a scheduled execution to the session it initiated. Functional: one session per execution."
+    constraint_note: "Functional: one session per execution."
+
+  # ─────────────────────────────────────────────────────────────────────
+  # v0.8.0: Scheduling & Automation data properties (pao-scheduling)
+  # ─────────────────────────────────────────────────────────────────────
+
+  - name: hasCronExpression
+    type: DataProperty
+    domain: RecurrencePattern
+    range: "xsd:string"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-scheduling
+    source_cq: CQ-115
+    definition: "Stores the cron expression string (e.g., '0 8 * * *'). Functional: one expression per pattern."
+    constraint_note: "Functional: one expression per pattern."
+
+  - name: hasIntervalSeconds
+    type: DataProperty
+    domain: RecurrencePattern
+    range: "xsd:nonNegativeInteger"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-scheduling
+    source_cq: CQ-115
+    definition: "Stores the interval duration in seconds for interval-based recurrence. Functional: one interval per pattern."
+    constraint_note: "Functional: one interval per pattern."
+
+  - name: allowsCatchUp
+    type: DataProperty
+    domain: Schedule
+    range: "xsd:boolean"
+    cardinality:
+      min: 0
+      max: 1
+    characteristics: [functional]
+    inverse: null
+    sub_property_of: null
+    bfo_ro_relation: null
+    module: pao-scheduling
+    source_cq: CQ-123
+    definition: "Whether the schedule should catch up missed executions after downtime. Functional: one boolean per schedule."
+    constraint_note: "Functional: one boolean per schedule."
+
 # ═══════════════════════════════════════════════════════════════════════
 # PROPERTY HIERARCHY SUMMARY
 # ═══════════════════════════════════════════════════════════════════════
@@ -2782,7 +2998,8 @@ properties:
 # hasStatus
 #   ├── hasComplianceStatus  (ToolInvocation -> ComplianceStatus)
 #   ├── hasIntegrationStatus (Integration -> IntegrationStatus)
-#   └── hasConnectionStatus  (ServiceConnection -> ConnectionStatus)
+#   ├── hasConnectionStatus  (ServiceConnection -> ConnectionStatus)
+#   └── hasScheduleStatus    (Schedule -> ScheduleStatus)
 #
 # belongsTo <-> hasMember (inverse pair)
 #
@@ -2849,15 +3066,25 @@ properties:
 # Integration:
 #   - sh:class IntegrationStatus on hasIntegrationStatus (max 1)
 #   - sh:minCount 1 on providesTool
+#
+# Schedule:
+#   - sh:class RecurrencePattern on hasRecurrencePattern (exactly 1)
+#   - sh:class ScheduleStatus on hasScheduleStatus (exactly 1)
+#   - sh:class AIAgent on ownedByAgent (exactly 1)
+#   - sh:minCount 1 on schedulesAction
+#
+# ScheduledExecution:
+#   - sh:class Schedule on executionOf (exactly 1)
+#   - sh:class ExecutionOutcome on hasExecutionOutcome (max 1)
 
 # ═══════════════════════════════════════════════════════════════════════
 # PROPERTY COUNT SUMMARY
 # ═══════════════════════════════════════════════════════════════════════
 
 summary:
-  total_properties: 160   # 128 object + 32 data
-  object_properties: 128  # was 110, +18 v0.7.0 (7 pao-model, 4 pao-observability, 1 pao-recovery, 6 pao-planning)
-  data_properties: 32     # was 23, +9 v0.7.0 (7 pao-model, 2 pao-observability)
+  total_properties: 173   # 138 object + 35 data
+  object_properties: 138  # was 128, +10 v0.8.0 (hasRecurrencePattern, schedulesAction, hasScheduleStatus, executionOf, hasExecutionOutcome, hasConcurrencyPolicy, activatedBy, servesGoal, ownedByAgent, initiatedSession)
+  data_properties: 35     # was 32, +3 v0.8.0 (hasCronExpression, hasIntervalSeconds, allowsCatchUp)
   by_module:
     pao-core: 18
     pao-event: 9
@@ -2869,6 +3096,7 @@ summary:
     pao-recovery: 9       # was 8, +1 v0.7.0 (hasFailureType)
     pao-model: 14         # new in v0.7.0 (7 OP + 7 DP; 7 OP: hasProvider, usesModel, deployedAs, invokedOnDeployment, hasGenerationConfig, modelInvocationForTurn, producedByModelInvocation; 7 DP: hasModelId, hasModelVersion, hasTemperature, hasTopP, hasMaxOutputTokens, hasPromptVersion, hasSeed)
     pao-observability: 6  # new in v0.7.0 (4 OP + 2 DP; 4 OP: observesMetric, observedOnEntity, incidentForEntity, linkedToRecovery; 2 DP: hasMetricName, hasMetricValue)
+    pao-scheduling: 13    # new in v0.8.0 (10 OP + 3 DP; 10 OP: hasRecurrencePattern, schedulesAction, hasScheduleStatus, executionOf, hasExecutionOutcome, hasConcurrencyPolicy, activatedBy, servesGoal, ownedByAgent, initiatedSession; 3 DP: hasCronExpression, hasIntervalSeconds, allowsCatchUp)
   imported_property_sets: 2  # PROV-O (14 properties), OWL-Time (5 properties)
   sub_property_chains:
     - "partOfConversation, partOfSession, partOfPlan -> partOf"

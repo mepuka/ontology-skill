@@ -1063,3 +1063,140 @@ cq_tests:
     type: SELECT
     expected: non_empty
     requires_abox: true
+
+  # --- v0.8.0 Additions: Scheduling & Automation ---
+
+  - id: cq-114
+    file: cq-114.sparql
+    cq: CQ-114
+    module: scheduling
+    question: "What schedules are defined in the system?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-115
+    file: cq-115.sparql
+    cq: CQ-115
+    module: scheduling
+    question: "What recurrence pattern does a given schedule use?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-116
+    file: cq-116.sparql
+    cq: CQ-116
+    module: scheduling
+    question: "What action does a schedule specify?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-117
+    file: cq-117.sparql
+    cq: CQ-117
+    module: scheduling
+    question: "What is the lifecycle status of a given schedule?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-118
+    file: cq-118.sparql
+    cq: CQ-118
+    module: scheduling
+    question: "What executions have occurred for a given schedule?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-119
+    file: cq-119.sparql
+    cq: CQ-119
+    module: scheduling
+    question: "What was the outcome of a scheduled execution?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-120
+    file: cq-120.sparql
+    cq: CQ-120
+    module: scheduling
+    question: "When did a scheduled execution start and end?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-121
+    file: cq-121.sparql
+    cq: CQ-121
+    module: scheduling
+    question: "What concurrency policy does a schedule have?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-122
+    file: cq-122.sparql
+    cq: CQ-122
+    module: scheduling
+    question: "Were any scheduled executions skipped due to concurrency?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-123
+    file: cq-123.sparql
+    cq: CQ-123
+    module: scheduling
+    question: "Does a schedule allow catch-up of missed executions?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-124
+    file: cq-124.sparql
+    cq: CQ-124
+    module: scheduling
+    question: "What trigger type activates a given schedule?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-125
+    file: cq-125.sparql
+    cq: CQ-125
+    module: scheduling
+    question: "What schedules are activated by a specific trigger type?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-126
+    file: cq-126.sparql
+    cq: CQ-126
+    module: scheduling
+    question: "Which goal does a schedule serve?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-127
+    file: cq-127.sparql
+    cq: CQ-127
+    module: scheduling
+    question: "Which agent owns a given schedule?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-128
+    file: cq-128.sparql
+    cq: CQ-128
+    module: scheduling
+    question: "Which session was initiated by a scheduled execution?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true

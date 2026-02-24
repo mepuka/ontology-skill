@@ -1,6 +1,7 @@
 @prefix odrl: <http://www.w3.org/ns/odrl/2/> .
 @prefix pao: <https://purl.org/pao/> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
@@ -8,16 +9,10 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 pao:AIAgentShape a sh:NodeShape ;
-    sh:property [ sh:class pao:Integration ;
-            sh:minCount 1 ;
-            sh:path pao:hasIntegration ],
-        [ sh:class pao:Persona ;
+    sh:property [ sh:class pao:Persona ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path pao:hasPersona ],
-        [ sh:class pao:FoundationModel ;
-            sh:minCount 1 ;
-            sh:path pao:usesModel ],
         [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
@@ -25,16 +20,22 @@ pao:AIAgentShape a sh:NodeShape ;
         [ sh:class pao:Hook ;
             sh:minCount 1 ;
             sh:path pao:hasHook ],
-        [ sh:class pao:ExternalService ;
+        [ sh:class pao:FoundationModel ;
             sh:minCount 1 ;
-            sh:path pao:hasExternalService ],
+            sh:path pao:usesModel ],
+        [ sh:class pao:ToolDefinition ;
+            sh:minCount 1 ;
+            sh:path pao:hasAvailableTool ],
         [ sh:class pao:PermissionMode ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path pao:operatesInMode ],
-        [ sh:class pao:ToolDefinition ;
+        [ sh:class pao:Integration ;
             sh:minCount 1 ;
-            sh:path pao:hasAvailableTool ] ;
+            sh:path pao:hasIntegration ],
+        [ sh:class pao:ExternalService ;
+            sh:minCount 1 ;
+            sh:path pao:hasExternalService ] ;
     sh:targetClass pao:AIAgent .
 
 pao:ActionShape a sh:NodeShape ;
@@ -49,13 +50,13 @@ pao:AuditEntryShape a sh:NodeShape ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path pao:recordsDecision ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:path pao:hasDecisionReason ],
         [ sh:class pao:AuditLog ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path pao:writtenToAuditLog ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:path pao:hasDecisionReason ],
         [ sh:class pao:ToolInvocation ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
@@ -78,18 +79,26 @@ pao:CapabilityDiscoveryEventShape a sh:NodeShape ;
     sh:targetClass pao:CapabilityDiscoveryEvent .
 
 pao:CheckpointShape a sh:NodeShape ;
-    sh:property [ sh:class pao:Task ;
+    sh:property [ sh:class pao:CheckpointDecision ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path pao:checkpointForTask ],
-        [ sh:class pao:CheckpointDecision ;
+            sh:path pao:checkpointDecision ],
+        [ sh:class pao:Task ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path pao:checkpointDecision ] ;
+            sh:path pao:checkpointForTask ] ;
     sh:targetClass pao:Checkpoint .
 
 pao:ClaimShape a sh:NodeShape ;
-    sh:property [ sh:class pao:MemoryTier ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:hasContent ],
+        [ sh:class pao:ClaimType ;
+            sh:maxCount 1 ;
+            sh:minCount 0 ;
+            sh:path pao:claimType ],
+        [ sh:class pao:MemoryTier ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path pao:storedIn ],
@@ -99,14 +108,6 @@ pao:ClaimShape a sh:NodeShape ;
             sh:minCount 0 ;
             sh:minInclusive 0.0 ;
             sh:path pao:hasConfidence ],
-        [ sh:class pao:ClaimType ;
-            sh:maxCount 1 ;
-            sh:minCount 0 ;
-            sh:path pao:claimType ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path pao:hasContent ],
         [ sh:class pao:Agent ;
             sh:minCount 1 ;
             sh:path pao:aboutAgent ] ;
@@ -137,18 +138,18 @@ pao:CompactionDispositionShape a sh:NodeShape ;
     sh:targetClass pao:CompactionDisposition .
 
 pao:CompactionEventShape a sh:NodeShape ;
-    sh:property [ sh:class pao:MemoryItem ;
+    sh:property [ sh:minCount 1 ;
+            sh:path pao:compactedItem ],
+        [ sh:class pao:ContextWindow ;
+            sh:maxCount 1 ;
+            sh:path pao:compactedContextOf ],
+        [ sh:class pao:MemoryItem ;
             sh:minCount 1 ;
             sh:path pao:producedSummary ],
         [ sh:class pao:Conversation ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path pao:inConversation ],
-        [ sh:minCount 1 ;
-            sh:path pao:compactedItem ],
-        [ sh:class pao:ContextWindow ;
-            sh:maxCount 1 ;
-            sh:path pao:compactedContextOf ] ;
+            sh:path pao:inConversation ] ;
     sh:targetClass pao:CompactionEvent .
 
 pao:ConsentRecordShape a sh:NodeShape ;
@@ -159,13 +160,13 @@ pao:ConsentRecordShape a sh:NodeShape ;
     sh:targetClass pao:ConsentRecord .
 
 pao:ContentBlockShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:nonNegativeInteger ;
-            sh:maxCount 1 ;
-            sh:path pao:blockSequenceIndex ],
-        [ sh:class pao:ContentBlockType ;
+    sh:property [ sh:class pao:ContentBlockType ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path pao:hasContentBlockType ] ;
+            sh:path pao:hasContentBlockType ],
+        [ sh:datatype xsd:nonNegativeInteger ;
+            sh:maxCount 1 ;
+            sh:path pao:blockSequenceIndex ] ;
     sh:targetClass pao:ContentBlock .
 
 pao:ContextWindowShape a sh:NodeShape ;
@@ -187,25 +188,25 @@ SELECT $this WHERE {
     sh:targetClass pao:ContextWindow .
 
 pao:ConversationShape a sh:NodeShape ;
-    sh:property [ sh:class pao:Agent ;
-            sh:minCount 1 ;
-            sh:path pao:hasParticipant ],
-        [ sh:datatype xsd:string ;
+    sh:property [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path pao:hasConversationId ] ;
+            sh:path pao:hasConversationId ],
+        [ sh:class pao:Agent ;
+            sh:minCount 1 ;
+            sh:path pao:hasParticipant ] ;
     sh:targetClass pao:Conversation .
 
 pao:DeliberationShape a sh:NodeShape ;
     sh:property [ sh:class pao:Belief ;
             sh:minCount 1 ;
             sh:path pao:considersBelief ],
-        [ sh:class pao:Desire ;
-            sh:minCount 1 ;
-            sh:path pao:considersDesire ],
         [ sh:class pao:Intention ;
             sh:minCount 1 ;
-            sh:path pao:producesIntention ] ;
+            sh:path pao:producesIntention ],
+        [ sh:class pao:Desire ;
+            sh:minCount 1 ;
+            sh:path pao:considersDesire ] ;
     sh:targetClass pao:Deliberation .
 
 pao:DesireShape a sh:NodeShape ;
@@ -221,16 +222,16 @@ pao:DialogActShape a sh:NodeShape ;
     sh:targetClass pao:DialogAct .
 
 pao:EpisodeShape a sh:NodeShape ;
-    sh:property [ sh:class time:Interval ;
+    sh:property [ sh:class pao:MemoryTier ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:storedIn ],
+        [ sh:class time:Interval ;
             sh:minCount 1 ;
             sh:path pao:hasTemporalExtent ],
         [ sh:class skos:Concept ;
             sh:minCount 1 ;
-            sh:path pao:hasTopic ],
-        [ sh:class pao:MemoryTier ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path pao:storedIn ] ;
+            sh:path pao:hasTopic ] ;
     sh:targetClass pao:Episode .
 
 pao:ErasureEventShape a sh:NodeShape ;
@@ -264,13 +265,13 @@ pao:EventShape a sh:NodeShape ;
     sh:targetClass pao:Event .
 
 pao:ExternalServiceShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:string ;
+    sh:property [ sh:class pao:ServiceCapability ;
+            sh:minCount 1 ;
+            sh:path pao:exposesCapability ],
+        [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path pao:hasServiceTransport ],
-        [ sh:class pao:ServiceCapability ;
-            sh:minCount 1 ;
-            sh:path pao:exposesCapability ],
         [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
@@ -278,20 +279,20 @@ pao:ExternalServiceShape a sh:NodeShape ;
     sh:targetClass pao:ExternalService .
 
 pao:FoundationModelShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:path pao:hasModelVersion ],
-        [ sh:class pao:ModelDeployment ;
+    sh:property [ sh:class pao:ModelDeployment ;
             sh:minCount 1 ;
             sh:path pao:deployedAs ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path pao:hasModelId ],
         [ sh:class pao:ModelProvider ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path pao:hasProvider ] ;
+            sh:path pao:hasProvider ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:path pao:hasModelVersion ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:hasModelId ] ;
     sh:targetClass pao:FoundationModel .
 
 pao:GenerationConfigurationShape a sh:NodeShape ;
@@ -331,29 +332,29 @@ pao:HookExecutionShape a sh:NodeShape ;
     sh:targetClass pao:HookExecution .
 
 pao:IntegrationShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:anyURI ;
+    sh:property [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
-            sh:path pao:hasEndpoint ],
-        [ sh:class pao:ToolDefinition ;
             sh:minCount 1 ;
-            sh:path pao:providesTool ],
+            sh:path pao:hasServiceName ],
         [ sh:class pao:IntegrationStatus ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path pao:hasIntegrationStatus ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
+        [ sh:class pao:ToolDefinition ;
             sh:minCount 1 ;
-            sh:path pao:hasServiceName ] ;
+            sh:path pao:providesTool ],
+        [ sh:datatype xsd:anyURI ;
+            sh:maxCount 1 ;
+            sh:path pao:hasEndpoint ] ;
     sh:targetClass pao:Integration .
 
 pao:IntentionShape a sh:NodeShape ;
-    sh:property [ sh:class pao:Goal ;
+    sh:property [ sh:class pao:Agent ;
             sh:minCount 1 ;
-            sh:path pao:derivedFromGoal ],
-        [ sh:class pao:Agent ;
+            sh:path pao:intendedBy ],
+        [ sh:class pao:Goal ;
             sh:minCount 1 ;
-            sh:path pao:intendedBy ] ;
+            sh:path pao:derivedFromGoal ] ;
     sh:targetClass pao:Intention .
 
 pao:JustificationShape a sh:NodeShape ;
@@ -372,25 +373,25 @@ pao:MemoryBlockShape a sh:NodeShape ;
     sh:targetClass pao:MemoryBlock .
 
 pao:MemoryItemShape a sh:NodeShape ;
-    sh:property [ sh:class pao:SensitivityLevel ;
+    sh:property [ sh:datatype xsd:dateTime ;
+            sh:maxCount 1 ;
+            sh:path pao:hasLastAccessTime ],
+        [ sh:class pao:SensitivityLevel ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path pao:hasSensitivityLevel ],
+        [ sh:class pao:MemoryTier ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:storedIn ],
+        [ sh:minCount 1 ;
+            sh:path prov:wasGeneratedBy ],
         [ sh:class pao:Agent ;
             sh:minCount 1 ;
             sh:path prov:wasAttributedTo ],
         [ sh:class pao:RetentionPolicy ;
             sh:minCount 1 ;
-            sh:path pao:governedByRetention ],
-        [ sh:class pao:MemoryTier ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path pao:storedIn ],
-        [ sh:datatype xsd:dateTime ;
-            sh:maxCount 1 ;
-            sh:path pao:hasLastAccessTime ],
-        [ sh:minCount 1 ;
-            sh:path prov:wasGeneratedBy ] ;
+            sh:path pao:governedByRetention ] ;
     sh:targetClass pao:MemoryItem .
 
 pao:MemoryOperationShape a sh:NodeShape ;
@@ -400,45 +401,45 @@ pao:MemoryOperationShape a sh:NodeShape ;
     sh:targetClass pao:MemoryOperation .
 
 pao:MemoryWriteConflictShape a sh:NodeShape ;
-    sh:property [ sh:class pao:Agent ;
-            sh:minCount 2 ;
-            sh:path pao:writesByAgent ],
-        [ sh:class pao:SharedMemoryArtifact ;
+    sh:property [ sh:class pao:SharedMemoryArtifact ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path pao:conflictOnArtifact ] ;
+            sh:path pao:conflictOnArtifact ],
+        [ sh:class pao:Agent ;
+            sh:minCount 2 ;
+            sh:path pao:writesByAgent ] ;
     sh:targetClass pao:MemoryWriteConflict .
 
 pao:MessageShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:string ;
+    sh:property [ sh:class pao:CommunicationChannel ;
+            sh:maxCount 1 ;
+            sh:path pao:sentViaChannel ],
+        [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path pao:hasContent ],
-        [ sh:class pao:CommunicationChannel ;
-            sh:maxCount 1 ;
-            sh:path pao:sentViaChannel ] ;
+            sh:path pao:hasContent ] ;
     sh:targetClass pao:Message .
 
 pao:MetricObservationShape a sh:NodeShape ;
-    sh:property [ sh:class pao:OperationalMetric ;
+    sh:property [ sh:datatype xsd:decimal ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path pao:observesMetric ],
-        [ sh:datatype xsd:decimal ;
+            sh:path pao:hasMetricValue ],
+        [ sh:class pao:OperationalMetric ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path pao:hasMetricValue ] ;
+            sh:path pao:observesMetric ] ;
     sh:targetClass pao:MetricObservation .
 
 pao:ModelInvocationShape a sh:NodeShape ;
-    sh:property [ sh:class pao:ModelDeployment ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path pao:invokedOnDeployment ],
-        [ sh:class pao:GenerationConfiguration ;
+    sh:property [ sh:class pao:GenerationConfiguration ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path pao:hasGenerationConfig ],
+        [ sh:class pao:ModelDeployment ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:invokedOnDeployment ],
         [ sh:class pao:Turn ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
@@ -474,12 +475,12 @@ pao:PermissionPolicyShape a sh:NodeShape ;
     sh:property [ sh:class odrl:Permission ;
             sh:minCount 1 ;
             sh:path pao:grantsPermission ],
-        [ sh:class pao:ToolDefinition ;
-            sh:minCount 1 ;
-            sh:path pao:restrictsToolUse ],
         [ sh:class pao:Agent ;
             sh:minCount 1 ;
-            sh:path pao:appliesTo ] ;
+            sh:path pao:appliesTo ],
+        [ sh:class pao:ToolDefinition ;
+            sh:minCount 1 ;
+            sh:path pao:restrictsToolUse ] ;
     sh:targetClass pao:PermissionPolicy .
 
 pao:PersonaShape a sh:NodeShape ;
@@ -494,6 +495,14 @@ pao:PlanShape a sh:NodeShape ;
             sh:minCount 1 ;
             sh:path pao:achievesGoal ] ;
     sh:targetClass pao:Plan .
+
+pao:RecurrencePatternShape a sh:NodeShape ;
+    sh:or ( [ sh:property [ sh:minCount 1 ;
+                        sh:path pao:hasCronExpression ] ] [ sh:property [ sh:minCount 1 ;
+                        sh:path pao:hasIntervalSeconds ] ] ) ;
+    sh:property [ sh:minCount 1 ;
+            sh:path rdfs:label ] ;
+    sh:targetClass pao:RecurrencePattern .
 
 pao:ReliabilityIncidentShape a sh:NodeShape ;
     sh:property [ sh:minCount 1 ;
@@ -513,42 +522,86 @@ pao:SafetyConstraintShape a sh:NodeShape ;
             sh:path pao:appliesTo ] ;
     sh:targetClass pao:SafetyConstraint .
 
+pao:ScheduleShape a sh:NodeShape ;
+    sh:property [ sh:class pao:Trigger ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:activatedBy ],
+        [ sh:class pao:ConcurrencyPolicy ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:hasConcurrencyPolicy ],
+        [ sh:class pao:Agent ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:ownedByAgent ],
+        [ sh:class pao:ScheduleStatus ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:hasScheduleStatus ],
+        [ sh:class pao:RecurrencePattern ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:hasRecurrencePattern ],
+        [ sh:datatype xsd:boolean ;
+            sh:maxCount 1 ;
+            sh:path pao:allowsCatchUp ],
+        [ sh:class pao:Action ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:schedulesAction ] ;
+    sh:targetClass pao:Schedule .
+
+pao:ScheduledExecutionShape a sh:NodeShape ;
+    sh:property [ sh:class pao:Schedule ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:executionOf ],
+        [ sh:class pao:ExecutionOutcome ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:hasExecutionOutcome ],
+        [ sh:class time:Interval ;
+            sh:minCount 1 ;
+            sh:path pao:hasTemporalExtent ] ;
+    sh:targetClass pao:ScheduledExecution .
+
 pao:ServiceConnectionShape a sh:NodeShape ;
-    sh:property [ sh:class pao:ConnectionStatus ;
+    sh:property [ sh:class pao:ExternalService ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path pao:hasConnectionStatus ],
-        [ sh:class pao:ExternalService ;
+            sh:path pao:connectsToService ],
+        [ sh:class pao:ConnectionStatus ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path pao:connectsToService ] ;
+            sh:path pao:hasConnectionStatus ] ;
     sh:targetClass pao:ServiceConnection .
 
 pao:SessionShape a sh:NodeShape ;
-    sh:property [ sh:class pao:ContextWindow ;
-            sh:maxCount 1 ;
-            sh:path pao:hasContextWindow ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path pao:hasSessionId ],
-        [ sh:class pao:Agent ;
-            sh:minCount 1 ;
-            sh:path pao:hasParticipant ],
-        [ sh:class pao:Conversation ;
+    sh:property [ sh:class pao:Conversation ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path pao:partOfConversation ],
-        [ sh:class pao:CommunicationChannel ;
-            sh:maxCount 1 ;
-            sh:path pao:viaChannel ],
+        [ sh:class pao:Agent ;
+            sh:minCount 1 ;
+            sh:path pao:hasParticipant ],
         [ sh:class pao:SessionStatus ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path pao:hasStatus ],
         [ sh:class time:Interval ;
             sh:minCount 1 ;
-            sh:path pao:hasTemporalExtent ] ;
+            sh:path pao:hasTemporalExtent ],
+        [ sh:class pao:ContextWindow ;
+            sh:maxCount 1 ;
+            sh:path pao:hasContextWindow ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:hasSessionId ],
+        [ sh:class pao:CommunicationChannel ;
+            sh:maxCount 1 ;
+            sh:path pao:viaChannel ] ;
     sh:targetClass pao:Session .
 
 pao:SharedMemoryArtifactShape a sh:NodeShape ;
@@ -572,13 +625,13 @@ pao:StatusTransitionShape a sh:NodeShape ;
     sh:targetClass pao:StatusTransition .
 
 pao:SubAgentShape a sh:NodeShape ;
-    sh:property [ sh:class pao:Agent ;
+    sh:property [ sh:class pao:Task ;
+            sh:minCount 1 ;
+            sh:path pao:delegatedTask ],
+        [ sh:class pao:Agent ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path pao:spawnedBy ],
-        [ sh:class pao:Task ;
-            sh:minCount 1 ;
-            sh:path pao:delegatedTask ] ;
+            sh:path pao:spawnedBy ] ;
     sh:targetClass pao:SubAgent .
 
 pao:TaskShape a sh:NodeShape ;
@@ -604,30 +657,30 @@ pao:ToolInvocationShape a sh:NodeShape ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path pao:invokesTool ],
+        [ sh:class pao:PermissionPolicy ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:governedByPolicy ],
         [ sh:minCount 1 ;
             sh:path pao:hasInput ],
-        [ sh:class pao:Agent ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path pao:invokedBy ],
-        [ sh:class pao:ComplianceStatus ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path pao:hasComplianceStatus ],
-        [ sh:class pao:Session ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path pao:inSession ],
         [ sh:class pao:ToolResult ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path pao:producedToolResult ],
-        [ sh:minCount 1 ;
-            sh:path pao:hasOutput ],
-        [ sh:class pao:PermissionPolicy ;
+        [ sh:class pao:Agent ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path pao:governedByPolicy ] ;
+            sh:path pao:invokedBy ],
+        [ sh:class pao:Session ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:inSession ],
+        [ sh:minCount 1 ;
+            sh:path pao:hasOutput ],
+        [ sh:class pao:ComplianceStatus ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:hasComplianceStatus ] ;
     sh:targetClass pao:ToolInvocation .
 
 pao:TurnShape a sh:NodeShape ;
@@ -635,15 +688,15 @@ pao:TurnShape a sh:NodeShape ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path pao:partOfConversation ],
+        [ sh:datatype xsd:nonNegativeInteger ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path pao:hasTurnIndex ],
         [ sh:class pao:Session ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path pao:partOfSession ],
         [ sh:class pao:Agent ;
             sh:minCount 1 ;
-            sh:path pao:hasParticipant ],
-        [ sh:datatype xsd:nonNegativeInteger ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path pao:hasTurnIndex ] ;
+            sh:path pao:hasParticipant ] ;
     sh:targetClass pao:Turn .

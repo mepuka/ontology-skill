@@ -24,12 +24,12 @@ independently and note the PROV-O relationship.
 | BFO Category | PAO Classes |
 |---|---|
 | Object (BFO:0000030) | HumanUser, Organization |
-| Generically Dependent Continuant (BFO:0000031) | AIAgent, SubAgent, ToolDefinition, Message, MemoryItem, MemoryTier, WorkingMemory, EpisodicMemory, SemanticMemory, ProceduralMemory, Episode, Claim, MemoryBlock, Goal, Plan, Task, Persona, Intention, PermissionPolicy, SafetyConstraint, ConsentRecord, RetentionPolicy, CompactionDisposition, ContextWindow, CommunicationChannel, Integration, ExternalService, ServiceConnection, ServiceCapability, ServiceToolCapability, ServiceResourceCapability, ServicePromptCapability, SandboxPolicy, Hook, AuditLog, AuditEntry, Checkpoint, ToolResult, ToolInvocationGroup, ContentBlock, SharedMemoryArtifact, DialogAct, CommonGround, ClarificationRequest, AcceptanceEvidence, ModelProvider, FoundationModel, ModelDeployment, GenerationConfiguration, OperationalMetric, MetricObservation, Belief, Desire, Justification, Status, SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate, ChannelType, IntegrationStatus, ConnectionStatus, PermissionMode, AuthorizationDecision, CheckpointDecision, ContentBlockType, MemorySource, MemoryScope, CommunicativeFunction |
+| Generically Dependent Continuant (BFO:0000031) | AIAgent, SubAgent, ToolDefinition, Message, MemoryItem, MemoryTier, WorkingMemory, EpisodicMemory, SemanticMemory, ProceduralMemory, Episode, Claim, MemoryBlock, Goal, Plan, Task, Persona, Intention, PermissionPolicy, SafetyConstraint, ConsentRecord, RetentionPolicy, CompactionDisposition, ContextWindow, CommunicationChannel, Integration, ExternalService, ServiceConnection, ServiceCapability, ServiceToolCapability, ServiceResourceCapability, ServicePromptCapability, SandboxPolicy, Hook, AuditLog, AuditEntry, Checkpoint, ToolResult, ToolInvocationGroup, ContentBlock, SharedMemoryArtifact, DialogAct, CommonGround, ClarificationRequest, AcceptanceEvidence, ModelProvider, FoundationModel, ModelDeployment, GenerationConfiguration, OperationalMetric, MetricObservation, Belief, Desire, Justification, Schedule, RecurrencePattern, Trigger, CronTrigger, IntervalTrigger, EventTrigger, Status, SessionStatus, TaskStatus, ComplianceStatus, SensitivityLevel, ItemFate, ChannelType, IntegrationStatus, ConnectionStatus, PermissionMode, AuthorizationDecision, CheckpointDecision, ContentBlockType, MemorySource, MemoryScope, CommunicativeFunction |
 | Role (BFO:0000023) | AgentRole |
-| Process (BFO:0000015) | Conversation, Session, Turn, ToolInvocation, CompactionEvent, ErasureEvent, Event, Action, MemoryOperation, Encoding, Retrieval, Consolidation, Forgetting, Observation, Rehearsal, StatusTransition, SessionStatusTransition, TaskStatusTransition, CapabilityDiscoveryEvent, HookExecution, ErrorRecoveryEvent, RetryAttempt, ReplanEvent, RollbackEvent, MemoryWriteConflict, GroundingAct, ModelInvocation, ReliabilityIncident, Deliberation |
+| Process (BFO:0000015) | Conversation, Session, Turn, ToolInvocation, CompactionEvent, ErasureEvent, Event, Action, MemoryOperation, Encoding, Retrieval, Consolidation, Forgetting, Observation, Rehearsal, StatusTransition, SessionStatusTransition, TaskStatusTransition, CapabilityDiscoveryEvent, HookExecution, ErrorRecoveryEvent, RetryAttempt, ReplanEvent, RollbackEvent, MemoryWriteConflict, GroundingAct, ModelInvocation, ReliabilityIncident, Deliberation, ScheduledExecution |
 | Cross-cutting (documented) | Agent (umbrella for Object + GDC subtypes) |
-| *(Status subtypes listed under GDC above — Value Partition ODP-6, incl. FailureType)* | |
-| Named Individuals | Active, Ended, Interrupted, Pending, InProgress, Completed, Blocked, Compliant, NonCompliant, AssistantRole, UserRole, UserPreference, Public, Internal, Confidential, Restricted, Preserved, Dropped, Summarized, Archived, CLI, Messaging, WebChat, APIChannel, VoiceChannel, EmailChannel, Connected, Disconnected, Error, Initializing, Open, Closed, Reconnecting, Failed, Permissive, Standard, Restrictive, Allow, Deny, RequireApproval, Approved, Rejected, Deferred, TextBlock, ToolUseBlock, ToolResultBlock, ImageBlock, UserSource, SystemSource, AgentSource, SessionScope, ProjectScope, GlobalScope, Inform, Request, Confirm, Clarify, Accept, Reject, Timeout, AuthenticationFailure, RateLimited, DependencyFailure, ConfigurationError, NetworkError |
+| *(Status subtypes listed under GDC above — Value Partition ODP-6, incl. FailureType, ScheduleStatus, ExecutionOutcome, ConcurrencyPolicy)* | |
+| Named Individuals | Active, Ended, Interrupted, Pending, InProgress, Completed, Blocked, Compliant, NonCompliant, AssistantRole, UserRole, UserPreference, Public, Internal, Confidential, Restricted, Preserved, Dropped, Summarized, Archived, CLI, Messaging, WebChat, APIChannel, VoiceChannel, EmailChannel, Connected, Disconnected, Error, Initializing, Open, Closed, Reconnecting, Failed, Permissive, Standard, Restrictive, Allow, Deny, RequireApproval, Approved, Rejected, Deferred, TextBlock, ToolUseBlock, ToolResultBlock, ImageBlock, UserSource, SystemSource, AgentSource, SessionScope, ProjectScope, GlobalScope, Inform, Request, Confirm, Clarify, Accept, Reject, Timeout, AuthenticationFailure, RateLimited, DependencyFailure, ConfigurationError, NetworkError, Paused, Expired, Disabled, Succeeded, Skipped, Forbid, Replace |
 
 ---
 
@@ -1098,6 +1098,88 @@ providing rationale, not the reasoning process itself (which is Deliberation).
 desires to produce intentions. It unfolds in time and has temporal extent.
 Subclass of Event. Distinct from the information entities it considers
 (Belief, Desire) and produces (Intention).
+
+---
+
+## v0.8.0 Phase D Alignment Decisions
+
+### 92. Schedule -> Generically Dependent Continuant (BFO:0000031)
+
+- **BFO Category**: Generically Dependent Continuant (GDC, BFO:0000031)
+- **Parent**: prov:Entity
+- **Rationale**: A schedule definition is an information artifact specifying when and what action to perform. It is a GDC because it can be copied across systems and exists independently of any particular execution. Analogous to how Plan is a GDC.
+
+---
+
+### 93. RecurrencePattern -> Generically Dependent Continuant (BFO:0000031)
+
+- **BFO Category**: Generically Dependent Continuant (GDC, BFO:0000031)
+- **Parent**: prov:Entity
+- **Rationale**: A recurrence pattern is a temporal specification (cron expression, interval) that can be instantiated across multiple schedules. It is information content that describes when something should happen, not the happening itself.
+
+---
+
+### 94. Trigger -> Generically Dependent Continuant (BFO:0000031)
+
+- **BFO Category**: Generically Dependent Continuant (GDC, BFO:0000031)
+- **Parent**: prov:Entity
+- **Rationale**: A trigger is a configured activation condition specification. It is a GDC because it describes a condition, not the event of being triggered. The actual firing produces a ScheduledExecution (Process).
+
+---
+
+### 95. CronTrigger -> Generically Dependent Continuant (BFO:0000031)
+
+- **BFO Category**: Generically Dependent Continuant (GDC, BFO:0000031)
+- **Parent**: Trigger
+- **Rationale**: Inherits GDC from Trigger. Specializes to cron-expression-based time triggers.
+
+---
+
+### 96. IntervalTrigger -> Generically Dependent Continuant (BFO:0000031)
+
+- **BFO Category**: Generically Dependent Continuant (GDC, BFO:0000031)
+- **Parent**: Trigger
+- **Rationale**: Inherits GDC from Trigger. Specializes to fixed-interval periodic triggers.
+
+---
+
+### 97. EventTrigger -> Generically Dependent Continuant (BFO:0000031)
+
+- **BFO Category**: Generically Dependent Continuant (GDC, BFO:0000031)
+- **Parent**: Trigger
+- **Rationale**: Inherits GDC from Trigger. Specializes to event-driven reactive triggers (ECA pattern).
+
+---
+
+### 98. ScheduledExecution -> Process (BFO:0000015)
+
+- **BFO Category**: Process (BFO:0000015)
+- **Parent**: Event (via pao:Event)
+- **Rationale**: A scheduled execution is a temporal process that unfolds in time — it has a beginning, duration, and end. It is the actualization of a schedule at a specific time, producing an outcome. Classified as Process via Event, consistent with other PAO events (ToolInvocation, Deliberation, etc.).
+
+---
+
+### 99. ScheduleStatus -> Value Partition (no BFO parent)
+
+- **BFO Category**: Value Partition (no BFO parent)
+- **Parent**: Status
+- **Rationale**: Controlled vocabulary for schedule lifecycle states (Active, Paused, Expired, Disabled). Uses the Value Partition ODP consistent with existing PAO status classes (SessionStatus, TaskStatus, etc.).
+
+---
+
+### 100. ExecutionOutcome -> Value Partition (no BFO parent)
+
+- **BFO Category**: Value Partition (no BFO parent)
+- **Parent**: Status
+- **Rationale**: Controlled vocabulary for execution results (Succeeded, Failed, Skipped). Uses the Value Partition ODP.
+
+---
+
+### 101. ConcurrencyPolicy -> Value Partition (no BFO parent)
+
+- **BFO Category**: Value Partition (no BFO parent)
+- **Parent**: Status
+- **Rationale**: Controlled vocabulary for overlap handling (Allow, Forbid, Replace). Modeled as a VP rather than a class hierarchy because the values are a closed, exhaustive set of behavioral options. Inspired by Kubernetes CronJob concurrencyPolicy field.
 
 ---
 

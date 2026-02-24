@@ -3435,3 +3435,435 @@ competency_questions:
     required_properties:
       - justifiesIntention
     required_axioms: []
+
+  # ═══════════════════════════════════════════════════════════════════
+  # MODULE 9: Scheduling & Automation
+  # ═══════════════════════════════════════════════════════════════════
+
+  - id: CQ-114
+    source_use_case: UC-048
+    natural_language: "What schedules are defined in the system?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - schedule: pao:schedule_daily_summary
+        label: "Daily message summary"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Schedule implementation details (thread pools, executors)"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?schedule ?label WHERE {
+        ?schedule a pao:Schedule ;
+                  rdfs:label ?label .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Schedule
+    required_properties: []
+    required_axioms: []
+
+  - id: CQ-115
+    source_use_case: UC-048
+    natural_language: "What recurrence pattern does a given schedule use?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - schedule: pao:schedule_daily_summary
+        pattern: pao:recurrence_daily_0800
+        expression: "0 8 * * *"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Parsing or evaluation of cron expressions"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?schedule ?pattern ?expr WHERE {
+        ?schedule a pao:Schedule ;
+                  pao:hasRecurrencePattern ?pattern .
+        ?pattern a pao:RecurrencePattern ;
+                 pao:hasCronExpression ?expr .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Schedule
+      - RecurrencePattern
+    required_properties:
+      - hasRecurrencePattern
+      - hasCronExpression
+    required_axioms: []
+
+  - id: CQ-116
+    source_use_case: UC-048
+    natural_language: "What action does a schedule specify?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - schedule: pao:schedule_daily_summary
+        action_spec: pao:action_spec_summarize_messages
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Action execution logic"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?schedule ?action_spec ?label WHERE {
+        ?schedule a pao:Schedule ;
+                  pao:schedulesAction ?action_spec .
+        ?action_spec rdfs:label ?label .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Schedule
+    required_properties:
+      - schedulesAction
+    required_axioms: []
+
+  - id: CQ-117
+    source_use_case: UC-048
+    natural_language: "What is the lifecycle status of a given schedule?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - schedule: pao:schedule_daily_summary
+        status: pao:Active
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Status transition history (covered by StatusTransition)"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?schedule ?status ?statusLabel WHERE {
+        ?schedule a pao:Schedule ;
+                  pao:hasScheduleStatus ?status .
+        ?status rdfs:label ?statusLabel .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Schedule
+      - ScheduleStatus
+    required_properties:
+      - hasScheduleStatus
+    required_axioms: []
+
+  - id: CQ-118
+    source_use_case: UC-049
+    natural_language: "What executions have occurred for a given schedule?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - schedule: pao:schedule_daily_summary
+        execution: pao:execution_2026_02_21_0800
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Execution runtime metrics (CPU, memory)"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?schedule ?execution ?label WHERE {
+        ?execution a pao:ScheduledExecution ;
+                   pao:executionOf ?schedule ;
+                   rdfs:label ?label .
+        ?schedule a pao:Schedule .
+      }
+    expected_result: non_empty
+    required_classes:
+      - ScheduledExecution
+      - Schedule
+    required_properties:
+      - executionOf
+    required_axioms: []
+
+  - id: CQ-119
+    source_use_case: UC-049
+    natural_language: "What was the outcome of a scheduled execution?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - execution: pao:execution_2026_02_21_0800
+        outcome: pao:Succeeded
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Detailed error messages or stack traces"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?execution ?outcome ?outcomeLabel WHERE {
+        ?execution a pao:ScheduledExecution ;
+                   pao:hasExecutionOutcome ?outcome .
+        ?outcome rdfs:label ?outcomeLabel .
+      }
+    expected_result: non_empty
+    required_classes:
+      - ScheduledExecution
+      - ExecutionOutcome
+    required_properties:
+      - hasExecutionOutcome
+    required_axioms: []
+
+  - id: CQ-120
+    source_use_case: UC-049
+    natural_language: "When did a scheduled execution start and end?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - execution: pao:execution_2026_02_21_0800
+        start: "2026-02-21T08:00:00"
+        end: "2026-02-21T08:02:30"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Execution duration computation"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      PREFIX time: <http://www.w3.org/2006/time#>
+      SELECT ?execution ?start ?end WHERE {
+        ?execution a pao:ScheduledExecution ;
+                   pao:hasTemporalExtent ?interval .
+        ?interval time:hasBeginning/time:inXSDDateTime ?start ;
+                  time:hasEnd/time:inXSDDateTime ?end .
+      }
+    expected_result: non_empty
+    required_classes:
+      - ScheduledExecution
+    required_properties:
+      - hasTemporalExtent
+    required_axioms: []
+
+  - id: CQ-121
+    source_use_case: UC-050
+    natural_language: "What concurrency policy does a schedule have?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - schedule: pao:schedule_daily_summary
+        policy: pao:Forbid
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Concurrency enforcement implementation"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?schedule ?policy ?policyLabel WHERE {
+        ?schedule a pao:Schedule ;
+                  pao:hasConcurrencyPolicy ?policy .
+        ?policy rdfs:label ?policyLabel .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Schedule
+      - ConcurrencyPolicy
+    required_properties:
+      - hasConcurrencyPolicy
+    required_axioms: []
+
+  - id: CQ-122
+    source_use_case: UC-050
+    natural_language: "Were any scheduled executions skipped due to concurrency?"
+    type: enumerative
+    priority: should_have
+    sample_answer:
+      - execution: pao:execution_skipped_01
+        outcome: pao:Skipped
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Which concurrent execution caused the skip"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?execution ?schedule WHERE {
+        ?execution a pao:ScheduledExecution ;
+                   pao:executionOf ?schedule ;
+                   pao:hasExecutionOutcome pao:Skipped .
+      }
+    expected_result: non_empty
+    required_classes:
+      - ScheduledExecution
+      - ExecutionOutcome
+    required_properties:
+      - hasExecutionOutcome
+      - executionOf
+    required_axioms: []
+
+  - id: CQ-123
+    source_use_case: UC-051
+    natural_language: "Does a schedule allow catch-up of missed executions?"
+    type: boolean
+    priority: should_have
+    sample_answer:
+      - schedule: pao:schedule_daily_summary
+        allows_catchup: true
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Catch-up execution ordering and prioritization"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+      SELECT ?schedule ?catchup WHERE {
+        ?schedule a pao:Schedule ;
+                  pao:allowsCatchUp ?catchup .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Schedule
+    required_properties:
+      - allowsCatchUp
+    required_axioms: []
+
+  - id: CQ-124
+    source_use_case: UC-052
+    natural_language: "What trigger type activates a given schedule?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - schedule: pao:schedule_daily_summary
+        trigger: pao:trigger_cron_daily
+        type: pao:CronTrigger
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Trigger evaluation logic"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?schedule ?trigger ?triggerType WHERE {
+        ?schedule a pao:Schedule ;
+                  pao:activatedBy ?trigger .
+        ?trigger a ?triggerType .
+        ?triggerType rdfs:subClassOf pao:Trigger .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Schedule
+      - Trigger
+    required_properties:
+      - activatedBy
+    required_axioms: []
+
+  - id: CQ-125
+    source_use_case: UC-052
+    natural_language: "What schedules are activated by a specific trigger type?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - trigger_type: pao:CronTrigger
+        schedule: pao:schedule_daily_summary
+    derivation_method: inference
+    out_of_scope:
+      - "Trigger firing history"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?schedule ?scheduleLabel ?trigger WHERE {
+        ?schedule a pao:Schedule ;
+                  rdfs:label ?scheduleLabel ;
+                  pao:activatedBy ?trigger .
+        ?trigger a pao:CronTrigger .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Schedule
+      - CronTrigger
+    required_properties:
+      - activatedBy
+    required_axioms: []
+
+  - id: CQ-126
+    source_use_case: UC-053
+    natural_language: "Which goal does a schedule serve?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - schedule: pao:schedule_daily_summary
+        goal: pao:goal_keep_user_informed
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Goal achievement assessment"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?schedule ?goal ?goalLabel WHERE {
+        ?schedule a pao:Schedule ;
+                  pao:servesGoal ?goal .
+        ?goal a pao:Goal ;
+              rdfs:label ?goalLabel .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Schedule
+      - Goal
+    required_properties:
+      - servesGoal
+    required_axioms: []
+
+  - id: CQ-127
+    source_use_case: UC-053
+    natural_language: "Which agent owns a given schedule?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - schedule: pao:schedule_daily_summary
+        agent: pao:agent_01
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Multi-agent schedule sharing"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?schedule ?agent ?agentLabel WHERE {
+        ?schedule a pao:Schedule ;
+                  pao:ownedByAgent ?agent .
+        ?agent a pao:AIAgent ;
+               rdfs:label ?agentLabel .
+      }
+    expected_result: non_empty
+    required_classes:
+      - Schedule
+      - AIAgent
+    required_properties:
+      - ownedByAgent
+    required_axioms: []
+
+  - id: CQ-128
+    source_use_case: UC-053
+    natural_language: "Which session was initiated by a scheduled execution?"
+    type: relational
+    priority: should_have
+    sample_answer:
+      - execution: pao:execution_2026_02_21_0800
+        session: pao:session_auto_001
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Session content beyond initiation linkage"
+    sparql: |
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX pao: <https://purl.org/pao/>
+      SELECT ?execution ?session ?sessionLabel WHERE {
+        ?execution a pao:ScheduledExecution ;
+                   pao:initiatedSession ?session .
+        ?session a pao:Session ;
+                 rdfs:label ?sessionLabel .
+      }
+    expected_result: non_empty
+    required_classes:
+      - ScheduledExecution
+      - Session
+    required_properties:
+      - initiatedSession
+    required_axioms: []
