@@ -39,6 +39,20 @@ enews:aboutProject a owl:ObjectProperty ;
     rdfs:range enews:EnergyProject ;
     skos:definition "Links an Article to an EnergyProject it covers"@en .
 
+enews:altText a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "alt text"@en ;
+    rdfs:domain enews:MediaAttachment ;
+    rdfs:range xsd:string ;
+    skos:definition "The alternative text description for the media attachment"@en .
+
+enews:capacityUnit a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "capacity unit"@en ;
+    rdfs:domain enews:CapacityMeasurement ;
+    rdfs:range xsd:string ;
+    skos:definition "The unit of measurement for capacity such as MW, GW, MWh, or GWh"@en .
+
 enews:coversTechnology a owl:ObjectProperty ;
     rdfs:label "covers technology"@en ;
     rdfs:domain enews:Article ;
@@ -134,12 +148,54 @@ enews:likeCount a owl:DatatypeProperty ;
     rdfs:range xsd:nonNegativeInteger ;
     skos:definition "The number of likes on a Post"@en .
 
+enews:linkDescription a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "link description"@en ;
+    rdfs:domain enews:EmbeddedExternalLink ;
+    rdfs:range xsd:string ;
+    skos:definition "The preview description text of the embedded external link"@en .
+
+enews:linkTitle a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "link title"@en ;
+    rdfs:domain enews:EmbeddedExternalLink ;
+    rdfs:range xsd:string ;
+    skos:definition "The preview title text of the embedded external link"@en .
+
+enews:linkUri a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "link URI"@en ;
+    rdfs:domain enews:EmbeddedExternalLink ;
+    rdfs:range xsd:anyURI ;
+    skos:definition "The target URI of the embedded external link"@en .
+
+enews:measurementDate a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "measurement date"@en ;
+    rdfs:domain enews:CapacityMeasurement ;
+    rdfs:range xsd:dateTime ;
+    skos:definition "The date when the capacity measurement was recorded"@en .
+
+enews:mediaUri a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "media URI"@en ;
+    rdfs:domain enews:MediaAttachment ;
+    rdfs:range xsd:anyURI ;
+    skos:definition "The URI of the media resource such as an image or video"@en .
+
 enews:mentionsOrganization a owl:ObjectProperty ;
     rdfs:label "mentions organization"@en ;
     rdfs:domain enews:Article ;
     rdfs:range enews:Organization ;
     rdfs:subPropertyOf schema:mentions ;
     skos:definition "Links an Article to an Organization mentioned in its coverage"@en .
+
+enews:mimeType a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "MIME type"@en ;
+    rdfs:domain enews:MediaAttachment ;
+    rdfs:range xsd:string ;
+    skos:definition "The MIME type of the media attachment such as image/jpeg or video/mp4"@en .
 
 enews:operatedBy a owl:ObjectProperty ;
     rdfs:label "operated by"@en ;
@@ -152,6 +208,27 @@ enews:postText a owl:DatatypeProperty ;
     rdfs:domain enews:Post ;
     rdfs:range xsd:string ;
     skos:definition "The text content of a Post"@en .
+
+enews:priceCurrency a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "price currency"@en ;
+    rdfs:domain enews:PriceDataPoint ;
+    rdfs:range xsd:string ;
+    skos:definition "The ISO 4217 currency code for the price value such as USD, EUR, or GBP"@en .
+
+enews:priceDate a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "price date"@en ;
+    rdfs:domain enews:PriceDataPoint ;
+    rdfs:range xsd:dateTime ;
+    skos:definition "The date when the price was recorded or observed"@en .
+
+enews:priceValue a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "price value"@en ;
+    rdfs:domain enews:PriceDataPoint ;
+    rdfs:range xsd:float ;
+    skos:definition "The numeric price or cost value"@en .
 
 enews:publishedBy a owl:FunctionalProperty,
         owl:ObjectProperty ;
@@ -189,6 +266,13 @@ enews:sharesArticle a owl:FunctionalProperty,
     owl:equivalentProperty schema:sharedContent ;
     skos:definition "Links a Post to the Article it shares via embedded link"@en .
 
+enews:thumbnailUri a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "thumbnail URI"@en ;
+    rdfs:domain enews:EmbeddedExternalLink ;
+    rdfs:range xsd:anyURI ;
+    skos:definition "The URI of the preview thumbnail image for the embedded external link"@en .
+
 enews:title a owl:DatatypeProperty,
         owl:FunctionalProperty ;
     rdfs:label "title"@en ;
@@ -196,6 +280,13 @@ enews:title a owl:DatatypeProperty,
     rdfs:range xsd:string ;
     owl:equivalentProperty schema:headline ;
     skos:definition "The headline or title string of an Article"@en .
+
+enews:valueInMW a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "value in MW"@en ;
+    rdfs:domain enews:CapacityMeasurement ;
+    rdfs:range xsd:float ;
+    skos:definition "The numeric capacity value expressed in megawatts"@en .
 
 enews:EnergyEvent a owl:Class ;
     rdfs:label "energy event"@en ;
@@ -224,11 +315,6 @@ enews:PowerPlant a owl:Class ;
     rdfs:label "power plant"@en ;
     rdfs:subClassOf obo:BFO_0000030 ;
     skos:definition "An Object representing a facility that generates electricity or thermal energy, characterized by fuel type, capacity, and operational status"@en .
-
-enews:PriceDataPoint a owl:Class ;
-    rdfs:label "price data point"@en ;
-    rdfs:subClassOf obo:BFO_0000031 ;
-    skos:definition "A GenericallyDependentContinuant representing a quantified price or cost metric for energy, technology, or commodities at a specific point in time"@en .
 
 enews:RenewableInstallation a owl:Class ;
     rdfs:label "renewable installation"@en ;
@@ -272,21 +358,6 @@ enews:url a owl:DatatypeProperty,
     owl:equivalentProperty schema:url ;
     skos:definition "The URL of an Article"@en .
 
-enews:CapacityMeasurement a owl:Class ;
-    rdfs:label "capacity measurement"@en ;
-    rdfs:subClassOf obo:BFO_0000031 ;
-    skos:definition "A GenericallyDependentContinuant representing a quantified metric of power generation or storage capability measured in MW, GW, MWh, or equivalent units"@en .
-
-enews:EmbeddedExternalLink a owl:Class ;
-    rdfs:label "embedded external link"@en ;
-    rdfs:subClassOf obo:BFO_0000031 ;
-    skos:definition "A GenericallyDependentContinuant representing a hyperlink embedded within a Post pointing to an external web resource with link metadata such as title, description, and URI"@en .
-
-enews:MediaAttachment a owl:Class ;
-    rdfs:label "media attachment"@en ;
-    rdfs:subClassOf obo:BFO_0000031 ;
-    skos:definition "A GenericallyDependentContinuant representing a multimedia object such as an image, video, or document attached to or embedded in a Post"@en .
-
 enews:ProjectStatus a owl:Class ;
     rdfs:label "project status"@en ;
     rdfs:subClassOf obo:BFO_0000031 ;
@@ -322,6 +393,11 @@ enews:GeographicEntity a owl:Class ;
         schema:Place ;
     skos:definition "A Site that represents a country region or subnational area relevant to energy news coverage"@en .
 
+enews:PriceDataPoint a owl:Class ;
+    rdfs:label "price data point"@en ;
+    rdfs:subClassOf obo:BFO_0000031 ;
+    skos:definition "A GenericallyDependentContinuant representing a quantified price or cost metric for energy, technology, or commodities at a specific point in time"@en .
+
 enews:SocialMediaPlatform a owl:Class ;
     rdfs:label "social media platform"@en ;
     rdfs:subClassOf obo:BFO_0000031 ;
@@ -338,16 +414,31 @@ enews:AuthorAccount a owl:Class ;
     skos:definition "A GenericallyDependentContinuant that represents a social media account that shares energy news"@en ;
     skos:relatedMatch schema:Person .
 
+enews:CapacityMeasurement a owl:Class ;
+    rdfs:label "capacity measurement"@en ;
+    rdfs:subClassOf obo:BFO_0000031 ;
+    skos:definition "A GenericallyDependentContinuant representing a quantified metric of power generation or storage capability measured in MW, GW, MWh, or equivalent units"@en .
+
 enews:EnergyProject a owl:Class ;
     rdfs:label "energy project"@en ;
     rdfs:subClassOf obo:BFO_0000015 ;
     skos:definition "A Process representing the planning, permitting, construction, and commissioning activity for developing energy infrastructure such as power plants, renewable installations, and grid upgrades"@en .
+
+enews:MediaAttachment a owl:Class ;
+    rdfs:label "media attachment"@en ;
+    rdfs:subClassOf obo:BFO_0000031 ;
+    skos:definition "A GenericallyDependentContinuant representing a multimedia object such as an image, video, or document attached to or embedded in a Post"@en .
 
 enews:Organization a owl:Class ;
     rdfs:label "organization"@en ;
     rdfs:subClassOf obo:BFO_0000030 ;
     owl:equivalentClass schema:Organization ;
     skos:definition "An Object that represents a company agency or institutional body mentioned in energy news"@en .
+
+enews:EmbeddedExternalLink a owl:Class ;
+    rdfs:label "embedded external link"@en ;
+    rdfs:subClassOf obo:BFO_0000031 ;
+    skos:definition "A GenericallyDependentContinuant representing a hyperlink embedded within a Post pointing to an external web resource with link metadata such as title, description, and URI"@en .
 
 enews:Article a owl:Class ;
     rdfs:label "article"@en ;

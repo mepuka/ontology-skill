@@ -46,6 +46,46 @@ enews:AuthorAccountShape a sh:NodeShape ;
             sh:path enews:handle ] ;
     sh:targetClass enews:AuthorAccount .
 
+enews:CapacityMeasurementShape a sh:NodeShape ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path enews:capacityUnit ],
+        [ sh:datatype xsd:dateTime ;
+            sh:maxCount 1 ;
+            sh:path enews:measurementDate ],
+        [ sh:datatype xsd:float ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path enews:valueInMW ] ;
+    sh:targetClass enews:CapacityMeasurement .
+
+enews:EmbeddedExternalLinkShape a sh:NodeShape ;
+    sh:property [ sh:datatype xsd:anyURI ;
+            sh:maxCount 1 ;
+            sh:path enews:thumbnailUri ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:path enews:linkDescription ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:path enews:linkTitle ],
+        [ sh:datatype xsd:anyURI ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path enews:linkUri ] ;
+    sh:targetClass enews:EmbeddedExternalLink .
+
+enews:EnergyProjectShape a sh:NodeShape ;
+    sh:property [ sh:minCount 1 ;
+            sh:path rdfs:label ],
+        [ sh:class enews:CapacityMeasurement ;
+            sh:path enews:hasCapacity ],
+        [ sh:class enews:ProjectStatus ;
+            sh:maxCount 1 ;
+            sh:path enews:hasStatus ] ;
+    sh:targetClass enews:EnergyProject .
+
 enews:EnergyTopicInstanceShape a sh:NodeShape ;
     sh:property [ sh:minCount 1 ;
             sh:path rdfs:label ],
@@ -64,8 +104,39 @@ enews:FeedShape a sh:NodeShape ;
             sh:path enews:onPlatform ] ;
     sh:targetClass enews:Feed .
 
+enews:GeographicEntityShape a sh:NodeShape ;
+    sh:property [ sh:minCount 1 ;
+            sh:path rdfs:label ] ;
+    sh:targetClass enews:GeographicEntity .
+
+enews:MediaAttachmentShape a sh:NodeShape ;
+    sh:property [ sh:datatype xsd:anyURI ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path enews:mediaUri ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:path enews:mimeType ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:path enews:altText ] ;
+    sh:targetClass enews:MediaAttachment .
+
+enews:OrganizationShape a sh:NodeShape ;
+    sh:property [ sh:minCount 1 ;
+            sh:path skos:definition ],
+        [ sh:minCount 1 ;
+            sh:path rdfs:label ] ;
+    sh:targetClass enews:Organization .
+
 enews:PostShape a sh:NodeShape ;
-    sh:property [ sh:class enews:AuthorAccount ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:path enews:postText ],
+        [ sh:datatype xsd:dateTime ;
+            sh:maxCount 1 ;
+            sh:path enews:createdAt ],
+        [ sh:class enews:AuthorAccount ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path enews:postedBy ],
@@ -73,12 +144,30 @@ enews:PostShape a sh:NodeShape ;
             sh:path enews:sharesArticle ] ;
     sh:targetClass enews:Post .
 
+enews:PowerPlantShape a sh:NodeShape ;
+    sh:property [ sh:minCount 1 ;
+            sh:path rdfs:label ],
+        [ sh:class enews:EnergyTechnology ;
+            sh:path enews:hasTechnology ],
+        [ sh:class enews:Organization ;
+            sh:path enews:operatedBy ] ;
+    sh:targetClass enews:PowerPlant .
+
 enews:PublicationShape a sh:NodeShape ;
     sh:property [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path enews:siteDomain ] ;
     sh:targetClass enews:Publication .
+
+enews:RenewableInstallationShape a sh:NodeShape ;
+    sh:property [ sh:class enews:EnergyTechnology ;
+            sh:path enews:hasTechnology ],
+        [ sh:minCount 1 ;
+            sh:path rdfs:label ],
+        [ sh:class enews:Organization ;
+            sh:path enews:operatedBy ] ;
+    sh:targetClass enews:RenewableInstallation .
 
 enews:SocialMediaPlatformShape a sh:NodeShape ;
     sh:property [ sh:minCount 1 ;

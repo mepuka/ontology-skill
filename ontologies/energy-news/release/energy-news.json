@@ -539,6 +539,28 @@
       "type" : "PROPERTY",
       "propertyType" : "OBJECT"
     }, {
+      "id" : "http://example.org/ontology/energy-news#altText",
+      "lbl" : "alt text",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "The alternative text description for the media attachment"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#capacityUnit",
+      "lbl" : "capacity unit",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "The unit of measurement for capacity such as MW, GW, MWh, or GWh"
+        } ]
+      }
+    }, {
       "id" : "http://example.org/ontology/energy-news#createdAt",
       "lbl" : "created at",
       "type" : "PROPERTY",
@@ -594,6 +616,72 @@
         } ]
       }
     }, {
+      "id" : "http://example.org/ontology/energy-news#linkDescription",
+      "lbl" : "link description",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "The preview description text of the embedded external link"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#linkTitle",
+      "lbl" : "link title",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "The preview title text of the embedded external link"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#linkUri",
+      "lbl" : "link URI",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "The target URI of the embedded external link"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#measurementDate",
+      "lbl" : "measurement date",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "The date when the capacity measurement was recorded"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#mediaUri",
+      "lbl" : "media URI",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "The URI of the media resource such as an image or video"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#mimeType",
+      "lbl" : "MIME type",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "The MIME type of the media attachment such as image/jpeg or video/mp4"
+        } ]
+      }
+    }, {
       "id" : "http://example.org/ontology/energy-news#postText",
       "lbl" : "post text",
       "type" : "PROPERTY",
@@ -602,6 +690,39 @@
         "basicPropertyValues" : [ {
           "pred" : "http://www.w3.org/2004/02/skos/core#definition",
           "val" : "The text content of a Post"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#priceCurrency",
+      "lbl" : "price currency",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "The ISO 4217 currency code for the price value such as USD, EUR, or GBP"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#priceDate",
+      "lbl" : "price date",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "The date when the price was recorded or observed"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#priceValue",
+      "lbl" : "price value",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "The numeric price or cost value"
         } ]
       }
     }, {
@@ -649,6 +770,17 @@
         } ]
       }
     }, {
+      "id" : "http://example.org/ontology/energy-news#thumbnailUri",
+      "lbl" : "thumbnail URI",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "The URI of the preview thumbnail image for the embedded external link"
+        } ]
+      }
+    }, {
       "id" : "http://example.org/ontology/energy-news#title",
       "lbl" : "title",
       "type" : "PROPERTY",
@@ -668,6 +800,17 @@
         "basicPropertyValues" : [ {
           "pred" : "http://www.w3.org/2004/02/skos/core#definition",
           "val" : "The URL of an Article"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#valueInMW",
+      "lbl" : "value in MW",
+      "type" : "PROPERTY",
+      "propertyType" : "DATA",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "The numeric capacity value expressed in megawatts"
         } ]
       }
     }, {
@@ -3406,6 +3549,66 @@
         } ]
       }
     }, {
+      "id" : "http://example.org/ontology/energy-news#status_Decommissioned",
+      "lbl" : "decommissioned",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A ProjectStatus indicating the project has been permanently shut down and removed"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#status_Mothballed",
+      "lbl" : "mothballed",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A ProjectStatus indicating the project is temporarily shut down but could restart"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#status_Operational",
+      "lbl" : "operational",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A ProjectStatus indicating the project is completed and generating energy"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#status_Planning",
+      "lbl" : "planning",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A ProjectStatus indicating the project is in early planning and permitting phases"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#status_UnderConstruction",
+      "lbl" : "under construction",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A ProjectStatus indicating the project is actively being built"
+        } ]
+      }
+    }, {
+      "id" : "http://example.org/ontology/energy-news#status_UnderReview",
+      "lbl" : "under review",
+      "type" : "INDIVIDUAL",
+      "meta" : {
+        "basicPropertyValues" : [ {
+          "pred" : "http://www.w3.org/2004/02/skos/core#definition",
+          "val" : "A ProjectStatus indicating the project is undergoing regulatory or environmental review"
+        } ]
+      }
+    }, {
       "id" : "http://purl.org/dc/terms/created",
       "type" : "PROPERTY",
       "propertyType" : "ANNOTATION"
@@ -4478,6 +4681,30 @@
       "sub" : "http://example.org/ontology/energy-news#pub_wired",
       "pred" : "type",
       "obj" : "http://example.org/ontology/energy-news#Publication"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#status_Decommissioned",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#ProjectStatus"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#status_Mothballed",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#ProjectStatus"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#status_Operational",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#ProjectStatus"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#status_Planning",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#ProjectStatus"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#status_UnderConstruction",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#ProjectStatus"
+    }, {
+      "sub" : "http://example.org/ontology/energy-news#status_UnderReview",
+      "pred" : "type",
+      "obj" : "http://example.org/ontology/energy-news#ProjectStatus"
     }, {
       "sub" : "http://example.org/ontology/energy-news#org_caiso",
       "pred" : "http://example.org/ontology/energy-news#hasSector",

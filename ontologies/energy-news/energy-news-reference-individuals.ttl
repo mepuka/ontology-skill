@@ -34,6 +34,30 @@ enews:LNGTradeAndInfrastructure a enews:EnergyTopic,
     skos:definition "A skos:Concept representing the international trade, pricing, and physical infrastructure for liquefied natural gas"@en ;
     skos:inScheme enews:EnergyTopicScheme .
 
+enews:status_Decommissioned a enews:ProjectStatus ;
+    rdfs:label "decommissioned"@en ;
+    skos:definition "A ProjectStatus indicating the project has been permanently shut down and removed"@en .
+
+enews:status_Mothballed a enews:ProjectStatus ;
+    rdfs:label "mothballed"@en ;
+    skos:definition "A ProjectStatus indicating the project is temporarily shut down but could restart"@en .
+
+enews:status_Operational a enews:ProjectStatus ;
+    rdfs:label "operational"@en ;
+    skos:definition "A ProjectStatus indicating the project is completed and generating energy"@en .
+
+enews:status_Planning a enews:ProjectStatus ;
+    rdfs:label "planning"@en ;
+    skos:definition "A ProjectStatus indicating the project is in early planning and permitting phases"@en .
+
+enews:status_UnderConstruction a enews:ProjectStatus ;
+    rdfs:label "under construction"@en ;
+    skos:definition "A ProjectStatus indicating the project is actively being built"@en .
+
+enews:status_UnderReview a enews:ProjectStatus ;
+    rdfs:label "under review"@en ;
+    skos:definition "A ProjectStatus indicating the project is undergoing regulatory or environmental review"@en .
+
 <http://example.org/ontology/energy-news/reference-individuals> a owl:Ontology ;
     dcterms:created "2026-02-11" ;
     dcterms:creator "ontology-architect skill" ;
@@ -1134,7 +1158,22 @@ enews:EnergyTopicScheme a skos:ConceptScheme ;
     owl:distinctMembers ( enews:geo_alberta enews:geo_california enews:geo_china enews:geo_eu enews:geo_germany enews:geo_india enews:geo_louisiana enews:geo_north_sea enews:geo_texas enews:geo_uk ) .
 
 [] a owl:AllDifferent ;
+    owl:distinctMembers ( enews:AIAndDataCenterDemand enews:BiomassAndBioenergy enews:BuildingsAndEfficiency enews:CarbonCapture enews:ClimateAndEmissions enews:DistributedEnergyAndFlexibility enews:Electrification enews:EnergyFinance enews:EnergyGeopolitics enews:EnergyJustice enews:EnergyMarkets enews:EnergyPolicy enews:EnergyStorage enews:EnergyTradeAndSupplyChains enews:EnvironmentAndLandUse enews:Fossil enews:GridAndInfrastructure enews:Hydrogen enews:Nuclear enews:Renewable enews:ResearchAndInnovation enews:SectoralDecarbonization enews:WorkforceAndManufacturing ) .
+
+[] a owl:AllDifferent ;
     owl:distinctMembers ( enews:Fusion enews:SMR ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( enews:pub_cnbc enews:pub_electrek enews:pub_energy_monitor enews:pub_ft enews:pub_guardian enews:pub_inside_climate enews:pub_reuters enews:pub_rto_insider enews:pub_utility_dive enews:pub_wired ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( enews:CarbonMarkets enews:Commodity enews:PowerPurchaseAgreement enews:WholesaleMarkets ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( enews:COPClimateConference enews:Decarbonization enews:EmissionsTracking enews:NetZero ) .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( enews:DemandResponse enews:Microgrid enews:VirtualPowerPlant ) .
 
 [] a owl:AllDifferent ;
     owl:distinctMembers ( enews:Coal enews:NaturalGas enews:Oil ) .
@@ -1186,18 +1225,3 @@ enews:EnergyTopicScheme a skos:ConceptScheme ;
 
 [] a owl:AllDifferent ;
     owl:distinctMembers ( enews:CorporateDeals enews:ProjectFinance enews:PublicFunding ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( enews:AIAndDataCenterDemand enews:BiomassAndBioenergy enews:BuildingsAndEfficiency enews:CarbonCapture enews:ClimateAndEmissions enews:DistributedEnergyAndFlexibility enews:Electrification enews:EnergyFinance enews:EnergyGeopolitics enews:EnergyJustice enews:EnergyMarkets enews:EnergyPolicy enews:EnergyStorage enews:EnergyTradeAndSupplyChains enews:EnvironmentAndLandUse enews:Fossil enews:GridAndInfrastructure enews:Hydrogen enews:Nuclear enews:Renewable enews:ResearchAndInnovation enews:SectoralDecarbonization enews:WorkforceAndManufacturing ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( enews:pub_cnbc enews:pub_electrek enews:pub_energy_monitor enews:pub_ft enews:pub_guardian enews:pub_inside_climate enews:pub_reuters enews:pub_rto_insider enews:pub_utility_dive enews:pub_wired ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( enews:CarbonMarkets enews:Commodity enews:PowerPurchaseAgreement enews:WholesaleMarkets ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( enews:COPClimateConference enews:Decarbonization enews:EmissionsTracking enews:NetZero ) .
-
-[] a owl:AllDifferent ;
-    owl:distinctMembers ( enews:DemandResponse enews:Microgrid enews:VirtualPowerPlant ) .

@@ -86,6 +86,9 @@ Datatype: xsd:date
 Datatype: xsd:dateTime
 
 
+Datatype: xsd:float
+
+
 Datatype: xsd:nonNegativeInteger
 
 
@@ -402,6 +405,38 @@ ObjectProperty: schema:sharedContent
         enews:sharesArticle
 
 
+DataProperty: enews:altText
+
+    Annotations:
+        rdfs:label "alt text"@en,
+        skos:definition "The alternative text description for the media attachment"@en
+
+    Characteristics:
+        Functional
+
+    Domain:
+        enews:MediaAttachment
+
+    Range:
+        xsd:string
+
+
+DataProperty: enews:capacityUnit
+
+    Annotations:
+        rdfs:label "capacity unit"@en,
+        skos:definition "The unit of measurement for capacity such as MW, GW, MWh, or GWh"@en
+
+    Characteristics:
+        Functional
+
+    Domain:
+        enews:CapacityMeasurement
+
+    Range:
+        xsd:string
+
+
 DataProperty: enews:createdAt
 
     Annotations:
@@ -479,6 +514,102 @@ DataProperty: enews:likeCount
         xsd:nonNegativeInteger
 
 
+DataProperty: enews:linkDescription
+
+    Annotations:
+        rdfs:label "link description"@en,
+        skos:definition "The preview description text of the embedded external link"@en
+
+    Characteristics:
+        Functional
+
+    Domain:
+        enews:EmbeddedExternalLink
+
+    Range:
+        xsd:string
+
+
+DataProperty: enews:linkTitle
+
+    Annotations:
+        rdfs:label "link title"@en,
+        skos:definition "The preview title text of the embedded external link"@en
+
+    Characteristics:
+        Functional
+
+    Domain:
+        enews:EmbeddedExternalLink
+
+    Range:
+        xsd:string
+
+
+DataProperty: enews:linkUri
+
+    Annotations:
+        rdfs:label "link URI"@en,
+        skos:definition "The target URI of the embedded external link"@en
+
+    Characteristics:
+        Functional
+
+    Domain:
+        enews:EmbeddedExternalLink
+
+    Range:
+        xsd:anyURI
+
+
+DataProperty: enews:measurementDate
+
+    Annotations:
+        rdfs:label "measurement date"@en,
+        skos:definition "The date when the capacity measurement was recorded"@en
+
+    Characteristics:
+        Functional
+
+    Domain:
+        enews:CapacityMeasurement
+
+    Range:
+        xsd:dateTime
+
+
+DataProperty: enews:mediaUri
+
+    Annotations:
+        rdfs:label "media URI"@en,
+        skos:definition "The URI of the media resource such as an image or video"@en
+
+    Characteristics:
+        Functional
+
+    Domain:
+        enews:MediaAttachment
+
+    Range:
+        xsd:anyURI
+
+
+DataProperty: enews:mimeType
+
+    Annotations:
+        rdfs:label "MIME type"@en,
+        skos:definition "The MIME type of the media attachment such as image/jpeg or video/mp4"@en
+
+    Characteristics:
+        Functional
+
+    Domain:
+        enews:MediaAttachment
+
+    Range:
+        xsd:string
+
+
 DataProperty: enews:postText
 
     Annotations:
@@ -490,6 +621,54 @@ DataProperty: enews:postText
 
     Range:
         xsd:string
+
+
+DataProperty: enews:priceCurrency
+
+    Annotations:
+        rdfs:label "price currency"@en,
+        skos:definition "The ISO 4217 currency code for the price value such as USD, EUR, or GBP"@en
+
+    Characteristics:
+        Functional
+
+    Domain:
+        enews:PriceDataPoint
+
+    Range:
+        xsd:string
+
+
+DataProperty: enews:priceDate
+
+    Annotations:
+        rdfs:label "price date"@en,
+        skos:definition "The date when the price was recorded or observed"@en
+
+    Characteristics:
+        Functional
+
+    Domain:
+        enews:PriceDataPoint
+
+    Range:
+        xsd:dateTime
+
+
+DataProperty: enews:priceValue
+
+    Annotations:
+        rdfs:label "price value"@en,
+        skos:definition "The numeric price or cost value"@en
+
+    Characteristics:
+        Functional
+
+    Domain:
+        enews:PriceDataPoint
+
+    Range:
+        xsd:float
 
 
 DataProperty: enews:publishedDate
@@ -553,6 +732,22 @@ DataProperty: enews:siteDomain
         xsd:string
 
 
+DataProperty: enews:thumbnailUri
+
+    Annotations:
+        rdfs:label "thumbnail URI"@en,
+        skos:definition "The URI of the preview thumbnail image for the embedded external link"@en
+
+    Characteristics:
+        Functional
+
+    Domain:
+        enews:EmbeddedExternalLink
+
+    Range:
+        xsd:anyURI
+
+
 DataProperty: enews:title
 
     Annotations:
@@ -589,6 +784,22 @@ DataProperty: enews:url
 
     EquivalentTo:
         schema:url
+
+
+DataProperty: enews:valueInMW
+
+    Annotations:
+        rdfs:label "value in MW"@en,
+        skos:definition "The numeric capacity value expressed in megawatts"@en
+
+    Characteristics:
+        Functional
+
+    Domain:
+        enews:CapacityMeasurement
+
+    Range:
+        xsd:float
 
 
 DataProperty: schema:datePublished
@@ -2894,6 +3105,66 @@ Individual: enews:pub_wired
 
     Facts:
      enews:siteDomain  "wired.com"
+
+
+Individual: enews:status_Decommissioned
+
+    Annotations:
+        rdfs:label "decommissioned"@en,
+        skos:definition "A ProjectStatus indicating the project has been permanently shut down and removed"@en
+
+    Types:
+        enews:ProjectStatus
+
+
+Individual: enews:status_Mothballed
+
+    Annotations:
+        rdfs:label "mothballed"@en,
+        skos:definition "A ProjectStatus indicating the project is temporarily shut down but could restart"@en
+
+    Types:
+        enews:ProjectStatus
+
+
+Individual: enews:status_Operational
+
+    Annotations:
+        rdfs:label "operational"@en,
+        skos:definition "A ProjectStatus indicating the project is completed and generating energy"@en
+
+    Types:
+        enews:ProjectStatus
+
+
+Individual: enews:status_Planning
+
+    Annotations:
+        rdfs:label "planning"@en,
+        skos:definition "A ProjectStatus indicating the project is in early planning and permitting phases"@en
+
+    Types:
+        enews:ProjectStatus
+
+
+Individual: enews:status_UnderConstruction
+
+    Annotations:
+        rdfs:label "under construction"@en,
+        skos:definition "A ProjectStatus indicating the project is actively being built"@en
+
+    Types:
+        enews:ProjectStatus
+
+
+Individual: enews:status_UnderReview
+
+    Annotations:
+        rdfs:label "under review"@en,
+        skos:definition "A ProjectStatus indicating the project is undergoing regulatory or environmental review"@en
+
+    Types:
+        enews:ProjectStatus
 
 
 DisjointClasses:

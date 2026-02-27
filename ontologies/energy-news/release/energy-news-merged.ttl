@@ -280,6 +280,24 @@ schema:sharedContent rdf:type owl:ObjectProperty .
 #    Data properties
 #################################################################
 
+###  http://example.org/ontology/energy-news#altText
+enews:altText rdf:type owl:DatatypeProperty ,
+                       owl:FunctionalProperty ;
+              rdfs:domain enews:MediaAttachment ;
+              rdfs:range xsd:string ;
+              rdfs:label "alt text"@en ;
+              skos:definition "The alternative text description for the media attachment"@en .
+
+
+###  http://example.org/ontology/energy-news#capacityUnit
+enews:capacityUnit rdf:type owl:DatatypeProperty ,
+                            owl:FunctionalProperty ;
+                   rdfs:domain enews:CapacityMeasurement ;
+                   rdfs:range xsd:string ;
+                   rdfs:label "capacity unit"@en ;
+                   skos:definition "The unit of measurement for capacity such as MW, GW, MWh, or GWh"@en .
+
+
 ###  http://example.org/ontology/energy-news#createdAt
 enews:createdAt rdf:type owl:DatatypeProperty ,
                          owl:FunctionalProperty ;
@@ -324,12 +342,93 @@ enews:likeCount rdf:type owl:DatatypeProperty ;
                 skos:definition "The number of likes on a Post"@en .
 
 
+###  http://example.org/ontology/energy-news#linkDescription
+enews:linkDescription rdf:type owl:DatatypeProperty ,
+                               owl:FunctionalProperty ;
+                      rdfs:domain enews:EmbeddedExternalLink ;
+                      rdfs:range xsd:string ;
+                      rdfs:label "link description"@en ;
+                      skos:definition "The preview description text of the embedded external link"@en .
+
+
+###  http://example.org/ontology/energy-news#linkTitle
+enews:linkTitle rdf:type owl:DatatypeProperty ,
+                         owl:FunctionalProperty ;
+                rdfs:domain enews:EmbeddedExternalLink ;
+                rdfs:range xsd:string ;
+                rdfs:label "link title"@en ;
+                skos:definition "The preview title text of the embedded external link"@en .
+
+
+###  http://example.org/ontology/energy-news#linkUri
+enews:linkUri rdf:type owl:DatatypeProperty ,
+                       owl:FunctionalProperty ;
+              rdfs:domain enews:EmbeddedExternalLink ;
+              rdfs:range xsd:anyURI ;
+              rdfs:label "link URI"@en ;
+              skos:definition "The target URI of the embedded external link"@en .
+
+
+###  http://example.org/ontology/energy-news#measurementDate
+enews:measurementDate rdf:type owl:DatatypeProperty ,
+                               owl:FunctionalProperty ;
+                      rdfs:domain enews:CapacityMeasurement ;
+                      rdfs:range xsd:dateTime ;
+                      rdfs:label "measurement date"@en ;
+                      skos:definition "The date when the capacity measurement was recorded"@en .
+
+
+###  http://example.org/ontology/energy-news#mediaUri
+enews:mediaUri rdf:type owl:DatatypeProperty ,
+                        owl:FunctionalProperty ;
+               rdfs:domain enews:MediaAttachment ;
+               rdfs:range xsd:anyURI ;
+               rdfs:label "media URI"@en ;
+               skos:definition "The URI of the media resource such as an image or video"@en .
+
+
+###  http://example.org/ontology/energy-news#mimeType
+enews:mimeType rdf:type owl:DatatypeProperty ,
+                        owl:FunctionalProperty ;
+               rdfs:domain enews:MediaAttachment ;
+               rdfs:range xsd:string ;
+               rdfs:label "MIME type"@en ;
+               skos:definition "The MIME type of the media attachment such as image/jpeg or video/mp4"@en .
+
+
 ###  http://example.org/ontology/energy-news#postText
 enews:postText rdf:type owl:DatatypeProperty ;
                rdfs:domain enews:Post ;
                rdfs:range xsd:string ;
                rdfs:label "post text"@en ;
                skos:definition "The text content of a Post"@en .
+
+
+###  http://example.org/ontology/energy-news#priceCurrency
+enews:priceCurrency rdf:type owl:DatatypeProperty ,
+                             owl:FunctionalProperty ;
+                    rdfs:domain enews:PriceDataPoint ;
+                    rdfs:range xsd:string ;
+                    rdfs:label "price currency"@en ;
+                    skos:definition "The ISO 4217 currency code for the price value such as USD, EUR, or GBP"@en .
+
+
+###  http://example.org/ontology/energy-news#priceDate
+enews:priceDate rdf:type owl:DatatypeProperty ,
+                         owl:FunctionalProperty ;
+                rdfs:domain enews:PriceDataPoint ;
+                rdfs:range xsd:dateTime ;
+                rdfs:label "price date"@en ;
+                skos:definition "The date when the price was recorded or observed"@en .
+
+
+###  http://example.org/ontology/energy-news#priceValue
+enews:priceValue rdf:type owl:DatatypeProperty ,
+                          owl:FunctionalProperty ;
+                 rdfs:domain enews:PriceDataPoint ;
+                 rdfs:range xsd:float ;
+                 rdfs:label "price value"@en ;
+                 skos:definition "The numeric price or cost value"@en .
 
 
 ###  http://example.org/ontology/energy-news#publishedDate
@@ -365,6 +464,15 @@ enews:siteDomain rdf:type owl:DatatypeProperty ,
                  rdfs:range xsd:string .
 
 
+###  http://example.org/ontology/energy-news#thumbnailUri
+enews:thumbnailUri rdf:type owl:DatatypeProperty ,
+                            owl:FunctionalProperty ;
+                   rdfs:domain enews:EmbeddedExternalLink ;
+                   rdfs:range xsd:anyURI ;
+                   rdfs:label "thumbnail URI"@en ;
+                   skos:definition "The URI of the preview thumbnail image for the embedded external link"@en .
+
+
 ###  http://example.org/ontology/energy-news#title
 enews:title rdf:type owl:DatatypeProperty ;
             owl:equivalentProperty schema:headline ;
@@ -383,6 +491,15 @@ enews:url rdf:type owl:DatatypeProperty ;
           rdfs:range xsd:anyURI ;
           rdfs:label "url"@en ;
           skos:definition "The URL of an Article"@en .
+
+
+###  http://example.org/ontology/energy-news#valueInMW
+enews:valueInMW rdf:type owl:DatatypeProperty ,
+                         owl:FunctionalProperty ;
+                rdfs:domain enews:CapacityMeasurement ;
+                rdfs:range xsd:float ;
+                rdfs:label "value in MW"@en ;
+                skos:definition "The numeric capacity value expressed in megawatts"@en .
 
 
 ###  https://schema.org/datePublished
@@ -2160,6 +2277,48 @@ enews:pub_wired rdf:type owl:NamedIndividual ,
                 enews:siteDomain "wired.com" ;
                 rdfs:label "Wired"@en ;
                 skos:definition "A Publication representing Wired magazine"@en .
+
+
+###  http://example.org/ontology/energy-news#status_Decommissioned
+enews:status_Decommissioned rdf:type owl:NamedIndividual ,
+                                     enews:ProjectStatus ;
+                            rdfs:label "decommissioned"@en ;
+                            skos:definition "A ProjectStatus indicating the project has been permanently shut down and removed"@en .
+
+
+###  http://example.org/ontology/energy-news#status_Mothballed
+enews:status_Mothballed rdf:type owl:NamedIndividual ,
+                                 enews:ProjectStatus ;
+                        rdfs:label "mothballed"@en ;
+                        skos:definition "A ProjectStatus indicating the project is temporarily shut down but could restart"@en .
+
+
+###  http://example.org/ontology/energy-news#status_Operational
+enews:status_Operational rdf:type owl:NamedIndividual ,
+                                  enews:ProjectStatus ;
+                         rdfs:label "operational"@en ;
+                         skos:definition "A ProjectStatus indicating the project is completed and generating energy"@en .
+
+
+###  http://example.org/ontology/energy-news#status_Planning
+enews:status_Planning rdf:type owl:NamedIndividual ,
+                               enews:ProjectStatus ;
+                      rdfs:label "planning"@en ;
+                      skos:definition "A ProjectStatus indicating the project is in early planning and permitting phases"@en .
+
+
+###  http://example.org/ontology/energy-news#status_UnderConstruction
+enews:status_UnderConstruction rdf:type owl:NamedIndividual ,
+                                        enews:ProjectStatus ;
+                               rdfs:label "under construction"@en ;
+                               skos:definition "A ProjectStatus indicating the project is actively being built"@en .
+
+
+###  http://example.org/ontology/energy-news#status_UnderReview
+enews:status_UnderReview rdf:type owl:NamedIndividual ,
+                                  enews:ProjectStatus ;
+                         rdfs:label "under review"@en ;
+                         skos:definition "A ProjectStatus indicating the project is undergoing regulatory or environmental review"@en .
 
 
 #################################################################
