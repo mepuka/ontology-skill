@@ -6,7 +6,7 @@
 
 enews:ArticleShape a sh:NodeShape ;
     sh:property [ sh:maxCount 1 ;
-            sh:path enews:publishedBy ],
+            sh:path enews:publishedDate ],
         [ sh:datatype xsd:anyURI ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
@@ -14,9 +14,9 @@ enews:ArticleShape a sh:NodeShape ;
         [ sh:maxCount 1 ;
             sh:path enews:title ],
         [ sh:maxCount 1 ;
-            sh:path enews:publishedDate ],
-        [ sh:maxCount 1 ;
             sh:path enews:description ],
+        [ sh:maxCount 1 ;
+            sh:path enews:publishedBy ],
         [ sh:class enews:EnergyTopic ;
             sh:minCount 1 ;
             sh:path enews:coversTopic ] ;
@@ -36,41 +36,41 @@ SELECT $this WHERE {
     sh:targetClass enews:Article .
 
 enews:AuthorAccountShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:string ;
+    sh:property [ sh:class enews:SocialMediaPlatform ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path enews:handle ],
-        [ sh:class enews:SocialMediaPlatform ;
+            sh:path enews:onPlatform ],
+        [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path enews:onPlatform ] ;
+            sh:path enews:handle ] ;
     sh:targetClass enews:AuthorAccount .
 
 enews:EnergyTopicInstanceShape a sh:NodeShape ;
     sh:property [ sh:minCount 1 ;
             sh:path rdfs:label ],
         [ sh:minCount 1 ;
-            sh:path skos:inScheme ],
+            sh:path skos:definition ],
         [ sh:minCount 1 ;
-            sh:path skos:definition ] ;
+            sh:path skos:inScheme ] ;
     sh:targetClass enews:EnergyTopic .
 
 enews:FeedShape a sh:NodeShape ;
-    sh:property [ sh:class enews:SocialMediaPlatform ;
+    sh:property [ sh:minCount 1 ;
+            sh:path rdfs:label ],
+        [ sh:class enews:SocialMediaPlatform ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path enews:onPlatform ],
-        [ sh:minCount 1 ;
-            sh:path rdfs:label ] ;
+            sh:path enews:onPlatform ] ;
     sh:targetClass enews:Feed .
 
 enews:PostShape a sh:NodeShape ;
-    sh:property [ sh:maxCount 1 ;
-            sh:path enews:sharesArticle ],
-        [ sh:class enews:AuthorAccount ;
+    sh:property [ sh:class enews:AuthorAccount ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path enews:postedBy ] ;
+            sh:path enews:postedBy ],
+        [ sh:maxCount 1 ;
+            sh:path enews:sharesArticle ] ;
     sh:targetClass enews:Post .
 
 enews:PublicationShape a sh:NodeShape ;

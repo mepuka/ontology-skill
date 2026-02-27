@@ -164,6 +164,96 @@ cq_tests:
     expected: non_empty
     requires_abox: true
 
+  # --- v0.3.0 Gap Analysis CQs ---
+
+  - id: cq-020
+    file: cq-020.sparql
+    cq: CQ-020
+    question: "What are the top-level energy topic categories?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: false
+
+  - id: cq-021
+    file: cq-021.sparql
+    cq: CQ-021
+    question: "Which subtopics exist under distributed energy and grid flexibility?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: false
+
+  - id: cq-022
+    file: cq-022.sparql
+    cq: CQ-022
+    question: "What organizations operate in a given energy sector?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-023
+    file: cq-023.sparql
+    cq: CQ-023
+    question: "Which regulatory bodies exist in the ontology?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-024
+    file: cq-024.sparql
+    cq: CQ-024
+    question: "What publications are registered with their site domains?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-025
+    file: cq-025.sparql
+    cq: CQ-025
+    question: "Which geographic entities are referenced in the ontology?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-026
+    file: cq-026.sparql
+    cq: CQ-026
+    question: "What energy topics relate to sectoral decarbonization?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: false
+
+  - id: cq-027
+    file: cq-027.sparql
+    cq: CQ-027
+    question: "Is offshore wind classified under renewable energy?"
+    type: ASK
+    expected: true
+    requires_abox: false
+
+  - id: cq-028
+    file: cq-028.sparql
+    cq: CQ-028
+    question: "What are the subtopics of energy storage?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: false
+
+  - id: cq-029
+    file: cq-029.sparql
+    cq: CQ-029
+    question: "Which organizations are classified as regulatory bodies?"
+    type: SELECT
+    expected: non_empty
+    requires_abox: true
+
+  - id: cq-030
+    file: cq-030.sparql
+    cq: CQ-030
+    question: "Is data center demand classified under AI and data center energy demand?"
+    type: ASK
+    expected: true
+    requires_abox: false
+
 # --- TBox Structure Tests ---
 
 tbox_tests:
@@ -188,6 +278,43 @@ tbox_tests:
     expected: true
     requires_abox: false
 
+  # --- v0.3.0 Gap Analysis TBox Tests ---
+
+  - id: tbox-004
+    file: tbox-004.sparql
+    description: "EnergyProject is declared under BFO:Process"
+    type: ASK
+    expected: true
+    requires_abox: false
+
+  - id: tbox-005
+    file: tbox-005.sparql
+    description: "PowerPlant is correctly aligned under BFO:Object"
+    type: ASK
+    expected: true
+    requires_abox: false
+
+  - id: tbox-006
+    file: tbox-006.sparql
+    description: "RenewableInstallation is correctly aligned under BFO:Object"
+    type: ASK
+    expected: true
+    requires_abox: false
+
+  - id: tbox-007
+    file: tbox-007.sparql
+    description: "RegulatoryBody is subClassOf Organization"
+    type: ASK
+    expected: true
+    requires_abox: false
+
+  - id: tbox-008
+    file: tbox-008.sparql
+    description: "GridZone is subClassOf GeographicEntity"
+    type: ASK
+    expected: true
+    requires_abox: false
+
 # --- Non-Entailment Tests ---
 
 non_entailment_tests:
@@ -201,6 +328,22 @@ non_entailment_tests:
   - id: neg-002
     file: neg-002.sparql
     description: "Nuclear is NOT classified under Renewable"
+    type: ASK
+    expected: false
+    requires_abox: false
+
+  # --- v0.3.0 Gap Analysis Non-Entailment Tests ---
+
+  - id: neg-003
+    file: neg-003.sparql
+    description: "BiomassAndBioenergy is NOT classified under Fossil"
+    type: ASK
+    expected: false
+    requires_abox: false
+
+  - id: neg-004
+    file: neg-004.sparql
+    description: "PowerPlant is NOT a subclass of EnergyProject (BFO alignment fix)"
     type: ASK
     expected: false
     requires_abox: false

@@ -1,25 +1,19 @@
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix obo: <http://purl.obolibrary.org/obo/> .
-
-# Minimal BFO class declarations for MIREOT-style alignment.
-# Only the BFO classes directly referenced as parents by this ontology.
-# Full BFO is not imported — these stubs enable OWL API parsing
-# of rdfs:subClassOf axioms pointing to BFO IRIs.
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
 <http://example.org/ontology/energy-news/bfo-declarations> a owl:Ontology ;
     rdfs:label "BFO Declarations for Energy News Ontology" ;
     rdfs:comment "MIREOT-style BFO class stubs. Not a substitute for full BFO import." .
 
-# BFO:0000029 — Site (immaterial entity bounded by fiat boundaries)
+obo:BFO_0000015 a owl:Class ;
+    rdfs:label "process"@en .
+
 obo:BFO_0000029 a owl:Class ;
     rdfs:label "site"@en .
 
-# BFO:0000030 — Object (independent continuant that is spatially extended)
 obo:BFO_0000030 a owl:Class ;
     rdfs:label "object"@en .
 
-# BFO:0000031 — Generically Dependent Continuant
 obo:BFO_0000031 a owl:Class ;
     rdfs:label "generically dependent continuant"@en .
