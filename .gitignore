@@ -53,3 +53,4 @@ htmlcov/
 # Large reference PDFs (copyrighted)
 docs/*.pdf
 ontologies/*/release/pao-docs.html
+.rlm/
