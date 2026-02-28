@@ -11,26 +11,22 @@ dependencies = [
     "rdflib>=7.0.0",
     "pyshacl>=0.26.0",
     "owlready2>=0.46",
-
     # Mapping
     "sssom>=0.4.0",
     "curies>=0.7.0",
     "prefixmaps>=0.2.0",
-
     # Schema / modeling
     "linkml>=1.8.0",
     "linkml-runtime>=1.8.0",
-
     # SPARQL
     "SPARQLWrapper>=2.0.0",
-
     # Data handling
     "pandas>=2.0",
     "pyyaml>=6.0",
     "click>=8.0",
-
     # HTTP
     "httpx>=0.27.0",
+    "pyoxigraph>=0.5.5",
 ]
 
 [dependency-groups]
