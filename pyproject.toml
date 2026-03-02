@@ -26,6 +26,7 @@ dependencies = [
     "click>=8.0",
     # HTTP
     "httpx>=0.27.0",
+    "trafilatura>=2.0,<3",
     "pyoxigraph>=0.5.5",
 ]
 
@@ -40,7 +41,10 @@ dev = [
     "types-requests>=2.31",
     # Testing
     "pytest>=8.0",
+    "pytest-asyncio>=0.24.0",
     "pytest-cov>=6.0",
+    "respx>=0.21.0",
+    "pip-audit>=2.8.0",
     # Pre-commit
     "pre-commit>=4.0",
     "pylode>=3.2.3",
@@ -68,6 +72,7 @@ select = [
     "UP",    # pyupgrade
     "B",     # flake8-bugbear
     "A",     # flake8-builtins
+    "ASYNC", # flake8-async
     "COM",   # flake8-commas
     "C4",    # flake8-comprehensions
     "DTZ",   # flake8-datetimez
@@ -90,6 +95,7 @@ select = [
     "FLY",   # flynt
     "PERF",  # perflint
     "RUF",   # ruff-specific
+    "S",     # flake8-bandit
 ]
 ignore = [
     "COM812",   # trailing comma (conflicts with formatter)
@@ -105,19 +111,24 @@ ignore = [
     "SLF001",  # private member access in tests is fine
     "PLR2004", # magic values in assertions
     "PLC0415", # imports inside test functions are intentional
+    "S101",    # asserts are normal in pytest tests
 ]
 "ontologies/**/tests/**/*.py" = [
     "ARG",     # unused arguments common in fixtures
     "SLF001",  # private member access in tests is fine
     "PLR2004", # magic values in assertions
     "PLC0415", # imports inside test functions are intentional
+    "S101",    # asserts are normal in pytest tests
 ]
 "scripts/**/*.py" = [
     "T201",    # print statements OK in scripts
 ]
 "ontologies/**/scripts/**/*.py" = [
     "T201",    # print statements OK in ontology build scripts
+    "PLR0912", # data-processing functions have many branches by design
     "PLR0915", # data-loading build functions have many statements by design
+    "PLC0415", # deferred/optional imports in CLI entrypoints are intentional
+    "S311",    # seeded PRNG is fine for stratified sampling (not crypto)
 ]
 
 [tool.ruff.lint.isort]

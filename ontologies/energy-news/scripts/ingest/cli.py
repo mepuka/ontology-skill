@@ -1,6 +1,7 @@
 """Click CLI for the Energy News ABox ETL pipeline.
 
 Commands:
+    fetch    — Fetch/extract article text into NDJSON sidecar cache
     resolve  — Resolve generic shortener URLs (async HTTP HEAD)
     run      — Run the full ETL pipeline (extract → transform → load)
     stats    — Query the Oxigraph store for triple counts
@@ -8,6 +9,8 @@ Commands:
 
 from __future__ import annotations
 
+import asyncio
+from collections import Counter
 from pathlib import Path
 
 import click
@@ -15,6 +18,7 @@ from rdflib import Graph
 
 from .dedup import deduplicate_articles
 from .extract import extract_from_file, extract_from_skygent
+from .fetcher import extract_candidate_urls, load_domain_policy, run_fetch_pipeline
 from .publications import build_ref_publication_index
 from .shorteners import (
     collect_shortener_urls,
@@ -44,10 +48,13 @@ def cli() -> None:
     default="skygent",
     help="Data source: 'skygent' (live CLI) or 'file' (NDJSON path).",
 )
+@click.option("--store", default="energy-news", help="SkyGent store name (default: energy-news).")
 @click.option("--file", "file_path", type=click.Path(exists=True), help="NDJSON file path.")
 @click.option("--limit", type=int, default=None, help="Max posts to extract for resolution scan.")
 @click.option("--concurrency", type=int, default=20, help="HTTP concurrency for resolution.")
-def resolve(source: str, file_path: str | None, limit: int | None, concurrency: int) -> None:
+def resolve(
+    source: str, store: str, file_path: str | None, limit: int | None, concurrency: int
+) -> None:
     """Resolve generic shortener URLs and populate the cache."""
     cache_path = PROJECT / "data" / "shortener-cache.json"
 
@@ -59,7 +66,7 @@ def resolve(source: str, file_path: str | None, limit: int | None, concurrency: 
     if source == "file" and file_path:
         posts = list(extract_from_file(Path(file_path)))
     else:
-        posts = list(extract_from_skygent(limit=limit))
+        posts = list(extract_from_skygent(store=store, limit=limit))
     print(f"  Extracted {len(posts)} posts")
 
     # Collect shortener URLs
@@ -79,20 +86,184 @@ def resolve(source: str, file_path: str | None, limit: int | None, concurrency: 
 
 @cli.command()
 @click.option(
+    "--concurrency",
+    type=int,
+    default=20,
+    show_default=True,
+    help="Global HTTP concurrency.",
+)
+@click.option(
+    "--domain-delay",
+    type=float,
+    default=1.0,
+    show_default=True,
+    help="Seconds between requests to same domain.",
+)
+@click.option(
+    "--request-timeout",
+    type=float,
+    default=20.0,
+    show_default=True,
+    help="Connect/read/write/pool timeout in seconds.",
+)
+@click.option(
+    "--max-retries",
+    type=int,
+    default=3,
+    show_default=True,
+    help="Retry attempts for retryable failures.",
+)
+@click.option(
+    "--max-bytes",
+    type=int,
+    default=2_000_000,
+    show_default=True,
+    help="Max response body bytes per URL.",
+)
+@click.option(
+    "--queue-size",
+    type=int,
+    default=200,
+    show_default=True,
+    help="Bounded queue size for pipeline backpressure.",
+)
+@click.option(
+    "--user-agent",
+    type=str,
+    default="energy-news-fetcher/1.0",
+    show_default=True,
+    help="HTTP User-Agent string.",
+)
+@click.option("--limit", type=int, default=None, help="Max URLs to fetch.")
+@click.option("--domain", type=str, default=None, help="Fetch only this domain (or subdomains).")
+@click.option(
+    "--resume/--no-resume",
+    default=True,
+    show_default=True,
+    help="Resume using cache state.",
+)
+@click.option(
+    "--cache-path",
+    type=click.Path(path_type=Path),
+    default=None,
+    help="NDJSON cache path (default: data/article-text-cache.ndjson).",
+)
+@click.option(
+    "--policy-path",
+    type=click.Path(path_type=Path),
+    default=None,
+    help="Domain policy YAML path (default: scripts/ingest/policy/domains.yml).",
+)
+@click.option(
+    "--fail-fast-threshold",
+    type=click.FloatRange(min=0.0, max=1.0),
+    default=0.95,
+    show_default=True,
+    help="Abort when sustained failure ratio reaches this threshold.",
+)
+@click.option(
+    "--progress-every",
+    type=click.IntRange(min=0),
+    default=50,
+    show_default=True,
+    help="Print progress every N processed events (0 disables progress logs).",
+)
+def fetch(
+    concurrency: int,
+    domain_delay: float,
+    request_timeout: float,
+    max_retries: int,
+    max_bytes: int,
+    queue_size: int,
+    user_agent: str,
+    limit: int | None,
+    domain: str | None,
+    resume: bool,
+    cache_path: Path | None,
+    policy_path: Path | None,
+    fail_fast_threshold: float,
+    progress_every: int,
+) -> None:
+    """Fetch article text from article URLs in the Oxigraph ABox."""
+    store_path = PROJECT / "data" / "oxigraph"
+    resolved_cache_path = cache_path or (PROJECT / "data" / "article-text-cache.ndjson")
+    resolved_policy_path = policy_path or (
+        PROJECT / "scripts" / "ingest" / "policy" / "domains.yml"
+    )
+
+    if not store_path.exists():
+        raise click.ClickException("No Oxigraph store found. Run 'ingest run' first.")
+
+    print("=== Article Fetch ===")
+    print(f"  Store: {store_path}")
+    print(f"  Cache: {resolved_cache_path}")
+    print(f"  Policy: {resolved_policy_path}")
+    print(f"  Concurrency: {concurrency}")
+    print(f"  Domain delay: {domain_delay}s")
+    print(f"  Request timeout: {request_timeout}s")
+    print(f"  Max retries: {max_retries}")
+    print(f"  Progress interval: {progress_every}")
+
+    policy = load_domain_policy(resolved_policy_path)
+    urls = extract_candidate_urls(store_path, domain=domain, limit=limit)
+    print(f"  Candidate URLs: {len(urls)}")
+
+    if not urls:
+        print("  No candidate URLs to fetch.")
+        return
+
+    try:
+        stats = asyncio.run(
+            run_fetch_pipeline(
+                urls=urls,
+                cache_path=resolved_cache_path,
+                concurrency=concurrency,
+                domain_delay=domain_delay,
+                request_timeout=request_timeout,
+                max_retries=max_retries,
+                max_bytes=max_bytes,
+                queue_size=queue_size,
+                user_agent=user_agent,
+                resume=resume,
+                domain_policy=policy,
+                fail_fast_threshold=fail_fast_threshold,
+                progress_every=progress_every,
+            )
+        )
+    except RuntimeError as exc:
+        raise click.ClickException(str(exc)) from exc
+
+    print("--- Summary ---")
+    print(f"  Processed events: {stats.processed}")
+    print(f"  Succeeded: {stats.succeeded}")
+    print(f"  Retryable failures: {stats.retryable_failed}")
+    print(f"  Terminal failures: {stats.terminal_failed}")
+    print(f"  Skipped by policy: {stats.skipped_policy}")
+    print(f"  Skipped by resume terminal state: {stats.skipped_terminal_resume}")
+    print(f"  Malformed resume lines: {stats.malformed_resume_lines}")
+    print(f"  Bytes fetched: {stats.bytes_fetched}")
+
+
+@cli.command()
+@click.option(
     "--source",
     type=click.Choice(["skygent", "file"]),
     default="skygent",
     help="Data source.",
 )
+@click.option("--store", default="energy-news", help="SkyGent store name (default: energy-news).")
 @click.option("--file", "file_path", type=click.Path(exists=True), help="NDJSON file path.")
 @click.option("--limit", type=int, default=None, help="Max posts to ingest.")
 @click.option("--validate/--no-validate", default=True, help="Run SHACL validation.")
+@click.option("--strict/--no-strict", default=False, help="SHACL strict mode (fail on violations).")
 @click.option("--snapshot/--no-snapshot", default=True, help="Write Turtle snapshot file.")
 def run(
     source: str,
+    store: str,
     file_path: str | None,
     limit: int | None,
     validate: bool,
+    strict: bool,
     snapshot: bool,
 ) -> None:
     """Run the full ETL pipeline: extract → transform → dedup → validate → load."""
@@ -104,6 +275,7 @@ def run(
     snapshot_path = PROJECT / "data" / "abox-snapshot.ttl"
 
     print("=== Energy News ABox ETL Pipeline ===\n")
+    print(f"  SkyGent store: {store}")
 
     # --- Load reference data ---
     print("[1/6] Loading reference data...")
@@ -125,7 +297,7 @@ def run(
     if source == "file" and file_path:
         posts = list(extract_from_file(Path(file_path)))
     else:
-        posts = list(extract_from_skygent(limit=limit))
+        posts = list(extract_from_skygent(store=store, limit=limit))
     print(f"  Extracted {len(posts)} posts")
 
     # --- Transform ---
@@ -152,20 +324,36 @@ def run(
 
     # --- Validate ---
     if validate:
-        print("\n[5/6] Running SHACL validation (warn mode)...")
-        merged = Graph()
-        merged.parse(str(tbox_path), format="turtle")
-        merged.parse(str(ref_path), format="turtle")
-        merged += abox_graph
+        mode_label = "strict" if strict else "warn"
+        print(f"\n[5/6] Running SHACL validation ({mode_label} mode)...")
+        # Parse TBox/ref into the ABox graph in-place to avoid doubling memory
+        pre_count = len(abox_graph)
+        abox_graph.parse(str(tbox_path), format="turtle")
+        abox_graph.parse(str(ref_path), format="turtle")
+        print(f"  Merged TBox+ref into ABox: {pre_count} → {len(abox_graph)} triples")
 
         shapes = Graph()
         shapes.parse(str(shapes_path), format="turtle")
 
-        conforms, results_text = validate_abox(merged, shapes)
+        conforms, results_text = validate_abox(abox_graph, shapes, strict=strict)
         if conforms:
-            print("  SHACL: passed (warn mode)")
+            print(f"  SHACL: passed ({mode_label} mode)")
         else:
-            print(f"  SHACL issues:\n{results_text}")
+            # Summarize violations instead of dumping the full report
+            report_lines = results_text.strip().split("\n")
+            result_count = sum(
+                1 for line in report_lines if line.startswith("Constraint Violation")
+            )
+            print(f"  SHACL: {result_count} violations found ({mode_label} mode)")
+            # Group by path
+            paths = [
+                line.strip() for line in report_lines if line.strip().startswith("Result Path:")
+            ]
+            for path, count in Counter(paths).most_common():
+                print(f"    {path}: {count}")
+            msgs = [line.strip() for line in report_lines if line.strip().startswith("Message:")]
+            for msg, count in Counter(msgs).most_common(5):
+                print(f"    {msg} (x{count})")
     else:
         print("\n[5/6] Skipping SHACL validation")
 

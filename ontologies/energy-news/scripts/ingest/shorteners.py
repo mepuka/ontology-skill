@@ -148,18 +148,38 @@ async def _resolve_batch(
     return results
 
 
+def _find_chain_urls(cache: dict[str, str]) -> list[str]:
+    """Find cached entries where the resolved URL is still a shortener domain.
+
+    Returns:
+        List of resolved URLs that need a second pass of resolution.
+    """
+    chain_urls: list[str] = []
+    for resolved in cache.values():
+        domain = extract_domain(resolved)
+        if domain and domain in GENERIC_SHORTENER_DOMAINS:
+            chain_urls.append(resolved)
+    return sorted(set(chain_urls))
+
+
 def resolve_generic_shorteners(
     urls: list[str],
     cache: dict[str, str],
     *,
     concurrency: int = 20,
+    max_chain_depth: int = 3,
 ) -> dict[str, str]:
     """Resolve generic shortener URLs, using cache for already-resolved ones.
+
+    Follows shortener chains — if a shortened URL resolves to another
+    shortener (e.g. bit.ly → buff.ly → final), iterates up to
+    max_chain_depth times to reach the final destination.
 
     Args:
         urls: List of shortened URLs to resolve.
         cache: Existing cache of url→resolved_url mappings.
         concurrency: Max concurrent HTTP requests.
+        max_chain_depth: Maximum number of chain resolution passes.
 
     Returns:
         Updated cache with all resolved URLs.
@@ -174,11 +194,63 @@ def resolve_generic_shorteners(
     else:
         print("  All shortener URLs already cached.")
 
+    # Follow shortener chains — resolved URLs that are themselves shorteners
+    for depth in range(max_chain_depth):
+        chain_urls = _find_chain_urls(cache)
+        if not chain_urls:
+            break
+
+        # Filter to only URLs not already in cache
+        to_resolve_chain = [u for u in chain_urls if u not in cache]
+        if not to_resolve_chain:
+            # All chain URLs are already cached — apply transitive resolution
+            _apply_chain_resolution(cache)
+            chain_remaining = _find_chain_urls(cache)
+            if not chain_remaining:
+                break
+            print(f"  Chain pass {depth + 2}: {len(chain_remaining)} still unresolved")
+            continue
+
+        print(
+            f"  Chain pass {depth + 2}: resolving {len(to_resolve_chain)} "
+            f"shortener-to-shortener URLs..."
+        )
+        chain_results = asyncio.run(_resolve_batch(to_resolve_chain, concurrency))
+        cache.update(chain_results)
+        print(f"  Resolved {len(chain_results)}/{len(to_resolve_chain)} chain URLs")
+
+        # Apply transitive resolution to update original→final mappings
+        _apply_chain_resolution(cache)
+
     return cache
 
 
+def _apply_chain_resolution(cache: dict[str, str]) -> None:
+    """Update cache entries so originals point to final destinations.
+
+    If cache has A→B and B→C, updates A→C.
+    """
+    updated = 0
+    for original in list(cache):
+        resolved = cache[original]
+        # Follow chain through cache
+        seen: set[str] = {original, resolved}
+        while resolved in cache and cache[resolved] not in seen:
+            resolved = cache[resolved]
+            seen.add(resolved)
+        if resolved != cache[original]:
+            cache[original] = resolved
+            updated += 1
+    if updated:
+        print(f"  Updated {updated} cache entries via chain resolution")
+
+
 def collect_shortener_urls(posts: list[dict[str, Any]]) -> list[str]:
-    """Collect all generic shortener URLs from post embeds.
+    """Collect all shortener URLs (generic + brand) from post embeds.
+
+    Both generic shorteners (bit.ly, buff.ly) and brand shorteners (reut.rs,
+    bloom.bg) are collected so that HTTP resolution can determine the final
+    canonical URL for each.
 
     Args:
         posts: List of post dicts from SkyGent.
@@ -194,6 +266,6 @@ def collect_shortener_urls(posts: list[dict[str, Any]]) -> list[str]:
         tag = embed.get("_tag")
         if tag == "External":
             uri = embed.get("uri", "")
-            if is_generic_shortener(uri):
+            if is_generic_shortener(uri) or is_brand_shortener(uri):
                 urls.add(uri)
     return sorted(urls)

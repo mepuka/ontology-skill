@@ -1,0 +1,2430 @@
+[
+  {
+    "text": "In a landmark decision, the Federal Energy Regulatory Commission in July ordered transmission providers to revise their interconnection rules to help ease a massive backlog of requests by generators and energy storage developers for permission to connect to the grid.\nWhile the new requirements are viewed as a major improvement, the Department of Energy and others are already looking at possible next steps for improving interconnection processes, including \u201cconnect and manage,\u201d the interconnection process used by the Electric Reliability Council of Texas.\nIn her concurrence to FERC\u2019s interconnection rule, Commissioner Allison Clements pointed to connect and manage as a potential template for interconnecting energy-only resources. It was also the focus of Beyond FERC Order 2023: Considerations on Deep Interconnection Reform, a white paper released in August by Tyler Norris, a doctoral student at Duke University and former vice president of development at Cypress Creek Renewables.\nConnect and manage is \u201ccertainly worth exploring\u201d in any future interconnection action at FERC, Karin Herzfeld, senior transmission counsel to the agency\u2019s acting Chairman Willie Phillips, said at a Nov. 2 meeting hosted by WIRES, a trade group for utilities, grid operators and other companies in the transmission sector.\nWhat is connect and manage?\nERCOT is the only U.S. grid operator to use connect and manage. The Texas grid operator focuses its interconnection request studies on what local upgrades are needed for a project to connect to the grid. In contrast to the rest of the U.S., it doesn\u2019t examine the possible need for broader network upgrades. ERCOT manages any grid bottlenecks caused by a new generator through market redispatch and curtailment.\nWith roughly 85 GW in peak load, ERCOT is a mid-sized grid operator, but in the last two years leads all U.S. grid operators and transmission providers in interconnecting generation to the grid.\nERCOT brought 14.2 GW online in 2021 and 2022 while in the PJM Interconnection, the largest U.S. grid operator, 5.6 GW started operating during those two years, according to data from S&P Global.\nERCOT brings the most generation online in 2021 and 2022\nERCOT\u2019s approach allows generators to interconnect much more quickly, efficiently and at minimal cost compared with the rest of the United States, according to Norris. Using congestion data, the grid operator relies on a transmission planning process to identify needed transmission upgrades, he said.\nIn ERCOT, interconnection customers take studies conducted by the grid operator and use them to assess their curtailment risk, according to Norris.\n\u201cAnd then they decide whether or not to proceed, and if they do, they'll bear that [curtailment] risk,\u201d Norris said. \u201cAnd of course, we're seeing many generators deciding they can take that risk.\u201d\nIn 2022, ERCOT curtailed about 9% of utility-scale solar generation and 5% of wind generation, Norris said in his white paper.\nBesides not requiring costly grid upgrades, which can kill planned projects, ERCOT\u2019s interconnection process is faster than elsewhere.\nERCOT\u2019s interconnection process can be finished in one to two years, according to Frank Swigonski, Pine Gate Renewables\u2019 director of market design.\n\u201cWe're big fans of connect and manage,\u201d he said, adding that interconnection issues are the company\u2019s \u201cnumber one project killer.\u201d\nIt takes roughly 3.5 years to complete ERCOT\u2019s interconnection process and bring a project online, compared to six or more years in other regions, with PJM and the Southwest Power Pool the longest, according to Mario Hayden, Enel North America director of transmission.\n\u201cIn ERCOT, it's been fairly plug and play,\u201d he said.\nEnel has 3.3 GW of wind and solar capacity in ERCOT, plus 520 MW of energy storage that can provide 780 MWh before recharging. It is building 1.8 GW of solar and 823 MW/1,234 MWh of utility-scale storage in ERCOT, which covers most of Texas.\nInvest and connect\nOutside ERCOT, transmission owners and grid operators use an \u201cinvest and connect\u201d interconnection framework. They generally study interconnection requests for \u201cnetwork resource interconnection service,\u201d or NRIS, to see whether broad transmission upgrades are needed under stressed conditions to reliably bring planned power plants and storage facilities online at full capacity. Generators then pay for any needed network upgrades, which are made before they connect to the grid.\nThe process has grown longer and more expensive, according to a June report by the Lawrence Berkeley National Laboratory. The average interconnection costs for projects in PJM\u2019s interconnection queue jumped eightfold to $240/kW in the 2020 to 2022 period from $29/kW in the previous two years, Berkeley Lab researchers said in a January report.\nThe pace of the interconnection process has resource adequacy implications, according to Swigonski. In PJM, for example, the interconnection process has been so bogged down, it would be difficult for generators to respond to price signals in its capacity market, he said.\n\u201cIf you were to try to start building a new power plant today [based on rising capacity prices,] you're looking at at least five years before the power plant is going to become operational,\u201d Swigonski said.\nLessons from ERCOT\nERCOT offers lessons for interconnection reform elsewhere in the United States, according to Norris.\n\u201cERCOT's interconnection performance suggests that less restrictive study approaches and greater use of real-time congestion management could enable more efficient use of limited transmission capacity,\u201d he said. \u201cThe goal is to figure out how to improve energy-only and fast-track options and to depend less on the interconnection study process to identify and fund network upgrades.\u201d\nGiven ERCOT\u2019s attributes \u2014 it\u2019s an energy-only, single-state market without broad cost allocation for interconnection costs \u2014 it would be difficult to directly transfer the Texas framework to other markets, according to Enel\u2019s Hayden.\nOne potential option is to enhance FERC\u2019s requirement that transmission providers offer \u201cenergy resource interconnection service,\u201d or ERIS, for energy-only resources that doesn\u2019t require full deliverability under stressed grid conditions, Norris said. If a project qualifies for ERIS, its potential grid upgrade costs could be significantly lower than if its developer sought NRIS interconnection, he said. The generator, however, faces curtailment risks.\nIn her concurrence to FERC\u2019s interconnection rule, Clements said ERCOT could provide a template for ERIS interconnection. Streamlining ERIS interconnection assessment could allow transmission providers to focus their study resources on a smaller number of requests seeking NRIS, she said.\nSome reform options include studying clustered interconnection requests in two steps: first ERIS requests, followed by NRIS requests, according to Norris\u2019s white paper. And instead of studying ERIS requests using power flows, transmission providers could study them using \u201csecurity constrained economic dispatch,\u201d which could identify whether curtailment could handle grid constraints caused by the project, he said.\nOverall, if energy-only and other fast-track interconnection options become more attractive, that could reduce the volume of projects seeking NRIS, improving the efficiency and success rate of the interconnection study process broadly, Norris said.\nOperational, planning concerns\nHowever, the connect and manage approach raises operational and planning issues, according to Casey Cathey, SPP senior director for grid asset utilization.\nOn the operation side, markets, which would be used to manage the \u201cconnect and manage\u201d resources, cannot assess operating issues such as voltage stability, transient stability, short circuit challenges and critical clearing time challenges, Cathey said.\n\u201cWhen you talk about the concept of connect and manage, there's this whole area of electrical engineering that still needs to be addressed,\u201d he said.\nAlso, connect and manage would need to be coupled with transmission planning reforms that assess future transmission needs to make sure grid planners are \u201clooking at the robust transmission solutions associated with what's necessary to best process all these [generator interconnection] requests,\u201d Cathey said.\nGenerally, the goal of connect and manage is to more quickly add power supplies to the grid, Cathey said. But if grid operators aren\u2019t identifying transmission upgrades during the generator interconnection process, and ultimately more transmission is needed, power plant owners may face significant curtailment until more transmission is built, which can take years, according to Cathey.\n\u201cThen the question is, what have we really done?\u201d he said.",
+    "extractions": [
+      {
+        "extractionClass": "RegulatoryBody",
+        "extractionText": "Federal Energy Regulatory Commission",
+        "charInterval": {
+          "startPos": 28,
+          "endPos": 64
+        }
+      },
+      {
+        "extractionClass": "EnergyEvent",
+        "extractionText": "landmark decision",
+        "charInterval": {
+          "startPos": 5,
+          "endPos": 22
+        }
+      },
+      {
+        "extractionClass": "RegulatoryBody",
+        "extractionText": "Department of Energy",
+        "charInterval": {
+          "startPos": 334,
+          "endPos": 354
+        }
+      },
+      {
+        "extractionClass": "GridZone",
+        "extractionText": "Electric Reliability Council of Texas",
+        "charInterval": {
+          "startPos": 522,
+          "endPos": 559
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Allison Clements",
+        "charInterval": {
+          "startPos": 625,
+          "endPos": 641
+        }
+      },
+      {
+        "extractionClass": "PolicyInstrument",
+        "extractionText": "FERC Order 2023",
+        "charInterval": {
+          "startPos": 771,
+          "endPos": 786
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Tyler Norris",
+        "charInterval": {
+          "startPos": 871,
+          "endPos": 883
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Duke University",
+        "charInterval": {
+          "startPos": 907,
+          "endPos": 922
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Cypress Creek Renewables",
+        "charInterval": {
+          "startPos": 967,
+          "endPos": 991
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Karin Herzfeld",
+        "charInterval": {
+          "startPos": 1089,
+          "endPos": 1103
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Willie Phillips",
+        "charInterval": {
+          "startPos": 1165,
+          "endPos": 1180
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "WIRES",
+        "charInterval": {
+          "startPos": 1217,
+          "endPos": 1222
+        }
+      },
+      {
+        "extractionClass": "GridZone",
+        "extractionText": "ERCOT",
+        "charInterval": {
+          "startPos": 1344,
+          "endPos": 1349
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "85 GW",
+        "charInterval": {
+          "startPos": 1769,
+          "endPos": 1774
+        },
+        "attributes": {
+          "valueInMW": "85000",
+          "capacityUnit": "GW"
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "14.2 GW",
+        "charInterval": {
+          "startPos": 1965,
+          "endPos": 1972
+        },
+        "attributes": {
+          "valueInMW": "14200",
+          "capacityUnit": "GW"
+        }
+      },
+      {
+        "extractionClass": "GridZone",
+        "extractionText": "PJM Interconnection",
+        "charInterval": {
+          "startPos": 2010,
+          "endPos": 2029
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "5.6 GW",
+        "charInterval": {
+          "startPos": 2063,
+          "endPos": 2069
+        },
+        "attributes": {
+          "valueInMW": "5600",
+          "capacityUnit": "GW"
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "S&P Global",
+        "charInterval": {
+          "startPos": 2135,
+          "endPos": 2145
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Pine Gate Renewables",
+        "charInterval": {
+          "startPos": 3212,
+          "endPos": 3232
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Frank Swigonski",
+        "charInterval": {
+          "startPos": 3195,
+          "endPos": 3210
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "3.3 GW",
+        "charInterval": {
+          "startPos": 3724,
+          "endPos": 3730
+        },
+        "attributes": {
+          "valueInMW": "3300",
+          "capacityUnit": "GW"
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "520 MW",
+        "charInterval": {
+          "startPos": 3773,
+          "endPos": 3779
+        },
+        "attributes": {
+          "valueInMW": "520",
+          "capacityUnit": "MW"
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "780 MWh",
+        "charInterval": {
+          "startPos": 3815,
+          "endPos": 3822
+        },
+        "attributes": {
+          "valueInMW": "780",
+          "capacityUnit": "MWh"
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "1.8 GW",
+        "charInterval": {
+          "startPos": 3857,
+          "endPos": 3863
+        },
+        "attributes": {
+          "valueInMW": "1800",
+          "capacityUnit": "GW"
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "823 MW",
+        "charInterval": {
+          "startPos": 3877,
+          "endPos": 3883
+        },
+        "attributes": {
+          "valueInMW": "823",
+          "capacityUnit": "MW"
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "1,234 MWh",
+        "charInterval": {
+          "startPos": 3884,
+          "endPos": 3893
+        },
+        "attributes": {
+          "valueInMW": "1234",
+          "capacityUnit": "MWh"
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Enel",
+        "charInterval": {
+          "startPos": 3617,
+          "endPos": 3621
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "Texas",
+        "charInterval": {
+          "startPos": 554,
+          "endPos": 559
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Lawrence Berkeley National Laboratory",
+        "charInterval": {
+          "startPos": 4539,
+          "endPos": 4576
+        }
+      },
+      {
+        "extractionClass": "PriceDataPoint",
+        "extractionText": "$240/kW",
+        "charInterval": {
+          "startPos": 4676,
+          "endPos": 4683
+        },
+        "attributes": {
+          "priceValue": "240",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "extractionClass": "PriceDataPoint",
+        "extractionText": "$29/kW",
+        "charInterval": {
+          "startPos": 4716,
+          "endPos": 4722
+        },
+        "attributes": {
+          "priceValue": "29",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "extractionClass": "GridZone",
+        "extractionText": "Southwest Power Pool",
+        "charInterval": {
+          "startPos": 3556,
+          "endPos": 3576
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Mario Hayden",
+        "charInterval": {
+          "startPos": 3603,
+          "endPos": 3615
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Enel North America",
+        "charInterval": {
+          "startPos": 3617,
+          "endPos": 3635
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "wind",
+        "charInterval": {
+          "startPos": 2929,
+          "endPos": 2933
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "solar",
+        "charInterval": {
+          "startPos": 2902,
+          "endPos": 2907
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "energy storage",
+        "charInterval": {
+          "startPos": 203,
+          "endPos": 217
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "Enel has 3.3 GW of wind and solar capacity in ERCOT",
+        "charInterval": {
+          "startPos": 3715,
+          "endPos": 3766
+        },
+        "attributes": {
+          "relationshipType": "hasCapacity",
+          "subject": "Enel",
+          "object": "3.3 GW"
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "ERCOT is the only U.S. grid operator to use connect and manage",
+        "charInterval": {
+          "startPos": 1344,
+          "endPos": 1406
+        },
+        "attributes": {
+          "relationshipType": "hasTechnology",
+          "subject": "ERCOT",
+          "object": "connect and manage"
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "Tyler Norris, a doctoral student at Duke University",
+        "charInterval": {
+          "startPos": 871,
+          "endPos": 922
+        },
+        "attributes": {
+          "relationshipType": "mentionsOrganization",
+          "subject": "Tyler Norris",
+          "object": "Duke University"
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Casey Cathey",
+        "charInterval": {
+          "startPos": 7556,
+          "endPos": 7568
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "SPP",
+        "charInterval": {
+          "startPos": 7570,
+          "endPos": 7573
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "ERCOT brought 14.2 GW online in 2021 and 2022",
+        "charInterval": {
+          "startPos": 1951,
+          "endPos": 1996
+        },
+        "attributes": {
+          "relationshipType": "hasCapacity",
+          "subject": "ERCOT",
+          "object": "14.2 GW"
+        }
+      }
+    ]
+  },
+  {
+    "text": "Next Upcoming\nCanary Live Bay Area\nBy Canary Media\nPJM Interconnection, the organization that manages the transmission grid delivering electricity to about 65 million people from the mid-Atlantic coast to the Great Lakes, badly needs more power. In fact, its inability to connect projects languishing in its interconnection queues \u2014 most of them solar, wind, and batteries ready to replace closing coal-fired power plants \u2014 has spiked the cost of power, is threatening state clean power goals, and may put grid reliability at risk before decade\u2019s end.\nLast week, PJM won approval from the Federal Energy Regulatory Commission for two dramatically different approaches to solving these problems. But clean energy companies and advocates say one of the plans is unfair and won\u2019t work \u2014 and they\u2019re hoping the grid operator will focus on the cleaner, faster, and more realistic alternatives at hand.\nThe plan critics take issue with, known as the Reliability Resource Initiative, allows PJM to fast-track some \u201cdispatchable\u201d generation resources \u2014 most likely, fossil gas\u2013fired power plants \u2014 ahead of all the other projects that have been waiting for years to get connected, the vast majority of which are wind, solar, and batteries.\nPower plant owners, utilities, and state regulators support the RRI. But opponents say it runs counter to fair and open grid access and market competition rules, could complicate already-clogged interconnection processes, and will likely fail to deliver the fast grid relief PJM is looking for.\nAt a FERC meeting last week, the RRI proposal passed by a 3-1 vote, with the fifth commissioner, Lindsay See, a Republican, abstaining. But only Mark Christie, a Republican who was named FERC chair by the Trump administration last month, voted in support of the plan without expressing reservations.\nWillie Phillips and David Rosner, the two Democrats who voted in favor of RRI, said in a concurrence to the decision that their approval was a \u201cone-time emergency measure\u201d and that the plan is \u201cnot a substitute for a well-functioning interconnection process.\u201d Judy Chang, a Democrat who voted against the plan, wrote in her dissenting statement that RRI \u201cpresents a risk of the worst of both worlds: It compromises the Commission\u2019s open access principles with no guarantee it will resolve PJM\u2019s reliability issue.\u201d\nOne problem with RRI, Chang wrote, is that it seeks to fast-track the kind of power plants that are the hardest to build quickly: \u201dlarge generators, which are the most challenging to develop, acquire the necessary environmental permits, and obtain adequate material supplies and labor for construction.\u201d\nAnother problem is that PJM\u2019s methodology for choosing which projects get fast-tracked primarily rewards large ones, rather than prioritizing criteria like whether they can be brought online before 2030 or built at sites with existing \u201cheadroom\u201d on PJM\u2019s grid, even though those are \u201carguably the two most critical factors to meeting its identified reliability needs,\u201d Chang wrote.\nCritics have expressed similar concerns since PJM launched the RRI plan in October. The grid operator predicted that the plan could spur 10 gigawatts of new power plants by 2028. But industry observers say it\u2019s highly unlikely that many gas-fired power plants could be built or connected that quickly.\nJust getting the new gas turbines needed for these power plants can take four to five years given current order backlogs, according to industry experts. Last month, renewable energy developer NextEra Energy announced plans to build gas power plants with GE Vernova. But CEO John Ketchum noted in an earnings call that gas-fired generation projects not already well along in the procurement and construction process \u201cwon\u2019t be available at scale until 2030 and then only in certain pockets of the U.S.\u201d\nNor are large power plants likely to fit easily onto a PJM grid that\u2019s already too congested to connect most projects, at least not without significant and costly grid upgrades, said Caitlin Marquis, managing director at clean energy trade group Advanced Energy United.\nLetting up to 50 projects leap to the front of the line \u201ccould raise interconnection upgrade costs\u201d for the many other projects that have been waiting to get onto the grid, she said.\nEven the Electric Power Supply Association, a trade group representing companies that own and develop gas-fired power plants, has voiced reservations about the RRI plan. \u201cAll resources play a role in the evolving energy landscape; this limited tool is only necessary to address short-term interconnection queue bottlenecks and the current supply crunch,\u201d Todd Snitchler, the group\u2019s president and CEO, said in a statement last week. \u201cWe anticipate that PJM\u2019s queue reform process will resolve these challenges, making such measures unnecessary in the future.\u201d\nAll of these drawbacks make the RRI plan a nonstarter, critics say. But there are many other options that PJM could pursue, according to Marquis.\n\u201cThose solutions that don\u2019t upend market expectations are the pathway you should take, rather than turning to a solution that\u2019s going to have a lot of disruption and market risk and still yield uncertain outcomes,\u201d she said.\nThe second PJM plan approved by FERC last week, known as Surplus Interconnection Service, is one such option. In simple terms, it lays out rules for existing projects to add new resources \u2014 like batteries to wind and solar farms \u2014 to provide more power when the grid needs it most.\nThat proposal won broad support from groups that have fought over RRI, including clean energy advocates and fossil fuel power plant owners who are usually at odds. The new plan, clean energy advocates point out, is much improved from PJM\u2019s previous SIS regime.\n\u201cIn the past, the surplus interconnection rules were very restrictive,\u201d said Katie Siegner, a manager in the carbon-free electricity practice at think tank RMI. \u201cNow it\u2019s been opened up to be applicable to a much bigger set of resources.\u201d For example, \u201cwe\u2019ve heard from independent power providers that adding storage to existing or soon-to-be-operating renewables is now a real use case.\u201d\nIn fact, an RMI analysis submitted as part of a FERC filing from environmental groups Sierra Club and Appalachian Voices calculated that by 2030, PJM projects using SIS could add between 5.3 GW and 13.2 GW of \u201cunforced capacity\u201d \u2014 a term for the amount of power available during times of peak grid demand that drive PJM\u2019s resource-adequacy needs.\nThat\u2019s not the only way PJM can unleash more power on the grid, Siegner said. Beyond SIS, PJM has put forward a bevy of ideas to deal with what it has described as a looming grid reliability crisis. Another proposal that\u2019s won ample stakeholder support and is now awaiting FERC approval would let newly built resources more quickly reuse the grid connections left open at power plants, most of them coal-fired, that are now closing across the region.\nAccording to RMI\u2019s analysis, this \u201cgenerator replacement interconnection\u201d option could add from 3.3 GW to 10.2 GW of unforced capacity to PJM\u2019s grid by 2030. That\u2019s not just a neat way to replace dirty generation with much cleaner resources \u2014 RMI has estimated that the technique could enable up to 250 GW of clean energy across the country by 2032. It would also help resolve PJM\u2019s core challenge of replacing power plants closing under state climate mandates or economic pressures.\nProjects in Massachusetts, Minnesota, and North Carolina have all installed batteries that use the grid connections at shuttered coal-fired power plants. Environmental groups and Maryland state officials attempted to get PJM to consider such a plan to avoid paying a set of coal plants in Maryland to stay open past their planned closure dates, only to founder on PJM\u2019s lack of a workable set of rules to allow this approach to move forward.\nPJM won\u2019t be trying something new if it pursues these pathways, Siegner added. The Midcontinent Independent System Operator and Southwest Power Pool, two grid operators that together manage grids covering or touching 18 states, have added nearly 7 GW of capacity using their own versions of surplus interconnection service, and a combined 13.3 GW of capacity through generator replacement, according to RMI\u2019s analysis.\nFinally, if PJM simply completes and executes long-promised reforms to its notoriously slow and backlogged process for managing its interconnection queue, that could make a big dent in its generation deficit, Siegner said. What\u2019s more, PJM and all other U.S. grid operators are under FERC mandate to undertake interconnection reforms that should drive further improvements.\nAll of these changes will \u201callow resources to be fairly evaluated and interconnected faster,\u201d she said. Taken together, they can more than make up the capacity shortfall PJM is forecasting for 2030 and that is spurring its RRI proposal.\nBackers of fast-tracking gas-fired power plants aren\u2019t against these other reforms. As Electric Power Supply Association\u2019s Snitchler said in last week\u2019s statement, \u201cWhat matters most and what we hope to see going forward is a fair, efficient interconnection process that gives developers reasonable certainty while ensuring the grid has the power it needs\u2014now and in the future.\u201d\nAt the same time, the conflicts that have emerged over PJM\u2019s menu of plans to solve its grid challenges match up with a broader political division between fossil fuel supporters and clean energy groups.\nLast month, Republicans in Congress introduced bills that would require FERC to quickly review and decide on grid operator proposals that, like PJM\u2019s RRI plan, push certain \u201cdispatchable\u201d power plants ahead of other projects in interconnection queues. The Electric Power Supply Association supports the legislation, which was introduced by lawmakers representing Ohio, North Dakota, and Indiana, three Republican-controlled states with policies that support fossil-fuel power plants.\nAt the same time, major grid failures during winter storms over the past four years have revealed that gas-fired power plants aren\u2019t always able to provide the electricity that plans like these assume they will, said Sarah Toth Kotwis, a senior associate on the markets and grids team at RMI\u2019s carbon-free electricity program.\nPJM\u2019s RRI proposal presumes that \u201clarger resources are more likely to contribute to reliability. But in fact, we\u2019ve seen time and time again that just because a resource is dispatchable doesn\u2019t mean it\u2019s reliable.\u201d\nSuch proposals will likely face legal challenges. FERC\u2019s decision last week rejected complaints by clean energy groups that PJM\u2019s RRI plan violates legal precedent over making changes to existing rules and rates. But policies that privilege some types of power plants over others in the competitive markets managed by grid operators could certainly be seen as a violation of the \u201copen access\u201d principle that\u2019s been core to federal electricity policy for decades, according to Rob Gramlich, president of consultancy Grid Strategies who previously held senior positions at FERC.\n\u201cFor those who think they have an easy one-time fix or a way to get a quick solution here, maybe they\u2019ve not been in court proceedings very often. But those don\u2019t get resolved quickly, especially when you\u2019re going after the core principle of FERC and Federal Power Act policy,\u201d Gramlich said during a December webinar.\nGramlich didn\u2019t dismiss the challenges that PJM and the country at large face in expanding power supply to serve data centers, factories, electric vehicles, and other drivers of growing electricity demand. But \u201cI would suggest people might look for other ways to speed things up,\u201d he said.",
+    "extractions": [
+      {
+        "extractionClass": "Organization",
+        "extractionText": "PJM Interconnection",
+        "charInterval": {
+          "startPos": 51,
+          "endPos": 70
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "mid-Atlantic coast",
+        "charInterval": {
+          "startPos": 183,
+          "endPos": 201
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "Great Lakes",
+        "charInterval": {
+          "startPos": 209,
+          "endPos": 220
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "solar, wind, and batteries",
+        "charInterval": {
+          "startPos": 346,
+          "endPos": 372
+        }
+      },
+      {
+        "extractionClass": "RegulatoryBody",
+        "extractionText": "Federal Energy Regulatory Commission",
+        "charInterval": {
+          "startPos": 589,
+          "endPos": 625
+        }
+      },
+      {
+        "extractionClass": "PolicyInstrument",
+        "extractionText": "Reliability Resource Initiative",
+        "charInterval": {
+          "startPos": 944,
+          "endPos": 975
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "fossil gas\u2013fired power plants",
+        "charInterval": {
+          "startPos": 1058,
+          "endPos": 1087
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Lindsay See",
+        "charInterval": {
+          "startPos": 1624,
+          "endPos": 1635
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Mark Christie",
+        "charInterval": {
+          "startPos": 1672,
+          "endPos": 1685
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Willie Phillips",
+        "charInterval": {
+          "startPos": 1827,
+          "endPos": 1842
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "David Rosner",
+        "charInterval": {
+          "startPos": 1847,
+          "endPos": 1859
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Judy Chang",
+        "charInterval": {
+          "startPos": 2087,
+          "endPos": 2097
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "10 gigawatts",
+        "charInterval": {
+          "startPos": 3165,
+          "endPos": 3177
+        },
+        "attributes": {
+          "valueInMW": "10000",
+          "capacityUnit": "GW"
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "NextEra Energy",
+        "charInterval": {
+          "startPos": 3522,
+          "endPos": 3536
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "GE Vernova",
+        "charInterval": {
+          "startPos": 3584,
+          "endPos": 3594
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "John Ketchum",
+        "charInterval": {
+          "startPos": 3604,
+          "endPos": 3616
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "50 projects",
+        "charInterval": {
+          "startPos": 4115,
+          "endPos": 4126
+        },
+        "attributes": {
+          "valueInMW": "0",
+          "capacityUnit": "projects"
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Electric Power Supply Association",
+        "charInterval": {
+          "startPos": 4293,
+          "endPos": 4326
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Todd Snitchler",
+        "charInterval": {
+          "startPos": 4639,
+          "endPos": 4653
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Advanced Energy United",
+        "charInterval": {
+          "startPos": 4077,
+          "endPos": 4099
+        }
+      },
+      {
+        "extractionClass": "PolicyInstrument",
+        "extractionText": "Surplus Interconnection Service",
+        "charInterval": {
+          "startPos": 5272,
+          "endPos": 5303
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "RMI",
+        "charInterval": {
+          "startPos": 5914,
+          "endPos": 5917
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Sierra Club",
+        "charInterval": {
+          "startPos": 6234,
+          "endPos": 6245
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Appalachian Voices",
+        "charInterval": {
+          "startPos": 6250,
+          "endPos": 6268
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "5.3 GW",
+        "charInterval": {
+          "startPos": 6335,
+          "endPos": 6341
+        },
+        "attributes": {
+          "valueInMW": "5300",
+          "capacityUnit": "GW"
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "13.2 GW",
+        "charInterval": {
+          "startPos": 6346,
+          "endPos": 6353
+        },
+        "attributes": {
+          "valueInMW": "13200",
+          "capacityUnit": "GW"
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Katie Siegner",
+        "charInterval": {
+          "startPos": 5835,
+          "endPos": 5848
+        }
+      },
+      {
+        "extractionClass": "PolicyInstrument",
+        "extractionText": "generator replacement interconnection",
+        "charInterval": {
+          "startPos": 6981,
+          "endPos": 7018
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "3.3 GW",
+        "charInterval": {
+          "startPos": 7042,
+          "endPos": 7048
+        },
+        "attributes": {
+          "valueInMW": "3300",
+          "capacityUnit": "GW"
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "10.2 GW",
+        "charInterval": {
+          "startPos": 7052,
+          "endPos": 7059
+        },
+        "attributes": {
+          "valueInMW": "10200",
+          "capacityUnit": "GW"
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "250 GW",
+        "charInterval": {
+          "startPos": 7245,
+          "endPos": 7251
+        },
+        "attributes": {
+          "valueInMW": "250000",
+          "capacityUnit": "GW"
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "Massachusetts",
+        "charInterval": {
+          "startPos": 7442,
+          "endPos": 7455
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "Minnesota",
+        "charInterval": {
+          "startPos": 7457,
+          "endPos": 7466
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "North Carolina",
+        "charInterval": {
+          "startPos": 7472,
+          "endPos": 7486
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "Maryland",
+        "charInterval": {
+          "startPos": 7609,
+          "endPos": 7617
+        }
+      },
+      {
+        "extractionClass": "GridZone",
+        "extractionText": "Midcontinent Independent System Operator",
+        "charInterval": {
+          "startPos": 7955,
+          "endPos": 7995
+        }
+      },
+      {
+        "extractionClass": "GridZone",
+        "extractionText": "Southwest Power Pool",
+        "charInterval": {
+          "startPos": 8000,
+          "endPos": 8020
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "7 GW",
+        "charInterval": {
+          "startPos": 8118,
+          "endPos": 8122
+        },
+        "attributes": {
+          "valueInMW": "7000",
+          "capacityUnit": "GW"
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "13.3 GW",
+        "charInterval": {
+          "startPos": 8211,
+          "endPos": 8218
+        },
+        "attributes": {
+          "valueInMW": "13300",
+          "capacityUnit": "GW"
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Rob Gramlich",
+        "charInterval": {
+          "startPos": 10987,
+          "endPos": 10999
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Sarah Toth Kotwis",
+        "charInterval": {
+          "startPos": 10186,
+          "endPos": 10203
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "transmission grid delivering electricity to about 65 million people from the mid-Atlantic coast to the Great Lakes",
+        "charInterval": {
+          "startPos": 106,
+          "endPos": 220
+        },
+        "attributes": {
+          "relationshipType": "locatedIn",
+          "subject": "transmission grid",
+          "object": "mid-Atlantic coast to Great Lakes"
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "NextEra Energy announced plans to build gas power plants with GE Vernova",
+        "charInterval": {
+          "startPos": 3522,
+          "endPos": 3594
+        },
+        "attributes": {
+          "relationshipType": "mentionsOrganization",
+          "subject": "gas power plants",
+          "object": "NextEra Energy"
+        }
+      }
+    ]
+  },
+  {
+    "text": "Winter Storm Fern knocked out power for millions of people across the US and reignited a familiar political and media fight over what really causes large-scale outages during extreme weather. To separate the rhetoric from the operational reality, Electrek spoke with Leah Qusba, CEO of GoodPower, a research, strategic communications, and campaigning organization focused on advancing the global renewable energy transition.\nIn this Q&A, Qusba walks through what tends to fail first during major winter storms, what outage data shows about the role of wind, solar, and fossil generation during Fern, why fuel supply and winterization still matter more than the generation mix, and how coordinated disinformation campaigns exploit moments of uncertainty after grid emergencies and what works to counter them.\nElectrek: When \u201cmillions lose power,\u201d what usually breaks first? During big winter storms like Fern, is the biggest culprit typically distribution, transmission, or generation?\nLeah Qusba: The \u201cculprit\u201d is almost always the distribution network, followed by generation. Transmission is generally the most resilient part of the grid, though it is also the most impactful if it fails.\nDistribution networks are the most exposed and least redundant segment of the system. They rely on poles, transformers, and local lines that are directly vulnerable to ice loading, high winds, falling vegetation, and vehicle strikes. In Fern\u2019s case, freezing rain coated distribution lines and nearby vegetation with ice, adding significant weight that snapped cables and pulled trees down into local networks.\nWhen outages affect neighborhoods, it\u2019s usually because distribution systems are damaged or deliberately de-energized for safety reasons. Transmission systems are more hardened and meshed, and large generators are typically designed to ride through cold conditions. Distribution damage, by contrast, requires hands-on reconstruction work \u2013 replacing poles, restringing wires, and clearing debris.\nDistribution is also the most expensive part of the grid to harden because of its sheer scale. Burying lines can prevent storm damage, but at a cost: Undergrounding can run roughly $1 million\u2013$1.5 million per mile, compared with about $300,000 per mile for overhead lines. As extreme weather events intensify, the cost of hardening the grid is only likely to rise.\nDespite what some biased narratives suggest, wind and solar generation are rarely the initiating cause of large, storm-driven outages. During winter events, wind output is often strong, and solar simply follows daylight availability. The binding constraint is getting electrons through damaged local wires to customers, not a lack of generation on the system.\nFrom a system-cost perspective, investments that harden distribution infrastructure and improve sectionalizing and restoration speed tend to deliver far more reliability value than debates about the generation mix.\nElectrek: Based on outage data and grid operator reports, to what extent, if at all, were solar and wind the cause of outages during Storm Fern? What forms of power generation had the most trouble, if that was an issue?\nLeah Qusba: Based on publicly available information, there is no evidence that wind or solar generation was a primary cause of outages during Fern. The overwhelming driver of customer outages appears to have been weather-related damage to the distribution system.\nWhen generation does struggle during these events, it is often thermal plants that run into problems. Fuel lines can freeze, cooling water intakes can ice over, and coal piles have frozen at power plants during previous cold snaps. While critics frequently point to frozen wind turbines, modern cold-weather packages, including internal heaters and blade coatings, allow wind to perform well in cold conditions. Wind output during winter storms is often at or above seasonal averages. Solar performance during Fern appears to have been predictable and well accounted for by system operators.\nFor additional context, a detailed analysis of Winter Storm Uri by joint staff from the Federal Energy Regulatory Commission (FERC) and the North American Electric Reliability Corporation (NERC) found that inadequate cold-weather preparedness of thermal generators and their fuel supply infrastructure was a core cause of generation outages. The final staff report called for stronger generator winterization and better coordination between natural gas and electric systems to prevent failures of the thermal fleet during prolonged cold conditions.\nFuel supply is a critical part of this picture. Natural gas production facilities can struggle to extract and transport gas during extreme cold because the equipment freezes. That affects gas-fired power plants and can be costly for consumers. During Fern, natural gas prices hit record highs as demand surged and supply dropped by roughly 10% due to cold-related shut-ins. Those costs will ultimately be passed on to ratepayers.\nElectrek: Multiple US Department of Energy press releases issuing emergency orders for backup generation during Fern quote Energy Secretary Chris Wright saying, \u201cThe previous administration\u2019s energy subtraction policies weakened the grid, leaving Americans more vulnerable during events like Winter Storm Fern.\u201d The EIA said coal \u201crose to meet demand,\u201d while other sources argue a diversified grid reduced outages. What does the evidence actually show?\nLeah Qusba: We need to separate political framing from operational data. The evidence shows a much more complex picture than simple narratives about coal saving the grid or renewables causing failures.\nThe primary driver of customer outages was damage to the distribution system. On the generation side, stress was concentrated in the thermal fleet, particularly in natural gas units facing fuel-deliverability constraints and cold-weather mechanical failures. PJM reported roughly 21 GW of thermal capacity offline at peak due to frozen equipment and other mechanical issues. This forced operators to dispatch more coal and oil generation at the margin. The Department of Energy also issued Section 202(c) emergency orders allowing grid operators to bypass environmental limits and access roughly 35 GW of behind-the-meter backup generation \u2013 mostly diesel units at data centers.\nCoal generation increased during the storm, mainly because coal plants store fuel onsite and avoided pipeline freeze-offs that constrained gas supply. At the same time, wind and solar output tracked close to forecast expectations.\nThe \u201cenergy subtraction\u201d argument typically refers to thermal plant retirements over the past decade and the claim that those retirements reduced reserve margins. There is a legitimate economic discussion to be had about planning reserve adequacy, but the operational evidence from Fern does not support the idea that retirements were the decisive reliability factor. The acute problems during Fern were about fuel delivery and winterization, not a lack of installed capacity.\nThe data ultimately supports the value of resource diversity. In ERCOT, wind and solar supplied up to 30% of generation during key storm periods, and post-2021 winterization efforts kept turbines online even as gas production dropped sharply. Fern was also the first major winter storm with more than 20 GW of battery storage deployed nationally. Batteries in PJM and ERCOT provided critical frequency response when large thermal plants tripped offline, effectively acting as shock absorbers for the grid.\nCoal\u2019s onsite fuel storage proved valuable when gas pipelines froze, but that is an argument for fuel diversity \u2013 not technology dominance. No single resource rescued the grid. The system held together through a combination of fuel-secure generation, emergency diesel dispatch, battery flexibility, and aggressive operator intervention. The takeaway for planners is the importance of fuel reliability, winterization standards, and maintaining a diverse resource mix.\nElectrek: How have coordinated disinformation campaigns about renewables exploited Storm Fern, and what has actually worked to counter them?\nLeah Qusba: Disinformation around Fern followed a familiar pattern: broad power system failures were quickly framed as evidence that renewables had \u201cfailed,\u201d often before operational data was available. In this case, we saw a coordinated wave of social media videos, partisan commentary, and even official statements amplifying the claim that wind and solar weakened the grid.\nThese narratives spread despite grid operator reports and market data pointing elsewhere. Several viral posts misattributed distribution-level outages and natural gas fuel constraints to renewable intermittency, frequently recycling talking points from prior storms like Uri without regard to Fern-specific conditions. The risk is that inaccurate narratives drive policy and investment decisions that ultimately make the grid less resilient and more expensive.\nWhat has proven effective in countering these claims is speed and specificity \u2013 using real data to explain, in plain language, what actually constrained the system. Equally important is the use of trusted messengers. Independent analysts and creators who can contextualize real-time data for non-technical audiences are often better positioned to cut through misinformation.\nThe Fern experience reinforces that disinformation thrives in the first 24 to 48 hours after a major event, when uncertainty is highest. The most effective counter is timely, factual analysis grounded in operator reports rather than ideology or opinion.\nRead more: US electricity demand surged in 2025 \u2013 solar handled 61% of it\nIf you\u2019re looking to replace your old HVAC equipment, it\u2019s always a good idea to get quotes from a few installers. To make sure you\u2019re finding a trusted, reliable HVAC installer near you that offers competitive pricing on heat pumps, check out EnergySage. EnergySage is a free service that makes it easy for you to get a heat pump. They have pre-vetted heat pump installers competing for your business, ensuring you get high quality solutions. Plus, it\u2019s free to use!\nYour personalized heat pump quotes are easy to compare online and you\u2019ll get access to unbiased Energy Advisors to help you every step of the way. Get started here. \u2013 *ad",
+    "extractions": [
+      {
+        "extractionClass": "EnergyEvent",
+        "extractionText": "Winter Storm Fern",
+        "charInterval": {
+          "startPos": 0,
+          "endPos": 17
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "GoodPower",
+        "charInterval": {
+          "startPos": 286,
+          "endPos": 295
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Leah Qusba",
+        "charInterval": {
+          "startPos": 267,
+          "endPos": 277
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Electrek",
+        "charInterval": {
+          "startPos": 247,
+          "endPos": 255
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "wind and solar",
+        "charInterval": {
+          "startPos": 2409,
+          "endPos": 2423
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "fossil generation",
+        "charInterval": {
+          "startPos": 569,
+          "endPos": 586
+        }
+      },
+      {
+        "extractionClass": "GridZone",
+        "extractionText": "PJM",
+        "charInterval": {
+          "startPos": 5908,
+          "endPos": 5911
+        }
+      },
+      {
+        "extractionClass": "GridZone",
+        "extractionText": "ERCOT",
+        "charInterval": {
+          "startPos": 7101,
+          "endPos": 7106
+        }
+      },
+      {
+        "extractionClass": "RegulatoryBody",
+        "extractionText": "Federal Energy Regulatory Commission",
+        "charInterval": {
+          "startPos": 4103,
+          "endPos": 4139
+        }
+      },
+      {
+        "extractionClass": "RegulatoryBody",
+        "extractionText": "FERC",
+        "charInterval": {
+          "startPos": 4141,
+          "endPos": 4145
+        }
+      },
+      {
+        "extractionClass": "RegulatoryBody",
+        "extractionText": "North American Electric Reliability Corporation",
+        "charInterval": {
+          "startPos": 4155,
+          "endPos": 4202
+        }
+      },
+      {
+        "extractionClass": "RegulatoryBody",
+        "extractionText": "NERC",
+        "charInterval": {
+          "startPos": 4204,
+          "endPos": 4208
+        }
+      },
+      {
+        "extractionClass": "EnergyEvent",
+        "extractionText": "Winter Storm Uri",
+        "charInterval": {
+          "startPos": 4062,
+          "endPos": 4078
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "21 GW",
+        "charInterval": {
+          "startPos": 5929,
+          "endPos": 5934
+        },
+        "attributes": {
+          "valueInMW": "21000",
+          "capacityUnit": "GW"
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "35 GW",
+        "charInterval": {
+          "startPos": 6245,
+          "endPos": 6250
+        },
+        "attributes": {
+          "valueInMW": "35000",
+          "capacityUnit": "GW"
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "30%",
+        "charInterval": {
+          "startPos": 7138,
+          "endPos": 7141
+        },
+        "attributes": {
+          "valueInMW": "30",
+          "capacityUnit": "%"
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "20 GW",
+        "charInterval": {
+          "startPos": 7337,
+          "endPos": 7342
+        },
+        "attributes": {
+          "valueInMW": "20000",
+          "capacityUnit": "GW"
+        }
+      },
+      {
+        "extractionClass": "PriceDataPoint",
+        "extractionText": "record highs",
+        "charInterval": {
+          "startPos": 4844,
+          "endPos": 4856
+        },
+        "attributes": {
+          "priceValue": "record",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Chris Wright",
+        "charInterval": {
+          "startPos": 5134,
+          "endPos": 5146
+        }
+      },
+      {
+        "extractionClass": "RegulatoryBody",
+        "extractionText": "US Department of Energy",
+        "charInterval": {
+          "startPos": 5013,
+          "endPos": 5036
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "coal",
+        "charInterval": {
+          "startPos": 3588,
+          "endPos": 3592
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "natural gas",
+        "charInterval": {
+          "startPos": 4456,
+          "endPos": 4467
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "battery storage",
+        "charInterval": {
+          "startPos": 7346,
+          "endPos": 7361
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "diesel units",
+        "charInterval": {
+          "startPos": 6298,
+          "endPos": 6310
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "freezing rain coated distribution lines and nearby vegetation with ice",
+        "charInterval": {
+          "startPos": 1441,
+          "endPos": 1511
+        },
+        "attributes": {
+          "relationshipType": "hasTechnology",
+          "subject": "Winter Storm Fern",
+          "object": "distribution lines"
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "inadequate cold-weather preparedness of thermal generators and their fuel supply infrastructure was a core cause of generation outages",
+        "charInterval": {
+          "startPos": 4221,
+          "endPos": 4355
+        },
+        "attributes": {
+          "relationshipType": "developedThrough",
+          "subject": "thermal generators",
+          "object": "fuel supply infrastructure"
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "wind and solar supplied up to 30% of generation during key storm periods, and post-2021 winterization efforts kept turbines online even as gas production dropped sharply",
+        "charInterval": {
+          "startPos": 7108,
+          "endPos": 7277
+        },
+        "attributes": {
+          "relationshipType": "hasTechnology",
+          "subject": "ERCOT",
+          "object": "wind and solar"
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "EnergySage",
+        "charInterval": {
+          "startPos": 9935,
+          "endPos": 9945
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "heat pumps",
+        "charInterval": {
+          "startPos": 9913,
+          "endPos": 9923
+        }
+      }
+    ]
+  },
+  {
+    "text": "Vertical aerial drone view of large scale data center showcasing renewable energy soucres, solar panels. Artificial intelligience infrastrucutre and AI revolution with massiv energy consumption.\nNew Ways to Power Data Centers and Other Large Energy Users\nHow Bring-Your-Own and Clean Transition Tariffs could meet the energy needs of large customers while reducing risks for other ratepayers.\nNote: In this insight brief, \u201ctariffs\u201d refer to electricity rate tariffs that govern utility services, not trade-related import/export tariffs.\nLarge energy users such as data centers and other advanced manufacturing facilities are driving demand for electricity. This demand is outpacing the rate at which existing resource planning, procurement, and market processes can identify and integrate new generation in the United States. This mismatch is raising concerns for public utility commissions and grid operators as they consider how to connect large loads without comprising system reliability, affordability of electricity bills, and state decarbonization policies.\nTo address this, states are turning to large load tariffs to bring large energy users onto the grid in a transparent, standardized way. These tariffs are focused on establishing (1) rates that account for large loads\u2019 potential grid impacts, and (2) measures that reduce the risk of cost increases to other ratepayers, primarily by focusing on the risk of overbuilding due to load that doesn\u2019t materialize. We will refer to this kind of tariff as a \u201cbaseline\u201d large load tariff.\nAlthough valuable for transparency and risk mitigation, a \u201cbaseline\u201d large load tariff typically doesn\u2019t contain provisions that speed up getting more energy online or that enable customer choice. To realize these additional benefits, a baseline tariff can be complemented by a Bring-Your-Own (BYO) tariff, which defines differentiated rates if large energy users pay for new power resources themselves, allowing new resources to be added quickly and dynamically. These BYO taffirfs can be a separate tariff or be implemented as a voluntary element of a baseline tariff. Eligible resource types can be restricted to clean energy under a subtype of BYO tariffs, Clean Transition tariffs. Stakeholders should evaluate eligibility rules to determine which resources can participate in BYO tariffs and consider how BYO tariffs can align or conflict with policy goals on decarbonization and affordability.\nProcurement under BYO programs can be arranged in a variety of ways\nWhat is a BYO Tariff?\nA bring-your-own (BYO) tariff contains a mechanism that allows large electricity customers to fund the development of one or more system resources through a procurement pathway that operates alongside existing utility resource planning processes or wholesale market procurement. The customer then receives electricity at a different rate and terms than what they would pay without bringing that resource. Resources procured through a BYO tariff can be added to those already selected through utility planning or may e intended to accelerate the deployment of anticipated resources awaiting interconnection. This could be especially valuable in regions like PJM where new resources can wait years to connect to the grid.\nWe have seen a variety of BYO programs proposed over the past year in both vertically integrated and market contexts:\n- PJM\u2019s recent board letter outlines a Bring Your Own New Generation Program and accelerated interconnection for generators greater than 250 MW in size. The program is for load-serving entities. There will likely be a complementary BYO retail tariff to assign costs to the appropriate large load customers.\n- Electric Cooperative Tri-State Generation and Transmission Association refers to its member cooperative self-supply program as Bring Your Own Resources program. With a BYO retail tariff in place, member co-ops could leverage the program to offer a procurement pathway for large load customers.\n- The settlement agreement for Evergy Kansas\u2019 Large Load Rate Plan includes a Clean Energy Choice Rider to \u201csupport the procurement of clean energy resources and/or replacement of identified existing resources in lieu of or in addition to the Company\u2019s Preferred Resource Plan.\u201d\n- Through NV Energy\u2019s Clean Transition Tariff, Google procured an enhanced geothermal system to meet some of its demand and make progress toward its corporate goal of 24/7 clean energy.\n- The settlement agreement for Georgia Power\u2019s 2025 Integrated Resource Plan added a Customer-Identified Resource (CIR) procurement option to the utility\u2019s Clean and Renewable Energy Subscription (CARES) program. CIR resources must meet or exceed the average total net benefit of the broader CARES portfolio.\nAligning large load interests and system outcomes\nBYO tariffs can be structured to offer large load customers a \u201cspeed to power\u201d opportunity to connect to the grid and begin operating earlier. While operationalizing this pathway will vary by jurisdiction, grid operators can accelerate interconnection for eligible load and generation, as seen in the recently approved High Impact Large Load Generator Assessment process from SPP, or PJM\u2019s Bring Your Own New Generation proposal.\nAside from expedited interconnection, a BYO tariff may allow independent third parties to develop and construct resources in parallel with the utility\u2019s efforts. This could accelerate the timeline for the utility to procure additional capacity to serve the load request.\nFor utilities and ratepayers, BYO tariffs may offer a lower-risk mechanism to invest in resources that are not included in a utility\u2019s current investment plans. They can also help insulate other ratepayers from the risks and costs associated with sourcing new generation. This can be done by allowing specific resources to be assigned to participating customers (large loads), rather than embedded in the rate base where costs are recovered by allocating them across all ratepayers. This also ensures that resources identified to supply other ratepayers are not preempted by large load customers.\nFor new clean energy technologies, BYO tariffs can be a vehicle for insulated investment and can drive costs down as these resources scale. Ratepayers may benefit from increased grid reliability, reduced emissions, and economic growth from these technologies while avoiding the associated financial risk if the pricing and contracting mechanisms are structured appropriately. This would be similar to how corporate procurement of wind and solar helped accelerate their transition from higher priced resources into some of the lowest-cost resources on the grid.\nDesign considerations for implementation\nPricing and contracting mechanisms\nA BYO tariff provides the opportunity to align the costs and benefits of the new resource with the interests of large load customers seeking a faster interconnection. BYO tariffs can be designed to support multiple resource ownership and procurement structures that we sort into four categories below. Payment for underlying grid services (transmission, distribution, balancing, and reliability) may be set forth in the BYO or the baseline large load tariff.\nAlignment with system planning\nBYO tariffs could specify how customer-funded resources are incorporated into utility system planning and load forecasting to promote optimization and efficiency across generation, transmission, and distribution plans.\nBYO tariffs can complement planning reforms by providing a mechanism to allocate cost and risk of large-load-driven resources directly to participating customers. By contrast, this may be more challenging to achieve through standard utility planning in the near term. Regulators could validate that the utility is accurately capturing resources procured under BYO tariffs in their long-term planning process to avoid building redundant and underutilized resources that create a more expensive system for ratepayers.\nA BYO tariff also creates an opportunity to greenlight projects the utility did not select and inform subsequent resource procurement cycles. Projects may be shovel-ready yet excluded due to utility cost thresholds, caps on resource types, or simply longer planning cycles. Regulators can ensure that the utility uses the large load customer experience of bringing new resources online to update cost assumptions for such resources in future planning cycles.\nEmission impact assessment and reporting\nBYO tariffs, particularly those focused on clean energy resources such as Clean Transition Tariffs, may include provisions to assess and report emission impacts. The tariffs could incorporate hourly load matching or other accounting approaches to distinguish whether the procured resource or other grid resources are meeting the customer\u2019s demand.\nFlexibility as a part of BYO tariff implementation\nRegulators and grid operators seeking to leverage demand-side flexibility in large load integration may implement interruptible service tariffs to allow large loads to connect quickly or expand service in exchange for a commitment to reduce demand through load shedding, self-supply, or procurement of flexibility elsewhere. The latter presents an opportunity to pair interruptible power and BYO tariffs to procure off-site flexibility, such as virtual power plants.\nExpediting new clean energy procurement\nAs jurisdictions develop baseline large load tariffs and update utility planning processes, stakeholders can leverage BYO tariffs as a complementary strategy to provide a path to speed and clean resource selection for large customers, manage risk and affordability concerns for ratepayers, and supplement utility resource plans.\nTo learn more about RMI\u2019s research on tariffs, grid planning, and load flexibility, contact Charles Cannon <ccannon@rmi.org> or talk to an RMIer at the upcoming NARUC Winter Policy Summit.",
+    "extractions": [
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "solar panels",
+        "charInterval": {
+          "startPos": 91,
+          "endPos": 103
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "renewable energy",
+        "charInterval": {
+          "startPos": 65,
+          "endPos": 81
+        }
+      },
+      {
+        "extractionClass": "PolicyInstrument",
+        "extractionText": "large load tariffs",
+        "charInterval": {
+          "startPos": 1104,
+          "endPos": 1122
+        }
+      },
+      {
+        "extractionClass": "PolicyInstrument",
+        "extractionText": "Clean Transition tariffs",
+        "charInterval": {
+          "startPos": 2205,
+          "endPos": 2229
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "PJM",
+        "charInterval": {
+          "startPos": 3192,
+          "endPos": 3195
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Electric Cooperative Tri-State Generation and Transmission Association",
+        "charInterval": {
+          "startPos": 3682,
+          "endPos": 3752
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Evergy Kansas",
+        "charInterval": {
+          "startPos": 4007,
+          "endPos": 4020
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "NV Energy",
+        "charInterval": {
+          "startPos": 4265,
+          "endPos": 4274
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Google",
+        "charInterval": {
+          "startPos": 4302,
+          "endPos": 4308
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Georgia Power",
+        "charInterval": {
+          "startPos": 4472,
+          "endPos": 4485
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "enhanced geothermal system",
+        "charInterval": {
+          "startPos": 4321,
+          "endPos": 4347
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "SPP",
+        "charInterval": {
+          "startPos": 5176,
+          "endPos": 5179
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "wind and solar",
+        "charInterval": {
+          "startPos": 6528,
+          "endPos": 6542
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "Google procured an enhanced geothermal system",
+        "charInterval": {
+          "startPos": 4302,
+          "endPos": 4347
+        },
+        "attributes": {
+          "relationshipType": "operatedBy",
+          "subject": "enhanced geothermal system",
+          "object": "Google"
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "program is for load-serving entities",
+        "charInterval": {
+          "startPos": 3530,
+          "endPos": 3566
+        },
+        "attributes": {
+          "relationshipType": "hasStatus",
+          "subject": "Bring Your Own New Generation Program",
+          "object": "for load-serving entities"
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "accelerated interconnection for generators greater than 250 MW",
+        "charInterval": {
+          "startPos": 3454,
+          "endPos": 3516
+        },
+        "attributes": {
+          "relationshipType": "jurisdiction",
+          "subject": "PJM",
+          "object": "generators greater than 250 MW"
+        }
+      },
+      {
+        "extractionClass": "PolicyInstrument",
+        "extractionText": "Large Load Rate Plan",
+        "charInterval": {
+          "startPos": 4022,
+          "endPos": 4042
+        }
+      },
+      {
+        "extractionClass": "PolicyInstrument",
+        "extractionText": "Clean Energy Choice Rider",
+        "charInterval": {
+          "startPos": 4054,
+          "endPos": 4079
+        }
+      },
+      {
+        "extractionClass": "PolicyInstrument",
+        "extractionText": "Integrated Resource Plan",
+        "charInterval": {
+          "startPos": 4493,
+          "endPos": 4517
+        }
+      },
+      {
+        "extractionClass": "PolicyInstrument",
+        "extractionText": "Clean and Renewable Energy Subscription",
+        "charInterval": {
+          "startPos": 4597,
+          "endPos": 4636
+        }
+      },
+      {
+        "extractionClass": "PolicyInstrument",
+        "extractionText": "High Impact Large Load Generator Assessment process",
+        "charInterval": {
+          "startPos": 5119,
+          "endPos": 5170
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "member co-ops could leverage the program",
+        "charInterval": {
+          "startPos": 3878,
+          "endPos": 3918
+        },
+        "attributes": {
+          "relationshipType": "operatedBy",
+          "subject": "Bring Your Own Resources program",
+          "object": "member cooperatives"
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "United States",
+        "charInterval": {
+          "startPos": 811,
+          "endPos": 824
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "regions like PJM",
+        "charInterval": {
+          "startPos": 3179,
+          "endPos": 3195
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "corporate procurement of wind and solar helped accelerate their transition",
+        "charInterval": {
+          "startPos": 6503,
+          "endPos": 6577
+        },
+        "attributes": {
+          "relationshipType": "hasTechnology",
+          "subject": "corporate procurement",
+          "object": "wind and solar"
+        }
+      }
+    ]
+  },
+  {
+    "text": "The California Independent Systems Operator processes hundreds of outages daily \u2014 a painstaking task only made more challenging by the sheer complexity and interconnectedness of California\u2019s grid and a rise in extreme weather events and distributed assets.\nManaging planned and unplanned interruptions to parts of the grid is a core responsibility of independent system operators. But it\u2019s a continuous, highly manual task distributed among hundreds of employees every single day. Outage requests submitted by transmission owners, generation companies, and utilities looking to take infrastructure out of service \u2014 whether for maintenance, upgrades, or unexpected faults \u2014 must be assessed for their impact on system reliability, market operations, and customer service.\nCAISO operators in departments around the organization (transmission, generation, reliability) read those reports, track down relevant historical data and operational information from multiple sources, input relevant metrics into CAISO\u2019s grid software system, and run calculations to evaluate the impact.\nBut the organization is moving slowly away from doing everything by hand. For the last several months, CAISO has been piloting a generative AI platform that it hopes will streamline the process and help it meet the compounding demands of outage coordination.\n\u201cGenie\u201d was purpose-built for CAISO by energy services provider Open Access Technology International, and is designed to automate the outage validation process. It pulls together information from across the CAISO system and provides system operators with real-time recommendations as they vet and process outage requests each day.\nWith Genie, California will become the first state to actively manage power outages with AI, explained Abhimanyu Thakur, vice president of platforms, visualizations, and analytics at OATI.\nKey to the rollout is the longstanding relationship between CAISO and OATI. CAISO already used a suite of OATI applications, meaning Genie could be more easily integrated into existing operations without disruption.\nGenie also runs entirely within OATI data centers: Its large language models (trained on CAISO\u2019s own dictionary) and agents are all hosted internally, where CAISO data already resides, meaning no data leaves the network.\nBuilding a library of AI agents\nMost artificial intelligence tools piloted and deployed in the energy sector to date have focused on forecasting, such as predicting load or energy prices. For example, Duke Energy is using AI to run power flow simulations. Google\u2019s moonshot project, Tapestry, is applying AI to the transmission planning process by simulating grid congestion.\nWhat makes Genie unique is that it layers advanced generative AI, like natural language processing, with agentic AI, which can proactively plan and execute multi-step tasks, automate routine analyses, and make recommendations to operators in real time.\nThe platform is made up of a suite of AI agents, each responsible for a different aspect of outage processing, Thakur explained. \u201cThe whole goal here is that by using a combination of multiple agents, you should be able to solve a problem,\u201d he said. \u201cWe\u2019ll continue to build different agents as the needs arise, and keep adding them to our library\u2026Eventually we\u2019ll have hundreds of agents available in this infrastructure.\u201d\nOATI built Genie in this modular, agent-based way on purpose, he added, to allow precise validation of the results of individual tasks, and help prevent AI hallucinations. Each component is being tested independently, but eventually they will be tested in parallel and then integrated incrementally into the overall Outage Management Application.\nFor example, there\u2019s an agent focused on keyword extraction. Today, CAISO engineers read through outage reports and requests to identify keywords that come up in specific contexts, like downed lines or transformers, and then run calculations to determine how each item could impact the grid. Genie, meanwhile, can scan requests, as well as any free-form, unstructured notes attached to them, interpret them using CAISO\u2019s own dictionary of operational keywords, and automatically flag potential discrepancies for further review.\nMeanwhile, \u201csimilarity search\u201d agents sift through historical outage records and compare them to new requests based on equipment, location, and procedural details to anticipate reliability risks. And report-generating agents combine inputs from around the organization to create nightly summaries that can be reviewed by operators in the transmission, reliability, and generation departments.\nA simple example of how all of those elements work together, Thakur explained, is an operator using Genie to identify the most relevant documents \u2014 out of hundreds \u2014 for a particular outage request. Instead of having an employee or several parse through hundreds of PDFs worth of operating procedures, Genie could direct the operator to those that are most likely to be relevant.\n\u201cImagine, for all 200 outages you have to evaluate, the AI system can detect that these three are the most important documents\u2026and within these three documents these are the paragraphs that are most important,\u201d he said. \u201cYou\u2019ve suddenly shrunk that overhead. So we\u2019re not really doing predictions here, we\u2019re improving the whole experience of how operations happen inside the control room.\u201d\nTimeline and implementation\nBuilding AI tools for the energy sector is a slower, more deliberative process than for many other industries. For example, the pilot started with several months of listening sessions with more than 200 CAISO grid operators, Thakur said. OATI held meetings with over 200 CAISO staff across the organization, tracing workflows and attempting to understand true pain points and their origins.\nOATI\u2019s data scientists and engineers set out to tailor Genie\u2019s underlying models, training them on CAISO data including historical outages, internal dictionaries, and operating procedures. Then, they set about creating synthetic test cases to validate and ground the models.\nAs of July, CAISO\u2019s grid operators are testing each of the four agents individually. \u201cWe don\u2019t want to wait to put out this giant AI system and then validate the accuracy, because AI systems can hallucinate,\u201d Thakur explained. The ISO team is in the midst of testing, and then will work on validating the various agents \u2014 a critical step to determining whether Genie makes the outage management process more efficient, and more reliable.\nThe goal is that by December, the pilot will be integrated and available in CAISO\u2019s outage management application, Thakur said. In the meantime, the ISO is also working on defining what success looks like.\n\u201cObviously the goal here is to assist the operators on multiple levels,\u201d Thakur said. But defining exactly how to measure the impact of that assistance is tricky, and requires establishing a baseline, which the ISO is working on as well.\nThe first metric they\u2019re focusing on is time, he added. Does the use of Genie decrease the aggregate amount of time it takes CAISO operators to review outages?\nTo create that baseline, CAISO needs to establish how long it takes an operator to review a single outage, and then extrapolate that to all outages managed by each group within the ISO for a given day.\nCAISO, for its part, appears to be approaching the pilot with exactly the level of skepticism associated with the slower-moving power sector. A senior advisor at the ISO told MIT Tech Review earlier this month he was cautiously optimistic about where and how broadly Genie could be applied. \u201cI don\u2019t want to overhype it,\u201d he said. \u201cBut I see a world where AI agents are able to do a lot more.\u201d",
+    "extractions": [
+      {
+        "extractionClass": "GridZone",
+        "extractionText": "California Independent Systems Operator",
+        "charInterval": {
+          "startPos": 4,
+          "endPos": 43
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "California",
+        "charInterval": {
+          "startPos": 4,
+          "endPos": 14
+        }
+      },
+      {
+        "extractionClass": "GridZone",
+        "extractionText": "CAISO",
+        "charInterval": {
+          "startPos": 771,
+          "endPos": 776
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Open Access Technology International",
+        "charInterval": {
+          "startPos": 1399,
+          "endPos": 1435
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "generative AI",
+        "charInterval": {
+          "startPos": 1205,
+          "endPos": 1218
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Abhimanyu Thakur",
+        "charInterval": {
+          "startPos": 1769,
+          "endPos": 1785
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "OATI",
+        "charInterval": {
+          "startPos": 1849,
+          "endPos": 1853
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Duke Energy",
+        "charInterval": {
+          "startPos": 2493,
+          "endPos": 2504
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Google",
+        "charInterval": {
+          "startPos": 2548,
+          "endPos": 2554
+        }
+      },
+      {
+        "extractionClass": "EnergyProject",
+        "extractionText": "Tapestry",
+        "charInterval": {
+          "startPos": 2575,
+          "endPos": 2583
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "natural language processing",
+        "charInterval": {
+          "startPos": 2739,
+          "endPos": 2766
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "agentic AI",
+        "charInterval": {
+          "startPos": 2773,
+          "endPos": 2783
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "keyword extraction",
+        "charInterval": {
+          "startPos": 3733,
+          "endPos": 3751
+        }
+      },
+      {
+        "extractionClass": "EnergyEvent",
+        "extractionText": "outages",
+        "charInterval": {
+          "startPos": 66,
+          "endPos": 73
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "CAISO already used a suite of OATI applications",
+        "charInterval": {
+          "startPos": 1931,
+          "endPos": 1978
+        },
+        "attributes": {
+          "relationshipType": "mentionsOrganization",
+          "subject": "CAISO",
+          "object": "OATI"
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "Duke Energy is using AI to run power flow simulations",
+        "charInterval": {
+          "startPos": 2493,
+          "endPos": 2546
+        },
+        "attributes": {
+          "relationshipType": "hasTechnology",
+          "subject": "Duke Energy",
+          "object": "AI"
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "AI",
+        "charInterval": {
+          "startPos": 772,
+          "endPos": 774
+        }
+      },
+      {
+        "extractionClass": "PolicyInstrument",
+        "extractionText": "Outage Management Application",
+        "charInterval": {
+          "startPos": 3661,
+          "endPos": 3690
+        }
+      },
+      {
+        "extractionClass": "EnergyEvent",
+        "extractionText": "downed lines or transformers",
+        "charInterval": {
+          "startPos": 3878,
+          "endPos": 3906
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "200 outages",
+        "charInterval": {
+          "startPos": 5011,
+          "endPos": 5022
+        },
+        "attributes": {
+          "valueInMW": "0",
+          "capacityUnit": "outages"
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "California will become the first state to actively manage power outages with AI",
+        "charInterval": {
+          "startPos": 1678,
+          "endPos": 1757
+        },
+        "attributes": {
+          "relationshipType": "hasTechnology",
+          "subject": "California",
+          "object": "AI"
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "large language models",
+        "charInterval": {
+          "startPos": 2126,
+          "endPos": 2147
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "power flow simulations",
+        "charInterval": {
+          "startPos": 2524,
+          "endPos": 2546
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "transmission planning",
+        "charInterval": {
+          "startPos": 2607,
+          "endPos": 2628
+        }
+      }
+    ]
+  },
+  {
+    "text": "On a quiet road in Valley Forge, Pennsylvania, not far from the field where George Washington\u2019s starving soldiers waited out the winter in 1778, sits the headquarters for PJM Interconnection, the largest electrical grid operator in the United States. Inside, operators wage war against inclement weather and power surges, ensuring that electricity is reliably delivered to 65 million customers across 13 states and the District of Columbia. The control board looks like something out of a disaster movie \u2014 covering the walls and stretching nearly from floor to ceiling \u2014 but, by design, it\u2019s a pretty drama-free environment.\nAs the U.S. grapples with a surge in electricity demand, however, that may be changing.\nIn late September, governors from 11 of PJM\u2019s member states banded together in Philadelphia to demand a greater role in the grid\u2019s energy decisions, given rapidly rising costs faced by their constituents. Some even threatened to walk away from the 13-state grid altogether.\n\u201cWe need states to have more of a say in how PJM operates,\u201d said Governor Josh Shapiro of Pennsylvania, who led the charge. \u201cWe need to move more quickly on energy-producing projects, and we\u2019ve got to hold down costs. If PJM cannot do that, then Pennsylvania will look to go it alone.\u201d\nPennsylvania is a net exporter of power and could, theoretically, pass a law forcing its generators to withdraw from the nonprofit and join a new grid operator, but that would require federal approval; plus, power generators would have to repay PJM for a mountain of payments the grid operator has already made. Shapiro\u2019s bluster is more likely intended to force changes within PJM and secure a greater role for public officials in the grid they rely on.\nWhat the governors really want, in the end, is lower retail electricity prices. In fact, preventing the kinds of dramatic rate increases that customers are seeing now, as tech companies rush to build energy-hungry data centers, was the reason PJM was formed. Until about 30 years ago, U.S. electric utility companies controlled both the means of generating energy via power plants and the transmission and distribution systems that delivered that energy to customers. Rising prices in the \u201980s and \u201990s led many states to rule that utility companies could no longer own power plants, breaking the generators\u2019 monopoly control within a given region. These moves came after the federal government took steps to open the nation\u2019s grids to independent power generators that could compete with utility-owned plants.\nToday, PJM acts as a kind of middleman. It runs a daily energy market, which buys power from the generators offering the lowest prices and then sells it to local utilities to meet real-time demand. But in order to do this, PJM has to guarantee that there will be enough power plants (or solar arrays or wind turbines) offering to sell their power at any given time. That\u2019s why, every year, PJM also runs a so-called capacity market, which estimates the total amount of electricity the entire region is projected to use over the next three years. PJM uses that figure to pay power plants to secure their commitment to operate when called upon.\nTo estimate required capacity, PJM looks at historical data and new load requests \u2014 potential customers who want to be connected to the grid \u2014 and then adds extra capacity so that regions have some wiggle room, rather than facing rolling blackouts when challenges like extreme weather arise. About 25 percent of every utility bill reflects this \u201ccapacity market,\u201d the amount of money PJM expects to pay to ensure reliable service on the hottest and coldest days of the year, over the next three years.\nCapacity auctions rarely make headlines, but Silicon Valley\u2019s race toward artificial intelligence is forcing these dynamics into the spotlight, because PJM member states such as Pennsylvania, New Jersey, Ohio, and Virginia have aggressively courted the industry. In March, President Trump joined Pennsylvania Senator Dave McCormick at the Energy and Innovation Summit in Pittsburgh to announce $90 billion in private investment, aiming to turn Pennsylvania into a national hub for data centers and AI. Virginia is already home to the so-called Data Center Alley, a cluster of facilities through which 70 percent of global internet traffic eventually flows, and Ohio is emerging as a major player in tech infrastructure as well. The result is an unprecedented number of large load requests flooding the grid.\nA report from the Union of Concerned Scientists found that ratepayers in seven data-center-friendly states within PJM\u2019s territory were charged $4.4 billion for the transmission upgrades data centers require in order to come online. In Washington, D.C., for example, customers saw an average increase of $21 on their monthly electricity bills.\nSkyrocketing prices at PJM\u2019s capacity auctions are a key factor putting pressure on consumer prices. In July, PJM announced that the cost of its most recent capacity auction had risen to $16.1 billion, up from only $2.2 billion just two years ago. This was, according to Monitoring Analytics, a PJM watchdog group, \u201calmost entirely due to existing and projected large data center load additions to the PJM grid.\u201d The group also pointed to \u201cthe extreme uncertainty in the load forecasts\u201d as a \u201cunique and unprecedented situation\u201d that needs to be addressed. Monitoring Analytics and the Natural Resources Defense Council, or NRDC, have both suggested that PJM adopt a \u201cbring your own generation\u201d system, in which particularly electricity-gobbling customers like data centers would be obligated to build their own sources of power upfront, rather than draining the grid.\nMuch of the uncertainty around the future of the grid, experts from NRDC and the Sierra Club caution, is because some of this seemingly bottomless demand for power may amount to little more than a mirage. A tech company looking to build a single data center, for example, might apply to the utility operator in three different areas before they\u2019ve definitively secured land. Ultimately, they build a single data center, but ratepayers are still stuck fronting the cost for three data centers, because all three applications were taken into account on the capacity market. Indeed, some estimates suggest that roughly 75 to 90 percent of data center load requests will amount to nothing.\nPJM has also taken heat for leaving new sources of electricity languishing, waiting to be connected to the grid. The grid operator has a so-called interconnection queue, largely full of renewable energy projects that have been waiting to come online for years. Earlier this month, 105 lawmakers signed a letter urging PJM to clear the queue of renewable energy projects to take advantage of tax credits that expire at the end of the year. (The current federal government shutdown may further complicate efforts to meet that deadline.)\nPart of the problem is logistical, according to Robert Routh, the Pennsylvania policy director of NRDC. \u201cFor a long period of time, PJM was accustomed to seeing its interconnection queue requests \u2026 come at a fairly leisurely pace,\u201d he said. In an earlier era, PJM was dealing with large fossil fuel plants that were constructed close to transmission lines and had a fairly standardized process for interconnection. But as renewable energy became cheaper, the number of smaller energy projects trying to connect to the grid increased. In 2022, PJM stopped taking new interconnection requests in order to work through its backlog, which is expected to take until the end of 2026.\n\u201cThe sheer volume of requests started to overwhelm them,\u201d said Routh. \u201cThey didn\u2019t adapt to those circumstances.\u201d\nIn the meantime, member state governors are requesting more say in how PJM allocates its resources and brings generation online. Although states have actively courted tech investment generally and data centers specifically, lawmakers are concerned that the investment boom is causing consumer electricity prices to rise to an unsustainable level.\nA representative from PJM said it was \u201cdoing everything within our given authority to deal with this unprecedented growth in expected electricity demand.\u201d PJM is seeking public comment on an initiative called the Critical Issue Fast Path that would fast-track state-sponsored energy projects associated with large load requests; task utilities with weeding out duplicative requests; and require states to sign off on capacity market projections. The requirement for state approval puts the onus back on the governors, who are \u201cbasically pointing fingers at PJM,\u201d said Rao Konidena, an energy market analyst.\nUnder the updated plan, states could choose large energy projects that would be allowed to jump the queue and power these data centers. But, critics say, this will inevitably result in more oil and gas projects \u2014 given the regulatory headwinds facing solar and wind under the Trump administration and the desperate race to build superintelligence, it\u2019s unlikely that tech companies will wait around for clean energy. Shapiro\u2019s office did not respond to a request for comment when asked how they planned to square Pennsylvania\u2019s emissions goals with the billions of dollars in AI investment the state has pursued.\n\u201cSo many of these [tech] companies \u2014 you know, Google, Apple \u2014 have these supposedly ironclad commitments to clean energy and climate action and reducing emissions,\u201d said Nick Abraham, the senior state communications with the League of Conservation Voters, an environmental advocacy group. \u201cThey cannot do that if they are adding more fossil fuels to the grid because of these data centers.\u201d\nEditor\u2019s note: The Natural Resources Defense Council is an advertiser with Grist. Advertisers have no role in Grist\u2019s editorial decisions.",
+    "extractions": [
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "Valley Forge, Pennsylvania",
+        "charInterval": {
+          "startPos": 19,
+          "endPos": 45
+        }
+      },
+      {
+        "extractionClass": "GridZone",
+        "extractionText": "PJM Interconnection",
+        "charInterval": {
+          "startPos": 171,
+          "endPos": 190
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "65 million",
+        "charInterval": {
+          "startPos": 373,
+          "endPos": 383
+        },
+        "attributes": {
+          "valueInMW": "customers",
+          "capacityUnit": "customers"
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "13 states",
+        "charInterval": {
+          "startPos": 401,
+          "endPos": 410
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "District of Columbia",
+        "charInterval": {
+          "startPos": 419,
+          "endPos": 439
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Governor Josh Shapiro",
+        "charInterval": {
+          "startPos": 1052,
+          "endPos": 1073
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "Pennsylvania",
+        "charInterval": {
+          "startPos": 33,
+          "endPos": 45
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "Governor Josh Shapiro of Pennsylvania, who led the charge",
+        "charInterval": {
+          "startPos": 1052,
+          "endPos": 1109
+        },
+        "attributes": {
+          "relationshipType": "mentionsOrganization",
+          "subject": "Governor Josh Shapiro",
+          "object": "Pennsylvania"
+        }
+      },
+      {
+        "extractionClass": "EnergyEvent",
+        "extractionText": "rate increases",
+        "charInterval": {
+          "startPos": 1850,
+          "endPos": 1864
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "solar arrays",
+        "charInterval": {
+          "startPos": 2826,
+          "endPos": 2838
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "wind turbines",
+        "charInterval": {
+          "startPos": 2842,
+          "endPos": 2855
+        }
+      },
+      {
+        "extractionClass": "PolicyInstrument",
+        "extractionText": "capacity market",
+        "charInterval": {
+          "startPos": 2955,
+          "endPos": 2970
+        }
+      },
+      {
+        "extractionClass": "PriceDataPoint",
+        "extractionText": "$90 billion",
+        "charInterval": {
+          "startPos": 4078,
+          "endPos": 4089
+        },
+        "attributes": {
+          "priceValue": "90000000000",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "President Trump",
+        "charInterval": {
+          "startPos": 3957,
+          "endPos": 3972
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Dave McCormick",
+        "charInterval": {
+          "startPos": 4001,
+          "endPos": 4015
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "Virginia",
+        "charInterval": {
+          "startPos": 3898,
+          "endPos": 3906
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "Ohio",
+        "charInterval": {
+          "startPos": 3888,
+          "endPos": 3892
+        }
+      },
+      {
+        "extractionClass": "RegulatoryBody",
+        "extractionText": "Union of Concerned Scientists",
+        "charInterval": {
+          "startPos": 4510,
+          "endPos": 4539
+        }
+      },
+      {
+        "extractionClass": "PriceDataPoint",
+        "extractionText": "$4.4 billion",
+        "charInterval": {
+          "startPos": 4635,
+          "endPos": 4647
+        },
+        "attributes": {
+          "priceValue": "4400000000",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "Washington, D.C.",
+        "charInterval": {
+          "startPos": 4727,
+          "endPos": 4743
+        }
+      },
+      {
+        "extractionClass": "PriceDataPoint",
+        "extractionText": "$21",
+        "charInterval": {
+          "startPos": 4795,
+          "endPos": 4798
+        },
+        "attributes": {
+          "priceValue": "21",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "extractionClass": "PriceDataPoint",
+        "extractionText": "$16.1 billion",
+        "charInterval": {
+          "startPos": 5022,
+          "endPos": 5035
+        },
+        "attributes": {
+          "priceValue": "16100000000",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "extractionClass": "PriceDataPoint",
+        "extractionText": "$2.2 billion",
+        "charInterval": {
+          "startPos": 5050,
+          "endPos": 5062
+        },
+        "attributes": {
+          "priceValue": "2200000000",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Monitoring Analytics",
+        "charInterval": {
+          "startPos": 5106,
+          "endPos": 5126
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Natural Resources Defense Council",
+        "charInterval": {
+          "startPos": 5421,
+          "endPos": 5454
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "data center load additions to the PJM grid",
+        "charInterval": {
+          "startPos": 5203,
+          "endPos": 5245
+        },
+        "attributes": {
+          "relationshipType": "mentionsOrganization",
+          "subject": "data centers",
+          "object": "PJM"
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Sierra Club",
+        "charInterval": {
+          "startPos": 5785,
+          "endPos": 5796
+        }
+      },
+      {
+        "extractionClass": "EnergyEvent",
+        "extractionText": "interconnection queue",
+        "charInterval": {
+          "startPos": 6537,
+          "endPos": 6558
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "renewable energy",
+        "charInterval": {
+          "startPos": 6576,
+          "endPos": 6592
+        }
+      },
+      {
+        "extractionClass": "PolicyInstrument",
+        "extractionText": "tax credits",
+        "charInterval": {
+          "startPos": 6781,
+          "endPos": 6792
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Robert Routh",
+        "charInterval": {
+          "startPos": 6973,
+          "endPos": 6985
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "fossil fuel plants",
+        "charInterval": {
+          "startPos": 7212,
+          "endPos": 7230
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "renewable energy",
+        "charInterval": {
+          "startPos": 6576,
+          "endPos": 6592
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "PJM was accustomed to seeing its interconnection queue requests",
+        "charInterval": {
+          "startPos": 7057,
+          "endPos": 7120
+        },
+        "attributes": {
+          "relationshipType": "mentionsOrganization",
+          "subject": "interconnection queue",
+          "object": "PJM"
+        }
+      },
+      {
+        "extractionClass": "PolicyInstrument",
+        "extractionText": "Critical Issue Fast Path",
+        "charInterval": {
+          "startPos": 8277,
+          "endPos": 8301
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Rao Konidena",
+        "charInterval": {
+          "startPos": 8632,
+          "endPos": 8644
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "solar and wind",
+        "charInterval": {
+          "startPos": 8923,
+          "endPos": 8937
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Google",
+        "charInterval": {
+          "startPos": 9332,
+          "endPos": 9338
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Apple",
+        "charInterval": {
+          "startPos": 9340,
+          "endPos": 9345
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "League of Conservation Voters",
+        "charInterval": {
+          "startPos": 9511,
+          "endPos": 9540
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "fossil fuels",
+        "charInterval": {
+          "startPos": 9620,
+          "endPos": 9632
+        }
+      }
+    ]
+  },
+  {
+    "text": "The Oregon Dept. of Energy has selected 24 recipients to receive nearly $12 million in Community Renewable Energy Grant Program funds. The program supports planning and construction of renewable energy or energy resilience projects for Tribes, public bodies and consumer-owned utilities.\nODOE received 76 applications requesting over $46 million to support projects for this fourth round of grant funding. Awards were chosen on a competitive basis with the help of a grant application evaluation committee, which included community-based organizations, renewable energy advocates, industry leaders and technical experts from across the state. Committee members considered project feasibility and strength, equity considerations, cost savings, economic development and other features to select the 24 awarded projects.\nThe Salem Housing Authority has been awarded about $295,000 to construct a net-metered solar system that will offset energy costs for 114 apartments for seniors at two low-income housing locations. Pinehurst School District\u2019s $219,500 award will support installation of a 19-kW solar array, along with 71.5 kWh of energy storage to mitigate routine power interruptions at Pinehurst Elementary School. The school serves as an emergency resilience hub for a remote community in the mountains east of Ashland. The City of Pendleton has also been awarded $1 million to install a 500-kW energy storage system that will pair with an existing micro-hydropower generation system at the Byers Aquifer Storage and Recovery Well Site. The added battery storage will optimize grid operations, particularly during outages or emergencies. The Confederated Tribes of Coos, Lower Umpqua and Siuslaw Indians has been awarded a $100,000 planning grant for a Tribal-wide renewable solar and storage resilience project at the Three Rivers Health Center. A $63,811 grant award to Oakridge School District will support planning for solar and energy storage, including a potential solar and biomass combined heat and power system at three area schools and a Parent Resource Center.\nODOE was also pleased to see program participants that received previous planning grants return to request construction funds to put those plans into action. The Curry Public Library District was awarded a planning grant in 2024, and will now receive nearly $1 million to install three solar canopies paired with energy storage. In addition to producing energy savings, the library will serve as a community emergency center during potential outages or other emergencies. The City of Cascade Locks also received a planning grant in 2024 and is now awarded nearly $778,000 to install rooftop solar and paired battery storage that will support Cascade Locks Fire Station operations during outages and emergencies. In total, ODOE\u2019s program is supporting eight planning and 16 construction projects.\n\u201cThe Oregon Department of Energy is proud to announce these new grant awardees,\u201d said ODOE Director Janine Benner. \u201cThis grant program supports projects across the state that bolster clean electricity and strengthen resilience in Oregon communities \u2013 two of five pathways we\u2019ve identified in the Oregon Energy Strategy.\u201d\nODOE will finalize performance agreements with the awardees, which outline their responsibilities for receiving the funds. After finalizing the agreements, the agency can release up to 30% of the grant, with the remaining funds released upon project completion and verification.\nThe Community Renewable Energy Grant Program was created by the Oregon Legislature in 2021 to support projects outside Portland city limits. ODOE also announced grant awardees in 2022, 2023 and 2024.\nALL AWARDEES\nSilver Falls Library District | Construction Resilience | $589,147\nInstallation of a 71-kW PV solar system, estimated to produce 82,359 kWh annually, along with a 240-kWh battery storage system to supplement energy use. The project will offset costs and allow the building to act as an emergency response and community support center during outages. This project is a prior grant recipient to support planning activities for this construction project.\nCity of Gresham | Construction Resilience | $998,766\nInstallation of a net-metered, 155-kW PV solar system capable of producing up to 173,160 kWh annually, including 480 kWh of battery energy storage. The project will support four buildings at the Rockwood Village Apartments. Project partners included Feed\u2019em Freedom Foundation, Community Development Partners and the City of Gresham. This project is a prior grant recipient for planning activities for this construction project.\nSalem Housing Authority | Construction Renewable | $294,967\nInstallation of a net-metered PV solar system estimated to generate 163,000 kWh annually to support and offset energy costs for 114 one-bedroom apartments for seniors at two low-income housing locations.\nUmpqua Indian Utility Cooperative | Construction Renewable | $1,000,000\nInstallation of 4-MW of solar generation across five site locations to provide electricity for the Cow Creek Band of the Umpqua Indians, resulting in an estimated annual savings of $706 per Tribal member households.\nPinehurst School District #94 | Construction Resilience | $219,500\nInstallation of a 19-kW solar photovoltaic array generating up to 25,825 kWh per year, along with 71.5 kWh of energy storage to mitigate routine power interruptions at Pinehurst Elementary School. The school serves as a community emergency resilience hub for a remote community in the mountains east of Ashland.\nCentral Oregon Intergovernmental Council | Construction Resilience | $292,923\nInstallation of a 37-kW PV solar system generating up to 53,389 kWh annually, including 111 kWh battery energy storage system and 12 publicly available electric vehicle charging ports at the Heart of Oregon Corps\u2019 new youth workforce development central campus in Redmond. The organization serves disadvantaged youth and the broader community.\nKlamath County | Construction Renewable \u2013 $321,988\nInstallation of a 148-kW solar system estimated to produce up to 243,028 kWh annually to offset utility costs for the Klamath County Juvenile and Public Departments, as well as the Veterans Services Office.\nCity of Pendleton | Construction Resilience | $1,000,000\nInstallation of 500-kW nameplate energy storage system paired with an existing micro-hydro generation system at the Byers Aquifer Storage and Recovery Well Site. The project will optimize grid operations and sustain power during outages or emergencies.\nCurry Public Library District | Construction Resilience | $999,161\nInstallation of three ground-mounted PV solar canopies, totaling 90 kW nameplate capacity, that are able to produce up to 131,100 kWh annually. They will be paired with a 184-kW energy storage setup to offset energy costs. The building will serve as a community emergency incidence center during outages and emergency events. This project is a prior grant recipient for supporting planning activities for this construction project.\nRogue River Rural Fire Protection District | Construction Resilience | $603,630\nInstallation of an 87-kW PV storage and 184-kWh storage capacity pole mount system that will allow critical fire, EMS and 911 operations to continue uninterrupted in the event of a major disaster without the need for diesel fuel deliveries.\nOchoco Irrigation District | Construction Renewable | $700,000\nInstallation of a 764-kW floating solar project on a reservoir to provide affordable energy to local residents.\nConfederated Tribes of the Warm Springs | Construction Resilience | $1,000,000\nInstallation of community-scale solar and battery storage systems at 34 Tribe-owned affordable and supportive housing locations, as well as a community center. The project will be capable of generating up to 239,000 kWh of renewable energy annually.\nCentral Oregon Intergovernmental Council | Construction Resilience | $380,000\nInstallation of a 30-kW photovoltaic array estimated to produce 41,483 kWh per year, paired with a 240-kWh battery storage system. The project will support 40 low-income households at a new affordable housing project in Sisters developed by partner Northwest Housing Alternatives.\nOregon State University Cascades | Construction Renewable | $1,000,000\nInstallation of solar at five campus locations, including classroom and residence halls and the Student Success Center. The projects are estimated to generate 1,128,000 kWh annually to provide clean campus energy and offset costs.\nCity of Cascade Locks | Construction Resilience | $777,851\nInstallation of a 64-kW rooftop solar array, generating 76,891 kWh per year, paired with a 125-kW battery storage system. The project will offset energy costs and support facility operation during outages and emergences at the Cascade Locks Fire Station. This project is a prior grant recipient for planning activities for this construction project.\nMultnomah County | Construction Resilience | $998,763\nInstallation of a net-metered 31-kW PV solar system with estimated annual renewable energy production of 340,109 kWh, paired with a 33-kWh battery energy storage system in Troutdale. The project will support an onsite walk-in cooler and refrigeration trailer, and provide barn lighting in partnership with Feed\u2019em Freedom Foundation, the county\u2019s CROP program, which also serves as a Black Community Food Center.\nCity of Gresham | Planning Resilience | $100,000\nPlanning for a microgrid solar power and storage system linking four non-profit agencies at the Rockwood Community Campus in Gresham.\nCoos County Area Transportation District | Planning Resilience | $100,000\nPlanning for a microgrid with multi-type solar arrays and energy storage systems for a new transit hub, including possible planning and consideration of a modern hydrogen methane pyrolysis system.\nConfederated Tribes of Coos, Lower Umpqua, and Siuslaw Indians | Planning Resilience | $100,000\nPlanning for a Tribal-wide renewable energy resilience project at the Three Rivers Health Center using solar and battery energy storage systems.\nOakridge School District 76 | Planning Resilience | $63,811\nPlanning for solar and energy storage, including a potential photovoltaic and biomass combined heat and power system at three area schools and a Parent Resource Center.\nHood River County School District | Planning Resilience | $100,000\nPlanning for a net-metered rooftop 110-kW photovoltaic system with 300-kWh battery storage potential at the elementary school, including possible addition of vehicle-to-building EV charging system.\nTualatin Hills Park & Recreation District | Planning Resilience | $100,000\nPlanning to conduct comprehensive feasibility studies for solar systems and potential resiliency options at multiple building sites at the Howard M. Terpenning Recreation Complex.\nEugene Water & Electric Board | Planning Renewable | $100,000\nPlanning to design expanded EV charging infrastructure at EWEB\u2019s headquarters to support the long-term electrification of its light-duty fleet, which typically includes 50 pickup trucks and 14 SUVs.\nEast Fork Irrigation District | Planning Renewable | $100,000\nPlanning for an in-conduit hydropower facility of approximately 850-950 kW that would generate approximately 2.6 million kWh annually.",
+    "extractions": [
+      {
+        "extractionClass": "RegulatoryBody",
+        "extractionText": "Oregon Dept. of Energy",
+        "charInterval": {
+          "startPos": 4,
+          "endPos": 26
+        }
+      },
+      {
+        "extractionClass": "PolicyInstrument",
+        "extractionText": "Community Renewable Energy Grant Program",
+        "charInterval": {
+          "startPos": 87,
+          "endPos": 127
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "$12 million",
+        "charInterval": {
+          "startPos": 72,
+          "endPos": 83
+        },
+        "attributes": {
+          "valueInMW": "12",
+          "capacityUnit": "million dollars"
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Salem Housing Authority",
+        "charInterval": {
+          "startPos": 822,
+          "endPos": 845
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "$295,000",
+        "charInterval": {
+          "startPos": 869,
+          "endPos": 877
+        },
+        "attributes": {
+          "valueInMW": "295000",
+          "capacityUnit": "dollars"
+        }
+      },
+      {
+        "extractionClass": "RenewableInstallation",
+        "extractionText": "net-metered solar system",
+        "charInterval": {
+          "startPos": 893,
+          "endPos": 917
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Pinehurst School District",
+        "charInterval": {
+          "startPos": 1016,
+          "endPos": 1041
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "19-kW",
+        "charInterval": {
+          "startPos": 1090,
+          "endPos": 1095
+        },
+        "attributes": {
+          "valueInMW": "0.019",
+          "capacityUnit": "kW"
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "71.5 kWh",
+        "charInterval": {
+          "startPos": 1120,
+          "endPos": 1128
+        },
+        "attributes": {
+          "valueInMW": "71.5",
+          "capacityUnit": "kWh"
+        }
+      },
+      {
+        "extractionClass": "PowerPlant",
+        "extractionText": "Pinehurst Elementary School",
+        "charInterval": {
+          "startPos": 1190,
+          "endPos": 1217
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "Ashland",
+        "charInterval": {
+          "startPos": 1316,
+          "endPos": 1323
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "City of Pendleton",
+        "charInterval": {
+          "startPos": 1329,
+          "endPos": 1346
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "500-kW",
+        "charInterval": {
+          "startPos": 1393,
+          "endPos": 1399
+        },
+        "attributes": {
+          "valueInMW": "0.5",
+          "capacityUnit": "kW"
+        }
+      },
+      {
+        "extractionClass": "PowerPlant",
+        "extractionText": "Byers Aquifer Storage and Recovery Well Site",
+        "charInterval": {
+          "startPos": 1496,
+          "endPos": 1540
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Confederated Tribes of Coos, Lower Umpqua and Siuslaw Indians",
+        "charInterval": {
+          "startPos": 1647,
+          "endPos": 1708
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "$100,000",
+        "charInterval": {
+          "startPos": 1728,
+          "endPos": 1736
+        },
+        "attributes": {
+          "valueInMW": "100000",
+          "capacityUnit": "dollars"
+        }
+      },
+      {
+        "extractionClass": "RenewableInstallation",
+        "extractionText": "Tribal-wide renewable solar and storage resilience project",
+        "charInterval": {
+          "startPos": 1758,
+          "endPos": 1816
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Oakridge School District",
+        "charInterval": {
+          "startPos": 1877,
+          "endPos": 1901
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Curry Public Library District",
+        "charInterval": {
+          "startPos": 2239,
+          "endPos": 2268
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "$1 million",
+        "charInterval": {
+          "startPos": 1369,
+          "endPos": 1379
+        },
+        "attributes": {
+          "valueInMW": "1",
+          "capacityUnit": "million dollars"
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "City of Cascade Locks",
+        "charInterval": {
+          "startPos": 2553,
+          "endPos": 2574
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "$778,000",
+        "charInterval": {
+          "startPos": 2640,
+          "endPos": 2648
+        },
+        "attributes": {
+          "valueInMW": "778000",
+          "capacityUnit": "dollars"
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Janine Benner",
+        "charInterval": {
+          "startPos": 2973,
+          "endPos": 2986
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "program supports projects",
+        "charInterval": {
+          "startPos": 3000,
+          "endPos": 3025
+        },
+        "attributes": {
+          "relationshipType": "developedThrough",
+          "subject": "Community Renewable Energy Grant Program",
+          "object": "clean electricity and strengthen resilience"
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "Installation of a 71-kW PV solar system",
+        "charInterval": {
+          "startPos": 3753,
+          "endPos": 3792
+        },
+        "attributes": {
+          "relationshipType": "hasTechnology",
+          "subject": "Silver Falls Library District",
+          "object": "PV solar system"
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "Installation of a net-metered, 155-kW PV solar system",
+        "charInterval": {
+          "startPos": 4191,
+          "endPos": 4244
+        },
+        "attributes": {
+          "relationshipType": "hasTechnology",
+          "subject": "City of Gresham",
+          "object": "PV solar system"
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "71-kW",
+        "charInterval": {
+          "startPos": 3771,
+          "endPos": 3776
+        },
+        "attributes": {
+          "valueInMW": "0.071",
+          "capacityUnit": "kW"
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "240-kWh",
+        "charInterval": {
+          "startPos": 3849,
+          "endPos": 3856
+        },
+        "attributes": {
+          "valueInMW": "240",
+          "capacityUnit": "kWh"
+        }
+      },
+      {
+        "extractionClass": "CapacityMeasurement",
+        "extractionText": "155-kW",
+        "charInterval": {
+          "startPos": 4222,
+          "endPos": 4228
+        },
+        "attributes": {
+          "valueInMW": "0.155",
+          "capacityUnit": "kW"
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "project will offset costs",
+        "charInterval": {
+          "startPos": 3910,
+          "endPos": 3935
+        },
+        "attributes": {
+          "relationshipType": "hasStatus",
+          "subject": "Silver Falls Library District project",
+          "object": "operational"
+        }
+      }
+    ]
+  },
+  {
+    "text": "PHILADELPHIA\u2014Ninety-eight years ago, the nation\u2019s largest power grid operator was founded here by utilities serving Pennsylvania and New Jersey. On Monday, Pennsylvania Gov. Josh Shapiro threatened to pull his state out of the coalition.\n\u201cIt is time to get serious about making significant reform,\u201d Shapiro said, at a conference he convened with representatives from all 13 states now in the grid to \u201cchart a new course\u201d for operator PJM Interconnection.\n\u201cIf PJM refuses to change, we will be forced to go in a different direction,\u201d he said.\nPennsylvania is the largest energy producer in the grid. Its absence would impact electricity consumers across the region, which stretches from Illinois to North Carolina.\nData centers built to fuel artificial intelligence technology are driving huge increases in electricity demand\u2014and in prices for consumers. Shapiro and other elected leaders like Virginia Gov. Glenn Youngkin blame PJM for delays in approving new power projects, creating a bottleneck that is making the situation worse. Shapiro, a Democrat, and Youngkin, a Republican, want states to have a say in PJM\u2019s decisions; right now, government officials do not have a voice on PJM\u2019s board.\nSpeaking at the conference later in the day, PJM CEO Manu Asthana, who is stepping down at the end of this year, said that \u201cfingerpointing\u201d wasn\u2019t helpful.\n\u201cThere\u2019s an element of responsibility on both sides,\u201d he said, meaning the states and PJM. All parties need to work together and ask, \u201c\u2018How do we solve this?\u2019\u201d he said.\nAt the end of the conference, 11 of the states\u2019 governors\u2019 offices\u2014all but Kentucky and West Virginia\u2014announced they had formed a collaborative to continue to work together on the energy issues discussed at the meeting.\nTom Rutigliano, senior advocate with the Natural Resources Defense Council, called the joint criticism of PJM by multiple state governors \u201cvery unusual\u201d and \u201cthe highest level of state engagement with PJM I\u2019ve ever seen.\u201d He said in an email that he thinks there\u2019s a strong chance for governance reforms.\nShapiro\u2019s statements come two months after nine governors in the PJM region demanded in a letter that PJM reserve two board seats to be filled with nominees by the states. Last month, those nominees surfaced as former Federal Energy Regulatory Commission Chairman Mark Christie and former FERC Commissioner Allison Clements.\nPJM, which has conducted a months-long effort with a consultant to propose candidates, initially responded that it would consider the recommendations. It is expected to make a decision this Thursday.\n\u201cPJM is mired in a crisis of confidence,\u201d Christie said at the conference. \u201cConsumers have lost confidence in the people who run their grid.\u201d\nChristie said PJM needs a \u201cnew constitution,\u201d one that reimagines the organization in a way that changes its governance structure to reflect the fact that PJM is a \u201cpolicy-making body.\u201d\nShapiro said PJM has \u201cmonths, not years\u201d to make changes, or Pennsylvania will take steps to leave the organization. \u201cWe need to move more quickly on these energy-producing projects, and we\u2019ve got to hold down costs. If PJM cannot do that, then Pennsylvania will look to go it alone,\u201d he said. Shapiro did not provide details about what this new arrangement would look like.\nNew Jersey lawmakers have already taken up the issue. In June, the state Assembly passed a bill directing its Board of Public Utilities to work with other states and study alternatives for addressing skyrocketing electricity prices\u2014including the option of leaving PJM altogether. A companion measure has been introduced in the state Senate but has not yet been assigned to a committee.\nIn remarks delivered remotely to the conference, Youngkin confirmed that he and his allies are working on bills that seek to do the same.\n\u201cThe bottom line is that when PJM succeeds, we all succeed together. But if reforms stall, we will act and do what is needed to protect the families and businesses who depend on us,\u201d Youngkin said.\nIn his recorded message for the conference attendees, Maryland Gov. Wes Moore said, \u201cThirteen governors have united with a single urgent message for our regional grid operator, and it underscores the seriousness of the crisis that we now face. The path forward requires real transparency and accountability from PJM and a truly collaborative role for states in the governance process.\u201d\nMaryland, as a net importer of electricity, is frustrated by PJM\u2019s delays connecting new clean-energy sources to the grid and opaque governance rules that Moore repeatedly said are disrupting the state\u2019s climate targets and hurting households and businesses.\nOn Monday, ahead of his recorded message, Moore huddled with state Senate leadership in Annapolis to announce $200 million in direct energy bill rebates for low-income households to counter the rising prices.\nWithout commenting on how PJM should be governed, the Natural Resources Defense Council said in a statement that PJM and states should require data center developers to \u201cpull their own weight\u201d by investing in new energy generation\u2014a policy push during the meeting colloquially tagged as \u201cbring your own generation\u201d or B.Y.O.G.\n\u201cThe big message today was that prices are unsustainably high and PJM needs to do a better job protecting customers,\u201d Rutigliano said. \u201cThe truth is that this crisis was caused by data centers and nearly all the money is going to old power plants.\u201d\nThis story is funded by readers like you.\nOur nonprofit newsroom provides award-winning climate coverage free of charge and advertising. We rely on donations from readers like you to keep going. Please donate now to support our work.\nDonate NowIn a statement to Inside Climate News, PJM spokesperson Dan Lockwood said that \u201cmeeting the demands of a rapidly changing energy landscape will require solutions that extend beyond any one institution.\u201d\n\u201cIt will require PJM, the industry and especially our states all working in concert,\u201d he said.\nAsthana, PJM\u2019s CEO, emphasized the scale of change that will be necessary to meet the challenges of powering AI now and in the future, not just at PJM but across the country. \u201cIf we\u2019re going to win this race, I think we need to think differently,\u201d he said.\nWhat\u2019s not clear is whether, or how, states leaving PJM would lead to a more affordable or reliable system.\nMost of the power plants in PJM compete on an open market as a result of decisions by lawmakers in various states in the 1990s and 2000s to introduce more competition into the electricity sector. This restructuring meant that regulated utilities were limited to providing the delivery of electricity, while independent power producers would build and operate power plants.\nRepresentatives of independent power producers said on Monday that they can understand the frustration with PJM, but they don\u2019t see how it solves anything for states to leave.\n\u201cWhile we continue to stand in favor of common-sense reforms that will improve power market functionality, grid reliability, and consumer affordability, the actions taken by some elected officials do nothing more than disrupt PJM\u2019s ability to do its job,\u201d said a statement from Todd Snitchler, president and CEO of the Electric Power Supply Association, a trade group whose members include independent power producers.\nJon Gordon, director at Advanced Energy United, a trade group that represents advanced generation technologies, said despite PJM\u2019s high prices, participation within the regional grid provides more efficiency and competition for electricity sales, which keeps costs lower for ratepayers. The regime used prior to PJM\u2019s shared marketplace allowed utilities to overbuild with less incentive to keep prices in check.\n\u201cI don\u2019t think anybody wants to go back to that. \u2026 We just need to make improvements so we get all the benefits of competition but none of the inefficiencies,\u201d Gordon said, adding that a PJM departure may mean state agencies could have to negotiate contracts with producers. \u201cIf these studies are fair and unbiased, I think they\u2019re going to show it\u2019s pretty risky to leave PJM and there\u2019s probably not enough benefit to justify the potential risks.\u201d\nThe challenge with PJM is the political diversity of the region that includes Republican West Virginia and Democratic New Jersey, compared to more ideologically homogeneous New England, Gordon added. The governors in the PJM region have now realized they don\u2019t have much influence over decisions affecting how new generation sources get onto the grid.\n\u201cI think the states are completely different on whether it\u2019s fossil or renewables generation,\u201d Gordon said. \u201cBut they all agree that they want a voice, and they want lower prices.\u201d\nAbout This Story\nPerhaps you noticed: This story, like all the news we publish, is free to read. That\u2019s because Inside Climate News is a 501c3 nonprofit organization. We do not charge a subscription fee, lock our news behind a paywall, or clutter our website with ads. We make our news on climate and the environment freely available to you and anyone who wants it.\nThat\u2019s not all. We also share our news for free with scores of other media organizations around the country. Many of them can\u2019t afford to do environmental journalism of their own. We\u2019ve built bureaus from coast to coast to report local stories, collaborate with local newsrooms and co-publish articles so that this vital work is shared as widely as possible.\nTwo of us launched ICN in 2007. Six years later we earned a Pulitzer Prize for National Reporting, and now we run the oldest and largest dedicated climate newsroom in the nation. We tell the story in all its complexity. We hold polluters accountable. We expose environmental injustice. We debunk misinformation. We scrutinize solutions and inspire action.\nDonations from readers like you fund every aspect of what we do. If you don\u2019t already, will you support our ongoing work, our reporting on the biggest crisis facing our planet, and help us reach even more readers in more places?\nPlease take a moment to make a tax-deductible donation. Every one of them makes a difference.\nThank you,",
+    "extractions": [
+      {
+        "extractionClass": "Organization",
+        "extractionText": "PJM Interconnection",
+        "charInterval": {
+          "startPos": 434,
+          "endPos": 453
+        }
+      },
+      {
+        "extractionClass": "RegulatoryBody",
+        "extractionText": "Pennsylvania",
+        "charInterval": {
+          "startPos": 116,
+          "endPos": 128
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Josh Shapiro",
+        "charInterval": {
+          "startPos": 174,
+          "endPos": 186
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "Pennsylvania",
+        "charInterval": {
+          "startPos": 116,
+          "endPos": 128
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "New Jersey",
+        "charInterval": {
+          "startPos": 133,
+          "endPos": 143
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "Illinois",
+        "charInterval": {
+          "startPos": 686,
+          "endPos": 694
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "North Carolina",
+        "charInterval": {
+          "startPos": 698,
+          "endPos": 712
+        }
+      },
+      {
+        "extractionClass": "EnergyTechnology",
+        "extractionText": "artificial intelligence technology",
+        "charInterval": {
+          "startPos": 741,
+          "endPos": 775
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Glenn Youngkin",
+        "charInterval": {
+          "startPos": 907,
+          "endPos": 921
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Manu Asthana",
+        "charInterval": {
+          "startPos": 1250,
+          "endPos": 1262
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Natural Resources Defense Council",
+        "charInterval": {
+          "startPos": 1783,
+          "endPos": 1816
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Mark Christie",
+        "charInterval": {
+          "startPos": 2311,
+          "endPos": 2324
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Allison Clements",
+        "charInterval": {
+          "startPos": 2354,
+          "endPos": 2370
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Wes Moore",
+        "charInterval": {
+          "startPos": 4065,
+          "endPos": 4074
+        }
+      },
+      {
+        "extractionClass": "GeographicEntity",
+        "extractionText": "Maryland",
+        "charInterval": {
+          "startPos": 4051,
+          "endPos": 4059
+        }
+      },
+      {
+        "extractionClass": "PriceDataPoint",
+        "extractionText": "$200 million",
+        "charInterval": {
+          "startPos": 4752,
+          "endPos": 4764
+        },
+        "attributes": {
+          "priceValue": "200",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Todd Snitchler",
+        "charInterval": {
+          "startPos": 7161,
+          "endPos": 7175
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Electric Power Supply Association",
+        "charInterval": {
+          "startPos": 7202,
+          "endPos": 7235
+        }
+      },
+      {
+        "extractionClass": "Person",
+        "extractionText": "Jon Gordon",
+        "charInterval": {
+          "startPos": 7302,
+          "endPos": 7312
+        }
+      },
+      {
+        "extractionClass": "Organization",
+        "extractionText": "Advanced Energy United",
+        "charInterval": {
+          "startPos": 7326,
+          "endPos": 7348
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "PJM CEO Manu Asthana, who is stepping down at the end of this year",
+        "charInterval": {
+          "startPos": 1242,
+          "endPos": 1308
+        },
+        "attributes": {
+          "relationshipType": "operatedBy",
+          "subject": "PJM Interconnection",
+          "object": "Manu Asthana"
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "stretches from Illinois to North Carolina",
+        "charInterval": {
+          "startPos": 671,
+          "endPos": 712
+        },
+        "attributes": {
+          "relationshipType": "locatedIn",
+          "subject": "PJM Interconnection",
+          "object": "Illinois"
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "former Federal Energy Regulatory Commission Chairman Mark Christie",
+        "charInterval": {
+          "startPos": 2258,
+          "endPos": 2324
+        },
+        "attributes": {
+          "relationshipType": "jurisdiction",
+          "subject": "PJM Interconnection",
+          "object": "Federal Energy Regulatory Commission"
+        }
+      },
+      {
+        "extractionClass": "Relationship",
+        "extractionText": "the PJM region",
+        "charInterval": {
+          "startPos": 2108,
+          "endPos": 2122
+        },
+        "attributes": {
+          "relationshipType": "locatedIn",
+          "subject": "PJM Interconnection",
+          "object": "PJM region"
+        }
+      }
+    ]
+  }
+]

@@ -259,7 +259,7 @@ def _handle_external_embed(
     stats.embeds_external += 1
 
     # --- Article stub ---
-    # Resolve effective URL through shortener cache
+    # Resolve effective URL through shortener cache (covers generic + brand shorteners)
     effective_url = link_uri_str
     if shortener_cache and link_uri_str in shortener_cache:
         effective_url = shortener_cache[link_uri_str]
@@ -269,9 +269,10 @@ def _handle_external_embed(
     g.add((article_uri, RDF.type, ENEWS.Article))
     g.add((article_uri, ENEWS.url, Literal(effective_url, datatype=XSD.anyURI)))
 
-    if title:
+    # Only set title/description if not already present (multiple posts may share an article)
+    if title and not g.value(article_uri, ENEWS.title):
         g.add((article_uri, ENEWS.title, Literal(title)))
-    if description:
+    if description and not g.value(article_uri, ENEWS.description):
         g.add((article_uri, ENEWS.description, Literal(description)))
 
     g.add((post_uri, ENEWS.sharesArticle, article_uri))
@@ -344,14 +345,12 @@ def _handle_video_embed(
     g.add((media_uri, RDF.type, ENEWS.MediaAttachment))
     g.add((post_uri, ENEWS.hasMedia, media_uri))
 
-    # Video embeds may have playlist/thumbnail from the --full output
+    # Video embeds may have playlist/thumbnail — use one (maxCount 1)
     playlist = embed.get("playlist", "")
-    if playlist:
-        g.add((media_uri, ENEWS.mediaUri, Literal(playlist, datatype=XSD.anyURI)))
-
     thumbnail = embed.get("thumbnail", "")
-    if thumbnail:
-        g.add((media_uri, ENEWS.mediaUri, Literal(thumbnail, datatype=XSD.anyURI)))
+    video_url = playlist or thumbnail
+    if video_url:
+        g.add((media_uri, ENEWS.mediaUri, Literal(video_url, datatype=XSD.anyURI)))
 
     # MIME type hint
     if record_embed:

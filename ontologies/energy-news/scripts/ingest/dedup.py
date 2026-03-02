@@ -61,6 +61,11 @@ def _merge_article(graph: Graph, canonical: URIRef, duplicate: URIRef) -> None:
     for topic in graph.objects(duplicate, ENEWS.coversTopic):
         graph.add((canonical, ENEWS.coversTopic, topic))
 
+    # Fill in missing single-valued properties from duplicate (title, description)
+    for prop in (ENEWS.title, ENEWS.description, ENEWS.publishedDate, ENEWS.publishedBy):
+        if not graph.value(canonical, prop) and graph.value(duplicate, prop):
+            graph.add((canonical, prop, graph.value(duplicate, prop)))
+
     # Rewrite incoming references (e.g., Post sharesArticle duplicate → canonical)
     for s, p in list(graph.subject_predicates(duplicate)):
         graph.remove((s, p, duplicate))

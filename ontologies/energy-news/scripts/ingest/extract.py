@@ -30,15 +30,22 @@ def extract_from_skygent(
     if limit:
         cmd.extend(["--limit", str(limit)])
 
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    assert proc.stdout is not None
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)  # noqa: S603
+    if proc.stdout is None:
+        raise RuntimeError("Failed to capture subprocess stdout")
 
+    skipped = 0
     try:
         for raw in proc.stdout:
             stripped = raw.strip()
             if stripped:
-                yield json.loads(stripped)
+                try:
+                    yield json.loads(stripped)
+                except json.JSONDecodeError:
+                    skipped += 1
     finally:
+        if skipped:
+            print(f"Warning: skipped {skipped} malformed NDJSON lines", file=sys.stderr)
         proc.stdout.close()
         proc.wait()
         if proc.returncode != 0:
@@ -57,8 +64,14 @@ def extract_from_file(path: Path) -> Iterator[dict[str, Any]]:
     Yields:
         Parsed JSON dicts, one per post.
     """
+    skipped = 0
     with path.open(encoding="utf-8") as f:
         for raw in f:
             stripped = raw.strip()
             if stripped:
-                yield json.loads(stripped)
+                try:
+                    yield json.loads(stripped)
+                except json.JSONDecodeError:
+                    skipped += 1
+    if skipped:
+        print(f"Warning: skipped {skipped} malformed NDJSON lines from {path}", file=sys.stderr)

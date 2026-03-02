@@ -1,0 +1,25 @@
+# Domain policy for article fetch.
+#
+# Precedence:
+# 1) allow_overrides
+# 2) deny_exact
+# 3) deny_registrable (applies to subdomains too)
+# 4) default allow
+
+allow_overrides: []
+
+deny_exact:
+  - buff.ly
+  - dlvr.it
+  - n.pr
+  - iea.li
+  - youtu.be
+
+deny_registrable:
+  - youtube.com
+  - podcasts.apple.com
+  - linkedin.com
+  - open.substack.com
+
+# Optional per-domain request spacing overrides (seconds).
+domain_delay_overrides: {}
