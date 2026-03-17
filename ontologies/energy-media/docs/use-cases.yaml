@@ -1,0 +1,99 @@
+# Energy Media Ontology — Use Cases
+
+- id: UC-M01
+  name: "Classify media in expert posts"
+  actor: "MCP agent (Claude or similar)"
+  goal: "Determine what type of media is attached to a post and what it depicts, to reason about content without vision"
+  preconditions:
+    - "Post has been ingested with embed metadata"
+    - "Media type taxonomy exists in ontology"
+  main_flow:
+    - "Agent queries post for attached media"
+    - "System returns media type classification (chart, screenshot, photo, infographic)"
+    - "Agent uses classification to determine reasoning strategy"
+  postconditions:
+    - "Agent knows whether the media is a data visualization, document screenshot, or photo"
+  related_cqs: [CQ-M01, CQ-M02, CQ-M03]
+  priority: must_have
+
+- id: UC-M02
+  name: "Trace chart attribution across layers"
+  actor: "MCP agent or analyst"
+  goal: "Distinguish where a chart image came from vs where the chart's data comes from"
+  preconditions:
+    - "Post has chart embed with enrichment metadata"
+    - "Attribution model supports multiple layers"
+  main_flow:
+    - "Agent queries chart for attribution"
+    - "System returns layered attribution: image poster (expert DID), content source (article/report), data source (dataset/API)"
+    - "Agent uses attribution for claim verification or source linking"
+  postconditions:
+    - "Agent can distinguish 'Blake Shaffer posted this chart' from 'chart uses BC Hydro data' from 'chart appeared in a BC Hydro report'"
+  related_cqs: [CQ-M04, CQ-M05, CQ-M06, CQ-M07]
+  priority: must_have
+  notes: "The canonical example: a screenshot of a BC Hydro report chart that cites DOE data has 3 attribution layers"
+
+- id: UC-M03
+  name: "Fill alt text gaps with provenance"
+  actor: "Enrichment pipeline"
+  goal: "Store vision-generated alt text alongside posts, with clear provenance distinguishing it from author-provided text"
+  preconditions:
+    - "Post has image embed"
+    - "Vision model has processed the image"
+  main_flow:
+    - "Pipeline checks if author-provided alt text exists"
+    - "If absent or empty, pipeline stores vision-generated description"
+    - "System marks provenance: original (author), synthetic (vision), or absent"
+  postconditions:
+    - "Every image has a description with known provenance"
+    - "Downstream consumers can trust or discount based on provenance"
+  related_cqs: [CQ-M08, CQ-M09]
+  priority: must_have
+
+- id: UC-M04
+  name: "Assess media richness for curation"
+  actor: "Curation predicate system"
+  goal: "Score a post's media richness as one of 7 ranking signals for curation flagging"
+  preconditions:
+    - "Post embeds have been classified by media type"
+  main_flow:
+    - "System counts chart images, link embeds, video embeds, quote posts"
+    - "System computes media richness score based on type diversity and count"
+    - "Curation predicates use score for flagging potentially interesting posts"
+  postconditions:
+    - "Post has a media richness score usable by curation pipeline"
+  related_cqs: [CQ-M10, CQ-M11]
+  priority: should_have
+
+- id: UC-M05
+  name: "Link charts to energy data sources"
+  actor: "MCP agent"
+  goal: "Connect chart visualizations to known energy data providers via provider-dataset linkage for claim verification"
+  preconditions:
+    - "Chart attribution has been extracted (data source layer)"
+    - "Energy data provider registry exists with providedBy linkage to datasets"
+  main_flow:
+    - "Agent queries chart for data source attribution"
+    - "System matches attribution to registered data provider (GridStatus, EIA, ENTSO-E, BC Hydro) via dataset linkage"
+    - "Agent uses provider identity for verification context"
+  postconditions:
+    - "Agent knows which data provider sourced the chart's data"
+  related_cqs: [CQ-M12, CQ-M14]
+  priority: should_have
+
+- id: UC-M06
+  name: "Describe chart semantics"
+  actor: "MCP agent or analyst"
+  goal: "Access structured metadata about what a chart shows: type, axes, units, time range, region, series, key data points"
+  preconditions:
+    - "Chart has been processed by vision pipeline"
+    - "Chart semantic schema exists in ontology"
+  main_flow:
+    - "Agent queries chart for semantic description"
+    - "System returns: chart type (line), x-axis (Year, 2015-2026), y-axis (TWh), series (BC imports, Manitoba exports), geographic scope (Canada), key data points (first time all 3 provinces net importers)"
+    - "Agent uses structured semantics for analysis, comparison, and summarization"
+  postconditions:
+    - "Agent can reason about chart data without vision capabilities"
+  related_cqs: [CQ-M15, CQ-M16, CQ-M17, CQ-M18, CQ-M19, CQ-M20, CQ-M21]
+  priority: must_have
+  notes: "This is the richest use case — turns opaque images into queryable knowledge. The Blake Shaffer hydro thread (10 charts, zero alt text) is the canonical test case."

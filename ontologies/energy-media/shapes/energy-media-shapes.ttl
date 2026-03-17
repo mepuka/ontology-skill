@@ -1,0 +1,76 @@
+@prefix emedia: <http://example.org/ontology/energy-media#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+emedia:ChartAxisShape a sh:NodeShape ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:path emedia:axisUnit ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path emedia:axisLabel ] ;
+    sh:targetClass emedia:ChartAxis .
+
+emedia:ChartSeriesShape a sh:NodeShape ;
+    sh:property [ sh:minCount 1 ;
+            sh:path rdfs:label ] ;
+    sh:targetClass emedia:ChartSeries .
+
+emedia:ChartShape a sh:NodeShape ;
+    sh:property [ sh:class skos:Concept ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path emedia:chartType ],
+        [ sh:maxCount 1 ;
+            sh:path emedia:hasYAxis ],
+        [ sh:maxCount 1 ;
+            sh:path emedia:hasXAxis ],
+        [ sh:path emedia:hasSeries ] ;
+    sh:targetClass emedia:Chart .
+
+emedia:ChartSourceLineShape a sh:NodeShape ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path emedia:sourceText ] ;
+    sh:targetClass emedia:ChartSourceLine .
+
+emedia:DocumentExcerptShape a sh:NodeShape ;
+    sh:targetClass emedia:DocumentExcerpt .
+
+emedia:EnergyDataProviderShape a sh:NodeShape ;
+    sh:property [ sh:minCount 1 ;
+            sh:path rdfs:label ] ;
+    sh:targetClass emedia:EnergyDataProvider .
+
+emedia:EnergyDatasetShape a sh:NodeShape ;
+    sh:property [ sh:minCount 1 ;
+            sh:path rdfs:label ],
+        [ sh:class emedia:EnergyDataProvider ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path emedia:providedBy ] ;
+    sh:targetClass emedia:EnergyDataset .
+
+emedia:InfographicShape a sh:NodeShape ;
+    sh:targetClass emedia:Infographic .
+
+emedia:MediaAttachmentShape a sh:NodeShape ;
+    sh:property [ sh:datatype xsd:anyURI ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:path emedia:mediaUrl ],
+        [ sh:maxCount 1 ;
+            sh:path emedia:altTextProvenance ],
+        [ sh:datatype xsd:string ;
+            sh:maxCount 1 ;
+            sh:path emedia:altText ] ;
+    sh:targetClass emedia:MediaAttachment .
+
+emedia:PhotoShape a sh:NodeShape ;
+    sh:targetClass emedia:Photo .
+
+emedia:VideoAttachmentShape a sh:NodeShape ;
+    sh:targetClass emedia:VideoAttachment .

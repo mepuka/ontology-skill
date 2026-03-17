@@ -1,0 +1,33 @@
+Term,Synonyms,Definition,Category,Source CQ,BFO Category
+MediaAttachment,"embed, media embed","A digital resource attached to or embedded in a Post",Class,"CQ-M01, CQ-M02",GDC (BFO:0000031)
+Chart,"data visualization, graph, plot","A MediaAttachment that is a data visualization depicting quantitative information",Class,"CQ-M03, CQ-M15",GDC (BFO:0000031)
+DocumentExcerpt,"excerpt, article capture, report excerpt","A MediaAttachment that is an extracted portion of a document, article, or report",Class,CQ-M01,GDC (BFO:0000031)
+Photo,"photograph, image","A MediaAttachment that is a photographic image of a real-world scene",Class,CQ-M01,GDC (BFO:0000031)
+Infographic,"info graphic, visual summary","A MediaAttachment that is a designed visual composition combining data, text, and graphics",Class,CQ-M01,GDC (BFO:0000031)
+VideoAttachment,"video, clip","A MediaAttachment that is a video recording or animation",Class,CQ-M01,GDC (BFO:0000031)
+ChartType,"visualization type, chart kind","A classification category for the structural form of a chart",SKOS Concept,"CQ-M03, CQ-M15",ICE (IAO:0000030)
+ChartAxis,"axis","A dimensional axis of a chart with label, unit, and scale",Class,"CQ-M16",GDC (BFO:0000031)
+ChartSeries,"data series, plot series","A named data series plotted within a chart",Class,CQ-M19,GDC (BFO:0000031)
+TemporalCoverage,"time range, period, date range","The time period that a chart's data covers",Class,CQ-M17,Temporal Region (BFO:0000008)
+SpatialCoverage,"geographic scope, region","The geographic area that a chart's data covers",Class,CQ-M18,Site (BFO:0000029)
+EnergyDataProvider,"data source, data provider","An organization that publishes energy data accessible via API or download",Class,"CQ-M12, CQ-M13",Object (BFO:0000030)
+EnergyDataset,"dataset","A specific dataset published by an EnergyDataProvider",Class,"CQ-M06, CQ-M14",GDC (BFO:0000031)
+AltTextProvenance,"alt text source","The origin of a media attachment's descriptive text — original (author-provided), synthetic (vision-generated), or absent",SKOS Concept,"CQ-M08, CQ-M09",ICE (IAO:0000030)
+hasMediaAttachment,"has embed, has media","Relates a Post to its attached media",ObjectProperty,CQ-M02,
+chartType,"has chart type, visualization type","Relates a Chart to its ChartType classification",ObjectProperty,CQ-M15,
+hasXAxis,,"Relates a Chart to its horizontal axis",ObjectProperty,CQ-M16,
+hasYAxis,,"Relates a Chart to its vertical axis",ObjectProperty,CQ-M16,
+hasSeries,"has data series","Relates a Chart to a plotted data series",ObjectProperty,CQ-M19,
+altText,"alternative text, description","The descriptive text for a media attachment",DataProperty,CQ-M08,
+altTextProvenance,"alt text source type","The provenance classification of a media attachment's alt text",ObjectProperty,CQ-M08,
+axisLabel,"label","The displayed label text of a chart axis",DataProperty,CQ-M16,
+axisUnit,"unit, measurement unit","The unit of measurement on a chart axis (MW, TWh, $/MWh, %)",DataProperty,CQ-M16,
+seriesUnit,"unit","The unit of measurement for a data series",DataProperty,CQ-M19,
+keyFinding,"key insight, main takeaway","The most salient data point or trend highlighted by a chart",DataProperty,CQ-M21,
+ChartSourceLine,"source line, attribution line, data credit","The source attribution text appearing on a chart, typically at the bottom",Class,CQ-M06,GDC (BFO:0000031)
+sourceText,"raw source text","The raw text of a chart's source attribution line as it appears on the chart",DataProperty,CQ-M06,
+hasSourceLine,"has source attribution","Relates a Chart to its source attribution line",ObjectProperty,CQ-M06,
+legendLabel,"legend entry, series label","The text label for a data series as shown in the chart legend",DataProperty,CQ-M19,
+providedBy,"from provider, published by","Relates an EnergyDataset to its EnergyDataProvider",ObjectProperty,CQ-M06,
+mediaUrl,"image url, fullsize url","The CDN URL of the media attachment's full-resolution file",DataProperty,CQ-M02,
+thumbnailUrl,"thumb url","The CDN URL of the media attachment's thumbnail",DataProperty,CQ-M02,

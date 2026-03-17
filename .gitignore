@@ -44,6 +44,7 @@ htmlcov/
 # Triple store data
 *.db
 *.sqlite
+ontologies/*/data/oxigraph/
 
 # Secrets
 .env
@@ -53,3 +54,4 @@ htmlcov/
 # Large reference PDFs (copyrighted)
 docs/*.pdf
 ontologies/*/release/pao-docs.html
+.rlm/
