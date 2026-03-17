@@ -1,0 +1,355 @@
+# Energy Media Ontology — Conceptual Model
+# Produced by: ontology-conceptualizer (Phase 3)
+# Input: scope.md, use-cases.yaml, competency-questions.yaml, glossary.csv
+# Extends: energy-news ontology (enews)
+
+ontology:
+  name: Energy Media Ontology
+  prefix: emedia
+  namespace: "http://example.org/ontology/energy-media#"
+  profile: OWL 2 DL
+  serialization: Turtle
+  target_size: "~14 classes, ~19 properties, ~17 SKOS individuals"
+  extends: energy-news
+
+# --- Module Structure ---
+
+modules:
+  - id: emedia-core
+    name: "Energy Media Core"
+    description: >
+      T-box module containing MediaAttachment class hierarchy, chart semantic
+      classes (ChartAxis, ChartSeries), ChartType and AltTextProvenance SKOS
+      schemes, and all properties. Extends energy-news core.
+    layer: problem-specific
+    file: "ontologies/energy-media/energy-media.ttl"
+
+  - id: emedia-providers
+    name: "Energy Data Providers"
+    description: >
+      A-box module containing EnergyDataProvider and EnergyDataset individuals,
+      alt text provenance concepts, and their relationships. Seeded from
+      known energy data sources.
+    layer: problem-specific
+    file: "ontologies/energy-media/energy-media-providers.ttl"
+
+  - id: emedia-chart-types
+    name: "Chart Type Scheme"
+    description: >
+      SKOS ConceptScheme with ~15-20 chart type individuals. Informed by VISO
+      ontology but lightweight — flat scheme with optional broader groupings.
+    layer: problem-specific
+    file: "ontologies/energy-media/energy-media-chart-types.ttl"
+
+# --- Architecture Layers ---
+
+layers:
+  foundational:
+    description: "Standard W3C vocabularies — same as energy-news"
+    vocabularies:
+      - prefix: rdf
+        namespace: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+      - prefix: rdfs
+        namespace: "http://www.w3.org/2000/01/rdf-schema#"
+      - prefix: owl
+        namespace: "http://www.w3.org/2002/07/owl#"
+      - prefix: xsd
+        namespace: "http://www.w3.org/2001/XMLSchema#"
+      - prefix: skos
+        namespace: "http://www.w3.org/2004/02/skos/core#"
+      - prefix: dcterms
+        namespace: "http://purl.org/dc/terms/"
+      - prefix: prov
+        namespace: "http://www.w3.org/ns/prov#"
+        usage: "Entity-Activity-Agent pattern for multi-layer attribution"
+
+  domain-independent:
+    description: "Alignment targets — referenced by equivalence axioms, not imported"
+    vocabularies:
+      - prefix: schema
+        namespace: "https://schema.org/"
+        usage: "Equivalence axioms for ImageObject, Dataset, DataCatalog"
+
+  domain-dependent:
+    description: "Energy-news ontology as direct dependency"
+    vocabularies:
+      - prefix: enews
+        namespace: "http://example.org/ontology/energy-news#"
+        usage: "Imports Post, AuthorAccount, Article, Publication, EnergyTopic, GeographicEntity"
+
+  problem-specific:
+    description: "Our media-specific modules"
+    modules: [emedia-core, emedia-providers, emedia-chart-types]
+
+# --- SKOS Concept Schemes ---
+
+concept_schemes:
+
+  - iri: "emedia:ChartTypeScheme"
+    type: "skos:ConceptScheme"
+    label: "Chart Type Scheme"
+    description: >
+      A SKOS concept scheme classifying chart/visualization structural forms.
+      Informed by VISO ontology but lightweight. Each individual is typed as
+      skos:Concept within this scheme.
+    individuals:
+      # --- Statistical Charts ---
+      - individual: BarChart
+        label: "Bar Chart"
+        altLabel: ["bar graph", "column chart"]
+        definition: "Rectangular bars representing values across categories"
+        broader: null
+      - individual: StackedBarChart
+        label: "Stacked Bar Chart"
+        definition: "Bar chart with segments showing component breakdown"
+        broader: BarChart
+      - individual: LineChart
+        label: "Line Chart"
+        altLabel: ["time series", "trend line"]
+        definition: "Connected data points showing trends over a continuous axis"
+        broader: null
+      - individual: AreaChart
+        label: "Area Chart"
+        altLabel: ["filled line chart"]
+        definition: "Line chart with the area below filled to emphasize volume"
+        broader: LineChart
+      - individual: ScatterPlot
+        label: "Scatter Plot"
+        altLabel: ["scatter chart", "dot plot"]
+        definition: "Individual data points plotted on two quantitative axes"
+        broader: null
+      - individual: Heatmap
+        label: "Heatmap"
+        altLabel: ["heat map"]
+        definition: "Matrix of values encoded as colors to show patterns"
+        broader: null
+      - individual: PieChart
+        label: "Pie Chart"
+        altLabel: ["donut chart"]
+        definition: "Circular chart divided into proportional segments"
+        broader: null
+      # --- Specialized Charts ---
+      - individual: SankeyDiagram
+        label: "Sankey Diagram"
+        altLabel: ["flow diagram", "alluvial diagram"]
+        definition: "Weighted flow diagram showing magnitude of flows between nodes"
+        broader: null
+      - individual: Treemap
+        label: "Treemap"
+        definition: "Nested rectangles showing hierarchical data proportions"
+        broader: null
+      - individual: CandlestickChart
+        label: "Candlestick Chart"
+        altLabel: ["OHLC chart"]
+        definition: "Chart showing open, high, low, close values for financial/commodity data"
+        broader: null
+      # --- Geographic ---
+      - individual: ChoroplethMap
+        label: "Choropleth Map"
+        altLabel: ["thematic map", "shaded map"]
+        definition: "Geographic map with regions shaded by data values"
+        broader: null
+      - individual: PointMap
+        label: "Point Map"
+        altLabel: ["dot map", "location map"]
+        definition: "Geographic map with data points plotted at coordinates"
+        broader: null
+      # --- Tabular ---
+      - individual: DataTable
+        label: "Data Table"
+        altLabel: ["table", "spreadsheet view"]
+        definition: "Structured tabular presentation of data in rows and columns"
+        broader: null
+      # --- Combination ---
+      - individual: DualAxisChart
+        label: "Dual Axis Chart"
+        altLabel: ["combo chart", "mixed chart"]
+        definition: "Chart combining two chart types sharing one axis (e.g., bars + line)"
+        broader: null
+
+  - iri: "emedia:AltTextProvenanceScheme"
+    type: "skos:ConceptScheme"
+    label: "Alt Text Provenance Scheme"
+    description: >
+      Classifies the origin of a media attachment's descriptive text.
+    individuals:
+      - individual: AltTextOriginal
+        label: "Original"
+        definition: "Alt text provided by the post author"
+      - individual: AltTextSynthetic
+        label: "Synthetic"
+        definition: "Alt text generated by a vision model (e.g., Gemini 2.5 Flash)"
+      - individual: AltTextAbsent
+        label: "Absent"
+        definition: "No alt text exists for this media attachment"
+
+# --- Class Hierarchy (OWL Classes) ---
+
+class_hierarchy:
+  # -- MediaAttachment (new top-level class, extends energy-news) --
+  - class: MediaAttachment
+    parent: owl:Thing
+    bfo: "GDC (BFO:0000031)"
+    schema_alignment: "rdfs:subClassOf schema:MediaObject"
+    definition: "A digital resource attached to or embedded in a Post"
+    notes: >
+      Superclass for all media types. Linked to Post via hasMediaAttachment.
+      Each attachment has a mediaUrl, optional thumbnailUrl, altText, and
+      altTextProvenance.
+
+  - class: Chart
+    parent: MediaAttachment
+    bfo: "GDC (BFO:0000031)"
+    schema_alignment: "rdfs:subClassOf schema:ImageObject"
+    definition: "A MediaAttachment that is a data visualization depicting quantitative information"
+    notes: >
+      Charts are the richest media type. They have chart semantics: chartType,
+      axes, series, temporal/spatial coverage, key findings. The vision pipeline
+      (SKY-16) enriches Chart instances with structured metadata.
+
+  - class: DocumentExcerpt
+    parent: MediaAttachment
+    bfo: "GDC (BFO:0000031)"
+    definition: "A MediaAttachment that is an extracted portion of a document, article, or report"
+    notes: >
+      Covers article screenshots, PDF page captures, cropped report sections.
+      Named for the content (an excerpt from a document), not the capture method.
+      Often contains charts — the attribution model distinguishes the document
+      source (the article/report) from any embedded chart's data source.
+      See CQ-M07 (three attribution layers).
+
+  - class: Photo
+    parent: MediaAttachment
+    bfo: "GDC (BFO:0000031)"
+    schema_alignment: "rdfs:subClassOf schema:ImageObject"
+    definition: "A MediaAttachment that is a photographic image of a real-world scene"
+
+  - class: Infographic
+    parent: MediaAttachment
+    bfo: "GDC (BFO:0000031)"
+    definition: "A MediaAttachment that is a designed visual composition combining data, text, and graphics"
+
+  - class: VideoAttachment
+    parent: MediaAttachment
+    bfo: "GDC (BFO:0000031)"
+    schema_alignment: "rdfs:subClassOf schema:VideoObject"
+    definition: "A MediaAttachment that is a video recording or animation"
+
+  # -- Chart Semantic Classes --
+  - class: ChartAxis
+    parent: owl:Thing
+    bfo: "GDC (BFO:0000031)"
+    definition: "A dimensional axis of a chart with label, unit, and optional scale"
+    notes: >
+      Charts typically have 2 axes (x, y). Dual-axis charts may have 2 y-axes.
+      Properties: axisLabel, axisUnit, axisScale.
+
+  - class: ChartSeries
+    parent: owl:Thing
+    bfo: "GDC (BFO:0000031)"
+    definition: "A named data series plotted within a chart"
+    notes: >
+      A line chart may have multiple series (e.g., "BC imports", "Manitoba exports").
+      Properties: rdfs:label, seriesUnit, optional color. The legend text for each
+      series is captured as rdfs:label on the ChartSeries instance — this is often
+      the most informative part of a chart for agents.
+
+  - class: ChartSourceLine
+    parent: owl:Thing
+    bfo: "GDC (BFO:0000031)"
+    definition: "The source attribution text appearing on a chart, typically at the bottom"
+    notes: >
+      The small text at the bottom of charts saying "Source: BC Hydro" or
+      "Data: EIA, compiled by author". This is distinct from the PROV-O
+      attribution model — the source line is raw text as it appears on the
+      chart. The enrichment pipeline parses source lines to populate the
+      formal prov:wasDerivedFrom → EnergyDataset → EnergyDataProvider chain.
+      Properties: sourceText (the raw string), confidence (how reliably parsed).
+
+  # -- Data Provider Classes --
+  - class: EnergyDataProvider
+    parent: owl:Thing
+    bfo: "Object (BFO:0000030)"
+    schema_alignment: "rdfs:subClassOf schema:Organization"
+    definition: "An organization that publishes energy data accessible via API or download"
+    notes: >
+      Individuals: GridStatus, EIA, ENTSO-E, BC Hydro, AESO, IESO, etc.
+      Properties: rdfs:label, apiEndpoint.
+
+  - class: EnergyDataset
+    parent: owl:Thing
+    bfo: "GDC (BFO:0000031)"
+    schema_alignment: "rdfs:subClassOf schema:Dataset"
+    definition: "A specific dataset published by an EnergyDataProvider"
+    notes: >
+      E.g., "EIA Electricity Monthly", "GridStatus ERCOT Real-Time Prices".
+      Linked to charts via prov:wasDerivedFrom. Linked to providers via providedBy.
+
+# --- Disjointness Declarations ---
+
+top_level_disjoint_groups:
+  - description: "MediaAttachment subtypes are pairwise disjoint"
+    classes: [Chart, DocumentExcerpt, Photo, Infographic, VideoAttachment]
+
+  - description: "Chart semantic classes are disjoint from media classes"
+    classes: [ChartAxis, ChartSeries]
+
+  - description: "Data provider classes are disjoint from media classes"
+    classes: [EnergyDataProvider, EnergyDataset]
+
+# --- Design Decisions ---
+
+design_decisions:
+  - id: DD-M01
+    decision: "Model chart types as SKOS Concepts, not OWL subclasses of Chart"
+    rationale: >
+      Following DD-001 from energy-news (topics as SKOS Concepts). Chart types
+      (BarChart, LineChart, etc.) are classification categories, not structural
+      subtypes. A Chart links to its type via the chartType property pointing
+      at a SKOS Concept in ChartTypeScheme. This avoids class proliferation
+      and allows multi-type classification (a dual-axis chart could reference
+      both BarChart and LineChart types).
+
+  - id: DD-M02
+    decision: "Use PROV-O vocabulary for attribution, not custom properties"
+    rationale: >
+      PROV-O provides the exact Entity-Activity-Agent pattern needed for
+      multi-layer attribution. prov:wasAttributedTo (image source → author),
+      dcterms:source (content source → article/report), prov:wasDerivedFrom
+      (data source → dataset). Reusing W3C standard vocabulary instead of
+      inventing custom attribution properties.
+
+  - id: DD-M03
+    decision: "Alt text provenance as SKOS scheme, not boolean flags"
+    rationale: >
+      Three-valued provenance (original, synthetic, absent) is better modeled
+      as a SKOS concept scheme than boolean flags (hasAltText + isGenerated).
+      The SKOS approach is extensible (could add "partial", "machine-translated")
+      and aligns with the overall SKOS pattern used throughout the ontology.
+
+  - id: DD-M05
+    decision: "MediaAttachment subtypes are OWL subclasses, not SKOS concepts"
+    rationale: >
+      Unlike chart types (which are classification facets), media types
+      (Chart, Screenshot, Photo, etc.) have genuinely different structural
+      properties. A Chart has axes and series; a Screenshot does not. This
+      structural difference justifies OWL subclasses with distinct property
+      restrictions, not a flat SKOS classification.
+
+  - id: DD-M06
+    decision: "ChartAxis and ChartSeries are separate classes, not embedded in Chart"
+    rationale: >
+      Charts can have 2-3 axes and 1-10+ series. Modeling these as separate
+      classes with their own properties (axisLabel, axisUnit, seriesUnit)
+      allows the SPARQL CQs to query axis/series metadata independently.
+      Embedding as data properties on Chart would limit queryability and
+      require complex string parsing.
+
+  - id: DD-M07
+    decision: "Temporal coverage uses dcterms:temporal with custom startDate/endDate"
+    rationale: >
+      OWL-Time is powerful but heavyweight for our needs. We borrow the
+      vocabulary concept (temporal coverage as a structured entity) but use
+      simple xsd:date properties (startDate, endDate) instead of importing
+      the full OWL-Time ontology. This covers the canonical use case
+      ("this chart shows data from 2015 to 2026") without temporal logic.

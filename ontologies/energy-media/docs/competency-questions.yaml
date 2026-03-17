@@ -1,0 +1,477 @@
+# Energy Media Ontology — Competency Questions
+
+# ==========================================================================
+# UC-M01: Classify media in expert posts
+# ==========================================================================
+
+# --- Must Have ---
+
+- id: CQ-M01
+  source_use_case: UC-M01
+  natural_language: "What media types exist in the ontology?"
+  type: enumerative
+  priority: must_have
+  sample_answer:
+    - type: emedia:Chart
+      label: "Chart"
+    - type: emedia:Screenshot
+      label: "Screenshot"
+    - type: emedia:Photo
+      label: "Photo"
+    - type: emedia:Infographic
+      label: "Infographic"
+  derivation_method: direct_lookup
+  sparql: |
+    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    SELECT ?type ?label WHERE {
+      ?type rdfs:subClassOf emedia:MediaAttachment ;
+            rdfs:label ?label .
+    }
+  expected_result: non_empty
+  required_classes: [MediaAttachment]
+  requires_reasoning: false
+
+- id: CQ-M02
+  source_use_case: UC-M01
+  natural_language: "What media attachments are embedded in a given post?"
+  type: relational
+  priority: must_have
+  sample_answer:
+    - post: enews:post_hydro_01
+      media: emedia:media_001
+      mediaType: emedia:Chart
+  derivation_method: direct_lookup
+  sparql: |
+    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX enews: <http://example.org/ontology/energy-news#>
+    SELECT ?media ?mediaType WHERE {
+      enews:post_hydro_01 emedia:hasMediaAttachment ?media .
+      ?media a ?mediaType .
+      ?mediaType rdfs:subClassOf emedia:MediaAttachment .
+    }
+  expected_result: non_empty
+  required_classes: [MediaAttachment]
+  required_properties: [hasMediaAttachment]
+  requires_reasoning: false
+
+- id: CQ-M03
+  source_use_case: UC-M01
+  natural_language: "What chart types exist in the ontology?"
+  type: enumerative
+  priority: must_have
+  sample_answer:
+    - chartType: emedia:BarChart
+      label: "Bar Chart"
+    - chartType: emedia:LineChart
+      label: "Line Chart"
+    - chartType: emedia:Heatmap
+      label: "Heatmap"
+  derivation_method: direct_lookup
+  sparql: |
+    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    SELECT ?chartType ?label WHERE {
+      ?chartType skos:inScheme emedia:ChartTypeScheme ;
+                 skos:prefLabel ?label .
+    }
+  expected_result: non_empty
+  required_classes: []
+  requires_reasoning: false
+
+# ==========================================================================
+# UC-M02: Trace chart attribution across layers
+# ==========================================================================
+
+- id: CQ-M04
+  source_use_case: UC-M02
+  natural_language: "Who posted a given chart (image source)?"
+  type: relational
+  priority: must_have
+  sample_answer:
+    - chart: emedia:media_001
+      author: enews:author_blakeshaffer
+      handle: "blakeshaffer.bsky.social"
+  derivation_method: direct_lookup
+  sparql: |
+    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX enews: <http://example.org/ontology/energy-news#>
+    PREFIX prov: <http://www.w3.org/ns/prov#>
+    SELECT ?author ?handle WHERE {
+      emedia:media_001 prov:wasAttributedTo ?author .
+      ?author enews:handle ?handle .
+    }
+  expected_result: non_empty
+  required_properties: [prov:wasAttributedTo]
+  requires_reasoning: false
+
+- id: CQ-M05
+  source_use_case: UC-M02
+  natural_language: "What publication or report does a chart originally appear in (content source)?"
+  type: relational
+  priority: must_have
+  sample_answer:
+    - chart: emedia:media_002
+      source: enews:article_bchydro_report
+      title: "BC Hydro Annual Report 2025"
+  derivation_method: direct_lookup
+  sparql: |
+    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX dcterms: <http://purl.org/dc/terms/>
+    SELECT ?source ?title WHERE {
+      emedia:media_002 dcterms:source ?source .
+      ?source dcterms:title ?title .
+    }
+  expected_result: non_empty
+  required_properties: [dcterms:source]
+  requires_reasoning: false
+
+- id: CQ-M06
+  source_use_case: UC-M02
+  natural_language: "What underlying dataset does a chart's data come from (data source)?"
+  type: relational
+  priority: must_have
+  sample_answer:
+    - chart: emedia:media_001
+      dataset: emedia:dataset_bchydro_generation
+      provider: emedia:provider_bchydro
+  derivation_method: direct_lookup
+  sparql: |
+    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX prov: <http://www.w3.org/ns/prov#>
+    SELECT ?dataset ?provider WHERE {
+      emedia:media_001 prov:wasDerivedFrom ?dataset .
+      ?dataset emedia:providedBy ?provider .
+    }
+  expected_result: non_empty
+  required_properties: [prov:wasDerivedFrom, providedBy]
+  requires_reasoning: false
+
+- id: CQ-M07
+  source_use_case: UC-M02
+  natural_language: "What are all three attribution layers for a given chart?"
+  type: relational
+  priority: must_have
+  sample_answer:
+    - chart: emedia:media_002
+      imageSource: enews:author_blakeshaffer
+      contentSource: enews:article_bchydro_report
+      dataSource: emedia:dataset_doe_generation
+  derivation_method: composite
+  sparql: |
+    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX prov: <http://www.w3.org/ns/prov#>
+    PREFIX dcterms: <http://purl.org/dc/terms/>
+    SELECT ?imageSource ?contentSource ?dataSource WHERE {
+      emedia:media_002 prov:wasAttributedTo ?imageSource .
+      OPTIONAL { emedia:media_002 dcterms:source ?contentSource . }
+      OPTIONAL { emedia:media_002 prov:wasDerivedFrom ?dataSource . }
+    }
+  expected_result: non_empty
+  requires_reasoning: false
+  notes: "Not all layers are always present. An original chart by an expert may have image source + data source but no content source."
+
+# ==========================================================================
+# UC-M03: Fill alt text gaps with provenance
+# ==========================================================================
+
+- id: CQ-M08
+  source_use_case: UC-M03
+  natural_language: "Does a given media attachment have alt text, and what is its provenance?"
+  type: relational
+  priority: must_have
+  sample_answer:
+    - media: emedia:media_001
+      altText: null
+      altTextProvenance: emedia:AltTextAbsent
+    - media: emedia:media_003
+      altText: "Day-ahead energy prices for 28/2/2026..."
+      altTextProvenance: emedia:AltTextOriginal
+  derivation_method: direct_lookup
+  sparql: |
+    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    SELECT ?media ?altText ?provenance WHERE {
+      ?media a emedia:MediaAttachment .
+      OPTIONAL { ?media emedia:altText ?altText . }
+      ?media emedia:altTextProvenance ?provenance .
+    }
+  expected_result: non_empty
+  required_properties: [altText, altTextProvenance]
+  requires_reasoning: false
+
+- id: CQ-M09
+  source_use_case: UC-M03
+  natural_language: "Which media attachments have no alt text (gap candidates for vision enrichment)?"
+  type: enumerative
+  priority: must_have
+  sample_answer:
+    - media: emedia:media_001
+      post: enews:post_hydro_01
+  derivation_method: direct_lookup
+  sparql: |
+    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    SELECT ?media ?post WHERE {
+      ?post emedia:hasMediaAttachment ?media .
+      ?media emedia:altTextProvenance emedia:AltTextAbsent .
+    }
+  expected_result: non_empty
+  requires_reasoning: false
+
+# ==========================================================================
+# UC-M04: Assess media richness for curation
+# ==========================================================================
+
+- id: CQ-M10
+  source_use_case: UC-M04
+  natural_language: "How many chart images does a given post have?"
+  type: quantitative
+  priority: should_have
+  sample_answer:
+    - post: enews:post_hydro_01
+      chartCount: 1
+  derivation_method: aggregation
+  sparql: |
+    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX enews: <http://example.org/ontology/energy-news#>
+    SELECT ?post (COUNT(?media) AS ?chartCount) WHERE {
+      ?post emedia:hasMediaAttachment ?media .
+      ?media a emedia:Chart .
+    }
+    GROUP BY ?post
+  expected_result: non_empty
+  requires_reasoning: false
+
+- id: CQ-M11
+  source_use_case: UC-M04
+  natural_language: "What distinct media types are embedded in a given post?"
+  type: enumerative
+  priority: should_have
+  sample_answer:
+    - post: enews:post_hydro_01
+      mediaTypes: [emedia:Chart, emedia:ExternalLink]
+  derivation_method: aggregation
+  sparql: |
+    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    SELECT ?post ?mediaType WHERE {
+      ?post emedia:hasMediaAttachment ?media .
+      ?media a ?mediaType .
+      ?mediaType rdfs:subClassOf emedia:MediaAttachment .
+    }
+  expected_result: non_empty
+  requires_reasoning: false
+
+# ==========================================================================
+# UC-M05: Link charts to energy data sources
+# ==========================================================================
+
+- id: CQ-M12
+  source_use_case: UC-M05
+  natural_language: "What energy data providers exist in the registry?"
+  type: enumerative
+  priority: should_have
+  sample_answer:
+    - provider: emedia:provider_gridstatus
+      label: "GridStatus"
+      coverage: "US grid data (ERCOT, CAISO, PJM, MISO, SPP, ISO-NE, NYISO)"
+    - provider: emedia:provider_eia
+      label: "U.S. Energy Information Administration"
+  derivation_method: direct_lookup
+  sparql: |
+    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    SELECT ?provider ?label WHERE {
+      ?provider a emedia:EnergyDataProvider ;
+               rdfs:label ?label .
+    }
+  expected_result: non_empty
+  required_classes: [EnergyDataProvider]
+  requires_reasoning: false
+
+- id: CQ-M13
+  source_use_case: UC-M05
+  natural_language: "Which data provider covers a given grid region?"
+  type: relational
+  priority: should_have
+  sample_answer:
+    - region: emedia:region_ercot
+      provider: emedia:provider_gridstatus
+  derivation_method: direct_lookup
+  sparql: |
+    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    SELECT ?provider WHERE {
+      ?provider emedia:coversRegion emedia:region_ercot .
+    }
+  expected_result: non_empty
+  required_properties: [coversRegion]
+  requires_reasoning: false
+
+- id: CQ-M14
+  source_use_case: UC-M05
+  natural_language: "Which charts in the system reference data from a given provider?"
+  type: relational
+  priority: should_have
+  sample_answer:
+    - chart: emedia:media_001
+      provider: emedia:provider_bchydro
+  derivation_method: composite
+  sparql: |
+    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX prov: <http://www.w3.org/ns/prov#>
+    SELECT ?chart WHERE {
+      ?chart prov:wasDerivedFrom ?dataset .
+      ?dataset emedia:providedBy emedia:provider_bchydro .
+    }
+  expected_result: non_empty
+  requires_reasoning: false
+
+# ==========================================================================
+# UC-M06: Describe chart semantics
+# ==========================================================================
+
+- id: CQ-M15
+  source_use_case: UC-M06
+  natural_language: "What type of chart is a given visualization (bar, line, scatter, etc.)?"
+  type: relational
+  priority: must_have
+  sample_answer:
+    - chart: emedia:media_001
+      chartType: emedia:LineChart
+  derivation_method: direct_lookup
+  sparql: |
+    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    SELECT ?chartType WHERE {
+      emedia:media_001 emedia:chartType ?chartType .
+    }
+  expected_result: non_empty
+  required_properties: [chartType]
+  requires_reasoning: false
+
+- id: CQ-M16
+  source_use_case: UC-M06
+  natural_language: "What are the axis labels and units for a given chart?"
+  type: relational
+  priority: must_have
+  sample_answer:
+    - chart: emedia:media_001
+      xAxisLabel: "Year"
+      xAxisUnit: null
+      yAxisLabel: "Net Imports"
+      yAxisUnit: "TWh"
+  derivation_method: direct_lookup
+  sparql: |
+    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    SELECT ?xLabel ?xUnit ?yLabel ?yUnit WHERE {
+      emedia:media_001 emedia:hasXAxis ?xAxis ;
+                       emedia:hasYAxis ?yAxis .
+      ?xAxis emedia:axisLabel ?xLabel .
+      OPTIONAL { ?xAxis emedia:axisUnit ?xUnit . }
+      ?yAxis emedia:axisLabel ?yLabel .
+      OPTIONAL { ?yAxis emedia:axisUnit ?yUnit . }
+    }
+  expected_result: non_empty
+  required_classes: [ChartAxis]
+  required_properties: [hasXAxis, hasYAxis, axisLabel, axisUnit]
+  requires_reasoning: false
+
+- id: CQ-M17
+  source_use_case: UC-M06
+  natural_language: "What time period does a given chart cover?"
+  type: relational
+  priority: must_have
+  sample_answer:
+    - chart: emedia:media_001
+      startDate: "2015-01-01"
+      endDate: "2026-03-01"
+  derivation_method: direct_lookup
+  sparql: |
+    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX dcterms: <http://purl.org/dc/terms/>
+    SELECT ?start ?end WHERE {
+      emedia:media_001 dcterms:temporal ?period .
+      ?period emedia:startDate ?start ;
+              emedia:endDate ?end .
+    }
+  expected_result: non_empty
+  requires_reasoning: false
+
+- id: CQ-M18
+  source_use_case: UC-M06
+  natural_language: "What geographic region does a given chart cover?"
+  type: relational
+  priority: must_have
+  sample_answer:
+    - chart: emedia:media_001
+      region: emedia:region_british_columbia
+      label: "British Columbia"
+  derivation_method: direct_lookup
+  sparql: |
+    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX dcterms: <http://purl.org/dc/terms/>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    SELECT ?region ?label WHERE {
+      emedia:media_001 dcterms:spatial ?region .
+      ?region rdfs:label ?label .
+    }
+  expected_result: non_empty
+  requires_reasoning: false
+
+- id: CQ-M19
+  source_use_case: UC-M06
+  natural_language: "What data series are plotted in a given chart?"
+  type: enumerative
+  priority: must_have
+  sample_answer:
+    - chart: emedia:media_001
+      series: emedia:series_001
+      label: "BC Net Imports"
+      unit: "TWh"
+  derivation_method: direct_lookup
+  sparql: |
+    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    SELECT ?series ?label ?unit WHERE {
+      emedia:media_001 emedia:hasSeries ?series .
+      ?series rdfs:label ?label .
+      OPTIONAL { ?series emedia:seriesUnit ?unit . }
+    }
+  expected_result: non_empty
+  required_classes: [ChartSeries]
+  required_properties: [hasSeries]
+  requires_reasoning: false
+
+- id: CQ-M20
+  source_use_case: UC-M06
+  natural_language: "What is the title or caption of a given chart?"
+  type: relational
+  priority: must_have
+  sample_answer:
+    - chart: emedia:media_001
+      title: "BC Hydro Net Imports 2015-2026"
+  derivation_method: direct_lookup
+  sparql: |
+    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX dcterms: <http://purl.org/dc/terms/>
+    SELECT ?title WHERE {
+      emedia:media_001 dcterms:title ?title .
+    }
+  expected_result: non_empty
+  requires_reasoning: false
+
+- id: CQ-M21
+  source_use_case: UC-M06
+  natural_language: "What key data points or trends does a chart highlight?"
+  type: relational
+  priority: should_have
+  sample_answer:
+    - chart: emedia:media_001
+      finding: "First time all three major hydro provinces were net importers simultaneously"
+  derivation_method: direct_lookup
+  sparql: |
+    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    SELECT ?finding WHERE {
+      emedia:media_001 emedia:keyFinding ?finding .
+    }
+  expected_result: non_empty
+  required_properties: [keyFinding]
+  requires_reasoning: false
+  notes: "Key findings are extracted by vision pipeline. They represent the most salient takeaway from the chart — the 'so what' a human would highlight."

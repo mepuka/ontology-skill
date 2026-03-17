@@ -1,0 +1,139 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix emedia: <http://example.org/ontology/energy-media#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+<http://example.org/ontology/energy-media/chart-types> a owl:Ontology ;
+    dcterms:created "2026-03-17" ;
+    dcterms:creator "ontology-architect skill" ;
+    dcterms:description "SKOS concept scheme classifying chart and visualization structural forms for the Energy Media Ontology."@en ;
+    dcterms:license <https://spdx.org/licenses/MIT> ;
+    dcterms:modified "2026-03-17" ;
+    dcterms:title "Energy Media Ontology — Chart Type Scheme"@en ;
+    owl:versionIRI <http://example.org/ontology/energy-media/chart-types/0.1.0> ;
+    owl:versionInfo "0.1.0" .
+
+emedia:AreaChart a skos:Concept ;
+    rdfs:label "Area Chart"@en ;
+    skos:altLabel "filled line chart"@en ;
+    skos:broader emedia:LineChart ;
+    skos:definition "Line chart with the area below filled to emphasize volume"@en ;
+    skos:inScheme emedia:ChartTypeScheme .
+
+emedia:StackedBarChart a skos:Concept ;
+    rdfs:label "Stacked Bar Chart"@en ;
+    skos:broader emedia:BarChart ;
+    skos:definition "Bar chart with segments showing component breakdown"@en ;
+    skos:inScheme emedia:ChartTypeScheme .
+
+emedia:CandlestickChart a skos:Concept ;
+    rdfs:label "Candlestick Chart"@en ;
+    skos:altLabel "OHLC chart"@en ;
+    skos:definition "Chart showing open, high, low, close values for financial/commodity data"@en ;
+    skos:inScheme emedia:ChartTypeScheme ;
+    skos:topConceptOf emedia:ChartTypeScheme .
+
+emedia:ChoroplethMap a skos:Concept ;
+    rdfs:label "Choropleth Map"@en ;
+    skos:altLabel "shaded map"@en,
+        "thematic map"@en ;
+    skos:definition "Geographic map with regions shaded by data values"@en ;
+    skos:inScheme emedia:ChartTypeScheme ;
+    skos:topConceptOf emedia:ChartTypeScheme .
+
+emedia:DataTable a skos:Concept ;
+    rdfs:label "Data Table"@en ;
+    skos:altLabel "spreadsheet view"@en,
+        "table"@en ;
+    skos:definition "Structured tabular presentation of data in rows and columns"@en ;
+    skos:inScheme emedia:ChartTypeScheme ;
+    skos:topConceptOf emedia:ChartTypeScheme .
+
+emedia:DualAxisChart a skos:Concept ;
+    rdfs:label "Dual Axis Chart"@en ;
+    skos:altLabel "combo chart"@en,
+        "mixed chart"@en ;
+    skos:definition "Chart combining two chart types sharing one axis (e.g., bars + line)"@en ;
+    skos:inScheme emedia:ChartTypeScheme ;
+    skos:topConceptOf emedia:ChartTypeScheme .
+
+emedia:Heatmap a skos:Concept ;
+    rdfs:label "Heatmap"@en ;
+    skos:altLabel "heat map"@en ;
+    skos:definition "Matrix of values encoded as colors to show patterns"@en ;
+    skos:inScheme emedia:ChartTypeScheme ;
+    skos:topConceptOf emedia:ChartTypeScheme .
+
+emedia:PieChart a skos:Concept ;
+    rdfs:label "Pie Chart"@en ;
+    skos:altLabel "donut chart"@en ;
+    skos:definition "Circular chart divided into proportional segments"@en ;
+    skos:inScheme emedia:ChartTypeScheme ;
+    skos:topConceptOf emedia:ChartTypeScheme .
+
+emedia:PointMap a skos:Concept ;
+    rdfs:label "Point Map"@en ;
+    skos:altLabel "dot map"@en,
+        "location map"@en ;
+    skos:definition "Geographic map with data points plotted at coordinates"@en ;
+    skos:inScheme emedia:ChartTypeScheme ;
+    skos:topConceptOf emedia:ChartTypeScheme .
+
+emedia:SankeyDiagram a skos:Concept ;
+    rdfs:label "Sankey Diagram"@en ;
+    skos:altLabel "alluvial diagram"@en,
+        "flow diagram"@en ;
+    skos:definition "Weighted flow diagram showing magnitude of flows between nodes"@en ;
+    skos:inScheme emedia:ChartTypeScheme ;
+    skos:topConceptOf emedia:ChartTypeScheme .
+
+emedia:ScatterPlot a skos:Concept ;
+    rdfs:label "Scatter Plot"@en ;
+    skos:altLabel "dot plot"@en,
+        "scatter chart"@en ;
+    skos:definition "Individual data points plotted on two quantitative axes"@en ;
+    skos:inScheme emedia:ChartTypeScheme ;
+    skos:topConceptOf emedia:ChartTypeScheme .
+
+emedia:Treemap a skos:Concept ;
+    rdfs:label "Treemap"@en ;
+    skos:definition "Nested rectangles showing hierarchical data proportions"@en ;
+    skos:inScheme emedia:ChartTypeScheme ;
+    skos:topConceptOf emedia:ChartTypeScheme .
+
+emedia:BarChart a skos:Concept ;
+    rdfs:label "Bar Chart"@en ;
+    skos:altLabel "bar graph"@en,
+        "column chart"@en ;
+    skos:definition "Rectangular bars representing values across categories"@en ;
+    skos:inScheme emedia:ChartTypeScheme ;
+    skos:topConceptOf emedia:ChartTypeScheme .
+
+emedia:LineChart a skos:Concept ;
+    rdfs:label "Line Chart"@en ;
+    skos:altLabel "time series"@en,
+        "trend line"@en ;
+    skos:definition "Connected data points showing trends over a continuous axis"@en ;
+    skos:inScheme emedia:ChartTypeScheme ;
+    skos:topConceptOf emedia:ChartTypeScheme .
+
+emedia:ChartTypeScheme a skos:ConceptScheme ;
+    rdfs:label "Chart Type Scheme"@en ;
+    skos:definition "A SKOS concept scheme classifying chart/visualization structural forms. Informed by VISO ontology but lightweight. Each individual is typed as skos:Concept within this scheme."@en ;
+    skos:hasTopConcept emedia:BarChart,
+        emedia:CandlestickChart,
+        emedia:ChoroplethMap,
+        emedia:DataTable,
+        emedia:DualAxisChart,
+        emedia:Heatmap,
+        emedia:LineChart,
+        emedia:PieChart,
+        emedia:PointMap,
+        emedia:SankeyDiagram,
+        emedia:ScatterPlot,
+        emedia:Treemap .
+
+[] a owl:AllDifferent ;
+    owl:distinctMembers ( emedia:BarChart emedia:StackedBarChart emedia:LineChart emedia:AreaChart emedia:ScatterPlot emedia:Heatmap emedia:PieChart emedia:SankeyDiagram emedia:Treemap emedia:CandlestickChart emedia:ChoroplethMap emedia:PointMap emedia:DataTable emedia:DualAxisChart ) .

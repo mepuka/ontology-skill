@@ -1,0 +1,236 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix emedia: <http://example.org/ontology/energy-media#> .
+@prefix enews: <http://example.org/ontology/energy-news#> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.org/ontology/energy-media> a owl:Ontology ;
+    dcterms:created "2026-03-17" ;
+    dcterms:creator "ontology-architect skill" ;
+    dcterms:description "A lightweight OWL 2 DL ontology modeling media attachments, chart semantics, and energy data provenance for social media posts in the energy domain."@en ;
+    dcterms:license <https://spdx.org/licenses/MIT> ;
+    dcterms:modified "2026-03-17" ;
+    dcterms:title "Energy Media Ontology"@en ;
+    owl:imports <http://example.org/ontology/energy-media/chart-types>,
+        <http://example.org/ontology/energy-media/providers>,
+        <http://example.org/ontology/energy-news> ;
+    owl:versionIRI <http://example.org/ontology/energy-media/0.1.0> ;
+    owl:versionInfo "0.1.0" .
+
+emedia:altText a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "alt text"@en ;
+    rdfs:domain emedia:MediaAttachment ;
+    rdfs:range xsd:string ;
+    skos:definition "The descriptive text for a media attachment"@en .
+
+emedia:altTextProvenance a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "alt text provenance"@en ;
+    rdfs:domain emedia:MediaAttachment ;
+    rdfs:range skos:Concept ;
+    skos:definition "The provenance classification of a media attachment's alt text"@en .
+
+emedia:axisLabel a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "axis label"@en ;
+    rdfs:domain emedia:ChartAxis ;
+    rdfs:range xsd:string ;
+    skos:definition "The displayed label text of a chart axis"@en .
+
+emedia:axisUnit a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "axis unit"@en ;
+    rdfs:domain emedia:ChartAxis ;
+    rdfs:range xsd:string ;
+    skos:definition "The unit of measurement on a chart axis (MW, TWh, $/MWh, %)"@en .
+
+emedia:hasMediaAttachment a owl:ObjectProperty ;
+    rdfs:label "has media attachment"@en ;
+    rdfs:domain enews:Post ;
+    rdfs:range emedia:MediaAttachment ;
+    skos:definition "Relates a Post to its attached media"@en .
+
+emedia:hasSeries a owl:ObjectProperty ;
+    rdfs:label "has series"@en ;
+    rdfs:domain emedia:Chart ;
+    rdfs:range emedia:ChartSeries ;
+    skos:definition "Relates a Chart to a plotted data series"@en .
+
+emedia:hasSourceLine a owl:ObjectProperty ;
+    rdfs:label "has source line"@en ;
+    rdfs:domain emedia:Chart ;
+    rdfs:range emedia:ChartSourceLine ;
+    skos:definition "Relates a Chart to its source attribution line"@en .
+
+emedia:keyFinding a owl:DatatypeProperty ;
+    rdfs:label "key finding"@en ;
+    rdfs:domain emedia:Chart ;
+    rdfs:range xsd:string ;
+    skos:definition "The most salient data point or trend highlighted by a chart"@en .
+
+emedia:legendLabel a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "legend label"@en ;
+    rdfs:domain emedia:ChartSeries ;
+    rdfs:range xsd:string ;
+    skos:definition "The text label for a data series as shown in the chart legend"@en .
+
+emedia:mediaUrl a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "media url"@en ;
+    rdfs:domain emedia:MediaAttachment ;
+    rdfs:range xsd:anyURI ;
+    skos:definition "The CDN URL of the media attachment's full-resolution file"@en .
+
+emedia:seriesUnit a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "series unit"@en ;
+    rdfs:domain emedia:ChartSeries ;
+    rdfs:range xsd:string ;
+    skos:definition "The unit of measurement for a data series"@en .
+
+emedia:sourceText a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "source text"@en ;
+    rdfs:domain emedia:ChartSourceLine ;
+    rdfs:range xsd:string ;
+    skos:definition "The raw text of a chart's source attribution line as it appears on the chart"@en .
+
+emedia:thumbnailUrl a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "thumbnail url"@en ;
+    rdfs:domain emedia:MediaAttachment ;
+    rdfs:range xsd:anyURI ;
+    skos:definition "The CDN URL of the media attachment's thumbnail"@en .
+
+dcterms:source a owl:ObjectProperty .
+
+dcterms:spatial a owl:ObjectProperty .
+
+dcterms:temporal a owl:ObjectProperty .
+
+prov:wasAttributedTo a owl:ObjectProperty .
+
+prov:wasDerivedFrom a owl:ObjectProperty .
+
+emedia:DocumentExcerpt a owl:Class ;
+    rdfs:label "document excerpt"@en ;
+    rdfs:subClassOf emedia:MediaAttachment,
+        obo:BFO_0000031 ;
+    skos:definition "A MediaAttachment that is an extracted portion of a document, article, or report"@en .
+
+emedia:Infographic a owl:Class ;
+    rdfs:label "infographic"@en ;
+    rdfs:subClassOf emedia:MediaAttachment,
+        obo:BFO_0000031 ;
+    skos:definition "A MediaAttachment that is a designed visual composition combining data, text, and graphics"@en .
+
+emedia:Photo a owl:Class ;
+    rdfs:label "photo"@en ;
+    rdfs:subClassOf emedia:MediaAttachment,
+        obo:BFO_0000031,
+        schema:ImageObject ;
+    skos:definition "A MediaAttachment that is a photographic image of a real-world scene"@en .
+
+emedia:VideoAttachment a owl:Class ;
+    rdfs:label "video attachment"@en ;
+    rdfs:subClassOf emedia:MediaAttachment,
+        obo:BFO_0000031,
+        schema:VideoObject ;
+    skos:definition "A MediaAttachment that is a video recording or animation"@en .
+
+emedia:chartType a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "chart type"@en ;
+    rdfs:domain emedia:Chart ;
+    rdfs:range skos:Concept ;
+    skos:definition "Relates a Chart to its ChartType classification"@en .
+
+emedia:hasXAxis a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "has x axis"@en ;
+    rdfs:domain emedia:Chart ;
+    rdfs:range emedia:ChartAxis ;
+    skos:definition "Relates a Chart to its horizontal axis"@en .
+
+emedia:hasYAxis a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "has y axis"@en ;
+    rdfs:domain emedia:Chart ;
+    rdfs:range emedia:ChartAxis ;
+    skos:definition "Relates a Chart to its vertical axis"@en .
+
+emedia:providedBy a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "provided by"@en ;
+    rdfs:domain emedia:EnergyDataset ;
+    rdfs:range emedia:EnergyDataProvider ;
+    skos:definition "Relates an EnergyDataset to its EnergyDataProvider"@en .
+
+emedia:ChartSourceLine a owl:Class ;
+    rdfs:label "chart source line"@en ;
+    rdfs:subClassOf obo:BFO_0000031 ;
+    skos:definition "The source attribution text appearing on a chart, typically at the bottom"@en .
+
+emedia:EnergyDataset a owl:Class ;
+    rdfs:label "energy dataset"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty emedia:providedBy ;
+            owl:someValuesFrom emedia:EnergyDataProvider ],
+        obo:BFO_0000031,
+        schema:Dataset ;
+    skos:definition "A specific dataset published by an EnergyDataProvider"@en .
+
+emedia:EnergyDataProvider a owl:Class ;
+    rdfs:label "energy data provider"@en ;
+    rdfs:subClassOf obo:BFO_0000030,
+        schema:Organization ;
+    skos:definition "An organization that publishes energy data accessible via API or download"@en .
+
+emedia:ChartSeries a owl:Class ;
+    rdfs:label "chart series"@en ;
+    rdfs:subClassOf obo:BFO_0000031 ;
+    skos:definition "A named data series plotted within a chart"@en .
+
+emedia:Chart a owl:Class ;
+    rdfs:label "chart"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty emedia:chartType ;
+            owl:someValuesFrom skos:Concept ],
+        [ a owl:Restriction ;
+            owl:onProperty emedia:hasXAxis ;
+            owl:someValuesFrom emedia:ChartAxis ],
+        [ a owl:Restriction ;
+            owl:onProperty emedia:hasYAxis ;
+            owl:someValuesFrom emedia:ChartAxis ],
+        emedia:MediaAttachment,
+        obo:BFO_0000031,
+        schema:ImageObject ;
+    skos:definition "A MediaAttachment that is a data visualization depicting quantitative information"@en .
+
+emedia:ChartAxis a owl:Class ;
+    rdfs:label "chart axis"@en ;
+    rdfs:subClassOf obo:BFO_0000031 ;
+    skos:definition "A dimensional axis of a chart with label, unit, and scale"@en .
+
+emedia:MediaAttachment a owl:Class ;
+    rdfs:label "media attachment"@en ;
+    rdfs:subClassOf obo:BFO_0000031,
+        schema:MediaObject ;
+    skos:definition "A digital resource attached to or embedded in a Post"@en .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( emedia:EnergyDataProvider emedia:EnergyDataset ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( emedia:Chart emedia:DocumentExcerpt emedia:Photo emedia:Infographic emedia:VideoAttachment ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( emedia:ChartAxis emedia:ChartSeries ) .
