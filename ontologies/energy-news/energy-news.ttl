@@ -390,18 +390,23 @@ enews:ChartAxis a owl:Class ;
 enews:Chart a owl:Class ;
     rdfs:label "chart"@en ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:onProperty enews:hasYAxis ;
-            owl:someValuesFrom enews:ChartAxis ],
+            owl:onProperty enews:chartType ;
+            owl:someValuesFrom skos:Concept ],
         [ a owl:Restriction ;
             owl:onProperty enews:hasXAxis ;
             owl:someValuesFrom enews:ChartAxis ],
         [ a owl:Restriction ;
-            owl:onProperty enews:chartType ;
-            owl:someValuesFrom skos:Concept ],
+            owl:onProperty enews:hasYAxis ;
+            owl:someValuesFrom enews:ChartAxis ],
         enews:MediaAttachment,
         obo:BFO_0000031,
         schema:ImageObject ;
     skos:definition "A MediaAttachment that is a data visualization depicting quantitative information"@en .
+
+enews:MediaAttachment a owl:Class ;
+    rdfs:label "media attachment"@en ;
+    rdfs:subClassOf obo:BFO_0000031 ;
+    skos:definition "A digital resource attached to or embedded in a Post"@en .
 
 enews:Article a owl:Class ;
     rdfs:label "article"@en ;
@@ -414,10 +419,10 @@ enews:Article a owl:Class ;
     skos:definition "A GenericallyDependentContinuant that represents a news article referenced by an embedded link in a social media post"@en .
 
 [] a owl:AllDisjointClasses ;
+    owl:members ( enews:ChartAxis enews:ChartSeries enews:ChartSourceLine ) .
+
+[] a owl:AllDisjointClasses ;
     owl:members ( enews:EnergyTopic enews:Article enews:Publication enews:Post enews:AuthorAccount enews:Feed enews:Organization enews:GeographicEntity enews:SocialMediaPlatform ) .
 
 [] a owl:AllDisjointClasses ;
     owl:members ( enews:Chart enews:DocumentExcerpt enews:Photo enews:Infographic enews:VideoAttachment ) .
-
-[] a owl:AllDisjointClasses ;
-    owl:members ( enews:ChartAxis enews:ChartSeries enews:ChartSourceLine ) .

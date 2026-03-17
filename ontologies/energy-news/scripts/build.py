@@ -335,6 +335,27 @@ def _add_has_key(g: Graph, cls: URIRef, key_props: list[URIRef]) -> None:
 
 def _add_media_classes(g: Graph) -> None:
     """Add media domain classes merged from energy-media ontology."""
+    # --- MediaAttachment base class (explicit declaration) ---
+    g.add((ENEWS.MediaAttachment, RDF.type, OWL.Class))
+    g.add(
+        (
+            ENEWS.MediaAttachment,
+            RDFS.label,
+            Literal("media attachment", lang="en"),
+        )
+    )
+    g.add(
+        (
+            ENEWS.MediaAttachment,
+            SKOS.definition,
+            Literal(
+                "A digital resource attached to or embedded in a Post",
+                lang="en",
+            ),
+        )
+    )
+    g.add((ENEWS.MediaAttachment, RDFS.subClassOf, OBO.BFO_0000031))
+
     # --- MediaAttachment subtypes ---
     media_subtypes: list[dict[str, Any]] = [
         {
