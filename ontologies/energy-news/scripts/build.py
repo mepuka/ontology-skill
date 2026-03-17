@@ -34,6 +34,7 @@ SCHEMA = Namespace("https://schema.org/")
 SIOC = Namespace("http://rdfs.org/sioc/ns#")
 SH = Namespace("http://www.w3.org/ns/shacl#")
 OBO = Namespace("http://purl.obolibrary.org/obo/")
+PROV = Namespace("http://www.w3.org/ns/prov#")
 
 # Ontology IRIs
 TBOX_IRI = URIRef("http://example.org/ontology/energy-news")
@@ -68,6 +69,7 @@ def bind_common_prefixes(g: Graph) -> None:
     g.bind("schema", SCHEMA)
     g.bind("sioc", SIOC)
     g.bind("obo", OBO)
+    g.bind("prov", PROV)
 
 
 def load_glossary() -> list[dict[str, str]]:
@@ -215,6 +217,10 @@ def build_tbox(glossary: list[dict[str, str]], props: dict) -> Graph:
     # Properties and axioms
     _add_properties_and_axioms(g, props)
 
+    # Media domain classes, properties, and axioms (merged from energy-media)
+    _add_media_classes(g)
+    _add_media_properties(g)
+
     return g
 
 
@@ -323,6 +329,333 @@ def _add_has_key(g: Graph, cls: URIRef, key_props: list[URIRef]) -> None:
 
 
 # ---------------------------------------------------------------------------
+# Media Domain (merged from energy-media)
+# ---------------------------------------------------------------------------
+
+
+def _add_media_classes(g: Graph) -> None:
+    """Add media domain classes merged from energy-media ontology."""
+    # --- MediaAttachment subtypes ---
+    media_subtypes: list[dict[str, Any]] = [
+        {
+            "name": "Chart",
+            "definition": (
+                "A MediaAttachment that is a data visualization depicting quantitative information"
+            ),
+            "parent": ENEWS.MediaAttachment,
+            "schema": SCHEMA.ImageObject,
+            "bfo": OBO.BFO_0000031,
+        },
+        {
+            "name": "DocumentExcerpt",
+            "definition": (
+                "A MediaAttachment that is an extracted portion of a document, article, or report"
+            ),
+            "parent": ENEWS.MediaAttachment,
+            "schema": None,
+            "bfo": OBO.BFO_0000031,
+        },
+        {
+            "name": "Photo",
+            "definition": ("A MediaAttachment that is a photographic image of a real-world scene"),
+            "parent": ENEWS.MediaAttachment,
+            "schema": SCHEMA.ImageObject,
+            "bfo": OBO.BFO_0000031,
+        },
+        {
+            "name": "Infographic",
+            "definition": (
+                "A MediaAttachment that is a designed visual"
+                " composition combining data, text, and graphics"
+            ),
+            "parent": ENEWS.MediaAttachment,
+            "schema": None,
+            "bfo": OBO.BFO_0000031,
+        },
+        {
+            "name": "VideoAttachment",
+            "definition": ("A MediaAttachment that is a video recording or animation"),
+            "parent": ENEWS.MediaAttachment,
+            "schema": SCHEMA.VideoObject,
+            "bfo": OBO.BFO_0000031,
+        },
+    ]
+
+    for cls_spec in media_subtypes:
+        uri = ENEWS[cls_spec["name"]]
+        g.add((uri, RDF.type, OWL.Class))
+        g.add((uri, RDFS.label, Literal(to_label(cls_spec["name"]), lang="en")))
+        g.add((uri, SKOS.definition, Literal(cls_spec["definition"], lang="en")))
+        g.add((uri, RDFS.subClassOf, cls_spec["parent"]))
+        g.add((uri, RDFS.subClassOf, cls_spec["bfo"]))
+        if cls_spec["schema"]:
+            g.add((uri, RDFS.subClassOf, cls_spec["schema"]))
+
+    # --- Standalone classes ---
+    standalone: list[dict[str, Any]] = [
+        {
+            "name": "ChartAxis",
+            "definition": ("A dimensional axis of a chart with label, unit, and optional scale"),
+            "bfo": OBO.BFO_0000031,
+            "schema": None,
+        },
+        {
+            "name": "ChartSeries",
+            "definition": ("A named data series plotted within a chart"),
+            "bfo": OBO.BFO_0000031,
+            "schema": None,
+        },
+        {
+            "name": "ChartSourceLine",
+            "definition": (
+                "The source attribution text appearing on a chart, typically at the bottom"
+            ),
+            "bfo": OBO.BFO_0000031,
+            "schema": None,
+        },
+        {
+            "name": "TemporalCoverage",
+            "definition": (
+                "A time period that a chart or visualization covers, with start and end dates"
+            ),
+            "bfo": OBO.BFO_0000008,  # Temporal Region
+            "schema": None,
+        },
+        {
+            "name": "EnergyDataProvider",
+            "definition": (
+                "An organization that publishes energy data accessible via API or download"
+            ),
+            "bfo": OBO.BFO_0000030,  # Object
+            "schema": SCHEMA.Organization,
+        },
+        {
+            "name": "EnergyDataset",
+            "definition": ("A specific dataset published by an EnergyDataProvider"),
+            "bfo": OBO.BFO_0000031,
+            "schema": SCHEMA.Dataset,
+        },
+    ]
+
+    for cls_spec in standalone:
+        uri = ENEWS[cls_spec["name"]]
+        g.add((uri, RDF.type, OWL.Class))
+        g.add((uri, RDFS.label, Literal(to_label(cls_spec["name"]), lang="en")))
+        g.add((uri, SKOS.definition, Literal(cls_spec["definition"], lang="en")))
+        g.add((uri, RDFS.subClassOf, cls_spec["bfo"]))
+        if cls_spec["schema"]:
+            g.add((uri, RDFS.subClassOf, cls_spec["schema"]))
+
+    # --- Disjoint groups ---
+    media_disjoint: list[list[str]] = [
+        [
+            "Chart",
+            "DocumentExcerpt",
+            "Photo",
+            "Infographic",
+            "VideoAttachment",
+        ],
+        ["ChartAxis", "ChartSeries", "ChartSourceLine"],
+    ]
+    for group in media_disjoint:
+        dj = BNode()
+        g.add((dj, RDF.type, OWL.AllDisjointClasses))
+        uris: list[Node] = [ENEWS[n] for n in group]
+        lst = BNode()
+        Collection(g, lst, uris)
+        g.add((dj, OWL.members, lst))
+
+
+def _add_media_properties(g: Graph) -> None:
+    """Add media domain properties merged from energy-media ontology."""
+    # --- Object Properties ---
+    obj_props: list[dict[str, Any]] = [
+        {
+            "name": "chartType",
+            "definition": ("Links a Chart to its visualization type classification"),
+            "domain": ENEWS.Chart,
+            "range": SKOS.Concept,
+            "functional": False,
+        },
+        {
+            "name": "hasXAxis",
+            "definition": "Links a Chart to its x-axis",
+            "domain": ENEWS.Chart,
+            "range": ENEWS.ChartAxis,
+            "functional": True,
+        },
+        {
+            "name": "hasYAxis",
+            "definition": "Links a Chart to a y-axis",
+            "domain": ENEWS.Chart,
+            "range": ENEWS.ChartAxis,
+            "functional": False,
+        },
+        {
+            "name": "hasSeries",
+            "definition": ("Links a Chart to a data series plotted in it"),
+            "domain": ENEWS.Chart,
+            "range": ENEWS.ChartSeries,
+            "functional": False,
+        },
+        {
+            "name": "hasSourceLine",
+            "definition": ("Links a Chart to its source attribution text"),
+            "domain": ENEWS.Chart,
+            "range": ENEWS.ChartSourceLine,
+            "functional": False,
+        },
+        {
+            "name": "altTextProvenance",
+            "definition": ("Links a MediaAttachment to the provenance category of its alt text"),
+            "domain": ENEWS.MediaAttachment,
+            "range": SKOS.Concept,
+            "functional": True,
+        },
+        {
+            "name": "providedBy",
+            "definition": ("Links an EnergyDataset to its provider organization"),
+            "domain": ENEWS.EnergyDataset,
+            "range": ENEWS.EnergyDataProvider,
+            "functional": True,
+        },
+        {
+            "name": "containsChart",
+            "definition": ("Links a DocumentExcerpt to a Chart embedded within it"),
+            "domain": ENEWS.DocumentExcerpt,
+            "range": ENEWS.Chart,
+            "functional": False,
+        },
+        {
+            "name": "hasTemporalCoverage",
+            "definition": ("Links a Chart to the time period it covers"),
+            "domain": ENEWS.Chart,
+            "range": ENEWS.TemporalCoverage,
+            "functional": True,
+        },
+    ]
+
+    for prop in obj_props:
+        uri = ENEWS[prop["name"]]
+        g.add((uri, RDF.type, OWL.ObjectProperty))
+        g.add((uri, RDFS.label, Literal(to_label(prop["name"]), lang="en")))
+        g.add((uri, SKOS.definition, Literal(prop["definition"], lang="en")))
+        g.add((uri, RDFS.domain, prop["domain"]))
+        g.add((uri, RDFS.range, prop["range"]))
+        if prop["functional"]:
+            g.add((uri, RDF.type, OWL.FunctionalProperty))
+
+    # --- Reused external properties ---
+    for ext in [PROV.wasAttributedTo, PROV.wasDerivedFrom]:
+        g.add((ext, RDF.type, OWL.ObjectProperty))
+    for ext in [DCTERMS.source, DCTERMS.spatial]:
+        g.add((ext, RDF.type, OWL.ObjectProperty))
+
+    # --- Datatype Properties ---
+    xsd_map = {
+        "xsd:string": XSD.string,
+        "xsd:anyURI": XSD.anyURI,
+        "xsd:date": XSD.date,
+    }
+
+    dt_props: list[dict[str, Any]] = [
+        {
+            "name": "altText",
+            "domain": "MediaAttachment",
+            "range": "xsd:string",
+            "functional": True,
+            "definition": ("The alternative text description for the media attachment"),
+        },
+        {
+            "name": "mediaUrl",
+            "domain": "MediaAttachment",
+            "range": "xsd:anyURI",
+            "functional": True,
+            "definition": ("The URL of the media resource"),
+        },
+        {
+            "name": "thumbnailUrl",
+            "domain": "MediaAttachment",
+            "range": "xsd:anyURI",
+            "functional": True,
+            "definition": ("The URL of the thumbnail image"),
+        },
+        {
+            "name": "axisLabel",
+            "domain": "ChartAxis",
+            "range": "xsd:string",
+            "functional": True,
+            "definition": ("The text label of a chart axis"),
+        },
+        {
+            "name": "axisUnit",
+            "domain": "ChartAxis",
+            "range": "xsd:string",
+            "functional": True,
+            "definition": ("The unit of measurement for a chart axis"),
+        },
+        {
+            "name": "seriesUnit",
+            "domain": "ChartSeries",
+            "range": "xsd:string",
+            "functional": True,
+            "definition": ("The unit of measurement for a data series"),
+        },
+        {
+            "name": "legendLabel",
+            "domain": "ChartSeries",
+            "range": "xsd:string",
+            "functional": True,
+            "definition": ("The legend label text for a data series"),
+        },
+        {
+            "name": "sourceText",
+            "domain": "ChartSourceLine",
+            "range": "xsd:string",
+            "functional": True,
+            "definition": ("The raw source attribution text appearing on a chart"),
+        },
+        {
+            "name": "keyFinding",
+            "domain": "Chart",
+            "range": "xsd:string",
+            "functional": False,
+            "definition": ("A key finding or takeaway extracted from a chart"),
+        },
+        {
+            "name": "startDate",
+            "domain": "TemporalCoverage",
+            "range": "xsd:date",
+            "functional": True,
+            "definition": ("The start date of a temporal coverage period"),
+        },
+        {
+            "name": "endDate",
+            "domain": "TemporalCoverage",
+            "range": "xsd:date",
+            "functional": True,
+            "definition": ("The end date of a temporal coverage period"),
+        },
+    ]
+
+    for prop in dt_props:
+        uri = ENEWS[prop["name"]]
+        g.add((uri, RDF.type, OWL.DatatypeProperty))
+        g.add((uri, RDFS.label, Literal(to_label(prop["name"]), lang="en")))
+        g.add((uri, SKOS.definition, Literal(prop["definition"], lang="en")))
+        g.add((uri, RDFS.domain, ENEWS[prop["domain"]]))
+        g.add((uri, RDFS.range, xsd_map[prop["range"]]))
+        if prop["functional"]:
+            g.add((uri, RDF.type, OWL.FunctionalProperty))
+
+    # --- Existential Restrictions ---
+    _add_existential(g, ENEWS.Chart, ENEWS.chartType, SKOS.Concept)
+    _add_existential(g, ENEWS.Chart, ENEWS.hasXAxis, ENEWS.ChartAxis)
+    _add_existential(g, ENEWS.Chart, ENEWS.hasYAxis, ENEWS.ChartAxis)
+    _add_existential(g, ENEWS.EnergyDataset, ENEWS.providedBy, ENEWS.EnergyDataProvider)
+
+
+# ---------------------------------------------------------------------------
 # Reference Individuals Builder
 # ---------------------------------------------------------------------------
 
@@ -426,6 +759,11 @@ def build_reference_individuals(glossary: list[dict[str, str]], model: dict) -> 
     # --- Social Media Platform Individuals ---
     _add_platform_individuals(g, glossary)
 
+    # --- Media SKOS Schemes and Provider Individuals ---
+    _add_chart_type_scheme(g)
+    _add_alt_text_provenance_scheme(g)
+    _add_data_provider_individuals(g)
+
     return g
 
 
@@ -493,6 +831,290 @@ def _add_platform_individuals(g: Graph, glossary: list[dict[str, str]]) -> None:
     member_list = BNode()
     Collection(g, member_list, platform_uris)
     g.add((diff_node, OWL.distinctMembers, member_list))
+
+
+def _add_chart_type_scheme(g: Graph) -> None:
+    """Add ChartTypeScheme SKOS concept scheme with chart type individuals."""
+    scheme = ENEWS.ChartTypeScheme
+    g.add((scheme, RDF.type, SKOS.ConceptScheme))
+    g.add((scheme, RDFS.label, Literal("Chart Type Scheme", lang="en")))
+    g.add(
+        (
+            scheme,
+            SKOS.definition,
+            Literal(
+                "A SKOS concept scheme classifying chart and visualization"
+                " structural forms for the Energy News Ontology.",
+                lang="en",
+            ),
+        )
+    )
+
+    chart_types: list[dict[str, Any]] = [
+        {
+            "name": "BarChart",
+            "label": "Bar Chart",
+            "altLabel": ["bar graph", "column chart"],
+            "definition": ("Rectangular bars representing values across categories"),
+            "broader": None,
+        },
+        {
+            "name": "StackedBarChart",
+            "label": "Stacked Bar Chart",
+            "altLabel": [],
+            "definition": ("Bar chart with segments showing component breakdown"),
+            "broader": "BarChart",
+        },
+        {
+            "name": "LineChart",
+            "label": "Line Chart",
+            "altLabel": ["time series", "trend line"],
+            "definition": ("Connected data points showing trends over a continuous axis"),
+            "broader": None,
+        },
+        {
+            "name": "AreaChart",
+            "label": "Area Chart",
+            "altLabel": ["filled line chart"],
+            "definition": ("Line chart with the area below filled to emphasize volume"),
+            "broader": "LineChart",
+        },
+        {
+            "name": "ScatterPlot",
+            "label": "Scatter Plot",
+            "altLabel": ["scatter chart", "dot plot"],
+            "definition": ("Individual data points plotted on two quantitative axes"),
+            "broader": None,
+        },
+        {
+            "name": "Heatmap",
+            "label": "Heatmap",
+            "altLabel": ["heat map"],
+            "definition": ("Matrix of values encoded as colors to show patterns"),
+            "broader": None,
+        },
+        {
+            "name": "PieChart",
+            "label": "Pie Chart",
+            "altLabel": ["donut chart"],
+            "definition": ("Circular chart divided into proportional segments"),
+            "broader": None,
+        },
+        {
+            "name": "SankeyDiagram",
+            "label": "Sankey Diagram",
+            "altLabel": [
+                "flow diagram",
+                "alluvial diagram",
+            ],
+            "definition": ("Weighted flow diagram showing magnitude of flows between nodes"),
+            "broader": None,
+        },
+        {
+            "name": "Treemap",
+            "label": "Treemap",
+            "altLabel": [],
+            "definition": ("Nested rectangles showing hierarchical data proportions"),
+            "broader": None,
+        },
+        {
+            "name": "CandlestickChart",
+            "label": "Candlestick Chart",
+            "altLabel": ["OHLC chart"],
+            "definition": (
+                "Chart showing open, high, low, close values for financial/commodity data"
+            ),
+            "broader": None,
+        },
+        {
+            "name": "ChoroplethMap",
+            "label": "Choropleth Map",
+            "altLabel": [
+                "thematic map",
+                "shaded map",
+            ],
+            "definition": ("Geographic map with regions shaded by data values"),
+            "broader": None,
+        },
+        {
+            "name": "PointMap",
+            "label": "Point Map",
+            "altLabel": ["dot map", "location map"],
+            "definition": ("Geographic map with data points plotted at coordinates"),
+            "broader": None,
+        },
+        {
+            "name": "DataTable",
+            "label": "Data Table",
+            "altLabel": [
+                "table",
+                "spreadsheet view",
+            ],
+            "definition": ("Structured tabular presentation of data in rows and columns"),
+            "broader": None,
+        },
+        {
+            "name": "DualAxisChart",
+            "label": "Dual Axis Chart",
+            "altLabel": ["combo chart", "mixed chart"],
+            "definition": ("Chart combining two chart types sharing one axis (e.g., bars + line)"),
+            "broader": None,
+        },
+    ]
+
+    all_names: list[str] = []
+    for ct in chart_types:
+        name = ct["name"]
+        all_names.append(name)
+        uri = ENEWS[name]
+        g.add((uri, RDF.type, SKOS.Concept))
+        g.add((uri, SKOS.inScheme, scheme))
+        g.add((uri, RDFS.label, Literal(ct["label"], lang="en")))
+        g.add((uri, SKOS.definition, Literal(ct["definition"], lang="en")))
+        for alt in ct.get("altLabel", []):
+            g.add((uri, SKOS.altLabel, Literal(alt, lang="en")))
+        if ct["broader"]:
+            g.add((uri, SKOS.broader, ENEWS[ct["broader"]]))
+        else:
+            g.add((uri, SKOS.topConceptOf, scheme))
+            g.add((scheme, SKOS.hasTopConcept, uri))
+
+    # AllDifferent
+    if len(all_names) > 1:
+        diff = BNode()
+        g.add((diff, RDF.type, OWL.AllDifferent))
+        members: list[Node] = [ENEWS[n] for n in all_names]
+        ml = BNode()
+        Collection(g, ml, members)
+        g.add((diff, OWL.distinctMembers, ml))
+
+
+def _add_alt_text_provenance_scheme(g: Graph) -> None:
+    """Add AltTextProvenanceScheme SKOS concept scheme."""
+    scheme = ENEWS.AltTextProvenanceScheme
+    g.add((scheme, RDF.type, SKOS.ConceptScheme))
+    g.add((scheme, RDFS.label, Literal("Alt Text Provenance Scheme", lang="en")))
+    g.add(
+        (
+            scheme,
+            SKOS.definition,
+            Literal(
+                "Classifies the origin of a media attachment's descriptive text.",
+                lang="en",
+            ),
+        )
+    )
+
+    provenance_values: list[dict[str, str]] = [
+        {
+            "name": "AltTextOriginal",
+            "label": "Original",
+            "definition": ("Alt text provided by the post author"),
+        },
+        {
+            "name": "AltTextSynthetic",
+            "label": "Synthetic",
+            "definition": ("Alt text generated by a vision model (e.g., Gemini 2.5 Flash)"),
+        },
+        {
+            "name": "AltTextAbsent",
+            "label": "Absent",
+            "definition": ("No alt text exists for this media attachment"),
+        },
+    ]
+
+    all_names: list[str] = []
+    for pv in provenance_values:
+        name = pv["name"]
+        all_names.append(name)
+        uri = ENEWS[name]
+        g.add((uri, RDF.type, SKOS.Concept))
+        g.add((uri, SKOS.inScheme, scheme))
+        g.add((uri, RDFS.label, Literal(pv["label"], lang="en")))
+        g.add((uri, SKOS.definition, Literal(pv["definition"], lang="en")))
+        g.add((uri, SKOS.topConceptOf, scheme))
+        g.add((scheme, SKOS.hasTopConcept, uri))
+
+    # AllDifferent
+    if len(all_names) > 1:
+        diff = BNode()
+        g.add((diff, RDF.type, OWL.AllDifferent))
+        members: list[Node] = [ENEWS[n] for n in all_names]
+        ml = BNode()
+        Collection(g, ml, members)
+        g.add((diff, OWL.distinctMembers, ml))
+
+
+def _add_data_provider_individuals(g: Graph) -> None:
+    """Add well-known EnergyDataProvider individuals."""
+    providers: list[dict[str, str]] = [
+        {
+            "name": "provider_gridstatus",
+            "label": "GridStatus",
+            "definition": (
+                "An energy data aggregator providing"
+                " real-time and historical grid data"
+                " for North American ISOs/RTOs."
+            ),
+        },
+        {
+            "name": "provider_eia",
+            "label": "EIA",
+            "definition": (
+                "The U.S. Energy Information"
+                " Administration, providing comprehensive"
+                " energy statistics and analysis."
+            ),
+        },
+        {
+            "name": "provider_aeso",
+            "label": "AESO",
+            "definition": (
+                "Alberta Electric System Operator, managing the Alberta electricity market."
+            ),
+        },
+        {
+            "name": "provider_ieso",
+            "label": "IESO",
+            "definition": (
+                "Independent Electricity System Operator, managing Ontario's electricity market."
+            ),
+        },
+        {
+            "name": "provider_bchydro",
+            "label": "BC Hydro",
+            "definition": (
+                "British Columbia's primary electric"
+                " utility, providing generation and"
+                " transmission data."
+            ),
+        },
+        {
+            "name": "provider_entsoe",
+            "label": "ENTSO-E",
+            "definition": (
+                "European Network of Transmission"
+                " System Operators for Electricity,"
+                " providing pan-European grid data."
+            ),
+        },
+    ]
+
+    provider_uris: list[Node] = []
+    for prov in providers:
+        uri = ENEWS[prov["name"]]
+        provider_uris.append(uri)
+        g.add((uri, RDF.type, ENEWS.EnergyDataProvider))
+        g.add((uri, RDFS.label, Literal(prov["label"], lang="en")))
+        g.add((uri, SKOS.definition, Literal(prov["definition"], lang="en")))
+
+    # AllDifferent
+    if len(provider_uris) > 1:
+        diff = BNode()
+        g.add((diff, RDF.type, OWL.AllDifferent))
+        ml = BNode()
+        Collection(g, ml, provider_uris)
+        g.add((diff, OWL.distinctMembers, ml))
 
 
 # ---------------------------------------------------------------------------
@@ -844,7 +1466,188 @@ def build_shacl_shapes() -> Graph:
         ),
     )
 
+    # --- Media domain SHACL shapes (merged from energy-media) ---
+    _add_media_shacl_shapes(g)
+
     return g
+
+
+def _add_media_shacl_shapes(g: Graph) -> None:
+    """Add media domain SHACL shapes merged from energy-media."""
+    # --- MediaAttachmentShape ---
+    _add_shape(
+        g,
+        ENEWS.MediaAttachmentShape,
+        ENEWS.MediaAttachment,
+        [
+            _property_shape(
+                g,
+                ENEWS.mediaUrl,
+                min_count=1,
+                max_count=1,
+                datatype=XSD.anyURI,
+            ),
+            _property_shape(
+                g,
+                ENEWS.altTextProvenance,
+                min_count=1,
+            ),
+            _property_shape(
+                g,
+                ENEWS.altText,
+                max_count=1,
+                datatype=XSD.string,
+            ),
+        ],
+    )
+
+    # --- ChartShape (no maxCount on chartType or hasYAxis) ---
+    _add_shape(
+        g,
+        ENEWS.ChartShape,
+        ENEWS.Chart,
+        [
+            _property_shape(
+                g,
+                ENEWS.chartType,
+                min_count=1,
+            ),
+            _property_shape(
+                g,
+                ENEWS.hasXAxis,
+                max_count=1,
+            ),
+            _property_shape(g, ENEWS.hasYAxis),
+            _property_shape(g, ENEWS.hasSeries),
+        ],
+    )
+
+    # --- ChartAxisShape ---
+    _add_shape(
+        g,
+        ENEWS.ChartAxisShape,
+        ENEWS.ChartAxis,
+        [
+            _property_shape(
+                g,
+                ENEWS.axisLabel,
+                min_count=1,
+                max_count=1,
+                datatype=XSD.string,
+            ),
+            _property_shape(
+                g,
+                ENEWS.axisUnit,
+                max_count=1,
+                datatype=XSD.string,
+            ),
+        ],
+    )
+
+    # --- ChartSeriesShape ---
+    _add_shape(
+        g,
+        ENEWS.ChartSeriesShape,
+        ENEWS.ChartSeries,
+        [
+            _min_count_property(g, RDFS.label, 1),
+        ],
+    )
+
+    # --- ChartSourceLineShape ---
+    _add_shape(
+        g,
+        ENEWS.ChartSourceLineShape,
+        ENEWS.ChartSourceLine,
+        [
+            _property_shape(
+                g,
+                ENEWS.sourceText,
+                min_count=1,
+                datatype=XSD.string,
+            ),
+        ],
+    )
+
+    # --- TemporalCoverageShape ---
+    _add_shape(
+        g,
+        ENEWS.TemporalCoverageShape,
+        ENEWS.TemporalCoverage,
+        [
+            _property_shape(
+                g,
+                ENEWS.startDate,
+                max_count=1,
+                datatype=XSD.date,
+            ),
+            _property_shape(
+                g,
+                ENEWS.endDate,
+                max_count=1,
+                datatype=XSD.date,
+            ),
+        ],
+    )
+
+    # --- DocumentExcerptShape ---
+    _add_shape(
+        g,
+        ENEWS.DocumentExcerptShape,
+        ENEWS.DocumentExcerpt,
+        [],
+    )
+
+    # --- InfographicShape ---
+    _add_shape(
+        g,
+        ENEWS.InfographicShape,
+        ENEWS.Infographic,
+        [],
+    )
+
+    # --- PhotoShape ---
+    _add_shape(
+        g,
+        ENEWS.PhotoShape,
+        ENEWS.Photo,
+        [],
+    )
+
+    # --- VideoAttachmentShape ---
+    _add_shape(
+        g,
+        ENEWS.VideoAttachmentShape,
+        ENEWS.VideoAttachment,
+        [],
+    )
+
+    # --- EnergyDataProviderShape ---
+    _add_shape(
+        g,
+        ENEWS.EnergyDataProviderShape,
+        ENEWS.EnergyDataProvider,
+        [
+            _min_count_property(g, RDFS.label, 1),
+        ],
+    )
+
+    # --- EnergyDatasetShape ---
+    _add_shape(
+        g,
+        ENEWS.EnergyDatasetShape,
+        ENEWS.EnergyDataset,
+        [
+            _min_count_property(g, RDFS.label, 1),
+            _property_shape(
+                g,
+                ENEWS.providedBy,
+                min_count=1,
+                max_count=1,
+                class_constraint=ENEWS.EnergyDataProvider,
+            ),
+        ],
+    )
 
 
 def _add_shape(g: Graph, shape_uri: URIRef, target_class: URIRef, prop_shapes: list[BNode]) -> None:

@@ -68,17 +68,17 @@
 - id: UC-M05
   name: "Link charts to energy data sources"
   actor: "MCP agent"
-  goal: "Connect chart visualizations to known energy data providers for claim verification"
+  goal: "Connect chart visualizations to known energy data providers via provider-dataset linkage for claim verification"
   preconditions:
     - "Chart attribution has been extracted (data source layer)"
-    - "Energy data source registry exists"
+    - "Energy data provider registry exists with providedBy linkage to datasets"
   main_flow:
     - "Agent queries chart for data source attribution"
-    - "System matches attribution to registered data provider (GridStatus, EIA, ENTSO-E, BC Hydro)"
-    - "Agent can cross-reference chart claims with live data API"
+    - "System matches attribution to registered data provider (GridStatus, EIA, ENTSO-E, BC Hydro) via dataset linkage"
+    - "Agent uses provider identity for verification context"
   postconditions:
-    - "Agent knows which API to query for verification data"
-  related_cqs: [CQ-M12, CQ-M13, CQ-M14]
+    - "Agent knows which data provider sourced the chart's data"
+  related_cqs: [CQ-M12, CQ-M14]
   priority: should_have
 
 - id: UC-M06

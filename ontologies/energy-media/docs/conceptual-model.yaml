@@ -1,45 +1,41 @@
 # Energy Media Ontology — Conceptual Model
 # Produced by: ontology-conceptualizer (Phase 3)
 # Input: scope.md, use-cases.yaml, competency-questions.yaml, glossary.csv
-# Extends: energy-news ontology (enews)
+# NOTE: Media domain is now merged into energy-news ontology (enews namespace).
 
 ontology:
-  name: Energy Media Ontology
-  prefix: emedia
-  namespace: "http://example.org/ontology/energy-media#"
+  name: Energy Media Domain (merged into Energy News Ontology)
+  prefix: enews
+  namespace: "http://example.org/ontology/energy-news#"
   profile: OWL 2 DL
   serialization: Turtle
   target_size: "~14 classes, ~19 properties, ~17 SKOS individuals"
   extends: energy-news
+  notes: >
+    The media domain model is now part of the energy-news ontology, not a
+    separate module. All classes and properties use the enews: namespace.
 
 # --- Module Structure ---
 
 modules:
-  - id: emedia-core
-    name: "Energy Media Core"
+  - id: enews-core
+    name: "Energy News Core (includes media domain)"
     description: >
-      T-box module containing MediaAttachment class hierarchy, chart semantic
-      classes (ChartAxis, ChartSeries), ChartType and AltTextProvenance SKOS
-      schemes, and all properties. Extends energy-news core.
+      T-box module containing the full energy-news ontology plus media domain:
+      MediaAttachment class hierarchy, chart semantic classes (ChartAxis,
+      ChartSeries, TemporalCoverage), ChartType and AltTextProvenance SKOS
+      schemes, and all properties. Single unified module.
     layer: problem-specific
-    file: "ontologies/energy-media/energy-media.ttl"
+    file: "ontologies/energy-news/energy-news.ttl"
 
-  - id: emedia-providers
-    name: "Energy Data Providers"
+  - id: enews-reference
+    name: "Energy News Reference Individuals"
     description: >
-      A-box module containing EnergyDataProvider and EnergyDataset individuals,
-      alt text provenance concepts, and their relationships. Seeded from
-      known energy data sources.
+      Reference individuals module containing SKOS topic scheme, chart type
+      scheme, alt text provenance scheme, EnergyDataProvider individuals,
+      and platform individuals.
     layer: problem-specific
-    file: "ontologies/energy-media/energy-media-providers.ttl"
-
-  - id: emedia-chart-types
-    name: "Chart Type Scheme"
-    description: >
-      SKOS ConceptScheme with ~15-20 chart type individuals. Informed by VISO
-      ontology but lightweight — flat scheme with optional broader groupings.
-    layer: problem-specific
-    file: "ontologies/energy-media/energy-media-chart-types.ttl"
+    file: "ontologies/energy-news/energy-news-reference-individuals.ttl"
 
 # --- Architecture Layers ---
 
@@ -71,21 +67,21 @@ layers:
         usage: "Equivalence axioms for ImageObject, Dataset, DataCatalog"
 
   domain-dependent:
-    description: "Energy-news ontology as direct dependency"
+    description: "Energy-news ontology as the host ontology"
     vocabularies:
       - prefix: enews
         namespace: "http://example.org/ontology/energy-news#"
-        usage: "Imports Post, AuthorAccount, Article, Publication, EnergyTopic, GeographicEntity"
+        usage: "All media classes and properties live in this namespace"
 
   problem-specific:
-    description: "Our media-specific modules"
-    modules: [emedia-core, emedia-providers, emedia-chart-types]
+    description: "Unified energy-news modules"
+    modules: [enews-core, enews-reference]
 
 # --- SKOS Concept Schemes ---
 
 concept_schemes:
 
-  - iri: "emedia:ChartTypeScheme"
+  - iri: "enews:ChartTypeScheme"
     type: "skos:ConceptScheme"
     label: "Chart Type Scheme"
     description: >
@@ -167,7 +163,7 @@ concept_schemes:
         definition: "Chart combining two chart types sharing one axis (e.g., bars + line)"
         broader: null
 
-  - iri: "emedia:AltTextProvenanceScheme"
+  - iri: "enews:AltTextProvenanceScheme"
     type: "skos:ConceptScheme"
     label: "Alt Text Provenance Scheme"
     description: >
@@ -186,16 +182,15 @@ concept_schemes:
 # --- Class Hierarchy (OWL Classes) ---
 
 class_hierarchy:
-  # -- MediaAttachment (new top-level class, extends energy-news) --
+  # -- MediaAttachment (existing in energy-news, subtypes added here) --
   - class: MediaAttachment
     parent: owl:Thing
     bfo: "GDC (BFO:0000031)"
     schema_alignment: "rdfs:subClassOf schema:MediaObject"
     definition: "A digital resource attached to or embedded in a Post"
     notes: >
-      Superclass for all media types. Linked to Post via hasMediaAttachment.
-      Each attachment has a mediaUrl, optional thumbnailUrl, altText, and
-      altTextProvenance.
+      Superclass for all media types. Already exists in energy-news.
+      Linked to Post via enews:hasMedia.
 
   - class: Chart
     parent: MediaAttachment
@@ -204,8 +199,7 @@ class_hierarchy:
     definition: "A MediaAttachment that is a data visualization depicting quantitative information"
     notes: >
       Charts are the richest media type. They have chart semantics: chartType,
-      axes, series, temporal/spatial coverage, key findings. The vision pipeline
-      (SKY-16) enriches Chart instances with structured metadata.
+      axes, series, temporal coverage, key findings.
 
   - class: DocumentExcerpt
     parent: MediaAttachment
@@ -213,10 +207,7 @@ class_hierarchy:
     definition: "A MediaAttachment that is an extracted portion of a document, article, or report"
     notes: >
       Covers article screenshots, PDF page captures, cropped report sections.
-      Named for the content (an excerpt from a document), not the capture method.
-      Often contains charts — the attribution model distinguishes the document
-      source (the article/report) from any embedded chart's data source.
-      See CQ-M07 (three attribution layers).
+      May contain charts — use containsChart to bridge.
 
   - class: Photo
     parent: MediaAttachment
@@ -240,31 +231,24 @@ class_hierarchy:
     parent: owl:Thing
     bfo: "GDC (BFO:0000031)"
     definition: "A dimensional axis of a chart with label, unit, and optional scale"
-    notes: >
-      Charts typically have 2 axes (x, y). Dual-axis charts may have 2 y-axes.
-      Properties: axisLabel, axisUnit, axisScale.
 
   - class: ChartSeries
     parent: owl:Thing
     bfo: "GDC (BFO:0000031)"
     definition: "A named data series plotted within a chart"
-    notes: >
-      A line chart may have multiple series (e.g., "BC imports", "Manitoba exports").
-      Properties: rdfs:label, seriesUnit, optional color. The legend text for each
-      series is captured as rdfs:label on the ChartSeries instance — this is often
-      the most informative part of a chart for agents.
 
   - class: ChartSourceLine
     parent: owl:Thing
     bfo: "GDC (BFO:0000031)"
     definition: "The source attribution text appearing on a chart, typically at the bottom"
+
+  - class: TemporalCoverage
+    parent: owl:Thing
+    bfo: "Temporal Region (BFO:0000008)"
+    definition: "A time period that a chart or visualization covers, with start and end dates"
     notes: >
-      The small text at the bottom of charts saying "Source: BC Hydro" or
-      "Data: EIA, compiled by author". This is distinct from the PROV-O
-      attribution model — the source line is raw text as it appears on the
-      chart. The enrichment pipeline parses source lines to populate the
-      formal prov:wasDerivedFrom → EnergyDataset → EnergyDataProvider chain.
-      Properties: sourceText (the raw string), confidence (how reliably parsed).
+      Linked to Chart via enews:hasTemporalCoverage. Uses simple xsd:date
+      properties (startDate, endDate) instead of importing full OWL-Time.
 
   # -- Data Provider Classes --
   - class: EnergyDataProvider
@@ -272,18 +256,12 @@ class_hierarchy:
     bfo: "Object (BFO:0000030)"
     schema_alignment: "rdfs:subClassOf schema:Organization"
     definition: "An organization that publishes energy data accessible via API or download"
-    notes: >
-      Individuals: GridStatus, EIA, ENTSO-E, BC Hydro, AESO, IESO, etc.
-      Properties: rdfs:label, apiEndpoint.
 
   - class: EnergyDataset
     parent: owl:Thing
     bfo: "GDC (BFO:0000031)"
     schema_alignment: "rdfs:subClassOf schema:Dataset"
     definition: "A specific dataset published by an EnergyDataProvider"
-    notes: >
-      E.g., "EIA Electricity Monthly", "GridStatus ERCOT Real-Time Prices".
-      Linked to charts via prov:wasDerivedFrom. Linked to providers via providedBy.
 
 # --- Disjointness Declarations ---
 
@@ -291,11 +269,8 @@ top_level_disjoint_groups:
   - description: "MediaAttachment subtypes are pairwise disjoint"
     classes: [Chart, DocumentExcerpt, Photo, Infographic, VideoAttachment]
 
-  - description: "Chart semantic classes are disjoint from media classes"
-    classes: [ChartAxis, ChartSeries]
-
-  - description: "Data provider classes are disjoint from media classes"
-    classes: [EnergyDataProvider, EnergyDataset]
+  - description: "Chart semantic classes are pairwise disjoint"
+    classes: [ChartAxis, ChartSeries, ChartSourceLine]
 
 # --- Design Decisions ---
 
@@ -306,50 +281,43 @@ design_decisions:
       Following DD-001 from energy-news (topics as SKOS Concepts). Chart types
       (BarChart, LineChart, etc.) are classification categories, not structural
       subtypes. A Chart links to its type via the chartType property pointing
-      at a SKOS Concept in ChartTypeScheme. This avoids class proliferation
-      and allows multi-type classification (a dual-axis chart could reference
-      both BarChart and LineChart types).
+      at a SKOS Concept in ChartTypeScheme. chartType is NOT functional — a
+      chart can have multiple types (e.g., a dual-axis chart references both
+      BarChart and LineChart).
 
   - id: DD-M02
     decision: "Use PROV-O vocabulary for attribution, not custom properties"
     rationale: >
       PROV-O provides the exact Entity-Activity-Agent pattern needed for
-      multi-layer attribution. prov:wasAttributedTo (image source → author),
-      dcterms:source (content source → article/report), prov:wasDerivedFrom
-      (data source → dataset). Reusing W3C standard vocabulary instead of
-      inventing custom attribution properties.
+      multi-layer attribution. prov:wasAttributedTo (image source -> author),
+      dcterms:source (content source -> article/report), prov:wasDerivedFrom
+      (data source -> dataset). Reusing W3C standard vocabulary.
 
   - id: DD-M03
     decision: "Alt text provenance as SKOS scheme, not boolean flags"
     rationale: >
       Three-valued provenance (original, synthetic, absent) is better modeled
-      as a SKOS concept scheme than boolean flags (hasAltText + isGenerated).
-      The SKOS approach is extensible (could add "partial", "machine-translated")
-      and aligns with the overall SKOS pattern used throughout the ontology.
+      as a SKOS concept scheme than boolean flags.
 
   - id: DD-M05
     decision: "MediaAttachment subtypes are OWL subclasses, not SKOS concepts"
     rationale: >
       Unlike chart types (which are classification facets), media types
-      (Chart, Screenshot, Photo, etc.) have genuinely different structural
-      properties. A Chart has axes and series; a Screenshot does not. This
-      structural difference justifies OWL subclasses with distinct property
-      restrictions, not a flat SKOS classification.
+      (Chart, DocumentExcerpt, Photo, etc.) have genuinely different structural
+      properties. A Chart has axes and series; a DocumentExcerpt does not.
 
   - id: DD-M06
     decision: "ChartAxis and ChartSeries are separate classes, not embedded in Chart"
     rationale: >
       Charts can have 2-3 axes and 1-10+ series. Modeling these as separate
-      classes with their own properties (axisLabel, axisUnit, seriesUnit)
-      allows the SPARQL CQs to query axis/series metadata independently.
-      Embedding as data properties on Chart would limit queryability and
-      require complex string parsing.
+      classes with their own properties allows SPARQL CQs to query axis/series
+      metadata independently.
 
   - id: DD-M07
-    decision: "Temporal coverage uses dcterms:temporal with custom startDate/endDate"
+    decision: "Temporal coverage uses TemporalCoverage class with startDate/endDate"
     rationale: >
-      OWL-Time is powerful but heavyweight for our needs. We borrow the
-      vocabulary concept (temporal coverage as a structured entity) but use
-      simple xsd:date properties (startDate, endDate) instead of importing
-      the full OWL-Time ontology. This covers the canonical use case
-      ("this chart shows data from 2015 to 2026") without temporal logic.
+      OWL-Time is powerful but heavyweight. We model temporal coverage as a
+      TemporalCoverage class (BFO: Temporal Region) with simple xsd:date
+      properties (startDate, endDate). Linked to Chart via hasTemporalCoverage.
+      This covers the canonical use case ("this chart shows data from 2015 to
+      2026") without importing the full OWL-Time ontology.

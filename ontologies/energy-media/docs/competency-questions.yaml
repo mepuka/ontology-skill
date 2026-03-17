@@ -1,4 +1,5 @@
 # Energy Media Ontology — Competency Questions
+# NOTE: Media domain is now merged into energy-news (enews namespace).
 
 # ==========================================================================
 # UC-M01: Classify media in expert posts
@@ -12,20 +13,20 @@
   type: enumerative
   priority: must_have
   sample_answer:
-    - type: emedia:Chart
+    - type: enews:Chart
       label: "Chart"
-    - type: emedia:Screenshot
-      label: "Screenshot"
-    - type: emedia:Photo
+    - type: enews:DocumentExcerpt
+      label: "Document Excerpt"
+    - type: enews:Photo
       label: "Photo"
-    - type: emedia:Infographic
+    - type: enews:Infographic
       label: "Infographic"
   derivation_method: direct_lookup
   sparql: |
-    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX enews: <http://example.org/ontology/energy-news#>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     SELECT ?type ?label WHERE {
-      ?type rdfs:subClassOf emedia:MediaAttachment ;
+      ?type rdfs:subClassOf enews:MediaAttachment ;
             rdfs:label ?label .
     }
   expected_result: non_empty
@@ -39,20 +40,20 @@
   priority: must_have
   sample_answer:
     - post: enews:post_hydro_01
-      media: emedia:media_001
-      mediaType: emedia:Chart
+      media: enews:media_001
+      mediaType: enews:Chart
   derivation_method: direct_lookup
   sparql: |
-    PREFIX emedia: <http://example.org/ontology/energy-media#>
     PREFIX enews: <http://example.org/ontology/energy-news#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     SELECT ?media ?mediaType WHERE {
-      enews:post_hydro_01 emedia:hasMediaAttachment ?media .
+      enews:post_hydro_01 enews:hasMedia ?media .
       ?media a ?mediaType .
-      ?mediaType rdfs:subClassOf emedia:MediaAttachment .
+      ?mediaType rdfs:subClassOf enews:MediaAttachment .
     }
   expected_result: non_empty
   required_classes: [MediaAttachment]
-  required_properties: [hasMediaAttachment]
+  required_properties: [hasMedia]
   requires_reasoning: false
 
 - id: CQ-M03
@@ -61,19 +62,20 @@
   type: enumerative
   priority: must_have
   sample_answer:
-    - chartType: emedia:BarChart
+    - chartType: enews:BarChart
       label: "Bar Chart"
-    - chartType: emedia:LineChart
+    - chartType: enews:LineChart
       label: "Line Chart"
-    - chartType: emedia:Heatmap
+    - chartType: enews:Heatmap
       label: "Heatmap"
   derivation_method: direct_lookup
   sparql: |
-    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX enews: <http://example.org/ontology/energy-news#>
     PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     SELECT ?chartType ?label WHERE {
-      ?chartType skos:inScheme emedia:ChartTypeScheme ;
-                 skos:prefLabel ?label .
+      ?chartType skos:inScheme enews:ChartTypeScheme ;
+                 rdfs:label ?label .
     }
   expected_result: non_empty
   required_classes: []
@@ -89,16 +91,15 @@
   type: relational
   priority: must_have
   sample_answer:
-    - chart: emedia:media_001
+    - chart: enews:media_001
       author: enews:author_blakeshaffer
       handle: "blakeshaffer.bsky.social"
   derivation_method: direct_lookup
   sparql: |
-    PREFIX emedia: <http://example.org/ontology/energy-media#>
     PREFIX enews: <http://example.org/ontology/energy-news#>
     PREFIX prov: <http://www.w3.org/ns/prov#>
     SELECT ?author ?handle WHERE {
-      emedia:media_001 prov:wasAttributedTo ?author .
+      enews:media_001 prov:wasAttributedTo ?author .
       ?author enews:handle ?handle .
     }
   expected_result: non_empty
@@ -111,15 +112,15 @@
   type: relational
   priority: must_have
   sample_answer:
-    - chart: emedia:media_002
+    - chart: enews:media_002
       source: enews:article_bchydro_report
       title: "BC Hydro Annual Report 2025"
   derivation_method: direct_lookup
   sparql: |
-    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX enews: <http://example.org/ontology/energy-news#>
     PREFIX dcterms: <http://purl.org/dc/terms/>
     SELECT ?source ?title WHERE {
-      emedia:media_002 dcterms:source ?source .
+      enews:media_002 dcterms:source ?source .
       ?source dcterms:title ?title .
     }
   expected_result: non_empty
@@ -132,16 +133,16 @@
   type: relational
   priority: must_have
   sample_answer:
-    - chart: emedia:media_001
-      dataset: emedia:dataset_bchydro_generation
-      provider: emedia:provider_bchydro
+    - chart: enews:media_001
+      dataset: enews:dataset_bchydro_generation
+      provider: enews:provider_bchydro
   derivation_method: direct_lookup
   sparql: |
-    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX enews: <http://example.org/ontology/energy-news#>
     PREFIX prov: <http://www.w3.org/ns/prov#>
     SELECT ?dataset ?provider WHERE {
-      emedia:media_001 prov:wasDerivedFrom ?dataset .
-      ?dataset emedia:providedBy ?provider .
+      enews:media_001 prov:wasDerivedFrom ?dataset .
+      ?dataset enews:providedBy ?provider .
     }
   expected_result: non_empty
   required_properties: [prov:wasDerivedFrom, providedBy]
@@ -153,19 +154,19 @@
   type: relational
   priority: must_have
   sample_answer:
-    - chart: emedia:media_002
+    - chart: enews:media_002
       imageSource: enews:author_blakeshaffer
       contentSource: enews:article_bchydro_report
-      dataSource: emedia:dataset_doe_generation
+      dataSource: enews:dataset_doe_generation
   derivation_method: composite
   sparql: |
-    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX enews: <http://example.org/ontology/energy-news#>
     PREFIX prov: <http://www.w3.org/ns/prov#>
     PREFIX dcterms: <http://purl.org/dc/terms/>
     SELECT ?imageSource ?contentSource ?dataSource WHERE {
-      emedia:media_002 prov:wasAttributedTo ?imageSource .
-      OPTIONAL { emedia:media_002 dcterms:source ?contentSource . }
-      OPTIONAL { emedia:media_002 prov:wasDerivedFrom ?dataSource . }
+      enews:media_002 prov:wasAttributedTo ?imageSource .
+      OPTIONAL { enews:media_002 dcterms:source ?contentSource . }
+      OPTIONAL { enews:media_002 prov:wasDerivedFrom ?dataSource . }
     }
   expected_result: non_empty
   requires_reasoning: false
@@ -181,19 +182,19 @@
   type: relational
   priority: must_have
   sample_answer:
-    - media: emedia:media_001
+    - media: enews:media_001
       altText: null
-      altTextProvenance: emedia:AltTextAbsent
-    - media: emedia:media_003
+      altTextProvenance: enews:AltTextAbsent
+    - media: enews:media_003
       altText: "Day-ahead energy prices for 28/2/2026..."
-      altTextProvenance: emedia:AltTextOriginal
+      altTextProvenance: enews:AltTextOriginal
   derivation_method: direct_lookup
   sparql: |
-    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX enews: <http://example.org/ontology/energy-news#>
     SELECT ?media ?altText ?provenance WHERE {
-      ?media a emedia:MediaAttachment .
-      OPTIONAL { ?media emedia:altText ?altText . }
-      ?media emedia:altTextProvenance ?provenance .
+      ?media a enews:MediaAttachment .
+      OPTIONAL { ?media enews:altText ?altText . }
+      ?media enews:altTextProvenance ?provenance .
     }
   expected_result: non_empty
   required_properties: [altText, altTextProvenance]
@@ -205,14 +206,14 @@
   type: enumerative
   priority: must_have
   sample_answer:
-    - media: emedia:media_001
+    - media: enews:media_001
       post: enews:post_hydro_01
   derivation_method: direct_lookup
   sparql: |
-    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX enews: <http://example.org/ontology/energy-news#>
     SELECT ?media ?post WHERE {
-      ?post emedia:hasMediaAttachment ?media .
-      ?media emedia:altTextProvenance emedia:AltTextAbsent .
+      ?post enews:hasMedia ?media .
+      ?media enews:altTextProvenance enews:AltTextAbsent .
     }
   expected_result: non_empty
   requires_reasoning: false
@@ -231,11 +232,10 @@
       chartCount: 1
   derivation_method: aggregation
   sparql: |
-    PREFIX emedia: <http://example.org/ontology/energy-media#>
     PREFIX enews: <http://example.org/ontology/energy-news#>
     SELECT ?post (COUNT(?media) AS ?chartCount) WHERE {
-      ?post emedia:hasMediaAttachment ?media .
-      ?media a emedia:Chart .
+      ?post enews:hasMedia ?media .
+      ?media a enews:Chart .
     }
     GROUP BY ?post
   expected_result: non_empty
@@ -248,14 +248,15 @@
   priority: should_have
   sample_answer:
     - post: enews:post_hydro_01
-      mediaTypes: [emedia:Chart, emedia:ExternalLink]
+      mediaTypes: [enews:Chart, enews:DocumentExcerpt]
   derivation_method: aggregation
   sparql: |
-    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX enews: <http://example.org/ontology/energy-news#>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     SELECT ?post ?mediaType WHERE {
-      ?post emedia:hasMediaAttachment ?media .
+      ?post enews:hasMedia ?media .
       ?media a ?mediaType .
-      ?mediaType rdfs:subClassOf emedia:MediaAttachment .
+      ?mediaType rdfs:subClassOf enews:MediaAttachment .
     }
   expected_result: non_empty
   requires_reasoning: false
@@ -270,40 +271,23 @@
   type: enumerative
   priority: should_have
   sample_answer:
-    - provider: emedia:provider_gridstatus
+    - provider: enews:provider_gridstatus
       label: "GridStatus"
-      coverage: "US grid data (ERCOT, CAISO, PJM, MISO, SPP, ISO-NE, NYISO)"
-    - provider: emedia:provider_eia
-      label: "U.S. Energy Information Administration"
+    - provider: enews:provider_eia
+      label: "EIA"
   derivation_method: direct_lookup
   sparql: |
-    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX enews: <http://example.org/ontology/energy-news#>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     SELECT ?provider ?label WHERE {
-      ?provider a emedia:EnergyDataProvider ;
+      ?provider a enews:EnergyDataProvider ;
                rdfs:label ?label .
     }
   expected_result: non_empty
   required_classes: [EnergyDataProvider]
   requires_reasoning: false
 
-- id: CQ-M13
-  source_use_case: UC-M05
-  natural_language: "Which data provider covers a given grid region?"
-  type: relational
-  priority: should_have
-  sample_answer:
-    - region: emedia:region_ercot
-      provider: emedia:provider_gridstatus
-  derivation_method: direct_lookup
-  sparql: |
-    PREFIX emedia: <http://example.org/ontology/energy-media#>
-    SELECT ?provider WHERE {
-      ?provider emedia:coversRegion emedia:region_ercot .
-    }
-  expected_result: non_empty
-  required_properties: [coversRegion]
-  requires_reasoning: false
+# CQ-M13 removed: coversRegion is no longer modeled (P1-3)
 
 - id: CQ-M14
   source_use_case: UC-M05
@@ -311,15 +295,15 @@
   type: relational
   priority: should_have
   sample_answer:
-    - chart: emedia:media_001
-      provider: emedia:provider_bchydro
+    - chart: enews:media_001
+      provider: enews:provider_bchydro
   derivation_method: composite
   sparql: |
-    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX enews: <http://example.org/ontology/energy-news#>
     PREFIX prov: <http://www.w3.org/ns/prov#>
     SELECT ?chart WHERE {
       ?chart prov:wasDerivedFrom ?dataset .
-      ?dataset emedia:providedBy emedia:provider_bchydro .
+      ?dataset enews:providedBy enews:provider_bchydro .
     }
   expected_result: non_empty
   requires_reasoning: false
@@ -334,13 +318,13 @@
   type: relational
   priority: must_have
   sample_answer:
-    - chart: emedia:media_001
-      chartType: emedia:LineChart
+    - chart: enews:media_001
+      chartType: enews:LineChart
   derivation_method: direct_lookup
   sparql: |
-    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX enews: <http://example.org/ontology/energy-news#>
     SELECT ?chartType WHERE {
-      emedia:media_001 emedia:chartType ?chartType .
+      enews:media_001 enews:chartType ?chartType .
     }
   expected_result: non_empty
   required_properties: [chartType]
@@ -352,21 +336,21 @@
   type: relational
   priority: must_have
   sample_answer:
-    - chart: emedia:media_001
+    - chart: enews:media_001
       xAxisLabel: "Year"
       xAxisUnit: null
       yAxisLabel: "Net Imports"
       yAxisUnit: "TWh"
   derivation_method: direct_lookup
   sparql: |
-    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX enews: <http://example.org/ontology/energy-news#>
     SELECT ?xLabel ?xUnit ?yLabel ?yUnit WHERE {
-      emedia:media_001 emedia:hasXAxis ?xAxis ;
-                       emedia:hasYAxis ?yAxis .
-      ?xAxis emedia:axisLabel ?xLabel .
-      OPTIONAL { ?xAxis emedia:axisUnit ?xUnit . }
-      ?yAxis emedia:axisLabel ?yLabel .
-      OPTIONAL { ?yAxis emedia:axisUnit ?yUnit . }
+      enews:media_001 enews:hasXAxis ?xAxis ;
+                       enews:hasYAxis ?yAxis .
+      ?xAxis enews:axisLabel ?xLabel .
+      OPTIONAL { ?xAxis enews:axisUnit ?xUnit . }
+      ?yAxis enews:axisLabel ?yLabel .
+      OPTIONAL { ?yAxis enews:axisUnit ?yUnit . }
     }
   expected_result: non_empty
   required_classes: [ChartAxis]
@@ -379,19 +363,19 @@
   type: relational
   priority: must_have
   sample_answer:
-    - chart: emedia:media_001
+    - chart: enews:media_001
       startDate: "2015-01-01"
       endDate: "2026-03-01"
   derivation_method: direct_lookup
   sparql: |
-    PREFIX emedia: <http://example.org/ontology/energy-media#>
-    PREFIX dcterms: <http://purl.org/dc/terms/>
+    PREFIX enews: <http://example.org/ontology/energy-news#>
     SELECT ?start ?end WHERE {
-      emedia:media_001 dcterms:temporal ?period .
-      ?period emedia:startDate ?start ;
-              emedia:endDate ?end .
+      enews:media_001 enews:hasTemporalCoverage ?period .
+      ?period enews:startDate ?start ;
+              enews:endDate ?end .
     }
   expected_result: non_empty
+  required_properties: [hasTemporalCoverage, startDate, endDate]
   requires_reasoning: false
 
 - id: CQ-M18
@@ -400,16 +384,16 @@
   type: relational
   priority: must_have
   sample_answer:
-    - chart: emedia:media_001
-      region: emedia:region_british_columbia
+    - chart: enews:media_001
+      region: enews:region_british_columbia
       label: "British Columbia"
   derivation_method: direct_lookup
   sparql: |
-    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX enews: <http://example.org/ontology/energy-news#>
     PREFIX dcterms: <http://purl.org/dc/terms/>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     SELECT ?region ?label WHERE {
-      emedia:media_001 dcterms:spatial ?region .
+      enews:media_001 dcterms:spatial ?region .
       ?region rdfs:label ?label .
     }
   expected_result: non_empty
@@ -421,18 +405,18 @@
   type: enumerative
   priority: must_have
   sample_answer:
-    - chart: emedia:media_001
-      series: emedia:series_001
+    - chart: enews:media_001
+      series: enews:series_001
       label: "BC Net Imports"
       unit: "TWh"
   derivation_method: direct_lookup
   sparql: |
-    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX enews: <http://example.org/ontology/energy-news#>
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     SELECT ?series ?label ?unit WHERE {
-      emedia:media_001 emedia:hasSeries ?series .
+      enews:media_001 enews:hasSeries ?series .
       ?series rdfs:label ?label .
-      OPTIONAL { ?series emedia:seriesUnit ?unit . }
+      OPTIONAL { ?series enews:seriesUnit ?unit . }
     }
   expected_result: non_empty
   required_classes: [ChartSeries]
@@ -445,14 +429,14 @@
   type: relational
   priority: must_have
   sample_answer:
-    - chart: emedia:media_001
+    - chart: enews:media_001
       title: "BC Hydro Net Imports 2015-2026"
   derivation_method: direct_lookup
   sparql: |
-    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX enews: <http://example.org/ontology/energy-news#>
     PREFIX dcterms: <http://purl.org/dc/terms/>
     SELECT ?title WHERE {
-      emedia:media_001 dcterms:title ?title .
+      enews:media_001 dcterms:title ?title .
     }
   expected_result: non_empty
   requires_reasoning: false
@@ -463,13 +447,13 @@
   type: relational
   priority: should_have
   sample_answer:
-    - chart: emedia:media_001
+    - chart: enews:media_001
       finding: "First time all three major hydro provinces were net importers simultaneously"
   derivation_method: direct_lookup
   sparql: |
-    PREFIX emedia: <http://example.org/ontology/energy-media#>
+    PREFIX enews: <http://example.org/ontology/energy-news#>
     SELECT ?finding WHERE {
-      emedia:media_001 emedia:keyFinding ?finding .
+      enews:media_001 enews:keyFinding ?finding .
     }
   expected_result: non_empty
   required_properties: [keyFinding]

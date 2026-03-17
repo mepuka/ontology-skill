@@ -6,20 +6,20 @@
 
 enews:ArticleShape a sh:NodeShape ;
     sh:property [ sh:maxCount 1 ;
-            sh:path enews:publishedDate ],
+            sh:path enews:title ],
+        [ sh:maxCount 1 ;
+            sh:path enews:publishedBy ],
         [ sh:datatype xsd:anyURI ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path enews:url ],
-        [ sh:maxCount 1 ;
-            sh:path enews:title ],
+        [ sh:class enews:EnergyTopic ;
+            sh:minCount 1 ;
+            sh:path enews:coversTopic ],
         [ sh:maxCount 1 ;
             sh:path enews:description ],
         [ sh:maxCount 1 ;
-            sh:path enews:publishedBy ],
-        [ sh:class enews:EnergyTopic ;
-            sh:minCount 1 ;
-            sh:path enews:coversTopic ] ;
+            sh:path enews:publishedDate ] ;
     sh:sparql [ a sh:SPARQLConstraint ;
             sh:message "Article URL domain does not match its Publication siteDomain" ;
             sh:select """PREFIX enews: <http://example.org/ontology/energy-news#>
@@ -46,112 +46,97 @@ enews:AuthorAccountShape a sh:NodeShape ;
             sh:path enews:handle ] ;
     sh:targetClass enews:AuthorAccount .
 
-enews:CapacityMeasurementShape a sh:NodeShape ;
+enews:ChartAxisShape a sh:NodeShape ;
     sh:property [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path enews:capacityUnit ],
-        [ sh:datatype xsd:dateTime ;
-            sh:maxCount 1 ;
-            sh:path enews:measurementDate ],
-        [ sh:datatype xsd:float ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path enews:valueInMW ] ;
-    sh:targetClass enews:CapacityMeasurement .
-
-enews:EmbeddedExternalLinkShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:anyURI ;
-            sh:maxCount 1 ;
-            sh:path enews:thumbnailUri ],
+            sh:path enews:axisUnit ],
         [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
-            sh:path enews:linkDescription ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:path enews:linkTitle ],
-        [ sh:datatype xsd:anyURI ;
-            sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path enews:linkUri ] ;
-    sh:targetClass enews:EmbeddedExternalLink .
+            sh:path enews:axisLabel ] ;
+    sh:targetClass enews:ChartAxis .
 
-enews:EnergyProjectShape a sh:NodeShape ;
+enews:ChartSeriesShape a sh:NodeShape ;
+    sh:property [ sh:minCount 1 ;
+            sh:path rdfs:label ] ;
+    sh:targetClass enews:ChartSeries .
+
+enews:ChartShape a sh:NodeShape ;
+    sh:property [ sh:path enews:hasYAxis ],
+        [ sh:maxCount 1 ;
+            sh:path enews:hasXAxis ],
+        [ sh:minCount 1 ;
+            sh:path enews:chartType ],
+        [ sh:path enews:hasSeries ] ;
+    sh:targetClass enews:Chart .
+
+enews:ChartSourceLineShape a sh:NodeShape ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:minCount 1 ;
+            sh:path enews:sourceText ] ;
+    sh:targetClass enews:ChartSourceLine .
+
+enews:DocumentExcerptShape a sh:NodeShape ;
+    sh:targetClass enews:DocumentExcerpt .
+
+enews:EnergyDataProviderShape a sh:NodeShape ;
+    sh:property [ sh:minCount 1 ;
+            sh:path rdfs:label ] ;
+    sh:targetClass enews:EnergyDataProvider .
+
+enews:EnergyDatasetShape a sh:NodeShape ;
     sh:property [ sh:minCount 1 ;
             sh:path rdfs:label ],
-        [ sh:class enews:CapacityMeasurement ;
-            sh:path enews:hasCapacity ],
-        [ sh:class enews:ProjectStatus ;
+        [ sh:class enews:EnergyDataProvider ;
             sh:maxCount 1 ;
-            sh:path enews:hasStatus ] ;
-    sh:targetClass enews:EnergyProject .
+            sh:minCount 1 ;
+            sh:path enews:providedBy ] ;
+    sh:targetClass enews:EnergyDataset .
 
 enews:EnergyTopicInstanceShape a sh:NodeShape ;
     sh:property [ sh:minCount 1 ;
-            sh:path rdfs:label ],
+            sh:path skos:inScheme ],
         [ sh:minCount 1 ;
             sh:path skos:definition ],
         [ sh:minCount 1 ;
-            sh:path skos:inScheme ] ;
+            sh:path rdfs:label ] ;
     sh:targetClass enews:EnergyTopic .
 
 enews:FeedShape a sh:NodeShape ;
-    sh:property [ sh:minCount 1 ;
-            sh:path rdfs:label ],
-        [ sh:class enews:SocialMediaPlatform ;
+    sh:property [ sh:class enews:SocialMediaPlatform ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
-            sh:path enews:onPlatform ] ;
-    sh:targetClass enews:Feed .
-
-enews:GeographicEntityShape a sh:NodeShape ;
-    sh:property [ sh:minCount 1 ;
-            sh:path rdfs:label ] ;
-    sh:targetClass enews:GeographicEntity .
-
-enews:MediaAttachmentShape a sh:NodeShape ;
-    sh:property [ sh:datatype xsd:anyURI ;
-            sh:maxCount 1 ;
-            sh:minCount 1 ;
-            sh:path enews:mediaUri ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:path enews:mimeType ],
-        [ sh:datatype xsd:string ;
-            sh:maxCount 1 ;
-            sh:path enews:altText ] ;
-    sh:targetClass enews:MediaAttachment .
-
-enews:OrganizationShape a sh:NodeShape ;
-    sh:property [ sh:minCount 1 ;
-            sh:path skos:definition ],
+            sh:path enews:onPlatform ],
         [ sh:minCount 1 ;
             sh:path rdfs:label ] ;
-    sh:targetClass enews:Organization .
+    sh:targetClass enews:Feed .
 
-enews:PostShape a sh:NodeShape ;
+enews:InfographicShape a sh:NodeShape ;
+    sh:targetClass enews:Infographic .
+
+enews:MediaAttachmentShape a sh:NodeShape ;
     sh:property [ sh:datatype xsd:string ;
             sh:maxCount 1 ;
-            sh:path enews:postText ],
-        [ sh:datatype xsd:dateTime ;
+            sh:path enews:altText ],
+        [ sh:datatype xsd:anyURI ;
             sh:maxCount 1 ;
-            sh:path enews:createdAt ],
-        [ sh:class enews:AuthorAccount ;
+            sh:minCount 1 ;
+            sh:path enews:mediaUrl ],
+        [ sh:minCount 1 ;
+            sh:path enews:altTextProvenance ] ;
+    sh:targetClass enews:MediaAttachment .
+
+enews:PhotoShape a sh:NodeShape ;
+    sh:targetClass enews:Photo .
+
+enews:PostShape a sh:NodeShape ;
+    sh:property [ sh:class enews:AuthorAccount ;
             sh:maxCount 1 ;
             sh:minCount 1 ;
             sh:path enews:postedBy ],
         [ sh:maxCount 1 ;
             sh:path enews:sharesArticle ] ;
     sh:targetClass enews:Post .
-
-enews:PowerPlantShape a sh:NodeShape ;
-    sh:property [ sh:minCount 1 ;
-            sh:path rdfs:label ],
-        [ sh:class enews:EnergyTechnology ;
-            sh:path enews:hasTechnology ],
-        [ sh:class enews:Organization ;
-            sh:path enews:operatedBy ] ;
-    sh:targetClass enews:PowerPlant .
 
 enews:PublicationShape a sh:NodeShape ;
     sh:property [ sh:datatype xsd:string ;
@@ -160,16 +145,19 @@ enews:PublicationShape a sh:NodeShape ;
             sh:path enews:siteDomain ] ;
     sh:targetClass enews:Publication .
 
-enews:RenewableInstallationShape a sh:NodeShape ;
-    sh:property [ sh:class enews:EnergyTechnology ;
-            sh:path enews:hasTechnology ],
-        [ sh:minCount 1 ;
-            sh:path rdfs:label ],
-        [ sh:class enews:Organization ;
-            sh:path enews:operatedBy ] ;
-    sh:targetClass enews:RenewableInstallation .
-
 enews:SocialMediaPlatformShape a sh:NodeShape ;
     sh:property [ sh:minCount 1 ;
             sh:path rdfs:label ] ;
     sh:targetClass enews:SocialMediaPlatform .
+
+enews:TemporalCoverageShape a sh:NodeShape ;
+    sh:property [ sh:datatype xsd:date ;
+            sh:maxCount 1 ;
+            sh:path enews:endDate ],
+        [ sh:datatype xsd:date ;
+            sh:maxCount 1 ;
+            sh:path enews:startDate ] ;
+    sh:targetClass enews:TemporalCoverage .
+
+enews:VideoAttachmentShape a sh:NodeShape ;
+    sh:targetClass enews:VideoAttachment .
