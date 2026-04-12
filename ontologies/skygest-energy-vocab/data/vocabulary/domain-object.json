@@ -1,0 +1,1227 @@
+[
+  {
+    "surfaceForm": "charge point",
+    "normalizedSurfaceForm": "charge point",
+    "canonical": "EV charging",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "charger",
+    "normalizedSurfaceForm": "charger",
+    "canonical": "EV charging",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "charging infrastructure",
+    "normalizedSurfaceForm": "charging infrastructure",
+    "canonical": "EV charging",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "charging station",
+    "normalizedSurfaceForm": "charging station",
+    "canonical": "EV charging",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "EV charging",
+    "normalizedSurfaceForm": "ev charging",
+    "canonical": "EV charging",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "EVSE",
+    "normalizedSurfaceForm": "evse",
+    "canonical": "EV charging",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "fast charging",
+    "normalizedSurfaceForm": "fast charging",
+    "canonical": "EV charging",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "battery energy storage",
+    "normalizedSurfaceForm": "battery energy storage",
+    "canonical": "battery storage",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "battery storage",
+    "normalizedSurfaceForm": "battery storage",
+    "canonical": "battery storage",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "BESS",
+    "normalizedSurfaceForm": "bess",
+    "canonical": "battery storage",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "energy storage",
+    "normalizedSurfaceForm": "energy storage",
+    "canonical": "battery storage",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "grid-scale storage",
+    "normalizedSurfaceForm": "grid-scale storage",
+    "canonical": "battery storage",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "long-duration storage",
+    "normalizedSurfaceForm": "long-duration storage",
+    "canonical": "battery storage",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "stationary storage",
+    "normalizedSurfaceForm": "stationary storage",
+    "canonical": "battery storage",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "utility-scale battery storage",
+    "normalizedSurfaceForm": "utility-scale battery storage",
+    "canonical": "battery storage",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "building energy",
+    "normalizedSurfaceForm": "building energy",
+    "canonical": "buildings",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "buildings",
+    "normalizedSurfaceForm": "buildings",
+    "canonical": "buildings",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "commercial",
+    "normalizedSurfaceForm": "commercial",
+    "canonical": "buildings",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "residential",
+    "normalizedSurfaceForm": "residential",
+    "canonical": "buildings",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "allowance market",
+    "normalizedSurfaceForm": "allowance market",
+    "canonical": "carbon market",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "carbon market",
+    "normalizedSurfaceForm": "carbon market",
+    "canonical": "carbon market",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "carbon price",
+    "normalizedSurfaceForm": "carbon price",
+    "canonical": "carbon market",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "carbon trading",
+    "normalizedSurfaceForm": "carbon trading",
+    "canonical": "carbon market",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "emissions market",
+    "normalizedSurfaceForm": "emissions market",
+    "canonical": "carbon market",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "EU ETS market",
+    "normalizedSurfaceForm": "eu ets market",
+    "canonical": "carbon market",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "clean energy",
+    "normalizedSurfaceForm": "clean energy",
+    "canonical": "clean energy",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "green energy",
+    "normalizedSurfaceForm": "green energy",
+    "canonical": "clean energy",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "low-carbon energy",
+    "normalizedSurfaceForm": "low-carbon energy",
+    "canonical": "clean energy",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "data center",
+    "normalizedSurfaceForm": "data center",
+    "canonical": "data center",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "data centre",
+    "normalizedSurfaceForm": "data centre",
+    "canonical": "data center",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "datacenter",
+    "normalizedSurfaceForm": "datacenter",
+    "canonical": "data center",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "carbon neutral",
+    "normalizedSurfaceForm": "carbon neutral",
+    "canonical": "decarbonization",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "carbon neutrality",
+    "normalizedSurfaceForm": "carbon neutrality",
+    "canonical": "decarbonization",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "climate target",
+    "normalizedSurfaceForm": "climate target",
+    "canonical": "decarbonization",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "decarbonization",
+    "normalizedSurfaceForm": "decarbonization",
+    "canonical": "decarbonization",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "deep decarbonization",
+    "normalizedSurfaceForm": "deep decarbonization",
+    "canonical": "decarbonization",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "net zero",
+    "normalizedSurfaceForm": "net zero",
+    "canonical": "decarbonization",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "net-zero",
+    "normalizedSurfaceForm": "net-zero",
+    "canonical": "decarbonization",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "zero emissions",
+    "normalizedSurfaceForm": "zero emissions",
+    "canonical": "decarbonization",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "electric",
+    "normalizedSurfaceForm": "electric",
+    "canonical": "electricity",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "electric grid",
+    "normalizedSurfaceForm": "electric grid",
+    "canonical": "electricity",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "electrical energy",
+    "normalizedSurfaceForm": "electrical energy",
+    "canonical": "electricity",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "electricity",
+    "normalizedSurfaceForm": "electricity",
+    "canonical": "electricity",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "electricity sector",
+    "normalizedSurfaceForm": "electricity sector",
+    "canonical": "electricity",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "electricity system",
+    "normalizedSurfaceForm": "electricity system",
+    "canonical": "electricity",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "power",
+    "normalizedSurfaceForm": "power",
+    "canonical": "electricity",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "power sector",
+    "normalizedSurfaceForm": "power sector",
+    "canonical": "electricity",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "power system",
+    "normalizedSurfaceForm": "power system",
+    "canonical": "electricity",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "electrolyser",
+    "normalizedSurfaceForm": "electrolyser",
+    "canonical": "electrolyzer",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "electrolysis",
+    "normalizedSurfaceForm": "electrolysis",
+    "canonical": "electrolyzer",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "electrolyzer",
+    "normalizedSurfaceForm": "electrolyzer",
+    "canonical": "electrolyzer",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "electricity access",
+    "normalizedSurfaceForm": "electricity access",
+    "canonical": "energy access",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "electrification",
+    "normalizedSurfaceForm": "electrification",
+    "canonical": "energy access",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "energy access",
+    "normalizedSurfaceForm": "energy access",
+    "canonical": "energy access",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "rural electrification",
+    "normalizedSurfaceForm": "rural electrification",
+    "canonical": "energy access",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "universal access",
+    "normalizedSurfaceForm": "universal access",
+    "canonical": "energy access",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "energy consumption",
+    "normalizedSurfaceForm": "energy consumption",
+    "canonical": "energy consumption",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "primary energy consumption",
+    "normalizedSurfaceForm": "primary energy consumption",
+    "canonical": "energy consumption",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "total energy use",
+    "normalizedSurfaceForm": "total energy use",
+    "canonical": "energy consumption",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "energy affordability",
+    "normalizedSurfaceForm": "energy affordability",
+    "canonical": "energy poverty",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "energy burden",
+    "normalizedSurfaceForm": "energy burden",
+    "canonical": "energy poverty",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "energy poverty",
+    "normalizedSurfaceForm": "energy poverty",
+    "canonical": "energy poverty",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "fuel poverty",
+    "normalizedSurfaceForm": "fuel poverty",
+    "canonical": "energy poverty",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "heating poverty",
+    "normalizedSurfaceForm": "heating poverty",
+    "canonical": "energy poverty",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "clean energy transition",
+    "normalizedSurfaceForm": "clean energy transition",
+    "canonical": "energy transition",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "clean transition",
+    "normalizedSurfaceForm": "clean transition",
+    "canonical": "energy transition",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "energy transition",
+    "normalizedSurfaceForm": "energy transition",
+    "canonical": "energy transition",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "green transition",
+    "normalizedSurfaceForm": "green transition",
+    "canonical": "energy transition",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "low-carbon transition",
+    "normalizedSurfaceForm": "low-carbon transition",
+    "canonical": "energy transition",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "ancillary services",
+    "normalizedSurfaceForm": "ancillary services",
+    "canonical": "grid",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "distribution",
+    "normalizedSurfaceForm": "distribution",
+    "canonical": "grid",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "DSO",
+    "normalizedSurfaceForm": "dso",
+    "canonical": "grid",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "electrical grid",
+    "normalizedSurfaceForm": "electrical grid",
+    "canonical": "grid",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "frequency regulation",
+    "normalizedSurfaceForm": "frequency regulation",
+    "canonical": "grid",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "grid",
+    "normalizedSurfaceForm": "grid",
+    "canonical": "grid",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "grid operator",
+    "normalizedSurfaceForm": "grid operator",
+    "canonical": "grid",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "power grid",
+    "normalizedSurfaceForm": "power grid",
+    "canonical": "grid",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "transmission",
+    "normalizedSurfaceForm": "transmission",
+    "canonical": "grid",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "transmission system operator",
+    "normalizedSurfaceForm": "transmission system operator",
+    "canonical": "grid",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "TSO",
+    "normalizedSurfaceForm": "tso",
+    "canonical": "grid",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "blackout",
+    "normalizedSurfaceForm": "blackout",
+    "canonical": "grid reliability",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "brownout",
+    "normalizedSurfaceForm": "brownout",
+    "canonical": "grid reliability",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "grid reliability",
+    "normalizedSurfaceForm": "grid reliability",
+    "canonical": "grid reliability",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "grid resilience",
+    "normalizedSurfaceForm": "grid resilience",
+    "canonical": "grid reliability",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "grid stability",
+    "normalizedSurfaceForm": "grid stability",
+    "canonical": "grid reliability",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "outage",
+    "normalizedSurfaceForm": "outage",
+    "canonical": "grid reliability",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "power outage",
+    "normalizedSurfaceForm": "power outage",
+    "canonical": "grid reliability",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "SAIDI",
+    "normalizedSurfaceForm": "saidi",
+    "canonical": "grid reliability",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "SAIFI",
+    "normalizedSurfaceForm": "saifi",
+    "canonical": "grid reliability",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "system reliability",
+    "normalizedSurfaceForm": "system reliability",
+    "canonical": "grid reliability",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "district heat",
+    "normalizedSurfaceForm": "district heat",
+    "canonical": "heat",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "district heating",
+    "normalizedSurfaceForm": "district heating",
+    "canonical": "heat",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "heat",
+    "normalizedSurfaceForm": "heat",
+    "canonical": "heat",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "heating",
+    "normalizedSurfaceForm": "heating",
+    "canonical": "heat",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "thermal",
+    "normalizedSurfaceForm": "thermal",
+    "canonical": "heat",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "air source heat pump",
+    "normalizedSurfaceForm": "air source heat pump",
+    "canonical": "heat pump",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "ASHP",
+    "normalizedSurfaceForm": "ashp",
+    "canonical": "heat pump",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "ground source heat pump",
+    "normalizedSurfaceForm": "ground source heat pump",
+    "canonical": "heat pump",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "GSHP",
+    "normalizedSurfaceForm": "gshp",
+    "canonical": "heat pump",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "heat pump",
+    "normalizedSurfaceForm": "heat pump",
+    "canonical": "heat pump",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "heat pumps",
+    "normalizedSurfaceForm": "heat pumps",
+    "canonical": "heat pump",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "green hydrogen",
+    "normalizedSurfaceForm": "green hydrogen",
+    "canonical": "hydrogen",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "H2",
+    "normalizedSurfaceForm": "h2",
+    "canonical": "hydrogen",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "hydrogen",
+    "normalizedSurfaceForm": "hydrogen",
+    "canonical": "hydrogen",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "industrial",
+    "normalizedSurfaceForm": "industrial",
+    "canonical": "industry",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "industrial energy",
+    "normalizedSurfaceForm": "industrial energy",
+    "canonical": "industry",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "industry",
+    "normalizedSurfaceForm": "industry",
+    "canonical": "industry",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "manufacturing",
+    "normalizedSurfaceForm": "manufacturing",
+    "canonical": "industry",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "grid queue",
+    "normalizedSurfaceForm": "grid queue",
+    "canonical": "interconnection queue",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "interconnection backlog",
+    "normalizedSurfaceForm": "interconnection backlog",
+    "canonical": "interconnection queue",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "interconnection queue",
+    "normalizedSurfaceForm": "interconnection queue",
+    "canonical": "interconnection queue",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "battery pack",
+    "normalizedSurfaceForm": "battery pack",
+    "canonical": "lithium-ion battery pack",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "li-ion pack",
+    "normalizedSurfaceForm": "li-ion pack",
+    "canonical": "lithium-ion battery pack",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "lithium-ion battery pack",
+    "normalizedSurfaceForm": "lithium-ion battery pack",
+    "canonical": "lithium-ion battery pack",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "gas",
+    "normalizedSurfaceForm": "gas",
+    "canonical": "natural gas",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "gas infrastructure",
+    "normalizedSurfaceForm": "gas infrastructure",
+    "canonical": "natural gas",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "gas pipeline",
+    "normalizedSurfaceForm": "gas pipeline",
+    "canonical": "natural gas",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "gas storage",
+    "normalizedSurfaceForm": "gas storage",
+    "canonical": "natural gas",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "gas supply",
+    "normalizedSurfaceForm": "gas supply",
+    "canonical": "natural gas",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "liquefied natural gas",
+    "normalizedSurfaceForm": "liquefied natural gas",
+    "canonical": "natural gas",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "LNG",
+    "normalizedSurfaceForm": "lng",
+    "canonical": "natural gas",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "natural gas",
+    "normalizedSurfaceForm": "natural gas",
+    "canonical": "natural gas",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "nuclear plant",
+    "normalizedSurfaceForm": "nuclear plant",
+    "canonical": "nuclear reactor",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "nuclear reactor",
+    "normalizedSurfaceForm": "nuclear reactor",
+    "canonical": "nuclear reactor",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "reactor",
+    "normalizedSurfaceForm": "reactor",
+    "canonical": "nuclear reactor",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "offshore park",
+    "normalizedSurfaceForm": "offshore park",
+    "canonical": "offshore wind farm",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "offshore wind farm",
+    "normalizedSurfaceForm": "offshore wind farm",
+    "canonical": "offshore wind farm",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "offshore wind park",
+    "normalizedSurfaceForm": "offshore wind park",
+    "canonical": "offshore wind farm",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "OWF",
+    "normalizedSurfaceForm": "owf",
+    "canonical": "offshore wind farm",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "wind park",
+    "normalizedSurfaceForm": "wind park",
+    "canonical": "offshore wind farm",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "offshore generator",
+    "normalizedSurfaceForm": "offshore generator",
+    "canonical": "offshore wind turbine",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "offshore turbine",
+    "normalizedSurfaceForm": "offshore turbine",
+    "canonical": "offshore wind turbine",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "offshore wind turbine",
+    "normalizedSurfaceForm": "offshore wind turbine",
+    "canonical": "offshore wind turbine",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "offshore WTG",
+    "normalizedSurfaceForm": "offshore wtg",
+    "canonical": "offshore wind turbine",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "crude",
+    "normalizedSurfaceForm": "crude",
+    "canonical": "oil",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "crude oil",
+    "normalizedSurfaceForm": "crude oil",
+    "canonical": "oil",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "oil",
+    "normalizedSurfaceForm": "oil",
+    "canonical": "oil",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "petroleum",
+    "normalizedSurfaceForm": "petroleum",
+    "canonical": "oil",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "renewable electricity",
+    "normalizedSurfaceForm": "renewable electricity",
+    "canonical": "renewable power",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "renewable generation",
+    "normalizedSurfaceForm": "renewable generation",
+    "canonical": "renewable power",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "renewable power",
+    "normalizedSurfaceForm": "renewable power",
+    "canonical": "renewable power",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "photovoltaic",
+    "normalizedSurfaceForm": "photovoltaic",
+    "canonical": "solar photovoltaic",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "PV",
+    "normalizedSurfaceForm": "pv",
+    "canonical": "solar photovoltaic",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "solar photovoltaic",
+    "normalizedSurfaceForm": "solar photovoltaic",
+    "canonical": "solar photovoltaic",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "solar PV",
+    "normalizedSurfaceForm": "solar pv",
+    "canonical": "solar photovoltaic",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "battery electric vehicle",
+    "normalizedSurfaceForm": "battery electric vehicle",
+    "canonical": "transport",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "BEV",
+    "normalizedSurfaceForm": "bev",
+    "canonical": "transport",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "e-mobility",
+    "normalizedSurfaceForm": "e-mobility",
+    "canonical": "transport",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "electric vehicle",
+    "normalizedSurfaceForm": "electric vehicle",
+    "canonical": "transport",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "EV",
+    "normalizedSurfaceForm": "ev",
+    "canonical": "transport",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "mobility",
+    "normalizedSurfaceForm": "mobility",
+    "canonical": "transport",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "PHEV",
+    "normalizedSurfaceForm": "phev",
+    "canonical": "transport",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "plug-in hybrid",
+    "normalizedSurfaceForm": "plug-in hybrid",
+    "canonical": "transport",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "transport",
+    "normalizedSurfaceForm": "transport",
+    "canonical": "transport",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "transportation",
+    "normalizedSurfaceForm": "transportation",
+    "canonical": "transport",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "vehicle",
+    "normalizedSurfaceForm": "vehicle",
+    "canonical": "transport",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "zero-emission vehicle",
+    "normalizedSurfaceForm": "zero-emission vehicle",
+    "canonical": "transport",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "ZEV",
+    "normalizedSurfaceForm": "zev",
+    "canonical": "transport",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "aggregator",
+    "normalizedSurfaceForm": "aggregator",
+    "canonical": "virtual power plant",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "demand aggregation",
+    "normalizedSurfaceForm": "demand aggregation",
+    "canonical": "virtual power plant",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "distributed energy resource",
+    "normalizedSurfaceForm": "distributed energy resource",
+    "canonical": "virtual power plant",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "virtual power plant",
+    "normalizedSurfaceForm": "virtual power plant",
+    "canonical": "virtual power plant",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "VPP",
+    "normalizedSurfaceForm": "vpp",
+    "canonical": "virtual power plant",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "balancing market",
+    "normalizedSurfaceForm": "balancing market",
+    "canonical": "wholesale market",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "day-ahead",
+    "normalizedSurfaceForm": "day-ahead",
+    "canonical": "wholesale market",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "intraday market",
+    "normalizedSurfaceForm": "intraday market",
+    "canonical": "wholesale market",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "power exchange",
+    "normalizedSurfaceForm": "power exchange",
+    "canonical": "wholesale market",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "spot market",
+    "normalizedSurfaceForm": "spot market",
+    "canonical": "wholesale market",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "wholesale electricity",
+    "normalizedSurfaceForm": "wholesale electricity",
+    "canonical": "wholesale market",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "wholesale market",
+    "normalizedSurfaceForm": "wholesale market",
+    "canonical": "wholesale market",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "wind energy converter",
+    "normalizedSurfaceForm": "wind energy converter",
+    "canonical": "wind turbine",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "wind generator",
+    "normalizedSurfaceForm": "wind generator",
+    "canonical": "wind turbine",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "wind turbine",
+    "normalizedSurfaceForm": "wind turbine",
+    "canonical": "wind turbine",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "wind turbines",
+    "normalizedSurfaceForm": "wind turbines",
+    "canonical": "wind turbine",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  },
+  {
+    "surfaceForm": "WTG",
+    "normalizedSurfaceForm": "wtg",
+    "canonical": "wind turbine",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T15:50:09.000Z"
+  }
+]

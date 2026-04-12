@@ -170,11 +170,149 @@ axiom_plan:
       check. In OWL this would be a DisjointUnion / covering axiom,
       but in SKOS we express it as a SPARQL constraint.
 
+  # ── MeasuredProperty + DomainObject CQs (SKY-309) ──────────
+
+  - cq_id: CQ-031
+    pattern: "SKOS altLabel + inScheme lookup"
+    owl_pattern: null
+    implementation: >
+      Assert skos:altLabel "generation"@en on sevocab:Generation
+      with skos:inScheme sevocab:MeasuredPropertyScheme. Same
+      surface form also exists on sevocab:Flow in StatisticTypeScheme —
+      cross-scheme overlap is intentional (CD-006).
+
+  - cq_id: CQ-032
+    pattern: "SKOS altLabel + inScheme lookup"
+    owl_pattern: null
+    implementation: >
+      Assert skos:altLabel "electricity"@en on sevocab:Electricity
+      with skos:inScheme sevocab:DomainObjectScheme.
+
+  - cq_id: CQ-033
+    pattern: "SKOS altLabel enumeration"
+    owl_pattern: null
+    implementation: "Assert multiple altLabels on sevocab:Capacity"
+
+  - cq_id: CQ-034
+    pattern: "External join (build-time integration test)"
+    owl_pattern: null
+    implementation: >
+      Ontology asserts the Generation concept. Disambiguation is
+      a kernel concern — SPARQL CQ verifies concept existence.
+
+  - cq_id: CQ-035
+    pattern: "Cross-scheme existence (ASK)"
+    owl_pattern: null
+    implementation: >
+      Three concepts in three schemes must all exist. No OWL
+      axiom needed — pure A-box existence check.
+
+  - cq_id: CQ-036
+    pattern: "Set difference on altLabels"
+    owl_pattern: null
+    implementation: "SPARQL FILTER NOT EXISTS — same as CQ-007"
+
+  - cq_id: CQ-037
+    pattern: "Build-time coverage constraint"
+    owl_pattern: null
+    implementation: >
+      SPARQL CQ-037 checks that all 8 cold-start measuredProperty
+      values have matching concepts. Same pattern as CQ-029/CQ-030.
+
+  - cq_id: CQ-038
+    pattern: "Build-time coverage constraint"
+    owl_pattern: null
+    implementation: >
+      SPARQL CQ-038 checks that all 16 cold-start domainObject
+      values have matching concepts. Same pattern as CQ-029/CQ-030.
+
+  - cq_id: CQ-039
+    pattern: "#15 Enumeration (conceptual — supersedes CQ-011)"
+    owl_pattern: null
+    implementation: >
+      Seven ConceptScheme individuals asserted. SPARQL query
+      enumerates all schemes. Supersedes CQ-011 (was 5 schemes).
+
+  - cq_id: CQ-040
+    pattern: "Build-time constraint (no axiom)"
+    owl_pattern: null
+    implementation: >
+      Collision detection for MeasuredPropertyScheme and
+      DomainObjectScheme. Same pattern as CQ-026. Build-script
+      enforces; SPARQL approximates.
+
+  # ── Gap Analysis Expansion CQs (UC-010, UC-011) ────────────
+
+  - cq_id: CQ-041
+    pattern: "SKOS altLabel + inScheme lookup"
+    owl_pattern: null
+    implementation: "Assert altLabel 'ETS' on EmissionsTrading in PolicyInstrumentScheme"
+
+  - cq_id: CQ-042
+    pattern: "SKOS altLabel enumeration"
+    owl_pattern: null
+    implementation: "Assert multiple altLabels on FeedInTariff concept"
+
+  - cq_id: CQ-043
+    pattern: "Build-time coverage constraint"
+    owl_pattern: null
+    implementation: "SPARQL checks all 10 policy instrument canonical values exist"
+
+  - cq_id: CQ-044
+    pattern: "Build-time constraint (no axiom)"
+    owl_pattern: null
+    implementation: "Collision detection for PolicyInstrumentScheme"
+
+  - cq_id: CQ-045
+    pattern: "Build-time coverage constraint"
+    owl_pattern: null
+    implementation: "SPARQL checks 7 new TechnologyOrFuel concepts exist"
+
+  - cq_id: CQ-046
+    pattern: "Build-time coverage constraint"
+    owl_pattern: null
+    implementation: "SPARQL checks 8 new DomainObject concepts exist"
+
+  - cq_id: CQ-047
+    pattern: "Build-time coverage constraint"
+    owl_pattern: null
+    implementation: "SPARQL checks 3 new MeasuredProperty concepts exist"
+
+  - cq_id: CQ-048
+    pattern: "#15 Enumeration (supersedes CQ-039)"
+    owl_pattern: null
+    implementation: "8 ConceptScheme individuals asserted"
+
+  - cq_id: CQ-049
+    pattern: "SKOS altLabel lookup"
+    owl_pattern: null
+    implementation: "Assert 'SMR' as altLabel on Nuclear concept"
+
+  - cq_id: CQ-050
+    pattern: "SKOS altLabel lookup"
+    owl_pattern: null
+    implementation: "Assert 'LNG' as altLabel on NaturalGas and NaturalGasDomain"
+
+  - cq_id: CQ-051
+    pattern: "SKOS altLabel lookup"
+    owl_pattern: null
+    implementation: "Assert 'rooftop solar' as altLabel on SolarPv"
+
+  - cq_id: CQ-052
+    pattern: "SKOS altLabel lookup"
+    owl_pattern: null
+    implementation: "Assert 'LCOE' as altLabel on LevelizedCost concept"
+
+  - cq_id: CQ-053
+    pattern: "Aggregation quality gate"
+    owl_pattern: null
+    implementation: "SPARQL GROUP BY + HAVING — enrichment quality check"
+
 # ── Summary ──────────────────────────────────────────────────
 
 summary:
-  total_cqs: 30
-  must_have_cqs: 19
+  total_cqs: 53
+  must_have_cqs: 41
   cqs_requiring_owl_axioms: 1
   cqs_requiring_shacl: 5
   cqs_requiring_sparql_only: 13

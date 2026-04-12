@@ -23,9 +23,23 @@ sevocab:Annual a skos:Concept ;
     skos:prefLabel "annual"@en ;
     skos:topConceptOf sevocab:FrequencyScheme .
 
+sevocab:AuctionInstrument a skos:Concept ;
+    rdfs:label "auction (policy instrument)"@en ;
+    skos:altLabel "auction"@en,
+        "competitive bidding"@en,
+        "procurement round"@en,
+        "reverse auction"@en,
+        "tender"@en ;
+    skos:definition "A policyInstrument concept representing competitive procurement mechanisms for energy projects"@en ;
+    skos:inScheme sevocab:PolicyInstrumentScheme ;
+    skos:prefLabel "auction"@en ;
+    skos:topConceptOf sevocab:PolicyInstrumentScheme .
+
 sevocab:Average a skos:Concept ;
     rdfs:label "average"@en ;
     skos:altLabel "Durchschnitt"@de,
+        "arithmetic mean"@en,
+        "avg"@en,
         "mean"@en,
         "weighted average"@en ;
     skos:definition "An aggregation concept representing the arithmetic mean over a period"@en ;
@@ -45,16 +59,21 @@ sevocab:Battery a skos:Concept ;
         "battery energy storage plant"@en,
         "battery energy storage system"@en,
         "battery storage power station"@en,
+        "behind-the-meter battery"@en,
         "energy storage"@en,
         "flow battery"@en,
+        "grid-scale battery"@en,
+        "grid-scale storage"@en,
         "lead-acid battery"@en,
         "liquid-metal battery"@en,
         "lithium-ion battery"@en,
         "molten-salt battery"@en,
+        "residential battery"@en,
         "sodium-ion battery"@en,
         "sodium-sulphur battery"@en,
         "storage power station"@en,
-        "traction battery"@en ;
+        "traction battery"@en,
+        "utility-scale battery"@en ;
     skos:definition "A technologyOrFuel concept representing electrochemical energy storage technology"@en ;
     skos:inScheme sevocab:TechnologyOrFuelScheme ;
     skos:prefLabel "battery"@en ;
@@ -96,14 +115,172 @@ sevocab:BrownCoal a skos:Concept ;
     skos:inScheme sevocab:TechnologyOrFuelScheme ;
     skos:prefLabel "brown coal"@en .
 
+sevocab:BuildingsDomain a skos:Concept ;
+    rdfs:label "buildings"@en ;
+    skos:altLabel "Gebaude"@de,
+        "Wohngebaude"@de,
+        "building energy"@en,
+        "buildings"@en,
+        "commercial"@en,
+        "residential"@en ;
+    skos:definition "A domainObject concept representing the buildings sector energy use as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "buildings"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
+sevocab:Capacity a skos:Concept ;
+    rdfs:label "capacity"@en ;
+    skos:altLabel "Kapazitat"@de,
+        "installierte Leistung"@de,
+        "capacity"@en,
+        "fleet"@en,
+        "installed"@en,
+        "installed capacity"@en,
+        "nameplate"@en ;
+    skos:definition "A measuredProperty concept representing the maximum output capability of an energy installation"@en ;
+    skos:inScheme sevocab:MeasuredPropertyScheme ;
+    skos:prefLabel "capacity"@en ;
+    skos:topConceptOf sevocab:MeasuredPropertyScheme .
+
+sevocab:CapacityFactorMeasure a skos:Concept ;
+    rdfs:label "capacity factor (measured property)"@en ;
+    skos:altLabel "CF"@en,
+        "availability factor"@en,
+        "capacity factor"@en,
+        "load factor"@en,
+        "plant factor"@en,
+        "utilization rate"@en ;
+    skos:definition "A measuredProperty concept representing the ratio of actual output to maximum possible output"@en ;
+    skos:inScheme sevocab:MeasuredPropertyScheme ;
+    skos:prefLabel "capacity factor"@en ;
+    skos:topConceptOf sevocab:MeasuredPropertyScheme .
+
+sevocab:CapacityMarketInstrument a skos:Concept ;
+    rdfs:label "capacity market (policy instrument)"@en ;
+    skos:altLabel "capacity auction"@en,
+        "capacity market"@en,
+        "capacity mechanism"@en,
+        "capacity payment"@en,
+        "capacity remuneration"@en ;
+    skos:definition "A policyInstrument concept representing market mechanisms ensuring generation adequacy"@en ;
+    skos:inScheme sevocab:PolicyInstrumentScheme ;
+    skos:prefLabel "capacity market"@en ;
+    skos:topConceptOf sevocab:PolicyInstrumentScheme .
+
+sevocab:CarbonCapture a skos:Concept ;
+    rdfs:label "carbon capture"@en ;
+    skos:altLabel "BECCS"@en,
+        "CCS"@en,
+        "CCUS"@en,
+        "DAC"@en,
+        "bioenergy with carbon capture"@en,
+        "carbon capture"@en,
+        "carbon capture and storage"@en,
+        "carbon removal"@en,
+        "direct air capture"@en ;
+    skos:definition "A technologyOrFuel concept representing carbon capture utilization and storage technology"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "carbon capture"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:CarbonCreditInstrument a skos:Concept ;
+    rdfs:label "carbon credit (policy instrument)"@en ;
+    skos:altLabel "VER"@en,
+        "carbon credit"@en,
+        "carbon offset"@en,
+        "certified emission reduction"@en,
+        "emission reduction credit"@en,
+        "offset"@en,
+        "voluntary carbon market"@en ;
+    skos:definition "A policyInstrument concept representing tradable certificates representing emission reductions"@en ;
+    skos:inScheme sevocab:PolicyInstrumentScheme ;
+    skos:prefLabel "carbon credit"@en ;
+    skos:topConceptOf sevocab:PolicyInstrumentScheme .
+
+sevocab:CarbonMarketDomain a skos:Concept ;
+    rdfs:label "carbon market (domain object)"@en ;
+    skos:altLabel "EU ETS market"@en,
+        "allowance market"@en,
+        "carbon market"@en,
+        "carbon price"@en,
+        "carbon trading"@en,
+        "emissions market"@en ;
+    skos:definition "A domainObject concept representing carbon emissions trading markets as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "carbon market"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
+sevocab:CarbonTax a skos:Concept ;
+    rdfs:label "carbon tax"@en ;
+    skos:altLabel "carbon fee"@en,
+        "carbon levy"@en,
+        "carbon price floor"@en,
+        "carbon pricing"@en,
+        "carbon tax"@en ;
+    skos:definition "A policyInstrument concept representing tax-based carbon pricing mechanisms"@en ;
+    skos:inScheme sevocab:PolicyInstrumentScheme ;
+    skos:prefLabel "carbon tax"@en ;
+    skos:topConceptOf sevocab:PolicyInstrumentScheme .
+
+sevocab:CleanEnergyDomain a skos:Concept ;
+    rdfs:label "clean energy"@en ;
+    skos:altLabel "saubere Energie"@de,
+        "clean energy"@en,
+        "green energy"@en,
+        "low-carbon energy"@en ;
+    skos:definition "A domainObject concept representing the aggregate clean energy sector as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "clean energy"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
+sevocab:CombinedHeatPower a skos:Concept ;
+    rdfs:label "combined heat and power"@en ;
+    skos:altLabel "CHP"@en,
+        "cogen"@en,
+        "cogeneration"@en,
+        "combined heat and power"@en,
+        "district energy"@en,
+        "trigeneration"@en ;
+    skos:definition "A technologyOrFuel concept representing simultaneous heat and electricity generation technology"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "combined heat and power"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:ConsumptionMeasure a skos:Concept ;
+    rdfs:label "consumption"@en ;
+    skos:altLabel "Endverbrauch"@de,
+        "Energieverbrauch"@de,
+        "consumption"@en,
+        "energy consumption"@en,
+        "final consumption"@en,
+        "total consumption"@en ;
+    skos:definition "A measuredProperty concept representing the actual use of energy by end consumers"@en ;
+    skos:inScheme sevocab:MeasuredPropertyScheme ;
+    skos:prefLabel "consumption"@en ;
+    skos:topConceptOf sevocab:MeasuredPropertyScheme .
+
 sevocab:Count a skos:Concept ;
     rdfs:label "count"@en ;
     skos:altLabel "number of"@en,
+        "tally"@en,
         "units"@en ;
     skos:definition "A statisticType concept representing a discrete tally of items or events"@en ;
     skos:inScheme sevocab:StatisticTypeScheme ;
     skos:prefLabel "count"@en ;
     skos:topConceptOf sevocab:StatisticTypeScheme .
+
+sevocab:CountMeasure a skos:Concept ;
+    rdfs:label "count (measured property)"@en ;
+    skos:altLabel "Anzahl"@de,
+        "Installationen"@de,
+        "count"@en,
+        "installations"@en,
+        "number"@en,
+        "units deployed"@en ;
+    skos:definition "A measuredProperty concept representing a discrete tally of equipment or infrastructure units"@en ;
+    skos:inScheme sevocab:MeasuredPropertyScheme ;
+    skos:prefLabel "count"@en ;
+    skos:topConceptOf sevocab:MeasuredPropertyScheme .
 
 sevocab:CurrencyPerEnergyUnit a skos:Concept ;
     rdfs:label "currency_per_energy"@en ;
@@ -127,6 +304,17 @@ sevocab:CurrencyUnit a skos:Concept ;
     skos:prefLabel "currency"@en ;
     skos:topConceptOf sevocab:UnitFamilyScheme .
 
+sevocab:Curtailment a skos:Concept ;
+    rdfs:label "curtailment"@en ;
+    skos:altLabel "constrained off"@en,
+        "curtailed"@en,
+        "curtailment"@en,
+        "spilled"@en ;
+    skos:definition "A measuredProperty concept representing generation that was reduced or prevented by grid constraints"@en ;
+    skos:inScheme sevocab:MeasuredPropertyScheme ;
+    skos:prefLabel "curtailment"@en ;
+    skos:topConceptOf sevocab:MeasuredPropertyScheme .
+
 sevocab:Daily a skos:Concept ;
     rdfs:label "daily"@en ;
     skos:altLabel "1d"@en,
@@ -136,14 +324,201 @@ sevocab:Daily a skos:Concept ;
     skos:prefLabel "daily"@en ;
     skos:topConceptOf sevocab:FrequencyScheme .
 
+sevocab:DataCenterDomain a skos:Concept ;
+    rdfs:label "data center"@en ;
+    skos:altLabel "Rechenzentrum"@de,
+        "data center"@en,
+        "data centre"@en,
+        "datacenter"@en ;
+    skos:definition "A domainObject concept representing data center infrastructure as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "data center"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
+sevocab:DecarbonizationDomain a skos:Concept ;
+    rdfs:label "decarbonization (domain object)"@en ;
+    skos:altLabel "carbon neutral"@en,
+        "carbon neutrality"@en,
+        "climate target"@en,
+        "decarbonization"@en,
+        "deep decarbonization"@en,
+        "net zero"@en,
+        "net-zero"@en,
+        "zero emissions"@en ;
+    skos:definition "A domainObject concept representing decarbonization goals and progress as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "decarbonization"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
+sevocab:DecommissioningMeasure a skos:Concept ;
+    rdfs:label "decommissioning (measured property)"@en ;
+    skos:altLabel "closure"@en,
+        "coal phase-out"@en,
+        "decommissioning"@en,
+        "phase-out"@en,
+        "plant closure"@en,
+        "retired capacity"@en,
+        "retirement"@en,
+        "shutdown"@en ;
+    skos:definition "A measuredProperty concept representing the removal of infrastructure from service"@en ;
+    skos:inScheme sevocab:MeasuredPropertyScheme ;
+    skos:prefLabel "decommissioning"@en ;
+    skos:topConceptOf sevocab:MeasuredPropertyScheme .
+
+sevocab:Demand a skos:Concept ;
+    rdfs:label "demand"@en ;
+    skos:altLabel "Bedarf"@de,
+        "Nachfrage"@de,
+        "Verbrauch"@de,
+        "demand"@en,
+        "load"@en,
+        "usage"@en,
+        "use"@en ;
+    skos:definition "A measuredProperty concept representing the quantity of energy or power consumed or required"@en ;
+    skos:inScheme sevocab:MeasuredPropertyScheme ;
+    skos:prefLabel "demand"@en ;
+    skos:topConceptOf sevocab:MeasuredPropertyScheme .
+
+sevocab:DeploymentMeasure a skos:Concept ;
+    rdfs:label "deployment (measured property)"@en ;
+    skos:altLabel "additions"@en,
+        "coming online"@en,
+        "commissioning"@en,
+        "deployment"@en,
+        "installed additions"@en,
+        "new build"@en,
+        "new capacity"@en,
+        "new installations"@en ;
+    skos:definition "A measuredProperty concept representing the rate of new infrastructure installation"@en ;
+    skos:inScheme sevocab:MeasuredPropertyScheme ;
+    skos:prefLabel "deployment"@en ;
+    skos:topConceptOf sevocab:MeasuredPropertyScheme .
+
+sevocab:DieselFuel a skos:Concept ;
+    rdfs:label "diesel"@en ;
+    skos:altLabel "HFO"@en,
+        "diesel"@en,
+        "diesel generator"@en,
+        "distillate"@en,
+        "fuel oil"@en,
+        "gasoil"@en,
+        "heavy fuel oil"@en ;
+    skos:definition "A technologyOrFuel concept representing diesel and fuel oil used for power generation"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "diesel"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
 sevocab:DimensionlessUnit a skos:Concept ;
     rdfs:label "dimensionless"@en ;
-    skos:altLabel "%"@en,
-        "percent"@en ;
+    skos:altLabel "coefficient"@en,
+        "factor"@en,
+        "fraction"@en,
+        "index"@en,
+        "percent"@en,
+        "ratio"@en ;
     skos:definition "A unitFamily concept representing ratios and percentages with no physical dimension"@en ;
     skos:inScheme sevocab:UnitFamilyScheme ;
     skos:prefLabel "dimensionless"@en ;
     skos:topConceptOf sevocab:UnitFamilyScheme .
+
+sevocab:DischargeMeasure a skos:Concept ;
+    rdfs:label "discharge"@en ;
+    skos:altLabel "discharge"@en,
+        "dispatched"@en,
+        "storage output"@en ;
+    skos:definition "A measuredProperty concept representing energy released from a storage system"@en ;
+    skos:inScheme sevocab:MeasuredPropertyScheme ;
+    skos:prefLabel "discharge"@en ;
+    skos:topConceptOf sevocab:MeasuredPropertyScheme .
+
+sevocab:EVChargingDomain a skos:Concept ;
+    rdfs:label "EV charging (domain object)"@en ;
+    skos:altLabel "EV charging"@en,
+        "EVSE"@en,
+        "charge point"@en,
+        "charger"@en,
+        "charging infrastructure"@en,
+        "charging station"@en,
+        "fast charging"@en ;
+    skos:definition "A domainObject concept representing electric vehicle charging infrastructure as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "EV charging"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
+sevocab:Efficiency a skos:Concept ;
+    rdfs:label "efficiency"@en ;
+    skos:altLabel "Effizienz"@de,
+        "Wirkungsgrad"@de,
+        "conversion efficiency"@en,
+        "efficiency"@en,
+        "system efficiency"@en,
+        "thermal efficiency"@en ;
+    skos:definition "A measuredProperty concept representing the ratio of useful energy output to total input"@en ;
+    skos:inScheme sevocab:MeasuredPropertyScheme ;
+    skos:prefLabel "efficiency"@en ;
+    skos:topConceptOf sevocab:MeasuredPropertyScheme .
+
+sevocab:ElectricityDomain a skos:Concept ;
+    rdfs:label "electricity"@en ;
+    skos:altLabel "Elektrizitat"@de,
+        "Strom"@de,
+        "elektrische Energie"@de,
+        "electric"@en,
+        "electric grid"@en,
+        "electrical energy"@en,
+        "electricity"@en,
+        "electricity sector"@en,
+        "electricity system"@en,
+        "power"@en,
+        "power sector"@en,
+        "power system"@en ;
+    skos:definition "A domainObject concept representing electrical energy as the subject of measurement"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "electricity"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
+sevocab:ElectrolyzerDomain a skos:Concept ;
+    rdfs:label "electrolyzer"@en ;
+    skos:altLabel "Elektrolyseur"@de,
+        "Wasserelektrolyseur"@de,
+        "electrolyser"@en,
+        "electrolysis"@en,
+        "electrolyzer"@en ;
+    skos:definition "A domainObject concept representing hydrogen electrolyzer equipment as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "electrolyzer"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
+sevocab:EmissionsMeasure a skos:Concept ;
+    rdfs:label "emissions"@en ;
+    skos:altLabel "CO2-Emissionen"@de,
+        "Emissionen"@de,
+        "Treibhausgase"@de,
+        "CO2"@en,
+        "CO2 emissions"@en,
+        "GHG"@en,
+        "carbon intensity"@en,
+        "emissions"@en,
+        "greenhouse gas"@en ;
+    skos:definition "A measuredProperty concept representing the release of greenhouse gases from energy activities"@en ;
+    skos:inScheme sevocab:MeasuredPropertyScheme ;
+    skos:prefLabel "emissions"@en ;
+    skos:topConceptOf sevocab:MeasuredPropertyScheme .
+
+sevocab:EmissionsTrading a skos:Concept ;
+    rdfs:label "emissions trading"@en ;
+    skos:altLabel "ETS"@en,
+        "EU ETS"@en,
+        "allowance"@en,
+        "cap and trade"@en,
+        "carbon trading"@en,
+        "emission allowance"@en,
+        "emissions trading"@en,
+        "emissions trading scheme"@en ;
+    skos:definition "A policyInstrument concept representing market-based emissions cap and trading systems"@en ;
+    skos:inScheme sevocab:PolicyInstrumentScheme ;
+    skos:prefLabel "emissions trading"@en ;
+    skos:topConceptOf sevocab:PolicyInstrumentScheme .
 
 sevocab:EndOfPeriod a skos:Concept ;
     rdfs:label "end_of_period"@en ;
@@ -155,6 +530,67 @@ sevocab:EndOfPeriod a skos:Concept ;
     skos:inScheme sevocab:AggregationScheme ;
     skos:prefLabel "end_of_period"@en ;
     skos:topConceptOf sevocab:AggregationScheme .
+
+sevocab:EnergyAccessDomain a skos:Concept ;
+    rdfs:label "energy access (domain object)"@en ;
+    skos:altLabel "electricity access"@en,
+        "electrification"@en,
+        "energy access"@en,
+        "rural electrification"@en,
+        "universal access"@en ;
+    skos:definition "A domainObject concept representing energy access and electrification as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "energy access"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
+sevocab:EnergyConsumptionDomain a skos:Concept ;
+    rdfs:label "energy consumption"@en ;
+    skos:altLabel "Energieverbrauch"@de,
+        "energy consumption"@en,
+        "primary energy consumption"@en,
+        "total energy use"@en ;
+    skos:definition "A domainObject concept representing aggregate energy consumption as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "energy consumption"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
+sevocab:EnergyPovertyDomain a skos:Concept ;
+    rdfs:label "energy poverty (domain object)"@en ;
+    skos:altLabel "energy affordability"@en,
+        "energy burden"@en,
+        "energy poverty"@en,
+        "fuel poverty"@en,
+        "heating poverty"@en ;
+    skos:definition "A domainObject concept representing energy poverty and affordability as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "energy poverty"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
+sevocab:EnergySupply a skos:Concept ;
+    rdfs:label "supply"@en ;
+    skos:altLabel "Energieversorgung"@de,
+        "Primarenergie"@de,
+        "TPES"@en,
+        "primary supply"@en,
+        "supply"@en,
+        "total primary energy supply"@en ;
+    skos:definition "A measuredProperty concept representing total primary energy supply entering the system"@en ;
+    skos:inScheme sevocab:MeasuredPropertyScheme ;
+    skos:prefLabel "supply"@en ;
+    skos:topConceptOf sevocab:MeasuredPropertyScheme .
+
+sevocab:EnergyTransitionDomain a skos:Concept ;
+    rdfs:label "energy transition"@en ;
+    skos:altLabel "Energiewende"@de,
+        "clean energy transition"@en,
+        "clean transition"@en,
+        "energy transition"@en,
+        "green transition"@en,
+        "low-carbon transition"@en ;
+    skos:definition "A domainObject concept representing the energy transition as an investment domain"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "energy transition"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
 
 sevocab:EnergyUnit a skos:Concept ;
     rdfs:label "energy"@en ;
@@ -168,18 +604,58 @@ sevocab:EnergyUnit a skos:Concept ;
     skos:prefLabel "energy"@en ;
     skos:topConceptOf sevocab:UnitFamilyScheme .
 
+sevocab:FeedInTariff a skos:Concept ;
+    rdfs:label "feed-in tariff"@en ;
+    skos:altLabel "FIP"@en,
+        "FIT"@en,
+        "feed-in law"@en,
+        "feed-in premium"@en,
+        "feed-in tariff"@en,
+        "renewable energy tariff"@en ;
+    skos:definition "A policyInstrument concept representing guaranteed-price mechanisms for renewable energy producers"@en ;
+    skos:inScheme sevocab:PolicyInstrumentScheme ;
+    skos:prefLabel "feed-in tariff"@en ;
+    skos:topConceptOf sevocab:PolicyInstrumentScheme .
+
 sevocab:Flow a skos:Concept ;
     rdfs:label "flow"@en ;
     skos:altLabel "Erzeugung"@de,
         "Nettostromerzeugung"@de,
         "Stromerzeugung"@de,
+        "flow rate"@en,
         "generation"@en,
         "output"@en,
-        "production"@en ;
+        "throughput"@en ;
     skos:definition "A statisticType concept representing a quantity accumulated over a time interval"@en ;
     skos:inScheme sevocab:StatisticTypeScheme ;
     skos:prefLabel "flow"@en ;
     skos:topConceptOf sevocab:StatisticTypeScheme .
+
+sevocab:FossilFuel a skos:Concept ;
+    rdfs:label "fossil fuel"@en ;
+    skos:altLabel "conventional generation"@en,
+        "conventional power"@en,
+        "fossil"@en,
+        "fossil fuel"@en,
+        "fossil fuels"@en ;
+    skos:definition "A technologyOrFuel concept representing the aggregate of fossil fuel energy technologies"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "fossil fuel"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:FuelCell a skos:Concept ;
+    rdfs:label "fuel cell"@en ;
+    skos:altLabel "PEMFC"@en,
+        "SOFC"@en,
+        "fuel cell"@en,
+        "fuel cells"@en,
+        "hydrogen fuel cell"@en,
+        "proton exchange membrane"@en,
+        "solid oxide fuel cell"@en ;
+    skos:definition "A technologyOrFuel concept representing electrochemical fuel cell technology"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "fuel cell"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
 
 sevocab:GasCcgt a skos:Concept ;
     rdfs:label "gas CCGT"@en ;
@@ -208,6 +684,22 @@ sevocab:GasCcgt a skos:Concept ;
     skos:inScheme sevocab:TechnologyOrFuelScheme ;
     skos:prefLabel "gas CCGT"@en .
 
+sevocab:Generation a skos:Concept ;
+    rdfs:label "generation"@en ;
+    skos:altLabel "Erzeugung"@de,
+        "Nettostromerzeugung"@de,
+        "Stromerzeugung"@de,
+        "generation"@en,
+        "gross electricity production"@en,
+        "net electricity production"@en,
+        "output"@en,
+        "power production"@en,
+        "produced"@en ;
+    skos:definition "A measuredProperty concept representing the production of energy or electricity over a time interval"@en ;
+    skos:inScheme sevocab:MeasuredPropertyScheme ;
+    skos:prefLabel "generation"@en ;
+    skos:topConceptOf sevocab:MeasuredPropertyScheme .
+
 sevocab:Geothermal a skos:Concept ;
     rdfs:label "geothermal"@en ;
     skos:altLabel "Geothermal Energy"@en,
@@ -232,6 +724,59 @@ sevocab:Geothermal a skos:Concept ;
     skos:prefLabel "geothermal"@en ;
     skos:topConceptOf sevocab:TechnologyOrFuelScheme .
 
+sevocab:GridDomain a skos:Concept ;
+    rdfs:label "grid"@en ;
+    skos:altLabel "Stromnetz"@de,
+        "Ubertragungsnetz"@de,
+        "Verteilnetz"@de,
+        "DSO"@en,
+        "TSO"@en,
+        "ancillary services"@en,
+        "distribution"@en,
+        "electrical grid"@en,
+        "frequency regulation"@en,
+        "grid"@en,
+        "grid operator"@en,
+        "power grid"@en,
+        "transmission"@en,
+        "transmission system operator"@en ;
+    skos:definition "A domainObject concept representing the electrical grid infrastructure as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "grid"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
+sevocab:GridReliabilityDomain a skos:Concept ;
+    rdfs:label "grid reliability (domain object)"@en ;
+    skos:altLabel "SAIDI"@en,
+        "SAIFI"@en,
+        "blackout"@en,
+        "brownout"@en,
+        "grid reliability"@en,
+        "grid resilience"@en,
+        "grid stability"@en,
+        "outage"@en,
+        "power outage"@en,
+        "system reliability"@en ;
+    skos:definition "A domainObject concept representing grid reliability and resilience as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "grid reliability"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
+sevocab:HeatDomain a skos:Concept ;
+    rdfs:label "heat"@en ;
+    skos:altLabel "Fernwarme"@de,
+        "Heizung"@de,
+        "Warme"@de,
+        "district heat"@en,
+        "district heating"@en,
+        "heat"@en,
+        "heating"@en,
+        "thermal"@en ;
+    skos:definition "A domainObject concept representing heat energy and the heating sector as the subject of measurement"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "heat"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
 sevocab:HeatPump a skos:Concept ;
     rdfs:label "heat pump"@en ;
     skos:altLabel "Warmepumpe"@de,
@@ -252,6 +797,21 @@ sevocab:HeatPump a skos:Concept ;
     skos:prefLabel "heat pump"@en ;
     skos:topConceptOf sevocab:TechnologyOrFuelScheme .
 
+sevocab:HeatPumpDomain a skos:Concept ;
+    rdfs:label "heat pump (domain object)"@en ;
+    skos:altLabel "Warmepumpe"@de,
+        "Warmepumpen"@de,
+        "ASHP"@en,
+        "GSHP"@en,
+        "air source heat pump"@en,
+        "ground source heat pump"@en,
+        "heat pump"@en,
+        "heat pumps"@en ;
+    skos:definition "A domainObject concept representing heat pump equipment as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "heat pump"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
 sevocab:Hourly a skos:Concept ;
     rdfs:label "hourly"@en ;
     skos:altLabel "1h"@en,
@@ -271,7 +831,6 @@ sevocab:Hydrogen a skos:Concept ;
         "fossil hydrogen"@en,
         "fossil steam reforming hydrogen"@en,
         "hydrogen"@en,
-        "hydrogen fuel cell"@en,
         "nuclear electric hydrogen"@en,
         "renewable electrolytic hydrogen"@en,
         "solar electrolytic hydrogen"@en,
@@ -282,13 +841,76 @@ sevocab:Hydrogen a skos:Concept ;
     skos:prefLabel "hydrogen"@en ;
     skos:topConceptOf sevocab:TechnologyOrFuelScheme .
 
+sevocab:HydrogenDomain a skos:Concept ;
+    rdfs:label "hydrogen (domain object)"@en ;
+    skos:altLabel "Wasserstoff"@de,
+        "gruner Wasserstoff"@de,
+        "H2"@en,
+        "green hydrogen"@en,
+        "hydrogen"@en ;
+    skos:definition "A domainObject concept representing hydrogen as an energy carrier and measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "hydrogen"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
+sevocab:IndustryDomain a skos:Concept ;
+    rdfs:label "industry"@en ;
+    skos:altLabel "Industrie"@de,
+        "industrial"@en,
+        "industrial energy"@en,
+        "industry"@en,
+        "manufacturing"@en ;
+    skos:definition "A domainObject concept representing the industrial sector energy use as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "industry"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
 sevocab:IntensityUnit a skos:Concept ;
     rdfs:label "intensity"@en ;
-    skos:altLabel "gCO2/kWh"@en ;
+    skos:altLabel "carbon intensity"@en,
+        "emission factor"@en,
+        "emission intensity"@en,
+        "gCO2/kWh"@en,
+        "kg CO2/MWh"@en,
+        "tCO2/MWh"@en ;
     skos:definition "A unitFamily concept representing compound units of emission rate per energy"@en ;
     skos:inScheme sevocab:UnitFamilyScheme ;
     skos:prefLabel "intensity"@en ;
     skos:topConceptOf sevocab:UnitFamilyScheme .
+
+sevocab:InterconnectionQueueDomain a skos:Concept ;
+    rdfs:label "interconnection queue"@en ;
+    skos:altLabel "grid queue"@en,
+        "interconnection backlog"@en,
+        "interconnection queue"@en ;
+    skos:definition "A domainObject concept representing the electricity grid interconnection queue as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "interconnection queue"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
+sevocab:Investment a skos:Concept ;
+    rdfs:label "investment"@en ;
+    skos:altLabel "Investition"@de,
+        "Investitionen"@de,
+        "capex"@en,
+        "funding"@en,
+        "investment"@en,
+        "spending"@en ;
+    skos:definition "A measuredProperty concept representing capital expenditure in energy infrastructure or technology"@en ;
+    skos:inScheme sevocab:MeasuredPropertyScheme ;
+    skos:prefLabel "investment"@en ;
+    skos:topConceptOf sevocab:MeasuredPropertyScheme .
+
+sevocab:LithiumIonBatteryPackDomain a skos:Concept ;
+    rdfs:label "lithium-ion battery pack"@en ;
+    skos:altLabel "Batteriepack"@de,
+        "battery pack"@en,
+        "li-ion pack"@en,
+        "lithium-ion battery pack"@en ;
+    skos:broader sevocab:BatteryStorageDomain ;
+    skos:definition "A domainObject concept representing lithium-ion battery packs as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "lithium-ion battery pack"@en .
 
 sevocab:Marine a skos:Concept ;
     rdfs:label "marine"@en ;
@@ -323,16 +945,31 @@ sevocab:MassCo2eUnit a skos:Concept ;
 
 sevocab:Max a skos:Concept ;
     rdfs:label "max"@en ;
-    skos:altLabel "maximum"@en,
+    skos:altLabel "highest"@en,
+        "maximum"@en,
         "peak"@en ;
     skos:definition "An aggregation concept representing the maximum observed value in a period"@en ;
     skos:inScheme sevocab:AggregationScheme ;
     skos:prefLabel "max"@en ;
     skos:topConceptOf sevocab:AggregationScheme .
 
+sevocab:MethaneFuel a skos:Concept ;
+    rdfs:label "methane"@en ;
+    skos:altLabel "CH4"@en,
+        "flaring"@en,
+        "fugitive methane"@en,
+        "methane"@en,
+        "methane emissions"@en,
+        "methane leakage"@en ;
+    skos:definition "A technologyOrFuel concept representing methane as fuel or emission source"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "methane"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
 sevocab:Min a skos:Concept ;
     rdfs:label "min"@en ;
-    skos:altLabel "minimum"@en,
+    skos:altLabel "floor"@en,
+        "minimum"@en,
         "trough"@en ;
     skos:definition "An aggregation concept representing the minimum observed value in a period"@en ;
     skos:inScheme sevocab:AggregationScheme ;
@@ -348,14 +985,48 @@ sevocab:Monthly a skos:Concept ;
     skos:prefLabel "monthly"@en ;
     skos:topConceptOf sevocab:FrequencyScheme .
 
+sevocab:NaturalGasDomain a skos:Concept ;
+    rdfs:label "natural gas (domain object)"@en ;
+    skos:altLabel "Erdgas"@de,
+        "LNG"@en,
+        "gas"@en,
+        "gas infrastructure"@en,
+        "gas pipeline"@en,
+        "gas storage"@en,
+        "gas supply"@en,
+        "liquefied natural gas"@en,
+        "natural gas"@en ;
+    skos:definition "A domainObject concept representing natural gas as an energy carrier and measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "natural gas"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
+sevocab:NetMeteringInstrument a skos:Concept ;
+    rdfs:label "net metering (policy instrument)"@en ;
+    skos:altLabel "behind-the-meter compensation"@en,
+        "net billing"@en,
+        "net energy metering"@en,
+        "net metering"@en,
+        "self-consumption"@en ;
+    skos:definition "A policyInstrument concept representing compensation mechanisms for distributed generation"@en ;
+    skos:inScheme sevocab:PolicyInstrumentScheme ;
+    skos:prefLabel "net metering"@en ;
+    skos:topConceptOf sevocab:PolicyInstrumentScheme .
+
 sevocab:Nuclear a skos:Concept ;
     rdfs:label "nuclear"@en ;
     skos:altLabel "Kernenergie"@de,
         "Kernkraft"@de,
+        "Gen IV"@en,
+        "Generation IV"@en,
+        "SMR"@en,
+        "advanced nuclear"@en,
+        "advanced reactor"@en,
         "atomic"@en,
         "atomic energy"@en,
         "atomic power"@en,
         "energy industry"@en,
+        "micro reactor"@en,
         "nuclear"@en,
         "nuclear electricity generation"@en,
         "nuclear energy"@en,
@@ -363,15 +1034,32 @@ sevocab:Nuclear a skos:Concept ;
         "nuclear power generation"@en,
         "nuclear program"@en,
         "nuclear programme"@en,
-        "nuclear technology"@en ;
+        "nuclear technology"@en,
+        "small modular reactor"@en ;
     skos:definition "A technologyOrFuel concept representing nuclear fission power generation technology"@en ;
     skos:inScheme sevocab:TechnologyOrFuelScheme ;
     skos:prefLabel "nuclear"@en ;
     skos:topConceptOf sevocab:TechnologyOrFuelScheme .
 
+sevocab:NuclearReactorDomain a skos:Concept ;
+    rdfs:label "nuclear reactor"@en ;
+    skos:altLabel "Kernkraftwerk"@de,
+        "Kernreaktor"@de,
+        "nuclear plant"@en,
+        "nuclear reactor"@en,
+        "reactor"@en ;
+    skos:definition "A domainObject concept representing nuclear reactor installations as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "nuclear reactor"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
 sevocab:OffshoreWind a skos:Concept ;
     rdfs:label "offshore wind"@en ;
-    skos:altLabel "offshore"@en,
+    skos:altLabel "bottom-fixed"@en,
+        "floating offshore"@en,
+        "floating offshore wind"@en,
+        "floating wind"@en,
+        "offshore"@en,
         "offshore wind energy"@en,
         "offshore wind power"@en,
         "offshorewind"@en ;
@@ -380,11 +1068,35 @@ sevocab:OffshoreWind a skos:Concept ;
     skos:inScheme sevocab:TechnologyOrFuelScheme ;
     skos:prefLabel "offshore wind"@en .
 
+sevocab:OffshoreWindFarmDomain a skos:Concept ;
+    rdfs:label "offshore wind farm"@en ;
+    skos:altLabel "Offshore-Windpark"@de,
+        "OWF"@en,
+        "offshore park"@en,
+        "offshore wind farm"@en,
+        "offshore wind park"@en,
+        "wind park"@en ;
+    skos:definition "A domainObject concept representing offshore wind farm installations as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "offshore wind farm"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
+sevocab:OffshoreWindTurbineDomain a skos:Concept ;
+    rdfs:label "offshore wind turbine"@en ;
+    skos:altLabel "Offshore-Windturbine"@de,
+        "offshore WTG"@en,
+        "offshore generator"@en,
+        "offshore turbine"@en,
+        "offshore wind turbine"@en ;
+    skos:broader sevocab:WindTurbineDomain ;
+    skos:definition "A domainObject concept representing offshore wind turbine equipment as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "offshore wind turbine"@en .
+
 sevocab:Oil a skos:Concept ;
     rdfs:label "oil"@en ;
     skos:altLabel "crude oil"@en,
         "diesel-fired power station"@en,
-        "fuel oil"@en,
         "oil power plant"@en,
         "oil-fired"@en,
         "oil-fired power plant"@en,
@@ -395,6 +1107,20 @@ sevocab:Oil a skos:Concept ;
     skos:inScheme sevocab:TechnologyOrFuelScheme ;
     skos:prefLabel "oil"@en ;
     skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:OilDomain a skos:Concept ;
+    rdfs:label "oil (domain object)"@en ;
+    skos:altLabel "Erdol"@de,
+        "Ol"@de,
+        "Petroleum"@de,
+        "crude"@en,
+        "crude oil"@en,
+        "oil"@en,
+        "petroleum"@en ;
+    skos:definition "A domainObject concept representing petroleum and the oil sector as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "oil"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
 
 sevocab:OnshoreWind a skos:Concept ;
     rdfs:label "onshore wind"@en ;
@@ -417,7 +1143,10 @@ sevocab:OnshoreWind a skos:Concept ;
 
 sevocab:OtherUnit a skos:Concept ;
     rdfs:label "other"@en ;
-    skos:altLabel "misc"@en ;
+    skos:altLabel "misc"@en,
+        "miscellaneous"@en,
+        "other"@en,
+        "unclassified"@en ;
     skos:definition "A unitFamily catch-all concept for units not classified into another family"@en ;
     skos:inScheme sevocab:UnitFamilyScheme ;
     skos:prefLabel "other"@en ;
@@ -426,11 +1155,26 @@ sevocab:OtherUnit a skos:Concept ;
 sevocab:Point a skos:Concept ;
     rdfs:label "point"@en ;
     skos:altLabel "instantaneous"@en,
+        "snapshot"@en,
         "spot"@en ;
     skos:definition "An aggregation concept representing a single instantaneous measurement"@en ;
     skos:inScheme sevocab:AggregationScheme ;
     skos:prefLabel "point"@en ;
     skos:topConceptOf sevocab:AggregationScheme .
+
+sevocab:PowerPurchaseAgreement a skos:Concept ;
+    rdfs:label "power purchase agreement"@en ;
+    skos:altLabel "CPPA"@en,
+        "PPA"@en,
+        "VPPA"@en,
+        "corporate PPA"@en,
+        "offtake agreement"@en,
+        "power purchase agreement"@en,
+        "virtual PPA"@en ;
+    skos:definition "A policyInstrument concept representing bilateral contracts for electricity procurement"@en ;
+    skos:inScheme sevocab:PolicyInstrumentScheme ;
+    skos:prefLabel "power purchase agreement"@en ;
+    skos:topConceptOf sevocab:PolicyInstrumentScheme .
 
 sevocab:PowerUnit a skos:Concept ;
     rdfs:label "power"@en ;
@@ -456,6 +1200,27 @@ sevocab:Price a skos:Concept ;
     skos:inScheme sevocab:StatisticTypeScheme ;
     skos:prefLabel "price"@en ;
     skos:topConceptOf sevocab:StatisticTypeScheme .
+
+sevocab:PriceMeasure a skos:Concept ;
+    rdfs:label "price (measured property)"@en ;
+    skos:altLabel "Kosten"@de,
+        "Preis"@de,
+        "Strompreis"@de,
+        "LCOE"@en,
+        "contract price"@en,
+        "cost"@en,
+        "day-ahead price"@en,
+        "levelized cost"@en,
+        "price"@en,
+        "rate"@en,
+        "spot price"@en,
+        "strike price"@en,
+        "tariff"@en,
+        "wholesale price"@en ;
+    skos:definition "A measuredProperty concept representing the monetary cost per unit of energy commodity or service"@en ;
+    skos:inScheme sevocab:MeasuredPropertyScheme ;
+    skos:prefLabel "price"@en ;
+    skos:topConceptOf sevocab:MeasuredPropertyScheme .
 
 sevocab:PumpedHydro a skos:Concept ;
     rdfs:label "pumped hydro"@en ;
@@ -503,9 +1268,48 @@ sevocab:Renewable a skos:Concept ;
     skos:prefLabel "renewable"@en ;
     skos:topConceptOf sevocab:TechnologyOrFuelScheme .
 
+sevocab:RenewablePortfolioStd a skos:Concept ;
+    rdfs:label "renewable portfolio standard"@en ;
+    skos:altLabel "CES"@en,
+        "RPS"@en,
+        "clean energy standard"@en,
+        "renewable mandate"@en,
+        "renewable obligation"@en,
+        "renewable portfolio standard"@en ;
+    skos:definition "A policyInstrument concept representing mandated renewable energy procurement targets"@en ;
+    skos:inScheme sevocab:PolicyInstrumentScheme ;
+    skos:prefLabel "renewable portfolio standard"@en ;
+    skos:topConceptOf sevocab:PolicyInstrumentScheme .
+
+sevocab:RenewablePowerDomain a skos:Concept ;
+    rdfs:label "renewable power"@en ;
+    skos:altLabel "Okostrom"@de,
+        "erneuerbare Energie"@de,
+        "renewable electricity"@en,
+        "renewable generation"@en,
+        "renewable power"@en ;
+    skos:definition "A domainObject concept representing renewable power generation as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "renewable power"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
+sevocab:Revenue a skos:Concept ;
+    rdfs:label "revenue"@en ;
+    skos:altLabel "Einnahmen"@de,
+        "Umsatz"@de,
+        "earnings"@en,
+        "income"@en,
+        "revenue"@en,
+        "turnover"@en ;
+    skos:definition "A measuredProperty concept representing monetary income from energy activities"@en ;
+    skos:inScheme sevocab:MeasuredPropertyScheme ;
+    skos:prefLabel "revenue"@en ;
+    skos:topConceptOf sevocab:MeasuredPropertyScheme .
+
 sevocab:Settlement a skos:Concept ;
     rdfs:label "settlement"@en ;
     skos:altLabel "clearing"@en,
+        "clearing price"@en,
         "settlement price"@en ;
     skos:definition "An aggregation concept representing a market clearing or settlement price"@en ;
     skos:inScheme sevocab:AggregationScheme ;
@@ -523,6 +1327,32 @@ sevocab:Share a skos:Concept ;
     skos:prefLabel "share"@en ;
     skos:topConceptOf sevocab:StatisticTypeScheme .
 
+sevocab:ShareMeasure a skos:Concept ;
+    rdfs:label "share (measured property)"@en ;
+    skos:altLabel "Anteil"@de,
+        "fraction"@en,
+        "mix"@en,
+        "penetration"@en,
+        "proportion"@en,
+        "share"@en ;
+    skos:definition "A measuredProperty concept representing the proportional contribution of a part to a whole"@en ;
+    skos:inScheme sevocab:MeasuredPropertyScheme ;
+    skos:prefLabel "share"@en ;
+    skos:topConceptOf sevocab:MeasuredPropertyScheme .
+
+sevocab:SolarPhotovoltaicDomain a skos:Concept ;
+    rdfs:label "solar photovoltaic"@en ;
+    skos:altLabel "Photovoltaik"@de,
+        "Solarenergie"@de,
+        "PV"@en,
+        "photovoltaic"@en,
+        "solar PV"@en,
+        "solar photovoltaic"@en ;
+    skos:definition "A domainObject concept representing solar PV technology as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "solar photovoltaic"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
 sevocab:SolarPv a skos:Concept ;
     rdfs:label "solar PV"@en ;
     skos:altLabel "Photovoltaik"@de,
@@ -532,23 +1362,31 @@ sevocab:SolarPv a skos:Concept ;
         "PERC panel"@en,
         "PV"@en,
         "PV panel"@en,
+        "agrivoltaic"@en,
+        "bifacial"@en,
         "bio-PV"@en,
         "bio-photovoltaics"@en,
         "building-integrated photovoltaics"@en,
+        "community solar"@en,
         "concentrated photovoltaics"@en,
         "concentration photovoltaics"@en,
         "concentrator photovoltaics"@en,
+        "floating solar"@en,
         "photovoltaic"@en,
         "photovoltaic energy systems"@en,
         "photovoltaic power systems"@en,
         "photovoltaics"@en,
+        "rooftop solar"@en,
         "solar"@en,
         "solar electricity"@en,
+        "solar farm"@en,
+        "solar installation"@en,
         "solar power"@en,
         "solar power unit"@en,
         "solar powered"@en,
         "solar thermal power unit"@en,
-        "solar window"@en ;
+        "solar window"@en,
+        "utility-scale solar"@en ;
     skos:definition "A technologyOrFuel concept representing solar photovoltaic generation technology"@en ;
     skos:inScheme sevocab:TechnologyOrFuelScheme ;
     skos:prefLabel "solar PV"@en ;
@@ -593,10 +1431,29 @@ sevocab:Stock a skos:Concept ;
     skos:prefLabel "stock"@en ;
     skos:topConceptOf sevocab:StatisticTypeScheme .
 
+sevocab:SubsidyInstrument a skos:Concept ;
+    rdfs:label "subsidy (policy instrument)"@en ;
+    skos:altLabel "ITC"@en,
+        "PTC"@en,
+        "grant"@en,
+        "incentive"@en,
+        "investment tax credit"@en,
+        "premium payment"@en,
+        "production tax credit"@en,
+        "rebate"@en,
+        "subsidy"@en,
+        "tax credit"@en ;
+    skos:definition "A policyInstrument concept representing financial support mechanisms for energy technologies"@en ;
+    skos:inScheme sevocab:PolicyInstrumentScheme ;
+    skos:prefLabel "subsidy"@en ;
+    skos:topConceptOf sevocab:PolicyInstrumentScheme .
+
 sevocab:Sum a skos:Concept ;
     rdfs:label "sum"@en ;
     skos:altLabel "Summe"@de,
+        "aggregate"@en,
         "annual total"@en,
+        "cumulative total"@en,
         "total"@en ;
     skos:definition "An aggregation concept representing the additive total over a period"@en ;
     skos:inScheme sevocab:AggregationScheme ;
@@ -606,6 +1463,70 @@ sevocab:Sum a skos:Concept ;
 sevocab:SurfaceFormEntry a owl:Class ;
     rdfs:label "surface form entry"@en ;
     skos:definition "A reified annotation that links a surface form string to its provenance metadata on a concept"@en .
+
+sevocab:SyntheticFuel a skos:Concept ;
+    rdfs:label "synthetic fuel"@en ;
+    skos:altLabel "SAF"@en,
+        "e-fuel"@en,
+        "efuel"@en,
+        "green fuel"@en,
+        "power-to-gas"@en,
+        "power-to-liquid"@en,
+        "sustainable aviation fuel"@en,
+        "synthetic fuel"@en ;
+    skos:definition "A technologyOrFuel concept representing synthetically produced fuels from renewable electricity"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "synthetic fuel"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:Trade a skos:Concept ;
+    rdfs:label "trade"@en ;
+    skos:altLabel "Exporte"@de,
+        "Handel"@de,
+        "Importe"@de,
+        "exports"@en,
+        "imports"@en,
+        "interconnector flow"@en,
+        "net imports"@en,
+        "trade"@en ;
+    skos:definition "A measuredProperty concept representing cross-border energy trade flows"@en ;
+    skos:inScheme sevocab:MeasuredPropertyScheme ;
+    skos:prefLabel "trade"@en ;
+    skos:topConceptOf sevocab:MeasuredPropertyScheme .
+
+sevocab:TransportDomain a skos:Concept ;
+    rdfs:label "transport"@en ;
+    skos:altLabel "Elektromobilitat"@de,
+        "Verkehr"@de,
+        "BEV"@en,
+        "EV"@en,
+        "PHEV"@en,
+        "ZEV"@en,
+        "battery electric vehicle"@en,
+        "e-mobility"@en,
+        "electric vehicle"@en,
+        "mobility"@en,
+        "plug-in hybrid"@en,
+        "transport"@en,
+        "transportation"@en,
+        "vehicle"@en,
+        "zero-emission vehicle"@en ;
+    skos:definition "A domainObject concept representing the transport sector and electric vehicles as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "transport"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
+sevocab:VirtualPowerPlantDomain a skos:Concept ;
+    rdfs:label "virtual power plant (domain object)"@en ;
+    skos:altLabel "VPP"@en,
+        "aggregator"@en,
+        "demand aggregation"@en,
+        "distributed energy resource"@en,
+        "virtual power plant"@en ;
+    skos:definition "A domainObject concept representing virtual power plant aggregation as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "virtual power plant"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
 
 sevocab:Waste a skos:Concept ;
     rdfs:label "waste"@en ;
@@ -637,6 +1558,20 @@ sevocab:Weekly a skos:Concept ;
     skos:prefLabel "weekly"@en ;
     skos:topConceptOf sevocab:FrequencyScheme .
 
+sevocab:WholesaleMarketDomain a skos:Concept ;
+    rdfs:label "wholesale market (domain object)"@en ;
+    skos:altLabel "balancing market"@en,
+        "day-ahead"@en,
+        "intraday market"@en,
+        "power exchange"@en,
+        "spot market"@en,
+        "wholesale electricity"@en,
+        "wholesale market"@en ;
+    skos:definition "A domainObject concept representing wholesale electricity market structure as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "wholesale market"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
+
 sevocab:hasProvenanceAnnotation a owl:ObjectProperty ;
     rdfs:label "has provenance annotation"@en ;
     skos:definition "Links a concept to a SurfaceFormEntry individual recording provenance for a specific altLabel"@en .
@@ -650,6 +1585,22 @@ sevocab:surfaceFormValue a owl:DatatypeProperty,
         owl:FunctionalProperty ;
     rdfs:label "surface form value"@en ;
     skos:definition "The exact altLabel string that this provenance annotation applies to"@en .
+
+sevocab:BatteryStorageDomain a skos:Concept ;
+    rdfs:label "battery storage"@en ;
+    skos:altLabel "Batteriespeicher"@de,
+        "BESS"@en,
+        "battery energy storage"@en,
+        "battery storage"@en,
+        "energy storage"@en,
+        "grid-scale storage"@en,
+        "long-duration storage"@en,
+        "stationary storage"@en,
+        "utility-scale battery storage"@en ;
+    skos:definition "A domainObject concept representing electrochemical storage systems as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "battery storage"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
 
 sevocab:Coal a skos:Concept ;
     rdfs:label "coal"@en ;
@@ -666,7 +1617,6 @@ sevocab:Coal a skos:Concept ;
         "brown coal"@en,
         "canndle coal"@en,
         "cannel coal"@en,
-        "carbon"@en,
         "coal"@en,
         "coal-fired"@en,
         "coking coal"@en,
@@ -728,18 +1678,38 @@ sevocab:Hydro a skos:Concept ;
 sevocab:NaturalGas a skos:Concept ;
     rdfs:label "natural gas"@en ;
     skos:altLabel "Erdgas"@de,
+        "LNG"@en,
         "associated gas"@en,
         "colliery gas"@en,
         "compressed natural gas"@en,
         "gas"@en,
+        "gas infrastructure"@en,
+        "gas pipeline"@en,
+        "gas-fired"@en,
         "liquefied natural gas"@en,
         "natural gas"@en,
         "natural-gas processing"@en,
-        "non associated gas"@en ;
+        "non associated gas"@en,
+        "shale gas"@en ;
     skos:definition "A technologyOrFuel concept representing natural gas power generation technology"@en ;
     skos:inScheme sevocab:TechnologyOrFuelScheme ;
     skos:prefLabel "natural gas"@en ;
     skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:WindTurbineDomain a skos:Concept ;
+    rdfs:label "wind turbine"@en ;
+    skos:altLabel "Windenergieanlage"@de,
+        "Windkraftanlage"@de,
+        "Windturbine"@de,
+        "WTG"@en,
+        "wind energy converter"@en,
+        "wind generator"@en,
+        "wind turbine"@en,
+        "wind turbines"@en ;
+    skos:definition "A domainObject concept representing wind turbine equipment as measurement subject"@en ;
+    skos:inScheme sevocab:DomainObjectScheme ;
+    skos:prefLabel "wind turbine"@en ;
+    skos:topConceptOf sevocab:DomainObjectScheme .
 
 sevocab:Wind a skos:Concept ;
     rdfs:label "wind"@en ;
@@ -787,7 +1757,22 @@ sevocab:UnitFamilyScheme a skos:ConceptScheme ;
     skos:definition "A concept scheme that partitions measurement-unit families used in energy chart axis labels"@en ;
     skos:prefLabel "unit family scheme"@en .
 
+sevocab:PolicyInstrumentScheme a skos:ConceptScheme ;
+    rdfs:label "policy instrument scheme"@en ;
+    skos:definition "A concept scheme that classifies energy policy mechanisms referenced in chart text, covering market mechanisms, support instruments, and procurement structures"@en ;
+    skos:prefLabel "policy instrument scheme"@en .
+
+sevocab:MeasuredPropertyScheme a skos:ConceptScheme ;
+    rdfs:label "measured property scheme"@en ;
+    skos:definition "A concept scheme that classifies what is being measured in an energy statistic, aligned with IEA energy balance flow categories"@en ;
+    skos:prefLabel "measured property scheme"@en .
+
 sevocab:TechnologyOrFuelScheme a skos:ConceptScheme ;
     rdfs:label "technology or fuel scheme"@en ;
     skos:definition "A concept scheme that enumerates energy technologies and fuels referenced in chart text"@en ;
     skos:prefLabel "technology or fuel scheme"@en .
+
+sevocab:DomainObjectScheme a skos:ConceptScheme ;
+    rdfs:label "domain object scheme"@en ;
+    skos:definition "A concept scheme that classifies the domain object to which an energy measurement applies, covering IEA sectors, energy carriers, and technology domains"@en ;
+    skos:prefLabel "domain object scheme"@en .

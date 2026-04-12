@@ -1,0 +1,19 @@
+# CQ-043: Does PolicyInstrumentScheme cover all corpus-identified instruments?
+# Expected: empty
+# Use case: UC-010
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?missing WHERE {
+  VALUES ?missing {
+    "feed-in tariff" "power purchase agreement" "auction"
+    "subsidy" "carbon tax" "emissions trading"
+    "renewable portfolio standard" "net metering"
+    "capacity market" "carbon credit"
+  }
+  FILTER NOT EXISTS {
+    ?c skos:inScheme sevocab:PolicyInstrumentScheme ;
+       skos:prefLabel ?l . FILTER(STR(?l) = ?missing)
+  }
+}

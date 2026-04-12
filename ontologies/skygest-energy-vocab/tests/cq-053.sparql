@@ -1,0 +1,14 @@
+# CQ-053: Does every active concept have at least 3 English surface forms?
+# Expected: empty
+# Use case: UC-011
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?concept ?label (COUNT(?alt) AS ?n) WHERE {
+  ?concept skos:inScheme ?s ; skos:prefLabel ?label ; skos:altLabel ?alt .
+  FILTER(LANG(?alt) = "en")
+  FILTER(?s != sevocab:FrequencyScheme)
+}
+GROUP BY ?concept ?label
+HAVING (COUNT(?alt) < 3)

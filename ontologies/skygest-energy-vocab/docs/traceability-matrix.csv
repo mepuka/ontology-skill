@@ -29,3 +29,26 @@ stakeholder_need,use_case_id,cq_id,ontology_terms,sparql_test
 "Notes required for agent-curated provenance",UC-008,CQ-028,"hasProvenanceAnnotation;provenance;skos:note",tests/cq-028.sparql
 "TechnologyOrFuel covers cold-start variables",UC-008,CQ-029,"TechnologyOrFuelScheme;skos:prefLabel",tests/cq-029.sparql
 "Vocabulary covers all Variable schema enum values",UC-008,CQ-030,"StatisticTypeScheme;AggregationScheme;UnitFamilyScheme;skos:prefLabel",tests/cq-030.sparql
+"Disambiguate Variables via measuredProperty facet",UC-009,CQ-031,"MeasuredPropertyScheme;Generation;skos:altLabel",tests/cq-031.sparql
+"Disambiguate Variables via domainObject facet",UC-009,CQ-032,"DomainObjectScheme;Electricity;skos:altLabel",tests/cq-032.sparql
+"Disambiguate Variables via measuredProperty facet",UC-009,CQ-033,"Capacity;skos:altLabel",tests/cq-033.sparql
+"Reduce 9-variable tie to ~5 via measuredProperty",UC-009,CQ-034,"MeasuredPropertyScheme;Generation;skos:prefLabel",tests/cq-034.sparql
+"Unique Variable resolution with 3 facets",UC-009,CQ-035,"MeasuredPropertyScheme;DomainObjectScheme;TechnologyOrFuelScheme",tests/cq-035.sparql
+"Distinguish generation from demand surface forms",UC-009,CQ-036,"Generation;Demand;skos:altLabel",tests/cq-036.sparql
+"MeasuredProperty covers cold-start variables",UC-009,CQ-037,"MeasuredPropertyScheme;skos:prefLabel",tests/cq-037.sparql
+"DomainObject covers cold-start variables",UC-009,CQ-038,"DomainObjectScheme;skos:prefLabel",tests/cq-038.sparql
+"All 7 ConceptSchemes present",UC-001,CQ-039,"skos:ConceptScheme;skos:prefLabel",tests/cq-039.sparql
+"No intra-scheme collisions in new schemes",UC-009,CQ-040,"MeasuredPropertyScheme;DomainObjectScheme;skos:altLabel",tests/cq-040.sparql
+"Resolve policy instrument surface forms",UC-010,CQ-041,"PolicyInstrumentScheme;skos:altLabel;skos:inScheme",tests/cq-041.sparql
+"Enumerate feed-in tariff surface forms",UC-010,CQ-042,"FeedInTariff;skos:altLabel",tests/cq-042.sparql
+"PolicyInstrumentScheme covers corpus instruments",UC-010,CQ-043,"PolicyInstrumentScheme;skos:prefLabel;skos:inScheme",tests/cq-043.sparql
+"No intra-scheme collisions in PolicyInstrumentScheme",UC-010,CQ-044,"PolicyInstrumentScheme;skos:altLabel;skos:inScheme",tests/cq-044.sparql
+"TechnologyOrFuelScheme includes Tier 1 gap concepts",UC-011,CQ-045,"TechnologyOrFuelScheme;skos:prefLabel;skos:inScheme",tests/cq-045.sparql
+"DomainObjectScheme covers market and grid concepts",UC-011,CQ-046,"DomainObjectScheme;skos:prefLabel;skos:inScheme",tests/cq-046.sparql
+"MeasuredPropertyScheme includes lifecycle metrics",UC-011,CQ-047,"MeasuredPropertyScheme;skos:prefLabel;skos:inScheme",tests/cq-047.sparql
+"All ConceptSchemes after gap expansion",UC-011,CQ-048,"skos:ConceptScheme;skos:prefLabel",tests/cq-048.sparql
+"SMR resolves to nuclear concept",UC-011,CQ-049,"TechnologyOrFuelScheme;skos:altLabel",tests/cq-049.sparql
+"LNG resolves to natural gas concept",UC-011,CQ-050,"skos:altLabel;skos:inScheme",tests/cq-050.sparql
+"Rooftop solar resolves to solar PV concept",UC-011,CQ-051,"TechnologyOrFuelScheme;skos:altLabel",tests/cq-051.sparql
+"LCOE resolves to measuredProperty concept",UC-011,CQ-052,"MeasuredPropertyScheme;skos:altLabel",tests/cq-052.sparql
+"Every active concept has >= 3 English surface forms",UC-011,CQ-053,"skos:altLabel;skos:inScheme;FrequencyScheme",tests/cq-053.sparql

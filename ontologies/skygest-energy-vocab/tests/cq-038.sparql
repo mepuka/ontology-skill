@@ -1,0 +1,22 @@
+# CQ-038: Does DomainObjectScheme cover all domainObject values used in cold-start Variables?
+# Expected: empty
+# Use case: UC-009
+# Note: VALUES list from skygest-cloudflare/references/cold-start/variables/*.json as of 2026-04-12.
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?missingCanonical WHERE {
+  VALUES ?missingCanonical {
+    "battery storage" "clean energy" "data center" "electricity"
+    "electrolyzer" "energy consumption" "energy transition"
+    "heat pump" "interconnection queue" "lithium-ion battery pack"
+    "nuclear reactor" "offshore wind farm" "offshore wind turbine"
+    "renewable power" "solar photovoltaic" "wind turbine"
+  }
+  FILTER NOT EXISTS {
+    ?concept skos:inScheme sevocab:DomainObjectScheme ;
+             skos:prefLabel ?label .
+    FILTER(STR(?label) = ?missingCanonical)
+  }
+}

@@ -1,0 +1,16 @@
+# CQ-034: Given measuredProperty=generation, how many cold-start Variables match?
+# Expected: non_empty
+# Use case: UC-009
+# Note: Vocabulary coverage test — actual disambiguation is in skygest-cloudflare kernel.
+
+# This CQ is validated by external join against cold-start variables.
+# The vocabulary must contain surface forms that map to "generation"
+# so that the resolver can narrow 9 flow-typed candidates to ~5.
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?concept ?label WHERE {
+  ?concept skos:inScheme sevocab:MeasuredPropertyScheme ;
+           skos:prefLabel ?label .
+  FILTER(STR(?label) = "generation")
+}

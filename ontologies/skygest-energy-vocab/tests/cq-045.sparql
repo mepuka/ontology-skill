@@ -1,0 +1,17 @@
+# CQ-045: Does TechnologyOrFuelScheme include Tier 1 gap concepts?
+# Expected: empty
+# Use case: UC-011
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?missing WHERE {
+  VALUES ?missing {
+    "carbon capture" "fossil fuel" "fuel cell" "methane"
+    "synthetic fuel" "combined heat and power" "diesel"
+  }
+  FILTER NOT EXISTS {
+    ?c skos:inScheme sevocab:TechnologyOrFuelScheme ;
+       skos:prefLabel ?l . FILTER(STR(?l) = ?missing)
+  }
+}

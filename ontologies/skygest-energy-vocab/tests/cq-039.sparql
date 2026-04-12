@@ -1,0 +1,12 @@
+# CQ-039: What are all ConceptSchemes in the vocabulary?
+# Expected: non_empty
+# Use case: UC-001
+# Note: Supersedes CQ-011 which expected 5 schemes. After SKY-309, the vocabulary has 7 schemes.
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?scheme ?label WHERE {
+  ?scheme a skos:ConceptScheme ;
+          skos:prefLabel ?label .
+}
+ORDER BY ?label

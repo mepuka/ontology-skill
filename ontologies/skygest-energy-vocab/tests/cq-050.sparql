@@ -1,0 +1,9 @@
+# CQ-050: Does 'LNG' resolve to a natural gas concept?
+# Expected: non_empty
+# Use case: UC-011
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?concept ?scheme WHERE {
+  ?concept skos:altLabel "LNG"@en ; skos:inScheme ?scheme .
+}

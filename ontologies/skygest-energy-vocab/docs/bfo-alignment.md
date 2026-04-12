@@ -59,11 +59,65 @@ sevocab:SurfaceFormEntry rdfs:subClassOf obo:BFO_0000031 .
 It has no natural BFO correspondent. Attempting to place it in BFO would
 be anti-pattern #15 (technical perspective over domain perspective).
 
+### MeasuredProperty Concepts → GDC (same rationale)
+
+**BFO category**: `BFO:0000031` (Generically Dependent Continuant)
+
+**Rationale**: MeasuredProperty concepts (Generation, Capacity, Demand,
+etc.) classify WHAT is being measured. They are information categories,
+not physical processes or qualities. "Generation" as a measuredProperty
+concept refers to the statistical category, not to the physical process
+of electricity generation (which would be a BFO Process). Same GDC
+alignment as all other SKOS concepts in this vocabulary.
+
+### DomainObject Concepts → GDC (same rationale)
+
+**BFO category**: `BFO:0000031` (Generically Dependent Continuant)
+
+**Rationale**: DomainObject concepts (Electricity, BatteryStorage, etc.)
+classify WHAT DOMAIN OBJECT is being measured. "Electricity" as a
+domainObject concept is an information category, not the physical
+phenomenon of electric current (which would be a BFO Process or Quality
+depending on perspective). The SSSOM mappings bridge to external ontologies
+where these concepts have different BFO alignment (e.g., OEO models
+electricity generation as a Process subclass).
+
+**Note on cross-ontology alignment**: Several domainObject concepts
+correspond to material entities in external ontologies:
+- `sevocab:NuclearReactor` (GDC here) ↔ OEO nuclear power plant (Material Entity)
+- `sevocab:WindTurbine` (GDC here) ↔ OEO wind energy converting unit (Material Entity)
+- `sevocab:Electricity` (GDC here) ↔ OEO electricity (Energy carrier)
+
+This is the same pattern as TechnologyOrFuelScheme — `skos:closeMatch`
+bridges the ontological gap between SKOS information categories and OWL
+domain classes.
+
+### PolicyInstrument Concepts → GDC (gap analysis expansion)
+
+**BFO category**: `BFO:0000031` (Generically Dependent Continuant)
+
+**Rationale**: PolicyInstrument concepts (FeedInTariff, EmissionsTrading,
+etc.) classify energy policy mechanisms — institutional/regulatory constructs
+that are information categories, not physical entities. BFO's Known
+Ambiguities table notes social constructs "have no BFO consensus." GDC is
+pragmatic and consistent with our SKOS approach.
+
+### Gap Analysis Expansion Concepts → GDC (same rationale)
+
+All new concepts from the gap analysis (CarbonCapture, FossilFuel,
+CarbonMarket, EVCharging, CapacityFactor, Deployment, Decommissioning,
+etc.) follow the same GDC alignment. They are information categories in a
+lookup vocabulary.
+
 ## Summary
 
 | Entity | BFO Category | Asserted in OWL? |
 |--------|-------------|------------------|
 | SKOS Concepts (Stock, SolarPv, ...) | GDC (`BFO:0000031`) | No — documented only |
+| MeasuredProperty Concepts (Generation, ...) | GDC (`BFO:0000031`) | No — documented only |
+| DomainObject Concepts (Electricity, ...) | GDC (`BFO:0000031`) | No — documented only |
+| PolicyInstrument Concepts (FIT, ETS, ...) | GDC (`BFO:0000031`) | No — documented only |
+| Gap Analysis Expansion Concepts | GDC (`BFO:0000031`) | No — documented only |
 | SurfaceFormEntry | GDC (`BFO:0000031`) | No — can be added later if needed |
 | ConceptSchemes | Not aligned | No |
 | Properties | N/A | N/A |

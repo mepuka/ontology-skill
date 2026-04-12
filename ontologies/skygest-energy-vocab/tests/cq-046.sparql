@@ -1,0 +1,18 @@
+# CQ-046: Does DomainObjectScheme cover market and grid reliability concepts?
+# Expected: empty
+# Use case: UC-011
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?missing WHERE {
+  VALUES ?missing {
+    "carbon market" "EV charging" "decarbonization"
+    "wholesale market" "grid reliability"
+    "virtual power plant" "energy access" "energy poverty"
+  }
+  FILTER NOT EXISTS {
+    ?c skos:inScheme sevocab:DomainObjectScheme ;
+       skos:prefLabel ?l . FILTER(STR(?l) = ?missing)
+  }
+}

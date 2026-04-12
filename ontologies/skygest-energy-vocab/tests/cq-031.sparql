@@ -1,0 +1,12 @@
+# CQ-031: What canonical measuredProperty does the surface form 'generation' map to?
+# Expected: non_empty
+# Use case: UC-009
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?concept ?scheme WHERE {
+  ?concept skos:altLabel "generation"@en ;
+           skos:inScheme ?scheme .
+  FILTER(?scheme = sevocab:MeasuredPropertyScheme)
+}

@@ -1,0 +1,11 @@
+# CQ-049: Does 'SMR' resolve to the nuclear concept?
+# Expected: non_empty
+# Use case: UC-011
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?concept WHERE {
+  ?concept skos:altLabel "SMR"@en ;
+           skos:inScheme sevocab:TechnologyOrFuelScheme .
+}

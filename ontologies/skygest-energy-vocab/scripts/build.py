@@ -51,6 +51,18 @@ SCHEME_CONFIG = {
         "filename": "technology-or-fuel.json",
         "name": "TechnologyOrFuel",
     },
+    str(SEVOCAB.MeasuredPropertyScheme): {
+        "filename": "measured-property.json",
+        "name": "MeasuredProperty",
+    },
+    str(SEVOCAB.DomainObjectScheme): {
+        "filename": "domain-object.json",
+        "name": "DomainObject",
+    },
+    str(SEVOCAB.PolicyInstrumentScheme): {
+        "filename": "policy-instrument.json",
+        "name": "PolicyInstrument",
+    },
 }
 
 # Default timestamp for bootstrap entries

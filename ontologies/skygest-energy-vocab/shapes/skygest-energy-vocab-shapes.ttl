@@ -5,15 +5,17 @@
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix sevocab: <https://skygest.dev/vocab/energy/> .
+@prefix sevocab-shapes: <https://skygest.dev/vocab/energy/shapes/> .
 
-# ═══════════════════════════════════════════════════════════════
-# ConceptShape — validates every SKOS concept in the vocabulary
-# ═══════════════════════════════════════════════════════════════
+# =============================================================================
+# A. STRUCTURAL COMPLETENESS — ConceptShape
+# Validates every skos:Concept in the vocabulary.
+# =============================================================================
 
-sevocab:ConceptShape a sh:NodeShape ;
+sevocab-shapes:ConceptShape a sh:NodeShape ;
     sh:targetClass skos:Concept ;
 
-    # CQ-022: every concept must have a prefLabel
+    # CQ-022: every concept must have exactly one prefLabel
     sh:property [
         sh:path skos:prefLabel ;
         sh:minCount 1 ;
@@ -55,13 +57,58 @@ sevocab:ConceptShape a sh:NodeShape ;
         sh:class skos:ConceptScheme ;
         sh:name "scheme membership" ;
         sh:message "Every concept must belong to exactly one ConceptScheme (CQ-023)"
+    ] ;
+
+    # B-1: prefLabel language must be "en"
+    sh:property [
+        sh:path skos:prefLabel ;
+        sh:languageIn ( "en" ) ;
+        sh:name "prefLabel language" ;
+        sh:message "prefLabel must use language tag 'en'"
+    ] ;
+
+    # B-2: altLabel must have a language tag
+    sh:property [
+        sh:path skos:altLabel ;
+        sh:datatype rdf:langString ;
+        sh:name "altLabel type" ;
+        sh:message "Every altLabel must have a language tag (rdf:langString)"
+    ] ;
+
+    # C-1: no leading/trailing whitespace in prefLabel
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "prefLabel must not have leading or trailing whitespace: '{?label}'" ;
+        sh:select """
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?label WHERE {
+                $this skos:prefLabel ?label .
+                FILTER(STR(?label) != REPLACE(STR(?label), "^\\\\s+|\\\\s+$", ""))
+            }
+        """
+    ] ;
+
+    # C-2: no leading/trailing whitespace in altLabels
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "altLabel must not have leading or trailing whitespace: '{?label}'" ;
+        sh:select """
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?label WHERE {
+                $this skos:altLabel ?label .
+                FILTER(LANG(?label) = "en")
+                FILTER(STR(?label) != REPLACE(STR(?label), "^\\\\s+|\\\\s+$", ""))
+            }
+        """
     ] .
 
-# ═══════════════════════════════════════════════════════════════
-# ConceptSchemeShape — validates ConceptScheme instances
-# ═══════════════════════════════════════════════════════════════
 
-sevocab:ConceptSchemeShape a sh:NodeShape ;
+# =============================================================================
+# A. SCHEME-LEVEL METADATA — ConceptSchemeShape
+# Validates ConceptScheme instances.
+# =============================================================================
+
+sevocab-shapes:ConceptSchemeShape a sh:NodeShape ;
     sh:targetClass skos:ConceptScheme ;
 
     sh:property [
@@ -78,11 +125,236 @@ sevocab:ConceptSchemeShape a sh:NodeShape ;
         sh:message "Every ConceptScheme must have a skos:definition"
     ] .
 
-# ═══════════════════════════════════════════════════════════════
-# SurfaceFormEntryShape — validates provenance annotations
-# ═══════════════════════════════════════════════════════════════
 
-sevocab:SurfaceFormEntryShape a sh:NodeShape ;
+# =============================================================================
+# A. PER-SCHEME CANONICAL VALUE CONSTRAINTS (sh:in enums)
+# These are the source of truth for TypeScript Schema.Literals enums.
+# Each shape uses a SPARQL-based target to scope to concepts in that scheme.
+# =============================================================================
+
+# --- StatisticType canonical values ---
+# Maps to: Schema.Literals(["stock", "flow", "price", "share", "count"])
+sevocab-shapes:StatisticTypeConceptShape a sh:NodeShape ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:select """
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+            SELECT ?this WHERE {
+                ?this skos:inScheme sevocab:StatisticTypeScheme .
+            }
+        """
+    ] ;
+    sh:property [
+        sh:path skos:prefLabel ;
+        sh:in ( "stock"@en "flow"@en "price"@en "share"@en "count"@en ) ;
+        sh:name "StatisticType canonical value" ;
+        sh:message "prefLabel must be one of the StatisticType canonical values: stock, flow, price, share, count"
+    ] .
+
+# --- Aggregation canonical values ---
+# Maps to: Schema.Literals(["point", "end_of_period", "sum", "average", "max", "min", "settlement"])
+sevocab-shapes:AggregationConceptShape a sh:NodeShape ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:select """
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+            SELECT ?this WHERE {
+                ?this skos:inScheme sevocab:AggregationScheme .
+            }
+        """
+    ] ;
+    sh:property [
+        sh:path skos:prefLabel ;
+        sh:in ( "point"@en "end_of_period"@en "sum"@en "average"@en
+                "max"@en "min"@en "settlement"@en ) ;
+        sh:name "Aggregation canonical value" ;
+        sh:message "prefLabel must be one of the Aggregation canonical values: point, end_of_period, sum, average, max, min, settlement"
+    ] .
+
+# --- UnitFamily canonical values ---
+# Maps to: Schema.Literals(["power", "energy", "currency", "currency_per_energy", "mass_co2e", "intensity", "dimensionless", "other"])
+sevocab-shapes:UnitFamilyConceptShape a sh:NodeShape ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:select """
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+            SELECT ?this WHERE {
+                ?this skos:inScheme sevocab:UnitFamilyScheme .
+            }
+        """
+    ] ;
+    sh:property [
+        sh:path skos:prefLabel ;
+        sh:in ( "power"@en "energy"@en "currency"@en "currency_per_energy"@en
+                "mass_co2e"@en "intensity"@en "dimensionless"@en "other"@en ) ;
+        sh:name "UnitFamily canonical value" ;
+        sh:message "prefLabel must be one of the UnitFamily canonical values: power, energy, currency, currency_per_energy, mass_co2e, intensity, dimensionless, other"
+    ] .
+
+# --- TechnologyOrFuel canonical values ---
+# Maps to: Schema.String (open vocabulary — not a closed enum in TS)
+sevocab-shapes:TechnologyOrFuelConceptShape a sh:NodeShape ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:select """
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+            SELECT ?this WHERE {
+                ?this skos:inScheme sevocab:TechnologyOrFuelScheme .
+            }
+        """
+    ] ;
+    sh:property [
+        sh:path skos:prefLabel ;
+        sh:in ( "battery"@en "biomass"@en "brown coal"@en
+                "carbon capture"@en "coal"@en "combined heat and power"@en
+                "diesel"@en "fossil fuel"@en "fuel cell"@en
+                "gas CCGT"@en "geothermal"@en "heat pump"@en "hydro"@en
+                "hydrogen"@en "marine"@en "methane"@en "natural gas"@en
+                "nuclear"@en "offshore wind"@en "oil"@en "onshore wind"@en
+                "pumped hydro"@en "renewable"@en "solar PV"@en
+                "solar thermal"@en "synthetic fuel"@en "waste"@en "wind"@en ) ;
+        sh:name "TechnologyOrFuel canonical value" ;
+        sh:message "prefLabel must be one of the TechnologyOrFuel canonical values"
+    ] .
+
+# --- MeasuredProperty canonical values ---
+# Maps to: Schema.String (open vocabulary — not a closed enum in TS)
+sevocab-shapes:MeasuredPropertyConceptShape a sh:NodeShape ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:select """
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+            SELECT ?this WHERE {
+                ?this skos:inScheme sevocab:MeasuredPropertyScheme .
+            }
+        """
+    ] ;
+    sh:property [
+        sh:path skos:prefLabel ;
+        sh:in ( "capacity"@en "capacity factor"@en "consumption"@en
+                "count"@en "curtailment"@en "decommissioning"@en
+                "demand"@en "deployment"@en "discharge"@en
+                "efficiency"@en "emissions"@en "generation"@en
+                "investment"@en "price"@en "revenue"@en
+                "share"@en "supply"@en "trade"@en ) ;
+        sh:name "MeasuredProperty canonical value" ;
+        sh:message "prefLabel must be one of the MeasuredProperty canonical values"
+    ] .
+
+# --- DomainObject canonical values ---
+# Maps to: Schema.String (open vocabulary — not a closed enum in TS)
+sevocab-shapes:DomainObjectConceptShape a sh:NodeShape ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:select """
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+            SELECT ?this WHERE {
+                ?this skos:inScheme sevocab:DomainObjectScheme .
+            }
+        """
+    ] ;
+    sh:property [
+        sh:path skos:prefLabel ;
+        sh:in ( "battery storage"@en "buildings"@en "carbon market"@en
+                "clean energy"@en "data center"@en "decarbonization"@en
+                "EV charging"@en "electricity"@en "electrolyzer"@en
+                "energy access"@en "energy consumption"@en
+                "energy poverty"@en "energy transition"@en "grid"@en
+                "grid reliability"@en "heat"@en "heat pump"@en
+                "hydrogen"@en "industry"@en
+                "interconnection queue"@en "lithium-ion battery pack"@en
+                "natural gas"@en "nuclear reactor"@en
+                "offshore wind farm"@en "offshore wind turbine"@en
+                "oil"@en "renewable power"@en "solar photovoltaic"@en
+                "transport"@en "virtual power plant"@en
+                "wholesale market"@en "wind turbine"@en ) ;
+        sh:name "DomainObject canonical value" ;
+        sh:message "prefLabel must be one of the DomainObject canonical values"
+    ] .
+
+# --- Frequency canonical values ---
+# Maps to: FixedDims.frequency (string field in TS, but constrained by vocabulary)
+sevocab-shapes:FrequencyConceptShape a sh:NodeShape ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:select """
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+            SELECT ?this WHERE {
+                ?this skos:inScheme sevocab:FrequencyScheme .
+            }
+        """
+    ] ;
+    sh:property [
+        sh:path skos:prefLabel ;
+        sh:in ( "annual"@en "daily"@en "hourly"@en "monthly"@en
+                "quarterly"@en "weekly"@en ) ;
+        sh:name "Frequency canonical value" ;
+        sh:message "prefLabel must be one of the Frequency canonical values: annual, daily, hourly, monthly, quarterly, weekly"
+    ] .
+
+# --- PolicyInstrument canonical values ---
+# Maps to: Schema.String (open vocabulary — not a closed enum in TS)
+sevocab-shapes:PolicyInstrumentConceptShape a sh:NodeShape ;
+    sh:target [
+        a sh:SPARQLTarget ;
+        sh:select """
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+            SELECT ?this WHERE {
+                ?this skos:inScheme sevocab:PolicyInstrumentScheme .
+            }
+        """
+    ] ;
+    sh:property [
+        sh:path skos:prefLabel ;
+        sh:in ( "auction"@en "capacity market"@en "carbon credit"@en
+                "carbon tax"@en "emissions trading"@en
+                "feed-in tariff"@en "net metering"@en
+                "power purchase agreement"@en
+                "renewable portfolio standard"@en "subsidy"@en ) ;
+        sh:name "PolicyInstrument canonical value" ;
+        sh:message "prefLabel must be one of the PolicyInstrument canonical values"
+    ] .
+
+
+# =============================================================================
+# D. CROSS-SCHEME COLLISION PREVENTION
+# Within each scheme, no two concepts may share the same English altLabel.
+# This is the SHACL equivalent of the build-time collision check in build.py.
+# =============================================================================
+
+sevocab-shapes:IntraSchemeAltLabelUniqueness a sh:NodeShape ;
+    sh:targetClass skos:Concept ;
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "Intra-scheme altLabel collision: concept {?this} and concept {?other} in the same scheme share English altLabel '{?label}'" ;
+        sh:select """
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this ?label ?other WHERE {
+                $this skos:inScheme ?scheme ;
+                      skos:altLabel ?label .
+                ?other skos:inScheme ?scheme ;
+                       skos:altLabel ?label .
+                FILTER(LANG(?label) = "en")
+                FILTER(STR($this) < STR(?other))
+            }
+        """
+    ] .
+
+
+# =============================================================================
+# E. SURFACE FORM PROVENANCE — SurfaceFormEntryShape
+# Validates provenance annotations on surface form entries.
+# =============================================================================
+
+sevocab-shapes:SurfaceFormEntryShape a sh:NodeShape ;
     sh:targetClass sevocab:SurfaceFormEntry ;
 
     # surfaceFormValue is required and functional

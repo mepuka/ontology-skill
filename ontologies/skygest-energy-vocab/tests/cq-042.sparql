@@ -1,0 +1,11 @@
+# CQ-042: What surface forms exist for the feed-in tariff concept?
+# Expected: non_empty
+# Use case: UC-010
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?surfaceForm WHERE {
+  sevocab:FeedInTariff skos:altLabel ?surfaceForm .
+  FILTER(LANG(?surfaceForm) = "en")
+}

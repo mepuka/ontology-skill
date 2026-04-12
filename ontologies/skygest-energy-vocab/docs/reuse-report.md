@@ -271,17 +271,111 @@ Wikidata labels need provenance `hand-curated` or `agent-curated` since
 they're harvested via SPARQL (no `wikidata-derived` provenance tag exists in
 the product code).
 
+### 2.8 OEO Alignment for MeasuredPropertyScheme (SKY-309, 2026-04-12)
+
+**Searched**: OEO process hierarchy, quality hierarchy, sector module
+
+| sevocab Concept | OEO IRI | OEO Label | Match Type |
+|-----------------|---------|-----------|------------|
+| Generation | OEO_00020003 | energy transformation | relatedMatch |
+| Capacity | OEO_00010256 | power capacity | closeMatch |
+| Capacity | OEO_00230003 | nameplate capacity | narrowMatch |
+| Demand | OEO_00140040 | demand | closeMatch |
+| EmissionsMeasure | OEO_00000147 | emission | closeMatch |
+| Investment | OEO_00020167 | investment cost | closeMatch |
+| PriceMeasure | OEO_00020117 | electricity price | narrowMatch |
+| ShareMeasure | — | — | noMatch |
+| CountMeasure | — | — | noMatch |
+
+**Coverage**: 6/8 cold-start concepts matched (75%). Domain-expansion
+concepts (trade, efficiency, curtailment, etc.) not yet searched.
+
+**Reuse decision**: SSSOM mapping only (same strategy as TechnologyOrFuel).
+OEO process classes model the physical phenomenon; our concepts model the
+statistical category. `skos:closeMatch` bridges the gap.
+
+### 2.9 OEO Alignment for DomainObjectScheme (SKY-309, 2026-04-12)
+
+| sevocab Concept | OEO IRI | OEO Label | Match Type |
+|-----------------|---------|-----------|------------|
+| Electricity | OEO_00000139 | electrical energy | closeMatch |
+| BatteryStorage | OEO_00000068 | battery | closeMatch |
+| DataCenter | OEO_00310000 | data center | exactMatch |
+| Electrolyzer | OEO_00010021 | water electrolyser | closeMatch |
+| EnergyConsumption | OEO_00010210 | energy use | closeMatch |
+| HeatPumpDomain | OEO_00000212 | heat pump | exactMatch |
+| NuclearReactor | OEO_00000029 | nuclear power unit | closeMatch |
+| OffshoreWindFarm | OEO_00000303 | wind farm | narrowMatch |
+| OffshoreWindTurbine | OEO_00000447 | wind energy converting unit | closeMatch |
+| SolarPhotovoltaic | OEO_00000034 | solar power unit | closeMatch |
+| WindTurbine | OEO_00000447 | wind energy converting unit | closeMatch |
+| RenewablePower | — (renewable energy) | renewable energy | closeMatch |
+| CleanEnergy | — | — | noMatch |
+| EnergyTransition | — | — | noMatch |
+| InterconnectionQueue | — | — | noMatch |
+| LithiumIonBatteryPack | — | — | noMatch |
+
+**Coverage**: 11/16 cold-start concepts matched (69%). Domain-expansion
+concepts (heat, transport, natural gas, hydrogen, oil, grid, buildings,
+industry) have strong OEO sector coverage via oeo-sector.omn.
+
+### 2.10 SDMX / IEA Energy Balance (SKY-309, 2026-04-12)
+
+**Key finding**: The IEA energy balance FLOW × PRODUCT matrix is the
+real-world precedent for our MeasuredProperty × DomainObject decomposition.
+SDMX's NRG_BAL dimension corresponds to MeasuredPropertyScheme; SIEC
+corresponds to TechnologyOrFuelScheme/DomainObjectScheme.
+
+**Reuse decision**: No import (IEA has no formal ontology). Reference
+SDMX terminology in surface forms. Consider annotating schemes with
+`dcterms:conformsTo <http://purl.org/linked-data/sdmx>`.
+
+### 2.11 XKOS (Extended SKOS for Statistical Classifications)
+
+**Key finding**: XKOS provides `xkos:coversMutuallyExclusively` and
+`xkos:classifiedUnder` which could formally declare our scheme concepts
+as disjoint code values and link Variables to scheme entries.
+
+**Reuse decision**: Medium priority. Consider adopting XKOS annotation
+properties to strengthen classification semantics.
+
+### 2.12 Harvestable Surface Forms (SKY-309)
+
+**From OEO German labels**:
+- Emission → EmissionsMeasure
+- Bedarf → Demand
+- Rechenzentrum → DataCenter
+- Windpark → OffshoreWindFarm
+- Windenergieanlage, Windkraftanlage → WindTurbine
+- Wasserelektrolyseur → Electrolyzer
+- Energieverbrauch → EnergyConsumption
+- Strompreis → PriceMeasure
+
+**From IEA/Eurostat terminology**:
+- "gross electricity production" → Generation
+- "net electricity production" → Generation
+- "final consumption" → Demand
+- "installed capacity" → Capacity
+
+**From EU Taxonomy activity descriptions**:
+- "storage of electricity" → BatteryStorage
+- "manufacture of hydrogen" → Electrolyzer
+- "district heating/cooling" → Heat (new domain expansion concept)
+
 ## 3. Coverage Summary
 
 | Source | Scheme Coverage | Reuse Strategy | Priority |
 |--------|----------------|----------------|----------|
-| **OEO** | TechnologyOrFuel (85%) | SSSOM mapping (`skos:closeMatch`) | High |
+| **OEO** | TechnologyOrFuel (85%), MeasuredProperty (75%), DomainObject (69%) | SSSOM mapping (`skos:closeMatch`) | High |
 | **ENTSO-E** | TechnologyOrFuel (54%) | SSSOM mapping (`skos:exactMatch`) | High |
 | **QUDT** | UnitFamily (partial) | SSSOM mapping for power/energy | Medium |
 | **UCUM** | UnitFamily (unit strings) | altLabel enrichment | High |
 | **ISO 4217** | UnitFamily (currency) | altLabel enrichment | Medium |
-| **Wikidata** | TechnologyOrFuel (full) | SSSOM mapping + German labels | High |
+| **Wikidata** | TechnologyOrFuel (full), DomainObject (partial) | SSSOM mapping + German labels | High |
 | **SIEC** | TechnologyOrFuel (60%) | SSSOM mapping (`skos:broadMatch`) | Low |
+| **SDMX/IEA** | MeasuredProperty (conceptual), DomainObject (conceptual) | Terminology reference; no import | Medium |
+| **XKOS** | Classification semantics (all schemes) | Annotation properties | Medium |
+| **EU Taxonomy** | DomainObject (partial) | Surface form harvesting only | Low |
 
 ## 4. What We Do NOT Import
 

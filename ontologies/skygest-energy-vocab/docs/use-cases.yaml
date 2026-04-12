@@ -175,3 +175,98 @@ use_cases:
       - "No VocabularyCollisionError on index build"
     related_cqs: []
     priority: must_have
+
+  - id: UC-009
+    name: "Disambiguate Variable candidates via measuredProperty and domainObject facets"
+    actor: "Stage 2 resolver pipeline"
+    goal: >
+      When multiple Variables tie on existing facets (statisticType,
+      aggregation, unitFamily, technologyOrFuel), extract measuredProperty
+      and domainObject surface forms from chart text to break the tie.
+      This addresses the 37 ambiguous observations from the 2026-04-12
+      eval run where 2-12 Variables tied on 1-2 matched facets.
+    preconditions:
+      - "Multiple Variables match on existing facets (tie detected)"
+      - "MeasuredProperty and DomainObject vocabulary JSON files are deployed"
+      - "Chart text contains measuredProperty or domainObject indicators"
+    main_flow:
+      - "Pipeline detects a tie — multiple Variables share the same matched facets"
+      - "Pipeline scans chart text for measuredProperty surface forms"
+      - "Pipeline scans chart text for domainObject surface forms"
+      - "Pipeline narrows candidate set using the additional facets"
+      - "If a unique Variable matches, pipeline resolves it"
+      - "If still ambiguous, pipeline emits ranked candidates with evidence"
+    postconditions:
+      - "Ambiguous observation count reduced by at least 50% (from 37 baseline)"
+      - "No new wrong-new-match false positives introduced"
+    related_cqs:
+      - CQ-031
+      - CQ-032
+      - CQ-033
+      - CQ-034
+      - CQ-035
+      - CQ-036
+      - CQ-037
+      - CQ-038
+      - CQ-040
+    priority: must_have
+
+  - id: UC-010
+    name: "Identify policy instruments in energy chart text"
+    actor: "Stage 2 resolver pipeline"
+    goal: >
+      Extract policy instrument references from chart text (e.g., "FIT",
+      "PPA", "ETS", "carbon tax") to add a policy dimension to Variable
+      resolution. Charts about energy policy mechanisms (tariff structures,
+      subsidy schemes, market designs) are common in the corpus (87+ hits
+      for FIT alone, 195 for ETS) and currently produce no-facet-match.
+    preconditions:
+      - "PolicyInstrument vocabulary JSON is deployed"
+      - "Chart text contains policy instrument terminology"
+    main_flow:
+      - "Pipeline tokenizes chart text"
+      - "Pipeline matches policy instrument surface forms"
+      - "Matched instrument canonical value is added to partial shape"
+      - "Pipeline uses instrument facet alongside other facets for resolution"
+    postconditions:
+      - "Policy-related chart text resolves to a policy instrument canonical"
+      - "No intra-scheme surface form collisions"
+    related_cqs:
+      - CQ-041
+      - CQ-042
+      - CQ-043
+      - CQ-044
+    priority: must_have
+
+  - id: UC-011
+    name: "Parse energy charts across the full domain"
+    actor: "Stage 2 resolver pipeline"
+    goal: >
+      Comprehensive coverage of energy chart terminology beyond the
+      cold-start Variable corpus. Handle charts about carbon capture,
+      fossil fuels, fuel cells, methane, synthetic fuels, EV charging,
+      carbon markets, grid reliability, capacity factors, and deployment
+      rates — all identified as gaps in the 2026-04-12 corpus analysis.
+    preconditions:
+      - "Expanded vocabulary JSON files are deployed"
+      - "Chart text contains energy domain terminology"
+    main_flow:
+      - "Pipeline encounters chart text with currently-unmatched terms"
+      - "Expanded surface forms fire on new concepts (SMR, LNG, LCOE, etc.)"
+      - "New TechnologyOrFuel, DomainObject, and MeasuredProperty concepts resolve"
+      - "Facet decomposition succeeds where it previously fell through"
+    postconditions:
+      - "no-facet-match rate reduced for energy chart text"
+      - "New technology/domain concepts resolve correctly"
+    related_cqs:
+      - CQ-045
+      - CQ-046
+      - CQ-047
+      - CQ-048
+      - CQ-049
+      - CQ-050
+      - CQ-051
+      - CQ-052
+      - CQ-053
+      - CQ-054
+    priority: must_have

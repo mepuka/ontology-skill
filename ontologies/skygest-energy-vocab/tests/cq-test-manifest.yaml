@@ -192,3 +192,144 @@ tests:
     type: SELECT
     expected_result: empty
     description: "Vocabulary covers all closed-enum facet values from Variable schema"
+
+  # MeasuredProperty / DomainObject resolution (UC-009)
+  - cq_id: CQ-031
+    file: cq-031.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Canonical measuredProperty for surface form 'generation'"
+
+  - cq_id: CQ-032
+    file: cq-032.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Canonical domainObject for surface form 'electricity'"
+
+  - cq_id: CQ-033
+    file: cq-033.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Surface forms for measuredProperty concept Capacity"
+
+  - cq_id: CQ-034
+    file: cq-034.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Generation concept exists in MeasuredPropertyScheme"
+
+  - cq_id: CQ-035
+    file: cq-035.sparql
+    type: ASK
+    expected_result: "true"
+    description: "Three-facet resolution concepts exist (generation + electricity + solar PV)"
+
+  - cq_id: CQ-036
+    file: cq-036.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Distinguishing surface forms between generation and demand"
+
+  - cq_id: CQ-037
+    file: cq-037.sparql
+    type: SELECT
+    expected_result: empty
+    description: "MeasuredPropertyScheme covers all cold-start measuredProperty values"
+
+  - cq_id: CQ-038
+    file: cq-038.sparql
+    type: SELECT
+    expected_result: empty
+    description: "DomainObjectScheme covers all cold-start domainObject values"
+
+  - cq_id: CQ-039
+    file: cq-039.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "All ConceptSchemes in the vocabulary (supersedes CQ-011)"
+
+  - cq_id: CQ-040
+    file: cq-040.sparql
+    type: SELECT
+    expected_result: empty
+    description: "No intra-scheme surface form collisions in MeasuredProperty/DomainObject schemes"
+
+  # PolicyInstrumentScheme (UC-010)
+  - cq_id: CQ-041
+    file: cq-041.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Canonical policy instrument for 'ETS'"
+
+  - cq_id: CQ-042
+    file: cq-042.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Surface forms for FeedInTariff concept"
+
+  - cq_id: CQ-043
+    file: cq-043.sparql
+    type: SELECT
+    expected_result: empty
+    description: "PolicyInstrumentScheme covers all corpus-identified instruments"
+
+  - cq_id: CQ-044
+    file: cq-044.sparql
+    type: SELECT
+    expected_result: empty
+    description: "No intra-scheme collisions in PolicyInstrumentScheme"
+
+  # Gap expansion (UC-011)
+  - cq_id: CQ-045
+    file: cq-045.sparql
+    type: SELECT
+    expected_result: empty
+    description: "TechnologyOrFuelScheme includes Tier 1 gap concepts"
+
+  - cq_id: CQ-046
+    file: cq-046.sparql
+    type: SELECT
+    expected_result: empty
+    description: "DomainObjectScheme covers market and grid reliability concepts"
+
+  - cq_id: CQ-047
+    file: cq-047.sparql
+    type: SELECT
+    expected_result: empty
+    description: "MeasuredPropertyScheme includes lifecycle and performance metrics"
+
+  - cq_id: CQ-048
+    file: cq-048.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "All ConceptSchemes after gap expansion (expects 8)"
+
+  - cq_id: CQ-049
+    file: cq-049.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "'SMR' resolves to nuclear concept"
+
+  - cq_id: CQ-050
+    file: cq-050.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "'LNG' resolves to natural gas concept"
+
+  - cq_id: CQ-051
+    file: cq-051.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "'rooftop solar' resolves to solar PV concept"
+
+  - cq_id: CQ-052
+    file: cq-052.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "'LCOE' resolves to measuredProperty concept"
+
+  - cq_id: CQ-053
+    file: cq-053.sparql
+    type: SELECT
+    expected_result: empty
+    description: "Every active concept has at least 3 English surface forms"

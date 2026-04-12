@@ -939,3 +939,603 @@ competency_questions:
       Variable schema adds new enum members, this CQ must be updated.
       This is the strongest alignment test between the ontology and the
       product code.
+
+  # ──────────────────────────────────────────────────────────
+  # MeasuredProperty + DomainObject Disambiguation (UC-009)
+  # Added: 2026-04-12 — SKY-309 eval-driven expansion
+  # ──────────────────────────────────────────────────────────
+
+  - id: CQ-031
+    source_use_case: UC-009
+    natural_language: "What canonical measuredProperty does the surface form 'generation' map to?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - surface_form: "generation"
+        concept: "sevocab:Generation"
+        scheme: "sevocab:MeasuredPropertyScheme"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Cross-scheme matches (generation also maps to flow in StatisticTypeScheme)"
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+      SELECT ?concept ?scheme WHERE {
+        ?concept skos:altLabel "generation"@en ;
+                 skos:inScheme ?scheme .
+        FILTER(?scheme = sevocab:MeasuredPropertyScheme)
+      }
+    expected_result: non_empty
+    required_classes: []
+    required_properties:
+      - "skos:altLabel"
+      - "skos:inScheme"
+    required_axioms: []
+    note: >
+      "generation" intentionally appears in both StatisticTypeScheme (as
+      altLabel of Flow) and MeasuredPropertyScheme (as altLabel of
+      Generation). Cross-scheme surface form overlap is by design — each
+      scheme's JSON is an independent lookup.
+
+  - id: CQ-032
+    source_use_case: UC-009
+    natural_language: "What canonical domainObject does the surface form 'electricity' map to?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - surface_form: "electricity"
+        concept: "sevocab:Electricity"
+        scheme: "sevocab:DomainObjectScheme"
+    derivation_method: direct_lookup
+    out_of_scope: []
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+      SELECT ?concept ?scheme WHERE {
+        ?concept skos:altLabel "electricity"@en ;
+                 skos:inScheme ?scheme .
+        FILTER(?scheme = sevocab:DomainObjectScheme)
+      }
+    expected_result: non_empty
+    required_classes: []
+    required_properties:
+      - "skos:altLabel"
+      - "skos:inScheme"
+    required_axioms: []
+
+  - id: CQ-033
+    source_use_case: UC-009
+    natural_language: "What surface forms exist for the measuredProperty concept 'capacity'?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - concept: "sevocab:Capacity"
+        surface_forms:
+          - "capacity"
+          - "installed"
+          - "nameplate"
+          - "fleet"
+          - "Kapazitat"
+    derivation_method: direct_lookup
+    out_of_scope: []
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+      SELECT ?surfaceForm ?lang WHERE {
+        sevocab:Capacity skos:altLabel ?surfaceForm .
+        BIND(LANG(?surfaceForm) AS ?lang)
+      }
+      ORDER BY ?lang ?surfaceForm
+    expected_result: non_empty
+    required_classes: []
+    required_properties:
+      - "skos:altLabel"
+    required_axioms: []
+
+  - id: CQ-034
+    source_use_case: UC-009
+    natural_language: "Given measuredProperty=generation, how many cold-start Variables match (compared to 9 on statisticType=flow alone)?"
+    type: quantitative
+    priority: must_have
+    sample_answer:
+      - measuredProperty: "generation"
+        matching_variables:
+          - "Battery discharge"
+          - "Coal electricity generation"
+          - "Electricity generation"
+          - "Solar electricity generation"
+          - "Wind electricity generation"
+        count: 5
+        reduction_from: 9
+    derivation_method: external_join
+    out_of_scope:
+      - "Runtime scoring — this tests vocabulary coverage, not kernel behavior"
+    sparql: |
+      # This CQ is validated by external join against cold-start variables.
+      # The vocabulary must contain surface forms that map to "generation"
+      # so that the resolver can narrow 9 flow-typed candidates to ~5.
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+      SELECT ?concept ?label WHERE {
+        ?concept skos:inScheme sevocab:MeasuredPropertyScheme ;
+                 skos:prefLabel ?label .
+        FILTER(STR(?label) = "generation")
+      }
+    expected_result: non_empty
+    required_classes: []
+    required_properties:
+      - "skos:prefLabel"
+      - "skos:inScheme"
+    required_axioms: []
+    note: >
+      The actual disambiguation is performed by the Stage 2 kernel in
+      skygest-cloudflare, not by SPARQL. This CQ verifies the ontology
+      side: that the concept exists and has surface forms that would fire
+      on chart text containing generation-related terms.
+
+  - id: CQ-035
+    source_use_case: UC-009
+    natural_language: "Given measuredProperty=generation, domainObject=electricity, and technologyOrFuel=solar PV, does a unique Variable resolve?"
+    type: boolean
+    priority: must_have
+    sample_answer:
+      - result: true
+        variable: "Solar electricity generation"
+    derivation_method: external_join
+    out_of_scope:
+      - "Runtime facet decomposition — tests concept existence only"
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+      ASK {
+        ?mp skos:inScheme sevocab:MeasuredPropertyScheme ;
+            skos:prefLabel "generation"@en .
+        ?do skos:inScheme sevocab:DomainObjectScheme ;
+            skos:prefLabel "electricity"@en .
+        ?tf skos:inScheme sevocab:TechnologyOrFuelScheme ;
+            skos:prefLabel "solar PV"@en .
+      }
+    expected_result: "true"
+    required_classes: []
+    required_properties:
+      - "skos:prefLabel"
+      - "skos:inScheme"
+    required_axioms: []
+    note: >
+      This CQ verifies the three concepts exist in their respective
+      schemes. The actual uniqueness resolution (only one Variable has
+      this 3-facet combination) is a product-code invariant in
+      skygest-cloudflare, not an ontology axiom.
+
+  - id: CQ-036
+    source_use_case: UC-009
+    natural_language: "What surface forms distinguish measuredProperty 'generation' from 'demand'?"
+    type: relational
+    priority: must_have
+    sample_answer:
+      - generation_only: ["generation", "output", "produced", "power production"]
+        demand_only: ["demand", "consumption", "use", "usage", "load"]
+    derivation_method: inference
+    out_of_scope:
+      - "Contextual disambiguation beyond surface form matching"
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+      SELECT ?concept ?surfaceForm WHERE {
+        VALUES ?concept { sevocab:Generation sevocab:Demand }
+        ?concept skos:altLabel ?surfaceForm .
+        FILTER(LANG(?surfaceForm) = "en")
+        FILTER NOT EXISTS {
+          VALUES ?other { sevocab:Generation sevocab:Demand }
+          ?other skos:altLabel ?surfaceForm .
+          FILTER(?other != ?concept)
+        }
+      }
+      ORDER BY ?concept ?surfaceForm
+    expected_result: non_empty
+    required_classes: []
+    required_properties:
+      - "skos:altLabel"
+    required_axioms: []
+
+  - id: CQ-037
+    source_use_case: UC-009
+    natural_language: "Does MeasuredPropertyScheme cover all measuredProperty values used in cold-start Variables?"
+    type: constraint
+    priority: must_have
+    sample_answer:
+      - result: "empty (every cold-start measuredProperty has a matching concept)"
+    derivation_method: external_join
+    out_of_scope: []
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+      SELECT ?missingCanonical WHERE {
+        VALUES ?missingCanonical {
+          "capacity" "count" "demand" "emissions"
+          "generation" "investment" "price" "share"
+        }
+        FILTER NOT EXISTS {
+          ?concept skos:inScheme sevocab:MeasuredPropertyScheme ;
+                   skos:prefLabel ?label .
+          FILTER(STR(?label) = ?missingCanonical)
+        }
+      }
+    expected_result: empty
+    required_classes: []
+    required_properties:
+      - "skos:prefLabel"
+      - "skos:inScheme"
+    required_axioms: []
+    note: >
+      VALUES list derived from measuredProperty fields in
+      skygest-cloudflare/references/cold-start/variables/*.json
+      as of 2026-04-12.
+
+  - id: CQ-038
+    source_use_case: UC-009
+    natural_language: "Does DomainObjectScheme cover all domainObject values used in cold-start Variables?"
+    type: constraint
+    priority: must_have
+    sample_answer:
+      - result: "empty (every cold-start domainObject has a matching concept)"
+    derivation_method: external_join
+    out_of_scope: []
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+      SELECT ?missingCanonical WHERE {
+        VALUES ?missingCanonical {
+          "battery storage" "clean energy" "data center" "electricity"
+          "electrolyzer" "energy consumption" "energy transition"
+          "heat pump" "interconnection queue" "lithium-ion battery pack"
+          "nuclear reactor" "offshore wind farm" "offshore wind turbine"
+          "renewable power" "solar photovoltaic" "wind turbine"
+        }
+        FILTER NOT EXISTS {
+          ?concept skos:inScheme sevocab:DomainObjectScheme ;
+                   skos:prefLabel ?label .
+          FILTER(STR(?label) = ?missingCanonical)
+        }
+      }
+    expected_result: empty
+    required_classes: []
+    required_properties:
+      - "skos:prefLabel"
+      - "skos:inScheme"
+    required_axioms: []
+    note: >
+      VALUES list derived from domainObject fields in
+      skygest-cloudflare/references/cold-start/variables/*.json
+      as of 2026-04-12. DomainObject is an open Schema.String field,
+      so the vocabulary defines the curated canonical list.
+
+  - id: CQ-039
+    source_use_case: UC-001
+    natural_language: "What are all ConceptSchemes in the vocabulary?"
+    type: enumerative
+    priority: must_have
+    sample_answer:
+      - schemes:
+          - "sevocab:StatisticTypeScheme"
+          - "sevocab:AggregationScheme"
+          - "sevocab:UnitFamilyScheme"
+          - "sevocab:TechnologyOrFuelScheme"
+          - "sevocab:FrequencyScheme"
+          - "sevocab:MeasuredPropertyScheme"
+          - "sevocab:DomainObjectScheme"
+    derivation_method: direct_lookup
+    out_of_scope: []
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      SELECT ?scheme ?label WHERE {
+        ?scheme a skos:ConceptScheme ;
+                skos:prefLabel ?label .
+      }
+      ORDER BY ?label
+    expected_result: non_empty
+    required_classes:
+      - "skos:ConceptScheme"
+    required_properties:
+      - "skos:prefLabel"
+    required_axioms: []
+    note: >
+      Supersedes CQ-011 which expected 5 schemes. After SKY-309,
+      the vocabulary has 7 schemes (4 original + frequency + 2 new).
+
+  - id: CQ-040
+    source_use_case: UC-009
+    natural_language: "Are there any intra-scheme surface form collisions in MeasuredPropertyScheme or DomainObjectScheme?"
+    type: constraint
+    priority: must_have
+    sample_answer:
+      - result: "empty (no two concepts in the same scheme share a surface form)"
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Cross-scheme collisions (same form in different schemes is allowed)"
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+      SELECT ?scheme ?surfaceForm ?concept1 ?concept2 WHERE {
+        VALUES ?scheme {
+          sevocab:MeasuredPropertyScheme
+          sevocab:DomainObjectScheme
+        }
+        ?concept1 skos:altLabel ?surfaceForm ;
+                  skos:inScheme ?scheme .
+        ?concept2 skos:altLabel ?surfaceForm ;
+                  skos:inScheme ?scheme .
+        FILTER(?concept1 < ?concept2)
+      }
+    expected_result: empty
+    required_classes: []
+    required_properties:
+      - "skos:altLabel"
+      - "skos:inScheme"
+    required_axioms: []
+
+  # ──────────────────────────────────────────────────────────
+  # Gap Analysis Expansion (UC-010, UC-011)
+  # Added: 2026-04-12 — corpus-driven domain expansion
+  # ──────────────────────────────────────────────────────────
+
+  - id: CQ-041
+    source_use_case: UC-010
+    natural_language: "What canonical policy instrument does 'ETS' map to?"
+    type: relational
+    priority: must_have
+    derivation_method: direct_lookup
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+      SELECT ?concept WHERE {
+        ?concept skos:altLabel "ETS"@en ;
+                 skos:inScheme sevocab:PolicyInstrumentScheme .
+      }
+    expected_result: non_empty
+    required_classes: []
+    required_properties: ["skos:altLabel", "skos:inScheme"]
+    required_axioms: []
+
+  - id: CQ-042
+    source_use_case: UC-010
+    natural_language: "What surface forms exist for the feed-in tariff concept?"
+    type: enumerative
+    priority: must_have
+    derivation_method: direct_lookup
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+      SELECT ?surfaceForm WHERE {
+        sevocab:FeedInTariff skos:altLabel ?surfaceForm .
+        FILTER(LANG(?surfaceForm) = "en")
+      }
+    expected_result: non_empty
+    required_classes: []
+    required_properties: ["skos:altLabel"]
+    required_axioms: []
+
+  - id: CQ-043
+    source_use_case: UC-010
+    natural_language: "Does PolicyInstrumentScheme cover all corpus-identified instruments?"
+    type: constraint
+    priority: must_have
+    derivation_method: external_join
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+      SELECT ?missing WHERE {
+        VALUES ?missing {
+          "feed-in tariff" "power purchase agreement" "auction"
+          "subsidy" "carbon tax" "emissions trading"
+          "renewable portfolio standard" "net metering"
+          "capacity market" "carbon credit"
+        }
+        FILTER NOT EXISTS {
+          ?c skos:inScheme sevocab:PolicyInstrumentScheme ;
+             skos:prefLabel ?l . FILTER(STR(?l) = ?missing)
+        }
+      }
+    expected_result: empty
+    required_classes: []
+    required_properties: ["skos:prefLabel", "skos:inScheme"]
+    required_axioms: []
+
+  - id: CQ-044
+    source_use_case: UC-010
+    natural_language: "No intra-scheme collisions in PolicyInstrumentScheme?"
+    type: constraint
+    priority: must_have
+    derivation_method: direct_lookup
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+      SELECT ?sf ?c1 ?c2 WHERE {
+        ?c1 skos:altLabel ?sf ; skos:inScheme sevocab:PolicyInstrumentScheme .
+        ?c2 skos:altLabel ?sf ; skos:inScheme sevocab:PolicyInstrumentScheme .
+        FILTER(?c1 < ?c2)
+      }
+    expected_result: empty
+    required_classes: []
+    required_properties: ["skos:altLabel", "skos:inScheme"]
+    required_axioms: []
+
+  - id: CQ-045
+    source_use_case: UC-011
+    natural_language: "Does TechnologyOrFuelScheme include Tier 1 gap concepts?"
+    type: constraint
+    priority: must_have
+    derivation_method: external_join
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+      SELECT ?missing WHERE {
+        VALUES ?missing {
+          "carbon capture" "fossil fuel" "fuel cell" "methane"
+          "synthetic fuel" "combined heat and power" "diesel"
+        }
+        FILTER NOT EXISTS {
+          ?c skos:inScheme sevocab:TechnologyOrFuelScheme ;
+             skos:prefLabel ?l . FILTER(STR(?l) = ?missing)
+        }
+      }
+    expected_result: empty
+    required_classes: []
+    required_properties: ["skos:prefLabel", "skos:inScheme"]
+    required_axioms: []
+
+  - id: CQ-046
+    source_use_case: UC-011
+    natural_language: "Does DomainObjectScheme cover market and grid reliability concepts?"
+    type: constraint
+    priority: must_have
+    derivation_method: external_join
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+      SELECT ?missing WHERE {
+        VALUES ?missing {
+          "carbon market" "EV charging" "decarbonization"
+          "wholesale market" "grid reliability"
+          "virtual power plant" "energy access" "energy poverty"
+        }
+        FILTER NOT EXISTS {
+          ?c skos:inScheme sevocab:DomainObjectScheme ;
+             skos:prefLabel ?l . FILTER(STR(?l) = ?missing)
+        }
+      }
+    expected_result: empty
+    required_classes: []
+    required_properties: ["skos:prefLabel", "skos:inScheme"]
+    required_axioms: []
+
+  - id: CQ-047
+    source_use_case: UC-011
+    natural_language: "Does MeasuredPropertyScheme include lifecycle and performance metrics?"
+    type: constraint
+    priority: must_have
+    derivation_method: external_join
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+      SELECT ?missing WHERE {
+        VALUES ?missing { "capacity factor" "deployment" "decommissioning" }
+        FILTER NOT EXISTS {
+          ?c skos:inScheme sevocab:MeasuredPropertyScheme ;
+             skos:prefLabel ?l . FILTER(STR(?l) = ?missing)
+        }
+      }
+    expected_result: empty
+    required_classes: []
+    required_properties: ["skos:prefLabel", "skos:inScheme"]
+    required_axioms: []
+
+  - id: CQ-048
+    source_use_case: UC-011
+    natural_language: "What are all ConceptSchemes after the gap expansion?"
+    type: enumerative
+    priority: must_have
+    derivation_method: direct_lookup
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      SELECT ?scheme ?label WHERE {
+        ?scheme a skos:ConceptScheme ; skos:prefLabel ?label .
+      } ORDER BY ?label
+    expected_result: non_empty
+    required_classes: ["skos:ConceptScheme"]
+    required_properties: ["skos:prefLabel"]
+    required_axioms: []
+    note: "Supersedes CQ-039/CQ-011. Expects 8 schemes."
+
+  - id: CQ-049
+    source_use_case: UC-011
+    natural_language: "Does 'SMR' resolve to the nuclear concept?"
+    type: relational
+    priority: must_have
+    derivation_method: direct_lookup
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+      SELECT ?concept WHERE {
+        ?concept skos:altLabel "SMR"@en ;
+                 skos:inScheme sevocab:TechnologyOrFuelScheme .
+      }
+    expected_result: non_empty
+    required_classes: []
+    required_properties: ["skos:altLabel"]
+    required_axioms: []
+
+  - id: CQ-050
+    source_use_case: UC-011
+    natural_language: "Does 'LNG' resolve to a natural gas concept?"
+    type: relational
+    priority: must_have
+    derivation_method: direct_lookup
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      SELECT ?concept ?scheme WHERE {
+        ?concept skos:altLabel "LNG"@en ; skos:inScheme ?scheme .
+      }
+    expected_result: non_empty
+    required_classes: []
+    required_properties: ["skos:altLabel", "skos:inScheme"]
+    required_axioms: []
+
+  - id: CQ-051
+    source_use_case: UC-011
+    natural_language: "Does 'rooftop solar' resolve to the solar PV concept?"
+    type: relational
+    priority: must_have
+    derivation_method: direct_lookup
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+      SELECT ?concept WHERE {
+        ?concept skos:altLabel "rooftop solar"@en ;
+                 skos:inScheme sevocab:TechnologyOrFuelScheme .
+      }
+    expected_result: non_empty
+    required_classes: []
+    required_properties: ["skos:altLabel"]
+    required_axioms: []
+
+  - id: CQ-052
+    source_use_case: UC-011
+    natural_language: "Does 'LCOE' resolve to a measuredProperty concept?"
+    type: relational
+    priority: must_have
+    derivation_method: direct_lookup
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+      SELECT ?concept WHERE {
+        ?concept skos:altLabel "LCOE"@en ;
+                 skos:inScheme sevocab:MeasuredPropertyScheme .
+      }
+    expected_result: non_empty
+    required_classes: []
+    required_properties: ["skos:altLabel"]
+    required_axioms: []
+
+  - id: CQ-053
+    source_use_case: UC-011
+    natural_language: "Does every active concept have at least 3 English surface forms?"
+    type: constraint
+    priority: should_have
+    derivation_method: aggregation
+    out_of_scope: ["FrequencyScheme (Phase 2)"]
+    sparql: |
+      PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+      PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+      SELECT ?concept ?label (COUNT(?alt) AS ?n) WHERE {
+        ?concept skos:inScheme ?s ; skos:prefLabel ?label ; skos:altLabel ?alt .
+        FILTER(LANG(?alt) = "en")
+        FILTER(?s != sevocab:FrequencyScheme)
+      }
+      GROUP BY ?concept ?label
+      HAVING (COUNT(?alt) < 3)
+    expected_result: empty
+    required_classes: []
+    required_properties: ["skos:altLabel"]
+    required_axioms: []
+    note: "Quality gate — concepts with <3 EN surface forms unlikely to match diverse chart text."

@@ -1,0 +1,12 @@
+# CQ-044: No intra-scheme collisions in PolicyInstrumentScheme?
+# Expected: empty
+# Use case: UC-010
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?sf ?c1 ?c2 WHERE {
+  ?c1 skos:altLabel ?sf ; skos:inScheme sevocab:PolicyInstrumentScheme .
+  ?c2 skos:altLabel ?sf ; skos:inScheme sevocab:PolicyInstrumentScheme .
+  FILTER(?c1 < ?c2)
+}

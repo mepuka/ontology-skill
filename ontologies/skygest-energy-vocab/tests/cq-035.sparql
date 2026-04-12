@@ -1,0 +1,16 @@
+# CQ-035: Given measuredProperty=generation, domainObject=electricity, and technologyOrFuel=solar PV, does a unique Variable resolve?
+# Expected: true
+# Use case: UC-009
+# Note: Tests concept existence only — uniqueness resolution is a product-code invariant.
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+ASK {
+  ?mp skos:inScheme sevocab:MeasuredPropertyScheme ;
+      skos:prefLabel "generation"@en .
+  ?do skos:inScheme sevocab:DomainObjectScheme ;
+      skos:prefLabel "electricity"@en .
+  ?tf skos:inScheme sevocab:TechnologyOrFuelScheme ;
+      skos:prefLabel "solar PV"@en .
+}

@@ -1,0 +1,11 @@
+# CQ-041: What canonical policy instrument does 'ETS' map to?
+# Expected: non_empty
+# Use case: UC-010
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?concept WHERE {
+  ?concept skos:altLabel "ETS"@en ;
+           skos:inScheme sevocab:PolicyInstrumentScheme .
+}

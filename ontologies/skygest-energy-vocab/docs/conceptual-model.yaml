@@ -75,8 +75,130 @@ layers:
             Wind: [OnshoreWind, OffshoreWind]
             Coal: [BrownCoal]
             NaturalGas: [GasCcgt]
+          gap_analysis_expansion:
+            - CarbonCapture      # CCS/CCUS/DAC (72 corpus hits)
+            - FossilFuel         # Parent concept for coal/gas/oil (113 hits)
+            - FuelCell           # SOFC/PEMFC/hydrogen fuel cell
+            - Methane            # CH4/fugitive emissions (36 hits)
+            - SyntheticFuel      # e-fuel/SAF/synthetic fuel
+            - CHP                # Combined heat and power/cogeneration
+            - Diesel             # Diesel/fuel oil/heavy fuel oil
         hierarchy: "2-level (skos:broader); only scheme with hierarchy"
         facet_type: "open string (curated canonical list)"
+
+      - name: measured-property
+        scheme: MeasuredPropertyScheme
+        concepts:
+          cold_start_coverage:
+            - Generation       # IEA: Production
+            - Capacity         # IEA/IRENA: Installed capacity
+            - Demand           # IEA: TFC (total final consumption)
+            - EmissionsMeasure # IPCC/IEA: GHG emissions
+            - Investment       # BNEF/IEA: Capital expenditure
+            - PriceMeasure     # Market: Commodity/electricity price
+            - ShareMeasure     # IRENA/Ember: Penetration/mix share
+            - CountMeasure     # Equipment: Units installed/deployed
+          domain_expansion:
+            - Trade            # IEA: Imports/exports/trade flows
+            - Efficiency       # IEA/IRENA: Conversion/system efficiency
+            - Curtailment      # Grid ops: Generation curtailed
+            - Revenue          # Market/corporate: Revenue/earnings
+            - Discharge        # Storage ops: Discharge/output from storage
+            - Consumption      # IEA: TFC (distinct from demand; actual use)
+            - Supply           # IEA: TPES (total primary energy supply)
+          gap_analysis_expansion:
+            - CapacityFactor   # Performance: utilization/load factor
+            - Deployment       # Lifecycle: additions/new build/commissioning
+            - Decommissioning  # Lifecycle: retirement/phase-out/shutdown
+        hierarchy: flat
+        facet_type: "open string (curated canonical list)"
+        added: "2026-04-12 — SKY-309"
+        note: >
+          Disambiguates WHAT is being measured. Models the full IEA
+          energy statistics space, not just cold-start Variable values.
+          Flat hierarchy; concepts are disjoint statistical categories.
+          Cross-scheme overlap with StatisticTypeScheme is intentional
+          (e.g., "generation" fires both Flow and Generation).
+
+      - name: domain-object
+        scheme: DomainObjectScheme
+        concepts:
+          energy_carriers:
+            - Electricity         # IEA: Electricity sector
+            - Heat                # IEA: Heat/district heating sector
+            - NaturalGasDomain    # IEA: Natural gas as energy carrier
+            - HydrogenDomain      # IEA: Hydrogen economy
+            - Oil                 # IEA: Petroleum/oil sector
+          sectors:
+            - Transport           # IEA: Transport sector (EV, mobility)
+            - Buildings           # IEA: Buildings/residential energy
+            - Industry            # IEA: Industrial energy use
+            - EnergyConsumption   # IEA: Aggregate energy consumption
+            - EnergyTransition    # Broad: Energy transition investment scope
+            - CleanEnergy         # Broad: Clean/green energy aggregate
+            - Grid                # Power: Transmission/distribution grid
+          technology_domains:
+            - BatteryStorage      # Storage: Battery/BESS systems
+            - DataCenter          # Infrastructure: Data center power
+            - Electrolyzer        # Equipment: Hydrogen electrolyzer
+            - HeatPumpDomain      # Equipment: Heat pump systems
+            - NuclearReactor      # Equipment: Nuclear reactor
+            - SolarPhotovoltaic   # Technology: Solar PV
+            - WindTurbine         # Technology: Wind turbine
+            - OffshoreWindTurbine # Technology: Offshore wind turbine
+            - OffshoreWindFarm    # Installation: Offshore wind farm
+            - RenewablePower      # Aggregate: Renewable power generation
+          product_specific:
+            - LithiumIonBatteryPack  # Product: Li-ion battery pack
+            - InterconnectionQueue   # Infrastructure: Grid queue
+          gap_analysis_expansion:
+            - CarbonMarket           # Market: ETS/carbon credits/offsets
+            - EVCharging             # Infrastructure: Charging stations/EVSE
+            - Decarbonization        # Broad: Net zero/carbon neutral
+            - WholesaleMarket        # Market: Spot/day-ahead/balancing
+            - GridReliability        # Grid: Outage/blackout/SAIDI
+            - VirtualPowerPlant      # Grid: VPP/aggregator
+            - EnergyAccess           # Social: Electrification/access rates
+            - EnergyPoverty          # Social: Fuel poverty/affordability
+        hierarchy: "2-level optional (skos:broader for related pairs)"
+        facet_type: "open string (curated canonical list)"
+        added: "2026-04-12 — SKY-309"
+        note: >
+          Disambiguates WHAT DOMAIN OBJECT is being measured. Models
+          the full energy domain — IEA sectors, energy carriers, and
+          technology domains — not just cold-start Variable values.
+          Organized into four sub-groups: energy carriers, sectors,
+          technology domains, and product-specific. Minimal hierarchy:
+          OffshoreWindTurbine broader WindTurbine, LithiumIonBatteryPack
+          broader BatteryStorage. Significant overlap with
+          TechnologyOrFuelScheme is by design (CD-007).
+
+      - name: policy-instrument
+        scheme: PolicyInstrumentScheme
+        concepts:
+          market_mechanisms:
+            - EmissionsTrading       # ETS/cap-and-trade (195 corpus hits)
+            - CarbonTax              # Carbon levy/fee (9 hits)
+            - CarbonCredit           # Carbon offset/VER (3 hits)
+            - CapacityMarket         # Capacity auction/payment
+            - Auction                # Competitive bidding/tender (51 hits)
+          support_mechanisms:
+            - FeedInTariff           # FIT/FIP/feed-in premium (87 hits)
+            - Subsidy                # Grant/incentive/tax credit
+            - NetMetering            # Net billing/self-consumption
+            - RenewablePortfolioStd  # RPS/renewable mandate/clean energy standard
+          procurement:
+            - PowerPurchaseAgreement # PPA/offtake/CPPA (19 hits)
+        hierarchy: flat
+        facet_type: "open string (curated canonical list)"
+        added: "2026-04-12 — gap analysis expansion"
+        note: >
+          Policy instruments are a distinct dimension — the mechanism
+          through which energy is priced, procured, or incentivized.
+          Organized into market mechanisms, support mechanisms, and
+          procurement. Flat hierarchy. Scope decision resolved: these
+          are NOT MeasuredProperty or DomainObject — they are a
+          separate facet describing the policy context of a chart.
 
   problem_specific:
     description: >
@@ -113,17 +235,24 @@ taxonomy:
     - AggregationScheme
     - UnitFamilyScheme
     - TechnologyOrFuelScheme
-    - FrequencyScheme  # Phase 2
+    - MeasuredPropertyScheme    # SKY-309
+    - DomainObjectScheme        # SKY-309
+    - PolicyInstrumentScheme    # Gap analysis expansion
+    - FrequencyScheme           # Phase 2
 
   skos_hierarchy:
-    # Only TechnologyOrFuelScheme has skos:broader relationships.
-    # All other schemes are flat.
+    # TechnologyOrFuelScheme hierarchy (existing):
     Wind:
       narrower: [OnshoreWind, OffshoreWind]
     Coal:
       narrower: [BrownCoal]
     NaturalGas:
       narrower: [GasCcgt]
+    # DomainObjectScheme hierarchy (new — SKY-309):
+    WindTurbine:
+      narrower: [OffshoreWindTurbine]
+    BatteryStorage:
+      narrower: [LithiumIonBatteryPack]
 
 # ─────────────────────────────────────────────────────────────
 # Module Boundaries
@@ -203,6 +332,57 @@ decisions:
       "currency_per_energy", "mass_co2e"). The concept IRI uses
       CamelCase (e.g., sevocab:EndOfPeriod) but prefLabel matches the
       TypeScript string.
+
+  - id: CD-006
+    title: "Cross-scheme composition semantics live in the kernel, not the ontology"
+    rationale: >
+      The three-way relationship TechnologyOrFuel × MeasuredProperty ×
+      DomainObject defines a unique Variable (e.g., solar PV × generation
+      × electricity = "Solar electricity generation"). This composition is
+      a product-code concern — the Stage 2 kernel assembles a partial
+      Variable shape from independently-matched facets, then scores
+      candidates. The ontology does NOT model this composition as OWL
+      axioms (no n-ary relation, no qualified restrictions across schemes).
+      Each scheme is an independent SKOS vocabulary with its own JSON
+      export. The kernel composes them.
+    implication: >
+      skos:related is NOT used between concepts in different schemes
+      (e.g., Generation and Electricity are not skos:related). This avoids
+      over-modeling and keeps each scheme independent. The composition
+      semantics are documented here and enforced by product-code tests.
+
+  - id: CD-007
+    title: "DomainObject overlaps with TechnologyOrFuel by design"
+    rationale: >
+      DomainObjectScheme concepts like "solar photovoltaic", "wind turbine",
+      and "battery storage" deliberately overlap with TechnologyOrFuelScheme.
+      This is correct because domainObject captures WHAT is being measured
+      (the object receiving the measurement) while technologyOrFuel captures
+      WHAT TECHNOLOGY is producing/converting. Example: "Solar electricity
+      generation" has technologyOrFuel=solar PV AND domainObject=electricity
+      (the generated product, not the technology). A Variable like "Installed
+      solar PV capacity" has technologyOrFuel=solar PV AND domainObject=
+      solar photovoltaic (the technology IS the measured object).
+    implication: >
+      Surface forms for DomainObject should be DISTINCT from TechnologyOrFuel
+      surface forms where possible. "solar" fires technologyOrFuel; "solar
+      photovoltaic" or "PV installations" could fire domainObject. But for
+      some concepts (e.g., "electricity"), domainObject has exclusive surface
+      forms not present in TechnologyOrFuelScheme.
+
+  - id: CD-008
+    title: "MeasuredProperty concept names use suffixed disambiguation"
+    rationale: >
+      Three MeasuredProperty concepts overlap in name with StatisticType
+      concepts: price, share, count. To avoid IRI collision in the Turtle
+      file (sevocab:Price is already the StatisticType concept), the
+      MeasuredProperty concepts use suffixed IRIs: PriceMeasure,
+      ShareMeasure, CountMeasure. The prefLabel still matches the cold-start
+      canonical string: "price", "share", "count".
+    implication: >
+      The architect must use IRI sevocab:PriceMeasure with
+      skos:prefLabel "price"@en. This follows CD-004 (prefLabel matches
+      TypeScript canonical string).
 
   - id: CD-005
     title: "TechnologyOrFuel hierarchy is max 2 levels"

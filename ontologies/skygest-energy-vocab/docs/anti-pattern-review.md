@@ -66,8 +66,72 @@ of the TypeScript schema.
 **Decision**: Keep. The alignment with the product code is intentional
 and correct.
 
-## Summary
+### Finding 3: MeasuredProperty / StatisticType polysemy risk (SKY-309)
 
-**Zero unresolved anti-patterns.** Two findings reviewed and accepted:
+**Anti-pattern #9 (Polysemy)**
+
+Three MeasuredProperty concepts share names with StatisticType concepts:
+- "price" (sevocab:Price in StatisticType, sevocab:PriceMeasure in MeasuredProperty)
+- "share" (sevocab:Share in StatisticType, sevocab:ShareMeasure in MeasuredProperty)
+- "count" (sevocab:Count in StatisticType, sevocab:CountMeasure in MeasuredProperty)
+
+**Assessment**: Controlled polysemy, not a defect. The same English word
+"price" correctly names two distinct concepts in two different schemes:
+- StatisticType "price" = the TYPE of statistic (as opposed to flow, stock)
+- MeasuredProperty "price" = WHAT is being measured (the price of something)
+
+The IRI disambiguation (CD-008) prevents technical collision. The same
+surface form correctly fires BOTH facets in different lookup tables — this
+is the intended cross-scheme overlap behavior (CD-006).
+
+**Decision**: Keep. Document in CD-008. IRIs use suffix disambiguation;
+prefLabels match canonical strings.
+
+### Finding 4: DomainObject / TechnologyOrFuel overlap (SKY-309)
+
+**Anti-pattern #9 (Polysemy)**
+
+Multiple DomainObject concepts overlap with TechnologyOrFuel concepts:
+- "solar photovoltaic" / "solar PV"
+- "wind turbine" / "wind"
+- "battery storage" / "battery"
+- "heat pump" / "heat pump"
+
+**Assessment**: Controlled overlap, not polysemy. These are genuinely
+different facets that happen to share referents:
+- TechnologyOrFuel "solar PV" = the technology PRODUCING energy
+- DomainObject "solar photovoltaic" = the thing BEING MEASURED
+
+Example: "Installed solar PV capacity" has technologyOrFuel=solar PV
+AND domainObject=solar photovoltaic. But "Solar electricity generation"
+has technologyOrFuel=solar PV AND domainObject=electricity (different!).
+
+**Decision**: Keep. Document in CD-007. Surface forms should be
+differentiated where possible to reduce noise.
+
+### Finding 5: DomainObjectScheme mixed abstraction levels (SKY-309)
+
+**Anti-pattern: granularity inconsistency (not in standard 16, but relevant)**
+
+DomainObjectScheme mixes broad sectors ("electricity", "transport",
+"industry") with specific equipment ("lithium-ion battery pack",
+"offshore wind turbine"). This is a granularity inconsistency.
+
+**Assessment**: Acceptable and intentional. The scheme's purpose is to
+match the domainObject field on Variables, which itself mixes
+granularities because Variables represent different kinds of statistics.
+Forcing uniform granularity would lose discriminating power. The
+sub-groups in the conceptual model (energy carriers, sectors, technology
+domains, product-specific) document the granularity layers clearly.
+
+**Decision**: Keep. The conceptual model's sub-grouping provides
+organizational clarity without constraining the flat SKOS scheme.
+
+## Summary (updated 2026-04-12)
+
+**Zero unresolved anti-patterns.** Five findings reviewed and accepted:
 1. Singleton hierarchies are demand-driven growth points (not defects)
 2. SurfaceFormEntry alignment with TypeScript is intentional (not a system blueprint leak)
+3. MeasuredProperty/StatisticType name overlap is controlled polysemy with IRI disambiguation (CD-008)
+4. DomainObject/TechnologyOrFuel overlap is by design — different facets, same referents (CD-007)
+5. DomainObjectScheme mixed granularity is intentional and documented via sub-groups

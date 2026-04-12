@@ -1,0 +1,18 @@
+# CQ-040: Are there any intra-scheme surface form collisions in MeasuredPropertyScheme or DomainObjectScheme?
+# Expected: empty
+# Use case: UC-009
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?scheme ?surfaceForm ?concept1 ?concept2 WHERE {
+  VALUES ?scheme {
+    sevocab:MeasuredPropertyScheme
+    sevocab:DomainObjectScheme
+  }
+  ?concept1 skos:altLabel ?surfaceForm ;
+            skos:inScheme ?scheme .
+  ?concept2 skos:altLabel ?surfaceForm ;
+            skos:inScheme ?scheme .
+  FILTER(?concept1 < ?concept2)
+}

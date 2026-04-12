@@ -1,0 +1,19 @@
+# CQ-037: Does MeasuredPropertyScheme cover all measuredProperty values used in cold-start Variables?
+# Expected: empty
+# Use case: UC-009
+# Note: VALUES list from skygest-cloudflare/references/cold-start/variables/*.json as of 2026-04-12.
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?missingCanonical WHERE {
+  VALUES ?missingCanonical {
+    "capacity" "count" "demand" "emissions"
+    "generation" "investment" "price" "share"
+  }
+  FILTER NOT EXISTS {
+    ?concept skos:inScheme sevocab:MeasuredPropertyScheme ;
+             skos:prefLabel ?label .
+    FILTER(STR(?label) = ?missingCanonical)
+  }
+}

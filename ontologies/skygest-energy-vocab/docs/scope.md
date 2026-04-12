@@ -60,9 +60,10 @@ when Series-level FixedDims support is added.
 
 ## In Scope
 
-### Four Core SKOS ConceptSchemes (Variable facets)
+### Six Core SKOS ConceptSchemes (Variable facets)
 
-These map 1:1 to the four facets Stage 2 attacks via deterministic lookup:
+The first four map 1:1 to Stage 2's original deterministic lookup facets.
+Schemes 5-6 were added in SKY-309 to disambiguate tied Variables:
 
 1. **StatisticTypeScheme** — 5 concepts: `stock`, `flow`, `price`, `share`,
    `count`. Surface forms map chart language to the type of quantity measured.
@@ -88,9 +89,31 @@ These map 1:1 to the four facets Stage 2 attacks via deterministic lookup:
    `Schema.String` in the Variable schema — this vocabulary defines the
    curated canonical list.
 
+### Disambiguation Schemes (SKY-309, added 2026-04-12)
+
+These two schemes address the 37 ambiguous eval observations where Variables
+tied on the four core facets. They add two discriminating dimensions:
+
+5. **MeasuredPropertyScheme** — 8 concepts: `generation`, `capacity`,
+   `demand`, `emissions`, `investment`, `price`, `share`, `count`. Surface
+   forms map chart language to WHAT is being measured. Examples: "generation"
+   -> generation, "installed" -> capacity, "demand" -> demand, "emissions" ->
+   emissions. Cross-scheme overlap with StatisticTypeScheme is intentional
+   ("generation" fires both Flow and Generation).
+
+6. **DomainObjectScheme** — 16 concepts matching cold-start Variable
+   domainObject values: `electricity`, `battery storage`, `clean energy`,
+   `data center`, `electrolyzer`, `energy consumption`, `energy transition`,
+   `heat pump`, `interconnection queue`, `lithium-ion battery pack`,
+   `nuclear reactor`, `offshore wind farm`, `offshore wind turbine`,
+   `renewable power`, `solar photovoltaic`, `wind turbine`. Surface forms
+   map chart language to WHAT DOMAIN OBJECT is being measured. Examples:
+   "electricity" -> electricity, "battery" -> battery storage, "data center"
+   -> data center.
+
 ### Phase 2 Extension Scheme (FixedDims, not Variable facet)
 
-5. **FrequencyScheme** — 6 concepts: `hourly`, `daily`, `weekly`, `monthly`,
+7. **FrequencyScheme** — 6 concepts: `hourly`, `daily`, `weekly`, `monthly`,
    `quarterly`, `annual`. Surface forms from x-axis labels and temporal
    qualifiers. Examples: "monthly data" -> monthly, "Q1 2024" -> quarterly.
    > **Note**: Frequency is not a Variable facet. It belongs to the

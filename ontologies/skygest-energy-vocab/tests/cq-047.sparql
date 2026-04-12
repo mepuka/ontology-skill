@@ -1,0 +1,14 @@
+# CQ-047: Does MeasuredPropertyScheme include lifecycle and performance metrics?
+# Expected: empty
+# Use case: UC-011
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?missing WHERE {
+  VALUES ?missing { "capacity factor" "deployment" "decommissioning" }
+  FILTER NOT EXISTS {
+    ?c skos:inScheme sevocab:MeasuredPropertyScheme ;
+       skos:prefLabel ?l . FILTER(STR(?l) = ?missing)
+  }
+}
