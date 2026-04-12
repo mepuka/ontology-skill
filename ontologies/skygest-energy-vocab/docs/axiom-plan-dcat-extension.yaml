@@ -1,0 +1,148 @@
+# Axiom Plan: DCAT Structural Extension
+# Maps CQs to OWL axiom patterns from _shared/axiom-patterns.md
+
+# =============================================================================
+# Class Hierarchy Axioms (Pattern #1: Simple SubClassOf)
+# =============================================================================
+
+- cq: CQ-057
+  pattern: "1. Simple SubClassOf"
+  manchester: |
+    Class: EnergyVariable
+      SubClassOf: schema:StatisticalVariable
+  notes: "Direct subclass assertion"
+
+- cq: CQ-061
+  pattern: "1. Simple SubClassOf"
+  manchester: |
+    Class: EnergyDataset
+      SubClassOf: dcat:Dataset
+  notes: "Direct subclass assertion"
+
+- cq: CQ-062
+  pattern: "1. Simple SubClassOf"
+  manchester: |
+    Class: EnergyAgent
+      SubClassOf: foaf:Agent
+  notes: "Direct subclass assertion"
+
+# =============================================================================
+# Disjointness (Pattern #5: Disjoint Classes)
+# =============================================================================
+
+- cq: implicit
+  pattern: "5. Disjoint Classes"
+  manchester: |
+    DisjointClasses: EnergyVariable, EnergyDataset, EnergyAgent
+  notes: >
+    A Variable cannot be a Dataset or an Agent. Pairwise disjointness
+    enables the reasoner to detect misclassification errors.
+
+# =============================================================================
+# DCAT Chain — Existential Restrictions (Pattern #2: SomeValuesFrom)
+# =============================================================================
+
+- cq: CQ-058
+  pattern: "2. Existential Restriction"
+  manchester: |
+    Class: EnergyDataset
+      SubClassOf: dct:publisher some EnergyAgent
+  notes: "Every EnergyDataset has at least one publisher that is an EnergyAgent"
+
+- cq: CQ-065
+  pattern: "2. Existential Restriction"
+  manchester: |
+    Class: EnergyDataset
+      SubClassOf: dcat:distribution some dcat:Distribution
+  notes: "Every EnergyDataset has at least one Distribution"
+
+- cq: CQ-059
+  pattern: "2. Existential Restriction"
+  manchester: |
+    Class: EnergyDataset
+      SubClassOf: hasVariable some EnergyVariable
+  notes: "Every EnergyDataset has at least one Variable"
+
+# =============================================================================
+# Variable Composition — Qualified Cardinality (Pattern #7)
+# =============================================================================
+
+- cq: CQ-063
+  pattern: "7. Qualified Cardinality Restriction"
+  manchester: |
+    Class: EnergyVariable
+      SubClassOf: measuredProperty max 1 skos:Concept
+      SubClassOf: domainObject max 1 skos:Concept
+      SubClassOf: technologyOrFuel max 1 skos:Concept
+      SubClassOf: statisticType max 1 skos:Concept
+      SubClassOf: aggregation max 1 skos:Concept
+      SubClassOf: unitFamily max 1 skos:Concept
+      SubClassOf: policyInstrument max 1 skos:Concept
+  notes: >
+    Each facet dimension has at most one value per Variable. This is
+    maxQualifiedCardinality 1, not exact cardinality — Variables can have
+    missing facets (partial composition during resolution).
+
+# =============================================================================
+# Data Structure Definition — Individual Assertions
+# =============================================================================
+
+- cq: CQ-054
+  pattern: "Individual assertions (not a class axiom pattern)"
+  description: |
+    EnergyVariableStructure is a named individual (qb:DataStructureDefinition)
+    with 7 qb:component links, each pointing to a blank-node
+    qb:ComponentSpecification that references one of the 7 dimension properties.
+  turtle_sketch: |
+    sevocab:EnergyVariableStructure a qb:DataStructureDefinition ;
+      qb:component [ qb:dimension sevocab:measuredProperty ] ;
+      qb:component [ qb:dimension sevocab:domainObject ] ;
+      qb:component [ qb:dimension sevocab:technologyOrFuel ] ;
+      qb:component [ qb:dimension sevocab:statisticType ] ;
+      qb:component [ qb:dimension sevocab:aggregation ] ;
+      qb:component [ qb:dimension sevocab:unitFamily ] ;
+      qb:component [ qb:dimension sevocab:policyInstrument ] .
+  notes: >
+    Blank nodes for ComponentSpecification are acceptable here — they are
+    structural, not externally referenced. The 7 dimension properties are
+    named individuals with qb:codeList pointing to sevocab schemes.
+
+- cq: CQ-055
+  pattern: "Individual assertions"
+  description: |
+    Each dimension property is a named individual with a qb:codeList.
+  turtle_sketch: |
+    sevocab:measuredProperty a qb:DimensionProperty, owl:ObjectProperty ;
+      qb:codeList sevocab:MeasuredPropertyScheme ;
+      rdfs:label "measured property"@en ;
+      skos:definition "The physical or economic quantity being measured."@en .
+  notes: "Repeated for all 7 dimensions with their respective code lists."
+
+# =============================================================================
+# hasVariable Property Declaration
+# =============================================================================
+
+- cq: CQ-059
+  pattern: "Property declaration"
+  manchester: |
+    ObjectProperty: hasVariable
+      Domain: EnergyDataset
+      Range: EnergyVariable
+  notes: >
+    Domain/range safe here — both are sevocab-specific classes. No risk
+    of unintended classification of external entities.
+
+# =============================================================================
+# SHACL Validation (not OWL axioms, but planned here)
+# =============================================================================
+
+- cq: CQ-064
+  pattern: "SHACL shape (not OWL)"
+  description: |
+    EnergyVariableShape validates that required dimensions are present.
+    measuredProperty and statisticType are required (minCount 1).
+    All others are optional.
+  notes: >
+    SHACL handles closed-world validation that OWL cannot express.
+    The shape also constrains facet values to concepts within the
+    correct scheme (sh:class or SPARQL constraint).

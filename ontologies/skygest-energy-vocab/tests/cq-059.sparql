@@ -1,0 +1,11 @@
+# CQ-059: What Variables belong to a given Dataset?
+# Expected: non-empty (requires ABox data)
+# NOTE: TBox-only test checks that hasVariable property is declared
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+SELECT ?property ?domain ?range WHERE {
+  sevocab:hasVariable a owl:ObjectProperty ;
+                      rdfs:domain ?domain ;
+                      rdfs:range ?range .
+}

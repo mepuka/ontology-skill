@@ -1,0 +1,388 @@
+# Competency Questions: DCAT Structural Extension
+# CQ IDs continue from sevocab's existing CQ-053.
+
+# =============================================================================
+# UC-DM-001: Variable Composition
+# =============================================================================
+
+- id: CQ-054
+  source_use_case: UC-DM-001
+  natural_language: "What are the facet dimensions of an EnergyVariable?"
+  type: enumerative
+  priority: must_have
+  sample_answer:
+    - dimension: sevocab:measuredProperty
+    - dimension: sevocab:domainObject
+    - dimension: sevocab:technologyOrFuel
+    - dimension: sevocab:statisticType
+    - dimension: sevocab:aggregation
+    - dimension: sevocab:unitFamily
+    - dimension: sevocab:policyInstrument
+  derivation_method: direct_lookup
+  out_of_scope:
+    - "The values within each dimension (those are SKOS concepts in sevocab)"
+  sparql: |
+    PREFIX qb: <http://purl.org/linked-data/cube#>
+    PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+    SELECT ?dimension ?codeList WHERE {
+      sevocab:EnergyVariableStructure qb:component ?comp .
+      ?comp qb:dimension ?dimension .
+      ?dimension qb:codeList ?codeList .
+    }
+  expected_result: exactly_7
+  required_classes:
+    - EnergyVariable
+  required_properties:
+    - qb:component
+    - qb:dimension
+    - qb:codeList
+
+- id: CQ-055
+  source_use_case: UC-DM-001
+  natural_language: "Which ConceptScheme provides the code list for the measuredProperty dimension?"
+  type: relational
+  priority: must_have
+  sample_answer:
+    - codeList: sevocab:MeasuredPropertyScheme
+  derivation_method: direct_lookup
+  out_of_scope: []
+  sparql: |
+    PREFIX qb: <http://purl.org/linked-data/cube#>
+    PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+    SELECT ?codeList WHERE {
+      sevocab:measuredProperty qb:codeList ?codeList .
+    }
+  expected_result: non_empty
+  required_classes: []
+  required_properties:
+    - qb:codeList
+
+- id: CQ-056
+  source_use_case: UC-DM-001
+  natural_language: "Is each facet dimension a qb:DimensionProperty?"
+  type: boolean
+  priority: must_have
+  sample_answer:
+    - result: true (all 7 dimensions are qb:DimensionProperty)
+  derivation_method: direct_lookup
+  out_of_scope: []
+  sparql: |
+    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    PREFIX qb: <http://purl.org/linked-data/cube#>
+    PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+    SELECT ?dimension WHERE {
+      sevocab:EnergyVariableStructure qb:component/qb:dimension ?dimension .
+      FILTER NOT EXISTS { ?dimension rdf:type qb:DimensionProperty }
+    }
+  expected_result: empty
+  required_classes: []
+  required_properties: []
+
+- id: CQ-057
+  source_use_case: UC-DM-001
+  natural_language: "Is EnergyVariable a subclass of schema:StatisticalVariable?"
+  type: boolean
+  priority: must_have
+  sample_answer:
+    - result: true
+  derivation_method: inference
+  out_of_scope: []
+  sparql: |
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX schema: <http://schema.org/>
+    PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+    ASK {
+      sevocab:EnergyVariable rdfs:subClassOf* schema:StatisticalVariable .
+    }
+  expected_result: true
+  required_classes:
+    - EnergyVariable
+  required_properties: []
+
+# =============================================================================
+# UC-DM-002: DCAT Chain Traversal for Disambiguation
+# =============================================================================
+
+- id: CQ-058
+  source_use_case: UC-DM-002
+  natural_language: "What Datasets does a given Agent publish?"
+  type: relational
+  priority: must_have
+  sample_answer:
+    - agent: ex:IRENA
+      dataset: ex:RenewableCapacityStatistics2024
+  derivation_method: direct_lookup
+  out_of_scope:
+    - "Historical publishing (only current publisher relationship)"
+  sparql: |
+    PREFIX dct: <http://purl.org/dc/terms/>
+    PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+    SELECT ?dataset ?title WHERE {
+      ?dataset a sevocab:EnergyDataset ;
+               dct:publisher ?agent ;
+               dct:title ?title .
+    }
+  expected_result: non_empty
+  required_classes:
+    - EnergyDataset
+    - EnergyAgent
+  required_properties:
+    - dct:publisher
+
+- id: CQ-059
+  source_use_case: UC-DM-002
+  natural_language: "What Variables belong to a given Dataset?"
+  type: relational
+  priority: must_have
+  sample_answer:
+    - dataset: ex:EmberGlobalElectricityReview
+      variable: ex:ElectricityGeneration_Wind_TWh
+  derivation_method: direct_lookup
+  out_of_scope: []
+  sparql: |
+    PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    SELECT ?variable ?label WHERE {
+      ?dataset sevocab:hasVariable ?variable .
+      ?variable rdfs:label ?label .
+    }
+  expected_result: non_empty
+  required_classes:
+    - EnergyDataset
+    - EnergyVariable
+  required_properties:
+    - sevocab:hasVariable
+
+- id: CQ-060
+  source_use_case: UC-DM-002
+  natural_language: "Given a Variable, who is the publishing Agent?"
+  type: relational
+  priority: must_have
+  sample_answer:
+    - variable: ex:ElectricityGeneration_Wind_TWh
+      agent: ex:Ember
+  derivation_method: inference
+  out_of_scope: []
+  sparql: |
+    PREFIX dct: <http://purl.org/dc/terms/>
+    PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+    SELECT ?variable ?agent WHERE {
+      ?dataset sevocab:hasVariable ?variable ;
+               dct:publisher ?agent .
+    }
+  expected_result: non_empty
+  required_classes:
+    - EnergyVariable
+    - EnergyDataset
+    - EnergyAgent
+  required_properties:
+    - sevocab:hasVariable
+    - dct:publisher
+
+- id: CQ-061
+  source_use_case: UC-DM-002
+  natural_language: "Is EnergyDataset a subclass of dcat:Dataset?"
+  type: boolean
+  priority: must_have
+  sample_answer:
+    - result: true
+  derivation_method: inference
+  out_of_scope: []
+  sparql: |
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX dcat: <http://www.w3.org/ns/dcat#>
+    PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+    ASK {
+      sevocab:EnergyDataset rdfs:subClassOf* dcat:Dataset .
+    }
+  expected_result: true
+  required_classes:
+    - EnergyDataset
+  required_properties: []
+
+- id: CQ-062
+  source_use_case: UC-DM-002
+  natural_language: "Is EnergyAgent a subclass of foaf:Agent?"
+  type: boolean
+  priority: must_have
+  sample_answer:
+    - result: true
+  derivation_method: inference
+  out_of_scope: []
+  sparql: |
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+    PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+    ASK {
+      sevocab:EnergyAgent rdfs:subClassOf* foaf:Agent .
+    }
+  expected_result: true
+  required_classes:
+    - EnergyAgent
+  required_properties: []
+
+# =============================================================================
+# UC-DM-003: Facet Completeness Validation
+# =============================================================================
+
+- id: CQ-063
+  source_use_case: UC-DM-003
+  natural_language: "Can an EnergyVariable have more than one value for a single facet dimension?"
+  type: constraint
+  priority: must_have
+  sample_answer:
+    - result: "No — each dimension has max cardinality 1"
+  derivation_method: inference
+  out_of_scope: []
+  sparql: |
+    PREFIX owl: <http://www.w3.org/2002/07/owl#>
+    PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+    SELECT ?restriction WHERE {
+      sevocab:EnergyVariable rdfs:subClassOf ?restriction .
+      ?restriction a owl:Restriction ;
+                   owl:onProperty sevocab:measuredProperty ;
+                   owl:maxQualifiedCardinality ?max .
+      FILTER (?max = 1)
+    }
+  expected_result: non_empty
+  required_classes:
+    - EnergyVariable
+  required_properties:
+    - sevocab:measuredProperty
+  required_axioms:
+    - "maxQualifiedCardinality 1 on each facet dimension"
+
+- id: CQ-064
+  source_use_case: UC-DM-003
+  natural_language: "Which facet dimensions are required for a valid EnergyVariable?"
+  type: enumerative
+  priority: should_have
+  sample_answer:
+    - required: [measuredProperty, statisticType]
+    - optional: [domainObject, technologyOrFuel, aggregation, unitFamily, policyInstrument]
+  derivation_method: direct_lookup
+  out_of_scope:
+    - "Application-level validation rules beyond ontology constraints"
+  sparql: |
+    PREFIX sh: <http://www.w3.org/ns/shacl#>
+    PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+    SELECT ?property ?minCount WHERE {
+      sevocab:EnergyVariableShape sh:property ?propShape .
+      ?propShape sh:path ?property ;
+                 sh:minCount ?minCount .
+      FILTER (?minCount > 0)
+    }
+  expected_result: non_empty
+  required_classes:
+    - EnergyVariable
+  required_properties: []
+
+# =============================================================================
+# UC-DM-004: Dataset Discovery
+# =============================================================================
+
+- id: CQ-065
+  source_use_case: UC-DM-004
+  natural_language: "What Distributions does a Dataset have?"
+  type: relational
+  priority: should_have
+  sample_answer:
+    - dataset: ex:EmberGlobalElectricityReview
+      distribution: ex:EmberCSVDownload
+  derivation_method: direct_lookup
+  out_of_scope: []
+  sparql: |
+    PREFIX dcat: <http://www.w3.org/ns/dcat#>
+    PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+    SELECT ?dataset ?distribution WHERE {
+      ?dataset a sevocab:EnergyDataset ;
+               dcat:distribution ?distribution .
+    }
+  expected_result: non_empty
+  required_classes:
+    - EnergyDataset
+  required_properties:
+    - dcat:distribution
+
+- id: CQ-066
+  source_use_case: UC-DM-004
+  natural_language: "How many Variables does each Dataset contain?"
+  type: quantitative
+  priority: should_have
+  sample_answer:
+    - dataset: ex:EmberGlobalElectricityReview
+      variable_count: 12
+  derivation_method: aggregation
+  out_of_scope: []
+  sparql: |
+    PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+    PREFIX dct: <http://purl.org/dc/terms/>
+    SELECT ?dataset ?title (COUNT(?var) AS ?varCount) WHERE {
+      ?dataset a sevocab:EnergyDataset ;
+               dct:title ?title ;
+               sevocab:hasVariable ?var .
+    }
+    GROUP BY ?dataset ?title
+  expected_result: non_empty
+  required_classes:
+    - EnergyDataset
+    - EnergyVariable
+  required_properties:
+    - sevocab:hasVariable
+
+# =============================================================================
+# UC-DM-005: Full Chain Traversal
+# =============================================================================
+
+- id: CQ-067
+  source_use_case: UC-DM-005
+  natural_language: "Can I traverse from a facet value to the publishing Agent in a single query?"
+  type: relational
+  priority: must_have
+  sample_answer:
+    - facet_value: sevocab:Price
+      variable: ex:ElectricityWholesalePrice
+      dataset: ex:EMBERPriceData
+      agent: ex:Ember
+  derivation_method: inference
+  out_of_scope: []
+  sparql: |
+    PREFIX dct: <http://purl.org/dc/terms/>
+    PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+    SELECT ?facetValue ?variable ?dataset ?agent WHERE {
+      ?variable sevocab:measuredProperty ?facetValue ;
+               a sevocab:EnergyVariable .
+      ?dataset sevocab:hasVariable ?variable ;
+               dct:publisher ?agent .
+    }
+  expected_result: non_empty
+  required_classes:
+    - EnergyVariable
+    - EnergyDataset
+    - EnergyAgent
+  required_properties:
+    - sevocab:measuredProperty
+    - sevocab:hasVariable
+    - dct:publisher
+
+- id: CQ-068
+  source_use_case: UC-DM-005
+  natural_language: "What is the complete DataStructureDefinition for the EnergyVariable?"
+  type: enumerative
+  priority: must_have
+  sample_answer:
+    - structure: sevocab:EnergyVariableStructure
+      components: 7
+  derivation_method: direct_lookup
+  out_of_scope: []
+  sparql: |
+    PREFIX qb: <http://purl.org/linked-data/cube#>
+    PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+    SELECT (COUNT(?comp) AS ?componentCount) WHERE {
+      sevocab:EnergyVariableStructure a qb:DataStructureDefinition ;
+                                       qb:component ?comp .
+    }
+  expected_result: exactly_7
+  required_classes: []
+  required_properties:
+    - qb:component

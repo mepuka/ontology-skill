@@ -1,0 +1,95 @@
+# Use Cases: DCAT Structural Extension
+# These use cases drive CQ elicitation for the structural layer.
+
+- id: UC-DM-001
+  name: "Compose a Variable from matched facets"
+  actor: "Stage 2 resolution kernel"
+  goal: "Build a partial or complete EnergyVariable from surface-form facet matches"
+  preconditions:
+    - "Surface form matching has produced 1+ facet hits (e.g., measuredProperty=Price, technologyOrFuel=NaturalGas)"
+    - "The ontology declares which dimensions compose an EnergyVariable"
+  main_flow:
+    - "Kernel receives matched facets from vocabulary lookup"
+    - "Kernel queries the ontology for the dimensional structure of EnergyVariable"
+    - "Kernel creates a partial Variable shape with the matched dimensions filled in"
+    - "Kernel checks which registered Variables match the partial shape"
+  postconditions:
+    - "A candidate set of Variables matching the partial shape is produced"
+  related_cqs: []
+  priority: must_have
+
+- id: UC-DM-002
+  name: "Disambiguate tied candidates via DCAT traversal"
+  actor: "Stage 2 resolution kernel"
+  goal: "Break ties between candidates that match on the same number of facets"
+  preconditions:
+    - "2+ candidate Variables tied on matched facet count"
+    - "The ontology declares which Dataset each Variable belongs to and which Agent published it"
+  main_flow:
+    - "Kernel identifies the tied candidates"
+    - "Kernel traverses Variable → Dataset → Agent for each candidate"
+    - "Kernel checks whether the post context (source URL, author) matches any Agent"
+    - "Kernel uses Agent match as a structural disambiguation signal"
+  postconditions:
+    - "Tied candidates are scored with structural context, reducing or eliminating ties"
+  related_cqs: []
+  priority: must_have
+
+- id: UC-DM-003
+  name: "Validate a Variable's facet completeness"
+  actor: "Data curator"
+  goal: "Check whether a registry Variable has all required facet dimensions"
+  preconditions:
+    - "A Variable exists in the registry with some facets populated"
+    - "The ontology declares required vs optional dimensions"
+  main_flow:
+    - "Curator runs SHACL validation against the Variable"
+    - "Validator reports missing required dimensions and empty optional dimensions"
+  postconditions:
+    - "Curator knows which dimensions to fill in"
+  related_cqs: []
+  priority: should_have
+
+- id: UC-DM-004
+  name: "Discover Variables within a Dataset"
+  actor: "Platform engineer"
+  goal: "List all Variables that belong to a given Dataset"
+  preconditions:
+    - "Datasets and their Variables are linked via sky:hasVariable"
+  main_flow:
+    - "Engineer queries for all Variables in a Dataset"
+    - "Results show each Variable's facet profile"
+  postconditions:
+    - "Engineer has a complete inventory of a Dataset's Variables"
+  related_cqs: []
+  priority: should_have
+
+- id: UC-DM-005
+  name: "Trace the publishing chain for a Variable"
+  actor: "Stage 2 resolution kernel"
+  goal: "Given a Variable, find its parent Dataset and publishing Agent"
+  preconditions:
+    - "Variable → Dataset → Agent chain is modeled"
+  main_flow:
+    - "Kernel starts from a candidate Variable"
+    - "Kernel traverses hasVariable inverse to find the Dataset"
+    - "Kernel traverses dct:publisher to find the Agent"
+  postconditions:
+    - "The full provenance chain (Variable → Dataset → Agent) is available"
+  related_cqs: []
+  priority: must_have
+
+- id: UC-DM-006
+  name: "Validate ontology structure against TypeScript types"
+  actor: "Platform engineer"
+  goal: "Ensure the TypeScript domain model matches the ontology structure"
+  preconditions:
+    - "Ontology declares classes, properties, and restrictions"
+    - "TypeScript declares interfaces and types"
+  main_flow:
+    - "Engineer compares ontology class hierarchy with TypeScript type hierarchy"
+    - "Engineer verifies property names and cardinalities match"
+  postconditions:
+    - "Discrepancies between ontology and TypeScript are identified"
+  related_cqs: []
+  priority: could_have

@@ -1,0 +1,118 @@
+# Property Design: DCAT Structural Extension
+
+# =============================================================================
+# New Object Property
+# =============================================================================
+
+new_properties:
+  - name: hasVariable
+    type: ObjectProperty
+    definition: "Links an energy dataset to a constituent energy variable."
+    label: "has variable"
+    domain: EnergyDataset
+    range: EnergyVariable
+    cardinality:
+      min: 0
+      max: unbounded
+    characteristics: []
+    inverse: null
+    specializes: null
+    source_cqs: [CQ-059, CQ-060, CQ-066, CQ-067]
+    notes: >
+      Domain/range declared in OWL for type inference. SHACL shapes will add
+      validation constraints (e.g., minCount 1 for published datasets).
+
+# =============================================================================
+# Reused Properties (no new declarations needed)
+# =============================================================================
+
+reused_properties:
+  - name: "dct:publisher"
+    type: "ObjectProperty (reused)"
+    usage: "Links EnergyDataset to its publishing EnergyAgent"
+    modeled_as: "OWL restriction on EnergyDataset (someValuesFrom EnergyAgent)"
+    source_cqs: [CQ-058, CQ-060, CQ-067]
+    notes: >
+      NOT redeclared. Used via OWL restriction on EnergyDataset. This avoids
+      overcommitting dct:publisher domain/range globally.
+
+  - name: "dcat:distribution"
+    type: "ObjectProperty (reused)"
+    usage: "Links EnergyDataset to its dcat:Distribution instances"
+    modeled_as: "OWL restriction on EnergyDataset (someValuesFrom dcat:Distribution)"
+    source_cqs: [CQ-065]
+    notes: >
+      Inherited from dcat:Dataset. Restriction added on EnergyDataset for
+      completeness.
+
+# =============================================================================
+# Facet Dimension Properties (instances, not new property declarations)
+# =============================================================================
+# The 7 facet dimensions are instances of qb:DimensionProperty, NOT new
+# OWL ObjectProperty declarations. They serve dual roles:
+#
+# 1. As qb:DimensionProperty instances in the DataStructureDefinition
+#    (with qb:codeList pointing to sevocab schemes)
+#
+# 2. As ObjectProperty instances used in OWL restrictions on EnergyVariable
+#    (maxQualifiedCardinality 1, range skos:Concept)
+#
+# This dual role is standard in Data Cube usage — DimensionProperty
+# rdfs:subClassOf rdf:Property, so instances are both Data Cube dimensions
+# and RDF properties usable in OWL restrictions.
+
+facet_dimensions:
+  - name: measuredProperty
+    codeList: sevocab:MeasuredPropertyScheme
+    owl_restriction: "maxQualifiedCardinality 1 on EnergyVariable"
+    range_in_restriction: skos:Concept
+    required_shacl: true  # minCount 1 in SHACL shape
+
+  - name: domainObject
+    codeList: sevocab:DomainObjectScheme
+    owl_restriction: "maxQualifiedCardinality 1 on EnergyVariable"
+    range_in_restriction: skos:Concept
+    required_shacl: false
+
+  - name: technologyOrFuel
+    codeList: sevocab:TechnologyOrFuelScheme
+    owl_restriction: "maxQualifiedCardinality 1 on EnergyVariable"
+    range_in_restriction: skos:Concept
+    required_shacl: false
+
+  - name: statisticType
+    codeList: sevocab:StatisticTypeScheme
+    owl_restriction: "maxQualifiedCardinality 1 on EnergyVariable"
+    range_in_restriction: skos:Concept
+    required_shacl: true  # minCount 1 in SHACL shape
+
+  - name: aggregation
+    codeList: sevocab:AggregationScheme
+    owl_restriction: "maxQualifiedCardinality 1 on EnergyVariable"
+    range_in_restriction: skos:Concept
+    required_shacl: false
+
+  - name: unitFamily
+    codeList: sevocab:UnitFamilyScheme
+    owl_restriction: "maxQualifiedCardinality 1 on EnergyVariable"
+    range_in_restriction: skos:Concept
+    required_shacl: false
+
+  - name: policyInstrument
+    codeList: sevocab:PolicyInstrumentScheme
+    owl_restriction: "maxQualifiedCardinality 1 on EnergyVariable"
+    range_in_restriction: skos:Concept
+    required_shacl: false
+
+# =============================================================================
+# Domain/Range Strategy
+# =============================================================================
+# Following the domain/range decision procedure from the conceptualizer:
+#
+# - hasVariable: OWL domain/range for type inference (safe — both classes
+#   are sevocab-specific, no unintended classification)
+# - dct:publisher: NOT redeclared globally. Modeled as local OWL restriction
+#   on EnergyDataset to avoid overcommitting DCTerms' property.
+# - Facet dimensions: NOT given global rdfs:domain/range. Modeled as local
+#   OWL restrictions on EnergyVariable (maxQualifiedCardinality).
+# - SHACL shapes handle validation constraints (required fields, value-in-scheme).

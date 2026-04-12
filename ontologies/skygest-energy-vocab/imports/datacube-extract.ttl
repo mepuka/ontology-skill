@@ -1,0 +1,52 @@
+@prefix qb: <http://purl.org/linked-data/cube#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+# Minimal W3C Data Cube extract for skygest-energy-vocab structural extension.
+# Source: The RDF Data Cube Vocabulary (W3C Recommendation 2014-01-16)
+# License: W3C Document License
+# Extracted: 2026-04-12
+# Only the classes and properties needed for the dimensional model.
+
+qb:ComponentProperty a rdfs:Class, owl:Class ;
+    rdfs:subClassOf rdf:Property ;
+    rdfs:label "Component property (abstract)"@en ;
+    rdfs:comment "Abstract super-property of all properties representing dimensions, attributes or measures."@en .
+
+qb:CodedProperty a rdfs:Class, owl:Class ;
+    rdfs:subClassOf qb:ComponentProperty ;
+    rdfs:label "Coded property"@en ;
+    rdfs:comment "Superclass of all coded ComponentProperties."@en .
+
+qb:DimensionProperty a rdfs:Class, owl:Class ;
+    rdfs:subClassOf qb:ComponentProperty, qb:CodedProperty ;
+    rdfs:label "Dimension property"@en ;
+    rdfs:comment "The class of component properties which represent the dimensions of the cube."@en .
+
+qb:DataStructureDefinition a rdfs:Class, owl:Class ;
+    rdfs:label "Data structure definition"@en ;
+    rdfs:comment "Defines the structure of a DataSet or slice."@en .
+
+qb:ComponentSpecification a rdfs:Class, owl:Class ;
+    rdfs:label "Component specification"@en ;
+    rdfs:comment "Used to define properties of a component (dimension, attribute, measure) which are specific to its usage in a DSD."@en .
+
+qb:component a owl:ObjectProperty ;
+    rdfs:label "component specification"@en ;
+    rdfs:domain qb:DataStructureDefinition ;
+    rdfs:range qb:ComponentSpecification ;
+    rdfs:comment "Indicates a component specification which is included in the structure of the dataset."@en .
+
+qb:dimension a owl:ObjectProperty ;
+    rdfs:label "dimension"@en ;
+    rdfs:domain qb:ComponentSpecification ;
+    rdfs:range qb:DimensionProperty ;
+    rdfs:comment "An alternative to qb:componentProperty which makes explicit that the component is a dimension."@en .
+
+qb:codeList a owl:ObjectProperty ;
+    rdfs:label "code list"@en ;
+    rdfs:domain qb:CodedProperty ;
+    rdfs:range [ owl:unionOf ( skos:ConceptScheme skos:Collection qb:HierarchicalCodeList ) ] ;
+    rdfs:comment "Gives the code list associated with a CodedProperty."@en .

@@ -1,0 +1,145 @@
+# Conceptual Model: DCAT Structural Extension
+# Extends skygest-energy-vocab with structural layer
+
+# =============================================================================
+# Architecture Layer: Domain-dependent (builds on W3C standards)
+# Module: Structural Model (single module — under 15 new entities)
+# =============================================================================
+
+module:
+  name: structural-model
+  layer: domain-dependent
+  description: >
+    Structural layer bridging sevocab vocabulary schemes with DCAT catalog
+    entities and W3C Data Cube dimensional model. Declares how facet
+    dimensions compose into statistical variables and how variables relate
+    to datasets and agents.
+  lives_in: skygest-energy-vocab.ttl (additive extension)
+
+# =============================================================================
+# Class Hierarchy (Middle-Out)
+# =============================================================================
+
+classes:
+  # Middle layer — the 3 domain classes that stakeholders talk about
+  - name: EnergyVariable
+    parent: schema:StatisticalVariable
+    definition: >
+      A statistical variable that is composed of up to seven facet
+      dimensions drawn from sevocab concept schemes.
+    label: "energy variable"
+    source_cqs: [CQ-054, CQ-057, CQ-063, CQ-067]
+    disjoint_with: [EnergyDataset, EnergyAgent]
+    notes: >
+      Central entity for the resolution kernel. Composition is modeled
+      via OWL restrictions on 7 facet dimension properties, each with
+      maxQualifiedCardinality 1.
+
+  - name: EnergyDataset
+    parent: dcat:Dataset
+    definition: >
+      A DCAT dataset that contains one or more energy variables and is
+      published by an energy agent.
+    label: "energy dataset"
+    source_cqs: [CQ-058, CQ-059, CQ-061, CQ-065, CQ-066]
+    disjoint_with: [EnergyVariable, EnergyAgent]
+    notes: >
+      Structural container. Links to Variables via hasVariable, to
+      Distributions via dcat:distribution, to Agents via dct:publisher.
+
+  - name: EnergyAgent
+    parent: foaf:Agent
+    definition: >
+      A FOAF agent that publishes one or more energy datasets.
+    label: "energy agent"
+    source_cqs: [CQ-058, CQ-060, CQ-062]
+    disjoint_with: [EnergyVariable, EnergyDataset]
+    notes: >
+      Publisher entity. The resolution kernel uses Agent identity for
+      structural disambiguation.
+
+# =============================================================================
+# Named Individuals
+# =============================================================================
+
+individuals:
+  - name: EnergyVariableStructure
+    type: qb:DataStructureDefinition
+    definition: >
+      The data structure definition declaring the seven facet dimensions
+      that compose an energy variable.
+    label: "energy variable structure"
+    source_cqs: [CQ-054, CQ-068]
+    components:
+      - dimension: measuredProperty
+      - dimension: domainObject
+      - dimension: technologyOrFuel
+      - dimension: statisticType
+      - dimension: aggregation
+      - dimension: unitFamily
+      - dimension: policyInstrument
+
+  # 7 Dimension Properties (instances of qb:DimensionProperty)
+  - name: measuredProperty
+    type: qb:DimensionProperty
+    codeList: sevocab:MeasuredPropertyScheme
+    definition: "The physical or economic quantity being measured."
+    label: "measured property"
+
+  - name: domainObject
+    type: qb:DimensionProperty
+    codeList: sevocab:DomainObjectScheme
+    definition: "The entity or system the measurement is about."
+    label: "domain object"
+
+  - name: technologyOrFuel
+    type: qb:DimensionProperty
+    codeList: sevocab:TechnologyOrFuelScheme
+    definition: "The energy technology or fuel type."
+    label: "technology or fuel"
+
+  - name: statisticType
+    type: qb:DimensionProperty
+    codeList: sevocab:StatisticTypeScheme
+    definition: "The kind of statistical measure."
+    label: "statistic type"
+
+  - name: aggregation
+    type: qb:DimensionProperty
+    codeList: sevocab:AggregationScheme
+    definition: "The temporal aggregation method."
+    label: "aggregation"
+
+  - name: unitFamily
+    type: qb:DimensionProperty
+    codeList: sevocab:UnitFamilyScheme
+    definition: "The family of measurement units."
+    label: "unit family"
+
+  - name: policyInstrument
+    type: qb:DimensionProperty
+    codeList: sevocab:PolicyInstrumentScheme
+    definition: "The policy mechanism involved."
+    label: "policy instrument"
+
+# =============================================================================
+# Relationships (visual summary)
+# =============================================================================
+#
+#   EnergyAgent
+#       ^
+#       | dct:publisher
+#       |
+#   EnergyDataset ----dcat:distribution----> dcat:Distribution
+#       |
+#       | hasVariable
+#       v
+#   EnergyVariable
+#       |-- measuredProperty ----> [MeasuredPropertyScheme concept]
+#       |-- domainObject --------> [DomainObjectScheme concept]
+#       |-- technologyOrFuel ----> [TechnologyOrFuelScheme concept]
+#       |-- statisticType -------> [StatisticTypeScheme concept]
+#       |-- aggregation ---------> [AggregationScheme concept]
+#       |-- unitFamily ----------> [UnitFamilyScheme concept]
+#       |-- policyInstrument ----> [PolicyInstrumentScheme concept]
+#

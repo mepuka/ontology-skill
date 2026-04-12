@@ -1,0 +1,9 @@
+# CQ-068: What is the complete DataStructureDefinition for EnergyVariable?
+# Expected: exactly 7 components
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+SELECT (COUNT(?comp) AS ?componentCount) WHERE {
+  sevocab:EnergyVariableStructure a qb:DataStructureDefinition ;
+                                   qb:component ?comp .
+}
+HAVING (COUNT(?comp) = 7)

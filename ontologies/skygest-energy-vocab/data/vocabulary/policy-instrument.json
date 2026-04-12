@@ -4,447 +4,447 @@
     "normalizedSurfaceForm": "auction",
     "canonical": "auction",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "competitive bidding",
     "normalizedSurfaceForm": "competitive bidding",
     "canonical": "auction",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "procurement round",
     "normalizedSurfaceForm": "procurement round",
     "canonical": "auction",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "reverse auction",
     "normalizedSurfaceForm": "reverse auction",
     "canonical": "auction",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "tender",
     "normalizedSurfaceForm": "tender",
     "canonical": "auction",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "capacity auction",
     "normalizedSurfaceForm": "capacity auction",
     "canonical": "capacity market",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "capacity market",
     "normalizedSurfaceForm": "capacity market",
     "canonical": "capacity market",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "capacity mechanism",
     "normalizedSurfaceForm": "capacity mechanism",
     "canonical": "capacity market",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "capacity payment",
     "normalizedSurfaceForm": "capacity payment",
     "canonical": "capacity market",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "capacity remuneration",
     "normalizedSurfaceForm": "capacity remuneration",
     "canonical": "capacity market",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "carbon credit",
     "normalizedSurfaceForm": "carbon credit",
     "canonical": "carbon credit",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "carbon offset",
     "normalizedSurfaceForm": "carbon offset",
     "canonical": "carbon credit",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "certified emission reduction",
     "normalizedSurfaceForm": "certified emission reduction",
     "canonical": "carbon credit",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "emission reduction credit",
     "normalizedSurfaceForm": "emission reduction credit",
     "canonical": "carbon credit",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "offset",
     "normalizedSurfaceForm": "offset",
     "canonical": "carbon credit",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "VER",
     "normalizedSurfaceForm": "ver",
     "canonical": "carbon credit",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "voluntary carbon market",
     "normalizedSurfaceForm": "voluntary carbon market",
     "canonical": "carbon credit",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "carbon fee",
     "normalizedSurfaceForm": "carbon fee",
     "canonical": "carbon tax",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "carbon levy",
     "normalizedSurfaceForm": "carbon levy",
     "canonical": "carbon tax",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "carbon price floor",
     "normalizedSurfaceForm": "carbon price floor",
     "canonical": "carbon tax",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "carbon pricing",
     "normalizedSurfaceForm": "carbon pricing",
     "canonical": "carbon tax",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "carbon tax",
     "normalizedSurfaceForm": "carbon tax",
     "canonical": "carbon tax",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "allowance",
     "normalizedSurfaceForm": "allowance",
     "canonical": "emissions trading",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "cap and trade",
     "normalizedSurfaceForm": "cap and trade",
     "canonical": "emissions trading",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "carbon trading",
     "normalizedSurfaceForm": "carbon trading",
     "canonical": "emissions trading",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "emission allowance",
     "normalizedSurfaceForm": "emission allowance",
     "canonical": "emissions trading",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "emissions trading",
     "normalizedSurfaceForm": "emissions trading",
     "canonical": "emissions trading",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "emissions trading scheme",
     "normalizedSurfaceForm": "emissions trading scheme",
     "canonical": "emissions trading",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "ETS",
     "normalizedSurfaceForm": "ets",
     "canonical": "emissions trading",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "EU ETS",
     "normalizedSurfaceForm": "eu ets",
     "canonical": "emissions trading",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "feed-in law",
     "normalizedSurfaceForm": "feed-in law",
     "canonical": "feed-in tariff",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "feed-in premium",
     "normalizedSurfaceForm": "feed-in premium",
     "canonical": "feed-in tariff",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "feed-in tariff",
     "normalizedSurfaceForm": "feed-in tariff",
     "canonical": "feed-in tariff",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "FIP",
     "normalizedSurfaceForm": "fip",
     "canonical": "feed-in tariff",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "FIT",
     "normalizedSurfaceForm": "fit",
     "canonical": "feed-in tariff",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "renewable energy tariff",
     "normalizedSurfaceForm": "renewable energy tariff",
     "canonical": "feed-in tariff",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "behind-the-meter compensation",
     "normalizedSurfaceForm": "behind-the-meter compensation",
     "canonical": "net metering",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "net billing",
     "normalizedSurfaceForm": "net billing",
     "canonical": "net metering",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "net energy metering",
     "normalizedSurfaceForm": "net energy metering",
     "canonical": "net metering",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "net metering",
     "normalizedSurfaceForm": "net metering",
     "canonical": "net metering",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "self-consumption",
     "normalizedSurfaceForm": "self-consumption",
     "canonical": "net metering",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "corporate PPA",
     "normalizedSurfaceForm": "corporate ppa",
     "canonical": "power purchase agreement",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "CPPA",
     "normalizedSurfaceForm": "cppa",
     "canonical": "power purchase agreement",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "offtake agreement",
     "normalizedSurfaceForm": "offtake agreement",
     "canonical": "power purchase agreement",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "power purchase agreement",
     "normalizedSurfaceForm": "power purchase agreement",
     "canonical": "power purchase agreement",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "PPA",
     "normalizedSurfaceForm": "ppa",
     "canonical": "power purchase agreement",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "virtual PPA",
     "normalizedSurfaceForm": "virtual ppa",
     "canonical": "power purchase agreement",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "VPPA",
     "normalizedSurfaceForm": "vppa",
     "canonical": "power purchase agreement",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "CES",
     "normalizedSurfaceForm": "ces",
     "canonical": "renewable portfolio standard",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "clean energy standard",
     "normalizedSurfaceForm": "clean energy standard",
     "canonical": "renewable portfolio standard",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "renewable mandate",
     "normalizedSurfaceForm": "renewable mandate",
     "canonical": "renewable portfolio standard",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "renewable obligation",
     "normalizedSurfaceForm": "renewable obligation",
     "canonical": "renewable portfolio standard",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "renewable portfolio standard",
     "normalizedSurfaceForm": "renewable portfolio standard",
     "canonical": "renewable portfolio standard",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "RPS",
     "normalizedSurfaceForm": "rps",
     "canonical": "renewable portfolio standard",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "grant",
     "normalizedSurfaceForm": "grant",
     "canonical": "subsidy",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "incentive",
     "normalizedSurfaceForm": "incentive",
     "canonical": "subsidy",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "investment tax credit",
     "normalizedSurfaceForm": "investment tax credit",
     "canonical": "subsidy",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "ITC",
     "normalizedSurfaceForm": "itc",
     "canonical": "subsidy",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "premium payment",
     "normalizedSurfaceForm": "premium payment",
     "canonical": "subsidy",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "production tax credit",
     "normalizedSurfaceForm": "production tax credit",
     "canonical": "subsidy",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "PTC",
     "normalizedSurfaceForm": "ptc",
     "canonical": "subsidy",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "rebate",
     "normalizedSurfaceForm": "rebate",
     "canonical": "subsidy",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "subsidy",
     "normalizedSurfaceForm": "subsidy",
     "canonical": "subsidy",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "tax credit",
     "normalizedSurfaceForm": "tax credit",
     "canonical": "subsidy",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   }
 ]

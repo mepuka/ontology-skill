@@ -4,125 +4,125 @@
     "normalizedSurfaceForm": "number of",
     "canonical": "count",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "tally",
     "normalizedSurfaceForm": "tally",
     "canonical": "count",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "units",
     "normalizedSurfaceForm": "units",
     "canonical": "count",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "flow rate",
     "normalizedSurfaceForm": "flow rate",
     "canonical": "flow",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "generation",
     "normalizedSurfaceForm": "generation",
     "canonical": "flow",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "output",
     "normalizedSurfaceForm": "output",
     "canonical": "flow",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "throughput",
     "normalizedSurfaceForm": "throughput",
     "canonical": "flow",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "cost",
     "normalizedSurfaceForm": "cost",
     "canonical": "price",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "rate",
     "normalizedSurfaceForm": "rate",
     "canonical": "price",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "tariff",
     "normalizedSurfaceForm": "tariff",
     "canonical": "price",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "wholesale price",
     "normalizedSurfaceForm": "wholesale price",
     "canonical": "price",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "percentage",
     "normalizedSurfaceForm": "percentage",
     "canonical": "share",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "proportion",
     "normalizedSurfaceForm": "proportion",
     "canonical": "share",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "share of",
     "normalizedSurfaceForm": "share of",
     "canonical": "share",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "cumulative",
     "normalizedSurfaceForm": "cumulative",
     "canonical": "stock",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "installed",
     "normalizedSurfaceForm": "installed",
     "canonical": "stock",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "nameplate",
     "normalizedSurfaceForm": "nameplate",
     "canonical": "stock",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
     "surfaceForm": "total capacity",
     "normalizedSurfaceForm": "total capacity",
     "canonical": "stock",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T15:50:09.000Z"
+    "addedAt": "2026-04-12T16:51:56.000Z"
   }
 ]

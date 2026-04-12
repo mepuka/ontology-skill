@@ -1,0 +1,9 @@
+# CQ-061: Is EnergyDataset a subclass of dcat:Dataset?
+# Expected: non-empty
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+SELECT ?class WHERE {
+  sevocab:EnergyDataset rdfs:subClassOf dcat:Dataset .
+  BIND(sevocab:EnergyDataset AS ?class)
+}

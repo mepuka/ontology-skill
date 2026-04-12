@@ -1,0 +1,13 @@
+term,synonyms,definition,category,source_cq,bfo_category,notes
+EnergyVariable,,"A statistical variable that is composed of up to seven facet dimensions drawn from sevocab concept schemes, representing a measurable energy-domain quantity.",class,"CQ-054,CQ-057,CQ-063",N/A (application ontology),Subclass of schema:StatisticalVariable
+EnergyDataset,,"A DCAT dataset that contains one or more energy variables and is published by an energy agent.",class,"CQ-058,CQ-059,CQ-061,CQ-065",N/A (application ontology),Subclass of dcat:Dataset
+EnergyAgent,,"A FOAF agent that publishes one or more energy datasets.",class,"CQ-058,CQ-060,CQ-062",N/A (application ontology),Subclass of foaf:Agent
+EnergyVariableStructure,,"The data structure definition that declares the seven facet dimensions composing an energy variable.",individual,"CQ-054,CQ-068",N/A,Instance of qb:DataStructureDefinition
+measuredProperty,,"A dimension property whose code list is MeasuredPropertyScheme, representing the physical or economic quantity being measured.",individual (qb:DimensionProperty),"CQ-054,CQ-055,CQ-063",N/A,Instance of qb:DimensionProperty
+domainObject,,"A dimension property whose code list is DomainObjectScheme, representing the entity or system the measurement is about.",individual (qb:DimensionProperty),CQ-054,N/A,Instance of qb:DimensionProperty
+technologyOrFuel,,"A dimension property whose code list is TechnologyOrFuelScheme, representing the energy technology or fuel type.",individual (qb:DimensionProperty),CQ-054,N/A,Instance of qb:DimensionProperty
+statisticType,,"A dimension property whose code list is StatisticTypeScheme, representing the kind of statistical measure (stock, flow, price, etc.).",individual (qb:DimensionProperty),CQ-054,N/A,Instance of qb:DimensionProperty
+aggregation,,"A dimension property whose code list is AggregationScheme, representing the temporal aggregation method.",individual (qb:DimensionProperty),CQ-054,N/A,Instance of qb:DimensionProperty
+unitFamily,,"A dimension property whose code list is UnitFamilyScheme, representing the family of measurement units.",individual (qb:DimensionProperty),CQ-054,N/A,Instance of qb:DimensionProperty
+policyInstrument,,"A dimension property whose code list is PolicyInstrumentScheme, representing the policy mechanism involved.",individual (qb:DimensionProperty),CQ-054,N/A,Instance of qb:DimensionProperty
+hasVariable,,"An object property that links an energy dataset to its constituent energy variables.",ObjectProperty,"CQ-059,CQ-060,CQ-066,CQ-067",N/A,Domain: EnergyDataset; Range: EnergyVariable

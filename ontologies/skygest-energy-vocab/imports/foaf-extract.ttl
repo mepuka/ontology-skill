@@ -1,0 +1,12 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Minimal FOAF extract for skygest-energy-vocab structural extension.
+# Source: Friend of a Friend (FOAF) Vocabulary
+# License: CC-BY 1.0
+# Extracted: 2026-04-12
+
+foaf:Agent a owl:Class ;
+    rdfs:label "Agent"@en ;
+    rdfs:comment "An agent (eg. person, group, software or physical artifact)."@en .

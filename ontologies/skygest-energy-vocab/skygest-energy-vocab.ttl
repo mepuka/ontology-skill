@@ -1,6 +1,11 @@
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix qb: <http://purl.org/linked-data/cube#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
 @prefix sevocab: <https://skygest.dev/vocab/energy/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -10,6 +15,10 @@
     dcterms:description "A SKOS vocabulary mapping natural-language surface forms in energy chart text to canonical data-variable facets for the Skygest Stage 2 resolver pipeline."@en ;
     dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
     dcterms:title "Skygest Energy Vocabulary"@en ;
+    owl:imports <https://skygest.dev/vocab/energy/imports/datacube-extract>,
+        <https://skygest.dev/vocab/energy/imports/dcat-extract>,
+        <https://skygest.dev/vocab/energy/imports/foaf-extract>,
+        <https://skygest.dev/vocab/energy/imports/schema-extract> ;
     owl:versionIRI sevocab:0.1.0 ;
     owl:versionInfo "0.1.0" .
 
@@ -603,6 +612,24 @@ sevocab:EnergyUnit a skos:Concept ;
     skos:inScheme sevocab:UnitFamilyScheme ;
     skos:prefLabel "energy"@en ;
     skos:topConceptOf sevocab:UnitFamilyScheme .
+
+sevocab:EnergyVariableStructure a qb:DataStructureDefinition ;
+    rdfs:label "energy variable structure"@en ;
+    qb:component [ a qb:ComponentSpecification ;
+            qb:dimension sevocab:aggregation ],
+        [ a qb:ComponentSpecification ;
+            qb:dimension sevocab:policyInstrument ],
+        [ a qb:ComponentSpecification ;
+            qb:dimension sevocab:unitFamily ],
+        [ a qb:ComponentSpecification ;
+            qb:dimension sevocab:domainObject ],
+        [ a qb:ComponentSpecification ;
+            qb:dimension sevocab:statisticType ],
+        [ a qb:ComponentSpecification ;
+            qb:dimension sevocab:technologyOrFuel ],
+        [ a qb:ComponentSpecification ;
+            qb:dimension sevocab:measuredProperty ] ;
+    skos:definition "The data structure definition declaring the seven facet dimensions that compose an energy variable."@en .
 
 sevocab:FeedInTariff a skos:Concept ;
     rdfs:label "feed-in tariff"@en ;
@@ -1711,6 +1738,31 @@ sevocab:WindTurbineDomain a skos:Concept ;
     skos:prefLabel "wind turbine"@en ;
     skos:topConceptOf sevocab:DomainObjectScheme .
 
+sevocab:hasVariable a owl:ObjectProperty ;
+    rdfs:label "has variable"@en ;
+    rdfs:domain sevocab:EnergyDataset ;
+    rdfs:range sevocab:EnergyVariable ;
+    skos:definition "Links an energy dataset to a constituent energy variable."@en .
+
+sevocab:EnergyAgent a owl:Class ;
+    rdfs:label "energy agent"@en ;
+    rdfs:subClassOf foaf:Agent ;
+    skos:definition "A FOAF agent that publishes one or more energy datasets."@en .
+
+sevocab:EnergyDataset a owl:Class ;
+    rdfs:label "energy dataset"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty dcat:distribution ;
+            owl:someValuesFrom dcat:Distribution ],
+        [ a owl:Restriction ;
+            owl:onProperty sevocab:hasVariable ;
+            owl:someValuesFrom sevocab:EnergyVariable ],
+        [ a owl:Restriction ;
+            owl:onProperty dcterms:publisher ;
+            owl:someValuesFrom sevocab:EnergyAgent ],
+        dcat:Dataset ;
+    skos:definition "A DCAT dataset that contains one or more energy variables and is published by an energy agent."@en .
+
 sevocab:Wind a skos:Concept ;
     rdfs:label "wind"@en ;
     skos:altLabel "Windenergie"@de,
@@ -1736,6 +1788,81 @@ sevocab:Wind a skos:Concept ;
     skos:inScheme sevocab:TechnologyOrFuelScheme ;
     skos:prefLabel "wind"@en ;
     skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:aggregation a qb:DimensionProperty,
+        owl:ObjectProperty ;
+    rdfs:label "aggregation"@en ;
+    qb:codeList sevocab:AggregationScheme ;
+    skos:definition "The temporal aggregation method."@en .
+
+sevocab:domainObject a qb:DimensionProperty,
+        owl:ObjectProperty ;
+    rdfs:label "domain object"@en ;
+    qb:codeList sevocab:DomainObjectScheme ;
+    skos:definition "The entity or system the measurement is about."@en .
+
+sevocab:measuredProperty a qb:DimensionProperty,
+        owl:ObjectProperty ;
+    rdfs:label "measured property"@en ;
+    qb:codeList sevocab:MeasuredPropertyScheme ;
+    skos:definition "The physical or economic quantity being measured."@en .
+
+sevocab:policyInstrument a qb:DimensionProperty,
+        owl:ObjectProperty ;
+    rdfs:label "policy instrument"@en ;
+    qb:codeList sevocab:PolicyInstrumentScheme ;
+    skos:definition "The policy mechanism involved."@en .
+
+sevocab:statisticType a qb:DimensionProperty,
+        owl:ObjectProperty ;
+    rdfs:label "statistic type"@en ;
+    qb:codeList sevocab:StatisticTypeScheme ;
+    skos:definition "The kind of statistical measure."@en .
+
+sevocab:technologyOrFuel a qb:DimensionProperty,
+        owl:ObjectProperty ;
+    rdfs:label "technology or fuel"@en ;
+    qb:codeList sevocab:TechnologyOrFuelScheme ;
+    skos:definition "The energy technology or fuel type."@en .
+
+sevocab:unitFamily a qb:DimensionProperty,
+        owl:ObjectProperty ;
+    rdfs:label "unit family"@en ;
+    qb:codeList sevocab:UnitFamilyScheme ;
+    skos:definition "The family of measurement units."@en .
+
+sevocab:EnergyVariable a owl:Class ;
+    rdfs:label "energy variable"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass skos:Concept ;
+            owl:onProperty sevocab:aggregation ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass skos:Concept ;
+            owl:onProperty sevocab:statisticType ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass skos:Concept ;
+            owl:onProperty sevocab:unitFamily ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass skos:Concept ;
+            owl:onProperty sevocab:policyInstrument ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass skos:Concept ;
+            owl:onProperty sevocab:measuredProperty ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass skos:Concept ;
+            owl:onProperty sevocab:technologyOrFuel ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass skos:Concept ;
+            owl:onProperty sevocab:domainObject ],
+        schema:StatisticalVariable ;
+    skos:definition "A statistical variable that is composed of up to seven facet dimensions drawn from sevocab concept schemes."@en .
 
 sevocab:StatisticTypeScheme a skos:ConceptScheme ;
     rdfs:label "statistic type scheme"@en ;
@@ -1776,3 +1903,6 @@ sevocab:DomainObjectScheme a skos:ConceptScheme ;
     rdfs:label "domain object scheme"@en ;
     skos:definition "A concept scheme that classifies the domain object to which an energy measurement applies, covering IEA sectors, energy carriers, and technology domains"@en ;
     skos:prefLabel "domain object scheme"@en .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( sevocab:EnergyVariable sevocab:EnergyDataset sevocab:EnergyAgent ) .

@@ -1,0 +1,13 @@
+# CQ-065: What Distributions does a Dataset have?
+# Expected: non-empty (checks that dcat:distribution restriction exists)
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX dcat: <http://www.w3.org/ns/dcat#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+SELECT ?class WHERE {
+  sevocab:EnergyDataset rdfs:subClassOf ?restriction .
+  ?restriction a owl:Restriction ;
+               owl:onProperty dcat:distribution ;
+               owl:someValuesFrom dcat:Distribution .
+  BIND(sevocab:EnergyDataset AS ?class)
+}

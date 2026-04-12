@@ -1,0 +1,9 @@
+# CQ-066: How many Variables does each Dataset contain?
+# Expected: non-empty (requires ABox data)
+# NOTE: TBox-only test checks that hasVariable is declared with correct domain/range
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+SELECT ?domain ?range WHERE {
+  sevocab:hasVariable rdfs:domain ?domain ;
+                      rdfs:range ?range .
+}

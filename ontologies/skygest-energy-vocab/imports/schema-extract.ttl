@@ -1,0 +1,13 @@
+@prefix schema: <https://schema.org/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Minimal schema.org extract for skygest-energy-vocab structural extension.
+# Source: schema.org (Community Group)
+# License: CC-BY-SA 3.0
+# Extracted: 2026-04-12
+# Note: Uses canonical https://schema.org/ namespace.
+
+schema:StatisticalVariable a owl:Class ;
+    rdfs:label "Statistical Variable"@en ;
+    rdfs:comment "A StatisticalVariable represents any type of statistical metric that can be measured at a place and time."@en .

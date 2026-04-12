@@ -1,0 +1,39 @@
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+# Minimal DCAT 3 extract for skygest-energy-vocab structural extension.
+# Source: W3C Data Catalog Vocabulary (DCAT) - Version 3
+# License: CC-BY 4.0
+# Extracted: 2026-04-12
+# Only the classes and properties needed by the sevocab data model.
+
+dcat:Resource a owl:Class ;
+    rdfs:label "Catalogued Resource"@en ;
+    rdfs:comment "Resource published or curated by a single agent."@en .
+
+dcat:Dataset a owl:Class ;
+    rdfs:subClassOf dcat:Resource ;
+    rdfs:label "Dataset"@en ;
+    rdfs:comment "A collection of data, published or curated by a single agent, and available for access or download in one or more representations."@en .
+
+dcat:Distribution a owl:Class ;
+    rdfs:label "Distribution"@en ;
+    rdfs:comment "A specific representation of a dataset. A dataset might be available in multiple serializations that may differ in various ways."@en .
+
+dcat:distribution a owl:ObjectProperty ;
+    rdfs:label "distribution"@en ;
+    rdfs:domain dcat:Dataset ;
+    rdfs:range dcat:Distribution ;
+    rdfs:comment "An available distribution of the dataset."@en .
+
+dcat:accessURL a owl:ObjectProperty ;
+    rdfs:label "access URL"@en ;
+    rdfs:domain dcat:Distribution ;
+    rdfs:comment "A URL of the resource that gives access to a distribution of the dataset."@en .
+
+dcat:mediaType a owl:ObjectProperty ;
+    rdfs:label "media type"@en ;
+    rdfs:domain dcat:Distribution ;
+    rdfs:comment "The media type of the distribution as defined by IANA."@en .

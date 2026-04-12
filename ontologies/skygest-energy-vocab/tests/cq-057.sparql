@@ -1,0 +1,9 @@
+# CQ-057: Is EnergyVariable a subclass of schema:StatisticalVariable?
+# Expected: non-empty (the subclass axiom exists)
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema: <https://schema.org/>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+SELECT ?class WHERE {
+  sevocab:EnergyVariable rdfs:subClassOf schema:StatisticalVariable .
+  BIND(sevocab:EnergyVariable AS ?class)
+}

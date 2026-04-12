@@ -1,0 +1,15 @@
+# CQ-060: Given a Variable, who is the publishing Agent?
+# Expected: non-empty (checks the full traversal path is declared)
+# Verifies: hasVariable exists AND publisher restriction on EnergyDataset exists
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+SELECT ?varProp ?pubProp WHERE {
+  sevocab:hasVariable a owl:ObjectProperty .
+  sevocab:EnergyDataset rdfs:subClassOf ?restriction .
+  ?restriction a owl:Restriction ;
+               owl:onProperty dct:publisher .
+  BIND(sevocab:hasVariable AS ?varProp)
+  BIND(dct:publisher AS ?pubProp)
+}

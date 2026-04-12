@@ -333,3 +333,103 @@ tests:
     type: SELECT
     expected_result: empty
     description: "Every active concept has at least 3 English surface forms"
+
+  # ==========================================================================
+  # DCAT Structural Extension (CQ-054 to CQ-068)
+  # Variable composition + DCAT chain + structural validation
+  # ==========================================================================
+
+  # Variable Composition (UC-DM-001)
+  - cq_id: CQ-054
+    file: cq-054.sparql
+    type: SELECT
+    expected_result: exactly_7
+    description: "Facet dimensions of EnergyVariable (7 qb:DimensionProperty)"
+
+  - cq_id: CQ-055
+    file: cq-055.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Code list for measuredProperty dimension"
+
+  - cq_id: CQ-056
+    file: cq-056.sparql
+    type: SELECT
+    expected_result: empty
+    description: "All facet dimensions typed as qb:DimensionProperty (no violations)"
+
+  - cq_id: CQ-057
+    file: cq-057.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "EnergyVariable is subclass of schema:StatisticalVariable"
+
+  # DCAT Chain (UC-DM-002, UC-DM-005)
+  - cq_id: CQ-058
+    file: cq-058.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "EnergyDataset has dct:publisher restriction to EnergyAgent"
+
+  - cq_id: CQ-059
+    file: cq-059.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "hasVariable property declared with domain/range"
+
+  - cq_id: CQ-060
+    file: cq-060.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Variable → Dataset → Agent traversal path declared"
+
+  - cq_id: CQ-061
+    file: cq-061.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "EnergyDataset is subclass of dcat:Dataset"
+
+  - cq_id: CQ-062
+    file: cq-062.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "EnergyAgent is subclass of foaf:Agent"
+
+  # Facet Completeness (UC-DM-003)
+  - cq_id: CQ-063
+    file: cq-063.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "measuredProperty has maxQualifiedCardinality 1"
+
+  - cq_id: CQ-064
+    file: cq-064.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Required facet dimensions (SHACL minCount > 0)"
+
+  # Dataset Discovery (UC-DM-004)
+  - cq_id: CQ-065
+    file: cq-065.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "EnergyDataset has dcat:distribution restriction"
+
+  - cq_id: CQ-066
+    file: cq-066.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "hasVariable domain/range check"
+
+  # Full Chain Traversal (UC-DM-005)
+  - cq_id: CQ-067
+    file: cq-067.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Full facet → Variable → Dataset → Agent chain declared"
+
+  - cq_id: CQ-068
+    file: cq-068.sparql
+    type: SELECT
+    expected_result: exactly_7
+    description: "DataStructureDefinition has exactly 7 components"

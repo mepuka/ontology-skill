@@ -1,0 +1,7 @@
+# CQ-055: Which ConceptScheme provides the code list for the measuredProperty dimension?
+# Expected: non-empty (MeasuredPropertyScheme)
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+SELECT ?codeList WHERE {
+  sevocab:measuredProperty qb:codeList ?codeList .
+}

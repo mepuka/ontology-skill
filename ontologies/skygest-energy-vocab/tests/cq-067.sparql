@@ -1,0 +1,19 @@
+# CQ-067: Can I traverse from facet value -> Variable -> Dataset -> Agent?
+# Expected: non-empty (checks all three links in the chain are declared)
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+SELECT ?facetProp ?varLink ?pubLink WHERE {
+  # Facet -> Variable: measuredProperty exists as a dimension
+  sevocab:measuredProperty a owl:ObjectProperty .
+  # Variable -> Dataset: hasVariable exists
+  sevocab:hasVariable a owl:ObjectProperty .
+  # Dataset -> Agent: publisher restriction exists
+  sevocab:EnergyDataset rdfs:subClassOf ?restriction .
+  ?restriction a owl:Restriction ;
+               owl:onProperty dct:publisher .
+  BIND(sevocab:measuredProperty AS ?facetProp)
+  BIND(sevocab:hasVariable AS ?varLink)
+  BIND(dct:publisher AS ?pubLink)
+}

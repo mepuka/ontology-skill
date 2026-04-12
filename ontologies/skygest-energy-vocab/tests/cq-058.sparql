@@ -1,0 +1,14 @@
+# CQ-058: What Datasets does a given Agent publish?
+# Expected: non-empty (requires ABox data)
+# NOTE: TBox-only test checks that the property chain is declared
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+SELECT ?domain ?range WHERE {
+  sevocab:EnergyDataset rdfs:subClassOf ?restriction .
+  ?restriction a owl:Restriction ;
+               owl:onProperty dct:publisher ;
+               owl:someValuesFrom ?range .
+  BIND(sevocab:EnergyDataset AS ?domain)
+}

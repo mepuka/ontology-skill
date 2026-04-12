@@ -1,0 +1,9 @@
+# CQ-056: Is each facet dimension a qb:DimensionProperty?
+# Expected: empty (no violations — all dimensions should be typed)
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+SELECT ?dimension WHERE {
+  sevocab:EnergyVariableStructure qb:component/qb:dimension ?dimension .
+  FILTER NOT EXISTS { ?dimension rdf:type qb:DimensionProperty }
+}

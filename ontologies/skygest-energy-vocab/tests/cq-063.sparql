@@ -1,0 +1,13 @@
+# CQ-063: Can an EnergyVariable have more than one value for measuredProperty?
+# Expected: non-empty (the max cardinality restriction exists)
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+SELECT ?maxCard WHERE {
+  sevocab:EnergyVariable rdfs:subClassOf ?restriction .
+  ?restriction a owl:Restriction ;
+               owl:onProperty sevocab:measuredProperty ;
+               owl:maxQualifiedCardinality ?maxCard .
+  FILTER (?maxCard = "1"^^xsd:nonNegativeInteger)
+}

@@ -1,0 +1,9 @@
+# CQ-054: What are the facet dimensions of an EnergyVariable?
+# Expected: exactly 7 rows (one per dimension)
+PREFIX qb: <http://purl.org/linked-data/cube#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+SELECT ?dimension ?codeList WHERE {
+  sevocab:EnergyVariableStructure qb:component ?comp .
+  ?comp qb:dimension ?dimension .
+  ?dimension qb:codeList ?codeList .
+}

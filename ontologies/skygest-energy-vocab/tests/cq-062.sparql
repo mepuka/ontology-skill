@@ -1,0 +1,9 @@
+# CQ-062: Is EnergyAgent a subclass of foaf:Agent?
+# Expected: non-empty
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+SELECT ?class WHERE {
+  sevocab:EnergyAgent rdfs:subClassOf foaf:Agent .
+  BIND(sevocab:EnergyAgent AS ?class)
+}

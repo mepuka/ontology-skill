@@ -1,0 +1,16 @@
+stakeholder_need,use_case_id,cq_id,ontology_terms,sparql_test
+"Compose Variable from matched facets",UC-DM-001,CQ-054,"EnergyVariable;EnergyVariableStructure;qb:component;qb:dimension;qb:codeList",tests/cq-054.sparql
+"Compose Variable from matched facets",UC-DM-001,CQ-055,"measuredProperty;qb:codeList;MeasuredPropertyScheme",tests/cq-055.sparql
+"Compose Variable from matched facets",UC-DM-001,CQ-056,"qb:DimensionProperty",tests/cq-056.sparql
+"Compose Variable from matched facets",UC-DM-001,CQ-057,"EnergyVariable;schema:StatisticalVariable",tests/cq-057.sparql
+"Disambiguate tied candidates via DCAT traversal",UC-DM-002,CQ-058,"EnergyDataset;EnergyAgent;dct:publisher",tests/cq-058.sparql
+"Disambiguate tied candidates via DCAT traversal",UC-DM-002,CQ-059,"hasVariable;EnergyDataset;EnergyVariable",tests/cq-059.sparql
+"Disambiguate tied candidates via DCAT traversal",UC-DM-002,CQ-060,"hasVariable;dct:publisher",tests/cq-060.sparql
+"Disambiguate tied candidates via DCAT traversal",UC-DM-002,CQ-061,"EnergyDataset;dcat:Dataset",tests/cq-061.sparql
+"Disambiguate tied candidates via DCAT traversal",UC-DM-002,CQ-062,"EnergyAgent;foaf:Agent",tests/cq-062.sparql
+"Validate Variable facet completeness",UC-DM-003,CQ-063,"EnergyVariable;measuredProperty;owl:maxQualifiedCardinality",tests/cq-063.sparql
+"Validate Variable facet completeness",UC-DM-003,CQ-064,"EnergyVariableShape;sh:minCount",tests/cq-064.sparql
+"Discover Variables within a Dataset",UC-DM-004,CQ-065,"EnergyDataset;dcat:distribution;dcat:Distribution",tests/cq-065.sparql
+"Discover Variables within a Dataset",UC-DM-004,CQ-066,"hasVariable;domain;range",tests/cq-066.sparql
+"Trace publishing chain for a Variable",UC-DM-005,CQ-067,"measuredProperty;hasVariable;dct:publisher",tests/cq-067.sparql
+"Trace publishing chain for a Variable",UC-DM-005,CQ-068,"EnergyVariableStructure;qb:DataStructureDefinition;qb:component",tests/cq-068.sparql

@@ -1,0 +1,10 @@
+# CQ-064: Which facet dimensions are required (SHACL minCount > 0)?
+# Expected: non-empty (at least measuredProperty and statisticType)
+PREFIX sh: <http://www.w3.org/ns/shacl#>
+PREFIX sevocab-shapes: <https://skygest.dev/vocab/energy/shapes/>
+SELECT ?property ?minCount WHERE {
+  sevocab-shapes:EnergyVariableShape sh:property ?propShape .
+  ?propShape sh:path ?property ;
+             sh:minCount ?minCount .
+  FILTER (?minCount > 0)
+}

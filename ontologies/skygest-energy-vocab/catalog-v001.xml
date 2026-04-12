@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+  <!-- Map import IRIs to local stub files -->
+  <uri id="dcat-extract"
+       name="https://skygest.dev/vocab/energy/imports/dcat-extract"
+       uri="imports/dcat-extract.ttl"/>
+  <uri id="datacube-extract"
+       name="https://skygest.dev/vocab/energy/imports/datacube-extract"
+       uri="imports/datacube-extract.ttl"/>
+  <uri id="schema-extract"
+       name="https://skygest.dev/vocab/energy/imports/schema-extract"
+       uri="imports/schema-extract.ttl"/>
+  <uri id="foaf-extract"
+       name="https://skygest.dev/vocab/energy/imports/foaf-extract"
+       uri="imports/foaf-extract.ttl"/>
+</catalog>
