@@ -1,0 +1,11 @@
+# CQ-008: Which unitFamily concept does 'GW' resolve to?
+# Expected: non_empty
+# Use case: UC-002
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?concept ?scheme WHERE {
+  ?concept skos:altLabel "GW"@en ;
+           skos:inScheme ?scheme .
+}

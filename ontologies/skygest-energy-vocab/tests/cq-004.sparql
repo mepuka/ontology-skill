@@ -1,0 +1,10 @@
+# CQ-004: Which ConceptScheme does a given concept belong to?
+# Expected: non_empty
+# Use case: UC-001
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?scheme WHERE {
+  sevocab:PowerUnit skos:inScheme ?scheme .
+}

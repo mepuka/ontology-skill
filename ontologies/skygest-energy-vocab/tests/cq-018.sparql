@@ -1,0 +1,13 @@
+# CQ-018: How many concepts exist per ConceptScheme?
+# Expected: non_empty
+# Use case: UC-005
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?scheme ?schemeLabel (COUNT(?concept) AS ?conceptCount) WHERE {
+  ?scheme a skos:ConceptScheme ;
+          skos:prefLabel ?schemeLabel .
+  ?concept skos:inScheme ?scheme .
+}
+GROUP BY ?scheme ?schemeLabel
+ORDER BY ?schemeLabel

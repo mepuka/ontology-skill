@@ -1,0 +1,11 @@
+# CQ-002: What canonical concept does a given surface form map to?
+# Expected: non_empty
+# Use case: UC-001
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?concept ?scheme WHERE {
+  ?concept skos:altLabel "installed capacity"@en ;
+           skos:inScheme ?scheme .
+}

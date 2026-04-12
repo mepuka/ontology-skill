@@ -1,0 +1,12 @@
+# CQ-005: What German surface forms exist for a given concept?
+# Expected: non_empty
+# Use case: UC-007
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?concept ?surfaceForm WHERE {
+  ?concept skos:altLabel ?surfaceForm .
+  FILTER(LANG(?surfaceForm) = "de")
+}
+ORDER BY ?concept ?surfaceForm

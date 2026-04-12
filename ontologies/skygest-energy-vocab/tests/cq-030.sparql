@@ -1,0 +1,37 @@
+# CQ-030: Vocabulary covers all closed-enum facet values from Variable schema
+# Expected: empty (every TypeScript enum member has a SKOS concept)
+# Use case: UC-005, UC-008
+# Source: skygest-cloudflare/src/domain/data-layer/variable.ts
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?facet ?missingValue WHERE {
+  VALUES (?facet ?missingValue ?scheme) {
+    ("statisticType" "stock" sevocab:StatisticTypeScheme)
+    ("statisticType" "flow" sevocab:StatisticTypeScheme)
+    ("statisticType" "price" sevocab:StatisticTypeScheme)
+    ("statisticType" "share" sevocab:StatisticTypeScheme)
+    ("statisticType" "count" sevocab:StatisticTypeScheme)
+    ("aggregation" "point" sevocab:AggregationScheme)
+    ("aggregation" "end_of_period" sevocab:AggregationScheme)
+    ("aggregation" "sum" sevocab:AggregationScheme)
+    ("aggregation" "average" sevocab:AggregationScheme)
+    ("aggregation" "max" sevocab:AggregationScheme)
+    ("aggregation" "min" sevocab:AggregationScheme)
+    ("aggregation" "settlement" sevocab:AggregationScheme)
+    ("unitFamily" "power" sevocab:UnitFamilyScheme)
+    ("unitFamily" "energy" sevocab:UnitFamilyScheme)
+    ("unitFamily" "currency" sevocab:UnitFamilyScheme)
+    ("unitFamily" "currency_per_energy" sevocab:UnitFamilyScheme)
+    ("unitFamily" "mass_co2e" sevocab:UnitFamilyScheme)
+    ("unitFamily" "intensity" sevocab:UnitFamilyScheme)
+    ("unitFamily" "dimensionless" sevocab:UnitFamilyScheme)
+    ("unitFamily" "other" sevocab:UnitFamilyScheme)
+  }
+  FILTER NOT EXISTS {
+    ?concept skos:inScheme ?scheme ;
+             skos:prefLabel ?label .
+    FILTER(STR(?label) = ?missingValue)
+  }
+}

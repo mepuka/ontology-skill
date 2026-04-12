@@ -1,0 +1,17 @@
+# CQ-007: What surface forms distinguish 'stock' from 'flow'?
+# Expected: non_empty
+# Use case: UC-002
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?concept ?surfaceForm WHERE {
+  VALUES ?concept { sevocab:Stock sevocab:Flow }
+  ?concept skos:altLabel ?surfaceForm .
+  FILTER NOT EXISTS {
+    VALUES ?other { sevocab:Stock sevocab:Flow }
+    ?other skos:altLabel ?surfaceForm .
+    FILTER(?other != ?concept)
+  }
+}
+ORDER BY ?concept ?surfaceForm

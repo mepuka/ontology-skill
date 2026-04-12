@@ -1,0 +1,177 @@
+# Skygest Energy Vocabulary — Use Cases
+# Derived from: docs/scope.md
+# Date: 2026-04-11
+
+use_cases:
+
+  - id: UC-001
+    name: "Decompose chart text into canonical facets"
+    actor: "Stage 2 resolver pipeline"
+    goal: >
+      Given a chart title, axis label, or source line, look up surface forms
+      in the vocabulary and return the matching canonical facet value(s) for
+      each of the five schemes (statisticType, aggregation, unitFamily,
+      technologyOrFuel, frequency).
+    preconditions:
+      - "Vocabulary JSON files are deployed to the Cloudflare Worker"
+      - "Chart text has been extracted from the media attachment"
+    main_flow:
+      - "Pipeline tokenizes chart text into candidate phrases"
+      - "For each phrase, pipeline queries surface form tables by normalized match"
+      - "Matching entries return canonical facet value + provenance"
+      - "Pipeline assembles partial Variable description from matched facets"
+    postconditions:
+      - "Zero or more facets are resolved with canonical values"
+      - "Unresolved facets are passed to Stage 3 with null + evidence"
+    related_cqs: []
+    priority: must_have
+
+  - id: UC-002
+    name: "Discriminate near-synonymous Variables"
+    actor: "Stage 2 resolver pipeline"
+    goal: >
+      Distinguish between Variable pairs that share surface forms but differ
+      in one or two facets (e.g., capacity vs generation, stock vs flow,
+      share vs absolute).
+    preconditions:
+      - "Multiple candidate Variables match the same chart text"
+      - "Vocabulary contains discriminator surface forms for each facet"
+    main_flow:
+      - "Pipeline detects ambiguity — multiple Variables match"
+      - "Pipeline checks for discriminator surface forms (e.g., 'GW' -> power -> capacity)"
+      - "unitFamily and statisticType surface forms break the tie"
+      - "If still ambiguous, pipeline emits both candidates with confidence scores"
+    postconditions:
+      - "A single Variable is selected, or ranked candidates are passed to Stage 3"
+    related_cqs: []
+    priority: must_have
+
+  - id: UC-003
+    name: "Provide evidence for Stage 3 LLM override"
+    actor: "Stage 3 LLM lane"
+    goal: >
+      Inspect what Stage 2 resolved (and what it could not resolve) so the
+      LLM can confirm, override, or fill in missing facets. Every surface
+      form entry must carry provenance and notes per H-S2-1 principle.
+    preconditions:
+      - "Stage 2 has produced a partial Variable resolution"
+      - "Surface form entries include provenance and notes fields"
+    main_flow:
+      - "LLM receives Stage 2's resolution plus the original chart text"
+      - "LLM inspects surface form evidence (which entries matched, their provenance)"
+      - "LLM confirms or overrides each facet, citing evidence"
+      - "For unresolved facets, LLM uses chart context + vocabulary evidence"
+    postconditions:
+      - "All seven facets are resolved (five from vocab, two from LLM)"
+      - "Override decisions are traceable to evidence"
+    related_cqs: []
+    priority: must_have
+
+  - id: UC-004
+    name: "Curate surface forms from new chart text"
+    actor: "Vocabulary maintainer"
+    goal: >
+      When new chart text is encountered that the current vocabulary cannot
+      resolve, add new surface form entries with appropriate provenance and
+      rebuild the JSON export.
+    preconditions:
+      - "Unresolved chart text has been identified (from eval or production)"
+      - "Maintainer has access to the ontology source and build pipeline"
+    main_flow:
+      - "Maintainer identifies the gap (missing surface form or concept)"
+      - "Maintainer adds altLabel to the appropriate SKOS concept"
+      - "Maintainer sets provenance (agent-curated or eval-feedback) and notes"
+      - "Build pipeline regenerates JSON export files"
+      - "Maintainer verifies the new entry resolves the previously-failing text"
+    postconditions:
+      - "New surface form is present in vocabulary and JSON export"
+      - "Provenance trail is complete"
+    related_cqs: []
+    priority: should_have
+
+  - id: UC-005
+    name: "Validate resolver accuracy against eval snapshot"
+    actor: "Eval / QA engineer"
+    goal: >
+      Run the 37-post eval snapshot against the current vocabulary and
+      measure resolution accuracy. Track which surface forms came from
+      eval feedback vs other sources.
+    preconditions:
+      - "Eval snapshot (37 posts with ground-truth Variable assignments) exists"
+      - "Current vocabulary JSON is built"
+    main_flow:
+      - "Engineer runs eval harness against current vocabulary"
+      - "Harness reports per-facet resolution rate and accuracy"
+      - "Engineer identifies false negatives (missing surface forms)"
+      - "Engineer identifies false positives (ambiguous surface forms)"
+      - "Gaps are filed as curation tasks (UC-004)"
+    postconditions:
+      - "Accuracy metrics are recorded"
+      - "Regression from prior eval is flagged"
+    related_cqs: []
+    priority: should_have
+
+  - id: UC-006
+    name: "Align vocabulary concepts to external standards"
+    actor: "Ontology engineer"
+    goal: >
+      Create and maintain SSSOM mappings between vocabulary concepts and
+      external ontologies (OEO, ENTSO-E, SIEC, QUDT, UCUM, ISO 4217,
+      Wikidata) for interoperability and surface form enrichment.
+    preconditions:
+      - "Vocabulary concepts are defined with stable IRIs"
+      - "Target external ontologies are accessible"
+    main_flow:
+      - "Engineer identifies alignment targets per concept scheme"
+      - "Engineer runs lexmatch or manual alignment"
+      - "Mappings are recorded in SSSOM format with justification"
+      - "Mapped external labels are harvested as additional altLabels with provenance"
+    postconditions:
+      - "SSSOM mapping file is valid and complete for target schemes"
+      - "Derived altLabels carry external-source provenance"
+    related_cqs: []
+    priority: should_have
+
+  - id: UC-007
+    name: "Match German-language chart text"
+    actor: "Stage 2 resolver pipeline"
+    goal: >
+      Resolve German surface forms from energy-charts.info posts to the
+      same canonical facet values as their English equivalents.
+    preconditions:
+      - "German altLabels are present in the vocabulary"
+      - "Chart text language has been detected or is known"
+    main_flow:
+      - "Pipeline encounters German chart text (e.g., 'Stromerzeugung')"
+      - "Pipeline matches against German altLabels in surface form tables"
+      - "Canonical value is the same as the English equivalent (e.g., flow)"
+    postconditions:
+      - "German chart text resolves to the same canonical as English"
+      - "Language tag is preserved in the match metadata"
+    related_cqs: []
+    priority: must_have
+
+  - id: UC-008
+    name: "Verify vocabulary covers cold-start Variable corpus"
+    actor: "Ontology engineer"
+    goal: >
+      Ensure the vocabulary's canonical concept list and surface forms
+      cover all facet values used by the 23 cold-start Variables in
+      skygest-cloudflare, and that the JSON export passes the
+      SurfaceFormEntry schema validation and buildVocabularyIndex()
+      collision check.
+    preconditions:
+      - "Cold-start variable definitions exist in skygest-cloudflare"
+      - "Vocabulary JSON files are built"
+    main_flow:
+      - "Engineer compares vocabulary canonical values against cold-start facet values"
+      - "Engineer runs JSON export against makeSurfaceFormEntry schema"
+      - "Engineer runs buildVocabularyIndex to check for collisions"
+      - "Engineer verifies normalizedSurfaceForm matches normalizeLookupText()"
+      - "Gaps are filed as curation tasks (UC-004)"
+    postconditions:
+      - "Every cold-start variable facet value has a matching vocabulary concept"
+      - "JSON export decodes without schema error"
+      - "No VocabularyCollisionError on index build"
+    related_cqs: []
+    priority: must_have

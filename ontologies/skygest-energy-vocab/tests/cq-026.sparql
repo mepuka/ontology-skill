@@ -1,0 +1,14 @@
+# CQ-026: No surface form collisions within a single ConceptScheme
+# Expected: empty (zero collisions)
+# Use case: UC-001, UC-008
+# Product constraint: buildVocabularyIndex() VocabularyCollisionError
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?scheme ?surfaceForm ?concept1 ?concept2 WHERE {
+  ?concept1 skos:altLabel ?surfaceForm ;
+            skos:inScheme ?scheme .
+  ?concept2 skos:altLabel ?surfaceForm ;
+            skos:inScheme ?scheme .
+  FILTER(?concept1 < ?concept2)
+}

@@ -1,0 +1,214 @@
+# Skygest Energy Vocabulary — Conceptual Model
+# Phase 3: Conceptualization
+# Date: 2026-04-11
+
+namespace: "https://skygest.dev/vocab/energy/"
+prefix: sevocab
+profile: OWL 2 DL (SKOS-heavy; minimal OWL class axiomatics)
+
+# ─────────────────────────────────────────────────────────────
+# Architecture Layers
+# ─────────────────────────────────────────────────────────────
+
+layers:
+  foundational:
+    description: >
+      Standard vocabularies used as-is. No project-specific extensions.
+    vocabularies:
+      - prefix: skos
+        role: "Core modeling vocabulary — ConceptScheme, Concept, labels, hierarchy, mapping"
+      - prefix: dcterms
+        role: "Metadata — source, created, modified"
+      - prefix: rdfs
+        role: "Labels — rdfs:label, rdfs:comment"
+      - prefix: owl
+        role: "Ontology header — versionIRI, imports"
+      - prefix: xsd
+        role: "Datatypes — xsd:string, xsd:date, xsd:anyURI"
+
+  domain_independent:
+    description: >
+      Reusable provenance pattern applicable beyond the energy domain.
+    modules:
+      - name: surface-form-provenance
+        description: "N-ary relation pattern for per-altLabel provenance tracking"
+        classes: [SurfaceFormEntry]
+        properties: [hasProvenanceAnnotation, surfaceFormValue, provenance]
+
+  domain_dependent:
+    description: >
+      Energy-domain concept schemes. Each scheme is a value partition of
+      one Variable facet from the skygest-cloudflare resolution kernel.
+    modules:
+      - name: statistic-type
+        scheme: StatisticTypeScheme
+        concepts: [Stock, Flow, Price, Share, Count]
+        hierarchy: flat
+        facet_type: "closed enum (Schema.Literals)"
+
+      - name: aggregation
+        scheme: AggregationScheme
+        concepts: [Point, EndOfPeriod, Sum, Average, Max, Min, Settlement]
+        hierarchy: flat
+        facet_type: "closed enum (Schema.Literals)"
+
+      - name: unit-family
+        scheme: UnitFamilyScheme
+        concepts: [Power, Energy, Currency, CurrencyPerEnergy, MassCo2e, Intensity, Dimensionless, Other]
+        hierarchy: flat
+        facet_type: "closed enum (Schema.Literals)"
+
+      - name: technology-or-fuel
+        scheme: TechnologyOrFuelScheme
+        concepts:
+          top_level:
+            - SolarPv
+            - Wind
+            - Battery
+            - Renewable
+            - Nuclear
+            - Coal
+            - HeatPump
+            - Hydrogen
+            - NaturalGas
+          narrower:
+            Wind: [OnshoreWind, OffshoreWind]
+            Coal: [BrownCoal]
+            NaturalGas: [GasCcgt]
+        hierarchy: "2-level (skos:broader); only scheme with hierarchy"
+        facet_type: "open string (curated canonical list)"
+
+  problem_specific:
+    description: >
+      Phase 2 extension for FixedDims frequency. Not consumed by
+      the current Stage 2 resolver.
+    modules:
+      - name: frequency
+        scheme: FrequencyScheme
+        concepts: [Hourly, Daily, Weekly, Monthly, Quarterly, Annual]
+        hierarchy: flat
+        priority: "Phase 2 / Could Have"
+
+# ─────────────────────────────────────────────────────────────
+# Taxonomy
+# ─────────────────────────────────────────────────────────────
+
+taxonomy:
+  description: >
+    This vocabulary uses SKOS, not OWL class subsumption, for its primary
+    structure. All energy concepts are skos:Concept individuals organized
+    into skos:ConceptScheme instances. The only OWL class in the project
+    ontology is SurfaceFormEntry.
+
+  owl_classes:
+    - name: SurfaceFormEntry
+      parent: "owl:Thing"
+      description: >
+        Reified N-ary annotation linking an altLabel string to its
+        provenance metadata. One instance per (concept, surfaceForm,
+        provenance) tuple.
+
+  skos_concept_schemes:
+    - StatisticTypeScheme
+    - AggregationScheme
+    - UnitFamilyScheme
+    - TechnologyOrFuelScheme
+    - FrequencyScheme  # Phase 2
+
+  skos_hierarchy:
+    # Only TechnologyOrFuelScheme has skos:broader relationships.
+    # All other schemes are flat.
+    Wind:
+      narrower: [OnshoreWind, OffshoreWind]
+    Coal:
+      narrower: [BrownCoal]
+    NaturalGas:
+      narrower: [GasCcgt]
+
+# ─────────────────────────────────────────────────────────────
+# Module Boundaries
+# ─────────────────────────────────────────────────────────────
+
+modules:
+  - file: "skygest-energy-vocab.ttl"
+    content: >
+      Ontology header, ConceptScheme declarations, all Concept individuals
+      with prefLabel/altLabel/definition/inScheme/broader, SurfaceFormEntry
+      class and property declarations.
+    estimated_triples: "~500-800"
+
+  - file: "skygest-energy-vocab-provenance.ttl"
+    content: >
+      SurfaceFormEntry A-box individuals — one per (concept, altLabel,
+      provenance) tuple. Separated from the main file to keep the T-box
+      clean and allow independent provenance updates.
+    estimated_triples: "~1500-2400 (3 triples per entry x 500-800 altLabels)"
+    note: >
+      Consider: this file may be generated by the build script rather
+      than hand-maintained. If provenance is tracked only in the JSON
+      export (not in RDF), this module can be omitted entirely.
+
+  - file: "mappings/sevocab-to-oeo.sssom.tsv"
+    content: "SSSOM mappings to OEO IRIs"
+
+  - file: "mappings/sevocab-to-entsoe.sssom.tsv"
+    content: "SSSOM mappings to ENTSO-E PSRType codes"
+
+  - file: "mappings/sevocab-to-wikidata.sssom.tsv"
+    content: "SSSOM mappings to Wikidata QIDs"
+
+  - file: "mappings/sevocab-to-qudt.sssom.tsv"
+    content: "SSSOM mappings to QUDT quantity kinds"
+
+# ─────────────────────────────────────────────────────────────
+# Key Design Decisions
+# ─────────────────────────────────────────────────────────────
+
+decisions:
+  - id: CD-001
+    title: "SKOS individuals, not OWL classes, for energy concepts"
+    rationale: >
+      The Worker consumes flat JSON, not OWL class expressions. The
+      concepts are reference-data entries in a lookup table, not types
+      that will be instantiated or reasoned over. SKOS individuals give
+      us labels, hierarchy, and mapping without OWL overhead.
+
+  - id: CD-002
+    title: "Single OWL class: SurfaceFormEntry"
+    rationale: >
+      The N-ary provenance pattern requires one reified class. All other
+      modeling is pure SKOS. This keeps the OWL footprint minimal and
+      avoids anti-pattern #14 (system blueprint instead of domain model).
+
+  - id: CD-003
+    title: "Provenance in RDF vs JSON-only"
+    rationale: >
+      CQ-012 through CQ-014 and CQ-028 require SPARQL-queryable
+      provenance. Therefore provenance must be in RDF, not only in the
+      JSON export. However, the provenance A-box module may be build-script
+      generated to avoid dual maintenance.
+    status: "Architect to decide implementation strategy"
+
+  - id: CD-004
+    title: "prefLabel values match TypeScript canonical strings"
+    rationale: >
+      The prefLabel of each concept must exactly match the canonical
+      string value expected by the TypeScript Schema.Literals enum (for
+      closed facets) or the curated canonical list (for technologyOrFuel).
+      E.g., prefLabel "stock", not "Stock" — lowercase to match the enum.
+    implication: >
+      This means prefLabel does not follow the naming convention of
+      lowercase-unless-proper-noun literally — the canonical strings
+      use snake_case for compound values (e.g., "end_of_period",
+      "currency_per_energy", "mass_co2e"). The concept IRI uses
+      CamelCase (e.g., sevocab:EndOfPeriod) but prefLabel matches the
+      TypeScript string.
+
+  - id: CD-005
+    title: "TechnologyOrFuel hierarchy is max 2 levels"
+    rationale: >
+      The resolver does exact and Jaccard-fuzzy matching, not transitive
+      hierarchy traversal. Deeper hierarchies add no resolver value and
+      complicate the build script. If a child concept matches, its
+      canonical value is returned directly (e.g., "offshore_wind"), not
+      its parent ("wind").

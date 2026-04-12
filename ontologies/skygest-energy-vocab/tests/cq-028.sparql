@@ -1,0 +1,15 @@
+# CQ-028: Notes required for agent-curated and eval-feedback provenance
+# Expected: empty (zero violations)
+# Use case: UC-003, UC-008
+# Product constraint: validateSurfaceFormEntry in surfaceForm.ts
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?concept ?surfaceForm ?provenance WHERE {
+  ?concept sevocab:hasProvenanceAnnotation ?anno .
+  ?anno sevocab:surfaceFormValue ?surfaceForm ;
+        sevocab:provenance ?provenance .
+  FILTER(?provenance IN ("agent-curated", "eval-feedback"))
+  FILTER NOT EXISTS { ?anno skos:note ?note }
+}

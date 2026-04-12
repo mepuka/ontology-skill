@@ -1,0 +1,16 @@
+#curie_map:
+#  sevocab: https://skygest.dev/vocab/energy/
+#  qudt: http://qudt.org/vocab/quantitykind/
+#  skos: http://www.w3.org/2004/02/skos/core#
+#  semapv: https://w3id.org/semapv/vocab/
+#mapping_set_id: https://skygest.dev/vocab/energy/mappings/sevocab-to-qudt
+#mapping_set_description: Mappings from Skygest Energy Vocabulary UnitFamily concepts to QUDT quantity kinds
+#license: https://creativecommons.org/licenses/by/4.0/
+#subject_source: https://skygest.dev/vocab/energy
+#object_source: http://qudt.org/vocab/quantitykind
+#mapping_date: 2026-04-11
+subject_id	subject_label	predicate_id	object_id	object_label	mapping_justification	confidence	comment
+sevocab:PowerUnit	power	skos:closeMatch	qudt:Power	Power	semapv:SemanticSimilarityThresholdMatching	0.85	sevocab models the unit family; QUDT models the quantity kind
+sevocab:EnergyUnit	energy	skos:closeMatch	qudt:Energy	Energy	semapv:SemanticSimilarityThresholdMatching	0.85	sevocab models the unit family; QUDT models the quantity kind
+sevocab:DimensionlessUnit	dimensionless	skos:closeMatch	qudt:DimensionlessRatio	Dimensionless Ratio	semapv:SemanticSimilarityThresholdMatching	0.80	QUDT has a more specific label but same domain
+sevocab:MassCo2eUnit	mass_co2e	skos:broadMatch	qudt:Mass	Mass	semapv:SemanticSimilarityThresholdMatching	0.65	sevocab is CO2-equivalent mass specifically; QUDT is generic mass

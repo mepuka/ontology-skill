@@ -1,0 +1,23 @@
+#curie_map:
+#  sevocab: https://skygest.dev/vocab/energy/
+#  OEO: http://purl.obolibrary.org/obo/OEO_
+#  skos: http://www.w3.org/2004/02/skos/core#
+#  semapv: https://w3id.org/semapv/vocab/
+#mapping_set_id: https://skygest.dev/vocab/energy/mappings/sevocab-to-oeo
+#mapping_set_description: Mappings from Skygest Energy Vocabulary TechnologyOrFuel concepts to Open Energy Ontology (OEO) classes
+#license: https://creativecommons.org/licenses/by/4.0/
+#subject_source: https://skygest.dev/vocab/energy
+#object_source: http://purl.obolibrary.org/obo/oeo.owl
+#mapping_date: 2026-04-11
+subject_id	subject_label	predicate_id	object_id	object_label	mapping_justification	confidence	comment
+sevocab:SolarPv	solar PV	skos:closeMatch	OEO:00000034	solar power unit	semapv:LexicalMatching	0.85	OEO models the power unit class; sevocab models the fuel/tech facet concept
+sevocab:Wind	wind	skos:closeMatch	OEO:00000043	wind	semapv:LexicalMatching	0.90	Exact label match; OEO models wind as a material entity (portion of matter)
+sevocab:Battery	battery	skos:closeMatch	OEO:00000068	battery	semapv:LexicalMatching	0.90	Exact label match; OEO models battery as a material entity
+sevocab:Renewable	renewable	skos:closeMatch	OEO:00030004	renewable	semapv:LexicalMatching	0.85	Exact label match; OEO uses this as a category marker
+sevocab:Nuclear	nuclear	skos:closeMatch	OEO:00010415	nuclear	semapv:LexicalMatching	0.90	Exact label match
+sevocab:Coal	coal	skos:closeMatch	OEO:00000088	coal	semapv:LexicalMatching	0.90	Exact label match; OEO models coal as an energy carrier
+sevocab:BrownCoal	brown coal	skos:closeMatch	OEO:00000251	lignite	semapv:LexicalMatching	0.85	Different preferred labels (brown coal vs lignite) but same referent
+sevocab:HeatPump	heat pump	skos:closeMatch	OEO:00000212	heat pump	semapv:LexicalMatching	0.90	Exact label match
+sevocab:Hydrogen	hydrogen	skos:closeMatch	OEO:00000220	hydrogen	semapv:LexicalMatching	0.90	Exact label match; OEO models hydrogen as a chemical substance
+sevocab:NaturalGas	natural gas	skos:closeMatch	OEO:00000292	natural gas	semapv:LexicalMatching	0.90	Exact label match; OEO models natural gas as an energy carrier
+sevocab:GasCcgt	gas CCGT	skos:closeMatch	OEO:00000185	gas turbine	semapv:SemanticSimilarityThresholdMatching	0.75	OEO has generic gas turbine; sevocab is specifically combined-cycle

@@ -1,0 +1,125 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix sevocab: <https://skygest.dev/vocab/energy/> .
+
+# ═══════════════════════════════════════════════════════════════
+# ConceptShape — validates every SKOS concept in the vocabulary
+# ═══════════════════════════════════════════════════════════════
+
+sevocab:ConceptShape a sh:NodeShape ;
+    sh:targetClass skos:Concept ;
+
+    # CQ-022: every concept must have a prefLabel
+    sh:property [
+        sh:path skos:prefLabel ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype rdf:langString ;
+        sh:name "preferred label" ;
+        sh:message "Every concept must have exactly one skos:prefLabel (CQ-022)"
+    ] ;
+
+    # CQ-024: every concept must have an rdfs:label
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 1 ;
+        sh:name "label" ;
+        sh:message "Every concept must have at least one rdfs:label (CQ-024)"
+    ] ;
+
+    # CQ-024: every concept must have a skos:definition
+    sh:property [
+        sh:path skos:definition ;
+        sh:minCount 1 ;
+        sh:name "definition" ;
+        sh:message "Every concept must have a skos:definition (CQ-024)"
+    ] ;
+
+    # CQ-015: every concept must have at least one altLabel
+    sh:property [
+        sh:path skos:altLabel ;
+        sh:minCount 1 ;
+        sh:name "surface form" ;
+        sh:message "Every concept must have at least one skos:altLabel surface form (CQ-015)"
+    ] ;
+
+    # CQ-023: every concept must belong to exactly one scheme
+    sh:property [
+        sh:path skos:inScheme ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:class skos:ConceptScheme ;
+        sh:name "scheme membership" ;
+        sh:message "Every concept must belong to exactly one ConceptScheme (CQ-023)"
+    ] .
+
+# ═══════════════════════════════════════════════════════════════
+# ConceptSchemeShape — validates ConceptScheme instances
+# ═══════════════════════════════════════════════════════════════
+
+sevocab:ConceptSchemeShape a sh:NodeShape ;
+    sh:targetClass skos:ConceptScheme ;
+
+    sh:property [
+        sh:path skos:prefLabel ;
+        sh:minCount 1 ;
+        sh:name "scheme label" ;
+        sh:message "Every ConceptScheme must have a skos:prefLabel"
+    ] ;
+
+    sh:property [
+        sh:path skos:definition ;
+        sh:minCount 1 ;
+        sh:name "scheme definition" ;
+        sh:message "Every ConceptScheme must have a skos:definition"
+    ] .
+
+# ═══════════════════════════════════════════════════════════════
+# SurfaceFormEntryShape — validates provenance annotations
+# ═══════════════════════════════════════════════════════════════
+
+sevocab:SurfaceFormEntryShape a sh:NodeShape ;
+    sh:targetClass sevocab:SurfaceFormEntry ;
+
+    # surfaceFormValue is required and functional
+    sh:property [
+        sh:path sevocab:surfaceFormValue ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:minLength 1 ;
+        sh:name "surface form value" ;
+        sh:message "SurfaceFormEntry must have exactly one non-empty surfaceFormValue"
+    ] ;
+
+    # provenance is required, functional, and constrained to 7 values
+    sh:property [
+        sh:path sevocab:provenance ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:datatype xsd:string ;
+        sh:in ( "cold-start-corpus" "hand-curated" "oeo-derived"
+                "ucum-derived" "wikidata-derived" "agent-curated"
+                "eval-feedback" ) ;
+        sh:name "provenance tag" ;
+        sh:message "SurfaceFormEntry must have exactly one valid provenance tag"
+    ] ;
+
+    # CQ-028: notes required for agent-curated and eval-feedback
+    sh:sparql [
+        a sh:SPARQLConstraint ;
+        sh:message "Notes are required when provenance is agent-curated or eval-feedback (CQ-028)" ;
+        sh:select """
+            PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+            SELECT $this WHERE {
+                $this sevocab:provenance ?prov .
+                FILTER(?prov IN ("agent-curated", "eval-feedback"))
+                FILTER NOT EXISTS { $this skos:note ?note }
+            }
+        """
+    ] .

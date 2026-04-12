@@ -1,0 +1,13 @@
+# CQ-025: What energy-news topic does a TechnologyOrFuel concept map to?
+# Expected: non_empty
+# Use case: UC-006
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+PREFIX enews: <https://skygest.dev/ontology/energy-news/>
+
+SELECT ?concept ?target WHERE {
+  ?concept skos:inScheme sevocab:TechnologyOrFuelScheme ;
+           skos:broadMatch ?target .
+  FILTER(STRSTARTS(STR(?target), STR(enews:)))
+}

@@ -1,0 +1,338 @@
+[
+  {
+    "concept_id": "sevocab:Nuclear",
+    "qid": "Q12739",
+    "surface_form": "nuclear power",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "rdfs:label"
+  },
+  {
+    "concept_id": "sevocab:Nuclear",
+    "qid": "Q12739",
+    "surface_form": "nuclear energy",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Nuclear",
+    "qid": "Q12739",
+    "surface_form": "atomic energy",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Nuclear",
+    "qid": "Q12739",
+    "surface_form": "atomic power",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Coal",
+    "qid": "Q24489",
+    "surface_form": "carbone",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:BrownCoal",
+    "qid": "Q29584410",
+    "surface_form": "mining of lignite",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "rdfs:label"
+  },
+  {
+    "concept_id": "sevocab:OnshoreWind",
+    "qid": "Q50687555",
+    "surface_form": "onshore wind farm",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "rdfs:label"
+  },
+  {
+    "concept_id": "sevocab:OffshoreWind",
+    "qid": "Q61637704",
+    "surface_form": "offshore wind power",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "rdfs:label"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "qid": "Q111191050",
+    "surface_form": "hydrogen fuel cell",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "rdfs:label"
+  },
+  {
+    "concept_id": "sevocab:Wind",
+    "qid": "Q43302",
+    "surface_form": "wind power",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "rdfs:label"
+  },
+  {
+    "concept_id": "sevocab:Wind",
+    "qid": "Q43302",
+    "surface_form": "wind power energy",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:SolarPv",
+    "qid": "Q192127",
+    "surface_form": "PV",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:SolarPv",
+    "qid": "Q192127",
+    "surface_form": "photovoltaic energy systems",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:SolarPv",
+    "qid": "Q192127",
+    "surface_form": "photovoltaic power systems",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Renewable",
+    "qid": "Q795757",
+    "surface_form": "renewable energy transition",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Battery",
+    "qid": "Q810924",
+    "surface_form": "BESS",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Battery",
+    "qid": "Q810924",
+    "surface_form": "battery energy storage plant",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Battery",
+    "qid": "Q810924",
+    "surface_form": "battery energy storage system",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Renewable",
+    "qid": "Q795757",
+    "surface_form": "energy transition",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "rdfs:label"
+  },
+  {
+    "concept_id": "sevocab:Coal",
+    "qid": "Q24489",
+    "surface_form": "coal",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "rdfs:label"
+  },
+  {
+    "concept_id": "sevocab:GasCcgt",
+    "qid": "Q900729",
+    "surface_form": "CC",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:GasCcgt",
+    "qid": "Q900729",
+    "surface_form": "CCPP",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:GasCcgt",
+    "qid": "Q900729",
+    "surface_form": "CCGT",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:GasCcgt",
+    "qid": "Q900729",
+    "surface_form": "combined cycle",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:GasCcgt",
+    "qid": "Q900729",
+    "surface_form": "combined cycle gas turbine",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:GasCcgt",
+    "qid": "Q900729",
+    "surface_form": "combined cycle power plant",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:HeatPump",
+    "qid": "Q1452596",
+    "surface_form": "heat recovery",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:HeatPump",
+    "qid": "Q1452596",
+    "surface_form": "refrigeration cycle",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:BrownCoal",
+    "qid": "Q29584410",
+    "surface_form": "05.2 Mining of lignite",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:BrownCoal",
+    "qid": "Q29584410",
+    "surface_form": "brown coal mining",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:BrownCoal",
+    "qid": "Q29584410",
+    "surface_form": "lignite mining",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:BrownCoal",
+    "qid": "Q29584410",
+    "surface_form": "NACE 05.2",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:OnshoreWind",
+    "qid": "Q50687555",
+    "surface_form": "onshore wind power plant",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:OnshoreWind",
+    "qid": "Q50687555",
+    "surface_form": "onshore wind power station",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:OnshoreWind",
+    "qid": "Q50687555",
+    "surface_form": "onshore wind turbines",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:OffshoreWind",
+    "qid": "Q61637704",
+    "surface_form": "offshore wind energy",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:OffshoreWind",
+    "qid": "Q61637704",
+    "surface_form": "offshorewind",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Battery",
+    "qid": "Q810924",
+    "surface_form": "battery storage power station",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "rdfs:label"
+  },
+  {
+    "concept_id": "sevocab:GasCcgt",
+    "qid": "Q900729",
+    "surface_form": "combined cycle power station",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "rdfs:label"
+  },
+  {
+    "concept_id": "sevocab:HeatPump",
+    "qid": "Q1452596",
+    "surface_form": "Heat pump and refrigeration cycle",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "rdfs:label"
+  },
+  {
+    "concept_id": "sevocab:NaturalGas",
+    "qid": "Q2287558",
+    "surface_form": "natural-gas processing",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "rdfs:label"
+  },
+  {
+    "concept_id": "sevocab:SolarPv",
+    "qid": "Q192127",
+    "surface_form": "photovoltaics",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "relation": "rdfs:label"
+  }
+]

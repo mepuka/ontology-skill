@@ -1,0 +1,16 @@
+# CQ-016: Which TechnologyOrFuel concepts lack German surface forms?
+# Expected: non_empty (some concepts may legitimately lack German forms)
+# Use case: UC-005
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?concept ?label WHERE {
+  ?concept skos:inScheme sevocab:TechnologyOrFuelScheme ;
+           skos:prefLabel ?label .
+  FILTER NOT EXISTS {
+    ?concept skos:altLabel ?de .
+    FILTER(LANG(?de) = "de")
+  }
+}
+ORDER BY ?label

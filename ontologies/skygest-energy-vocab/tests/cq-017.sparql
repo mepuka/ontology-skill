@@ -1,0 +1,13 @@
+# CQ-017: How many surface forms does each concept have?
+# Expected: non_empty
+# Use case: UC-005
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?concept ?label (COUNT(?alt) AS ?altCount) WHERE {
+  ?concept skos:inScheme ?scheme ;
+           skos:prefLabel ?label ;
+           skos:altLabel ?alt .
+}
+GROUP BY ?concept ?label
+ORDER BY DESC(?altCount)

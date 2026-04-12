@@ -1,0 +1,14 @@
+# CQ-006: Which concepts share the same surface form (ambiguous altLabels)?
+# Expected: non_empty
+# Use case: UC-002
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?surfaceForm ?concept1 ?concept2 ?scheme1 ?scheme2 WHERE {
+  ?concept1 skos:altLabel ?surfaceForm ;
+            skos:inScheme ?scheme1 .
+  ?concept2 skos:altLabel ?surfaceForm ;
+            skos:inScheme ?scheme2 .
+  FILTER(?concept1 < ?concept2)
+}
+ORDER BY ?surfaceForm

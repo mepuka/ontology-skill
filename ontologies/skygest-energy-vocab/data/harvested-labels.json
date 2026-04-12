@@ -1,0 +1,1192 @@
+[
+  {
+    "concept_id": "sevocab:SolarPv",
+    "concept_label": "solar PV",
+    "surface_form": "solar power unit",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000034",
+    "source_label": "solar power unit",
+    "relation": "skos:closeMatch"
+  },
+  {
+    "concept_id": "sevocab:SolarPv",
+    "concept_label": "solar PV",
+    "surface_form": "solar thermal power unit",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000035",
+    "source_label": "solar thermal power unit",
+    "relation": "descendant of OEO:00000034"
+  },
+  {
+    "concept_id": "sevocab:SolarPv",
+    "concept_label": "solar PV",
+    "surface_form": "field photovoltaic power plant",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000165",
+    "source_label": "field photovoltaic power plant",
+    "relation": "descendant of OEO:00000034"
+  },
+  {
+    "concept_id": "sevocab:SolarPv",
+    "concept_label": "solar PV",
+    "surface_form": "photovoltaic power plant",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000324",
+    "source_label": "photovoltaic power plant",
+    "relation": "descendant of OEO:00000034"
+  },
+  {
+    "concept_id": "sevocab:SolarPv",
+    "concept_label": "solar PV",
+    "surface_form": "PV panel",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000348",
+    "source_label": "PV panel",
+    "relation": "descendant of OEO:00000034"
+  },
+  {
+    "concept_id": "sevocab:SolarPv",
+    "concept_label": "solar PV",
+    "surface_form": "rooftop photovoltaic power plant",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000361",
+    "source_label": "rooftop photovoltaic power plant",
+    "relation": "descendant of OEO:00000034"
+  },
+  {
+    "concept_id": "sevocab:SolarPv",
+    "concept_label": "solar PV",
+    "surface_form": "solar power plant",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000386",
+    "source_label": "solar power plant",
+    "relation": "descendant of OEO:00000034"
+  },
+  {
+    "concept_id": "sevocab:SolarPv",
+    "concept_label": "solar PV",
+    "surface_form": "solar thermal power plant",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000389",
+    "source_label": "solar thermal power plant",
+    "relation": "descendant of OEO:00000034"
+  },
+  {
+    "concept_id": "sevocab:SolarPv",
+    "concept_label": "solar PV",
+    "surface_form": "solar power technology",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010427",
+    "source_label": "solar power technology",
+    "relation": "descendant of OEO:00000034"
+  },
+  {
+    "concept_id": "sevocab:SolarPv",
+    "concept_label": "solar PV",
+    "surface_form": "photovoltaic technology",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010428",
+    "source_label": "photovoltaic technology",
+    "relation": "descendant of OEO:00000034"
+  },
+  {
+    "concept_id": "sevocab:SolarPv",
+    "concept_label": "solar PV",
+    "surface_form": "solar thermal power technology",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010429",
+    "source_label": "solar thermal power technology",
+    "relation": "descendant of OEO:00000034"
+  },
+  {
+    "concept_id": "sevocab:SolarPv",
+    "concept_label": "solar PV",
+    "surface_form": "PERC panel",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00280011",
+    "source_label": "PERC panel",
+    "relation": "descendant of OEO:00000034"
+  },
+  {
+    "concept_id": "sevocab:Wind",
+    "concept_label": "wind",
+    "surface_form": "wind",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000043",
+    "source_label": "wind",
+    "relation": "skos:closeMatch"
+  },
+  {
+    "concept_id": "sevocab:Wind",
+    "concept_label": "wind",
+    "surface_form": "wind energy",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000446",
+    "source_label": "wind energy",
+    "relation": "descendant of OEO:00000043"
+  },
+  {
+    "concept_id": "sevocab:Battery",
+    "concept_label": "battery",
+    "surface_form": "battery",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000068",
+    "source_label": "battery",
+    "relation": "skos:closeMatch"
+  },
+  {
+    "concept_id": "sevocab:Battery",
+    "concept_label": "battery",
+    "surface_form": "flow battery",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000169",
+    "source_label": "flow battery",
+    "relation": "descendant of OEO:00000068"
+  },
+  {
+    "concept_id": "sevocab:Battery",
+    "concept_label": "battery",
+    "surface_form": "lithium-ion battery",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000248",
+    "source_label": "lithium-ion battery",
+    "relation": "descendant of OEO:00000068"
+  },
+  {
+    "concept_id": "sevocab:Battery",
+    "concept_label": "battery",
+    "surface_form": "liquid-metal battery",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000259",
+    "source_label": "liquid-metal battery",
+    "relation": "descendant of OEO:00000068"
+  },
+  {
+    "concept_id": "sevocab:Battery",
+    "concept_label": "battery",
+    "surface_form": "molten-salt battery",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000282",
+    "source_label": "molten-salt battery",
+    "relation": "descendant of OEO:00000068"
+  },
+  {
+    "concept_id": "sevocab:Battery",
+    "concept_label": "battery",
+    "surface_form": "sodium-ion battery",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000376",
+    "source_label": "sodium-ion battery",
+    "relation": "descendant of OEO:00000068"
+  },
+  {
+    "concept_id": "sevocab:Battery",
+    "concept_label": "battery",
+    "surface_form": "sodium-sulphur battery",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000377",
+    "source_label": "sodium-sulphur battery",
+    "relation": "descendant of OEO:00000068"
+  },
+  {
+    "concept_id": "sevocab:Battery",
+    "concept_label": "battery",
+    "surface_form": "traction battery",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010026",
+    "source_label": "traction battery",
+    "relation": "descendant of OEO:00000068"
+  },
+  {
+    "concept_id": "sevocab:Battery",
+    "concept_label": "battery",
+    "surface_form": "plug-in hybrid electric vehicle",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010030",
+    "source_label": "plug-in hybrid electric vehicle",
+    "relation": "descendant of OEO:00000068"
+  },
+  {
+    "concept_id": "sevocab:Battery",
+    "concept_label": "battery",
+    "surface_form": "e-bike",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010283",
+    "source_label": "e-bike",
+    "relation": "descendant of OEO:00000068"
+  },
+  {
+    "concept_id": "sevocab:Battery",
+    "concept_label": "battery",
+    "surface_form": "NMC battery",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00280012",
+    "source_label": "NMC battery",
+    "relation": "descendant of OEO:00000068"
+  },
+  {
+    "concept_id": "sevocab:Battery",
+    "concept_label": "battery",
+    "surface_form": "LFP battery",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00280013",
+    "source_label": "LFP battery",
+    "relation": "descendant of OEO:00000068"
+  },
+  {
+    "concept_id": "sevocab:Battery",
+    "concept_label": "battery",
+    "surface_form": "lead-acid battery",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00280014",
+    "source_label": "lead-acid battery",
+    "relation": "descendant of OEO:00000068"
+  },
+  {
+    "concept_id": "sevocab:Battery",
+    "concept_label": "battery",
+    "surface_form": "charging",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00320064",
+    "source_label": "charging",
+    "relation": "descendant of OEO:00000068"
+  },
+  {
+    "concept_id": "sevocab:Renewable",
+    "concept_label": "renewable",
+    "surface_form": "renewable",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00030004",
+    "source_label": "renewable",
+    "relation": "skos:closeMatch"
+  },
+  {
+    "concept_id": "sevocab:Renewable",
+    "concept_label": "renewable",
+    "surface_form": "geothermal energy",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000191",
+    "source_label": "geothermal energy",
+    "relation": "descendant of OEO:00030004"
+  },
+  {
+    "concept_id": "sevocab:Renewable",
+    "concept_label": "renewable",
+    "surface_form": "solar energy",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000384",
+    "source_label": "solar energy",
+    "relation": "descendant of OEO:00030004"
+  },
+  {
+    "concept_id": "sevocab:Renewable",
+    "concept_label": "renewable",
+    "surface_form": "solar thermal energy",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000388",
+    "source_label": "solar thermal energy",
+    "relation": "descendant of OEO:00030004"
+  },
+  {
+    "concept_id": "sevocab:Renewable",
+    "concept_label": "renewable",
+    "surface_form": "wind energy",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000446",
+    "source_label": "wind energy",
+    "relation": "descendant of OEO:00030004"
+  },
+  {
+    "concept_id": "sevocab:Renewable",
+    "concept_label": "renewable",
+    "surface_form": "marine thermal energy",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010095",
+    "source_label": "marine thermal energy",
+    "relation": "descendant of OEO:00030004"
+  },
+  {
+    "concept_id": "sevocab:Renewable",
+    "concept_label": "renewable",
+    "surface_form": "marine current energy",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010097",
+    "source_label": "marine current energy",
+    "relation": "descendant of OEO:00030004"
+  },
+  {
+    "concept_id": "sevocab:Renewable",
+    "concept_label": "renewable",
+    "surface_form": "marine tidal energy",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010100",
+    "source_label": "marine tidal energy",
+    "relation": "descendant of OEO:00030004"
+  },
+  {
+    "concept_id": "sevocab:Renewable",
+    "concept_label": "renewable",
+    "surface_form": "marine wave energy",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010102",
+    "source_label": "marine wave energy",
+    "relation": "descendant of OEO:00030004"
+  },
+  {
+    "concept_id": "sevocab:Renewable",
+    "concept_label": "renewable",
+    "surface_form": "solar electrical energy",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010419",
+    "source_label": "solar electrical energy",
+    "relation": "descendant of OEO:00030004"
+  },
+  {
+    "concept_id": "sevocab:Renewable",
+    "concept_label": "renewable",
+    "surface_form": "natural hydro energy",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00020087",
+    "source_label": "natural hydro energy",
+    "relation": "descendant of OEO:00030004"
+  },
+  {
+    "concept_id": "sevocab:Renewable",
+    "concept_label": "renewable",
+    "surface_form": "natural ambient thermal energy",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00140104",
+    "source_label": "natural ambient thermal energy",
+    "relation": "descendant of OEO:00030004"
+  },
+  {
+    "concept_id": "sevocab:Renewable",
+    "concept_label": "renewable",
+    "surface_form": "aerothermal energy",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00310006",
+    "source_label": "aerothermal energy",
+    "relation": "descendant of OEO:00030004"
+  },
+  {
+    "concept_id": "sevocab:Nuclear",
+    "concept_label": "nuclear",
+    "surface_form": "nuclear",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010415",
+    "source_label": "nuclear",
+    "relation": "skos:closeMatch"
+  },
+  {
+    "concept_id": "sevocab:Coal",
+    "concept_label": "coal",
+    "surface_form": "coal",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000088",
+    "source_label": "coal",
+    "relation": "skos:closeMatch"
+  },
+  {
+    "concept_id": "sevocab:Coal",
+    "concept_label": "coal",
+    "surface_form": "coal power unit",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000008",
+    "source_label": "coal power unit",
+    "relation": "descendant of OEO:00000088"
+  },
+  {
+    "concept_id": "sevocab:Coal",
+    "concept_label": "coal",
+    "surface_form": "hard coal power unit",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000021",
+    "source_label": "hard coal power unit",
+    "relation": "descendant of OEO:00000088"
+  },
+  {
+    "concept_id": "sevocab:Coal",
+    "concept_label": "coal",
+    "surface_form": "lignite power unit",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000024",
+    "source_label": "lignite power unit",
+    "relation": "descendant of OEO:00000088"
+  },
+  {
+    "concept_id": "sevocab:Coal",
+    "concept_label": "coal",
+    "surface_form": "anthracite",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000058",
+    "source_label": "anthracite",
+    "relation": "descendant of OEO:00000088"
+  },
+  {
+    "concept_id": "sevocab:Coal",
+    "concept_label": "coal",
+    "surface_form": "coking coal",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000094",
+    "source_label": "coking coal",
+    "relation": "descendant of OEO:00000088"
+  },
+  {
+    "concept_id": "sevocab:Coal",
+    "concept_label": "coal",
+    "surface_form": "hard coal",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000204",
+    "source_label": "hard coal",
+    "relation": "descendant of OEO:00000088"
+  },
+  {
+    "concept_id": "sevocab:Coal",
+    "concept_label": "coal",
+    "surface_form": "lignite",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000251",
+    "source_label": "lignite",
+    "relation": "descendant of OEO:00000088"
+  },
+  {
+    "concept_id": "sevocab:Coal",
+    "concept_label": "coal",
+    "surface_form": "sub bituminous coal",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000401",
+    "source_label": "sub bituminous coal",
+    "relation": "descendant of OEO:00000088"
+  },
+  {
+    "concept_id": "sevocab:BrownCoal",
+    "concept_label": "brown coal",
+    "surface_form": "lignite",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000251",
+    "source_label": "lignite",
+    "relation": "skos:closeMatch"
+  },
+  {
+    "concept_id": "sevocab:BrownCoal",
+    "concept_label": "brown coal",
+    "surface_form": "lignite power unit",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000024",
+    "source_label": "lignite power unit",
+    "relation": "descendant of OEO:00000251"
+  },
+  {
+    "concept_id": "sevocab:HeatPump",
+    "concept_label": "heat pump",
+    "surface_form": "heat pump",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000212",
+    "source_label": "heat pump",
+    "relation": "skos:closeMatch"
+  },
+  {
+    "concept_id": "sevocab:HeatPump",
+    "concept_label": "heat pump",
+    "surface_form": "electric heat pump",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000009",
+    "source_label": "electric heat pump",
+    "relation": "descendant of OEO:00000212"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "hydrogen",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000220",
+    "source_label": "hydrogen",
+    "relation": "skos:closeMatch"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "hydrogen power unit",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000022",
+    "source_label": "hydrogen power unit",
+    "relation": "descendant of OEO:00000220"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "hydrogen turbine",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000222",
+    "source_label": "hydrogen turbine",
+    "relation": "descendant of OEO:00000220"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "underground hydrogen storage object",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000429",
+    "source_label": "underground hydrogen storage object",
+    "relation": "descendant of OEO:00000220"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "fossil hydrogen",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010015",
+    "source_label": "fossil hydrogen",
+    "relation": "descendant of OEO:00000220"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "synthetic hydrogen",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010016",
+    "source_label": "synthetic hydrogen",
+    "relation": "descendant of OEO:00000220"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "water electrolyser",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010021",
+    "source_label": "water electrolyser",
+    "relation": "descendant of OEO:00000220"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "fuel cell electric vehicle",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010025",
+    "source_label": "fuel cell electric vehicle",
+    "relation": "descendant of OEO:00000220"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "water electrolysis process",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010219",
+    "source_label": "water electrolysis process",
+    "relation": "descendant of OEO:00000220"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "methanation",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010220",
+    "source_label": "methanation",
+    "relation": "descendant of OEO:00000220"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "refinery gas",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010326",
+    "source_label": "refinery gas",
+    "relation": "descendant of OEO:00000220"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "electrolytic hydrogen",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010379",
+    "source_label": "electrolytic hydrogen",
+    "relation": "descendant of OEO:00000220"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "renewable electrolytic hydrogen",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010380",
+    "source_label": "renewable electrolytic hydrogen",
+    "relation": "descendant of OEO:00000220"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "steam reforming hydrogen",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010381",
+    "source_label": "steam reforming hydrogen",
+    "relation": "descendant of OEO:00000220"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "fossil steam reforming hydrogen",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010382",
+    "source_label": "fossil steam reforming hydrogen",
+    "relation": "descendant of OEO:00000220"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "abated steam reforming hydrogen",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010383",
+    "source_label": "abated steam reforming hydrogen",
+    "relation": "descendant of OEO:00000220"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "nuclear electric hydrogen",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010416",
+    "source_label": "nuclear electric hydrogen",
+    "relation": "descendant of OEO:00000220"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "solar electrolytic hydrogen",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010418",
+    "source_label": "solar electrolytic hydrogen",
+    "relation": "descendant of OEO:00000220"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "hydrogen fuel cell",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00140134",
+    "source_label": "hydrogen fuel cell",
+    "relation": "descendant of OEO:00000220"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "syngas",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00140160",
+    "source_label": "syngas",
+    "relation": "descendant of OEO:00000220"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "hydrogen transport",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00320060",
+    "source_label": "hydrogen transport",
+    "relation": "descendant of OEO:00000220"
+  },
+  {
+    "concept_id": "sevocab:NaturalGas",
+    "concept_label": "natural gas",
+    "surface_form": "natural gas",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000292",
+    "source_label": "natural gas",
+    "relation": "skos:closeMatch"
+  },
+  {
+    "concept_id": "sevocab:NaturalGas",
+    "concept_label": "natural gas",
+    "surface_form": "associated gas",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000062",
+    "source_label": "associated gas",
+    "relation": "descendant of OEO:00000292"
+  },
+  {
+    "concept_id": "sevocab:NaturalGas",
+    "concept_label": "natural gas",
+    "surface_form": "colliery gas",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000096",
+    "source_label": "colliery gas",
+    "relation": "descendant of OEO:00000292"
+  },
+  {
+    "concept_id": "sevocab:NaturalGas",
+    "concept_label": "natural gas",
+    "surface_form": "non associated gas",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000297",
+    "source_label": "non associated gas",
+    "relation": "descendant of OEO:00000292"
+  },
+  {
+    "concept_id": "sevocab:NaturalGas",
+    "concept_label": "natural gas",
+    "surface_form": "liquefied natural gas",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010237",
+    "source_label": "liquefied natural gas",
+    "relation": "descendant of OEO:00000292"
+  },
+  {
+    "concept_id": "sevocab:NaturalGas",
+    "concept_label": "natural gas",
+    "surface_form": "natural gas turbine",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00140135",
+    "source_label": "natural gas turbine",
+    "relation": "descendant of OEO:00000292"
+  },
+  {
+    "concept_id": "sevocab:NaturalGas",
+    "concept_label": "natural gas",
+    "surface_form": "compressed natural gas",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00320012",
+    "source_label": "compressed natural gas",
+    "relation": "descendant of OEO:00000292"
+  },
+  {
+    "concept_id": "sevocab:GasCcgt",
+    "concept_label": "gas CCGT",
+    "surface_form": "gas turbine",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000185",
+    "source_label": "gas turbine",
+    "relation": "skos:closeMatch"
+  },
+  {
+    "concept_id": "sevocab:GasCcgt",
+    "concept_label": "gas CCGT",
+    "surface_form": "hydrogen power unit",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000022",
+    "source_label": "hydrogen power unit",
+    "relation": "descendant of OEO:00000185"
+  },
+  {
+    "concept_id": "sevocab:GasCcgt",
+    "concept_label": "gas CCGT",
+    "surface_form": "hydrogen turbine",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00000222",
+    "source_label": "hydrogen turbine",
+    "relation": "descendant of OEO:00000185"
+  },
+  {
+    "concept_id": "sevocab:GasCcgt",
+    "concept_label": "gas CCGT",
+    "surface_form": "jet fuel turbine",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010303",
+    "source_label": "jet fuel turbine",
+    "relation": "descendant of OEO:00000185"
+  },
+  {
+    "concept_id": "sevocab:GasCcgt",
+    "concept_label": "gas CCGT",
+    "surface_form": "gas turbine compressor station",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00010482",
+    "source_label": "gas turbine compressor station",
+    "relation": "descendant of OEO:00000185"
+  },
+  {
+    "concept_id": "sevocab:GasCcgt",
+    "concept_label": "gas CCGT",
+    "surface_form": "natural gas turbine",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00140135",
+    "source_label": "natural gas turbine",
+    "relation": "descendant of OEO:00000185"
+  },
+  {
+    "concept_id": "sevocab:GasCcgt",
+    "concept_label": "gas CCGT",
+    "surface_form": "gas turbine process",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "OEO:00310027",
+    "source_label": "gas turbine process",
+    "relation": "descendant of OEO:00000185"
+  },
+  {
+    "concept_id": "sevocab:GasCcgt",
+    "concept_label": "gas CCGT",
+    "surface_form": "None",
+    "language": "en",
+    "provenance": "oeo-derived",
+    "source_id": "https://openenergyplatform.org/ontology/oeo/oeo-physical/OEO_00080003",
+    "source_label": "None",
+    "relation": "descendant of OEO:00000185"
+  },
+  {
+    "concept_id": "sevocab:Hydrogen",
+    "concept_label": "hydrogen",
+    "surface_form": "element 1",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q556",
+    "source_label": "element 1",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:NaturalGas",
+    "concept_label": "natural gas",
+    "surface_form": "agriculture",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q11451",
+    "source_label": "agriculture",
+    "relation": "rdfs:label"
+  },
+  {
+    "concept_id": "sevocab:NaturalGas",
+    "concept_label": "natural gas",
+    "surface_form": "plant agriculture",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q11451",
+    "source_label": "plant agriculture",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Renewable",
+    "concept_label": "renewable",
+    "surface_form": "renewable energy",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q12705",
+    "source_label": "renewable energy",
+    "relation": "rdfs:label"
+  },
+  {
+    "concept_id": "sevocab:Renewable",
+    "concept_label": "renewable",
+    "surface_form": "bioenergy",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q12705",
+    "source_label": "bioenergy",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Renewable",
+    "concept_label": "renewable",
+    "surface_form": "green energy",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q12705",
+    "source_label": "green energy",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Nuclear",
+    "concept_label": "nuclear",
+    "surface_form": "nuclear power",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q12739",
+    "source_label": "nuclear power",
+    "relation": "rdfs:label"
+  },
+  {
+    "concept_id": "sevocab:Nuclear",
+    "concept_label": "nuclear",
+    "surface_form": "nuclear energy",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q12739",
+    "source_label": "nuclear energy",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Nuclear",
+    "concept_label": "nuclear",
+    "surface_form": "atomic energy",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q12739",
+    "source_label": "atomic energy",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Nuclear",
+    "concept_label": "nuclear",
+    "surface_form": "atomic power",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q12739",
+    "source_label": "atomic power",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Coal",
+    "concept_label": "coal",
+    "surface_form": "carbone",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q24489",
+    "source_label": "carbone",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Wind",
+    "concept_label": "wind",
+    "surface_form": "wind farm",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q194356",
+    "source_label": "wind farm",
+    "relation": "rdfs:label"
+  },
+  {
+    "concept_id": "sevocab:Wind",
+    "concept_label": "wind",
+    "surface_form": "wind power station",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q194356",
+    "source_label": "wind power station",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Wind",
+    "concept_label": "wind",
+    "surface_form": "wind park",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q194356",
+    "source_label": "wind park",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Wind",
+    "concept_label": "wind",
+    "surface_form": "wind power plant",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q194356",
+    "source_label": "wind power plant",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Wind",
+    "concept_label": "wind",
+    "surface_form": "windfarm",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q194356",
+    "source_label": "windfarm",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Wind",
+    "concept_label": "wind",
+    "surface_form": "windpark",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q194356",
+    "source_label": "windpark",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Wind",
+    "concept_label": "wind",
+    "surface_form": "wind energy site",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q194356",
+    "source_label": "wind energy site",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Battery",
+    "concept_label": "battery",
+    "surface_form": "electric battery",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q267298",
+    "source_label": "electric battery",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:SolarPv",
+    "concept_label": "solar PV",
+    "surface_form": "amusement park",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q194195",
+    "source_label": "amusement park",
+    "relation": "rdfs:label"
+  },
+  {
+    "concept_id": "sevocab:SolarPv",
+    "concept_label": "solar PV",
+    "surface_form": "funfair",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q194195",
+    "source_label": "funfair",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:SolarPv",
+    "concept_label": "solar PV",
+    "surface_form": "roller coaster park",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q194195",
+    "source_label": "roller coaster park",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:Battery",
+    "concept_label": "battery",
+    "surface_form": "electrical battery",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q267298",
+    "source_label": "electrical battery",
+    "relation": "skos:altLabel"
+  },
+  {
+    "concept_id": "sevocab:HeatPump",
+    "concept_label": "heat pump",
+    "surface_form": "Babylon Tower",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q148490",
+    "source_label": "Babylon Tower",
+    "relation": "rdfs:label"
+  },
+  {
+    "concept_id": "sevocab:BrownCoal",
+    "concept_label": "brown coal",
+    "surface_form": "Hooke's law",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q170282",
+    "source_label": "Hooke's law",
+    "relation": "rdfs:label"
+  },
+  {
+    "concept_id": "sevocab:GasCcgt",
+    "concept_label": "gas CCGT",
+    "surface_form": "Cr\u00fcger",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q1142589",
+    "source_label": "Cr\u00fcger",
+    "relation": "rdfs:label"
+  },
+  {
+    "concept_id": "sevocab:OffshoreWind",
+    "concept_label": "offshore wind",
+    "surface_form": "curry powder",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q1144935",
+    "source_label": "curry powder",
+    "relation": "rdfs:label"
+  },
+  {
+    "concept_id": "sevocab:OnshoreWind",
+    "concept_label": "onshore wind",
+    "surface_form": "1991 in Europe",
+    "language": "en",
+    "provenance": "wikidata-derived",
+    "source_id": "wikidata:Q2813071",
+    "source_label": "1991 in Europe",
+    "relation": "rdfs:label"
+  }
+]

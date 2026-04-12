@@ -1,0 +1,13 @@
+# CQ-014: Which surface forms were derived from a specific external source?
+# Expected: non_empty
+# Use case: UC-003
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?concept ?surfaceForm WHERE {
+  ?concept sevocab:hasProvenanceAnnotation ?anno .
+  ?anno sevocab:surfaceFormValue ?surfaceForm ;
+        sevocab:provenance "oeo-derived" .
+}
+ORDER BY ?concept ?surfaceForm

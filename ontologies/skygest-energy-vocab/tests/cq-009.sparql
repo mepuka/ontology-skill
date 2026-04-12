@@ -1,0 +1,12 @@
+# CQ-009: What are the narrower concepts of a given technology concept?
+# Expected: non_empty
+# Use case: UC-001
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?narrower ?label WHERE {
+  ?narrower skos:broader sevocab:Wind ;
+            skos:prefLabel ?label .
+}
+ORDER BY ?label

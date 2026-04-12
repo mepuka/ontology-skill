@@ -1,0 +1,16 @@
+# CQ-020: What QUDT unit does a UnitFamily concept relate to?
+# Expected: non_empty
+# Use case: UC-006
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?concept ?mappingProp ?target WHERE {
+  ?concept skos:inScheme sevocab:UnitFamilyScheme .
+  VALUES ?mappingProp {
+    skos:exactMatch skos:closeMatch skos:broadMatch
+  }
+  ?concept ?mappingProp ?target .
+  FILTER(STRSTARTS(STR(?target), "http://qudt.org/"))
+}
+ORDER BY ?concept

@@ -9,9 +9,11 @@ decomposes chart titles, axis labels, and source lines into seven-facet
 Variable descriptions. This ontology provides the surface-form-to-canonical
 mappings that power that decomposition.
 
-Five facets are attacked by Stage 2's deterministic table lookup. Each becomes
-a SKOS ConceptScheme whose concepts carry `skos:altLabel` values representing
-the surface forms found in real chart text (English and German).
+Four of the seven facets are attacked by Stage 2's deterministic table
+lookup. Each becomes a SKOS ConceptScheme whose concepts carry
+`skos:altLabel` values representing the surface forms found in real chart
+text (English and German). A fifth scheme (frequency) is planned for Phase 2
+when Series-level FixedDims support is added.
 
 ## Intended Use Cases
 
@@ -58,7 +60,9 @@ the surface forms found in real chart text (English and German).
 
 ## In Scope
 
-### Five SKOS ConceptSchemes
+### Four Core SKOS ConceptSchemes (Variable facets)
+
+These map 1:1 to the four facets Stage 2 attacks via deterministic lookup:
 
 1. **StatisticTypeScheme** — 5 concepts: `stock`, `flow`, `price`, `share`,
    `count`. Surface forms map chart language to the type of quantity measured.
@@ -80,10 +84,18 @@ the surface forms found in real chart text (English and German).
    "CCGT" -> gas_ccgt, "offshore wind" -> offshore_wind, "lignite" ->
    brown_coal. Hierarchy follows OEO structure (energy carriers, power
    generating units) enriched with ENTSO-E, SIEC, and Wikidata synonyms.
+   Unlike the other three schemes, `technologyOrFuel` is an open
+   `Schema.String` in the Variable schema — this vocabulary defines the
+   curated canonical list.
+
+### Phase 2 Extension Scheme (FixedDims, not Variable facet)
 
 5. **FrequencyScheme** — 6 concepts: `hourly`, `daily`, `weekly`, `monthly`,
    `quarterly`, `annual`. Surface forms from x-axis labels and temporal
    qualifiers. Examples: "monthly data" -> monthly, "Q1 2024" -> quarterly.
+   > **Note**: Frequency is not a Variable facet. It belongs to the
+   > Series-level FixedDims model. This scheme is planned for Phase 2
+   > when the resolver expands beyond Variable decomposition.
 
 ### Cross-ontology mappings (SSSOM)
 
@@ -105,14 +117,32 @@ references/vocabulary/statistic-type.json
 references/vocabulary/aggregation.json
 references/vocabulary/unit-family.json
 references/vocabulary/technology-or-fuel.json
-references/vocabulary/frequency.json
+references/vocabulary/frequency.json          # Phase 2 — FixedDims, not Variable facet
 ```
 
 Each row has: `surfaceForm`, `normalizedSurfaceForm`, `canonical`,
-`provenance` (one of: cold-start-corpus, hand-curated, oeo-derived,
-ucum-derived, entsoe-derived, siec-derived, qudt-derived, iso4217-derived,
-wikidata-derived, agent-curated, eval-feedback), `notes` (required for
-agent-curated and eval-feedback), `addedAt`, optional `source`.
+`provenance` (one of: `cold-start-corpus`, `hand-curated`, `oeo-derived`,
+`ucum-derived`, `wikidata-derived`, `agent-curated`, `eval-feedback`),
+`notes` (required when provenance is `agent-curated` or `eval-feedback`),
+`addedAt`, optional `source`.
+
+> **Note**: The `SurfaceFormProvenance` enum in `skygest-cloudflare` defines
+> exactly these 7 values (SKY-305 added `wikidata-derived`). Additional
+> provenance tags (e.g., `entsoe-derived`, `qudt-derived`) would require a
+> code change to `src/domain/surfaceForm.ts`.
+
+### Normalization contract
+
+`normalizedSurfaceForm` must exactly equal
+`normalizeLookupText(surfaceForm)` — i.e., Unicode NFKC normalization,
+collapse whitespace, lowercase. The build script must enforce this invariant.
+
+### Collision constraint
+
+`buildVocabularyIndex()` raises `VocabularyCollisionError` if two different
+canonical values claim the same `normalizedSurfaceForm` within a single
+vocabulary file. The ontology must not produce surface forms that violate
+this constraint.
 
 ## Out of Scope
 
@@ -126,7 +156,7 @@ agent-curated and eval-feedback), `addedAt`, optional `source`.
 ## Constraints
 
 - **Profile**: OWL 2 DL (primarily SKOS concept schemes with annotation properties)
-- **Size**: Small (~80-100 SKOS concepts across 5 schemes, ~500-800 altLabels)
+- **Size**: Small (~60-80 SKOS concepts across 4 core schemes, ~400-700 altLabels; +6 frequency concepts in Phase 2)
 - **Serialization**: Turtle (.ttl)
 - **Upper ontology**: Minimal BFO alignment where natural (inherits from energy-news)
 - **Naming**: CamelCase concepts, English labels as primary, German altLabels for energy-charts.info surface forms

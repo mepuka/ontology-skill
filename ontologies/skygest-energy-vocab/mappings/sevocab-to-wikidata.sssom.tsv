@@ -1,0 +1,25 @@
+#curie_map:
+#  sevocab: https://skygest.dev/vocab/energy/
+#  wikidata: http://www.wikidata.org/entity/
+#  skos: http://www.w3.org/2004/02/skos/core#
+#  semapv: https://w3id.org/semapv/vocab/
+#mapping_set_id: https://skygest.dev/vocab/energy/mappings/sevocab-to-wikidata
+#mapping_set_description: Mappings from Skygest Energy Vocabulary concepts to Wikidata entities for label harvesting and interoperability
+#license: https://creativecommons.org/licenses/by/4.0/
+#subject_source: https://skygest.dev/vocab/energy
+#object_source: http://www.wikidata.org
+#mapping_date: 2026-04-11
+subject_id	subject_label	predicate_id	object_id	object_label	mapping_justification	confidence	comment
+sevocab:SolarPv	solar PV	skos:closeMatch	wikidata:Q194195	photovoltaic power station	semapv:SemanticSimilarityThresholdMatching	0.80	Wikidata models the station; sevocab models the technology facet
+sevocab:Wind	wind	skos:closeMatch	wikidata:Q194356	wind farm	semapv:SemanticSimilarityThresholdMatching	0.75	Wikidata models the farm/installation; sevocab models the energy source
+sevocab:OnshoreWind	onshore wind	skos:closeMatch	wikidata:Q2813071	onshore wind farm	semapv:SemanticSimilarityThresholdMatching	0.80	Close match — Wikidata is installation-level
+sevocab:OffshoreWind	offshore wind	skos:closeMatch	wikidata:Q1144935	offshore wind farm	semapv:SemanticSimilarityThresholdMatching	0.80	Close match — Wikidata is installation-level
+sevocab:Battery	battery	skos:closeMatch	wikidata:Q267298	rechargeable battery	semapv:SemanticSimilarityThresholdMatching	0.80	Wikidata is the device; sevocab is the technology facet
+sevocab:Nuclear	nuclear	skos:closeMatch	wikidata:Q12739	nuclear power	semapv:LexicalMatching	0.90	Good conceptual alignment
+sevocab:Coal	coal	skos:closeMatch	wikidata:Q24489	coal	semapv:LexicalMatching	0.85	Wikidata models the substance; sevocab models the fuel facet
+sevocab:BrownCoal	brown coal	skos:closeMatch	wikidata:Q170282	lignite	semapv:LexicalMatching	0.85	Different preferred label; same referent
+sevocab:HeatPump	heat pump	skos:closeMatch	wikidata:Q148490	heat pump	semapv:LexicalMatching	0.90	Exact label match
+sevocab:Hydrogen	hydrogen	skos:closeMatch	wikidata:Q556	hydrogen	semapv:LexicalMatching	0.85	Wikidata models the element; sevocab models the tech/fuel facet
+sevocab:NaturalGas	natural gas	skos:closeMatch	wikidata:Q11451	natural gas	semapv:LexicalMatching	0.90	Good conceptual alignment
+sevocab:Renewable	renewable	skos:closeMatch	wikidata:Q12705	renewable energy	semapv:LexicalMatching	0.85	Wikidata has broader scope (includes heat, transport)
+sevocab:GasCcgt	gas CCGT	skos:closeMatch	wikidata:Q1142589	combined cycle	semapv:SemanticSimilarityThresholdMatching	0.80	Wikidata is the thermodynamic cycle; sevocab is the plant type

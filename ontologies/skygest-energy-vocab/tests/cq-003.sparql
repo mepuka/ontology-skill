@@ -1,0 +1,12 @@
+# CQ-003: What surface forms (altLabels) exist for a given canonical concept?
+# Expected: non_empty
+# Use case: UC-001
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?surfaceForm ?lang WHERE {
+  sevocab:SolarPv skos:altLabel ?surfaceForm .
+  BIND(LANG(?surfaceForm) AS ?lang)
+}
+ORDER BY ?lang ?surfaceForm

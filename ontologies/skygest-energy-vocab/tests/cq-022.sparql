@@ -1,0 +1,11 @@
+# CQ-022: Does every concept with altLabels have a prefLabel (canonical value)?
+# Expected: empty (zero violations)
+# Use case: UC-001
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?concept WHERE {
+  ?concept skos:altLabel ?alt ;
+           skos:inScheme ?scheme .
+  FILTER NOT EXISTS { ?concept skos:prefLabel ?pref }
+}

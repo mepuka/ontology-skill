@@ -1,0 +1,17 @@
+# CQ-021: Which vocabulary concepts have no external mappings?
+# Expected: non_empty (some concepts may legitimately have no mappings)
+# Use case: UC-006
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?concept ?label ?scheme WHERE {
+  ?concept skos:inScheme ?scheme ;
+           skos:prefLabel ?label .
+  FILTER NOT EXISTS {
+    VALUES ?mappingProp {
+      skos:exactMatch skos:closeMatch skos:broadMatch skos:narrowMatch
+    }
+    ?concept ?mappingProp ?target .
+  }
+}
+ORDER BY ?scheme ?label

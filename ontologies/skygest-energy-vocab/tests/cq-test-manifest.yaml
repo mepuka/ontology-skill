@@ -1,0 +1,194 @@
+# Skygest Energy Vocabulary — CQ Test Manifest
+# Maps CQ IDs to SPARQL test files and expected results.
+# Date: 2026-04-11
+
+tests:
+
+  # Facet Lookup
+  - cq_id: CQ-001
+    file: cq-001.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "All concepts in a given ConceptScheme"
+
+  - cq_id: CQ-002
+    file: cq-002.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Canonical concept for a surface form"
+
+  - cq_id: CQ-003
+    file: cq-003.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Surface forms for SolarPv"
+
+  - cq_id: CQ-004
+    file: cq-004.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "ConceptScheme for Power"
+
+  - cq_id: CQ-005
+    file: cq-005.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "German surface forms across vocabulary"
+
+  # Disambiguation
+  - cq_id: CQ-006
+    file: cq-006.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Ambiguous altLabels shared by multiple concepts"
+
+  - cq_id: CQ-007
+    file: cq-007.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Unique discriminator forms for stock vs flow"
+
+  - cq_id: CQ-008
+    file: cq-008.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "UnitFamily concept for 'GW'"
+
+  # Hierarchy
+  - cq_id: CQ-009
+    file: cq-009.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Narrower concepts of Wind"
+
+  - cq_id: CQ-010
+    file: cq-010.sparql
+    type: ASK
+    expected_result: "true"
+    description: "OffshoreWind is narrower than Wind"
+
+  - cq_id: CQ-011
+    file: cq-011.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "All five ConceptSchemes"
+
+  # Provenance
+  - cq_id: CQ-012
+    file: cq-012.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Provenance of surface form entries"
+
+  - cq_id: CQ-013
+    file: cq-013.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Surface forms from eval feedback"
+
+  - cq_id: CQ-014
+    file: cq-014.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Surface forms derived from OEO"
+
+  # Coverage
+  - cq_id: CQ-015
+    file: cq-015.sparql
+    type: SELECT
+    expected_result: empty
+    description: "Concepts with no altLabels (should be zero)"
+
+  - cq_id: CQ-016
+    file: cq-016.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "TechnologyOrFuel concepts lacking German forms"
+
+  - cq_id: CQ-017
+    file: cq-017.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Surface form count per concept"
+
+  - cq_id: CQ-018
+    file: cq-018.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Concept count per ConceptScheme"
+
+  # Cross-ontology
+  - cq_id: CQ-019
+    file: cq-019.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "OEO mappings for TechnologyOrFuel concepts"
+
+  - cq_id: CQ-020
+    file: cq-020.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "QUDT mappings for UnitFamily concepts"
+
+  - cq_id: CQ-021
+    file: cq-021.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Concepts with no external mappings"
+
+  # Constraints
+  - cq_id: CQ-022
+    file: cq-022.sparql
+    type: SELECT
+    expected_result: empty
+    description: "No concept with altLabels should lack a prefLabel"
+
+  - cq_id: CQ-023
+    file: cq-023.sparql
+    type: SELECT
+    expected_result: empty
+    description: "Every concept in exactly one scheme"
+
+  - cq_id: CQ-024
+    file: cq-024.sparql
+    type: SELECT
+    expected_result: empty
+    description: "Every concept has rdfs:label and skos:definition"
+
+  # Cross-repo
+  - cq_id: CQ-025
+    file: cq-025.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "energy-news broadMatch mappings"
+
+  # Resolution kernel constraints (product-code alignment)
+  - cq_id: CQ-026
+    file: cq-026.sparql
+    type: SELECT
+    expected_result: empty
+    description: "No intra-scheme surface form collisions (VocabularyCollisionError)"
+
+  - cq_id: CQ-027
+    file: cq-027.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Surface forms with uppercase (normalization awareness; real test is in build.py)"
+
+  - cq_id: CQ-028
+    file: cq-028.sparql
+    type: SELECT
+    expected_result: empty
+    description: "Notes required for agent-curated/eval-feedback provenance"
+
+  - cq_id: CQ-029
+    file: cq-029.sparql
+    type: SELECT
+    expected_result: empty
+    description: "TechnologyOrFuel covers all cold-start variable values"
+
+  - cq_id: CQ-030
+    file: cq-030.sparql
+    type: SELECT
+    expected_result: empty
+    description: "Vocabulary covers all closed-enum facet values from Variable schema"

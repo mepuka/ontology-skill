@@ -1,0 +1,58 @@
+term,synonyms,definition,category,source_cq,bfo_category,notes
+StatisticTypeScheme,,A skos:ConceptScheme that partitions the statistical-measure space into the types of quantity a chart can depict,individual,CQ-011,GDC,"Instance of skos:ConceptScheme; 5 members"
+AggregationScheme,,A skos:ConceptScheme that partitions temporal aggregation methods applied to chart data,individual,CQ-011,GDC,"Instance of skos:ConceptScheme; 7 members"
+UnitFamilyScheme,,A skos:ConceptScheme that partitions measurement-unit families used in energy chart axis labels,individual,CQ-011,GDC,"Instance of skos:ConceptScheme; 8 members"
+TechnologyOrFuelScheme,,A skos:ConceptScheme that enumerates energy technologies and fuels referenced in chart text,individual,CQ-011,GDC,"Instance of skos:ConceptScheme; ~40-60 members; only scheme with hierarchy"
+FrequencyScheme,,A skos:ConceptScheme that classifies temporal resolution of chart data series,individual,CQ-011,GDC,"Phase 2 — FixedDims, not a Variable facet"
+Stock,"installed; cumulative; nameplate; total; Kapazitat",A statisticType concept representing a cumulative quantity measured at a point in time,individual,CQ-007,GDC,
+Flow,"generation; output; production; Erzeugung; Stromerzeugung",A statisticType concept representing a quantity accumulated over a time interval,individual,CQ-007,GDC,
+Price,"cost; tariff; rate; Strompreis",A statisticType concept representing a monetary value per unit of energy commodity,individual,CQ-002,GDC,
+Share,"percentage; proportion; Anteil",A statisticType concept representing a dimensionless ratio of a part to a whole,individual,CQ-002,GDC,
+Count,,A statisticType concept representing a discrete tally of items or events,individual,CQ-001,GDC,
+Point,,An aggregation concept representing a single instantaneous measurement,individual,CQ-001,GDC,
+EndOfPeriod,"cumulative; as of; end of period",An aggregation concept representing a running total measured at a period boundary,individual,CQ-001,GDC,
+Sum,"total; annual total; Summe",An aggregation concept representing the additive total over a period,individual,CQ-001,GDC,
+Average,"mean; weighted average; Durchschnitt",An aggregation concept representing the arithmetic mean over a period,individual,CQ-001,GDC,
+Max,,An aggregation concept representing the maximum observed value in a period,individual,CQ-001,GDC,
+Min,,An aggregation concept representing the minimum observed value in a period,individual,CQ-001,GDC,
+Settlement,"clearing",An aggregation concept representing a market clearing or settlement price,individual,CQ-001,GDC,
+Power,"GW; MW; kW; gigawatt; megawatt; kilowatt",A unitFamily concept representing units of instantaneous energy conversion rate,individual,CQ-008,GDC,
+Energy,"TWh; GWh; MWh; kWh; Wh",A unitFamily concept representing units of cumulative energy quantity,individual,CQ-001,GDC,
+Currency,"$; USD; EUR; GBP; CAD",A unitFamily concept representing monetary denomination units,individual,CQ-001,GDC,
+CurrencyPerEnergy,"$/MWh; EUR/MWh; ct/kWh",A unitFamily concept representing compound units of price per energy quantity,individual,CQ-001,GDC,
+MassCo2e,"tCO2; tCO2e; MtCO2e",A unitFamily concept representing units of carbon-dioxide-equivalent mass,individual,CQ-001,GDC,
+Intensity,"gCO2/kWh",A unitFamily concept representing compound units of emission rate per energy,individual,CQ-001,GDC,
+Dimensionless,"%; share; proportion",A unitFamily concept representing ratios and percentages with no physical dimension,individual,CQ-001,GDC,
+Other,,A unitFamily catch-all concept for units not classified into another family,individual,CQ-001,GDC,
+SolarPv,"solar; solar PV; PV; photovoltaic; Solarenergie; Photovoltaik",A technologyOrFuel concept representing solar photovoltaic generation technology,individual,CQ-003,GDC,"OEO:00000034; ENTSO-E B16; Wikidata Q194195"
+Wind,"wind power; Windkraft; Windenergie",A technologyOrFuel concept representing wind energy generation technology (parent of onshore/offshore),individual,CQ-009,GDC,"OEO:00000043; Wikidata Q194356"
+OnshoreWind,"onshore wind; land-based wind",A technologyOrFuel concept representing land-based wind generation technology,individual,CQ-009,GDC,"ENTSO-E B19; narrower than Wind"
+OffshoreWind,"offshore wind",A technologyOrFuel concept representing sea-based wind generation technology,individual,CQ-009,GDC,"ENTSO-E B18; narrower than Wind"
+Battery,"batteries; BESS; energy storage; Batterie",A technologyOrFuel concept representing electrochemical energy storage technology,individual,CQ-001,GDC,"OEO:00000068; Wikidata Q267298"
+Renewable,"renewables; clean energy; erneuerbare Energien",A technologyOrFuel concept representing the aggregate of renewable energy technologies,individual,CQ-001,GDC,"OEO:00030004; ENTSO-E B15"
+Nuclear,"atomic; Kernkraft; Kernenergie",A technologyOrFuel concept representing nuclear fission power generation technology,individual,CQ-001,GDC,"OEO:00010415; ENTSO-E B14; Wikidata Q12739"
+Coal,"coal-fired; Kohle",A technologyOrFuel concept representing coal-based power generation technology (parent of brown coal),individual,CQ-001,GDC,"OEO:00000088; ENTSO-E B05"
+BrownCoal,"lignite; Braunkohle",A technologyOrFuel concept representing lignite-based power generation technology,individual,CQ-001,GDC,"OEO:00000251; ENTSO-E B02; narrower than Coal"
+HeatPump,"heat pumps; Warmepumpe",A technologyOrFuel concept representing heat pump technology for heating and cooling,individual,CQ-016,GDC,"OEO:00000212"
+Hydrogen,"electrolyzer; electrolysis; Wasserstoff",A technologyOrFuel concept representing hydrogen production and fuel cell technology,individual,CQ-001,GDC,"OEO:00000220; Wikidata Q556"
+NaturalGas,"gas; Erdgas",A technologyOrFuel concept representing natural gas power generation technology (parent of GasCcgt),individual,CQ-001,GDC,"OEO:00000292; ENTSO-E B04"
+GasCcgt,"CCGT; combined cycle; combined cycle gas turbine",A technologyOrFuel concept representing combined-cycle gas turbine technology,individual,CQ-001,GDC,"OEO:00000185 (close); narrower than NaturalGas"
+Hourly,,A frequency concept representing hourly temporal resolution,individual,CQ-001,GDC,"Phase 2"
+Daily,,A frequency concept representing daily temporal resolution,individual,CQ-001,GDC,"Phase 2"
+Weekly,,A frequency concept representing weekly temporal resolution,individual,CQ-001,GDC,"Phase 2"
+Monthly,,A frequency concept representing monthly temporal resolution,individual,CQ-001,GDC,"Phase 2"
+Quarterly,,A frequency concept representing quarterly temporal resolution,individual,CQ-001,GDC,"Phase 2"
+Annual,,A frequency concept representing annual temporal resolution,individual,CQ-001,GDC,"Phase 2"
+SurfaceFormEntry,,A reified annotation that links a surface form string to its provenance metadata on a concept,class,CQ-012,GDC,"N-ary relation pattern; one instance per altLabel-provenance pair"
+skos:inScheme,,A SKOS property linking a concept to its parent ConceptScheme,property,CQ-004,—,"Standard SKOS; no custom definition needed"
+skos:prefLabel,,A SKOS property holding the canonical preferred label of a concept,property,CQ-001,—,"Standard SKOS"
+skos:altLabel,,A SKOS property holding an alternative surface form for a concept,property,CQ-002,—,"Standard SKOS; carries EN and DE language tags"
+skos:broader,,A SKOS property linking a narrower concept to its broader parent,property,CQ-009,—,"Standard SKOS; used only in TechnologyOrFuelScheme"
+skos:definition,,A SKOS property holding the genus-differentia definition of a concept,property,CQ-024,—,"Standard SKOS"
+skos:exactMatch,,A SKOS mapping property asserting exact cross-ontology equivalence,property,CQ-019,—,"Standard SKOS; used in SSSOM mappings"
+skos:closeMatch,,A SKOS mapping property asserting approximate cross-ontology equivalence,property,CQ-019,—,"Standard SKOS; primary mapping relation to OEO"
+skos:broadMatch,,A SKOS mapping property asserting the target is broader than the source,property,CQ-025,—,"Standard SKOS"
+hasProvenanceAnnotation,,A custom property linking a concept to a SurfaceFormEntry individual,property,CQ-012,—,"Domain: skos:Concept; Range: SurfaceFormEntry"
+surfaceFormValue,,A custom data property holding the altLabel string that a SurfaceFormEntry annotates,property,CQ-012,—,"Domain: SurfaceFormEntry; Range: xsd:string"
+provenance,,A custom data property holding the provenance tag of a surface form entry,property,CQ-012,—,"Domain: SurfaceFormEntry; Range: xsd:string; constrained to 7 SurfaceFormProvenance values"
+skos:note,,A SKOS annotation property holding free-text notes on a SurfaceFormEntry,property,CQ-028,—,"Required when provenance is agent-curated or eval-feedback"

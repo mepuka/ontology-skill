@@ -1,0 +1,15 @@
+{
+  "sevocab:SolarPv": "Q192127",
+  "sevocab:Wind": "Q43302",
+  "sevocab:OnshoreWind": "Q50687555",
+  "sevocab:OffshoreWind": "Q61637704",
+  "sevocab:Battery": "Q810924",
+  "sevocab:Renewable": "Q795757",
+  "sevocab:Nuclear": "Q12739",
+  "sevocab:Coal": "Q24489",
+  "sevocab:BrownCoal": "Q29584410",
+  "sevocab:HeatPump": "Q1452596",
+  "sevocab:Hydrogen": "Q111191050",
+  "sevocab:NaturalGas": "Q2287558",
+  "sevocab:GasCcgt": "Q900729"
+}

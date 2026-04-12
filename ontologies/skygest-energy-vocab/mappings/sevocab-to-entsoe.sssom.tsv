@@ -1,0 +1,20 @@
+#curie_map:
+#  sevocab: https://skygest.dev/vocab/energy/
+#  entsoe: https://transparency.entsoe.eu/vocabulary/PSRType/
+#  skos: http://www.w3.org/2004/02/skos/core#
+#  semapv: https://w3id.org/semapv/vocab/
+#mapping_set_id: https://skygest.dev/vocab/energy/mappings/sevocab-to-entsoe
+#mapping_set_description: Mappings from Skygest Energy Vocabulary TechnologyOrFuel concepts to ENTSO-E PSRType codes
+#license: https://creativecommons.org/licenses/by/4.0/
+#subject_source: https://skygest.dev/vocab/energy
+#object_source: https://transparency.entsoe.eu/vocabulary/PSRType
+#mapping_date: 2026-04-11
+subject_id	subject_label	predicate_id	object_id	object_label	mapping_justification	confidence	comment
+sevocab:SolarPv	solar PV	skos:broadMatch	entsoe:B16	Solar	semapv:ManualMappingCuration	0.80	ENTSO-E B16 covers solar PV and solar thermal; sevocab is PV-specific
+sevocab:OnshoreWind	onshore wind	skos:exactMatch	entsoe:B19	Wind Onshore	semapv:ManualMappingCuration	0.95	1:1 correspondence
+sevocab:OffshoreWind	offshore wind	skos:exactMatch	entsoe:B18	Wind Offshore	semapv:ManualMappingCuration	0.95	1:1 correspondence
+sevocab:Nuclear	nuclear	skos:exactMatch	entsoe:B14	Nuclear	semapv:ManualMappingCuration	0.95	1:1 correspondence
+sevocab:Coal	coal	skos:broadMatch	entsoe:B05	Fossil Hard coal	semapv:ManualMappingCuration	0.80	ENTSO-E B05 is hard coal only; sevocab:Coal is broader (includes brown coal)
+sevocab:BrownCoal	brown coal	skos:exactMatch	entsoe:B02	Fossil Brown coal/Lignite	semapv:ManualMappingCuration	0.95	1:1 correspondence
+sevocab:NaturalGas	natural gas	skos:exactMatch	entsoe:B04	Fossil Gas	semapv:ManualMappingCuration	0.90	ENTSO-E B04 is fossil gas broadly; close enough for 1:1
+sevocab:Renewable	renewable	skos:broadMatch	entsoe:B15	Other renewable	semapv:ManualMappingCuration	0.70	ENTSO-E B15 is residual renewables not captured by other codes; sevocab is the aggregate

@@ -125,10 +125,14 @@ ignore = [
 ]
 "ontologies/**/scripts/**/*.py" = [
     "T201",    # print statements OK in ontology build scripts
+    "PLR0911", # noise-filter functions have many return paths by design
     "PLR0912", # data-processing functions have many branches by design
     "PLR0915", # data-loading build functions have many statements by design
     "PLC0415", # deferred/optional imports in CLI entrypoints are intentional
+    "S310",    # URL open to Wikidata/OEO SPARQL endpoints is intentional
     "S311",    # seeded PRNG is fine for stratified sampling (not crypto)
+    "S603",    # subprocess calls to uv/runoak are intentional (fixed args)
+    "S607",    # partial executable paths (uv, runoak) are expected
 ]
 
 [tool.ruff.lint.isort]

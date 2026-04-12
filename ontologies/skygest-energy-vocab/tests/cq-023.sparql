@@ -1,0 +1,12 @@
+# CQ-023: Does every concept belong to exactly one ConceptScheme?
+# Expected: empty (zero violations)
+# Use case: UC-001
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?concept (COUNT(?scheme) AS ?schemeCount) WHERE {
+  ?concept a skos:Concept ;
+           skos:inScheme ?scheme .
+}
+GROUP BY ?concept
+HAVING (COUNT(?scheme) != 1)

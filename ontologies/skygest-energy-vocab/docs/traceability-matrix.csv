@@ -1,0 +1,31 @@
+stakeholder_need,use_case_id,cq_id,ontology_terms,sparql_test
+"Decompose chart text into canonical facets",UC-001,CQ-001,"skos:ConceptScheme;skos:inScheme;skos:prefLabel",tests/cq-001.sparql
+"Decompose chart text into canonical facets",UC-001,CQ-002,"skos:altLabel;skos:inScheme",tests/cq-002.sparql
+"Decompose chart text into canonical facets",UC-001,CQ-003,"SolarPv;skos:altLabel",tests/cq-003.sparql
+"Decompose chart text into canonical facets",UC-001,CQ-004,"Power;skos:inScheme",tests/cq-004.sparql
+"Decompose chart text into canonical facets",UC-001,CQ-009,"Wind;skos:broader;skos:prefLabel",tests/cq-009.sparql
+"Decompose chart text into canonical facets",UC-001,CQ-011,"skos:ConceptScheme;skos:prefLabel",tests/cq-011.sparql
+"Decompose chart text into canonical facets",UC-001,CQ-022,"skos:prefLabel;skos:altLabel",tests/cq-022.sparql
+"Decompose chart text into canonical facets",UC-001,CQ-023,"skos:Concept;skos:inScheme",tests/cq-023.sparql
+"Discriminate near-synonymous Variables",UC-002,CQ-006,"skos:altLabel;skos:inScheme",tests/cq-006.sparql
+"Discriminate near-synonymous Variables",UC-002,CQ-007,"Stock;Flow;skos:altLabel",tests/cq-007.sparql
+"Discriminate near-synonymous Variables",UC-002,CQ-008,"Power;skos:altLabel;skos:inScheme",tests/cq-008.sparql
+"Discriminate near-synonymous Variables",UC-002,CQ-010,"OffshoreWind;Wind;skos:broader",tests/cq-010.sparql
+"Provide evidence for Stage 3 LLM override",UC-003,CQ-012,"SurfaceFormEntry;hasProvenanceAnnotation;provenance",tests/cq-012.sparql
+"Provide evidence for Stage 3 LLM override",UC-003,CQ-014,"hasProvenanceAnnotation;provenance",tests/cq-014.sparql
+"Provide evidence for Stage 3 LLM override",UC-003,CQ-024,"rdfs:label;skos:definition",tests/cq-024.sparql
+"Curate surface forms from new chart text",UC-004,CQ-013,"hasProvenanceAnnotation;provenance",tests/cq-013.sparql
+"Validate resolver accuracy against eval",UC-005,CQ-015,"skos:altLabel;skos:inScheme",tests/cq-015.sparql
+"Validate resolver accuracy against eval",UC-005,CQ-016,"TechnologyOrFuelScheme;skos:altLabel",tests/cq-016.sparql
+"Validate resolver accuracy against eval",UC-005,CQ-017,"skos:altLabel",tests/cq-017.sparql
+"Validate resolver accuracy against eval",UC-005,CQ-018,"skos:ConceptScheme;skos:inScheme",tests/cq-018.sparql
+"Align to external standards (OEO, QUDT, etc.)",UC-006,CQ-019,"TechnologyOrFuelScheme;skos:closeMatch",tests/cq-019.sparql
+"Align to external standards (OEO, QUDT, etc.)",UC-006,CQ-020,"UnitFamilyScheme;skos:closeMatch",tests/cq-020.sparql
+"Align to external standards (OEO, QUDT, etc.)",UC-006,CQ-021,"skos:exactMatch;skos:closeMatch;skos:broadMatch",tests/cq-021.sparql
+"Align to external standards (OEO, QUDT, etc.)",UC-006,CQ-025,"TechnologyOrFuelScheme;skos:broadMatch",tests/cq-025.sparql
+"Match German-language chart text",UC-007,CQ-005,"skos:altLabel",tests/cq-005.sparql
+"No intra-scheme surface form collisions",UC-008,CQ-026,"skos:altLabel;skos:inScheme",tests/cq-026.sparql
+"Normalization consistency with normalizeLookupText",UC-008,CQ-027,"skos:altLabel",tests/cq-027.sparql
+"Notes required for agent-curated provenance",UC-008,CQ-028,"hasProvenanceAnnotation;provenance;skos:note",tests/cq-028.sparql
+"TechnologyOrFuel covers cold-start variables",UC-008,CQ-029,"TechnologyOrFuelScheme;skos:prefLabel",tests/cq-029.sparql
+"Vocabulary covers all Variable schema enum values",UC-008,CQ-030,"StatisticTypeScheme;AggregationScheme;UnitFamilyScheme;skos:prefLabel",tests/cq-030.sparql

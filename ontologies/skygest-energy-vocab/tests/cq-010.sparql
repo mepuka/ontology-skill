@@ -1,0 +1,10 @@
+# CQ-010: Is OffshoreWind a narrower term of Wind?
+# Expected: true
+# Use case: UC-002
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+ASK {
+  sevocab:OffshoreWind skos:broader sevocab:Wind .
+}

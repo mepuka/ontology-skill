@@ -1,0 +1,14 @@
+# CQ-012: What is the provenance of a given surface form entry?
+# Expected: non_empty
+# Use case: UC-003
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+
+SELECT ?concept ?surfaceForm ?provenance ?note WHERE {
+  ?concept sevocab:hasProvenanceAnnotation ?anno .
+  ?anno sevocab:surfaceFormValue ?surfaceForm ;
+        sevocab:provenance ?provenance .
+  OPTIONAL { ?anno skos:note ?note }
+}

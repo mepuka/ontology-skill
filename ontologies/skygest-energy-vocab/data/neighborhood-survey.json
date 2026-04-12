@@ -1,0 +1,2105 @@
+{
+  "sevocab:SolarPv": [
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "wikidata:Q23900289",
+      "relation": "subclass",
+      "surface_form": "solar window",
+      "description": "type of window which converts sunlight to electricity",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "wikidata:Q192127",
+      "relation": "self",
+      "surface_form": "photovoltaics",
+      "description": "method of converting solar radiation into direct current electricity",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "wikidata:Q192127",
+      "relation": "self",
+      "surface_form": "PV",
+      "description": "method of converting solar radiation into direct current electricity",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "wikidata:Q113296972",
+      "relation": "subclass",
+      "surface_form": "bio-photovoltaics",
+      "description": "approach to harvesting sunlight for power generation that involves living components",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "wikidata:Q113296972",
+      "relation": "subclass",
+      "surface_form": "bio-PV",
+      "description": "approach to harvesting sunlight for power generation that involves living components",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "wikidata:Q7556714",
+      "relation": "subclass",
+      "surface_form": "solar module quality assurance",
+      "description": "testing and evaluating of photovoltaics to ensure the required qualities are met",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "wikidata:Q7556714",
+      "relation": "subclass",
+      "surface_form": "photovoltaic quality assurance",
+      "description": "testing and evaluating of photovoltaics to ensure the required qualities are met",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "wikidata:Q7556714",
+      "relation": "subclass",
+      "surface_form": "solar cell quality assurance",
+      "description": "testing and evaluating of photovoltaics to ensure the required qualities are met",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "wikidata:Q1483757",
+      "relation": "superclass",
+      "surface_form": "solar power",
+      "description": "conversion of energy from sunlight into electricity",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "wikidata:Q1483757",
+      "relation": "superclass",
+      "surface_form": "solar electricity",
+      "description": "conversion of energy from sunlight into electricity",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "wikidata:Q2065094",
+      "relation": "subclass",
+      "surface_form": "concentrated photovoltaics",
+      "description": "technology which uses lenses to concentrate a larger area of solar energy onto a smaller photovoltaic surface",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "wikidata:Q2065094",
+      "relation": "subclass",
+      "surface_form": "CPV",
+      "description": "technology which uses lenses to concentrate a larger area of solar energy onto a smaller photovoltaic surface",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "wikidata:Q192127",
+      "relation": "self",
+      "surface_form": "photovoltaic energy systems",
+      "description": "method of converting solar radiation into direct current electricity",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "wikidata:Q192127",
+      "relation": "self",
+      "surface_form": "photovoltaic power systems",
+      "description": "method of converting solar radiation into direct current electricity",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "wikidata:Q1497383",
+      "relation": "subclass",
+      "surface_form": "building-integrated photovoltaics",
+      "description": "photovoltaic materials used to replace conventional building materials",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "wikidata:Q1497383",
+      "relation": "subclass",
+      "surface_form": "BIPV",
+      "description": "photovoltaic materials used to replace conventional building materials",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "wikidata:Q2065094",
+      "relation": "subclass",
+      "surface_form": "concentration photovoltaics",
+      "description": "technology which uses lenses to concentrate a larger area of solar energy onto a smaller photovoltaic surface",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "wikidata:Q2065094",
+      "relation": "subclass",
+      "surface_form": "concentrator photovoltaics",
+      "description": "technology which uses lenses to concentrate a larger area of solar energy onto a smaller photovoltaic surface",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "wikidata:Q1483757",
+      "relation": "superclass",
+      "surface_form": "solar powered",
+      "description": "conversion of energy from sunlight into electricity",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "OEO:00000034",
+      "relation": "descendant",
+      "surface_form": "solar power unit",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "OEO:00000035",
+      "relation": "descendant",
+      "surface_form": "solar thermal power unit",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "OEO:00000348",
+      "relation": "descendant",
+      "surface_form": "PV panel",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:SolarPv",
+      "source": "OEO:00280011",
+      "relation": "descendant",
+      "surface_form": "PERC panel",
+      "type": "rdfs:label"
+    }
+  ],
+  "sevocab:Wind": [
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q12705",
+      "relation": "superclass",
+      "surface_form": "renewable energy",
+      "description": "energy collected from renewable resources",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q12705",
+      "relation": "superclass",
+      "surface_form": "bioenergy",
+      "description": "energy collected from renewable resources",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q43302",
+      "relation": "self",
+      "surface_form": "wind power",
+      "description": "conversion of wind energy into a useful form",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q43302",
+      "relation": "self",
+      "surface_form": "wind power energy",
+      "description": "conversion of wind energy into a useful form",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q12705",
+      "relation": "superclass",
+      "surface_form": "green energy",
+      "description": "energy collected from renewable resources",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q1962383",
+      "relation": "superclass",
+      "surface_form": "sustainable energy",
+      "description": "use of energy in ways that meet present needs without compromising the ability of future generations to meet their own needs",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q1962383",
+      "relation": "superclass",
+      "surface_form": "alternative energy",
+      "description": "use of energy in ways that meet present needs without compromising the ability of future generations to meet their own needs",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q2639469",
+      "relation": "subclass",
+      "surface_form": "wind power in the United States",
+      "description": "overview of wind power in the United States",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q1962383",
+      "relation": "superclass",
+      "surface_form": "clean energy",
+      "description": "use of energy in ways that meet present needs without compromising the ability of future generations to meet their own needs",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q1962383",
+      "relation": "superclass",
+      "surface_form": "clean power",
+      "description": "use of energy in ways that meet present needs without compromising the ability of future generations to meet their own needs",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q1962383",
+      "relation": "superclass",
+      "surface_form": "ecological energy",
+      "description": "use of energy in ways that meet present needs without compromising the ability of future generations to meet their own needs",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q1962383",
+      "relation": "superclass",
+      "surface_form": "ecological power",
+      "description": "use of energy in ways that meet present needs without compromising the ability of future generations to meet their own needs",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q1962383",
+      "relation": "superclass",
+      "surface_form": "green electricity",
+      "description": "use of energy in ways that meet present needs without compromising the ability of future generations to meet their own needs",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q1962383",
+      "relation": "superclass",
+      "surface_form": "green power",
+      "description": "use of energy in ways that meet present needs without compromising the ability of future generations to meet their own needs",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q1962383",
+      "relation": "superclass",
+      "surface_form": "low-carbon energy",
+      "description": "use of energy in ways that meet present needs without compromising the ability of future generations to meet their own needs",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q3588999",
+      "relation": "subclass",
+      "surface_form": "Wind power in Iran",
+      "description": "",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q8023998",
+      "relation": "subclass",
+      "surface_form": "Wind power in Greece",
+      "description": "",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q65171125",
+      "relation": "subclass",
+      "surface_form": "wind power in Vietnam",
+      "description": "",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q119518423",
+      "relation": "subclass",
+      "surface_form": "wind power in the European Union",
+      "description": "overview of wind power only in the European Union",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q4887162",
+      "relation": "subclass",
+      "surface_form": "airborne wind energy",
+      "description": "direct use or generation of wind energy",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q4887162",
+      "relation": "subclass",
+      "surface_form": "AWE",
+      "description": "direct use or generation of wind energy",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q3958441",
+      "relation": "superclass",
+      "surface_form": "economic sector",
+      "description": "conceptual grouping of economic activities",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q3958441",
+      "relation": "superclass",
+      "surface_form": "sector",
+      "description": "conceptual grouping of economic activities",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q4887162",
+      "relation": "subclass",
+      "surface_form": "airborne wind power",
+      "description": "direct use or generation of wind energy",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q4887162",
+      "relation": "subclass",
+      "surface_form": "HAWP",
+      "description": "direct use or generation of wind energy",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q4887162",
+      "relation": "subclass",
+      "surface_form": "high-altitude wind power",
+      "description": "direct use or generation of wind energy",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q61637704",
+      "relation": "subclass",
+      "surface_form": "offshore wind power",
+      "description": "use of wind turbines constructed in marine bodies of water to harvest wind energy to generate electricity",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q61637704",
+      "relation": "subclass",
+      "surface_form": "offshore wind energy",
+      "description": "use of wind turbines constructed in marine bodies of water to harvest wind energy to generate electricity",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q61637704",
+      "relation": "subclass",
+      "surface_form": "offshorewind",
+      "description": "use of wind turbines constructed in marine bodies of water to harvest wind energy to generate electricity",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q4110086",
+      "relation": "subclass",
+      "surface_form": "wind power in Canada",
+      "description": "Wind-powered energy production in Canada",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q15710723",
+      "relation": "subclass",
+      "surface_form": "wind power in Japan",
+      "description": "overview of wind power in Japan",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q119983326",
+      "relation": "subclass",
+      "surface_form": "Wind power by country or region",
+      "description": "aspect in a geographic region",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q119983326",
+      "relation": "subclass",
+      "surface_form": "Wind power by region",
+      "description": "aspect in a geographic region",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q8024038",
+      "relation": "subclass",
+      "surface_form": "wind power in South Australia",
+      "description": "South Australian use of wind turbines to generate electricity",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q8024044",
+      "relation": "subclass",
+      "surface_form": "wind power in the Philippines",
+      "description": "overview of wind power in the Philippines",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "wikidata:Q12592554",
+      "relation": "subclass",
+      "surface_form": "wind power in South Korea",
+      "description": "form of renewable energy in South Korea",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Wind",
+      "source": "OEO:00000043",
+      "relation": "descendant",
+      "surface_form": "wind",
+      "type": "rdfs:label"
+    }
+  ],
+  "sevocab:OnshoreWind": [
+    {
+      "concept_id": "sevocab:OnshoreWind",
+      "source": "wikidata:Q194356",
+      "relation": "superclass",
+      "surface_form": "wind farm",
+      "description": "group of wind turbines",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:OnshoreWind",
+      "source": "wikidata:Q194356",
+      "relation": "superclass",
+      "surface_form": "wind energy site",
+      "description": "group of wind turbines",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:OnshoreWind",
+      "source": "wikidata:Q194356",
+      "relation": "superclass",
+      "surface_form": "wind power station",
+      "description": "group of wind turbines",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:OnshoreWind",
+      "source": "wikidata:Q194356",
+      "relation": "superclass",
+      "surface_form": "wind park",
+      "description": "group of wind turbines",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:OnshoreWind",
+      "source": "wikidata:Q194356",
+      "relation": "superclass",
+      "surface_form": "wind power plant",
+      "description": "group of wind turbines",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:OnshoreWind",
+      "source": "wikidata:Q194356",
+      "relation": "superclass",
+      "surface_form": "windfarm",
+      "description": "group of wind turbines",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:OnshoreWind",
+      "source": "wikidata:Q194356",
+      "relation": "superclass",
+      "surface_form": "windpark",
+      "description": "group of wind turbines",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:OnshoreWind",
+      "source": "wikidata:Q50687555",
+      "relation": "self",
+      "surface_form": "onshore wind farm",
+      "description": "group of wind turbines on land",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:OnshoreWind",
+      "source": "wikidata:Q50687555",
+      "relation": "self",
+      "surface_form": "onshore wind power plant",
+      "description": "group of wind turbines on land",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:OnshoreWind",
+      "source": "wikidata:Q50687555",
+      "relation": "self",
+      "surface_form": "onshore wind power station",
+      "description": "group of wind turbines on land",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:OnshoreWind",
+      "source": "wikidata:Q50687555",
+      "relation": "self",
+      "surface_form": "onshore wind turbines",
+      "description": "group of wind turbines on land",
+      "type": "skos:altLabel"
+    }
+  ],
+  "sevocab:OffshoreWind": [
+    {
+      "concept_id": "sevocab:OffshoreWind",
+      "source": "wikidata:Q61637704",
+      "relation": "self",
+      "surface_form": "offshore wind power",
+      "description": "use of wind turbines constructed in marine bodies of water to harvest wind energy to generate electricity",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:OffshoreWind",
+      "source": "wikidata:Q61637704",
+      "relation": "self",
+      "surface_form": "offshore wind energy",
+      "description": "use of wind turbines constructed in marine bodies of water to harvest wind energy to generate electricity",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:OffshoreWind",
+      "source": "wikidata:Q61637704",
+      "relation": "self",
+      "surface_form": "offshorewind",
+      "description": "use of wind turbines constructed in marine bodies of water to harvest wind energy to generate electricity",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:OffshoreWind",
+      "source": "wikidata:Q43302",
+      "relation": "superclass",
+      "surface_form": "wind power",
+      "description": "conversion of wind energy into a useful form",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:OffshoreWind",
+      "source": "wikidata:Q43302",
+      "relation": "superclass",
+      "surface_form": "wind power energy",
+      "description": "conversion of wind energy into a useful form",
+      "type": "skos:altLabel"
+    }
+  ],
+  "sevocab:Battery": [
+    {
+      "concept_id": "sevocab:Battery",
+      "source": "wikidata:Q2308612",
+      "relation": "superclass",
+      "surface_form": "storage power station",
+      "description": "type of power station",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Battery",
+      "source": "wikidata:Q810924",
+      "relation": "self",
+      "surface_form": "battery storage power station",
+      "description": "energy storage system using electrochemical secondary cells",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Battery",
+      "source": "wikidata:Q810924",
+      "relation": "self",
+      "surface_form": "battery energy storage plant",
+      "description": "energy storage system using electrochemical secondary cells",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Battery",
+      "source": "wikidata:Q810924",
+      "relation": "self",
+      "surface_form": "battery energy storage system",
+      "description": "energy storage system using electrochemical secondary cells",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Battery",
+      "source": "wikidata:Q810924",
+      "relation": "self",
+      "surface_form": "BESS",
+      "description": "energy storage system using electrochemical secondary cells",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Battery",
+      "source": "wikidata:Q130425514",
+      "relation": "subclass",
+      "surface_form": "Waroona Renewable Energy Hub",
+      "description": "Proposed renewable energy project located near Waroona Western Australia",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Battery",
+      "source": "wikidata:Q130425514",
+      "relation": "subclass",
+      "surface_form": "Waroona Project",
+      "description": "Proposed renewable energy project located near Waroona Western Australia",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Battery",
+      "source": "wikidata:Q130425514",
+      "relation": "subclass",
+      "surface_form": "Waroona Renewable Energy Project",
+      "description": "Proposed renewable energy project located near Waroona Western Australia",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Battery",
+      "source": "wikidata:Q130425514",
+      "relation": "subclass",
+      "surface_form": "Waroona Renewable Energy Project \u2013 Stage 1",
+      "description": "Proposed renewable energy project located near Waroona Western Australia",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Battery",
+      "source": "OEO:00000068",
+      "relation": "descendant",
+      "surface_form": "battery",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Battery",
+      "source": "OEO:00000169",
+      "relation": "descendant",
+      "surface_form": "flow battery",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Battery",
+      "source": "OEO:00000248",
+      "relation": "descendant",
+      "surface_form": "lithium-ion battery",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Battery",
+      "source": "OEO:00000259",
+      "relation": "descendant",
+      "surface_form": "liquid-metal battery",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Battery",
+      "source": "OEO:00000282",
+      "relation": "descendant",
+      "surface_form": "molten-salt battery",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Battery",
+      "source": "OEO:00000376",
+      "relation": "descendant",
+      "surface_form": "sodium-ion battery",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Battery",
+      "source": "OEO:00000377",
+      "relation": "descendant",
+      "surface_form": "sodium-sulphur battery",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Battery",
+      "source": "OEO:00010026",
+      "relation": "descendant",
+      "surface_form": "traction battery",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Battery",
+      "source": "OEO:00280012",
+      "relation": "descendant",
+      "surface_form": "NMC battery",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Battery",
+      "source": "OEO:00280013",
+      "relation": "descendant",
+      "surface_form": "LFP battery",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Battery",
+      "source": "OEO:00280014",
+      "relation": "descendant",
+      "surface_form": "lead-acid battery",
+      "type": "rdfs:label"
+    }
+  ],
+  "sevocab:Renewable": [
+    {
+      "concept_id": "sevocab:Renewable",
+      "source": "wikidata:Q4605764",
+      "relation": "has_part",
+      "surface_form": "2006 Argentine nuclear reactivation plan",
+      "description": "project to renew development of nuclear power in Argentina",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Renewable",
+      "source": "wikidata:Q113015776",
+      "relation": "has_part",
+      "surface_form": "energy transition in heating",
+      "description": "the social process of modifying thermal energy systems into more sustainable ones to combat climate change",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Renewable",
+      "source": "wikidata:Q19298719",
+      "relation": "has_part",
+      "surface_form": "power-to-X",
+      "description": "Storing surplus electricity production in chemical form",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Renewable",
+      "source": "wikidata:Q19298719",
+      "relation": "has_part",
+      "surface_form": "P2X",
+      "description": "Storing surplus electricity production in chemical form",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Renewable",
+      "source": "wikidata:Q26836351",
+      "relation": "has_part",
+      "surface_form": "sector coupling",
+      "description": "integration of energy sectors",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Renewable",
+      "source": "wikidata:Q26836351",
+      "relation": "has_part",
+      "surface_form": "sector Integration",
+      "description": "integration of energy sectors",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Renewable",
+      "source": "wikidata:Q25040632",
+      "relation": "has_part",
+      "surface_form": "energy transition in Germany",
+      "description": "transition by Germany to a low carbon, environmentally sound, reliable, and affordable energy supply",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Renewable",
+      "source": "wikidata:Q25040632",
+      "relation": "has_part",
+      "surface_form": "Energiewende",
+      "description": "transition by Germany to a low carbon, environmentally sound, reliable, and affordable energy supply",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Renewable",
+      "source": "wikidata:Q795757",
+      "relation": "self",
+      "surface_form": "energy transition",
+      "description": "long-term structural change towards sustainable energy systems",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Renewable",
+      "source": "wikidata:Q795757",
+      "relation": "self",
+      "surface_form": "renewable energy transition",
+      "description": "long-term structural change towards sustainable energy systems",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Renewable",
+      "source": "wikidata:Q1150070",
+      "relation": "superclass",
+      "surface_form": "change",
+      "description": "process, event or action that deviates from the present state",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Renewable",
+      "source": "wikidata:Q1150070",
+      "relation": "superclass",
+      "surface_form": "changing",
+      "description": "process, event or action that deviates from the present state",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Renewable",
+      "source": "OEO:00030004",
+      "relation": "descendant",
+      "surface_form": "renewable",
+      "type": "rdfs:label"
+    }
+  ],
+  "sevocab:Nuclear": [
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q11016",
+      "relation": "superclass",
+      "surface_form": "technology",
+      "description": "making, modification, usage, and knowledge of tools, machines, techniques, crafts, systems, and methods of organization, or tools and techniques so created",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q11016",
+      "relation": "superclass",
+      "surface_form": "technicology",
+      "description": "making, modification, usage, and knowledge of tools, machines, techniques, crafts, systems, and methods of organization, or tools and techniques so created",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q11016",
+      "relation": "superclass",
+      "surface_form": "technological science",
+      "description": "making, modification, usage, and knowledge of tools, machines, techniques, crafts, systems, and methods of organization, or tools and techniques so created",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q11016",
+      "relation": "superclass",
+      "surface_form": "technological sciences",
+      "description": "making, modification, usage, and knowledge of tools, machines, techniques, crafts, systems, and methods of organization, or tools and techniques so created",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q11016",
+      "relation": "superclass",
+      "surface_form": "technologies",
+      "description": "making, modification, usage, and knowledge of tools, machines, techniques, crafts, systems, and methods of organization, or tools and techniques so created",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q12739",
+      "relation": "self",
+      "surface_form": "nuclear power",
+      "description": "power generated from nuclear reactions",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q12739",
+      "relation": "self",
+      "surface_form": "nuclear energy",
+      "description": "power generated from nuclear reactions",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q11016",
+      "relation": "superclass",
+      "surface_form": "technology sector",
+      "description": "making, modification, usage, and knowledge of tools, machines, techniques, crafts, systems, and methods of organization, or tools and techniques so created",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q348091",
+      "relation": "superclass",
+      "surface_form": "nuclear technology",
+      "description": "technology that involves the reactions of atomic nuclei",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q348091",
+      "relation": "superclass",
+      "surface_form": "nuclear science",
+      "description": "technology that involves the reactions of atomic nuclei",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q12739",
+      "relation": "self",
+      "surface_form": "atomic energy",
+      "description": "power generated from nuclear reactions",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q12739",
+      "relation": "self",
+      "surface_form": "atomic power",
+      "description": "power generated from nuclear reactions",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q93631",
+      "relation": "subclass",
+      "surface_form": "nuclear energy in Vietnam",
+      "description": "Vietnam as a Nuclear Power",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q11016",
+      "relation": "superclass",
+      "surface_form": "tech",
+      "description": "making, modification, usage, and knowledge of tools, machines, techniques, crafts, systems, and methods of organization, or tools and techniques so created",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q3725278",
+      "relation": "subclass",
+      "surface_form": "Nuclear energy in Slovakia",
+      "description": "overview of nuclear energy in Slovakia",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q3725276",
+      "relation": "subclass",
+      "surface_form": "nuclear power in Romania",
+      "description": "overview of nuclear power in Romania",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q7068074",
+      "relation": "subclass",
+      "surface_form": "nuclear power in Jordan",
+      "description": "Summary of nuclear energy in Jordan",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q6501273",
+      "relation": "subclass",
+      "surface_form": "nuclear power in North Korea",
+      "description": "overview of nuclear power in North Korea",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q6501273",
+      "relation": "subclass",
+      "surface_form": "nuclear energy in North Korea",
+      "description": "overview of nuclear power in North Korea",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q16000261",
+      "relation": "subclass",
+      "surface_form": "nuclear energy in Tunisia",
+      "description": "industry in Tunisia",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q4202245",
+      "relation": "part_of",
+      "surface_form": "alternative energy",
+      "description": "energy source that is an alternative to fossil fuel",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q663617",
+      "relation": "subclass",
+      "surface_form": "nuclear power in Switzerland",
+      "description": "overview of nuclear power in Switzerland",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q611666",
+      "relation": "subclass",
+      "surface_form": "nuclear power in Spain",
+      "description": "overview of nuclear power in Spain",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q488497",
+      "relation": "subclass",
+      "surface_form": "nuclear power in South Korea",
+      "description": "overview of nuclear power in South Korea",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q377791",
+      "relation": "subclass",
+      "surface_form": "nuclear power in France",
+      "description": "overview of nuclear power in France",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q377791",
+      "relation": "subclass",
+      "surface_form": "nuclear industry in France",
+      "description": "overview of nuclear power in France",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q1067468",
+      "relation": "subclass",
+      "surface_form": "nuclear power in Japan",
+      "description": "overview of nuclear power in Japan",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q1344419",
+      "relation": "subclass",
+      "surface_form": "nuclear power by country",
+      "description": "Wikimedia list article",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q3208472",
+      "relation": "subclass",
+      "surface_form": "nuclear energy in Poland",
+      "description": "",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q3725265",
+      "relation": "subclass",
+      "surface_form": "nuclear power in Bulgaria",
+      "description": "",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q17232373",
+      "relation": "subclass",
+      "surface_form": "nuclear electricity generation",
+      "description": "",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q17232373",
+      "relation": "subclass",
+      "surface_form": "nuclear power generation",
+      "description": "",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q19753332",
+      "relation": "part_of",
+      "surface_form": "nuclear program",
+      "description": "",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q19753332",
+      "relation": "part_of",
+      "surface_form": "nuclear programme",
+      "description": "",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q1751731",
+      "relation": "subclass",
+      "surface_form": "nuclear power in Sweden",
+      "description": "overview of nuclear power in Sweden",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q2151621",
+      "relation": "part_of",
+      "surface_form": "energy industry",
+      "description": "industries involved in producing, selling, and distributing energy (in all forms, e.g. petroleum, natural gas, coal, peat, firewood, nuclear energy, solar energy, hydroelectric energy, wind energy, geothermal energy)",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q1522115",
+      "relation": "superclass",
+      "surface_form": "energy source",
+      "description": "physical or chemical phenomenon from which one can extract energy",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q1522115",
+      "relation": "superclass",
+      "surface_form": "source of energy",
+      "description": "physical or chemical phenomenon from which one can extract energy",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q1522115",
+      "relation": "superclass",
+      "surface_form": "energy generating resource",
+      "description": "physical or chemical phenomenon from which one can extract energy",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q1522115",
+      "relation": "superclass",
+      "surface_form": "energy resource",
+      "description": "physical or chemical phenomenon from which one can extract energy",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q1522115",
+      "relation": "superclass",
+      "surface_form": "energy resources",
+      "description": "physical or chemical phenomenon from which one can extract energy",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q1522115",
+      "relation": "superclass",
+      "surface_form": "energy sources",
+      "description": "physical or chemical phenomenon from which one can extract energy",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q1522115",
+      "relation": "superclass",
+      "surface_form": "energy-generating resource",
+      "description": "physical or chemical phenomenon from which one can extract energy",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q1962383",
+      "relation": "part_of",
+      "surface_form": "sustainable energy",
+      "description": "use of energy in ways that meet present needs without compromising the ability of future generations to meet their own needs",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q2089497",
+      "relation": "subclass",
+      "surface_form": "nuclear power in the European Union",
+      "description": "overview of nuclear power in the European Union",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q1962383",
+      "relation": "part_of",
+      "surface_form": "clean energy",
+      "description": "use of energy in ways that meet present needs without compromising the ability of future generations to meet their own needs",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q1962383",
+      "relation": "part_of",
+      "surface_form": "clean power",
+      "description": "use of energy in ways that meet present needs without compromising the ability of future generations to meet their own needs",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q1962383",
+      "relation": "part_of",
+      "surface_form": "ecological energy",
+      "description": "use of energy in ways that meet present needs without compromising the ability of future generations to meet their own needs",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q1962383",
+      "relation": "part_of",
+      "surface_form": "ecological power",
+      "description": "use of energy in ways that meet present needs without compromising the ability of future generations to meet their own needs",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q1962383",
+      "relation": "part_of",
+      "surface_form": "green electricity",
+      "description": "use of energy in ways that meet present needs without compromising the ability of future generations to meet their own needs",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q1962383",
+      "relation": "part_of",
+      "surface_form": "green energy",
+      "description": "use of energy in ways that meet present needs without compromising the ability of future generations to meet their own needs",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q1962383",
+      "relation": "part_of",
+      "surface_form": "green power",
+      "description": "use of energy in ways that meet present needs without compromising the ability of future generations to meet their own needs",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q1962383",
+      "relation": "part_of",
+      "surface_form": "low-carbon energy",
+      "description": "use of energy in ways that meet present needs without compromising the ability of future generations to meet their own needs",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "wikidata:Q1691021",
+      "relation": "subclass",
+      "surface_form": "nuclear power in Canada",
+      "description": "Overview of nuclear power production in Canada",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Nuclear",
+      "source": "OEO:00010415",
+      "relation": "descendant",
+      "surface_form": "nuclear",
+      "type": "rdfs:label"
+    }
+  ],
+  "sevocab:Coal": [
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q24489",
+      "relation": "self",
+      "surface_form": "coal",
+      "description": "combustible sedimentary rock composed primarily of carbon",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q24489",
+      "relation": "self",
+      "surface_form": "carbone",
+      "description": "combustible sedimentary rock composed primarily of carbon",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q623",
+      "relation": "has_part",
+      "surface_form": "carbon",
+      "description": "chemical element with symbol C and atomic number 6; common element of all known life",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q623",
+      "relation": "has_part",
+      "surface_form": "\u2086C",
+      "description": "chemical element with symbol C and atomic number 6; common element of all known life",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q623",
+      "relation": "has_part",
+      "surface_form": "element 6",
+      "description": "chemical element with symbol C and atomic number 6; common element of all known life",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q156267",
+      "relation": "subclass",
+      "surface_form": "lignite",
+      "description": "type of fossil fuel; soft brown combustible sedimentary rock",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q156267",
+      "relation": "subclass",
+      "surface_form": "brown coal",
+      "description": "type of fossil fuel; soft brown combustible sedimentary rock",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q182458",
+      "relation": "subclass",
+      "surface_form": "anthracite",
+      "description": "hard coal with a volatile component (gas) of less than 10 %",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q182458",
+      "relation": "subclass",
+      "surface_form": "anthracite coal",
+      "description": "hard coal with a volatile component (gas) of less than 10 %",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q182458",
+      "relation": "subclass",
+      "surface_form": "black coal",
+      "description": "hard coal with a volatile component (gas) of less than 10 %",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q182458",
+      "relation": "subclass",
+      "surface_form": "blind coal",
+      "description": "hard coal with a volatile component (gas) of less than 10 %",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q182458",
+      "relation": "subclass",
+      "surface_form": "craw coal",
+      "description": "hard coal with a volatile component (gas) of less than 10 %",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q182458",
+      "relation": "subclass",
+      "surface_form": "crow coal",
+      "description": "hard coal with a volatile component (gas) of less than 10 %",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q182458",
+      "relation": "subclass",
+      "surface_form": "hard coal",
+      "description": "hard coal with a volatile component (gas) of less than 10 %",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q182458",
+      "relation": "subclass",
+      "surface_form": "Kilkenny coal",
+      "description": "hard coal with a volatile component (gas) of less than 10 %",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q182458",
+      "relation": "subclass",
+      "surface_form": "stone coal",
+      "description": "hard coal with a volatile component (gas) of less than 10 %",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q182458",
+      "relation": "subclass",
+      "surface_form": "black diamond",
+      "description": "hard coal with a volatile component (gas) of less than 10 %",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q82480",
+      "relation": "superclass",
+      "surface_form": "sedimentary rock",
+      "description": "rock formed by the deposition of material",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q5509870",
+      "relation": "subclass",
+      "surface_form": "fusain",
+      "description": "type of fossil deposit",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q790674",
+      "relation": "subclass",
+      "surface_form": "sub-bituminous coal",
+      "description": "lower grade of coal that contains 35\u201345% carbon",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q1408429",
+      "relation": "superclass",
+      "surface_form": "solid fuel",
+      "description": "solid material that can be burnt to release energy",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q1237331",
+      "relation": "has_part",
+      "surface_form": "maceral",
+      "description": "organic-origin component of coal or oil shale",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q732607",
+      "relation": "subclass",
+      "surface_form": "bituminous coal",
+      "description": "often greasy, shiny, combustible organic sedimentary rock that consists of more than 75 per cent carbon by weight",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q48969047",
+      "relation": "subclass",
+      "surface_form": "metallurgical coal",
+      "description": "grade of coal",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q48969047",
+      "relation": "subclass",
+      "surface_form": "coking coal",
+      "description": "grade of coal",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q732607",
+      "relation": "subclass",
+      "surface_form": "soft coal",
+      "description": "often greasy, shiny, combustible organic sedimentary rock that consists of more than 75 per cent carbon by weight",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q106043898",
+      "relation": "subclass",
+      "surface_form": "cannel coal",
+      "description": "Bituminous coal of uniform and compact fine-grained texture. It is dark gray to black in color, has a greasy luster, and is It yields a high percentage of volatile matter, ignites easily, and burns with a luminous smoky flame.",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q106043898",
+      "relation": "subclass",
+      "surface_form": "canndle coal",
+      "description": "Bituminous coal of uniform and compact fine-grained texture. It is dark gray to black in color, has a greasy luster, and is It yields a high percentage of volatile matter, ignites easily, and burns with a luminous smoky flame.",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q7937223",
+      "relation": "subclass",
+      "surface_form": "Vitrain",
+      "description": "Lithotype of coal",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q240270",
+      "relation": "subclass",
+      "surface_form": "xyloid lignite",
+      "description": "waste product generated by the mining of lignite",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q240270",
+      "relation": "subclass",
+      "surface_form": "xylit",
+      "description": "waste product generated by the mining of lignite",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q1705967",
+      "relation": "subclass",
+      "surface_form": "sapropelite",
+      "description": "",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q12103026",
+      "relation": "subclass",
+      "surface_form": "durain",
+      "description": "",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q12110328",
+      "relation": "subclass",
+      "surface_form": "Clarain",
+      "description": "",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "wikidata:Q604915",
+      "relation": "subclass",
+      "surface_form": "vitreous coal",
+      "description": "",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Coal",
+      "source": "OEO:00000401",
+      "relation": "descendant",
+      "surface_form": "sub bituminous coal",
+      "type": "rdfs:label"
+    }
+  ],
+  "sevocab:BrownCoal": [
+    {
+      "concept_id": "sevocab:BrownCoal",
+      "source": "wikidata:Q112122182",
+      "relation": "part_of",
+      "surface_form": "group in classification of productive activities",
+      "description": "",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:BrownCoal",
+      "source": "wikidata:Q12880211",
+      "relation": "superclass",
+      "surface_form": "mining of coal",
+      "description": "process of getting coal out of the ground",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:BrownCoal",
+      "source": "wikidata:Q12880211",
+      "relation": "superclass",
+      "surface_form": "coal mining",
+      "description": "process of getting coal out of the ground",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:BrownCoal",
+      "source": "wikidata:Q29584410",
+      "relation": "self",
+      "surface_form": "mining of lignite",
+      "description": "economic activity",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:BrownCoal",
+      "source": "wikidata:Q29584410",
+      "relation": "self",
+      "surface_form": "05.2 Mining of lignite",
+      "description": "economic activity",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:BrownCoal",
+      "source": "wikidata:Q29584410",
+      "relation": "self",
+      "surface_form": "brown coal mining",
+      "description": "economic activity",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:BrownCoal",
+      "source": "wikidata:Q29584410",
+      "relation": "self",
+      "surface_form": "lignite mining",
+      "description": "economic activity",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:BrownCoal",
+      "source": "wikidata:Q29584410",
+      "relation": "self",
+      "surface_form": "NACE 05.2",
+      "description": "economic activity",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:BrownCoal",
+      "source": "wikidata:Q112117881",
+      "relation": "superclass",
+      "surface_form": "mining of coal and lignite",
+      "description": "economic activity",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:BrownCoal",
+      "source": "wikidata:Q112117881",
+      "relation": "superclass",
+      "surface_form": "ISIC 05",
+      "description": "economic activity",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:BrownCoal",
+      "source": "wikidata:Q112117881",
+      "relation": "superclass",
+      "surface_form": "NACE 05",
+      "description": "economic activity",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:BrownCoal",
+      "source": "OEO:00000251",
+      "relation": "descendant",
+      "surface_form": "lignite",
+      "type": "rdfs:label"
+    }
+  ],
+  "sevocab:HeatPump": [
+    {
+      "concept_id": "sevocab:HeatPump",
+      "source": "wikidata:Q75920",
+      "relation": "superclass",
+      "surface_form": "thermodynamic cycle",
+      "description": "linked sequence of thermodynamic processes that involve transfer of heat and work into and out of the system,while varying pressure, temperature, and other state variables within the system, and that eventually returns the system to its initial state",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:HeatPump",
+      "source": "wikidata:Q336178",
+      "relation": "subclass",
+      "surface_form": "water heat recycling",
+      "description": "utilisation of the thermal energy contained in the wastewater",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:HeatPump",
+      "source": "wikidata:Q336178",
+      "relation": "subclass",
+      "surface_form": "drain water heat recovery",
+      "description": "utilisation of the thermal energy contained in the wastewater",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:HeatPump",
+      "source": "wikidata:Q336178",
+      "relation": "subclass",
+      "surface_form": "waste water heat recovery",
+      "description": "utilisation of the thermal energy contained in the wastewater",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:HeatPump",
+      "source": "wikidata:Q336178",
+      "relation": "subclass",
+      "surface_form": "greywater heat recovery",
+      "description": "utilisation of the thermal energy contained in the wastewater",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:HeatPump",
+      "source": "wikidata:Q336178",
+      "relation": "subclass",
+      "surface_form": "shower water heat recovery",
+      "description": "utilisation of the thermal energy contained in the wastewater",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:HeatPump",
+      "source": "wikidata:Q179635",
+      "relation": "superclass",
+      "surface_form": "heat transfer",
+      "description": "transport of thermal energy in physical systems",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:HeatPump",
+      "source": "wikidata:Q179635",
+      "relation": "superclass",
+      "surface_form": "heat exchange",
+      "description": "transport of thermal energy in physical systems",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:HeatPump",
+      "source": "wikidata:Q1452596",
+      "relation": "self",
+      "surface_form": "Heat pump and refrigeration cycle",
+      "description": "mathematical models of heat pumps and refrigeration",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:HeatPump",
+      "source": "wikidata:Q1452596",
+      "relation": "self",
+      "surface_form": "refrigeration cycle",
+      "description": "mathematical models of heat pumps and refrigeration",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:HeatPump",
+      "source": "wikidata:Q120378944",
+      "relation": "subclass",
+      "surface_form": "waste heat recovery",
+      "description": "process of capturing waste heat from manufacturing processes for further use",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:HeatPump",
+      "source": "wikidata:Q1452596",
+      "relation": "self",
+      "surface_form": "heat recovery",
+      "description": "mathematical models of heat pumps and refrigeration",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:HeatPump",
+      "source": "OEO:00000009",
+      "relation": "descendant",
+      "surface_form": "electric heat pump",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:HeatPump",
+      "source": "OEO:00000212",
+      "relation": "descendant",
+      "surface_form": "heat pump",
+      "type": "rdfs:label"
+    }
+  ],
+  "sevocab:Hydrogen": [
+    {
+      "concept_id": "sevocab:Hydrogen",
+      "source": "wikidata:Q111191050",
+      "relation": "self",
+      "surface_form": "hydrogen fuel cell",
+      "description": "electricity generated from hydrogen",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Hydrogen",
+      "source": "OEO:00000220",
+      "relation": "descendant",
+      "surface_form": "hydrogen",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Hydrogen",
+      "source": "OEO:00010015",
+      "relation": "descendant",
+      "surface_form": "fossil hydrogen",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Hydrogen",
+      "source": "OEO:00010016",
+      "relation": "descendant",
+      "surface_form": "synthetic hydrogen",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Hydrogen",
+      "source": "OEO:00010379",
+      "relation": "descendant",
+      "surface_form": "electrolytic hydrogen",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Hydrogen",
+      "source": "OEO:00010380",
+      "relation": "descendant",
+      "surface_form": "renewable electrolytic hydrogen",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Hydrogen",
+      "source": "OEO:00010381",
+      "relation": "descendant",
+      "surface_form": "steam reforming hydrogen",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Hydrogen",
+      "source": "OEO:00010382",
+      "relation": "descendant",
+      "surface_form": "fossil steam reforming hydrogen",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Hydrogen",
+      "source": "OEO:00010383",
+      "relation": "descendant",
+      "surface_form": "abated steam reforming hydrogen",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Hydrogen",
+      "source": "OEO:00010416",
+      "relation": "descendant",
+      "surface_form": "nuclear electric hydrogen",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:Hydrogen",
+      "source": "OEO:00010418",
+      "relation": "descendant",
+      "surface_form": "solar electrolytic hydrogen",
+      "type": "rdfs:label"
+    }
+  ],
+  "sevocab:NaturalGas": [
+    {
+      "concept_id": "sevocab:NaturalGas",
+      "source": "wikidata:Q2287558",
+      "relation": "self",
+      "surface_form": "natural-gas processing",
+      "description": "industrial process designed to clean raw natural gas by separating impurities and various non-methane hydrocarbons and fluids to produce what is known as pipeline quality dry natural gas",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:NaturalGas",
+      "source": "OEO:00000062",
+      "relation": "descendant",
+      "surface_form": "associated gas",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:NaturalGas",
+      "source": "OEO:00000096",
+      "relation": "descendant",
+      "surface_form": "colliery gas",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:NaturalGas",
+      "source": "OEO:00000292",
+      "relation": "descendant",
+      "surface_form": "natural gas",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:NaturalGas",
+      "source": "OEO:00000297",
+      "relation": "descendant",
+      "surface_form": "non associated gas",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:NaturalGas",
+      "source": "OEO:00010237",
+      "relation": "descendant",
+      "surface_form": "liquefied natural gas",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:NaturalGas",
+      "source": "OEO:00320012",
+      "relation": "descendant",
+      "surface_form": "compressed natural gas",
+      "type": "rdfs:label"
+    }
+  ],
+  "sevocab:GasCcgt": [
+    {
+      "concept_id": "sevocab:GasCcgt",
+      "source": "wikidata:Q900729",
+      "relation": "self",
+      "surface_form": "combined cycle power station",
+      "description": "type of power station",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:GasCcgt",
+      "source": "wikidata:Q900729",
+      "relation": "self",
+      "surface_form": "CC",
+      "description": "type of power station",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:GasCcgt",
+      "source": "wikidata:Q1158818",
+      "relation": "superclass",
+      "surface_form": "steam-electric power station",
+      "description": "power plant, wherein the thermal energy is exploited by steam in a steam turbine",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:GasCcgt",
+      "source": "wikidata:Q1158818",
+      "relation": "superclass",
+      "surface_form": "steam power plant",
+      "description": "power plant, wherein the thermal energy is exploited by steam in a steam turbine",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:GasCcgt",
+      "source": "wikidata:Q1158818",
+      "relation": "superclass",
+      "surface_form": "steam power station",
+      "description": "power plant, wherein the thermal energy is exploited by steam in a steam turbine",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:GasCcgt",
+      "source": "wikidata:Q900729",
+      "relation": "self",
+      "surface_form": "CCGT",
+      "description": "type of power station",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:GasCcgt",
+      "source": "wikidata:Q900729",
+      "relation": "self",
+      "surface_form": "combined cycle",
+      "description": "type of power station",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:GasCcgt",
+      "source": "wikidata:Q900729",
+      "relation": "self",
+      "surface_form": "combined cycle gas turbine",
+      "description": "type of power station",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:GasCcgt",
+      "source": "wikidata:Q900729",
+      "relation": "self",
+      "surface_form": "combined cycle power plant",
+      "description": "type of power station",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:GasCcgt",
+      "source": "wikidata:Q1427536",
+      "relation": "superclass",
+      "surface_form": "gas turbine power station",
+      "description": "a power station that utilises gas turbines for power generation",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:GasCcgt",
+      "source": "wikidata:Q1427536",
+      "relation": "superclass",
+      "surface_form": "gas turbine power plant",
+      "description": "a power station that utilises gas turbines for power generation",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:GasCcgt",
+      "source": "wikidata:Q1158818",
+      "relation": "superclass",
+      "surface_form": "steam-electric power plant",
+      "description": "power plant, wherein the thermal energy is exploited by steam in a steam turbine",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:GasCcgt",
+      "source": "wikidata:Q1158818",
+      "relation": "superclass",
+      "surface_form": "thermal generation",
+      "description": "power plant, wherein the thermal energy is exploited by steam in a steam turbine",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:GasCcgt",
+      "source": "wikidata:Q105029714",
+      "relation": "subclass",
+      "surface_form": "integrated solar combined-cycle power plant",
+      "description": "combined cycle power plant which also uses a solar thermal system",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:GasCcgt",
+      "source": "wikidata:Q105029714",
+      "relation": "subclass",
+      "surface_form": "ISCC",
+      "description": "combined cycle power plant which also uses a solar thermal system",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:GasCcgt",
+      "source": "wikidata:Q900729",
+      "relation": "self",
+      "surface_form": "CCPP",
+      "description": "type of power station",
+      "type": "skos:altLabel"
+    },
+    {
+      "concept_id": "sevocab:GasCcgt",
+      "source": "OEO:00000185",
+      "relation": "descendant",
+      "surface_form": "gas turbine",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:GasCcgt",
+      "source": "OEO:00000222",
+      "relation": "descendant",
+      "surface_form": "hydrogen turbine",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:GasCcgt",
+      "source": "OEO:00010303",
+      "relation": "descendant",
+      "surface_form": "jet fuel turbine",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:GasCcgt",
+      "source": "OEO:00140135",
+      "relation": "descendant",
+      "surface_form": "natural gas turbine",
+      "type": "rdfs:label"
+    },
+    {
+      "concept_id": "sevocab:GasCcgt",
+      "source": "https://openenergyplatform.org/ontology/oeo/oeo-physical/OEO_00080003",
+      "relation": "descendant",
+      "surface_form": "None",
+      "type": "rdfs:label"
+    }
+  ]
+}

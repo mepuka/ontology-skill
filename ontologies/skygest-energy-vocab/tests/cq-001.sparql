@@ -1,0 +1,12 @@
+# CQ-001: What are all concepts in a given ConceptScheme?
+# Expected: non_empty
+# Use case: UC-001
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?concept ?label WHERE {
+  ?concept skos:inScheme ?scheme ;
+           skos:prefLabel ?label .
+}
+ORDER BY ?label

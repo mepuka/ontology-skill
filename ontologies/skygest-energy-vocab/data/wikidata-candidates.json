@@ -1,0 +1,980 @@
+{
+  "sevocab:SolarPv": [
+    {
+      "qid": "Q116715638",
+      "label": "Solar Photovoltaic Project #02",
+      "description": "power station with capacity >1MW in San Bernardino County, California",
+      "instance_of": "photovoltaic power station",
+      "search_term": "solar photovoltaic"
+    },
+    {
+      "qid": "Q116715839",
+      "label": "Solar Photovoltaic Project #06",
+      "description": "power station with capacity >1MW in San Bernardino County, California",
+      "instance_of": "photovoltaic power station",
+      "search_term": "solar photovoltaic"
+    },
+    {
+      "qid": "Q116715836",
+      "label": "Solar Photovoltaic Project #03",
+      "description": "power station with capacity >1MW in San Bernardino County, California",
+      "instance_of": "photovoltaic power station",
+      "search_term": "solar photovoltaic"
+    },
+    {
+      "qid": "Q116715837",
+      "label": "Solar Photovoltaic Project #05",
+      "description": "power station with capacity >1MW in San Bernardino County, California",
+      "instance_of": "photovoltaic power station",
+      "search_term": "solar photovoltaic"
+    },
+    {
+      "qid": "Q116715843",
+      "label": "Solar Photovoltaic Project #09",
+      "description": "power station with capacity >1MW in San Bernardino County, California",
+      "instance_of": "photovoltaic power station",
+      "search_term": "solar photovoltaic"
+    },
+    {
+      "qid": "Q116715840",
+      "label": "Solar Photovoltaic Project #07",
+      "description": "power station with capacity >1MW in San Bernardino County, California",
+      "instance_of": "photovoltaic power station",
+      "search_term": "solar photovoltaic"
+    },
+    {
+      "qid": "Q116715841",
+      "label": "Solar Photovoltaic Project #08",
+      "description": "power station with capacity >1MW in San Bernardino County, California",
+      "instance_of": "photovoltaic power station",
+      "search_term": "solar photovoltaic"
+    },
+    {
+      "qid": "Q116715846",
+      "label": "Solar Photovoltaic Project #11",
+      "description": "power station with capacity >1MW in San Bernardino County, California",
+      "instance_of": "photovoltaic power station",
+      "search_term": "solar photovoltaic"
+    },
+    {
+      "qid": "Q51074995",
+      "label": "Q51074995",
+      "description": "",
+      "instance_of": "",
+      "search_term": "photovoltaic energy"
+    },
+    {
+      "qid": "Q58652802",
+      "label": "Q58652802",
+      "description": "",
+      "instance_of": "",
+      "search_term": "photovoltaic energy"
+    },
+    {
+      "qid": "Q58990176",
+      "label": "Q58990176",
+      "description": "",
+      "instance_of": "",
+      "search_term": "photovoltaic energy"
+    },
+    {
+      "qid": "Q64097791",
+      "label": "Q64097791",
+      "description": "",
+      "instance_of": "",
+      "search_term": "photovoltaic energy"
+    },
+    {
+      "qid": "Q81118655",
+      "label": "Q81118655",
+      "description": "",
+      "instance_of": "",
+      "search_term": "photovoltaic energy"
+    },
+    {
+      "qid": "Q192127",
+      "label": "photovoltaics",
+      "description": "method of converting solar radiation into direct current electricity",
+      "instance_of": "",
+      "search_term": "photovoltaic energy"
+    },
+    {
+      "qid": "Q114031314",
+      "label": "Q114031314",
+      "description": "",
+      "instance_of": "",
+      "search_term": "photovoltaic energy"
+    },
+    {
+      "qid": "Q127799572",
+      "label": "Q127799572",
+      "description": "",
+      "instance_of": "",
+      "search_term": "photovoltaic energy"
+    }
+  ],
+  "sevocab:Wind": [
+    {
+      "qid": "Q122922549",
+      "label": "Wind energy park with airborne wind energy systems and a direct current (DC) internal grid",
+      "description": "US patent 11365721",
+      "instance_of": "United States patent",
+      "search_term": "wind energy"
+    },
+    {
+      "qid": "Q59598157",
+      "label": "Wind Energy: Offshore Permitting",
+      "description": "Congressional Research Service report",
+      "instance_of": "Congressional Research Service report",
+      "search_term": "wind energy"
+    },
+    {
+      "qid": "Q76547772",
+      "label": "Wind energy resources in Powys",
+      "description": "book (work)",
+      "instance_of": "written work",
+      "search_term": "wind energy"
+    },
+    {
+      "qid": "Q52664392",
+      "label": "Wind Energy Solutions",
+      "description": "",
+      "instance_of": "business",
+      "search_term": "wind energy"
+    },
+    {
+      "qid": "Q36725847",
+      "label": "Q36725847",
+      "description": "",
+      "instance_of": "",
+      "search_term": "wind energy"
+    },
+    {
+      "qid": "Q50812078",
+      "label": "Wind Energy Science",
+      "description": "Academic journal published by Copernicus Publications, covering the subjects: Technology: Mechanical engineering and machinery: Renewable energy sources",
+      "instance_of": "academic journal",
+      "search_term": "wind energy"
+    },
+    {
+      "qid": "Q38423808",
+      "label": "Q38423808",
+      "description": "",
+      "instance_of": "",
+      "search_term": "wind energy"
+    },
+    {
+      "qid": "Q12073025",
+      "label": "wind power in Scotland",
+      "description": "overview of wind power in Scotland",
+      "instance_of": "aspect in a geographic region",
+      "search_term": "wind power"
+    },
+    {
+      "qid": "Q3306854",
+      "label": "wind power in the United Kingdom",
+      "description": "use of wind turbines to generate electricity in the United Kingdom",
+      "instance_of": "aspect in a geographic region",
+      "search_term": "wind power"
+    },
+    {
+      "qid": "Q67945726",
+      "label": "The Wind Power",
+      "description": "online database of wind energy installations",
+      "instance_of": "online database",
+      "search_term": "wind power"
+    },
+    {
+      "qid": "Q3588996",
+      "label": "wind power in Belgium",
+      "description": "electricity generation from wind in Belgium",
+      "instance_of": "Wind power by country or region",
+      "search_term": "wind power"
+    },
+    {
+      "qid": "Q43302",
+      "label": "wind power",
+      "description": "conversion of wind energy into a useful form",
+      "instance_of": "renewable resource",
+      "search_term": "wind power"
+    },
+    {
+      "qid": "Q17065246",
+      "label": "wind power in Thailand",
+      "description": "",
+      "instance_of": "aspect in a geographic region",
+      "search_term": "wind power"
+    },
+    {
+      "qid": "Q17069427",
+      "label": "Wind power in Kenya",
+      "description": "",
+      "instance_of": "aspect in a geographic region",
+      "search_term": "wind power"
+    },
+    {
+      "qid": "Q97610490",
+      "label": "wind power capacity in different countries",
+      "description": "Wikimedia list article",
+      "instance_of": "Wikimedia list article",
+      "search_term": "wind power"
+    }
+  ],
+  "sevocab:OnshoreWind": [
+    {
+      "qid": "Q50687555",
+      "label": "onshore wind farm",
+      "description": "group of wind turbines on land",
+      "instance_of": "",
+      "search_term": "onshore wind power"
+    }
+  ],
+  "sevocab:OffshoreWind": [
+    {
+      "qid": "Q116636661",
+      "label": "offshore wind power in the United States",
+      "description": "",
+      "instance_of": "aspect in a geographic region",
+      "search_term": "offshore wind power"
+    },
+    {
+      "qid": "Q123456618",
+      "label": "offshore wind power in the United Kingdom",
+      "description": "",
+      "instance_of": "aspect in a geographic region",
+      "search_term": "offshore wind power"
+    },
+    {
+      "qid": "Q55932432",
+      "label": "Q55932432",
+      "description": "",
+      "instance_of": "",
+      "search_term": "offshore wind power"
+    },
+    {
+      "qid": "Q57663191",
+      "label": "Q57663191",
+      "description": "",
+      "instance_of": "",
+      "search_term": "offshore wind power"
+    },
+    {
+      "qid": "Q61637704",
+      "label": "offshore wind power",
+      "description": "use of wind turbines constructed in marine bodies of water to harvest wind energy to generate electricity",
+      "instance_of": "",
+      "search_term": "offshore wind power"
+    },
+    {
+      "qid": "Q74826881",
+      "label": "Q74826881",
+      "description": "",
+      "instance_of": "",
+      "search_term": "offshore wind power"
+    },
+    {
+      "qid": "Q121468856",
+      "label": "Q121468856",
+      "description": "",
+      "instance_of": "",
+      "search_term": "offshore wind power"
+    },
+    {
+      "qid": "Q126863512",
+      "label": "Q126863512",
+      "description": "",
+      "instance_of": "",
+      "search_term": "offshore wind power"
+    }
+  ],
+  "sevocab:Battery": [
+    {
+      "qid": "Q123049171",
+      "label": "Battery storage case",
+      "description": "US patent 11462781",
+      "instance_of": "United States patent",
+      "search_term": "battery storage"
+    },
+    {
+      "qid": "Q810924",
+      "label": "battery storage power station",
+      "description": "energy storage system using electrochemical secondary cells",
+      "instance_of": "",
+      "search_term": "battery storage"
+    },
+    {
+      "qid": "Q114357242",
+      "label": "Battery Storage Soars on U.S. Electric Grid",
+      "description": "Wall Street Journal article (December 21, 2021)",
+      "instance_of": "news article",
+      "search_term": "battery storage"
+    },
+    {
+      "qid": "Q119521656",
+      "label": "Battery storage device of vehicle",
+      "description": "US patent 11355812",
+      "instance_of": "United States patent",
+      "search_term": "battery storage"
+    },
+    {
+      "qid": "Q123745546",
+      "label": "Battery storage device for electric vehicle",
+      "description": "US patent 11498404",
+      "instance_of": "United States patent",
+      "search_term": "battery storage"
+    },
+    {
+      "qid": "Q123566592",
+      "label": "Battery storage system for electric refuse vehicle",
+      "description": "US patent 11505083",
+      "instance_of": "United States patent",
+      "search_term": "battery storage"
+    },
+    {
+      "qid": "Q123572388",
+      "label": "Battery storage system for electric refuse vehicle",
+      "description": "US patent 11148550",
+      "instance_of": "United States patent",
+      "search_term": "battery storage"
+    },
+    {
+      "qid": "Q120496151",
+      "label": "Q120496151",
+      "description": "",
+      "instance_of": "",
+      "search_term": "battery storage"
+    },
+    {
+      "qid": "Q117405552",
+      "label": "Battery energy storage system and microgrid controller",
+      "description": "US patent 11515706",
+      "instance_of": "United States patent",
+      "search_term": "battery energy storage"
+    },
+    {
+      "qid": "Q58842110",
+      "label": "Battery Energy Storage Systems",
+      "description": "report about battery energy storage systems published by the UNSECO in May 1991",
+      "instance_of": "report",
+      "search_term": "battery energy storage"
+    },
+    {
+      "qid": "Q51191783",
+      "label": "Q51191783",
+      "description": "",
+      "instance_of": "",
+      "search_term": "battery energy storage"
+    },
+    {
+      "qid": "Q116716133",
+      "label": "Battery Energy Storage System",
+      "description": "power station with capacity >1MW in Fairbanks North Star Borough, Alaska",
+      "instance_of": "battery storage power station",
+      "search_term": "battery energy storage"
+    },
+    {
+      "qid": "Q119521832",
+      "label": "Battery energy storage system",
+      "description": "US patent 11349332",
+      "instance_of": "United States patent",
+      "search_term": "battery energy storage"
+    },
+    {
+      "qid": "Q56932497",
+      "label": "Q56932497",
+      "description": "",
+      "instance_of": "",
+      "search_term": "battery energy storage"
+    },
+    {
+      "qid": "Q57906881",
+      "label": "Q57906881",
+      "description": "",
+      "instance_of": "",
+      "search_term": "battery energy storage"
+    }
+  ],
+  "sevocab:Renewable": [
+    {
+      "qid": "Q57841979",
+      "label": "Renewable Energy (Electricity) Amendment Act 2015",
+      "description": "Act of the Parliament of Australia, registered as C2015A00090",
+      "instance_of": "Act of the Parliament of Australia",
+      "search_term": "renewable energy"
+    },
+    {
+      "qid": "Q55631425",
+      "label": "renewable energy in Austria",
+      "description": "",
+      "instance_of": "aspect in a geographic region",
+      "search_term": "renewable energy"
+    },
+    {
+      "qid": "Q1361656",
+      "label": "REN21",
+      "description": "Multi-stakeholder network enabling the changes for the energy transition.",
+      "instance_of": "network",
+      "search_term": "renewable energy"
+    },
+    {
+      "qid": "Q795757",
+      "label": "energy transition",
+      "description": "long-term structural change towards sustainable energy systems",
+      "instance_of": "energy policy",
+      "search_term": "renewable energy"
+    },
+    {
+      "qid": "Q48855863",
+      "label": "renewable energy in Brazil",
+      "description": "overview of renewable energy in Brazil",
+      "instance_of": "aspect in a geographic region",
+      "search_term": "renewable energy"
+    }
+  ],
+  "sevocab:Nuclear": [
+    {
+      "qid": "Q3725259",
+      "label": "nuclear power in Armenia",
+      "description": "",
+      "instance_of": "aspect in a geographic region",
+      "search_term": "nuclear power"
+    },
+    {
+      "qid": "Q1751731",
+      "label": "nuclear power in Sweden",
+      "description": "overview of nuclear power in Sweden",
+      "instance_of": "aspect in a geographic region",
+      "search_term": "nuclear power"
+    },
+    {
+      "qid": "Q4536297",
+      "label": "nuclear power in space",
+      "description": "Space exploration using nuclear energy",
+      "instance_of": "",
+      "search_term": "nuclear power"
+    },
+    {
+      "qid": "Q267166",
+      "label": "nuclear power in India",
+      "description": "overview of nuclear power in India",
+      "instance_of": "nuclear power",
+      "search_term": "nuclear power"
+    },
+    {
+      "qid": "Q1344419",
+      "label": "nuclear power by country",
+      "description": "Wikimedia list article",
+      "instance_of": "Wikimedia list article",
+      "search_term": "nuclear power"
+    },
+    {
+      "qid": "Q12739",
+      "label": "nuclear power",
+      "description": "power generated from nuclear reactions",
+      "instance_of": "energy production",
+      "search_term": "nuclear power"
+    },
+    {
+      "qid": "Q6501273",
+      "label": "nuclear power in North Korea",
+      "description": "overview of nuclear power in North Korea",
+      "instance_of": "",
+      "search_term": "nuclear power"
+    },
+    {
+      "qid": "Q3725279",
+      "label": "nuclear energy in Slovenia",
+      "description": "",
+      "instance_of": "aspect in a geographic region",
+      "search_term": "nuclear energy"
+    },
+    {
+      "qid": "Q16924228",
+      "label": "nuclear energy in Hong Kong",
+      "description": "energy in Hong Kong, China",
+      "instance_of": "aspect in a geographic region",
+      "search_term": "nuclear energy"
+    },
+    {
+      "qid": "Q104710374",
+      "label": "Nuclear energy for peaceful purposes, individual power plants",
+      "description": "subject category of the 20th Century Press Archives",
+      "instance_of": "PM20 subject category",
+      "search_term": "nuclear energy"
+    },
+    {
+      "qid": "Q104710373",
+      "label": "Nuclear energy for peaceful purposes",
+      "description": "subject category of the 20th Century Press Archives",
+      "instance_of": "PM20 subject category",
+      "search_term": "nuclear energy"
+    },
+    {
+      "qid": "Q96326279",
+      "label": "Nuclear Energy",
+      "description": "UK scientific journal",
+      "instance_of": "scientific journal",
+      "search_term": "nuclear energy"
+    },
+    {
+      "qid": "Q104713037",
+      "label": "Nuclear energy",
+      "description": "subject category of the 20th Century Press Archives",
+      "instance_of": "PM20 subject category",
+      "search_term": "nuclear energy"
+    },
+    {
+      "qid": "Q4355111",
+      "label": "Nuclear Energy",
+      "description": "sculpture by Henry Moore (LH 526, University of Chicago)",
+      "instance_of": "sculpture",
+      "search_term": "nuclear energy"
+    }
+  ],
+  "sevocab:Coal": [
+    {
+      "qid": "Q490727",
+      "label": "Coal County",
+      "description": "county in Oklahoma, United States",
+      "instance_of": "county of Oklahoma",
+      "search_term": "coal"
+    },
+    {
+      "qid": "Q18785935",
+      "label": "Coalecerotanais",
+      "description": "genus of crustaceans",
+      "instance_of": "taxon",
+      "search_term": "coal"
+    },
+    {
+      "qid": "Q959309",
+      "label": "coal mine",
+      "description": "place for extraction of coal",
+      "instance_of": "type of mining site",
+      "search_term": "coal"
+    },
+    {
+      "qid": "Q955589",
+      "label": "Coalville",
+      "description": "town in Leicestershire, England",
+      "instance_of": "unparished area",
+      "search_term": "coal"
+    },
+    {
+      "qid": "Q12880211",
+      "label": "mining of coal",
+      "description": "process of getting coal out of the ground",
+      "instance_of": "",
+      "search_term": "coal"
+    },
+    {
+      "qid": "Q60796324",
+      "label": "Coal",
+      "description": "family name",
+      "instance_of": "family name",
+      "search_term": "coal"
+    },
+    {
+      "qid": "Q24489",
+      "label": "coal",
+      "description": "combustible sedimentary rock composed primarily of carbon",
+      "instance_of": "",
+      "search_term": "coal"
+    },
+    {
+      "qid": "Q16687580",
+      "label": "Coal Energy",
+      "description": "Wikimedia disambiguation page",
+      "instance_of": "Wikimedia disambiguation page",
+      "search_term": "coal energy"
+    },
+    {
+      "qid": "Q12062816",
+      "label": "Coal Energy S.A.",
+      "description": "",
+      "instance_of": "business",
+      "search_term": "coal energy"
+    },
+    {
+      "qid": "Q11982303",
+      "label": "coal power",
+      "description": "conversion of coal into energy",
+      "instance_of": "",
+      "search_term": "coal energy"
+    },
+    {
+      "qid": "Q52697482",
+      "label": "Q52697482",
+      "description": "",
+      "instance_of": "",
+      "search_term": "coal energy"
+    }
+  ],
+  "sevocab:BrownCoal": [
+    {
+      "qid": "Q1940110",
+      "label": "Lignite mining in Central Germany",
+      "description": "Lignite mining region in eastern Germany",
+      "instance_of": "mining region",
+      "search_term": "lignite"
+    },
+    {
+      "qid": "Q132235387",
+      "label": "Lignite Energy Council",
+      "description": "American trade association",
+      "instance_of": "organization",
+      "search_term": "lignite"
+    },
+    {
+      "qid": "Q2447055",
+      "label": "Lignite",
+      "description": "human settlement in Burke County, North Dakota, United States of America",
+      "instance_of": "city in the United States",
+      "search_term": "lignite"
+    },
+    {
+      "qid": "Q1671678",
+      "label": "Lignite Mine at Stolzenbach",
+      "description": "former underground lignite mine in Hesse, Germany",
+      "instance_of": "open-pit lignite mine",
+      "search_term": "lignite"
+    },
+    {
+      "qid": "Q26360712",
+      "label": "Q26360712",
+      "description": "",
+      "instance_of": "",
+      "search_term": "lignite"
+    },
+    {
+      "qid": "Q115863334",
+      "label": "Lignite mine Kosovo, Obilic",
+      "description": "Lignite mine",
+      "instance_of": "mine",
+      "search_term": "lignite"
+    },
+    {
+      "qid": "Q906359",
+      "label": "Montan wax",
+      "description": "wax derived from certain types of coal",
+      "instance_of": "wax",
+      "search_term": "lignite"
+    },
+    {
+      "qid": "Q119477634",
+      "label": "Brown coal, greenwash: the true emissions impact of the Hydrogen Energy Supply Chain project",
+      "description": "Discussion paper published by The Australia Institute on 2022-05-19.",
+      "instance_of": "report",
+      "search_term": "brown coal"
+    },
+    {
+      "qid": "Q130650392",
+      "label": "brown coal deposit",
+      "description": "",
+      "instance_of": "",
+      "search_term": "brown coal"
+    },
+    {
+      "qid": "Q30264028",
+      "label": "Brown Coal Innovation Australia (Australia)",
+      "description": "company in Melbourne, Australia",
+      "instance_of": "business",
+      "search_term": "brown coal"
+    },
+    {
+      "qid": "Q49402153",
+      "label": "Brown Coal Mine",
+      "description": "mine in Fergus County, Montana, United States of America",
+      "instance_of": "mine",
+      "search_term": "brown coal"
+    },
+    {
+      "qid": "Q29584410",
+      "label": "mining of lignite",
+      "description": "economic activity",
+      "instance_of": "economic activity",
+      "search_term": "brown coal"
+    },
+    {
+      "qid": "Q901497",
+      "label": "open-pit lignite mine",
+      "description": "",
+      "instance_of": "",
+      "search_term": "brown coal"
+    },
+    {
+      "qid": "Q61948152",
+      "label": "Q61948152",
+      "description": "",
+      "instance_of": "",
+      "search_term": "brown coal"
+    }
+  ],
+  "sevocab:HeatPump": [
+    {
+      "qid": "Q123598134",
+      "label": "Heat pump",
+      "description": "US patent 11441794",
+      "instance_of": "United States patent",
+      "search_term": "heat pump"
+    },
+    {
+      "qid": "Q123598319",
+      "label": "Heat pump",
+      "description": "US patent 11215370",
+      "instance_of": "United States patent",
+      "search_term": "heat pump"
+    },
+    {
+      "qid": "Q1452596",
+      "label": "Heat pump and refrigeration cycle",
+      "description": "mathematical models of heat pumps and refrigeration",
+      "instance_of": "",
+      "search_term": "heat pump"
+    },
+    {
+      "qid": "Q131363615",
+      "label": "Heat pump and method for designing the same",
+      "description": "US patent 11441821",
+      "instance_of": "United States patent",
+      "search_term": "heat pump"
+    },
+    {
+      "qid": "Q123745476",
+      "label": "Heat pump system for vehicle",
+      "description": "US patent 11505038",
+      "instance_of": "United States patent",
+      "search_term": "heat pump"
+    },
+    {
+      "qid": "Q30455516",
+      "label": "Q30455516",
+      "description": "",
+      "instance_of": "",
+      "search_term": "heat pump"
+    },
+    {
+      "qid": "Q123923382",
+      "label": "Heat pump systems with gas bypass and methods thereof",
+      "description": "US patent 11519646",
+      "instance_of": "United States patent",
+      "search_term": "heat pump"
+    },
+    {
+      "qid": "Q117837158",
+      "label": "Heat pump with simultaneous cooling and defrosting of heat exchangers arranged in parallel",
+      "description": "US patent 11333411",
+      "instance_of": "United States patent",
+      "search_term": "heat pump"
+    }
+  ],
+  "sevocab:Hydrogen": [
+    {
+      "qid": "Q66324651",
+      "label": "Hydrogen Energy: Clean Energy - 1979 (NAID 54454)",
+      "description": "item in the National Archives and Records Administration's holdings",
+      "instance_of": "item of collection or exhibition",
+      "search_term": "hydrogen energy"
+    },
+    {
+      "qid": "Q100319400",
+      "label": "Hydrogen Energy Applications for Valley Environments in Northern Netherlands",
+      "description": "EU Funded (H2020) Research Project",
+      "instance_of": "science project",
+      "search_term": "hydrogen energy"
+    },
+    {
+      "qid": "Q31097337",
+      "label": "Q31097337",
+      "description": "",
+      "instance_of": "",
+      "search_term": "hydrogen energy"
+    },
+    {
+      "qid": "Q5954912",
+      "label": "Hydrogen energy vision and technology roadmap",
+      "description": "Chinese government plan",
+      "instance_of": "",
+      "search_term": "hydrogen energy"
+    },
+    {
+      "qid": "Q56659152",
+      "label": "Q56659152",
+      "description": "",
+      "instance_of": "",
+      "search_term": "hydrogen energy"
+    },
+    {
+      "qid": "Q57968490",
+      "label": "Q57968490",
+      "description": "",
+      "instance_of": "",
+      "search_term": "hydrogen energy"
+    },
+    {
+      "qid": "Q61951331",
+      "label": "Q61951331",
+      "description": "",
+      "instance_of": "",
+      "search_term": "hydrogen energy"
+    },
+    {
+      "qid": "Q111191050",
+      "label": "hydrogen fuel cell",
+      "description": "electricity generated from hydrogen",
+      "instance_of": "fuel cell",
+      "search_term": "hydrogen fuel"
+    },
+    {
+      "qid": "Q30254598",
+      "label": "Hydrogen Fuel Cells and Electro-Mobility in European Regions",
+      "description": "organization in Brussels, Belgium",
+      "instance_of": "organization",
+      "search_term": "hydrogen fuel"
+    },
+    {
+      "qid": "Q26370801",
+      "label": "Q26370801",
+      "description": "",
+      "instance_of": "",
+      "search_term": "hydrogen fuel"
+    },
+    {
+      "qid": "Q37045648",
+      "label": "Q37045648",
+      "description": "",
+      "instance_of": "",
+      "search_term": "hydrogen fuel"
+    },
+    {
+      "qid": "Q124977546",
+      "label": "Hydrogen fueling station with integrated ammonia cracking unit",
+      "description": "US patent 11167732",
+      "instance_of": "United States patent",
+      "search_term": "hydrogen fuel"
+    },
+    {
+      "qid": "Q123144055",
+      "label": "Hydrogen fuel cell power plant",
+      "description": "type of fuel cell power plant",
+      "instance_of": "",
+      "search_term": "hydrogen fuel"
+    },
+    {
+      "qid": "Q119626696",
+      "label": "Hydrogen fuel cell stack and method for upgrading a hydrogen fuel cell stack",
+      "description": "US patent 11276869",
+      "instance_of": "United States patent",
+      "search_term": "hydrogen fuel"
+    },
+    {
+      "qid": "Q54962706",
+      "label": "Q54962706",
+      "description": "",
+      "instance_of": "",
+      "search_term": "hydrogen fuel"
+    }
+  ],
+  "sevocab:NaturalGas": [
+    {
+      "qid": "Q389036",
+      "label": "methane clathrate",
+      "description": "flammable solid similar to ice",
+      "instance_of": "type of chemical entity",
+      "search_term": "natural gas"
+    },
+    {
+      "qid": "Q1262712",
+      "label": "gas pipeline",
+      "description": "pipe designed for long-distance natural-gas transportation",
+      "instance_of": "",
+      "search_term": "natural gas"
+    },
+    {
+      "qid": "Q1406985",
+      "label": "transmission system operator for natural gas",
+      "description": "entity which operates infrastructure for bulk transfer of natural gas on a national or regional level",
+      "instance_of": "",
+      "search_term": "natural gas"
+    },
+    {
+      "qid": "Q60187089",
+      "label": "Natural Gas and Israel's Energy Future : Near-Term Decisions from a Strategic Perspective",
+      "description": "book",
+      "instance_of": "version, edition or translation",
+      "search_term": "natural gas"
+    },
+    {
+      "qid": "Q27095613",
+      "label": "natural gas (petroleum), raw liq. mix",
+      "description": "substance",
+      "instance_of": "",
+      "search_term": "natural gas"
+    },
+    {
+      "qid": "Q16919115",
+      "label": "natural gas in Russia",
+      "description": "",
+      "instance_of": "aspect in a geographic region",
+      "search_term": "natural gas"
+    },
+    {
+      "qid": "Q2287558",
+      "label": "natural-gas processing",
+      "description": "industrial process designed to clean raw natural gas by separating impurities and various non-methane hydrocarbons and fluids to produce what is known as pipeline quality dry natural gas",
+      "instance_of": "",
+      "search_term": "natural gas"
+    },
+    {
+      "qid": "Q2328318",
+      "label": "natural-gas condensate",
+      "description": "low-density mixture of hydrocarbon liquids that are present as gaseous components in the raw natural gas produced from many natural gas fields",
+      "instance_of": "",
+      "search_term": "natural gas"
+    }
+  ],
+  "sevocab:GasCcgt": [
+    {
+      "qid": "Q900729",
+      "label": "combined cycle power station",
+      "description": "type of power station",
+      "instance_of": "",
+      "search_term": "combined cycle gas turbine"
+    },
+    {
+      "qid": "Q128565496",
+      "label": "Q128565496",
+      "description": "",
+      "instance_of": "",
+      "search_term": "combined cycle gas turbine"
+    },
+    {
+      "qid": "Q120016077",
+      "label": "Combined cycle power plant and Methods of controlling emissions therefrom",
+      "description": "US patent 11365677",
+      "instance_of": "United States patent",
+      "search_term": "combined cycle power plant"
+    },
+    {
+      "qid": "Q120068712",
+      "label": "Combined cycle power plant and method for operating the combined cycle power plant",
+      "description": "US patent 11199113",
+      "instance_of": "United States patent",
+      "search_term": "combined cycle power plant"
+    },
+    {
+      "qid": "Q137765309",
+      "label": "Combined-cycle power plant with thermal energy storage",
+      "description": "US patent 11434786",
+      "instance_of": "United States patent",
+      "search_term": "combined cycle power plant"
+    },
+    {
+      "qid": "Q126816917",
+      "label": "Q126816917",
+      "description": "",
+      "instance_of": "",
+      "search_term": "combined cycle power plant"
+    }
+  ]
+}

@@ -1,0 +1,151 @@
+# Skygest Energy Vocabulary — Property Design
+# Phase 3: Conceptualization
+# Date: 2026-04-11
+
+# Standard SKOS properties (used as-is, not redefined)
+standard_properties:
+  - name: skos:inScheme
+    type: ObjectProperty
+    domain: skos:Concept
+    range: skos:ConceptScheme
+    cardinality: "exactly 1 per concept (CQ-023)"
+    characteristics: []
+    note: "Enforced by constraint CQ-023 (SPARQL), not OWL cardinality"
+
+  - name: skos:prefLabel
+    type: AnnotationProperty
+    domain: skos:Concept
+    range: "rdf:langString"
+    cardinality: "exactly 1 per concept per language"
+    characteristics: []
+    note: >
+      prefLabel value must exactly match the TypeScript canonical string.
+      E.g., "stock"@en, "end_of_period"@en, "solar PV"@en.
+
+  - name: skos:altLabel
+    type: AnnotationProperty
+    domain: skos:Concept
+    range: "rdf:langString"
+    cardinality: "1..* per concept (CQ-015 ensures >= 1)"
+    characteristics: []
+    note: >
+      Surface forms for chart text matching. Language-tagged: @en for
+      English, @de for German. Normalized form computed by build script.
+
+  - name: skos:broader
+    type: ObjectProperty
+    domain: skos:Concept
+    range: skos:Concept
+    cardinality: "0..1 (max 1 level of nesting; only in TechnologyOrFuelScheme)"
+    characteristics: []
+    note: "Used only for Wind>Onshore/Offshore, Coal>BrownCoal, NaturalGas>GasCcgt"
+
+  - name: skos:definition
+    type: AnnotationProperty
+    domain: skos:Concept
+    range: "rdf:langString"
+    cardinality: "exactly 1 (CQ-024 enforces)"
+    characteristics: []
+    note: "Genus-differentia pattern per naming conventions"
+
+  - name: skos:exactMatch
+    type: ObjectProperty
+    domain: skos:Concept
+    range: "rdfs:Resource"
+    characteristics: [symmetric, transitive]
+    note: "Used for ENTSO-E PSRType and UCUM code mappings"
+
+  - name: skos:closeMatch
+    type: ObjectProperty
+    domain: skos:Concept
+    range: "rdfs:Resource"
+    characteristics: [symmetric]
+    note: "Primary mapping relation to OEO and Wikidata"
+
+  - name: skos:broadMatch
+    type: ObjectProperty
+    domain: skos:Concept
+    range: "rdfs:Resource"
+    characteristics: []
+    note: "Used for SIEC and energy-news topic mappings"
+
+# Custom properties (defined in this ontology)
+custom_properties:
+
+  - name: hasProvenanceAnnotation
+    type: ObjectProperty
+    domain: skos:Concept
+    range: SurfaceFormEntry
+    cardinality: "0..* (one per altLabel-provenance pair)"
+    characteristics: []
+    inverse: null
+    bfo_relation: null
+    source_cq: CQ-012
+    note: >
+      Links a concept to a SurfaceFormEntry individual that records
+      provenance for a specific altLabel. Domain is broad (any concept);
+      range is SurfaceFormEntry. Not declared as OWL domain/range to
+      avoid inference side effects — enforced via SHACL instead.
+
+  - name: surfaceFormValue
+    type: DatatypeProperty
+    domain: SurfaceFormEntry
+    range: "xsd:string"
+    cardinality: "exactly 1"
+    characteristics: [functional]
+    source_cq: CQ-012
+    note: >
+      The exact altLabel string this provenance annotation applies to.
+      Must match a skos:altLabel on the parent concept (minus language tag).
+
+  - name: provenance
+    type: DatatypeProperty
+    domain: SurfaceFormEntry
+    range: "xsd:string"
+    cardinality: "exactly 1"
+    characteristics: [functional]
+    source_cq: CQ-012
+    note: >
+      One of 7 values: cold-start-corpus, hand-curated, oeo-derived,
+      ucum-derived, wikidata-derived, agent-curated, eval-feedback.
+      Constrained via SHACL sh:in, not OWL enumeration.
+
+# SHACL enforcement (not OWL domain/range)
+shacl_constraints:
+  - shape: ConceptShape
+    target: skos:Concept
+    rules:
+      - property: skos:inScheme
+        min_count: 1
+        max_count: 1
+      - property: rdfs:label
+        min_count: 1
+      - property: skos:definition
+        min_count: 1
+      - property: skos:altLabel
+        min_count: 1
+      - property: skos:prefLabel
+        min_count: 1
+        max_count: 1
+
+  - shape: SurfaceFormEntryShape
+    target: SurfaceFormEntry
+    rules:
+      - property: surfaceFormValue
+        min_count: 1
+        max_count: 1
+        datatype: "xsd:string"
+      - property: provenance
+        min_count: 1
+        max_count: 1
+        in_values:
+          - "cold-start-corpus"
+          - "hand-curated"
+          - "oeo-derived"
+          - "ucum-derived"
+          - "wikidata-derived"
+          - "agent-curated"
+          - "eval-feedback"
+      - property: skos:note
+        conditional: "required when provenance in (agent-curated, eval-feedback)"
+        note: "SPARQL-based SHACL constraint (sh:SPARQLConstraint)"

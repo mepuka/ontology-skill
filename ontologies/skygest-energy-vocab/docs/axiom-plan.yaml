@@ -1,0 +1,198 @@
+# Skygest Energy Vocabulary — Axiom Plan
+# Phase 3: Conceptualization
+# Date: 2026-04-11
+
+# Maps each Must-Have CQ to the axiom pattern(s) needed.
+# Reference: _shared/axiom-patterns.md
+
+axiom_plan:
+
+  # ── Facet Lookup CQs ──────────────────────────────────────
+
+  - cq_id: CQ-001
+    pattern: "SKOS membership (skos:inScheme assertions)"
+    owl_pattern: null
+    implementation: >
+      Assert skos:inScheme for every concept individual.
+      No OWL axiom needed — pure A-box assertion.
+
+  - cq_id: CQ-002
+    pattern: "SKOS altLabel lookup"
+    owl_pattern: null
+    implementation: >
+      Assert skos:altLabel on concept individuals with language tags.
+      Lookup is SPARQL pattern matching, not OWL reasoning.
+
+  - cq_id: CQ-003
+    pattern: "SKOS altLabel enumeration"
+    owl_pattern: null
+    implementation: "Same as CQ-002 — altLabel assertions on individuals"
+
+  - cq_id: CQ-004
+    pattern: "SKOS inScheme lookup"
+    owl_pattern: null
+    implementation: "Same as CQ-001 — inScheme assertions"
+
+  - cq_id: CQ-005
+    pattern: "Language-filtered altLabel query"
+    owl_pattern: null
+    implementation: >
+      Assert skos:altLabel with @de language tags on concepts.
+      SPARQL FILTER(LANG(...) = "de") handles the query.
+
+  # ── Disambiguation CQs ────────────────────────────────────
+
+  - cq_id: CQ-006
+    pattern: "Cross-concept altLabel overlap detection"
+    owl_pattern: null
+    implementation: >
+      No axiom needed — CQ-026 (collision constraint) ensures this is
+      detectable at build time. SPARQL self-join on altLabel.
+
+  - cq_id: CQ-007
+    pattern: "Set difference on altLabels"
+    owl_pattern: null
+    implementation: "SPARQL FILTER NOT EXISTS — no axiom needed"
+
+  - cq_id: CQ-008
+    pattern: "SKOS altLabel + inScheme lookup"
+    owl_pattern: null
+    implementation: "Combined altLabel + inScheme query"
+
+  - cq_id: CQ-009
+    pattern: "#1 Simple SubClassOf (via skos:broader)"
+    owl_pattern: "skos:broader assertion"
+    implementation: >
+      Assert skos:broader on child concepts:
+        sevocab:OnshoreWind skos:broader sevocab:Wind .
+        sevocab:OffshoreWind skos:broader sevocab:Wind .
+
+  # ── Structure CQs ────��────────────────────────────��───────
+
+  - cq_id: CQ-011
+    pattern: "#15 Enumeration (conceptual — not owl:oneOf)"
+    owl_pattern: null
+    implementation: >
+      Five ConceptScheme individuals asserted as skos:ConceptScheme.
+      The enumeration is structural (membership via skos:inScheme),
+      not OWL owl:oneOf.
+
+  # ── Provenance CQs ──────────────────��─────────────────────
+
+  - cq_id: CQ-012
+    pattern: "#9 N-ary Relation"
+    owl_pattern: "N-ary reification"
+    implementation: >
+      SurfaceFormEntry class with three properties:
+        sevocab:SurfaceFormEntry a owl:Class .
+        sevocab:hasProvenanceAnnotation a owl:ObjectProperty .
+        sevocab:surfaceFormValue a owl:DatatypeProperty ; a owl:FunctionalProperty .
+        sevocab:provenance a owl:DatatypeProperty ; a owl:FunctionalProperty .
+      Instance pattern:
+        sevocab:SolarPv sevocab:hasProvenanceAnnotation _:e1 .
+        _:e1 a sevocab:SurfaceFormEntry ;
+             sevocab:surfaceFormValue "photovoltaic" ;
+             sevocab:provenance "oeo-derived" ;
+             skos:note "From OEO:00000034 label" .
+
+  # ── Coverage / Quality CQs ────────────────────────────────
+
+  - cq_id: CQ-015
+    pattern: "Constraint (SHACL sh:minCount)"
+    owl_pattern: null
+    implementation: >
+      SHACL shape: ConceptShape requires skos:altLabel sh:minCount 1.
+      SPARQL CQ-015 detects violations.
+
+  - cq_id: CQ-018
+    pattern: "Aggregation query"
+    owl_pattern: null
+    implementation: "SPARQL GROUP BY — no axiom needed"
+
+  # ── Constraint CQs ──────────────────────────────────────��─
+
+  - cq_id: CQ-022
+    pattern: "Constraint (SHACL sh:minCount on prefLabel)"
+    owl_pattern: null
+    implementation: >
+      SHACL shape: every concept with altLabels must have prefLabel.
+      SPARQL CQ-022 detects violations.
+
+  - cq_id: CQ-023
+    pattern: "Constraint (SHACL sh:maxCount 1 on inScheme)"
+    owl_pattern: null
+    implementation: >
+      SHACL shape: ConceptShape requires skos:inScheme exactly 1.
+      Could also be enforced by declaring sevocab:hasProvenanceAnnotation
+      as inverse-functional, but SHACL is simpler.
+
+  - cq_id: CQ-024
+    pattern: "Constraint (SHACL sh:minCount on label + definition)"
+    owl_pattern: null
+    implementation: "SHACL shape: requires rdfs:label and skos:definition"
+
+  # ── Resolution Kernel CQs ─────────────────────────────────
+
+  - cq_id: CQ-026
+    pattern: "Build-time constraint (no axiom)"
+    owl_pattern: null
+    implementation: >
+      Collision detection is a build-script check, not an OWL axiom.
+      SPARQL CQ-026 approximates it; build.py enforces the normalized form.
+
+  - cq_id: CQ-027
+    pattern: "Build-time constraint (no axiom)"
+    owl_pattern: null
+    implementation: >
+      Normalization consistency is enforced by build.py, not OWL.
+      Python test in test_ontology.py validates.
+
+  - cq_id: CQ-028
+    pattern: "SHACL conditional constraint (sh:SPARQLConstraint)"
+    owl_pattern: null
+    implementation: >
+      SHACL SPARQL constraint: if provenance IN (agent-curated,
+      eval-feedback) then skos:note must be present and non-empty.
+
+  - cq_id: CQ-029
+    pattern: "Build-time integration test"
+    owl_pattern: null
+    implementation: >
+      SPARQL CQ-029 checks coverage against cold-start variable VALUES.
+      Python test can also validate by loading the variable JSON files.
+
+  - cq_id: CQ-030
+    pattern: "#8 Value Partition (conceptual)"
+    owl_pattern: null
+    implementation: >
+      SPARQL CQ-030 checks that every TypeScript enum member has a
+      corresponding concept. This is the value-partition completeness
+      check. In OWL this would be a DisjointUnion / covering axiom,
+      but in SKOS we express it as a SPARQL constraint.
+
+# ── Summary ──────────────────────────────────────────────────
+
+summary:
+  total_cqs: 30
+  must_have_cqs: 19
+  cqs_requiring_owl_axioms: 1
+  cqs_requiring_shacl: 5
+  cqs_requiring_sparql_only: 13
+  cqs_requiring_build_script: 3
+
+  owl_axioms_needed:
+    - "SurfaceFormEntry class declaration"
+    - "hasProvenanceAnnotation object property declaration"
+    - "surfaceFormValue functional datatype property declaration"
+    - "provenance functional datatype property declaration"
+
+  shacl_shapes_needed:
+    - "ConceptShape (prefLabel, altLabel, definition, inScheme cardinality)"
+    - "SurfaceFormEntryShape (surfaceFormValue, provenance, conditional notes)"
+
+  note: >
+    This vocabulary is remarkably light on OWL axioms. The primary
+    modeling work is SKOS assertions (A-box), SHACL validation shapes,
+    and build-script constraints. The architect phase will focus on
+    correct Turtle serialization, SHACL shape authoring, and build
+    script development rather than complex OWL reasoning.

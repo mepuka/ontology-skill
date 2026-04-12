@@ -1,0 +1,19 @@
+# CQ-029: TechnologyOrFuel canonical list covers cold-start variables
+# Expected: empty (every cold-start technologyOrFuel value has a concept)
+# Use case: UC-005, UC-008
+# Source: skygest-cloudflare/references/cold-start/variables/
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?missingCanonical WHERE {
+  VALUES ?missingCanonical {
+    "solar PV" "wind" "offshore wind" "battery" "nuclear"
+    "hydrogen" "coal" "renewable"
+  }
+  FILTER NOT EXISTS {
+    ?concept skos:inScheme sevocab:TechnologyOrFuelScheme ;
+             skos:prefLabel ?label .
+    FILTER(LCASE(STR(?label)) = LCASE(?missingCanonical))
+  }
+}

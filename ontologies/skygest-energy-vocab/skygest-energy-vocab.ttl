@@ -1,0 +1,793 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sevocab: <https://skygest.dev/vocab/energy/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://skygest.dev/vocab/energy> a owl:Ontology ;
+    dcterms:created "2026-04-11"^^xsd:date ;
+    dcterms:description "A SKOS vocabulary mapping natural-language surface forms in energy chart text to canonical data-variable facets for the Skygest Stage 2 resolver pipeline."@en ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:title "Skygest Energy Vocabulary"@en ;
+    owl:versionIRI sevocab:0.1.0 ;
+    owl:versionInfo "0.1.0" .
+
+sevocab:Annual a skos:Concept ;
+    rdfs:label "annual"@en ;
+    skos:altLabel "annual data"@en,
+        "year"@en,
+        "yearly"@en ;
+    skos:definition "A frequency concept representing annual temporal resolution"@en ;
+    skos:inScheme sevocab:FrequencyScheme ;
+    skos:prefLabel "annual"@en ;
+    skos:topConceptOf sevocab:FrequencyScheme .
+
+sevocab:Average a skos:Concept ;
+    rdfs:label "average"@en ;
+    skos:altLabel "Durchschnitt"@de,
+        "mean"@en,
+        "weighted average"@en ;
+    skos:definition "An aggregation concept representing the arithmetic mean over a period"@en ;
+    skos:inScheme sevocab:AggregationScheme ;
+    skos:prefLabel "average"@en ;
+    skos:topConceptOf sevocab:AggregationScheme .
+
+sevocab:Battery a skos:Concept ;
+    rdfs:label "battery"@en ;
+    skos:altLabel "Batterie"@de,
+        "Batteriespeicher"@de,
+        "BESS"@en,
+        "LFP battery"@en,
+        "NMC battery"@en,
+        "batteries"@en,
+        "battery"@en,
+        "battery energy storage plant"@en,
+        "battery energy storage system"@en,
+        "battery storage power station"@en,
+        "energy storage"@en,
+        "flow battery"@en,
+        "lead-acid battery"@en,
+        "liquid-metal battery"@en,
+        "lithium-ion battery"@en,
+        "molten-salt battery"@en,
+        "sodium-ion battery"@en,
+        "sodium-sulphur battery"@en,
+        "storage power station"@en,
+        "traction battery"@en ;
+    skos:definition "A technologyOrFuel concept representing electrochemical energy storage technology"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "battery"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:Biomass a skos:Concept ;
+    rdfs:label "biomass"@en ;
+    skos:altLabel "BIOMASS ENERGY k. s."@en,
+        "Biomass Energy Centre"@en,
+        "Biomass Energy and Alcohol Fuels Act"@en,
+        "bio-energy"@en,
+        "bioenergy"@en,
+        "biofuel"@en,
+        "biofuel power plant"@en,
+        "biogas"@en,
+        "biogas power plant"@en,
+        "biomass energy"@en,
+        "biomass power"@en,
+        "biopower"@en,
+        "solid biomass"@en,
+        "solid biomass power plant"@en ;
+    skos:definition "A technologyOrFuel concept representing biomass and bioenergy power generation technology"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "biomass"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:BrownCoal a skos:Concept ;
+    rdfs:label "brown coal"@en ;
+    skos:altLabel "Braunkohle"@de,
+        "brown coal mining"@en,
+        "coal mining"@en,
+        "lignite"@en,
+        "lignite mining"@en,
+        "mining of coal"@en,
+        "mining of coal and lignite"@en,
+        "mining of lignite"@en ;
+    skos:broader sevocab:Coal ;
+    skos:definition "A technologyOrFuel concept representing lignite-based power generation technology"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "brown coal"@en .
+
+sevocab:Count a skos:Concept ;
+    rdfs:label "count"@en ;
+    skos:altLabel "number of"@en,
+        "units"@en ;
+    skos:definition "A statisticType concept representing a discrete tally of items or events"@en ;
+    skos:inScheme sevocab:StatisticTypeScheme ;
+    skos:prefLabel "count"@en ;
+    skos:topConceptOf sevocab:StatisticTypeScheme .
+
+sevocab:CurrencyPerEnergyUnit a skos:Concept ;
+    rdfs:label "currency_per_energy"@en ;
+    skos:altLabel "$/MWh"@en,
+        "EUR/MWh"@en,
+        "ct/kWh"@en ;
+    skos:definition "A unitFamily concept representing compound units of price per energy quantity"@en ;
+    skos:inScheme sevocab:UnitFamilyScheme ;
+    skos:prefLabel "currency_per_energy"@en ;
+    skos:topConceptOf sevocab:UnitFamilyScheme .
+
+sevocab:CurrencyUnit a skos:Concept ;
+    rdfs:label "currency"@en ;
+    skos:altLabel "$"@en,
+        "CAD"@en,
+        "EUR"@en,
+        "GBP"@en,
+        "USD"@en ;
+    skos:definition "A unitFamily concept representing monetary denomination units"@en ;
+    skos:inScheme sevocab:UnitFamilyScheme ;
+    skos:prefLabel "currency"@en ;
+    skos:topConceptOf sevocab:UnitFamilyScheme .
+
+sevocab:Daily a skos:Concept ;
+    rdfs:label "daily"@en ;
+    skos:altLabel "1d"@en,
+        "day"@en ;
+    skos:definition "A frequency concept representing daily temporal resolution"@en ;
+    skos:inScheme sevocab:FrequencyScheme ;
+    skos:prefLabel "daily"@en ;
+    skos:topConceptOf sevocab:FrequencyScheme .
+
+sevocab:DimensionlessUnit a skos:Concept ;
+    rdfs:label "dimensionless"@en ;
+    skos:altLabel "%"@en,
+        "percent"@en ;
+    skos:definition "A unitFamily concept representing ratios and percentages with no physical dimension"@en ;
+    skos:inScheme sevocab:UnitFamilyScheme ;
+    skos:prefLabel "dimensionless"@en ;
+    skos:topConceptOf sevocab:UnitFamilyScheme .
+
+sevocab:EndOfPeriod a skos:Concept ;
+    rdfs:label "end_of_period"@en ;
+    skos:altLabel "as of"@en,
+        "cumulative"@en,
+        "end of period"@en,
+        "year-end"@en ;
+    skos:definition "An aggregation concept representing a running total measured at a period boundary"@en ;
+    skos:inScheme sevocab:AggregationScheme ;
+    skos:prefLabel "end_of_period"@en ;
+    skos:topConceptOf sevocab:AggregationScheme .
+
+sevocab:EnergyUnit a skos:Concept ;
+    rdfs:label "energy"@en ;
+    skos:altLabel "GWh"@en,
+        "MWh"@en,
+        "TWh"@en,
+        "Wh"@en,
+        "kWh"@en ;
+    skos:definition "A unitFamily concept representing units of cumulative energy quantity"@en ;
+    skos:inScheme sevocab:UnitFamilyScheme ;
+    skos:prefLabel "energy"@en ;
+    skos:topConceptOf sevocab:UnitFamilyScheme .
+
+sevocab:Flow a skos:Concept ;
+    rdfs:label "flow"@en ;
+    skos:altLabel "Erzeugung"@de,
+        "Nettostromerzeugung"@de,
+        "Stromerzeugung"@de,
+        "generation"@en,
+        "output"@en,
+        "production"@en ;
+    skos:definition "A statisticType concept representing a quantity accumulated over a time interval"@en ;
+    skos:inScheme sevocab:StatisticTypeScheme ;
+    skos:prefLabel "flow"@en ;
+    skos:topConceptOf sevocab:StatisticTypeScheme .
+
+sevocab:GasCcgt a skos:Concept ;
+    rdfs:label "gas CCGT"@en ;
+    skos:altLabel "CC"@en,
+        "CCGT"@en,
+        "CCPP"@en,
+        "ISCC"@en,
+        "combined cycle"@en,
+        "combined cycle gas turbine"@en,
+        "combined cycle power plant"@en,
+        "combined cycle power station"@en,
+        "gas turbine"@en,
+        "gas turbine power plant"@en,
+        "gas turbine power station"@en,
+        "hydrogen turbine"@en,
+        "integrated solar combined-cycle power plant"@en,
+        "jet fuel turbine"@en,
+        "natural gas turbine"@en,
+        "steam power plant"@en,
+        "steam power station"@en,
+        "steam-electric power plant"@en,
+        "steam-electric power station"@en,
+        "thermal generation"@en ;
+    skos:broader sevocab:NaturalGas ;
+    skos:definition "A technologyOrFuel concept representing combined-cycle gas turbine technology"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "gas CCGT"@en .
+
+sevocab:Geothermal a skos:Concept ;
+    rdfs:label "geothermal"@en ;
+    skos:altLabel "Geothermal Energy"@en,
+        "Geothermal Energy Act"@en,
+        "Geothermal Energy Association"@en,
+        "Geothermal Energy Regulations 1961"@en,
+        "Geothermal Energy Research And Development"@en,
+        "Geothermal Energy Research And Development Co., Ltd."@en,
+        "Geothermal Energy Research And Development Co., Ltd. (Japan)"@en,
+        "Geothermal Energy Research, Development, and Demonstration Act of 1974"@en,
+        "Geothermal energy in Italy"@en,
+        "Geothermal energy in Taiwan"@en,
+        "Geothermal energy in Uzbekistan"@en,
+        "geothermal electricity"@en,
+        "geothermal energy"@en,
+        "geothermal energy in Lebanon"@en,
+        "geothermal energy in the United States"@en,
+        "geothermal power"@en,
+        "geothermal power plant"@en ;
+    skos:definition "A technologyOrFuel concept representing geothermal power generation technology"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "geothermal"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:HeatPump a skos:Concept ;
+    rdfs:label "heat pump"@en ;
+    skos:altLabel "Warmepumpe"@de,
+        "Heat pump and refrigeration cycle"@en,
+        "drain water heat recovery"@en,
+        "electric heat pump"@en,
+        "greywater heat recovery"@en,
+        "heat pump"@en,
+        "heat pumps"@en,
+        "heat recovery"@en,
+        "refrigeration cycle"@en,
+        "shower water heat recovery"@en,
+        "waste heat recovery"@en,
+        "waste water heat recovery"@en,
+        "water heat recycling"@en ;
+    skos:definition "A technologyOrFuel concept representing heat pump technology for heating and cooling"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "heat pump"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:Hourly a skos:Concept ;
+    rdfs:label "hourly"@en ;
+    skos:altLabel "1h"@en,
+        "hour"@en ;
+    skos:definition "A frequency concept representing hourly temporal resolution"@en ;
+    skos:inScheme sevocab:FrequencyScheme ;
+    skos:prefLabel "hourly"@en ;
+    skos:topConceptOf sevocab:FrequencyScheme .
+
+sevocab:Hydrogen a skos:Concept ;
+    rdfs:label "hydrogen"@en ;
+    skos:altLabel "Wasserstoff"@de,
+        "abated steam reforming hydrogen"@en,
+        "electrolysis"@en,
+        "electrolytic hydrogen"@en,
+        "electrolyzer"@en,
+        "fossil hydrogen"@en,
+        "fossil steam reforming hydrogen"@en,
+        "hydrogen"@en,
+        "hydrogen fuel cell"@en,
+        "nuclear electric hydrogen"@en,
+        "renewable electrolytic hydrogen"@en,
+        "solar electrolytic hydrogen"@en,
+        "steam reforming hydrogen"@en,
+        "synthetic hydrogen"@en ;
+    skos:definition "A technologyOrFuel concept representing hydrogen production and fuel cell technology"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "hydrogen"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:IntensityUnit a skos:Concept ;
+    rdfs:label "intensity"@en ;
+    skos:altLabel "gCO2/kWh"@en ;
+    skos:definition "A unitFamily concept representing compound units of emission rate per energy"@en ;
+    skos:inScheme sevocab:UnitFamilyScheme ;
+    skos:prefLabel "intensity"@en ;
+    skos:topConceptOf sevocab:UnitFamilyScheme .
+
+sevocab:Marine a skos:Concept ;
+    rdfs:label "marine"@en ;
+    skos:altLabel "Marine Energy Farm, San Diego, California (NAID 102045243)"@en,
+        "Marine Energy Programme Board"@en,
+        "Marine energy management"@en,
+        "Marine energy storage unit and a method to prevent thermal runaway in a marine energy storage unit"@en,
+        "marine and hydrokinetic energy"@en,
+        "marine energy"@en,
+        "marine power"@en,
+        "marine wave energy power plant"@en,
+        "ocean energy"@en,
+        "ocean power"@en,
+        "tidal"@en,
+        "tidal energy"@en,
+        "tidal power"@en,
+        "wave energy"@en ;
+    skos:definition "A technologyOrFuel concept representing marine energy technologies including wave, tidal, and current"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "marine"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:MassCo2eUnit a skos:Concept ;
+    rdfs:label "mass_co2e"@en ;
+    skos:altLabel "MtCO2e"@en,
+        "tCO2"@en,
+        "tCO2e"@en ;
+    skos:definition "A unitFamily concept representing units of carbon-dioxide-equivalent mass"@en ;
+    skos:inScheme sevocab:UnitFamilyScheme ;
+    skos:prefLabel "mass_co2e"@en ;
+    skos:topConceptOf sevocab:UnitFamilyScheme .
+
+sevocab:Max a skos:Concept ;
+    rdfs:label "max"@en ;
+    skos:altLabel "maximum"@en,
+        "peak"@en ;
+    skos:definition "An aggregation concept representing the maximum observed value in a period"@en ;
+    skos:inScheme sevocab:AggregationScheme ;
+    skos:prefLabel "max"@en ;
+    skos:topConceptOf sevocab:AggregationScheme .
+
+sevocab:Min a skos:Concept ;
+    rdfs:label "min"@en ;
+    skos:altLabel "minimum"@en,
+        "trough"@en ;
+    skos:definition "An aggregation concept representing the minimum observed value in a period"@en ;
+    skos:inScheme sevocab:AggregationScheme ;
+    skos:prefLabel "min"@en ;
+    skos:topConceptOf sevocab:AggregationScheme .
+
+sevocab:Monthly a skos:Concept ;
+    rdfs:label "monthly"@en ;
+    skos:altLabel "month"@en,
+        "monthly data"@en ;
+    skos:definition "A frequency concept representing monthly temporal resolution"@en ;
+    skos:inScheme sevocab:FrequencyScheme ;
+    skos:prefLabel "monthly"@en ;
+    skos:topConceptOf sevocab:FrequencyScheme .
+
+sevocab:Nuclear a skos:Concept ;
+    rdfs:label "nuclear"@en ;
+    skos:altLabel "Kernenergie"@de,
+        "Kernkraft"@de,
+        "atomic"@en,
+        "atomic energy"@en,
+        "atomic power"@en,
+        "energy industry"@en,
+        "nuclear"@en,
+        "nuclear electricity generation"@en,
+        "nuclear energy"@en,
+        "nuclear power"@en,
+        "nuclear power generation"@en,
+        "nuclear program"@en,
+        "nuclear programme"@en,
+        "nuclear technology"@en ;
+    skos:definition "A technologyOrFuel concept representing nuclear fission power generation technology"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "nuclear"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:OffshoreWind a skos:Concept ;
+    rdfs:label "offshore wind"@en ;
+    skos:altLabel "offshore"@en,
+        "offshore wind energy"@en,
+        "offshore wind power"@en,
+        "offshorewind"@en ;
+    skos:broader sevocab:Wind ;
+    skos:definition "A technologyOrFuel concept representing sea-based wind generation technology"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "offshore wind"@en .
+
+sevocab:Oil a skos:Concept ;
+    rdfs:label "oil"@en ;
+    skos:altLabel "crude oil"@en,
+        "diesel-fired power station"@en,
+        "fuel oil"@en,
+        "oil power plant"@en,
+        "oil-fired"@en,
+        "oil-fired power plant"@en,
+        "oil-fired power station"@en,
+        "petroleum"@en,
+        "petroleum power station"@en ;
+    skos:definition "A technologyOrFuel concept representing oil-fired power generation technology"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "oil"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:OnshoreWind a skos:Concept ;
+    rdfs:label "onshore wind"@en ;
+    skos:altLabel "land-based wind"@en,
+        "onshore wind farm"@en,
+        "onshore wind power plant"@en,
+        "onshore wind power station"@en,
+        "onshore wind turbines"@en,
+        "wind energy site"@en,
+        "wind farm"@en,
+        "wind park"@en,
+        "wind power plant"@en,
+        "wind power station"@en,
+        "windfarm"@en,
+        "windpark"@en ;
+    skos:broader sevocab:Wind ;
+    skos:definition "A technologyOrFuel concept representing land-based wind generation technology"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "onshore wind"@en .
+
+sevocab:OtherUnit a skos:Concept ;
+    rdfs:label "other"@en ;
+    skos:altLabel "misc"@en ;
+    skos:definition "A unitFamily catch-all concept for units not classified into another family"@en ;
+    skos:inScheme sevocab:UnitFamilyScheme ;
+    skos:prefLabel "other"@en ;
+    skos:topConceptOf sevocab:UnitFamilyScheme .
+
+sevocab:Point a skos:Concept ;
+    rdfs:label "point"@en ;
+    skos:altLabel "instantaneous"@en,
+        "spot"@en ;
+    skos:definition "An aggregation concept representing a single instantaneous measurement"@en ;
+    skos:inScheme sevocab:AggregationScheme ;
+    skos:prefLabel "point"@en ;
+    skos:topConceptOf sevocab:AggregationScheme .
+
+sevocab:PowerUnit a skos:Concept ;
+    rdfs:label "power"@en ;
+    skos:altLabel "GW"@en,
+        "MW"@en,
+        "gigawatt"@en,
+        "kW"@en,
+        "kilowatt"@en,
+        "megawatt"@en ;
+    skos:definition "A unitFamily concept representing units of instantaneous energy conversion rate"@en ;
+    skos:inScheme sevocab:UnitFamilyScheme ;
+    skos:prefLabel "power"@en ;
+    skos:topConceptOf sevocab:UnitFamilyScheme .
+
+sevocab:Price a skos:Concept ;
+    rdfs:label "price"@en ;
+    skos:altLabel "Strompreis"@de,
+        "cost"@en,
+        "rate"@en,
+        "tariff"@en,
+        "wholesale price"@en ;
+    skos:definition "A statisticType concept representing a monetary value per unit of energy commodity"@en ;
+    skos:inScheme sevocab:StatisticTypeScheme ;
+    skos:prefLabel "price"@en ;
+    skos:topConceptOf sevocab:StatisticTypeScheme .
+
+sevocab:PumpedHydro a skos:Concept ;
+    rdfs:label "pumped hydro"@en ;
+    skos:altLabel "PHES"@en,
+        "Pumped-storage hydroelectricity Żar"@en,
+        "closed-loop pumped hydro storage power plant"@en,
+        "open-loop pumped hydro storage power plant"@en,
+        "pumped hydro storage"@en,
+        "pumped hydro storage power plant"@en,
+        "pumped storage"@en ;
+    skos:broader sevocab:Hydro ;
+    skos:definition "A technologyOrFuel concept representing pumped-storage hydroelectric technology"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "pumped hydro"@en .
+
+sevocab:Quarterly a skos:Concept ;
+    rdfs:label "quarterly"@en ;
+    skos:altLabel "Q1"@en,
+        "Q2"@en,
+        "Q3"@en,
+        "Q4"@en,
+        "quarter"@en ;
+    skos:definition "A frequency concept representing quarterly temporal resolution"@en ;
+    skos:inScheme sevocab:FrequencyScheme ;
+    skos:prefLabel "quarterly"@en ;
+    skos:topConceptOf sevocab:FrequencyScheme .
+
+sevocab:Renewable a skos:Concept ;
+    rdfs:label "renewable"@en ;
+    skos:altLabel "erneuerbare Energien"@de,
+        "Energiewende"@en,
+        "P2X"@en,
+        "clean energy"@en,
+        "energy transition"@en,
+        "energy transition in Germany"@en,
+        "energy transition in heating"@en,
+        "power-to-X"@en,
+        "renewable"@en,
+        "renewable energy transition"@en,
+        "renewables"@en,
+        "sector Integration"@en,
+        "sector coupling"@en ;
+    skos:definition "A technologyOrFuel concept representing the aggregate of renewable energy technologies"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "renewable"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:Settlement a skos:Concept ;
+    rdfs:label "settlement"@en ;
+    skos:altLabel "clearing"@en,
+        "settlement price"@en ;
+    skos:definition "An aggregation concept representing a market clearing or settlement price"@en ;
+    skos:inScheme sevocab:AggregationScheme ;
+    skos:prefLabel "settlement"@en ;
+    skos:topConceptOf sevocab:AggregationScheme .
+
+sevocab:Share a skos:Concept ;
+    rdfs:label "share"@en ;
+    skos:altLabel "Anteil"@de,
+        "percentage"@en,
+        "proportion"@en,
+        "share of"@en ;
+    skos:definition "A statisticType concept representing a dimensionless ratio of a part to a whole"@en ;
+    skos:inScheme sevocab:StatisticTypeScheme ;
+    skos:prefLabel "share"@en ;
+    skos:topConceptOf sevocab:StatisticTypeScheme .
+
+sevocab:SolarPv a skos:Concept ;
+    rdfs:label "solar PV"@en ;
+    skos:altLabel "Photovoltaik"@de,
+        "Solarenergie"@de,
+        "BIPV"@en,
+        "CPV"@en,
+        "PERC panel"@en,
+        "PV"@en,
+        "PV panel"@en,
+        "bio-PV"@en,
+        "bio-photovoltaics"@en,
+        "building-integrated photovoltaics"@en,
+        "concentrated photovoltaics"@en,
+        "concentration photovoltaics"@en,
+        "concentrator photovoltaics"@en,
+        "photovoltaic"@en,
+        "photovoltaic energy systems"@en,
+        "photovoltaic power systems"@en,
+        "photovoltaics"@en,
+        "solar"@en,
+        "solar electricity"@en,
+        "solar power"@en,
+        "solar power unit"@en,
+        "solar powered"@en,
+        "solar thermal power unit"@en,
+        "solar window"@en ;
+    skos:definition "A technologyOrFuel concept representing solar photovoltaic generation technology"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "solar PV"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:SolarThermal a skos:Concept ;
+    rdfs:label "solar thermal"@en ;
+    skos:altLabel "CSP"@en,
+        "CSP plant"@en,
+        "CSP station"@en,
+        "Concentrated Solar Power"@en,
+        "Gemasolar Thermosolar Plant"@en,
+        "concentrated solar"@en,
+        "concentrated solar power"@en,
+        "concentrated solar power plant"@en,
+        "concentrated solar power station"@en,
+        "concentrated solar thermal"@en,
+        "concentrated solar thermal power station"@en,
+        "csp"@en,
+        "parabolic trough"@en,
+        "solar power tower"@en,
+        "solar thermal electric"@en,
+        "solar thermal power"@en,
+        "solar thermal power plant"@en,
+        "solar thermal power station"@en,
+        "solar tower"@en,
+        "thermal solar power station"@en ;
+    skos:definition "A technologyOrFuel concept representing concentrated solar thermal power generation technology"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "solar thermal"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:Stock a skos:Concept ;
+    rdfs:label "stock"@en ;
+    skos:altLabel "Kapazitat"@de,
+        "cumulative"@en,
+        "installed"@en,
+        "nameplate"@en,
+        "total capacity"@en ;
+    skos:definition "A statisticType concept representing a cumulative quantity measured at a point in time"@en ;
+    skos:inScheme sevocab:StatisticTypeScheme ;
+    skos:prefLabel "stock"@en ;
+    skos:topConceptOf sevocab:StatisticTypeScheme .
+
+sevocab:Sum a skos:Concept ;
+    rdfs:label "sum"@en ;
+    skos:altLabel "Summe"@de,
+        "annual total"@en,
+        "total"@en ;
+    skos:definition "An aggregation concept representing the additive total over a period"@en ;
+    skos:inScheme sevocab:AggregationScheme ;
+    skos:prefLabel "sum"@en ;
+    skos:topConceptOf sevocab:AggregationScheme .
+
+sevocab:SurfaceFormEntry a owl:Class ;
+    rdfs:label "surface form entry"@en ;
+    skos:definition "A reified annotation that links a surface form string to its provenance metadata on a concept"@en .
+
+sevocab:Waste a skos:Concept ;
+    rdfs:label "waste"@en ;
+    skos:altLabel "EfW"@en,
+        "MSW-fired power plant"@en,
+        "MSW-fired power station"@en,
+        "WtE"@en,
+        "energy from waste"@en,
+        "energy recovery facility"@en,
+        "energy-from-waste"@en,
+        "incineration"@en,
+        "municipal solid waste"@en,
+        "waste power plant"@en,
+        "waste power station"@en,
+        "waste to energy plant"@en,
+        "waste-to-energy"@en,
+        "waste-to-energy power plant"@en,
+        "waste-to-energy power station"@en ;
+    skos:definition "A technologyOrFuel concept representing waste-to-energy power generation technology"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "waste"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:Weekly a skos:Concept ;
+    rdfs:label "weekly"@en ;
+    skos:altLabel "week"@en ;
+    skos:definition "A frequency concept representing weekly temporal resolution"@en ;
+    skos:inScheme sevocab:FrequencyScheme ;
+    skos:prefLabel "weekly"@en ;
+    skos:topConceptOf sevocab:FrequencyScheme .
+
+sevocab:hasProvenanceAnnotation a owl:ObjectProperty ;
+    rdfs:label "has provenance annotation"@en ;
+    skos:definition "Links a concept to a SurfaceFormEntry individual recording provenance for a specific altLabel"@en .
+
+sevocab:provenance a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "provenance"@en ;
+    skos:definition "The provenance tag indicating how a surface form was sourced"@en .
+
+sevocab:surfaceFormValue a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "surface form value"@en ;
+    skos:definition "The exact altLabel string that this provenance annotation applies to"@en .
+
+sevocab:Coal a skos:Concept ;
+    rdfs:label "coal"@en ;
+    skos:altLabel "Kohle"@de,
+        "Clarain"@en,
+        "Kilkenny coal"@en,
+        "Vitrain"@en,
+        "anthracite"@en,
+        "anthracite coal"@en,
+        "bituminous coal"@en,
+        "black coal"@en,
+        "black diamond"@en,
+        "blind coal"@en,
+        "brown coal"@en,
+        "canndle coal"@en,
+        "cannel coal"@en,
+        "carbon"@en,
+        "coal"@en,
+        "coal-fired"@en,
+        "coking coal"@en,
+        "craw coal"@en,
+        "crow coal"@en,
+        "durain"@en,
+        "fusain"@en,
+        "hard coal"@en,
+        "maceral"@en,
+        "metallurgical coal"@en,
+        "sapropelite"@en,
+        "soft coal"@en,
+        "solid fuel"@en,
+        "stone coal"@en,
+        "sub bituminous coal"@en,
+        "sub-bituminous coal"@en,
+        "vitreous coal"@en,
+        "xylit"@en,
+        "xyloid lignite"@en ;
+    skos:definition "A technologyOrFuel concept representing coal-based power generation technology"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "coal"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:Hydro a skos:Concept ;
+    rdfs:label "hydro"@en ;
+    skos:altLabel "Hydroelectric Power Plants in Washington State, 1890--1938 MPS"@en,
+        "Hydroelectric power plant Krpeľany"@en,
+        "Hydroelectric power plant Sučany"@en,
+        "Hydroelectric power plant in Farchau"@en,
+        "Hydroelectric power plant in Pardubice"@en,
+        "Hydroelectric power station Pravdinsk Kurortnoye"@en,
+        "Hydroelectric power station on the Lizerne"@en,
+        "Pravdinsk GES-4"@en,
+        "hydro electric power scheme"@en,
+        "hydro electric scheme"@en,
+        "hydro power"@en,
+        "hydro power plant"@en,
+        "hydro storage power plant"@en,
+        "hydro-electric power scheme"@en,
+        "hydro-electric scheme"@en,
+        "hydroelectric"@en,
+        "hydroelectric power plant in Poděbrady"@en,
+        "hydroelectric power plants in Japan"@en,
+        "hydroelectric power scheme"@en,
+        "hydroelectric power station Stuttgart-Untertürkheim"@en,
+        "hydroelectric power stations in Japan"@en,
+        "hydroelectric scheme"@en,
+        "hydropower"@en,
+        "marine current energy power plant"@en,
+        "marine tidal energy power plant"@en,
+        "reservoir hydro storage power plant"@en,
+        "run of river power plant"@en ;
+    skos:definition "A technologyOrFuel concept representing hydroelectric power generation technology"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "hydro"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:NaturalGas a skos:Concept ;
+    rdfs:label "natural gas"@en ;
+    skos:altLabel "Erdgas"@de,
+        "associated gas"@en,
+        "colliery gas"@en,
+        "compressed natural gas"@en,
+        "gas"@en,
+        "liquefied natural gas"@en,
+        "natural gas"@en,
+        "natural-gas processing"@en,
+        "non associated gas"@en ;
+    skos:definition "A technologyOrFuel concept representing natural gas power generation technology"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "natural gas"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:Wind a skos:Concept ;
+    rdfs:label "wind"@en ;
+    skos:altLabel "Windenergie"@de,
+        "Windkraft"@de,
+        "AWE"@en,
+        "HAWP"@en,
+        "airborne wind energy"@en,
+        "airborne wind power"@en,
+        "clean power"@en,
+        "ecological energy"@en,
+        "ecological power"@en,
+        "green electricity"@en,
+        "green energy"@en,
+        "green power"@en,
+        "high-altitude wind power"@en,
+        "low-carbon energy"@en,
+        "renewable energy"@en,
+        "sustainable energy"@en,
+        "wind"@en,
+        "wind power"@en,
+        "wind power energy"@en ;
+    skos:definition "A technologyOrFuel concept representing wind energy generation technology"@en ;
+    skos:inScheme sevocab:TechnologyOrFuelScheme ;
+    skos:prefLabel "wind"@en ;
+    skos:topConceptOf sevocab:TechnologyOrFuelScheme .
+
+sevocab:StatisticTypeScheme a skos:ConceptScheme ;
+    rdfs:label "statistic type scheme"@en ;
+    skos:definition "A concept scheme that partitions the statistical-measure space into the types of quantity a chart can depict"@en ;
+    skos:prefLabel "statistic type scheme"@en .
+
+sevocab:FrequencyScheme a skos:ConceptScheme ;
+    rdfs:label "frequency scheme"@en ;
+    skos:definition "A concept scheme that classifies temporal resolution of chart data series (Phase 2 — FixedDims)"@en ;
+    skos:prefLabel "frequency scheme"@en .
+
+sevocab:AggregationScheme a skos:ConceptScheme ;
+    rdfs:label "aggregation scheme"@en ;
+    skos:definition "A concept scheme that partitions temporal aggregation methods applied to chart data"@en ;
+    skos:prefLabel "aggregation scheme"@en .
+
+sevocab:UnitFamilyScheme a skos:ConceptScheme ;
+    rdfs:label "unit family scheme"@en ;
+    skos:definition "A concept scheme that partitions measurement-unit families used in energy chart axis labels"@en ;
+    skos:prefLabel "unit family scheme"@en .
+
+sevocab:TechnologyOrFuelScheme a skos:ConceptScheme ;
+    rdfs:label "technology or fuel scheme"@en ;
+    skos:definition "A concept scheme that enumerates energy technologies and fuels referenced in chart text"@en ;
+    skos:prefLabel "technology or fuel scheme"@en .

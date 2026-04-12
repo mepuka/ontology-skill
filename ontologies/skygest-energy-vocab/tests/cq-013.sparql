@@ -1,0 +1,13 @@
+# CQ-013: Which surface forms were added from eval feedback?
+# Expected: non_empty
+# Use case: UC-004
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?concept ?surfaceForm ?note WHERE {
+  ?concept sevocab:hasProvenanceAnnotation ?anno .
+  ?anno sevocab:surfaceFormValue ?surfaceForm ;
+        sevocab:provenance "eval-feedback" .
+  OPTIONAL { ?anno skos:note ?note }
+}

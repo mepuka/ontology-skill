@@ -1,0 +1,11 @@
+# CQ-015: Which concepts have no surface forms (altLabels) at all?
+# Expected: empty (all concepts should have at least one altLabel)
+# Use case: UC-005
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?concept ?label ?scheme WHERE {
+  ?concept skos:inScheme ?scheme ;
+           skos:prefLabel ?label .
+  FILTER NOT EXISTS { ?concept skos:altLabel ?any }
+}

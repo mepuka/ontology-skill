@@ -1,0 +1,17 @@
+# CQ-027: Normalization consistency (approximate SPARQL check)
+# Expected: non_empty (many altLabels have uppercase — GW, CCGT, BESS, etc.)
+# Use case: UC-008
+# Note: Full normalization check is a build-script/Python test, not SPARQL.
+#       This query flags English altLabels with uppercase for awareness.
+#       The real test: normalizedSurfaceForm == normalizeLookupText(surfaceForm)
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?concept ?surfaceForm WHERE {
+  ?concept skos:altLabel ?surfaceForm .
+  FILTER(
+    ?surfaceForm != LCASE(?surfaceForm) &&
+    LANG(?surfaceForm) = "en"
+  )
+}
+ORDER BY ?concept ?surfaceForm

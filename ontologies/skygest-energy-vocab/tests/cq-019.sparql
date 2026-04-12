@@ -1,0 +1,16 @@
+# CQ-019: What OEO concept is a TechnologyOrFuel concept mapped to?
+# Expected: non_empty
+# Use case: UC-006
+
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+
+SELECT ?concept ?mappingProp ?target WHERE {
+  ?concept skos:inScheme sevocab:TechnologyOrFuelScheme .
+  VALUES ?mappingProp {
+    skos:exactMatch skos:closeMatch skos:broadMatch skos:narrowMatch
+  }
+  ?concept ?mappingProp ?target .
+  FILTER(STRSTARTS(STR(?target), "http://purl.obolibrary.org/obo/OEO_"))
+}
+ORDER BY ?concept
