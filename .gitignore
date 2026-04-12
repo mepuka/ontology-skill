@@ -55,3 +55,8 @@ ontologies/*/data/oxigraph/
 docs/*.pdf
 ontologies/*/release/pao-docs.html
 .rlm/
+
+# Committed Skygest Energy Vocabulary manifest
+!ontologies/skygest-energy-vocab/build/
+ontologies/skygest-energy-vocab/build/*
+!ontologies/skygest-energy-vocab/build/shacl-manifest.json

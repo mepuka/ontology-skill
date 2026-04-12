@@ -1,0 +1,56 @@
+{
+  "manifestVersion": 1,
+  "sourceCommit": "82a18c7acd52b6b84aa2a69d8b99a084c4573259",
+  "generatedAt": "2026-04-12T13:47:01-05:00",
+  "inputHash": "sha256:e307f251e0b40b04ff658af6e41b2b5303740307ed2ca83925c76d5e49e82016",
+  "facetKeys": [
+    "measuredProperty",
+    "domainObject",
+    "technologyOrFuel",
+    "statisticType",
+    "aggregation",
+    "unitFamily",
+    "policyInstrument"
+  ],
+  "requiredFacetKeys": [
+    "measuredProperty",
+    "statisticType"
+  ],
+  "closedEnums": {
+    "StatisticType": {
+      "shapeIri": "https://skygest.dev/vocab/energy/shapes/StatisticTypeConceptShape",
+      "values": [
+        "stock",
+        "flow",
+        "price",
+        "share",
+        "count"
+      ]
+    },
+    "Aggregation": {
+      "shapeIri": "https://skygest.dev/vocab/energy/shapes/AggregationConceptShape",
+      "values": [
+        "point",
+        "end_of_period",
+        "sum",
+        "average",
+        "max",
+        "min",
+        "settlement"
+      ]
+    },
+    "UnitFamily": {
+      "shapeIri": "https://skygest.dev/vocab/energy/shapes/UnitFamilyConceptShape",
+      "values": [
+        "power",
+        "energy",
+        "currency",
+        "currency_per_energy",
+        "mass_co2e",
+        "intensity",
+        "dimensionless",
+        "other"
+      ]
+    }
+  }
+}

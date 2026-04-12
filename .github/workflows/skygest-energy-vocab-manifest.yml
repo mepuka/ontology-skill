@@ -1,0 +1,23 @@
+name: Skygest Energy Vocab Manifest
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  manifest-drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v3
+
+      - name: Install dependencies
+        run: uv sync --group dev
+
+      - name: Verify committed SHACL manifest
+        run: |
+          uv run python ontologies/skygest-energy-vocab/scripts/build_type_manifest.py \
+            --out ontologies/skygest-energy-vocab/build/shacl-manifest.json
+          git diff --exit-code -- ontologies/skygest-energy-vocab/build/shacl-manifest.json
