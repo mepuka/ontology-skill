@@ -1,0 +1,29 @@
+# CQ-072: Many-Series-to-one-Variable dedup invariant.
+# Multiple sevocab:Series may implement the same EnergyVariable
+# (e.g. two series realizing installed-renewable-capacity across two
+# datasets). This is observable via functional semantics:
+# implementsVariable is owl:FunctionalProperty, which means each Series
+# collapses to exactly one Variable, while the reverse (Variable ->
+# Series) is one-to-many.
+#
+# TBox-level check: asserts that implementsVariable is FunctionalProperty
+# and that no inverse-functional axiom has been (mistakenly) added, which
+# would forbid two Series from sharing the same Variable.
+#
+# Reference consumer query for dedup/collision observability (ABox):
+#
+#   SELECT ?variable (COUNT(DISTINCT ?series) AS ?seriesCount) WHERE {
+#     ?series sevocab:implementsVariable ?variable .
+#   }
+#   GROUP BY ?variable
+#   HAVING (COUNT(DISTINCT ?series) > 1)
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+SELECT ?property WHERE {
+  sevocab:implementsVariable a owl:FunctionalProperty .
+  FILTER NOT EXISTS {
+    sevocab:implementsVariable a owl:InverseFunctionalProperty .
+  }
+  BIND(sevocab:implementsVariable AS ?property)
+}

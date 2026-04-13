@@ -433,3 +433,47 @@ tests:
     type: SELECT
     expected_result: exactly_7
     description: "DataStructureDefinition has exactly 7 components"
+
+  # ==========================================================================
+  # Series Chain Integrity (CQ-069 to CQ-074) — SKY-318
+  # Dataset → Series → Variable structural spine introduced in SKY-316.
+  # Tests are TBox/SHACL-level: they prove the ontology declares the links,
+  # functional characteristics, and minCount guards that enforce the chain.
+  # ABox-level consumer queries are documented inline in each fixture.
+  # ==========================================================================
+
+  - cq_id: CQ-069
+    file: cq-069.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "hasSeries object property declared with EnergyDataset domain and Series range"
+
+  - cq_id: CQ-070
+    file: cq-070.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "implementsVariable declared as FunctionalProperty from Series to EnergyVariable"
+
+  - cq_id: CQ-071
+    file: cq-071.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "All three chain properties (hasSeries, implementsVariable, hasVariable) declared for agreement query"
+
+  - cq_id: CQ-072
+    file: cq-072.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "implementsVariable is FunctionalProperty but not InverseFunctionalProperty (dedup-legal many-to-one)"
+
+  - cq_id: CQ-073
+    file: cq-073.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "SeriesShape enforces sh:minCount ≥ 1 on publishedInDataset (missing-link guard)"
+
+  - cq_id: CQ-074
+    file: cq-074.sparql
+    type: SELECT
+    expected_result: non_empty
+    description: "Per-Agent Series + Variable chain declared (dct:publisher + hasSeries + implementsVariable)"

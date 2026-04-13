@@ -386,3 +386,201 @@
   required_classes: []
   required_properties:
     - qb:component
+
+# =============================================================================
+# UC-DM-007: Series chain integrity (SKY-318)
+# New CQs added for the Dataset -> Series -> Variable structural spine
+# introduced in SKY-316. These exercise the new class, inverse property
+# pair, functional characteristics, and the must-have missing-link guard.
+# =============================================================================
+
+- id: CQ-069
+  source_use_case: UC-DM-007
+  natural_language: "What Series belong to a given Dataset?"
+  type: enumerative
+  priority: must_have
+  sample_answer:
+    - dataset: ex:GlobalRenewableCapacityAnnual
+      series: ex:GlobalRenewableCapacityAnnual-Installed-Solar
+  derivation_method: direct_lookup
+  out_of_scope:
+    - "Per-reporting-period series slices (not modelled in this slice)"
+  sparql: |
+    PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+    SELECT ?dataset ?series ?seriesLabel WHERE {
+      ?dataset a sevocab:EnergyDataset ;
+               sevocab:hasSeries ?series .
+      OPTIONAL { ?series rdfs:label ?seriesLabel }
+    }
+  expected_result: non_empty
+  required_classes:
+    - EnergyDataset
+    - Series
+  required_properties:
+    - sevocab:hasSeries
+
+- id: CQ-070
+  source_use_case: UC-DM-007
+  natural_language: "Which Variable does a given Series implement?"
+  type: relational
+  priority: must_have
+  sample_answer:
+    - series: ex:GlobalRenewableCapacityAnnual-Installed-Solar
+      variable: ex:InstalledRenewableCapacity_Solar
+  derivation_method: direct_lookup
+  out_of_scope: []
+  sparql: |
+    PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+    SELECT ?series ?variable WHERE {
+      ?series a sevocab:Series ;
+              sevocab:implementsVariable ?variable .
+    }
+  expected_result: non_empty
+  required_classes:
+    - Series
+    - EnergyVariable
+  required_properties:
+    - sevocab:implementsVariable
+  required_axioms:
+    - "sevocab:implementsVariable is owl:FunctionalProperty"
+
+- id: CQ-071
+  source_use_case: UC-DM-007
+  natural_language: "Does the Dataset -> Series -> Variable path agree with the higher-level Dataset -> Variable view?"
+  type: integrity
+  priority: must_have
+  sample_answer:
+    - result: "No disagreement -- every (dataset, variable) reachable by one path is reachable by the other."
+  derivation_method: direct_lookup
+  out_of_scope:
+    - "Resolving disagreement (SKY-317 does that at runtime by making the series chain authoritative)"
+  sparql: |
+    # Entailment-agnostic chain-agreement query. Uses UNION +
+    # FILTER EXISTS instead of owl:propertyChainAxiom because SPARQL
+    # consumers under simple entailment do not compute property chains.
+    PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+    SELECT ?dataset ?variable ?via WHERE {
+      {
+        ?dataset sevocab:hasSeries/sevocab:implementsVariable ?variable .
+        BIND("series-chain" AS ?via)
+        FILTER NOT EXISTS { ?dataset sevocab:hasVariable ?variable }
+      }
+      UNION
+      {
+        ?dataset sevocab:hasVariable ?variable .
+        BIND("denormalized" AS ?via)
+        FILTER NOT EXISTS {
+          ?dataset sevocab:hasSeries/sevocab:implementsVariable ?variable
+        }
+      }
+    }
+  expected_result: empty
+  required_classes:
+    - EnergyDataset
+    - Series
+    - EnergyVariable
+  required_properties:
+    - sevocab:hasSeries
+    - sevocab:implementsVariable
+    - sevocab:hasVariable
+  notes: >
+    The positive side of this CQ (both paths agree for all reachable
+    pairs) can also be expressed as an ASK that returns true when no
+    disagreement exists. We keep the SELECT form so consumers can
+    inspect the disagreement set for observability.
+
+- id: CQ-072
+  source_use_case: UC-DM-007
+  natural_language: "Which Variables are implemented by more than one Series (many-to-one dedup semantics)?"
+  type: quantitative
+  priority: should_have
+  sample_answer:
+    - variable: ex:InstalledRenewableCapacity_Solar
+      seriesCount: 2
+  derivation_method: aggregation
+  out_of_scope:
+    - "Resolving whether multiple series represent conflicting numeric values -- that is a data-quality concern, not an ontology concern"
+  sparql: |
+    PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+    SELECT ?variable (COUNT(DISTINCT ?series) AS ?seriesCount) WHERE {
+      ?series a sevocab:Series ;
+              sevocab:implementsVariable ?variable .
+    }
+    GROUP BY ?variable
+    HAVING (COUNT(DISTINCT ?series) > 1)
+  expected_result: non_empty
+  required_classes:
+    - Series
+    - EnergyVariable
+  required_properties:
+    - sevocab:implementsVariable
+  notes: >
+    This is observability, not a violation: many-Series-per-Variable is
+    legal under the functional semantics of implementsVariable (a Series
+    collapses to exactly one Variable; the reverse relation is
+    one-to-many). Consumers reading the series-chain view must dedup
+    Variables before counting.
+
+- id: CQ-073
+  source_use_case: UC-DM-007
+  natural_language: "Are there any Series missing a dataset link?"
+  type: integrity
+  priority: must_have
+  sample_answer:
+    - result: "Zero -- every sevocab:Series has a sevocab:publishedInDataset link."
+  derivation_method: direct_lookup
+  out_of_scope: []
+  sparql: |
+    PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+    SELECT ?series WHERE {
+      ?series a sevocab:Series .
+      FILTER NOT EXISTS { ?series sevocab:publishedInDataset ?dataset }
+    }
+  expected_result: empty
+  required_classes:
+    - Series
+    - EnergyDataset
+  required_properties:
+    - sevocab:publishedInDataset
+  required_axioms:
+    - "sevocab-shapes:SeriesShape enforces sh:minCount 1 on sevocab:publishedInDataset"
+  notes: >
+    This is the must-have missing-link guard behind the SKY-317 incident.
+    The SHACL SeriesShape enforces it structurally (minCount 1 on both
+    publishedInDataset and implementsVariable); the CQ provides the
+    SPARQL-level invariant proof for CQ consumers.
+
+- id: CQ-074
+  source_use_case: UC-DM-007
+  natural_language: "For a given Agent, how many Series and how many distinct Variables are published through the dataset/series chain?"
+  type: quantitative
+  priority: should_have
+  sample_answer:
+    - agent: ex:IRENA
+      seriesCount: 12
+      variableCount: 7
+  derivation_method: aggregation
+  out_of_scope: []
+  sparql: |
+    PREFIX dct: <http://purl.org/dc/terms/>
+    PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+    SELECT ?agent
+           (COUNT(DISTINCT ?series) AS ?seriesCount)
+           (COUNT(DISTINCT ?variable) AS ?variableCount)
+    WHERE {
+      ?dataset dct:publisher ?agent ;
+               sevocab:hasSeries ?series .
+      ?series sevocab:implementsVariable ?variable .
+    }
+    GROUP BY ?agent
+  expected_result: non_empty
+  required_classes:
+    - EnergyAgent
+    - EnergyDataset
+    - Series
+    - EnergyVariable
+  required_properties:
+    - dct:publisher
+    - sevocab:hasSeries
+    - sevocab:implementsVariable

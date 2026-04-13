@@ -1,0 +1,30 @@
+# CQ-071: Does the Dataset -> Series -> Variable path agree with the
+# higher-level Dataset -> Variable view (hasVariable)?
+#
+# TBox-level check: asserts that all three structural properties
+# (hasSeries, implementsVariable, hasVariable) are declared. Consumer
+# ABox query uses an explicit UNION of the two paths (below) rather
+# than relying on owl:propertyChainAxiom entailment, because simple
+# entailment does not compute property chains.
+#
+# Reference consumer query (do not run here, documented for readers):
+#
+#   SELECT ?dataset ?variable ?via WHERE {
+#     { ?dataset sevocab:hasSeries/sevocab:implementsVariable ?variable .
+#       BIND("series-chain" AS ?via) }
+#     UNION
+#     { ?dataset sevocab:hasVariable ?variable .
+#       BIND("denormalized" AS ?via) }
+#     FILTER EXISTS { ?dataset sevocab:hasSeries/sevocab:implementsVariable ?variable }
+#     FILTER EXISTS { ?dataset sevocab:hasVariable ?variable }
+#   }
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+SELECT ?hasSeries ?implementsVariable ?hasVariable WHERE {
+  sevocab:hasSeries a owl:ObjectProperty .
+  sevocab:implementsVariable a owl:ObjectProperty .
+  sevocab:hasVariable a owl:ObjectProperty .
+  BIND(sevocab:hasSeries AS ?hasSeries)
+  BIND(sevocab:implementsVariable AS ?implementsVariable)
+  BIND(sevocab:hasVariable AS ?hasVariable)
+}

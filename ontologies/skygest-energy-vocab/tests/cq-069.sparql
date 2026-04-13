@@ -1,0 +1,16 @@
+# CQ-069: What Series belong to a given Dataset?
+# TBox-level check: confirms sevocab:hasSeries is declared as an
+# ObjectProperty with domain EnergyDataset and range Series.
+# Consumers query the ABox with: ?dataset sevocab:hasSeries ?series .
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+SELECT ?property ?domain ?range WHERE {
+  sevocab:hasSeries a owl:ObjectProperty ;
+                    rdfs:domain ?domain ;
+                    rdfs:range ?range .
+  FILTER(?domain = sevocab:EnergyDataset)
+  FILTER(?range = sevocab:Series)
+  BIND(sevocab:hasSeries AS ?property)
+}

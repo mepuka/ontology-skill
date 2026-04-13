@@ -1,0 +1,25 @@
+# CQ-073: Are there any Series missing a dataset link?
+# SHACL-level check: confirms that sevocab-shapes:SeriesShape enforces
+# sh:minCount 1 on sevocab:publishedInDataset (the missing-link guard).
+# This is the must-have integrity constraint behind the original outage
+# that motivated SKY-317.
+#
+# Reference consumer query (ABox, expected to return 0 rows):
+#
+#   SELECT ?series WHERE {
+#     ?series a sevocab:Series .
+#     FILTER NOT EXISTS { ?series sevocab:publishedInDataset ?dataset }
+#   }
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX sh: <http://www.w3.org/ns/shacl#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+PREFIX sevocab-shapes: <https://skygest.dev/vocab/energy/shapes/>
+SELECT ?shape ?path ?minCount WHERE {
+  sevocab-shapes:SeriesShape sh:property ?propShape ;
+                             sh:targetClass sevocab:Series .
+  ?propShape sh:path ?path ;
+             sh:minCount ?minCount .
+  FILTER(?path = sevocab:publishedInDataset)
+  FILTER(?minCount >= 1)
+  BIND(sevocab-shapes:SeriesShape AS ?shape)
+}

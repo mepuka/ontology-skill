@@ -14,3 +14,9 @@ stakeholder_need,use_case_id,cq_id,ontology_terms,sparql_test
 "Discover Variables within a Dataset",UC-DM-004,CQ-066,"hasVariable;domain;range",tests/cq-066.sparql
 "Trace publishing chain for a Variable",UC-DM-005,CQ-067,"measuredProperty;hasVariable;dct:publisher",tests/cq-067.sparql
 "Trace publishing chain for a Variable",UC-DM-005,CQ-068,"EnergyVariableStructure;qb:DataStructureDefinition;qb:component",tests/cq-068.sparql
+"Validate Series chain integrity",UC-DM-007,CQ-069,"EnergyDataset;Series;hasSeries",tests/cq-069.sparql
+"Validate Series chain integrity",UC-DM-007,CQ-070,"Series;EnergyVariable;implementsVariable;owl:FunctionalProperty",tests/cq-070.sparql
+"Validate Series chain integrity",UC-DM-007,CQ-071,"EnergyDataset;Series;EnergyVariable;hasSeries;implementsVariable;hasVariable",tests/cq-071.sparql
+"Validate Series chain integrity",UC-DM-007,CQ-072,"Series;EnergyVariable;implementsVariable;owl:FunctionalProperty",tests/cq-072.sparql
+"Validate Series chain integrity",UC-DM-007,CQ-073,"Series;publishedInDataset;SeriesShape;sh:minCount",tests/cq-073.sparql
+"Validate Series chain integrity",UC-DM-007,CQ-074,"EnergyAgent;EnergyDataset;Series;EnergyVariable;dct:publisher;hasSeries;implementsVariable",tests/cq-074.sparql

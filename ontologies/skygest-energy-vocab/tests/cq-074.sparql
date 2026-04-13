@@ -1,0 +1,34 @@
+# CQ-074: For a given Agent, how many Series and how many distinct
+# Variables are published through the dataset/series chain?
+#
+# TBox-level check: confirms all three links required by the consumer
+# query chain are declared -- dct:publisher (Dataset -> Agent),
+# sevocab:hasSeries (Dataset -> Series), and sevocab:implementsVariable
+# (Series -> Variable).
+#
+# Reference consumer query (ABox):
+#
+#   SELECT ?agent
+#          (COUNT(DISTINCT ?series) AS ?seriesCount)
+#          (COUNT(DISTINCT ?variable) AS ?variableCount)
+#   WHERE {
+#     ?dataset dct:publisher ?agent ;
+#              sevocab:hasSeries ?series .
+#     ?series sevocab:implementsVariable ?variable .
+#   }
+#   GROUP BY ?agent
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX dct: <http://purl.org/dc/terms/>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+SELECT ?publisherLink ?hasSeriesLink ?implementsVariableLink WHERE {
+  sevocab:EnergyDataset rdfs:subClassOf ?restriction .
+  ?restriction a owl:Restriction ;
+               owl:onProperty dct:publisher .
+  sevocab:hasSeries a owl:ObjectProperty .
+  sevocab:implementsVariable a owl:FunctionalProperty .
+  BIND(dct:publisher AS ?publisherLink)
+  BIND(sevocab:hasSeries AS ?hasSeriesLink)
+  BIND(sevocab:implementsVariable AS ?implementsVariableLink)
+}

@@ -104,3 +104,39 @@
     - "Discrepancies between ontology and TypeScript are identified"
   related_cqs: []
   priority: could_have
+
+- id: UC-DM-007
+  name: "Validate Series chain integrity (SKY-318)"
+  actor: "Stage 2 resolution kernel + data curator"
+  goal: "Prove that the Dataset -> Series -> Variable structural chain is
+    internally consistent, that no Series dangles without a publishing
+    dataset, and that many-Series-per-Variable is legal but observable."
+  preconditions:
+    - "sevocab:Series declared as an owl:Class (SKY-316)"
+    - "sevocab:hasSeries / sevocab:publishedInDataset declared as inverses"
+    - "sevocab:implementsVariable declared as owl:FunctionalProperty"
+    - "sevocab-shapes:SeriesShape enforces sh:minCount 1 on both structural links"
+  main_flow:
+    - "Kernel or curator queries the new Series-focused CQs (CQ-069 through CQ-074)"
+    - "The missing-dataset-link guard (CQ-073) reports zero violations"
+    - "The chain-agreement check (CQ-071) reports an empty disagreement set"
+    - "The dedup observability query (CQ-072) surfaces many-to-one Variables for runtime union-merge"
+    - "The per-Agent shelf query (CQ-074) aggregates Series and Variables via the chain"
+  postconditions:
+    - "Every Series resolves to exactly one Dataset and exactly one Variable"
+    - "The series-chain view and the denormalized hasVariable view agree on all (dataset, variable) pairs"
+    - "Observability of many-Series-per-Variable is exposed to consumers"
+  related_cqs:
+    - CQ-069
+    - CQ-070
+    - CQ-071
+    - CQ-072
+    - CQ-073
+    - CQ-074
+  priority: must_have
+  notes: >
+    This use case is the ontology-side mirror of the SKY-317 runtime
+    invariants: series-backed variablesByDatasetId with union-merge
+    semantics, validator rejection of dangling datasetId references,
+    and agent-shelf coverage via the dataset/series chain. Runtime
+    capability probes land in SKY-330 (separate repo).

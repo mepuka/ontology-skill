@@ -1,0 +1,17 @@
+# CQ-070: Which Variable does a given Series implement?
+# TBox-level check: confirms sevocab:implementsVariable is declared as
+# an owl:ObjectProperty AND owl:FunctionalProperty from Series to
+# EnergyVariable. The functional characteristic is load-bearing: a
+# Series must implement exactly one Variable.
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX sevocab: <https://skygest.dev/vocab/energy/>
+SELECT ?property ?domain ?range WHERE {
+  sevocab:implementsVariable a owl:ObjectProperty ;
+                             a owl:FunctionalProperty ;
+                             rdfs:domain ?domain ;
+                             rdfs:range ?range .
+  FILTER(?domain = sevocab:Series)
+  FILTER(?range = sevocab:EnergyVariable)
+  BIND(sevocab:implementsVariable AS ?property)
+}

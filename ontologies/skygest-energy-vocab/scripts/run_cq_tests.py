@@ -7,6 +7,7 @@ from rdflib import Graph
 
 VOCAB_DIR = Path(__file__).parent.parent
 VOCAB_FILE = VOCAB_DIR / "skygest-energy-vocab.ttl"
+SHAPES_FILE = VOCAB_DIR / "shapes" / "skygest-energy-vocab-shapes.ttl"
 TEST_DIR = VOCAB_DIR / "tests"
 MANIFEST_FILE = TEST_DIR / "cq-test-manifest.yaml"
 
@@ -15,6 +16,10 @@ def main() -> None:
     """Execute all CQ tests and report results."""
     g = Graph()
     g.parse(VOCAB_FILE, format="turtle")
+    # SHACL shapes live in a sibling file; merge them so SHACL-inspecting
+    # CQs (e.g. CQ-064, CQ-073) can see the shape graph.
+    if SHAPES_FILE.exists():
+        g.parse(SHAPES_FILE, format="turtle")
 
     manifest = yaml.safe_load(MANIFEST_FILE.read_text())
     tests = manifest["tests"]
