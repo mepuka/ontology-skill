@@ -4,188 +4,188 @@
     "normalizedSurfaceForm": "arithmetic mean",
     "canonical": "average",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "avg",
     "normalizedSurfaceForm": "avg",
     "canonical": "average",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "mean",
     "normalizedSurfaceForm": "mean",
     "canonical": "average",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "weighted average",
     "normalizedSurfaceForm": "weighted average",
     "canonical": "average",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "as of",
     "normalizedSurfaceForm": "as of",
     "canonical": "end_of_period",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "cumulative",
     "normalizedSurfaceForm": "cumulative",
     "canonical": "end_of_period",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "end of period",
     "normalizedSurfaceForm": "end of period",
     "canonical": "end_of_period",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "year-end",
     "normalizedSurfaceForm": "year-end",
     "canonical": "end_of_period",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "highest",
     "normalizedSurfaceForm": "highest",
     "canonical": "max",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "maximum",
     "normalizedSurfaceForm": "maximum",
     "canonical": "max",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
-  },
-  {
-    "surfaceForm": "peak demand",
-    "normalizedSurfaceForm": "peak demand",
-    "canonical": "max",
-    "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
-  },
-  {
-    "surfaceForm": "peak load",
-    "normalizedSurfaceForm": "peak load",
-    "canonical": "max",
-    "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
-  },
-  {
-    "surfaceForm": "peak generation",
-    "normalizedSurfaceForm": "peak generation",
-    "canonical": "max",
-    "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "peak capacity",
     "normalizedSurfaceForm": "peak capacity",
     "canonical": "max",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
+  },
+  {
+    "surfaceForm": "peak demand",
+    "normalizedSurfaceForm": "peak demand",
+    "canonical": "max",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-13T18:15:15.000Z"
+  },
+  {
+    "surfaceForm": "peak generation",
+    "normalizedSurfaceForm": "peak generation",
+    "canonical": "max",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-13T18:15:15.000Z"
+  },
+  {
+    "surfaceForm": "peak load",
+    "normalizedSurfaceForm": "peak load",
+    "canonical": "max",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "floor",
     "normalizedSurfaceForm": "floor",
     "canonical": "min",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "minimum",
     "normalizedSurfaceForm": "minimum",
     "canonical": "min",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "trough",
     "normalizedSurfaceForm": "trough",
     "canonical": "min",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "instantaneous",
     "normalizedSurfaceForm": "instantaneous",
     "canonical": "point",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "snapshot",
     "normalizedSurfaceForm": "snapshot",
     "canonical": "point",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "spot",
     "normalizedSurfaceForm": "spot",
     "canonical": "point",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "clearing",
     "normalizedSurfaceForm": "clearing",
     "canonical": "settlement",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "clearing price",
     "normalizedSurfaceForm": "clearing price",
     "canonical": "settlement",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "settlement price",
     "normalizedSurfaceForm": "settlement price",
     "canonical": "settlement",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "aggregate",
     "normalizedSurfaceForm": "aggregate",
     "canonical": "sum",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "annual total",
     "normalizedSurfaceForm": "annual total",
     "canonical": "sum",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "cumulative total",
     "normalizedSurfaceForm": "cumulative total",
     "canonical": "sum",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "total",
     "normalizedSurfaceForm": "total",
     "canonical": "sum",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   }
 ]

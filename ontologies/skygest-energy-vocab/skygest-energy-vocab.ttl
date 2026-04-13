@@ -724,7 +724,8 @@ sevocab:Generation a skos:Concept ;
         "output"@en,
         "power generation"@en,
         "power production"@en,
-        "produced"@en ;
+        "produced"@en,
+        "wind generation"@en ;
     skos:definition "A measuredProperty concept representing the production of energy or electricity over a time interval"@en ;
     skos:inScheme sevocab:MeasuredPropertyScheme ;
     skos:prefLabel "generation"@en ;
@@ -799,7 +800,6 @@ sevocab:HeatDomain a skos:Concept ;
         "Warme"@de,
         "district heat"@en,
         "district heating"@en,
-        "heat"@en,
         "heating"@en,
         "thermal"@en ;
     skos:definition "A domainObject concept representing heat energy and the heating sector as the subject of measurement"@en ;
@@ -977,7 +977,10 @@ sevocab:Max a skos:Concept ;
     rdfs:label "max"@en ;
     skos:altLabel "highest"@en,
         "maximum"@en,
-        "peak"@en ;
+        "peak capacity"@en,
+        "peak demand"@en,
+        "peak generation"@en,
+        "peak load"@en ;
     skos:definition "An aggregation concept representing the maximum observed value in a period"@en ;
     skos:inScheme sevocab:AggregationScheme ;
     skos:prefLabel "max"@en ;

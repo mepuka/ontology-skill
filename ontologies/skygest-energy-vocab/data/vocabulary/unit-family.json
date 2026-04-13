@@ -4,265 +4,265 @@
     "normalizedSurfaceForm": "$",
     "canonical": "currency",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "CAD",
     "normalizedSurfaceForm": "cad",
     "canonical": "currency",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "EUR",
     "normalizedSurfaceForm": "eur",
     "canonical": "currency",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "GBP",
     "normalizedSurfaceForm": "gbp",
     "canonical": "currency",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "USD",
     "normalizedSurfaceForm": "usd",
     "canonical": "currency",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "$/MWh",
     "normalizedSurfaceForm": "$/mwh",
     "canonical": "currency_per_energy",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "ct/kWh",
     "normalizedSurfaceForm": "ct/kwh",
     "canonical": "currency_per_energy",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "EUR/MWh",
     "normalizedSurfaceForm": "eur/mwh",
     "canonical": "currency_per_energy",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "coefficient",
     "normalizedSurfaceForm": "coefficient",
     "canonical": "dimensionless",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "factor",
     "normalizedSurfaceForm": "factor",
     "canonical": "dimensionless",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "fraction",
     "normalizedSurfaceForm": "fraction",
     "canonical": "dimensionless",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "index",
     "normalizedSurfaceForm": "index",
     "canonical": "dimensionless",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "percent",
     "normalizedSurfaceForm": "percent",
     "canonical": "dimensionless",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "ratio",
     "normalizedSurfaceForm": "ratio",
     "canonical": "dimensionless",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "GWh",
     "normalizedSurfaceForm": "gwh",
     "canonical": "energy",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "kWh",
     "normalizedSurfaceForm": "kwh",
     "canonical": "energy",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "MWh",
     "normalizedSurfaceForm": "mwh",
     "canonical": "energy",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "TWh",
     "normalizedSurfaceForm": "twh",
     "canonical": "energy",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "Wh",
     "normalizedSurfaceForm": "wh",
     "canonical": "energy",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "carbon intensity",
     "normalizedSurfaceForm": "carbon intensity",
     "canonical": "intensity",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "emission factor",
     "normalizedSurfaceForm": "emission factor",
     "canonical": "intensity",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "emission intensity",
     "normalizedSurfaceForm": "emission intensity",
     "canonical": "intensity",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "gCO2/kWh",
     "normalizedSurfaceForm": "gco2/kwh",
     "canonical": "intensity",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "kg CO2/MWh",
     "normalizedSurfaceForm": "kg co2/mwh",
     "canonical": "intensity",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "tCO2/MWh",
     "normalizedSurfaceForm": "tco2/mwh",
     "canonical": "intensity",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "MtCO2e",
     "normalizedSurfaceForm": "mtco2e",
     "canonical": "mass_co2e",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "tCO2",
     "normalizedSurfaceForm": "tco2",
     "canonical": "mass_co2e",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "tCO2e",
     "normalizedSurfaceForm": "tco2e",
     "canonical": "mass_co2e",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "misc",
     "normalizedSurfaceForm": "misc",
     "canonical": "other",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "miscellaneous",
     "normalizedSurfaceForm": "miscellaneous",
     "canonical": "other",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "other",
     "normalizedSurfaceForm": "other",
     "canonical": "other",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "unclassified",
     "normalizedSurfaceForm": "unclassified",
     "canonical": "other",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "gigawatt",
     "normalizedSurfaceForm": "gigawatt",
     "canonical": "power",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "GW",
     "normalizedSurfaceForm": "gw",
     "canonical": "power",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "kilowatt",
     "normalizedSurfaceForm": "kilowatt",
     "canonical": "power",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "kW",
     "normalizedSurfaceForm": "kw",
     "canonical": "power",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "megawatt",
     "normalizedSurfaceForm": "megawatt",
     "canonical": "power",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   },
   {
     "surfaceForm": "MW",
     "normalizedSurfaceForm": "mw",
     "canonical": "power",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T18:15:15.000Z"
   }
 ]
