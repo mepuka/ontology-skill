@@ -1,0 +1,174 @@
+[
+  {
+    "surfaceForm": "spot price",
+    "normalizedSurfaceForm": "spot price",
+    "assignments": {
+      "statisticType": "price"
+    },
+    "provenance": "hand-curated",
+    "addedAt": "2026-04-12T00:00:00.000Z",
+    "notes": "Spot market price — simultaneously a measured price value and a statistical transformation (instantaneous clearing)."
+  },
+  {
+    "surfaceForm": "settlement price",
+    "normalizedSurfaceForm": "settlement price",
+    "assignments": {
+      "statisticType": "price",
+      "aggregation": "settlement"
+    },
+    "provenance": "hand-curated",
+    "addedAt": "2026-04-12T00:00:00.000Z",
+    "notes": "Settlement price — compound price concept with explicit settlement aggregation."
+  },
+  {
+    "surfaceForm": "clearing price",
+    "normalizedSurfaceForm": "clearing price",
+    "assignments": {
+      "statisticType": "price"
+    },
+    "provenance": "hand-curated",
+    "addedAt": "2026-04-12T00:00:00.000Z",
+    "notes": "Market clearing price — simultaneous measuredProperty and statisticType assignment."
+  },
+  {
+    "surfaceForm": "day-ahead price",
+    "normalizedSurfaceForm": "day-ahead price",
+    "assignments": {
+      "statisticType": "price"
+    },
+    "provenance": "hand-curated",
+    "addedAt": "2026-04-12T00:00:00.000Z",
+    "notes": "Day-ahead market price — simultaneous measuredProperty and statisticType assignment."
+  },
+  {
+    "surfaceForm": "wholesale price",
+    "normalizedSurfaceForm": "wholesale price",
+    "assignments": {
+      "statisticType": "price"
+    },
+    "provenance": "hand-curated",
+    "addedAt": "2026-04-12T00:00:00.000Z",
+    "notes": "Wholesale market price — simultaneous measuredProperty and statisticType assignment."
+  },
+  {
+    "surfaceForm": "wholesale electricity price",
+    "normalizedSurfaceForm": "wholesale electricity price",
+    "assignments": {
+      "statisticType": "price",
+      "domainObject": "electricity"
+    },
+    "provenance": "hand-curated",
+    "addedAt": "2026-04-12T00:00:00.000Z",
+    "notes": "Three-facet compound: price of electricity in the wholesale market."
+  },
+  {
+    "surfaceForm": "locational marginal price",
+    "normalizedSurfaceForm": "locational marginal price",
+    "assignments": {
+      "statisticType": "price",
+      "domainObject": "electricity"
+    },
+    "provenance": "hand-curated",
+    "addedAt": "2026-04-12T00:00:00.000Z",
+    "notes": "LMP — nodal electricity price."
+  },
+  {
+    "surfaceForm": "lmp",
+    "normalizedSurfaceForm": "lmp",
+    "assignments": {
+      "statisticType": "price",
+      "domainObject": "electricity"
+    },
+    "provenance": "hand-curated",
+    "addedAt": "2026-04-12T00:00:00.000Z",
+    "notes": "Locational marginal price acronym."
+  },
+  {
+    "surfaceForm": "battery price spread",
+    "normalizedSurfaceForm": "battery price spread",
+    "assignments": {
+      "measuredProperty": "price",
+      "technologyOrFuel": "battery"
+    },
+    "provenance": "hand-curated",
+    "addedAt": "2026-04-12T00:00:00.000Z",
+    "notes": "Battery price-spread concept — pins technologyOrFuel=battery alongside measuredProperty=price."
+  },
+  {
+    "surfaceForm": "battery price spreads",
+    "normalizedSurfaceForm": "battery price spreads",
+    "assignments": {
+      "measuredProperty": "price",
+      "technologyOrFuel": "battery"
+    },
+    "provenance": "hand-curated",
+    "addedAt": "2026-04-12T00:00:00.000Z",
+    "notes": "Plural of battery price spread — matcher's plural tolerance is single-word only."
+  },
+  {
+    "surfaceForm": "battery spread",
+    "normalizedSurfaceForm": "battery spread",
+    "assignments": {
+      "measuredProperty": "price",
+      "technologyOrFuel": "battery"
+    },
+    "provenance": "hand-curated",
+    "addedAt": "2026-04-12T00:00:00.000Z",
+    "notes": "Shorter variant of battery price spread; still pins price + battery."
+  },
+  {
+    "surfaceForm": "battery spreads",
+    "normalizedSurfaceForm": "battery spreads",
+    "assignments": {
+      "measuredProperty": "price",
+      "technologyOrFuel": "battery"
+    },
+    "provenance": "hand-curated",
+    "addedAt": "2026-04-12T00:00:00.000Z",
+    "notes": "Plural of battery spread."
+  },
+  {
+    "surfaceForm": "peak demand",
+    "normalizedSurfaceForm": "peak demand",
+    "assignments": {
+      "measuredProperty": "demand",
+      "aggregation": "max"
+    },
+    "provenance": "hand-curated",
+    "addedAt": "2026-04-12T00:00:00.000Z",
+    "notes": "Peak demand — compound pins measuredProperty=demand and aggregation=max."
+  },
+  {
+    "surfaceForm": "peak load",
+    "normalizedSurfaceForm": "peak load",
+    "assignments": {
+      "measuredProperty": "demand",
+      "aggregation": "max"
+    },
+    "provenance": "hand-curated",
+    "addedAt": "2026-04-12T00:00:00.000Z",
+    "notes": "Peak load — synonym for peak demand; same compound assignment."
+  },
+  {
+    "surfaceForm": "share of generation",
+    "normalizedSurfaceForm": "share of generation",
+    "assignments": {
+      "measuredProperty": "generation",
+      "statisticType": "share"
+    },
+    "provenance": "hand-curated",
+    "addedAt": "2026-04-12T00:00:00.000Z",
+    "notes": "Share-of-generation compound — measuredProperty=generation with share statistical transformation."
+  },
+  {
+    "surfaceForm": "share of electricity",
+    "normalizedSurfaceForm": "share of electricity",
+    "assignments": {
+      "statisticType": "share",
+      "domainObject": "electricity"
+    },
+    "provenance": "hand-curated",
+    "addedAt": "2026-04-12T00:00:00.000Z",
+    "notes": "Share of electricity — share statistic over electricity domain."
+  }
+]

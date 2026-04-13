@@ -392,3 +392,59 @@ decisions:
       complicate the build script. If a child concept matches, its
       canonical value is returned directly (e.g., "offshore_wind"), not
       its parent ("wind").
+
+  - id: CD-009
+    title: "Compound concepts express multi-facet surface forms"
+    rationale: >
+      The algebra review (2026-04-12, Gap 2) identified a class of
+      surface forms that legitimately span multiple facets at once.
+      Phrases like "spot price", "battery price spread", "peak demand",
+      or "wholesale electricity price" are single lexical units that
+      carry two or three facet assignments simultaneously — a shape
+      the per-facet SKOS concept schemes structurally cannot represent
+      (one JSON file per scheme, one canonical per SurfaceFormEntry).
+    mechanism: >
+      A separate `compound-concepts.json` vocabulary file declares
+      entries of shape
+        { surfaceForm, normalizedSurfaceForm, assignments, provenance,
+          addedAt, notes? }
+      where `assignments` is a PartialVariableShape — every kernel
+      facet optional, closed-enum facets validated against their
+      literal members. The Worker's `FacetVocabulary` service loads
+      this file alongside the per-facet lexicons and exposes
+      `matchCompoundConcepts(text)`.
+    integration: >
+      The Interpret step in the resolution kernel runs
+      matchCompoundConcepts on each identity-source site BEFORE the
+      per-facet matchers. When any compound fires, its assignments
+      short-circuit per-facet matching on that site — the compound
+      is authoritative. Multiple compounds on the same site are
+      joined through the normal `joinPartials` fold, producing a
+      principled conflict if the curated set disagrees.
+      Overlap resolution is longest-match-first (inherited from the
+      underlying SurfaceFormLookup).
+    ontology_scope: >
+      Compound concepts live ONLY in the vocabulary JSON export and
+      the Worker's resolution kernel. They are NOT modeled as RDF
+      concept individuals in the SKOS Turtle file — doing so would
+      require an n-ary relation class expressing "this surface form
+      has assignments over N schemes" which contradicts CD-006
+      (cross-scheme composition lives in the kernel, not the
+      ontology). Compounds are instead documented in this conceptual
+      model and the JSON file is consumed directly by the kernel.
+    starter_set: >
+      Initial curation (2026-04-12) covers the price/spread family
+      (spot price, settlement price, clearing price, day-ahead price,
+      wholesale price, wholesale electricity price, LMP, locational
+      marginal price, battery price spread, battery spread),
+      demand-peak family (peak demand, peak load), and share family
+      (share of generation, share of electricity). Expansion is
+      ongoing and driven by eval-harness false-positive/false-negative
+      analysis.
+    implication: >
+      When a new cross-facet surface form is identified during
+      curation or eval review, add it to
+      compound-concepts.json in the ontology_skill source of truth
+      and re-run the sync script. Do NOT add it to a single-facet
+      SurfaceFormEntry lexicon — that path cannot express the
+      multi-facet semantics and reintroduces the Gap-2 problem.
