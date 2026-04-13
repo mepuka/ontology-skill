@@ -4,622 +4,692 @@
     "normalizedSurfaceForm": "capacity",
     "canonical": "capacity",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "fleet",
     "normalizedSurfaceForm": "fleet",
     "canonical": "capacity",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "installed",
     "normalizedSurfaceForm": "installed",
     "canonical": "capacity",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "installed capacity",
     "normalizedSurfaceForm": "installed capacity",
     "canonical": "capacity",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "nameplate",
     "normalizedSurfaceForm": "nameplate",
     "canonical": "capacity",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "availability factor",
     "normalizedSurfaceForm": "availability factor",
     "canonical": "capacity factor",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "capacity factor",
     "normalizedSurfaceForm": "capacity factor",
     "canonical": "capacity factor",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "CF",
     "normalizedSurfaceForm": "cf",
     "canonical": "capacity factor",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "load factor",
     "normalizedSurfaceForm": "load factor",
     "canonical": "capacity factor",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "plant factor",
     "normalizedSurfaceForm": "plant factor",
     "canonical": "capacity factor",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "utilization rate",
     "normalizedSurfaceForm": "utilization rate",
     "canonical": "capacity factor",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "consumption",
     "normalizedSurfaceForm": "consumption",
     "canonical": "consumption",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "energy consumption",
     "normalizedSurfaceForm": "energy consumption",
     "canonical": "consumption",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "final consumption",
     "normalizedSurfaceForm": "final consumption",
     "canonical": "consumption",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "total consumption",
     "normalizedSurfaceForm": "total consumption",
     "canonical": "consumption",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "count",
     "normalizedSurfaceForm": "count",
     "canonical": "count",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "installations",
     "normalizedSurfaceForm": "installations",
     "canonical": "count",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "number",
     "normalizedSurfaceForm": "number",
     "canonical": "count",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "units deployed",
     "normalizedSurfaceForm": "units deployed",
     "canonical": "count",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "constrained off",
     "normalizedSurfaceForm": "constrained off",
     "canonical": "curtailment",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "curtailed",
     "normalizedSurfaceForm": "curtailed",
     "canonical": "curtailment",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "curtailment",
     "normalizedSurfaceForm": "curtailment",
     "canonical": "curtailment",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "spilled",
     "normalizedSurfaceForm": "spilled",
     "canonical": "curtailment",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "closure",
     "normalizedSurfaceForm": "closure",
     "canonical": "decommissioning",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "coal phase-out",
     "normalizedSurfaceForm": "coal phase-out",
     "canonical": "decommissioning",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "decommissioning",
     "normalizedSurfaceForm": "decommissioning",
     "canonical": "decommissioning",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "phase-out",
     "normalizedSurfaceForm": "phase-out",
     "canonical": "decommissioning",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "plant closure",
     "normalizedSurfaceForm": "plant closure",
     "canonical": "decommissioning",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "retired capacity",
     "normalizedSurfaceForm": "retired capacity",
     "canonical": "decommissioning",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "retirement",
     "normalizedSurfaceForm": "retirement",
     "canonical": "decommissioning",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "shutdown",
     "normalizedSurfaceForm": "shutdown",
     "canonical": "decommissioning",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "demand",
     "normalizedSurfaceForm": "demand",
     "canonical": "demand",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "load",
     "normalizedSurfaceForm": "load",
     "canonical": "demand",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "usage",
     "normalizedSurfaceForm": "usage",
     "canonical": "demand",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "use",
     "normalizedSurfaceForm": "use",
     "canonical": "demand",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "additions",
     "normalizedSurfaceForm": "additions",
     "canonical": "deployment",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "coming online",
     "normalizedSurfaceForm": "coming online",
     "canonical": "deployment",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "commissioning",
     "normalizedSurfaceForm": "commissioning",
     "canonical": "deployment",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "deployment",
     "normalizedSurfaceForm": "deployment",
     "canonical": "deployment",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "installed additions",
     "normalizedSurfaceForm": "installed additions",
     "canonical": "deployment",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "new build",
     "normalizedSurfaceForm": "new build",
     "canonical": "deployment",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "new capacity",
     "normalizedSurfaceForm": "new capacity",
     "canonical": "deployment",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "new installations",
     "normalizedSurfaceForm": "new installations",
     "canonical": "deployment",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "discharge",
     "normalizedSurfaceForm": "discharge",
     "canonical": "discharge",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "dispatched",
     "normalizedSurfaceForm": "dispatched",
     "canonical": "discharge",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "storage output",
     "normalizedSurfaceForm": "storage output",
     "canonical": "discharge",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "conversion efficiency",
     "normalizedSurfaceForm": "conversion efficiency",
     "canonical": "efficiency",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "efficiency",
     "normalizedSurfaceForm": "efficiency",
     "canonical": "efficiency",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "system efficiency",
     "normalizedSurfaceForm": "system efficiency",
     "canonical": "efficiency",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "thermal efficiency",
     "normalizedSurfaceForm": "thermal efficiency",
     "canonical": "efficiency",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "carbon intensity",
     "normalizedSurfaceForm": "carbon intensity",
     "canonical": "emissions",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "CO2",
     "normalizedSurfaceForm": "co2",
     "canonical": "emissions",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "CO2 emissions",
     "normalizedSurfaceForm": "co2 emissions",
     "canonical": "emissions",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
-    "surfaceForm": "emissions",
-    "normalizedSurfaceForm": "emissions",
+    "surfaceForm": "emissions factor",
+    "normalizedSurfaceForm": "emissions factor",
     "canonical": "emissions",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
+  },
+  {
+    "surfaceForm": "energy sector emissions",
+    "normalizedSurfaceForm": "energy sector emissions",
+    "canonical": "emissions",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "GHG",
     "normalizedSurfaceForm": "ghg",
     "canonical": "emissions",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "greenhouse gas",
     "normalizedSurfaceForm": "greenhouse gas",
     "canonical": "emissions",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
-    "surfaceForm": "generation",
-    "normalizedSurfaceForm": "generation",
+    "surfaceForm": "power sector emissions",
+    "normalizedSurfaceForm": "power sector emissions",
+    "canonical": "emissions",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-13T17:28:29.000Z"
+  },
+  {
+    "surfaceForm": "electricity generation",
+    "normalizedSurfaceForm": "electricity generation",
     "canonical": "generation",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
+  },
+  {
+    "surfaceForm": "energy generation",
+    "normalizedSurfaceForm": "energy generation",
+    "canonical": "generation",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "gross electricity production",
     "normalizedSurfaceForm": "gross electricity production",
     "canonical": "generation",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "net electricity production",
     "normalizedSurfaceForm": "net electricity production",
     "canonical": "generation",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "output",
     "normalizedSurfaceForm": "output",
     "canonical": "generation",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
+  },
+  {
+    "surfaceForm": "power generation",
+    "normalizedSurfaceForm": "power generation",
+    "canonical": "generation",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "power production",
     "normalizedSurfaceForm": "power production",
     "canonical": "generation",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "produced",
     "normalizedSurfaceForm": "produced",
     "canonical": "generation",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "capex",
     "normalizedSurfaceForm": "capex",
     "canonical": "investment",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "funding",
     "normalizedSurfaceForm": "funding",
     "canonical": "investment",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "investment",
     "normalizedSurfaceForm": "investment",
     "canonical": "investment",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "spending",
     "normalizedSurfaceForm": "spending",
     "canonical": "investment",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
+  },
+  {
+    "surfaceForm": "contract price",
+    "normalizedSurfaceForm": "contract price",
+    "canonical": "price",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "cost",
     "normalizedSurfaceForm": "cost",
     "canonical": "price",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
-    "surfaceForm": "fee",
-    "normalizedSurfaceForm": "fee",
+    "surfaceForm": "day-ahead price",
+    "normalizedSurfaceForm": "day-ahead price",
     "canonical": "price",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
+  },
+  {
+    "surfaceForm": "LCOE",
+    "normalizedSurfaceForm": "lcoe",
+    "canonical": "price",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-13T17:28:29.000Z"
+  },
+  {
+    "surfaceForm": "levelized cost",
+    "normalizedSurfaceForm": "levelized cost",
+    "canonical": "price",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "price",
     "normalizedSurfaceForm": "price",
     "canonical": "price",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "rate",
     "normalizedSurfaceForm": "rate",
     "canonical": "price",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
+  },
+  {
+    "surfaceForm": "spot price",
+    "normalizedSurfaceForm": "spot price",
+    "canonical": "price",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-13T17:28:29.000Z"
+  },
+  {
+    "surfaceForm": "strike price",
+    "normalizedSurfaceForm": "strike price",
+    "canonical": "price",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "tariff",
     "normalizedSurfaceForm": "tariff",
     "canonical": "price",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
+  },
+  {
+    "surfaceForm": "wholesale price",
+    "normalizedSurfaceForm": "wholesale price",
+    "canonical": "price",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "earnings",
     "normalizedSurfaceForm": "earnings",
     "canonical": "revenue",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "income",
     "normalizedSurfaceForm": "income",
     "canonical": "revenue",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "revenue",
     "normalizedSurfaceForm": "revenue",
     "canonical": "revenue",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "turnover",
     "normalizedSurfaceForm": "turnover",
     "canonical": "revenue",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "fraction",
     "normalizedSurfaceForm": "fraction",
     "canonical": "share",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "mix",
     "normalizedSurfaceForm": "mix",
     "canonical": "share",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "penetration",
     "normalizedSurfaceForm": "penetration",
     "canonical": "share",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "proportion",
     "normalizedSurfaceForm": "proportion",
     "canonical": "share",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "share",
     "normalizedSurfaceForm": "share",
     "canonical": "share",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "primary supply",
     "normalizedSurfaceForm": "primary supply",
     "canonical": "supply",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "supply",
     "normalizedSurfaceForm": "supply",
     "canonical": "supply",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "total primary energy supply",
     "normalizedSurfaceForm": "total primary energy supply",
     "canonical": "supply",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "TPES",
     "normalizedSurfaceForm": "tpes",
     "canonical": "supply",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "exports",
     "normalizedSurfaceForm": "exports",
     "canonical": "trade",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "imports",
     "normalizedSurfaceForm": "imports",
     "canonical": "trade",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "interconnector flow",
     "normalizedSurfaceForm": "interconnector flow",
     "canonical": "trade",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "net imports",
     "normalizedSurfaceForm": "net imports",
     "canonical": "trade",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   },
   {
     "surfaceForm": "trade",
     "normalizedSurfaceForm": "trade",
     "canonical": "trade",
     "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
+    "addedAt": "2026-04-13T17:28:29.000Z"
   }
 ]

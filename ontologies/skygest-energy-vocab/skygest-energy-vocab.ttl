@@ -19,8 +19,8 @@
         <https://skygest.dev/vocab/energy/imports/dcat-extract>,
         <https://skygest.dev/vocab/energy/imports/foaf-extract>,
         <https://skygest.dev/vocab/energy/imports/schema-extract> ;
-    owl:versionIRI sevocab:0.2.0 ;
-    owl:versionInfo "0.2.0" .
+    owl:versionIRI sevocab:0.2.1 ;
+    owl:versionInfo "0.2.1" .
 
 sevocab:Annual a skos:Concept ;
     rdfs:label "annual"@en ;
@@ -478,7 +478,6 @@ sevocab:ElectricityDomain a skos:Concept ;
         "electricity"@en,
         "electricity sector"@en,
         "electricity system"@en,
-        "power"@en,
         "power sector"@en,
         "power system"@en ;
     skos:definition "A domainObject concept representing electrical energy as the subject of measurement"@en ;
@@ -507,8 +506,10 @@ sevocab:EmissionsMeasure a skos:Concept ;
         "CO2 emissions"@en,
         "GHG"@en,
         "carbon intensity"@en,
-        "emissions"@en,
-        "greenhouse gas"@en ;
+        "emissions factor"@en,
+        "energy sector emissions"@en,
+        "greenhouse gas"@en,
+        "power sector emissions"@en ;
     skos:definition "A measuredProperty concept representing the release of greenhouse gases from energy activities"@en ;
     skos:inScheme sevocab:MeasuredPropertyScheme ;
     skos:prefLabel "emissions"@en ;
@@ -716,10 +717,12 @@ sevocab:Generation a skos:Concept ;
     skos:altLabel "Erzeugung"@de,
         "Nettostromerzeugung"@de,
         "Stromerzeugung"@de,
-        "generation"@en,
+        "electricity generation"@en,
+        "energy generation"@en,
         "gross electricity production"@en,
         "net electricity production"@en,
         "output"@en,
+        "power generation"@en,
         "power production"@en,
         "produced"@en ;
     skos:definition "A measuredProperty concept representing the production of energy or electricity over a time interval"@en ;
@@ -1016,7 +1019,6 @@ sevocab:NaturalGasDomain a skos:Concept ;
     rdfs:label "natural gas (domain object)"@en ;
     skos:altLabel "Erdgas"@de,
         "LNG"@en,
-        "gas"@en,
         "gas infrastructure"@en,
         "gas pipeline"@en,
         "gas storage"@en,
@@ -1603,6 +1605,14 @@ sevocab:hasProvenanceAnnotation a owl:ObjectProperty ;
     rdfs:label "has provenance annotation"@en ;
     skos:definition "Links a concept to a SurfaceFormEntry individual recording provenance for a specific altLabel"@en .
 
+sevocab:implementsVariable a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "implements variable"@en ;
+    rdfs:comment "Functional link from a Series to the single EnergyVariable it realizes in its publishing dataset's reporting context. A Series implements exactly one Variable."@en ;
+    rdfs:domain sevocab:Series ;
+    rdfs:range sevocab:EnergyVariable ;
+    skos:definition "The energy variable realized by this series."@en .
+
 sevocab:provenance a owl:DatatypeProperty,
         owl:FunctionalProperty ;
     rdfs:label "provenance"@en ;
@@ -1709,7 +1719,6 @@ sevocab:NaturalGas a skos:Concept ;
         "associated gas"@en,
         "colliery gas"@en,
         "compressed natural gas"@en,
-        "gas"@en,
         "gas infrastructure"@en,
         "gas pipeline"@en,
         "gas-fired"@en,
@@ -1738,13 +1747,6 @@ sevocab:WindTurbineDomain a skos:Concept ;
     skos:prefLabel "wind turbine"@en ;
     skos:topConceptOf sevocab:DomainObjectScheme .
 
-sevocab:hasVariable a owl:ObjectProperty ;
-    rdfs:label "has variable"@en ;
-    rdfs:comment "Higher-level dataset-to-variable view. The structural path in this vocabulary runs Dataset → Series → Variable via sevocab:hasSeries and sevocab:implementsVariable; hasVariable remains as the denormalized view asserting that a dataset is associated with a given variable regardless of how many series realize it. CQ/SPARQL consumers should traverse the explicit hasSeries + implementsVariable path rather than relying on OWL property-chain entailment, because simple entailment does not compute property chains."@en ;
-    rdfs:domain sevocab:EnergyDataset ;
-    rdfs:range sevocab:EnergyVariable ;
-    skos:definition "Links an energy dataset to a constituent energy variable. Documented as the higher-level view over the Dataset → Series → Variable chain."@en .
-
 sevocab:hasSeries a owl:ObjectProperty ;
     rdfs:label "has series"@en ;
     rdfs:comment "Links an EnergyDataset to a concrete published Series that implements a Variable in that dataset's reporting context. Inverse of sevocab:publishedInDataset."@en ;
@@ -1753,16 +1755,15 @@ sevocab:hasSeries a owl:ObjectProperty ;
     owl:inverseOf sevocab:publishedInDataset ;
     skos:definition "Structural link from an energy dataset to a concrete series it publishes."@en .
 
-sevocab:implementsVariable a owl:ObjectProperty,
-        owl:FunctionalProperty ;
-    rdfs:label "implements variable"@en ;
-    rdfs:comment "Functional link from a Series to the single EnergyVariable it realizes in its publishing dataset's reporting context. A Series implements exactly one Variable."@en ;
-    rdfs:domain sevocab:Series ;
+sevocab:hasVariable a owl:ObjectProperty ;
+    rdfs:label "has variable"@en ;
+    rdfs:comment "Higher-level dataset-to-variable view. The structural path in this vocabulary runs Dataset → Series → Variable via sevocab:hasSeries and sevocab:implementsVariable; hasVariable remains as the denormalized view asserting that a dataset is associated with a given variable regardless of how many series realize it. CQ/SPARQL consumers should traverse the explicit hasSeries + implementsVariable path rather than relying on OWL property-chain entailment, because simple entailment does not compute property chains."@en ;
+    rdfs:domain sevocab:EnergyDataset ;
     rdfs:range sevocab:EnergyVariable ;
-    skos:definition "The energy variable realized by this series."@en .
+    skos:definition "Links an energy dataset to a constituent energy variable. Documented as the higher-level view over the Dataset → Series → Variable chain."@en .
 
-sevocab:publishedInDataset a owl:ObjectProperty,
-        owl:FunctionalProperty ;
+sevocab:publishedInDataset a owl:FunctionalProperty,
+        owl:ObjectProperty ;
     rdfs:label "published in dataset"@en ;
     rdfs:comment "Functional link from a Series back to the EnergyDataset that publishes it. A Series belongs to exactly one dataset. Inverse of sevocab:hasSeries."@en ;
     rdfs:domain sevocab:Series ;
@@ -1774,20 +1775,6 @@ sevocab:EnergyAgent a owl:Class ;
     rdfs:label "energy agent"@en ;
     rdfs:subClassOf foaf:Agent ;
     skos:definition "A FOAF agent that publishes one or more energy datasets."@en .
-
-sevocab:EnergyDataset a owl:Class ;
-    rdfs:label "energy dataset"@en ;
-    rdfs:subClassOf [ a owl:Restriction ;
-            owl:onProperty dcat:distribution ;
-            owl:someValuesFrom dcat:Distribution ],
-        [ a owl:Restriction ;
-            owl:onProperty sevocab:hasVariable ;
-            owl:someValuesFrom sevocab:EnergyVariable ],
-        [ a owl:Restriction ;
-            owl:onProperty dcterms:publisher ;
-            owl:someValuesFrom sevocab:EnergyAgent ],
-        dcat:Dataset ;
-    skos:definition "A DCAT dataset that contains one or more energy variables and is published by an energy agent."@en .
 
 sevocab:Wind a skos:Concept ;
     rdfs:label "wind"@en ;
@@ -1856,6 +1843,20 @@ sevocab:unitFamily a qb:DimensionProperty,
     rdfs:label "unit family"@en ;
     qb:codeList sevocab:UnitFamilyScheme ;
     skos:definition "The family of measurement units."@en .
+
+sevocab:EnergyDataset a owl:Class ;
+    rdfs:label "energy dataset"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty sevocab:hasVariable ;
+            owl:someValuesFrom sevocab:EnergyVariable ],
+        [ a owl:Restriction ;
+            owl:onProperty dcterms:publisher ;
+            owl:someValuesFrom sevocab:EnergyAgent ],
+        [ a owl:Restriction ;
+            owl:onProperty dcat:distribution ;
+            owl:someValuesFrom dcat:Distribution ],
+        dcat:Dataset ;
+    skos:definition "A DCAT dataset that contains one or more energy variables and is published by an energy agent."@en .
 
 sevocab:EnergyVariable a owl:Class ;
     rdfs:label "energy variable"@en ;

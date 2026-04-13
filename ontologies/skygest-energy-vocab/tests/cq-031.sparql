@@ -1,12 +1,22 @@
-# CQ-031: What canonical measuredProperty does the surface form 'generation' map to?
+# CQ-031: What canonical measuredProperty does an anchored "generation"
+# surface form map to?
 # Expected: non_empty
 # Use case: UC-009
+#
+# Updated for SKY-311: bare "generation" was removed as an altLabel
+# (polysemous with "next generation", "demographic generation", etc.)
+# and replaced with anchored multi-word forms. The CQ now verifies that
+# at least one anchored form containing "generation" resolves to a
+# measured-property concept.
 
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX sevocab: <https://skygest.dev/vocab/energy/>
 
-SELECT ?concept ?scheme WHERE {
-  ?concept skos:altLabel "generation"@en ;
+SELECT ?concept ?altLabel ?scheme WHERE {
+  ?concept skos:altLabel ?altLabel ;
            skos:inScheme ?scheme .
   FILTER(?scheme = sevocab:MeasuredPropertyScheme)
+  FILTER(LANG(?altLabel) = "en")
+  FILTER(CONTAINS(LCASE(STR(?altLabel)), "generation"))
+  FILTER(STR(?altLabel) != "generation")
 }
