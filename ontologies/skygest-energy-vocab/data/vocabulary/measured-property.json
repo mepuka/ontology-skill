@@ -462,13 +462,6 @@
     "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
-    "surfaceForm": "contract price",
-    "normalizedSurfaceForm": "contract price",
-    "canonical": "price",
-    "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
-  },
-  {
     "surfaceForm": "cost",
     "normalizedSurfaceForm": "cost",
     "canonical": "price",
@@ -476,22 +469,8 @@
     "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
-    "surfaceForm": "day-ahead price",
-    "normalizedSurfaceForm": "day-ahead price",
-    "canonical": "price",
-    "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
-  },
-  {
-    "surfaceForm": "LCOE",
-    "normalizedSurfaceForm": "lcoe",
-    "canonical": "price",
-    "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
-  },
-  {
-    "surfaceForm": "levelized cost",
-    "normalizedSurfaceForm": "levelized cost",
+    "surfaceForm": "fee",
+    "normalizedSurfaceForm": "fee",
     "canonical": "price",
     "provenance": "cold-start-corpus",
     "addedAt": "2026-04-12T16:51:56.000Z"
@@ -511,29 +490,8 @@
     "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
-    "surfaceForm": "spot price",
-    "normalizedSurfaceForm": "spot price",
-    "canonical": "price",
-    "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
-  },
-  {
-    "surfaceForm": "strike price",
-    "normalizedSurfaceForm": "strike price",
-    "canonical": "price",
-    "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
-  },
-  {
     "surfaceForm": "tariff",
     "normalizedSurfaceForm": "tariff",
-    "canonical": "price",
-    "provenance": "cold-start-corpus",
-    "addedAt": "2026-04-12T16:51:56.000Z"
-  },
-  {
-    "surfaceForm": "wholesale price",
-    "normalizedSurfaceForm": "wholesale price",
     "canonical": "price",
     "provenance": "cold-start-corpus",
     "addedAt": "2026-04-12T16:51:56.000Z"

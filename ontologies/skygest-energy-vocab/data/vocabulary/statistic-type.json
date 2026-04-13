@@ -49,22 +49,71 @@
     "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
-    "surfaceForm": "cost",
-    "normalizedSurfaceForm": "cost",
+    "surfaceForm": "clearing price",
+    "normalizedSurfaceForm": "clearing price",
     "canonical": "price",
     "provenance": "cold-start-corpus",
     "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
-    "surfaceForm": "rate",
-    "normalizedSurfaceForm": "rate",
+    "surfaceForm": "contract price",
+    "normalizedSurfaceForm": "contract price",
     "canonical": "price",
     "provenance": "cold-start-corpus",
     "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
-    "surfaceForm": "tariff",
-    "normalizedSurfaceForm": "tariff",
+    "surfaceForm": "day-ahead price",
+    "normalizedSurfaceForm": "day-ahead price",
+    "canonical": "price",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T16:51:56.000Z"
+  },
+  {
+    "surfaceForm": "LCOE",
+    "normalizedSurfaceForm": "lcoe",
+    "canonical": "price",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T16:51:56.000Z"
+  },
+  {
+    "surfaceForm": "levelized cost",
+    "normalizedSurfaceForm": "levelized cost",
+    "canonical": "price",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T16:51:56.000Z"
+  },
+  {
+    "surfaceForm": "LMP",
+    "normalizedSurfaceForm": "lmp",
+    "canonical": "price",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T16:51:56.000Z"
+  },
+  {
+    "surfaceForm": "locational marginal price",
+    "normalizedSurfaceForm": "locational marginal price",
+    "canonical": "price",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T16:51:56.000Z"
+  },
+  {
+    "surfaceForm": "settlement price",
+    "normalizedSurfaceForm": "settlement price",
+    "canonical": "price",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T16:51:56.000Z"
+  },
+  {
+    "surfaceForm": "spot price",
+    "normalizedSurfaceForm": "spot price",
+    "canonical": "price",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T16:51:56.000Z"
+  },
+  {
+    "surfaceForm": "strike price",
+    "normalizedSurfaceForm": "strike price",
     "canonical": "price",
     "provenance": "cold-start-corpus",
     "addedAt": "2026-04-12T16:51:56.000Z"
@@ -84,8 +133,15 @@
     "addedAt": "2026-04-12T16:51:56.000Z"
   },
   {
-    "surfaceForm": "proportion",
-    "normalizedSurfaceForm": "proportion",
+    "surfaceForm": "percent of total",
+    "normalizedSurfaceForm": "percent of total",
+    "canonical": "share",
+    "provenance": "cold-start-corpus",
+    "addedAt": "2026-04-12T16:51:56.000Z"
+  },
+  {
+    "surfaceForm": "proportion of",
+    "normalizedSurfaceForm": "proportion of",
     "canonical": "share",
     "provenance": "cold-start-corpus",
     "addedAt": "2026-04-12T16:51:56.000Z"

@@ -135,3 +135,88 @@ organizational clarity without constraining the flat SKOS scheme.
 3. MeasuredProperty/StatisticType name overlap is controlled polysemy with IRI disambiguation (CD-008)
 4. DomainObject/TechnologyOrFuel overlap is by design — different facets, same referents (CD-007)
 5. DomainObjectScheme mixed granularity is intentional and documented via sub-groups
+
+## CD-008 implementation policy (2026-04-12)
+
+Finding 3 above established CD-008 as controlled polysemy with IRI
+disambiguation. The initial assumption was that the *same* surface form
+should fire BOTH facets simultaneously in different lookup tables. Eval
+harness runs on the `sky-314/resolution-kernel-eval-harness` branch
+demonstrated this was wrong: firing both facets on every unqualified
+price/share/count mention produces Class-B partials like
+`{measuredProperty: demand, statisticType: price}` that bind to no
+variable, because no variable in the catalog has `statisticType=price`
+*and* an unrelated `measuredProperty`.
+
+The lexicon must route each surface form to exactly one scheme based on
+whether it is **unqualified** (name of the measured property itself) or
+**compound-qualified** (name of a statistical transformation applied to
+some other measured property).
+
+### Routing rules
+
+**Price (`sevocab:PriceMeasure` vs `sevocab:Price`)**
+
+- Unqualified → `measuredProperty=price` only:
+  - `price`, `prices`, `cost`, `costs`, `tariff`, `tariffs`, `rate`, `fee`
+- Compound-qualified → `statisticType=price` only:
+  - `spot price`, `settlement price`, `strike price`, `clearing price`
+  - `locational marginal price`, `LMP`
+  - `day-ahead price`, `wholesale price`, `contract price`
+  - `LCOE`, `levelized cost` (these are statistical transformations of
+    underlying costs; the `price` statistic type captures that they're
+    a price aggregate, not just a price reading)
+
+**Share (`sevocab:ShareMeasure` vs `sevocab:Share`)**
+
+- Unqualified → `measuredProperty=share` only:
+  - `share`, `shares`, `fraction`, `mix`, `penetration`, `proportion`
+- Compound-qualified → `statisticType=share` only:
+  - `share of` (anything — "share of generation", "share of new
+    installations")
+  - `percent of total`, `proportion of`, `percentage`
+
+  Note: the 003-janrosenow case ("Share of new installations") is the
+  canonical example of why `share of X` belongs in the statistic type
+  scheme — "share of X where X is a count or stock" IS a statistical
+  transformation, not a measured property in its own right.
+
+**Count (`sevocab:CountMeasure` vs `sevocab:Count`)**
+
+- Unqualified → `measuredProperty=count` only:
+  - `count`, `counts`, `number`, `numbers`, `installations`,
+    `units deployed`
+- Compound-qualified → `statisticType=count` only:
+  - `number of`, `tally`, `units` (as in "MW units", a unit-count
+    aggregate)
+
+### Matcher discipline
+
+The lexicon split alone is not enough. The matcher in
+`src/resolution/facetVocabulary/SurfaceFormEntry.ts` (skygest-cloudflare)
+also enforces:
+
+1. **Word-boundary matching.** Surface forms match only at
+   non-alphanumeric word boundaries — never as substrings inside larger
+   words. Already present prior to CD-008 work, codified here because
+   CD-008 depends on it.
+
+2. **Simple pluralization.** Single-word surface forms with an optional
+   trailing `s` also match, so `price` matches both `price` and `prices`
+   without listing every plural explicitly. (Multi-word surface forms
+   and forms already ending in `s` are matched verbatim.)
+
+3. **Cross-facet suppression for CD-008 concepts.** When
+   `matchMeasuredProperty` finds a match for a dual-facet canonical
+   (`price`, `share`, `count`), it checks whether the text contains any
+   compound-qualifier phrase from the CD-008 compound list. If yes, the
+   measuredProperty match is suppressed (returns `None`) and the
+   statisticType facet owns the match. This is the explicit
+   implementation of "compound wins over bare" that longest-match-first
+   can provide only within a single vocabulary but not across facets.
+
+The compound-qualifier list is maintained in
+`src/resolution/facetVocabulary/measuredProperty.ts` alongside the
+matcher override. New compound forms added to
+`data/vocabulary/statistic-type.json` should be reflected in that list
+whenever they involve the dual-facet concepts.
