@@ -31,23 +31,46 @@ The structural model covers:
 
 ## In Scope
 
-- sky:EnergyAgent rdfs:subClassOf foaf:Agent
-- sky:EnergyDataset rdfs:subClassOf dcat:Dataset
-- sky:EnergyVariable rdfs:subClassOf schema:StatisticalVariable
+- sevocab:EnergyAgent rdfs:subClassOf foaf:Agent
+- sevocab:EnergyDataset rdfs:subClassOf dcat:Dataset
+- sevocab:EnergyVariable rdfs:subClassOf schema:StatisticalVariable
+- sevocab:Series as a top-level OWL class (SKY-316) for the structural
+  Dataset → Series → Variable path
 - 7 qb:DimensionProperty declarations with qb:codeList → sevocab schemes
-- sky:hasVariable linking Dataset to Variable
+- sevocab:hasVariable linking Dataset to Variable (retained as the
+  higher-level denormalized view)
+- sevocab:hasSeries linking Dataset to Series (inverse of publishedInDataset)
+- sevocab:implementsVariable linking Series to Variable
+  (owl:FunctionalProperty)
+- sevocab:publishedInDataset linking Series back to Dataset
+  (owl:FunctionalProperty, owl:inverseOf sevocab:hasSeries)
 - dct:publisher linking Dataset to Agent
 - dcat:distribution linking Dataset to Distribution
 - Cardinality restrictions (each facet at most 1 per Variable)
 - qb:DataStructureDefinition for the dimensional model
-- SHACL shapes for structural validation
+- SHACL shapes for structural validation, including SeriesShape
 - Minimal DCAT property coverage: accessURL, mediaType, title, description
+
+Legality note (SKY-316 decision): an EnergyDataset with zero Series is
+explicitly legal. No `hasSeries someValuesFrom Series` existential
+restriction is added on EnergyDataset in this slice — Series-less
+datasets are permitted during the rollout while parallel data work
+(SKY-323) backfills Series coverage for gold-eval publishers.
 
 ## Out of Scope
 
 - Modifying existing SKOS concepts or altLabels
-- ABox individuals (specific Agents, Datasets, Variables)
-- Temporal/series structure (future work)
+- ABox individuals (specific Agents, Datasets, Variables, Series)
+- dcat:DatasetSeries modelling (sevocab:Series is deliberately
+  distinct — see conceptual model notes)
+- Distribution → Series linkage (deferred)
+- Fixed-dimension bag semantics on Series (place/market/frequency/etc.;
+  deferred)
+- qb:Slice subclassing for Series or qb:dataSet subproperty on
+  publishedInDataset (deferred; impact on codegen unevaluated)
+- OWL property chain axiom materialization for hasVariable (deferred —
+  simple entailment does not compute property chains, so SPARQL
+  consumers traverse hasSeries + implementsVariable explicitly)
 - BFO alignment (application ontology, not reference)
 - Full DCAT 3 property coverage
 - Data quality, provenance, or access control metadata

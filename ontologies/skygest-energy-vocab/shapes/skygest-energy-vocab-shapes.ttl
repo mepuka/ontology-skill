@@ -229,6 +229,28 @@ sevocab-shapes:PolicyInstrumentConceptShape a sh:NodeShape ;
             }
         """ ] .
 
+sevocab-shapes:SeriesShape a sh:NodeShape ;
+    rdfs:comment "Validates sevocab:Series instances: exactly one implemented variable and exactly one publishing dataset (SKY-316 structural invariants)."@en ;
+    sh:property [ sh:class sevocab:EnergyVariable ;
+            sh:maxCount 1 ;
+            sh:message "Every sevocab:Series must sevocab:implementsVariable exactly one sevocab:EnergyVariable" ;
+            sh:minCount 1 ;
+            sh:name "implemented variable" ;
+            sh:nodeKind sh:IRI ;
+            sh:path sevocab:implementsVariable ],
+        [ sh:class sevocab:EnergyDataset ;
+            sh:maxCount 1 ;
+            sh:message "Every sevocab:Series must sevocab:publishedInDataset exactly one sevocab:EnergyDataset" ;
+            sh:minCount 1 ;
+            sh:name "publishing dataset" ;
+            sh:nodeKind sh:IRI ;
+            sh:path sevocab:publishedInDataset ],
+        [ sh:message "Every sevocab:Series must have an rdfs:label" ;
+            sh:minCount 1 ;
+            sh:name "label" ;
+            sh:path rdfs:label ] ;
+    sh:targetClass sevocab:Series .
+
 sevocab-shapes:StatisticTypeConceptShape a sh:NodeShape ;
     sh:property [ sh:in ( "stock"@en "flow"@en "price"@en "share"@en "count"@en ) ;
             sh:message "prefLabel must be one of the StatisticType canonical values: stock, flow, price, share, count" ;

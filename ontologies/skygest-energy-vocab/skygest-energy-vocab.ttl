@@ -19,8 +19,8 @@
         <https://skygest.dev/vocab/energy/imports/dcat-extract>,
         <https://skygest.dev/vocab/energy/imports/foaf-extract>,
         <https://skygest.dev/vocab/energy/imports/schema-extract> ;
-    owl:versionIRI sevocab:0.1.0 ;
-    owl:versionInfo "0.1.0" .
+    owl:versionIRI sevocab:0.2.0 ;
+    owl:versionInfo "0.2.0" .
 
 sevocab:Annual a skos:Concept ;
     rdfs:label "annual"@en ;
@@ -1740,9 +1740,35 @@ sevocab:WindTurbineDomain a skos:Concept ;
 
 sevocab:hasVariable a owl:ObjectProperty ;
     rdfs:label "has variable"@en ;
+    rdfs:comment "Higher-level dataset-to-variable view. The structural path in this vocabulary runs Dataset → Series → Variable via sevocab:hasSeries and sevocab:implementsVariable; hasVariable remains as the denormalized view asserting that a dataset is associated with a given variable regardless of how many series realize it. CQ/SPARQL consumers should traverse the explicit hasSeries + implementsVariable path rather than relying on OWL property-chain entailment, because simple entailment does not compute property chains."@en ;
     rdfs:domain sevocab:EnergyDataset ;
     rdfs:range sevocab:EnergyVariable ;
-    skos:definition "Links an energy dataset to a constituent energy variable."@en .
+    skos:definition "Links an energy dataset to a constituent energy variable. Documented as the higher-level view over the Dataset → Series → Variable chain."@en .
+
+sevocab:hasSeries a owl:ObjectProperty ;
+    rdfs:label "has series"@en ;
+    rdfs:comment "Links an EnergyDataset to a concrete published Series that implements a Variable in that dataset's reporting context. Inverse of sevocab:publishedInDataset."@en ;
+    rdfs:domain sevocab:EnergyDataset ;
+    rdfs:range sevocab:Series ;
+    owl:inverseOf sevocab:publishedInDataset ;
+    skos:definition "Structural link from an energy dataset to a concrete series it publishes."@en .
+
+sevocab:implementsVariable a owl:ObjectProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "implements variable"@en ;
+    rdfs:comment "Functional link from a Series to the single EnergyVariable it realizes in its publishing dataset's reporting context. A Series implements exactly one Variable."@en ;
+    rdfs:domain sevocab:Series ;
+    rdfs:range sevocab:EnergyVariable ;
+    skos:definition "The energy variable realized by this series."@en .
+
+sevocab:publishedInDataset a owl:ObjectProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "published in dataset"@en ;
+    rdfs:comment "Functional link from a Series back to the EnergyDataset that publishes it. A Series belongs to exactly one dataset. Inverse of sevocab:hasSeries."@en ;
+    rdfs:domain sevocab:Series ;
+    rdfs:range sevocab:EnergyDataset ;
+    owl:inverseOf sevocab:hasSeries ;
+    skos:definition "The energy dataset in which this series is published."@en .
 
 sevocab:EnergyAgent a owl:Class ;
     rdfs:label "energy agent"@en ;
@@ -1864,6 +1890,19 @@ sevocab:EnergyVariable a owl:Class ;
         schema:StatisticalVariable ;
     skos:definition "A statistical variable that is composed of up to seven facet dimensions drawn from sevocab concept schemes."@en .
 
+sevocab:Series a owl:Class ;
+    rdfs:label "series"@en ;
+    rdfs:comment """A concrete published series that implements exactly one EnergyVariable within exactly one EnergyDataset's reporting context. Each Series sits on the structural path EnergyAgent ← EnergyDataset ← Series → EnergyVariable, with sevocab:publishedInDataset and sevocab:implementsVariable as functional links.
+
+Naming disambiguation (important):
+
+(1) sevocab:Series is NOT dcat:DatasetSeries. dcat:DatasetSeries in DCAT 3 groups curated editions of related datasets (e.g. annual releases of a statistical publication); sevocab:Series is an intra-dataset structural node that names how a single Variable is realized inside one dataset.
+
+(2) sevocab:Series is also distinct from the pre-existing 'dataset-series' family concepts used elsewhere in the Skygest runtime data (e.g. dataset-series/dser_* references). Those name publisher-side dataset groupings; sevocab:Series names the Variable-implementing record a dataset exposes.
+
+Fixed-dimension bag semantics (place/market/frequency/etc.) are deliberately deferred and are not modelled on this class in this slice."""@en ;
+    skos:definition "A concrete published series that implements a single EnergyVariable within a single EnergyDataset's reporting context."@en .
+
 sevocab:StatisticTypeScheme a skos:ConceptScheme ;
     rdfs:label "statistic type scheme"@en ;
     skos:definition "A concept scheme that partitions the statistical-measure space into the types of quantity a chart can depict"@en ;
@@ -1905,4 +1944,4 @@ sevocab:DomainObjectScheme a skos:ConceptScheme ;
     skos:prefLabel "domain object scheme"@en .
 
 [] a owl:AllDisjointClasses ;
-    owl:members ( sevocab:EnergyVariable sevocab:EnergyDataset sevocab:EnergyAgent ) .
+    owl:members ( sevocab:EnergyVariable sevocab:EnergyDataset sevocab:EnergyAgent sevocab:Series ) .

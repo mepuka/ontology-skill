@@ -33,10 +33,13 @@
 - cq: implicit
   pattern: "5. Disjoint Classes"
   manchester: |
-    DisjointClasses: EnergyVariable, EnergyDataset, EnergyAgent
+    DisjointClasses: EnergyVariable, EnergyDataset, EnergyAgent, Series
   notes: >
-    A Variable cannot be a Dataset or an Agent. Pairwise disjointness
-    enables the reasoner to detect misclassification errors.
+    A Variable cannot be a Dataset, an Agent, or a Series. Series is
+    added to the AllDisjointClasses axiom in SKY-316 so the reasoner
+    detects misclassification between Series and the other spine
+    classes. Pairwise disjointness enables the reasoner to detect
+    misclassification errors.
 
 # =============================================================================
 # DCAT Chain — Existential Restrictions (Pattern #2: SomeValuesFrom)
@@ -130,7 +133,83 @@
       Range: EnergyVariable
   notes: >
     Domain/range safe here — both are sevocab-specific classes. No risk
-    of unintended classification of external entities.
+    of unintended classification of external entities. Retained as the
+    higher-level denormalized view; structural source of truth is the
+    hasSeries + implementsVariable chain.
+
+# =============================================================================
+# Series Structural Chain — SKY-316
+# =============================================================================
+
+- cq: implicit  # structural prerequisite for SKY-318 CQs
+  pattern: "Property declaration"
+  manchester: |
+    ObjectProperty: hasSeries
+      Domain: EnergyDataset
+      Range: Series
+      InverseOf: publishedInDataset
+  notes: >
+    Not functional on the Dataset side — one Dataset can have many
+    Series. Deliberately not declared as a subproperty of qb:dataSet
+    in this first slice.
+
+- cq: implicit  # structural prerequisite for SKY-318 CQs
+  pattern: "Property declaration + 6. Functional Property"
+  manchester: |
+    ObjectProperty: implementsVariable
+      Domain: Series
+      Range: EnergyVariable
+      Characteristics: Functional
+  notes: >
+    owl:FunctionalProperty. Each Series realizes exactly one Variable;
+    this is the semantic anchor that makes the structural chain
+    deterministic.
+
+- cq: implicit  # structural prerequisite for SKY-318 CQs
+  pattern: "Property declaration + 6. Functional Property"
+  manchester: |
+    ObjectProperty: publishedInDataset
+      Domain: Series
+      Range: EnergyDataset
+      Characteristics: Functional
+      InverseOf: hasSeries
+  notes: >
+    owl:FunctionalProperty and inverse of hasSeries. Each Series is
+    published in exactly one Dataset. Deliberately not declared as a
+    subproperty of dcterms:isPartOf or qb:dataSet in this first slice.
+
+- cq: implicit
+  pattern: "Class declaration"
+  manchester: |
+    Class: Series
+  notes: >
+    Top-level OWL class with no superclass in this slice (no qb:Slice
+    subclassing). No existential restriction on EnergyDataset requiring
+    hasSeries someValuesFrom Series — a dataset with zero Series is
+    explicitly legal in this slice. SHACL SeriesShape (see SHACL
+    section below) enforces the Series-side exactly-one cardinalities
+    for implementsVariable and publishedInDataset.
+
+# =============================================================================
+# SeriesShape — SKY-316 SHACL plan
+# =============================================================================
+
+- cq: implicit  # validation prerequisite for SKY-318
+  pattern: "SHACL shape (not OWL)"
+  description: |
+    SeriesShape validates sevocab:Series instances:
+    - sh:targetClass sevocab:Series
+    - sh:property on sevocab:implementsVariable
+        sh:class sevocab:EnergyVariable, sh:minCount 1, sh:maxCount 1, sh:nodeKind sh:IRI
+    - sh:property on sevocab:publishedInDataset
+        sh:class sevocab:EnergyDataset, sh:minCount 1, sh:maxCount 1, sh:nodeKind sh:IRI
+    - sh:property on rdfs:label (minCount 1)
+  notes: >
+    Closed-world structural cardinality enforcement. OWL
+    owl:FunctionalProperty on implementsVariable and publishedInDataset
+    handles the max-one side (via inconsistency detection under
+    HermiT); SHACL SeriesShape handles the min-one side and the
+    structural targeting.
 
 # =============================================================================
 # SHACL Validation (not OWL axioms, but planned here)

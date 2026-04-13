@@ -24,16 +24,21 @@
   goal: "Break ties between candidates that match on the same number of facets"
   preconditions:
     - "2+ candidate Variables tied on matched facet count"
-    - "The ontology declares which Dataset each Variable belongs to and which Agent published it"
+    - "The ontology declares which Dataset each Variable is published in (via Series → Dataset) and which Agent published that Dataset"
   main_flow:
     - "Kernel identifies the tied candidates"
-    - "Kernel traverses Variable → Dataset → Agent for each candidate"
+    - "Kernel traverses Variable ← Series → Dataset → Agent for each candidate (via implementsVariable inverse and publishedInDataset, then dct:publisher)"
     - "Kernel checks whether the post context (source URL, author) matches any Agent"
     - "Kernel uses Agent match as a structural disambiguation signal"
   postconditions:
     - "Tied candidates are scored with structural context, reducing or eliminating ties"
   related_cqs: []
   priority: must_have
+  notes: >
+    The traversal runs on the explicit Series-backed path rather than
+    hasVariable, because hasVariable is retained only as a higher-level
+    view; the structural source of truth is the Dataset → Series →
+    Variable chain added in SKY-316.
 
 - id: UC-DM-003
   name: "Validate a Variable's facet completeness"
@@ -67,17 +72,23 @@
 - id: UC-DM-005
   name: "Trace the publishing chain for a Variable"
   actor: "Stage 2 resolution kernel"
-  goal: "Given a Variable, find its parent Dataset and publishing Agent"
+  goal: "Given a Variable, find its publishing Series, parent Dataset, and publishing Agent"
   preconditions:
-    - "Variable → Dataset → Agent chain is modeled"
+    - "Variable ← Series → Dataset → Agent chain is modeled (sevocab:implementsVariable, sevocab:publishedInDataset, dct:publisher)"
   main_flow:
     - "Kernel starts from a candidate Variable"
-    - "Kernel traverses hasVariable inverse to find the Dataset"
+    - "Kernel traverses implementsVariable inverse to find the Series"
+    - "Kernel traverses publishedInDataset to find the Dataset"
     - "Kernel traverses dct:publisher to find the Agent"
   postconditions:
-    - "The full provenance chain (Variable → Dataset → Agent) is available"
+    - "The full provenance chain (Variable ← Series → Dataset → Agent) is available"
   related_cqs: []
   priority: must_have
+  notes: >
+    A single Variable may be reached from multiple Series (e.g. two
+    series for installed-renewable-capacity); the traversal is a
+    set-union over all implementing Series. Dedup semantics for this
+    case are covered by SKY-318's validation CQs.
 
 - id: UC-DM-006
   name: "Validate ontology structure against TypeScript types"

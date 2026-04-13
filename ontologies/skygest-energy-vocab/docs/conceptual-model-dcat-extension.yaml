@@ -29,7 +29,7 @@ classes:
       dimensions drawn from sevocab concept schemes.
     label: "energy variable"
     source_cqs: [CQ-054, CQ-057, CQ-063, CQ-067]
-    disjoint_with: [EnergyDataset, EnergyAgent]
+    disjoint_with: [EnergyDataset, EnergyAgent, Series]
     notes: >
       Central entity for the resolution kernel. Composition is modeled
       via OWL restrictions on 7 facet dimension properties, each with
@@ -42,10 +42,12 @@ classes:
       published by an energy agent.
     label: "energy dataset"
     source_cqs: [CQ-058, CQ-059, CQ-061, CQ-065, CQ-066]
-    disjoint_with: [EnergyVariable, EnergyAgent]
+    disjoint_with: [EnergyVariable, EnergyAgent, Series]
     notes: >
-      Structural container. Links to Variables via hasVariable, to
-      Distributions via dcat:distribution, to Agents via dct:publisher.
+      Structural container. Links to Variables via the higher-level
+      sevocab:hasVariable view, and to concrete published realizations via
+      sevocab:hasSeries (Dataset → Series → Variable). Links to
+      Distributions via dcat:distribution and to Agents via dct:publisher.
 
   - name: EnergyAgent
     parent: foaf:Agent
@@ -53,10 +55,37 @@ classes:
       A FOAF agent that publishes one or more energy datasets.
     label: "energy agent"
     source_cqs: [CQ-058, CQ-060, CQ-062]
-    disjoint_with: [EnergyVariable, EnergyDataset]
+    disjoint_with: [EnergyVariable, EnergyDataset, Series]
     notes: >
       Publisher entity. The resolution kernel uses Agent identity for
       structural disambiguation.
+
+  - name: Series
+    parent: null
+    definition: >
+      A concrete published series that implements exactly one EnergyVariable
+      within exactly one EnergyDataset's reporting context.
+    label: "series"
+    source_cqs: []  # TBD in SKY-318 (Series competency questions)
+    disjoint_with: [EnergyVariable, EnergyDataset, EnergyAgent]
+    notes: >
+      Structural node on the Dataset → Series → Variable path. Linked to
+      exactly one Variable via sevocab:implementsVariable (owl:FunctionalProperty)
+      and to exactly one Dataset via sevocab:publishedInDataset
+      (owl:FunctionalProperty, owl:inverseOf sevocab:hasSeries).
+
+      Naming disambiguation: sevocab:Series is NOT dcat:DatasetSeries
+      (which groups dataset editions in DCAT 3) and is distinct from the
+      pre-existing 'dataset-series' family concepts used elsewhere in the
+      Skygest runtime data (dataset-series/dser_* references). Those name
+      publisher-side dataset groupings; sevocab:Series names the
+      Variable-implementing record a dataset exposes.
+
+      Scope cuts in this slice: no qb:Slice subclassing, no
+      qb:dataSet subproperty, no Distribution → Series linkage, and
+      fixed-dimension bag semantics (place/market/frequency) are
+      deferred. An EnergyDataset with zero Series is explicitly legal
+      in this slice — no hasSeries someValuesFrom restriction is added.
 
 # =============================================================================
 # Named Individuals
@@ -132,7 +161,13 @@ individuals:
 #       |
 #   EnergyDataset ----dcat:distribution----> dcat:Distribution
 #       |
-#       | hasVariable
+#       | hasVariable (higher-level denormalized view)
+#       |
+#       | hasSeries (structural path — functional via publishedInDataset)
+#       v
+#   Series
+#       |
+#       | implementsVariable (owl:FunctionalProperty)
 #       v
 #   EnergyVariable
 #       |-- measuredProperty ----> [MeasuredPropertyScheme concept]
@@ -142,4 +177,8 @@ individuals:
 #       |-- aggregation ---------> [AggregationScheme concept]
 #       |-- unitFamily ----------> [UnitFamilyScheme concept]
 #       |-- policyInstrument ----> [PolicyInstrumentScheme concept]
+#
+# hasVariable remains asserted as the higher-level denormalized view.
+# SPARQL consumers should traverse hasSeries + implementsVariable
+# explicitly — simple entailment does not compute OWL property chains.
 #

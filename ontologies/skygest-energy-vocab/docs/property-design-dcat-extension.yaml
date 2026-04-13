@@ -7,7 +7,11 @@
 new_properties:
   - name: hasVariable
     type: ObjectProperty
-    definition: "Links an energy dataset to a constituent energy variable."
+    definition: >
+      Links an energy dataset to a constituent energy variable. Documented
+      as the higher-level denormalized view over the Dataset → Series →
+      Variable chain; the structural source of truth is hasSeries +
+      implementsVariable.
     label: "has variable"
     domain: EnergyDataset
     range: EnergyVariable
@@ -19,8 +23,69 @@ new_properties:
     specializes: null
     source_cqs: [CQ-059, CQ-060, CQ-066, CQ-067]
     notes: >
-      Domain/range declared in OWL for type inference. SHACL shapes will add
-      validation constraints (e.g., minCount 1 for published datasets).
+      Domain/range declared in OWL for type inference. Retained as the
+      higher-level dataset-to-variable view. SPARQL consumers should
+      traverse hasSeries + implementsVariable explicitly — simple
+      entailment does not compute OWL property chains.
+
+  - name: hasSeries
+    type: ObjectProperty
+    definition: >
+      Links an EnergyDataset to a concrete published Series that
+      implements a Variable in that dataset's reporting context.
+    label: "has series"
+    domain: EnergyDataset
+    range: Series
+    cardinality:
+      min: 0
+      max: unbounded
+    characteristics: []  # not functional on this side; a dataset can have many series
+    inverse: publishedInDataset
+    specializes: null
+    source_cqs: []  # TBD in SKY-318
+    notes: >
+      No existential restriction is added on EnergyDataset in this slice —
+      a dataset with zero series is explicitly legal.
+
+  - name: implementsVariable
+    type: ObjectProperty
+    definition: >
+      Functional link from a Series to the single EnergyVariable it
+      realizes in its publishing dataset's reporting context.
+    label: "implements variable"
+    domain: Series
+    range: EnergyVariable
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [FunctionalProperty]
+    inverse: null
+    specializes: null
+    source_cqs: []  # TBD in SKY-318
+    notes: >
+      Functional in OWL. SHACL SeriesShape also enforces exactly-one
+      via sh:minCount 1 and sh:maxCount 1 on this path.
+
+  - name: publishedInDataset
+    type: ObjectProperty
+    definition: >
+      Functional link from a Series back to the EnergyDataset that
+      publishes it.
+    label: "published in dataset"
+    domain: Series
+    range: EnergyDataset
+    cardinality:
+      min: 1
+      max: 1
+    characteristics: [FunctionalProperty]
+    inverse: hasSeries
+    specializes: null
+    source_cqs: []  # TBD in SKY-318
+    notes: >
+      Functional in OWL and the inverse of hasSeries. SHACL SeriesShape
+      enforces exactly-one via sh:minCount 1 and sh:maxCount 1 on this
+      path. Deliberate scope cut: not declared as a subproperty of
+      qb:dataSet or dcterms:isPartOf in this first slice.
 
 # =============================================================================
 # Reused Properties (no new declarations needed)
