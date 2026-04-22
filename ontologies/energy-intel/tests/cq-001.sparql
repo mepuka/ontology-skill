@@ -1,0 +1,13 @@
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ei:   <https://w3id.org/energy-intel/>
+
+# CQ-001 (must_have, UC-001)
+# For a given Post, which CanonicalMeasurementClaims does it evidence?
+# Expected: 0..n rows, per_row = [cmc].
+# Derivation: direct_lookup.
+
+SELECT ?cmc WHERE {
+  <https://id.skygest.io/post/post_01J_example> ei:evidences ?cmc .
+  ?cmc a ei:CanonicalMeasurementClaim .
+}

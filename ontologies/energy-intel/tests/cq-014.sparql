@@ -1,0 +1,19 @@
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX ei:   <https://w3id.org/energy-intel/>
+
+# CQ-014 (should_have, UC-005)
+# Rewritten 2026-04-22: two-hop walk via CMC-level ei:aboutTechnology.
+# Post → evidences → CMC → aboutTechnology → concept; transitive through
+# (skos:broader | rdfs:subClassOf)*.
+#
+# Expected: 0..n distinct rows.
+# Derivation: inference (transitive property path).
+# Entailment regime: simple.
+
+SELECT DISTINCT ?post WHERE {
+  ?post ei:evidences      ?cmc .
+  ?cmc  ei:aboutTechnology ?concept .
+  ?concept (skos:broader|rdfs:subClassOf)* <https://w3id.org/energy-intel/concept/wind> .
+}

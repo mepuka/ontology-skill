@@ -1,0 +1,86 @@
+term,category,source_cq,notes
+# ===== Classes (local) =====
+CanonicalMeasurementClaim,class,"CQ-001,CQ-003,CQ-004,CQ-005,CQ-006,CQ-008,CQ-009,CQ-010,CQ-012,CQ-014","Editorial primitive extracted from a media artefact; tagged-union counterpart to Observation (owl:disjointWith). skos:altLabel ""Candidate"" per runtime naming. BFO: iao:InformationContentEntity."
+Observation,class,(foundational),"Data primitive from Distribution ingestion — fully-resolved data point. Thin in V0; no CQs hit it yet (deferred full treatment to data-ingest lane). iao:InformationContentEntity."
+Variable,class,"CQ-003,CQ-006,CQ-007,CQ-008","Thin class in V0: IRI + rdfs:label + optional rdfs:comment. Seven-facet identity from Linear D2 deferred to V1. skos:altLabel ""CanonicalMeasurementSeries"" for agentology continuity. iao:InformationContentEntity."
+Series,class,"CQ-004","Thin class in V0: IRI + rdfs:label. Per SKY-316: ei:implementsVariable exactly 1 + ei:publishedInDataset max 1. iao:InformationContentEntity."
+Post,class,"CQ-001,CQ-002,CQ-007,CQ-008,CQ-014","Social-media post (Bluesky at:// or Twitter x://). authoredBy exactly 1 Expert; inConversation max 1 SocialThread. iao:Document subclass."
+MediaAttachment,class,(media § expanded),"Abstract supertype for chart/screenshot/excerpt/image payloads attached to a Post. iao:Document subclass."
+Chart,class,(media § expanded),"Data visualisation — bar/line/pie chart embedded in a post. Subclass of MediaAttachment."
+Screenshot,class,(media § expanded),"Screenshot of external content (news article, report, external post, PDF). Subclass of MediaAttachment. Carries ei:screenshotOf → xsd:anyURI."
+Excerpt,class,(media § expanded),"Quoted text block from an external source (pull-quote, transcribed report snippet). Subclass of MediaAttachment. Carries ei:excerptFrom → xsd:anyURI."
+Image,class,(media § expanded),"Generic image (photo, diagram, logo). Subclass of MediaAttachment. Thin catch-all for attachments that are not Chart/Screenshot/Excerpt."
+Conversation,class,(scope § modules),"Abstract supertype: unit of media with multi-participant exchange. Subtypes: SocialThread, PodcastEpisode. iao:InformationContentEntity."
+SocialThread,class,(scope § modules),"Reply-tree of Posts on Bluesky or Twitter. Conversation subclass. Posts within are linked via ei:repliesTo (partial order, not ordered list)."
+PodcastEpisode,class,"CQ-011,CQ-012","Audio recording composed of ordered PodcastSegments. Conversation subclass."
+PodcastSegment,class,"CQ-011,CQ-012","Timestamped portion of a PodcastEpisode. partOf exactly 1 PodcastEpisode; spokenBy 0..n Expert. Carries ei:hasSegmentIndex xsd:integer for ordering."
+Expert,class,"CQ-002,CQ-007,CQ-008,CQ-011","Person with public energy discourse; DID-based identity. Strict foaf:Person subclass in V0 (no team / bot accounts)."
+Organization,class,"(scope § modules)","Institutional actor (agency, publisher, data provider). Dual parent: rdfs:subClassOf foaf:Organization + rdfs:subClassOf bfo:ObjectAggregate. Role-bearer for PublisherRole + DataProviderRole."
+PublisherRole,class,"(scope § modules)","bfo:Role borne by Organization when it publishes content (news, analysis, editorial)."
+DataProviderRole,class,"(scope § modules)","bfo:Role borne by Organization when it publishes data distributions (EIA, Ember, NESO, ...)."
+ClaimTemporalWindow,class,(CMC shape),"Range of ei:assertedTime. Attributes: ei:intervalStart (xsd:date|xsd:dateTime), ei:intervalEnd (0..1), rdfs:label (surface form like ""2025 YTD"")."
+
+# ===== Classes (reused external) =====
+foaf:Agent,class,(superclass),"Root for Organization + Person in FOAF."
+foaf:Person,class,(superclass),"Superclass of Expert."
+foaf:Organization,class,(superclass),"Superclass of ei:Organization."
+bfo:ObjectAggregate,class,(superclass),"Co-parent of ei:Organization (BFO 2020 category for institutional wholes)."
+iao:Document,class,(superclass),"Superclass of Post and all MediaAttachment subclasses."
+iao:InformationContentEntity,class,(superclass),"Superclass of CMC, Observation, Variable, Series, PodcastEpisode, PodcastSegment, Conversation."
+prov:Entity,class,(reuse),"Applied to CMC (prov lineage of produced artefacts)."
+prov:Activity,class,(reuse),"Future ABox: extraction / resolution events; referenced via prov:wasGeneratedBy annotation on CMC in V0."
+skos:Concept,class,(reuse),"Range for ei:aboutTechnology. Wide enough to accommodate OEO classes once imported (via OWL 2 punning)."
+qudt:Unit,class,(reuse),"Future: ei:assertedUnit canonical normalisation target."
+dcat:Dataset,class,"CQ-010","Conceptual collection; has 1..n Distributions. Full DCAT fidelity."
+dcat:Distribution,class,"CQ-005,CQ-010","Specific access point (CSV, API, PDF, landing page)."
+dcat:Catalog,class,(scope § modules),"Curated collection of Dataset metadata."
+dcat:CatalogRecord,class,(scope § modules),"Per-catalog entry about a Dataset (distinct from Dataset itself, per Linear D5)."
+dcat:DataService,class,(scope § modules),"API described as a service; linked from Distribution.accessService."
+dcat:DatasetSeries,class,(scope § modules),"Recurring Dataset releases (Form 860 2023, 2024, 2025). Note: distinct from ei:Series."
+
+# ===== Object properties (local) =====
+ei:evidences,property,"CQ-001,CQ-009,CQ-012","Domain: (Post ∪ MediaAttachment ∪ PodcastSegment). Range: CanonicalMeasurementClaim. CMC invariant: ≥1 evidencing artefact (CQ-009)."
+ei:authoredBy,property,"CQ-002,CQ-007,CQ-008","Domain: Post. Range: Expert. Cardinality: exactly 1."
+ei:presents,property,(scope § modules),"Domain: Post. Range: MediaAttachment (widened from Chart). Cardinality: 0..n."
+ei:inConversation,property,(scope § modules),"Domain: Post. Range: SocialThread. Cardinality: 0..1 (not every post is threaded)."
+ei:repliesTo,property,(scope § modules),"Domain: Post. Range: Post. Cardinality: 0..1. Defines the reply partial-order within a SocialThread."
+ei:spokenBy,property,"CQ-011","Domain: PodcastSegment. Range: Expert. Cardinality: 0..n."
+ei:partOf,property,"(scope § modules)","Domain: PodcastSegment. Range: PodcastEpisode. Cardinality: exactly 1."
+ei:hasSegmentIndex,property,(scope § modules),"Domain: PodcastSegment. Range: xsd:integer. Cardinality: 0..1 (ordering hint within an Episode)."
+ei:screenshotOf,property,(scope § modules),"Domain: Screenshot. Range: xsd:anyURI. Cardinality: 0..1. URL of external content captured."
+ei:excerptFrom,property,(scope § modules),"Domain: Excerpt. Range: xsd:anyURI. Cardinality: 0..1."
+ei:references,property,"CQ-010","Abstract super-property over the five ei:references* properties below. Domain: CanonicalMeasurementClaim. Range: owl:Thing. Not asserted on individuals directly; used for generic CMC-has-any-reference queries."
+ei:referencesAgent,property,"CQ-010","Domain: CMC. Range: ei:Organization. Cardinality: 0..1. rdfs:subPropertyOf ei:references."
+ei:referencesDistribution,property,"CQ-005,CQ-010","Domain: CMC. Range: dcat:Distribution. Cardinality: 0..1. rdfs:subPropertyOf ei:references."
+ei:referencesDataset,property,"CQ-010","Domain: CMC. Range: dcat:Dataset. Cardinality: 0..1. rdfs:subPropertyOf ei:references."
+ei:referencesVariable,property,"CQ-003,CQ-006,CQ-007,CQ-008,CQ-010","Domain: CMC. Range: ei:Variable. Cardinality: 0..1. rdfs:subPropertyOf ei:references."
+ei:referencesSeries,property,"CQ-004,CQ-010","Domain: CMC. Range: ei:Series. Cardinality: 0..1. rdfs:subPropertyOf ei:references."
+ei:aboutTechnology,property,"CQ-013,CQ-014","Domain: CMC. Range: skos:Concept. Cardinality: 0..n. Claim-level technology / topic classification. Range widens to the imported OEO subtree in a later phase (see scope.md § Open questions #1). Moved from Variable-facet-level (Linear D2) to claim-level per 2026-04-22 interview."
+ei:implementsVariable,property,"(scope § modules)","Domain: Series. Range: Variable. Cardinality: exactly 1. Matches SKY-316 in sevocab."
+ei:publishedInDataset,property,"(scope § modules)","Domain: Series. Range: dcat:Dataset. Cardinality: 0..1 in V0. Inverse of ei:hasSeries."
+ei:hasSeries,property,(scope § modules),"Inverse of ei:publishedInDataset. Domain: dcat:Dataset. Range: Series."
+
+# ===== Datatype properties (local) =====
+ei:assertedValue,property,"CQ-008","Domain: CMC. Range: rdfs:Datatype = (xsd:decimal ∪ xsd:string). 0..1."
+ei:assertedUnit,property,"CQ-008","Domain: CMC. Range: xsd:string (surface token like 'GW', 'TWh') in V0. Canonical qudt:Unit linkage deferred to later phase."
+ei:assertedTime,property,"CQ-008","Domain: CMC. Range: ei:ClaimTemporalWindow. Cardinality: 0..1."
+ei:intervalStart,property,(ClaimTemporalWindow),"Domain: ClaimTemporalWindow. Range: xsd:date | xsd:dateTime. Cardinality: 0..1."
+ei:intervalEnd,property,(ClaimTemporalWindow),"Domain: ClaimTemporalWindow. Range: xsd:date | xsd:dateTime. Cardinality: 0..1."
+ei:rawLabel,property,"(scope § modules)","Domain: CMC. Range: xsd:string. Surface text (chart title, post-text fragment, screenshot caption)."
+ei:rawDims,property,"(scope § modules)","Domain: CMC. Range: xsd:string (JSON literal encoding key-value dims). Cardinality: 0..1."
+
+# ===== Annotation properties =====
+prov:wasGeneratedBy,property,(extraction annotation),"Applied as an annotation property to CMC recording the extraction activity IRI. Full prov:Activity individuals deferred to ABox phase."
+skos:altLabel,property,(reuse),"Used on CanonicalMeasurementClaim (""Candidate"") and Variable (""CanonicalMeasurementSeries"") for cross-codebase naming continuity."
+skos:exactMatch,property,(reuse),"For alias relations per Linear D4 (plus closeMatch, broadMatch, narrowMatch). 'methodologyVariant' extension deferred."
+
+# ===== Individuals =====
+# V0 intentionally carries no enum individuals. Earlier drafts carried
+# ei:StatisticType / ei:Aggregation / ei:SourceModality / ei:ResolutionState
+# closed enums; all were dropped per the 2026-04-22 interview:
+#   - Seven-facet Variable model (and its enum facets) deferred to V1.
+#   - Resolution state is derivable from which ei:references* are populated.
+#   - Source modality is derivable from the ei:evidences range member.
+#
+# Individual-shape seed data (e.g., specific OEO technology IRIs) will be
+# surfaced by ontology-scout during OEO MIREOT extraction.

@@ -1,0 +1,232 @@
+# energy-intel — CQ Test Manifest (Step 7.5)
+#
+# parse_status: ok         — `rdflib.plugins.sparql.prepareQuery` accepts the file.
+# fixture_run_status:
+#   skipped                — no fixture built in Requirements phase. Fixtures land in
+#                            ontologies/energy-intel/tests/fixtures/{cq-id}.ttl after
+#                            the ontology-architect produces the first TBox slice.
+#   pass / fail            — set once fixture is built and query runs against it.
+#
+# entailment_regime is the minimum regime a downstream reasoner must enable for the
+# query to return the contractually-specified rows. CQ-013 / CQ-014 use rdfs:subClassOf*
+# property paths, which work under RDFS entailment; Hermit DL is acceptable and
+# strictly stronger. CQ-009 is a constraint query whose expected answer is 0 rows;
+# any reasoner that materializes negation-as-failure via `FILTER NOT EXISTS` satisfies.
+#
+# expected_results_contract is the downstream-binding promise: a test-runner can verify
+# it by asserting column shape + row-count band + sample row presence against the
+# fixture. See _shared/cq-traceability.md § expected-results contract.
+
+preflight_summary:
+  total: 14
+  parse_ok: 14
+  parse_fail: 0
+  fixtures_built: 0
+  fixtures_skipped: 14
+
+tests:
+
+  - id: CQ-001
+    file: tests/cq-001.sparql
+    kind: select
+    expected: "non-empty when the target post has any CMC; empty for plain-text posts"
+    expected_results_contract: |
+      Columns: ?cmc.
+      Cardinality: 0..n.
+      Against a fixture with a single post evidencing one CMC, returns exactly that CMC IRI.
+      Against a fixture where the target post has no ei:evidences, returns 0 rows.
+    parse_status: ok
+    fixture_run_status: skipped
+    fixture_path: tests/fixtures/cq-001.ttl
+    entailment_regime: simple
+    fixture_rationale: "TBox is pre-architect; fixture built in Slice 1 of ontology-architect handoff."
+
+  - id: CQ-002
+    file: tests/cq-002.sparql
+    kind: select
+    expected: "exactly 1 row for any valid Post"
+    expected_results_contract: |
+      Columns: ?expert.
+      Cardinality: exactly 1 on a valid fixture.
+      Zero rows indicates the Post → Expert cardinality axiom is not enforced by the ontology.
+    parse_status: ok
+    fixture_run_status: skipped
+    fixture_path: tests/fixtures/cq-002.ttl
+    entailment_regime: simple
+    fixture_rationale: "Pre-architect."
+
+  - id: CQ-003
+    file: tests/cq-003.sparql
+    kind: select
+    expected: "0..1 rows"
+    expected_results_contract: |
+      Columns: ?variable.
+      Cardinality: 0..1 (unresolved CMC returns 0).
+    parse_status: ok
+    fixture_run_status: skipped
+    fixture_path: tests/fixtures/cq-003.ttl
+    entailment_regime: simple
+    fixture_rationale: "Pre-architect."
+
+  - id: CQ-004
+    file: tests/cq-004.sparql
+    kind: select
+    expected: "0..1 rows"
+    expected_results_contract: |
+      Columns: ?series.
+      Cardinality: 0..1.
+    parse_status: ok
+    fixture_run_status: skipped
+    fixture_path: tests/fixtures/cq-004.ttl
+    entailment_regime: simple
+    fixture_rationale: "Pre-architect."
+
+  - id: CQ-005
+    file: tests/cq-005.sparql
+    kind: select
+    expected: "0..1 rows"
+    expected_results_contract: |
+      Columns: ?distribution.
+      Cardinality: 0..1.
+    parse_status: ok
+    fixture_run_status: skipped
+    fixture_path: tests/fixtures/cq-005.ttl
+    entailment_regime: simple
+    fixture_rationale: "Pre-architect."
+
+  - id: CQ-006
+    file: tests/cq-006.sparql
+    kind: select
+    expected: "0..n rows; 0 is a valid cold-start outcome"
+    expected_results_contract: |
+      Columns: ?cmc.
+      Cardinality: 0..n.
+      Against a fixture with two CMCs referencing the same Variable, returns both.
+    parse_status: ok
+    fixture_run_status: skipped
+    fixture_path: tests/fixtures/cq-006.ttl
+    entailment_regime: simple
+    fixture_rationale: "Pre-architect."
+
+  - id: CQ-007
+    file: tests/cq-007.sparql
+    kind: select
+    expected: "0..n distinct rows"
+    expected_results_contract: |
+      Columns: ?expert.
+      Cardinality: 0..n; DISTINCT applied.
+      Two Experts making claims about the same Variable must both appear.
+    parse_status: ok
+    fixture_run_status: skipped
+    fixture_path: tests/fixtures/cq-007.ttl
+    entailment_regime: simple
+    fixture_rationale: "Pre-architect."
+
+  - id: CQ-008
+    file: tests/cq-008.sparql
+    kind: select
+    expected: "0..n rows (full cross-expert join payload)"
+    expected_results_contract: |
+      Columns: ?cmc ?post ?expert ?assertedValue ?assertedUnit ?assertedTime.
+      Cardinality: 0..n.
+      OPTIONAL columns may be null per row; ?cmc, ?post, ?expert must bind on every row.
+    parse_status: ok
+    fixture_run_status: skipped
+    fixture_path: tests/fixtures/cq-008.ttl
+    entailment_regime: simple
+    fixture_rationale: "Pre-architect."
+
+  - id: CQ-009
+    file: tests/cq-009.sparql
+    kind: select
+    expected: "exact_0 rows on a well-formed fixture"
+    expected_results_contract: |
+      Columns: ?cmc.
+      Cardinality: exactly 0.
+      Any row is a violation: a CMC exists without an evidencing media artefact.
+      Test runner fails when this query returns > 0 rows.
+    parse_status: ok
+    fixture_run_status: skipped
+    fixture_path: tests/fixtures/cq-009.ttl
+    entailment_regime: simple
+    fixture_rationale: "Pre-architect."
+
+  - id: CQ-010
+    file: tests/cq-010.sparql
+    kind: select
+    expected: "exactly 1 row with OPTIONAL columns"
+    expected_results_contract: |
+      Columns: ?agent ?dist ?dataset ?var ?series (all OPTIONAL).
+      Cardinality: exactly 1.
+      A freshly-extracted CMC with no resolutions returns one row where all columns are null.
+      A fully-resolved CMC returns one row with all five columns populated.
+    parse_status: ok
+    fixture_run_status: skipped
+    fixture_path: tests/fixtures/cq-010.ttl
+    entailment_regime: simple
+    fixture_rationale: "Pre-architect."
+
+  - id: CQ-011
+    file: tests/cq-011.sparql
+    kind: select
+    expected: "0..n rows (multi-speaker segments)"
+    expected_results_contract: |
+      Columns: ?expert.
+      Cardinality: 0..n.
+    parse_status: ok
+    fixture_run_status: skipped
+    fixture_path: tests/fixtures/cq-011.ttl
+    entailment_regime: simple
+    fixture_rationale: "Pre-architect; podcast ingest lane is planned not live per scope.md."
+
+  - id: CQ-012
+    file: tests/cq-012.sparql
+    kind: select
+    expected: "0..n rows"
+    expected_results_contract: |
+      Columns: ?cmc.
+      Cardinality: 0..n.
+    parse_status: ok
+    fixture_run_status: skipped
+    fixture_path: tests/fixtures/cq-012.ttl
+    entailment_regime: simple
+    fixture_rationale: "Pre-architect."
+
+  - id: CQ-013
+    file: tests/cq-013.sparql
+    kind: select
+    expected: "0..n rows; transitive concept walk"
+    expected_results_contract: |
+      Columns: ?cmc.
+      Cardinality: 0..n.
+      Uses SPARQL 1.1 property path (skos:broader | rdfs:subClassOf)* — works under simple
+      entailment regime (no reasoner required). Path union accommodates both V0's hand-seeded
+      skos:Concept hierarchy and the post-MIREOT OEO class hierarchy reached via punning.
+      Querying a parent concept returns CMCs tagged with the concept or any transitively
+      narrower/subclassed concept.
+    parse_status: ok
+    fixture_run_status: skipped
+    fixture_path: tests/fixtures/cq-013.ttl
+    entailment_regime: simple
+    fixture_rationale: "Rewritten 2026-04-22 to route classification through CMC-level ei:aboutTechnology (seven-facet Variable model deferred to V1). Fixture landing requires ontology-scout to produce at least a stub skos:Concept tree at imports/concept-subset.ttl, or ontology-architect to hand-seed a couple of concepts."
+
+  - id: CQ-014
+    file: tests/cq-014.sparql
+    kind: select
+    expected: "0..n distinct rows; two-hop walk via CMC-level concept tag"
+    expected_results_contract: |
+      Columns: ?post.
+      Cardinality: 0..n; DISTINCT applied.
+      Two-hop traversal (Post → CMC → concept) with transitive property path.
+      Same simple-entailment regime as CQ-013.
+    parse_status: ok
+    fixture_run_status: skipped
+    fixture_path: tests/fixtures/cq-014.ttl
+    entailment_regime: simple
+    fixture_rationale: "Rewritten 2026-04-22 alongside CQ-013; Variable hop removed per seven-facet deferral. Fixture prerequisites identical to CQ-013."
+
+# Loopback triggers recorded for this manifest
+#
+# None raised. If any parse_status transitions to `fail` in a later session,
+# route `sparql_parse` loopback to the sparql-expert skill per
+# .claude/skills/_shared/iteration-loopbacks.md § 3.

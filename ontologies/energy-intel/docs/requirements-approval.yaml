@@ -1,0 +1,100 @@
+# energy-intel — Requirements Approval (Step 9)
+#
+# This artifact is the handoff gate to ontology-scout + ontology-conceptualizer.
+# No downstream skill may begin work until this file exists with:
+#   - a named reviewer
+#   - an ISO date
+#   - a resolved cq_freeze_commit SHA
+#   - every Must-Have CQ having parse_status: ok in tests/cq-test-manifest.yaml
+#   - every approved CQ appearing in docs/traceability-matrix.csv
+
+reviewer: "kokokessy@gmail.com"
+reviewed_at: "2026-04-22"
+
+# cq_freeze_commit is the git SHA of the commit that freezes the 14 CQs.
+# Populate with `git rev-parse HEAD` after the requirements-phase commit lands.
+# A placeholder is recorded here; the reviewer updates it in the same commit
+# that signs the approval, or in a follow-on commit that only touches this file.
+cq_freeze_commit: "TBD — update after requirements-phase commit is created"
+
+scope_gate:
+  scope_fit: approved
+  retrofit_note: false          # no ontologies/energy-intel/*.ttl exists yet; no retrofit
+  stakeholder_available: true   # single-stakeholder phase; reviewer == product owner == domain expert
+
+approved_cq_ids:
+  # Must-Have (10)
+  - CQ-001
+  - CQ-002
+  - CQ-003
+  - CQ-004
+  - CQ-005
+  - CQ-006
+  - CQ-007
+  - CQ-008
+  - CQ-009
+  - CQ-010
+  # Should-Have (4)
+  - CQ-011
+  - CQ-012
+  - CQ-013
+  - CQ-014
+
+waived_cqs:
+  - id: DROPPED-001
+    natural_language: "What CanonicalMeasurementClaims exist?"
+    reason: "Fails Step 2.5 `falsifiable` criterion. Replaced by CQ-009 (invariant test that every CMC evidences ≥1 media artefact)."
+  - id: DROPPED-002
+    natural_language: "What does a Post say?"
+    reason: "Fails Step 2.5 `atomic` and `scoped` criteria. Post-text semantics is runtime NLP, not an ontology CQ."
+  - id: DROPPED-003
+    natural_language: "What is the confidence score of a resolved reference?"
+    reason: "Fails `scoped`. Confidence is a runtime annotation on a resolution record, not a TBox relation. Captured under scope.md § Out-of-scope for a future phase."
+
+notes: |
+  Shakedown-cruise run of the ontology-requirements skill post the Wave 0–4 refactor
+  (commit b2c4d9a). Exercised the full Step 0 → Step 9 pipeline against a real greenfield
+  domain (energy intelligence) informed by three prior-art sources (agentology canonical
+  ontology, skygest-cloudflare sevocab + runtime, skygest-editorial frontmatter graph)
+  plus 20 locked Linear design docs from the "Newsletter & Story Intelligence" project.
+
+  Decision log: scope.md § "Decisions resolved — 2026-04-22" captures the 30+ open
+  questions closed in a follow-up interview. Notable structural decisions:
+    - Seven-facet Variable identity model (Linear D2) deferred to V1.
+      Variable + Series kept as thin classes; CMCs reference them as opaque join grains.
+    - Technology classification moved from Variable-facet to CMC-level via ei:aboutTechnology.
+    - Resolution-state enum dropped (derivable from which ei:references* populate).
+    - Source-modality enum dropped (derivable from ei:evidences range member).
+    - Media layer expanded: ei:MediaAttachment abstract + Chart / Screenshot / Excerpt / Image.
+      Screenshot / Excerpt added per interview: "people very often screenshot an actual report
+      or news article — we want to resolve those."
+    - CQ-013 / CQ-014 rewritten to traverse CMC-level aboutTechnology with a union property
+      path (skos:broader | rdfs:subClassOf)* that works pre- and post- OEO MIREOT.
+
+  Outbound contracts to downstream skills:
+    - ontology-scout            ← docs/pre-glossary.csv, docs/scope.md (seed list for OEO
+                                  subset extraction, BFO alignment check, DCAT import
+                                  confirmation).
+    - ontology-conceptualizer   ← docs/competency-questions.yaml, docs/pre-glossary.csv,
+                                  docs/traceability-matrix.csv (BFO category decisions
+                                  flagged in scope.md § Open questions 1–4; punning-vs-
+                                  individual decision for ei:hasTechnologyOrFuel range
+                                  per scope.md § Open questions 5).
+    - ontology-architect        ← after conceptualizer: TBox axiomatization, ROBOT
+                                  templates, KGCL patches.
+    - ontology-validator        ← after architect: reasoner + SHACL + CQ tests against
+                                  real fixtures.
+
+  Fixture rationale: 14 of 14 tests have fixture_run_status: skipped because the
+  TBox does not yet exist. Fixtures (tests/fixtures/cq-*.ttl) are built by the
+  ontology-architect during its first TBox slice; CQ preflight re-runs as each
+  fixture lands.
+
+  Known deferrals captured in scope.md § Open questions:
+    1. BFO category for CanonicalMeasurementClaim (leaning iao:InformationContentEntity)
+    2. BFO category for Post / Chart / PodcastEpisode (leaning iao:Document subclass)
+    3. BFO category for Expert vs Organization (Person + Role vs ObjectAggregate)
+    4. Conversation shape (ordered list vs reply-partial-order)
+    5. OEO MIREOT seed IRI set (scout collects during Step 6-equivalent scout phase)
+
+  Loopback inventory: none raised. Traceability matrix closes the chain on all 14 CQs.

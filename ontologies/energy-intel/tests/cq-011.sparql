@@ -1,0 +1,12 @@
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ei:   <https://w3id.org/energy-intel/>
+
+# CQ-011 (should_have, UC-004)
+# For a given PodcastSegment, which Expert(s) spoke it?
+# Expected: 0..n rows (multi-speaker segments possible).
+# Derivation: direct_lookup.
+
+SELECT ?expert WHERE {
+  <https://id.skygest.io/podcast-segment/seg_01J_example> ei:spokenBy ?expert .
+  ?expert a ei:Expert .
+}

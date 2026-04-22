@@ -1,0 +1,17 @@
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ei:   <https://w3id.org/energy-intel/>
+
+# CQ-010 (must_have, UC-002)
+# For a given CMC, what is the full resolution shape: which of
+# Agent, Distribution, Dataset, Variable, Series are populated?
+# Expected: exactly 1 row with OPTIONAL columns (nullable per grain).
+# Derivation: direct_lookup.
+
+SELECT ?agent ?dist ?dataset ?var ?series WHERE {
+  <https://id.skygest.io/cmc/cmc_01J_example> a ei:CanonicalMeasurementClaim .
+  OPTIONAL { <https://id.skygest.io/cmc/cmc_01J_example> ei:referencesAgent        ?agent   . }
+  OPTIONAL { <https://id.skygest.io/cmc/cmc_01J_example> ei:referencesDistribution ?dist    . }
+  OPTIONAL { <https://id.skygest.io/cmc/cmc_01J_example> ei:referencesDataset      ?dataset . }
+  OPTIONAL { <https://id.skygest.io/cmc/cmc_01J_example> ei:referencesVariable     ?var     . }
+  OPTIONAL { <https://id.skygest.io/cmc/cmc_01J_example> ei:referencesSeries       ?series  . }
+}

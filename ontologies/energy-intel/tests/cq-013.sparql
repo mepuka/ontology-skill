@@ -1,0 +1,22 @@
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX ei:   <https://w3id.org/energy-intel/>
+
+# CQ-013 (should_have, UC-005)
+# Rewritten 2026-04-22: technology classification moved from Variable facet
+# to CMC-level per ei:aboutTechnology → skos:Concept. The union property
+# path (skos:broader | rdfs:subClassOf)* works both in V0 (SKOS hierarchy)
+# and after OEO MIREOT import (OWL class hierarchy via punning).
+#
+# For a given energy-technology concept, which CanonicalMeasurementClaims
+# are classified about it (transitively)?
+# Expected: 0..n rows.
+# Derivation: inference (transitive property path).
+# Entailment regime: simple (SPARQL 1.1 path) — no reasoner required.
+
+SELECT ?cmc WHERE {
+  ?cmc ei:aboutTechnology ?concept ;
+       a ei:CanonicalMeasurementClaim .
+  ?concept (skos:broader|rdfs:subClassOf)* <https://w3id.org/energy-intel/concept/wind> .
+}
