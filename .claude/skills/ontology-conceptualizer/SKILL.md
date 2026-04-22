@@ -45,6 +45,8 @@ Read these files from `_shared/` before beginning work:
 - `_shared/relation-semantics.md` — object vs data property decision, RO cheat sheet, characteristics matrix
 - `_shared/closure-and-open-world.md` — OWA vs CWA, closure patterns, when to specify SHACL vs OWL universal
 - `_shared/iteration-loopbacks.md` — routing of `bfo_misalignment`, `closure_gap`, `anti_pattern` loopbacks to this skill
+- `_shared/pattern-catalog.md` — ODP selection from CQs (value partition, part-whole, role, participation, N-ary, information-realization); cite the pattern before authoring the axiom plan
+- `_shared/modularization-and-bridges.md` — module granularity, split triggers, layer assignment, import-vs-bridge decision for the conceptual model
 
 ## Core Workflow
 
@@ -262,3 +264,48 @@ This skill produces:
 | Conflicting CQ requirements | Stakeholder disagreement | Escalate to user for priority decision |
 | Anti-pattern cannot be resolved | Genuine modeling dilemma | Document the trade-off and let user decide |
 | Pre-glossary terms missing from reuse report | Scout didn't find matches | Mark as "new term needed" in glossary |
+
+## Progress Criteria
+
+Work is done when every box is checked.
+
+- [ ] `docs/glossary.csv` complete; every row links to at least one CQ.
+- [ ] `docs/conceptual-model.yaml` encodes taxonomy, property design,
+      layer assignment per [`_shared/modularization-and-bridges.md § 2`](_shared/modularization-and-bridges.md).
+- [ ] `docs/bfo-alignment.md` carries an ambiguity register; ambiguity ≥ 2 rows
+      have Class-C reviewer signatures.
+- [ ] `docs/property-design.yaml` declares `intent:` = infer / validate / restrict / annotate
+      for every property (decides OWL vs SHACL per architect handoff).
+- [ ] `docs/axiom-plan.yaml` cites an ODP from [`_shared/pattern-catalog.md § 2`](_shared/pattern-catalog.md)
+      per CQ and names the target OWL profile.
+- [ ] `docs/anti-pattern-review.md` lists each anti-pattern, detection mode, result.
+- [ ] `docs/conceptual-model-review.md` exists with reviewer + ISO date.
+
+## LLM Verification Required
+
+See [`_shared/llm-verification-patterns.md`](_shared/llm-verification-patterns.md).
+Never replaces the anti-pattern SPARQL scan or architect's reasoner/report gates.
+
+| Operation | Class | Tool gate |
+|---|---|---|
+| BFO placement (ambiguity ≥ 2) | C | Named reviewer, ISO date, rationale in bfo-alignment.md |
+| Genus-differentia definitions | B | Evidence = parent class, closest sibling, discriminating axiom |
+| Axiom-plan ODP pick | B | Cite the catalog row + axiom-pattern number |
+| Domain/range vs SHACL intent | B | Decision record in property-design.yaml with reason |
+
+## Loopback Triggers
+
+| Trigger | Route to | Reason |
+|---|---|---|
+| Incoming: `bfo_misalignment` | `ontology-conceptualizer` | BFO placement is owned here; reviewer signs off. |
+| Incoming: `closure_gap` | `ontology-conceptualizer` | Closure intent is a conceptualization decision. |
+| Incoming: `anti_pattern` | `ontology-conceptualizer` | Anti-pattern scan + resolution is owned here. |
+| Raised: needed term not in reuse report | `ontology-scout` | Missing reuse — rescout before minting. |
+| Raised: CQ phrasing can't be mapped to a pattern | `ontology-requirements` | Sharpen CQ wording; do not paper over. |
+
+Depth > 3 escalates per [`_shared/iteration-loopbacks.md`](_shared/iteration-loopbacks.md).
+
+## Worked Examples
+
+- [`_shared/worked-examples/ensemble/conceptualizer.md`](_shared/worked-examples/ensemble/conceptualizer.md) — picking value-partition for pitch, role for ensemble seat, N-ary for performance; closure review for `hasMember`. *(Wave 4)*
+- [`_shared/worked-examples/microgrid/conceptualizer.md`](_shared/worked-examples/microgrid/conceptualizer.md) — part-whole topology; BFO placement for dispatch event vs. dispatch role; OEO layering decision. *(Wave 4)*

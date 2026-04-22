@@ -282,3 +282,48 @@ This skill produces:
 | Empty results | Wrong prefix IRI or term not in graph | Verify prefix resolves correctly; check term existence |
 | 403 Forbidden | Endpoint requires authentication | Check credentials configuration |
 | RDF-star syntax error | Store doesn't support RDF-star | Check store capabilities; fall back to standard reification |
+
+## Progress Criteria
+
+Work is done when every box is checked. Each item is tool-verifiable.
+
+- [ ] Query parses via `rdflib.plugins.sparql.prepareQuery` (exit 0).
+- [ ] Query runs on the declared target (fixture graph or endpoint) without timeout.
+- [ ] Entailment regime declared (`simple` / `rdfs` / `owl2-rl` / etc.) per
+      [`_shared/closure-and-open-world.md`](_shared/closure-and-open-world.md).
+- [ ] `expected_results_contract` encoded per
+      [`_shared/cq-traceability.md`](_shared/cq-traceability.md)
+      (exact rows / subset / count / boolean).
+- [ ] Every PREFIX used is declared; PREFIXes resolve via `_shared/namespaces.json`.
+- [ ] CQ-test queries land at `ontologies/{name}/tests/cq-{id}.sparql` and
+      are linked from `cq-test-manifest.yaml`.
+- [ ] No Loopback Trigger below fires.
+
+## LLM Verification Required
+
+See [`_shared/llm-verification-patterns.md`](_shared/llm-verification-patterns.md).
+Never replaces `prepareQuery` or execution on a fixture graph.
+
+| Operation | Class | Tool gate |
+|---|---|---|
+| SPARQL draft from a CQ | A | `prepareQuery` parses; fixture-graph run matches expected-results contract |
+| Query optimization rewrite | A | Before/after `prepareQuery` + execution; identical result shape |
+| Anti-pattern detection query | A | Ships expected violation row; runs on the target graph |
+| Endpoint-dialect adaptation | B | Reviewer confirms target-store feature (e.g., RDF-star assertion semantics) |
+
+## Loopback Triggers
+
+| Trigger | Route to | Reason |
+|---|---|---|
+| Incoming: `sparql_parse` | `sparql-expert` | Syntax fix owned here. |
+| Incoming: `sparql_shape` (results don't match contract) | `sparql-expert` | Query-shape fix owned here. |
+| Raised: CQ phrasing is ambiguous or unformalizable | `ontology-requirements` | Sharpen CQ; do not guess. |
+| Raised: query empty because target axioms missing | `ontology-architect` | Axiom-level fix; not a SPARQL bug. |
+| Raised: query empty because entailment regime mismatched | (documentation) | Declare regime; do not mutate the query. |
+
+Depth > 3 escalates per [`_shared/iteration-loopbacks.md`](_shared/iteration-loopbacks.md).
+
+## Worked Examples
+
+- [`_shared/worked-examples/ensemble/sparql.md`](_shared/worked-examples/ensemble/sparql.md) — SPARQL for each CQ-E-001..005; `COUNT` vs. row-shape pitfall on CQ-E-003. *(Wave 4)*
+- [`_shared/worked-examples/microgrid/sparql.md`](_shared/worked-examples/microgrid/sparql.md) — property-path query for transitive `locatedIn`; entailment regime declaration for CQ-M-001. *(Wave 4)*

@@ -42,6 +42,7 @@ Read these files from `_shared/` before beginning work:
 - `_shared/owl-profile-playbook.md` — profile constraints inform import-size and term-selection trade-offs
 - `_shared/iteration-loopbacks.md` — raises `missing_reuse`, `bad_module`, `import_provenance` loopbacks back to scout
 - `_shared/llm-verification-patterns.md` — when reuse recommendations and ODP picks require LLM-verified evidence
+- `_shared/modularization-and-bridges.md` — when to split, when to merge, import vs. bridge vs. copy decision tree (complements the MIREOT/STAR mechanics in `odk-and-imports.md`)
 
 ## Core Workflow
 
@@ -273,3 +274,47 @@ This skill produces:
 | ROBOT extract fails | Invalid IRI or unreachable source | Download ontology locally first, then extract |
 | No candidates found | Domain is niche or uses non-standard terminology | Broaden search terms; try synonyms from pre-glossary |
 | Candidate has no license | License not declared in metadata | Contact maintainers or choose alternatives |
+
+## Progress Criteria
+
+Work is done when every box is checked. Each item is tool-verifiable.
+
+- [ ] `docs/reuse-report.md` lists every registry searched with access date + status.
+- [ ] Every recommended external term has IRI, label, source ontology version, license.
+- [ ] `docs/imports-manifest.yaml` updated per [`_shared/odk-and-imports.md`](_shared/odk-and-imports.md)
+      (source, version, extraction method, term file, refresh policy).
+- [ ] Each rejected candidate has a written rejection rationale (not silent exclusion).
+- [ ] Import-vs-bridge-vs-copy decision recorded per
+      [`_shared/modularization-and-bridges.md § 6`](_shared/modularization-and-bridges.md).
+- [ ] ODP recommendations cite an instantiation template from
+      [`_shared/pattern-catalog.md`](_shared/pattern-catalog.md) *or* an
+      external DOSDP source.
+- [ ] No Loopback Trigger below fires.
+
+## LLM Verification Required
+
+See [`_shared/llm-verification-patterns.md`](_shared/llm-verification-patterns.md).
+Never replaces `runoak info`, license metadata check, or `robot extract`.
+
+| Operation | Class | Tool gate |
+|---|---|---|
+| Reuse-candidate ranking | B | Evidence = label, definition, parents, license; explicit decision + rationale |
+| ODP applicability picks | B | Cite pattern source + variable binding table |
+| Candidate CQ-probe interpretation | B | Attach raw query output; never paraphrase |
+| Import-vs-bridge decision | B | Cite the § 6 decision-tree branch; bridge choice triggers mapper loopback |
+
+## Loopback Triggers
+
+| Trigger | Route to | Reason |
+|---|---|---|
+| Incoming: `missing_reuse` (from conceptualizer / architect) | `ontology-scout` | A new term was minted when a reusable existed; rescout before proceeding. |
+| Incoming: `bad_module` (from architect / validator) | `ontology-scout` | Module extraction method was wrong; re-extract with correct MIREOT/STAR/BOT. |
+| Incoming: `import_provenance` (from curator) | `ontology-scout` | Manifest row missing or stale; regenerate the row before curator continues. |
+| Raised: cross-domain `skos:exactMatch` candidate surfaces in reuse | `ontology-mapper` | Mapping work belongs to mapper, not scout. |
+
+Depth > 3 escalates per [`_shared/iteration-loopbacks.md`](_shared/iteration-loopbacks.md).
+
+## Worked Examples
+
+- [`_shared/worked-examples/ensemble/scout.md`](_shared/worked-examples/ensemble/scout.md) — MIMO reuse: MIREOT vs. full-import choice; rejecting a weak music vocabulary on license. *(Wave 4)*
+- [`_shared/worked-examples/microgrid/scout.md`](_shared/worked-examples/microgrid/scout.md) — OEO import vs. schema.org bridge; manifest row for a pinned OEO version. *(Wave 4)*

@@ -41,6 +41,7 @@ Read these files from `_shared/` before beginning work:
 - `_shared/llm-verification-patterns.md` — why validator never paraphrases tool output; rules for attaching raw logs
 - `_shared/cq-traceability.md` — the CQ manifest schema; validator reads to know expected-results contract per CQ
 - `_shared/iteration-loopbacks.md` — validator is the primary raiser of loopbacks; see routing table for per-failure-type owners
+- `_shared/mapping-evaluation.md` — pre-merge gate checklist, clique check, cross-domain exactMatch rule, OAEI metrics; the validator runs these against every mapping set
 
 ## Consistency vs. Validity (OWA vs. CWA)
 
@@ -279,3 +280,51 @@ Date: {date}
 | SHACL shapes file missing | Architect didn't generate shapes | Create minimal shapes or defer SHACL check |
 | CQ test files missing | Requirements skill output not available | Generate tests from `ontologies/{name}/docs/competency-questions.yaml` if available |
 | ROBOT report fails to parse | Corrupt or malformed Turtle | Run `robot validate --input ontology.ttl` to find syntax errors |
+
+## Progress Criteria
+
+Work is done when every box is checked. All check outputs are saved to
+`ontologies/{name}/validation/` as machine-readable files; no claim of pass
+without the artifact.
+
+- [ ] `validation/reasoner.log` from `robot reason` (reasoner name declared).
+- [ ] `validation/robot-report.tsv` with `--fail-on ERROR` exit 0.
+- [ ] `validation/profile-validate.txt` from `robot validate-profile --profile {…}`.
+- [ ] `validation/shacl-results.ttl` from `pyshacl` (empty violations list).
+- [ ] `validation/cq-results.json` — every Must-Have CQ executed, pass/fail recorded.
+- [ ] `validation/anti-pattern-results/` — each `_shared/anti-patterns.md` probe run.
+- [ ] Mapping sets (if present) pass gates 1–10 of [`_shared/mapping-evaluation.md § 1`](_shared/mapping-evaluation.md).
+- [ ] `validation/diff.md` vs. prior release (or main) for release-gate runs.
+- [ ] No Loopback Trigger below fires.
+
+## LLM Verification Required
+
+See [`_shared/llm-verification-patterns.md`](_shared/llm-verification-patterns.md).
+Validator NEVER paraphrases tool output — raw log is the evidence.
+
+| Operation | Class | Tool gate |
+|---|---|---|
+| Root-cause interpretation of a reasoner failure | D | Attach raw reasoner log; no paraphrase. |
+| SHACL violation explanation | D | Attach `shacl-results.ttl` row verbatim. |
+| Mapping QA narrative | D | Cite gate rows from [`_shared/mapping-evaluation.md § 1`](_shared/mapping-evaluation.md) + raw output. |
+
+## Loopback Triggers
+
+Validator is the primary raiser of loopbacks. Route per failure class:
+
+| Trigger | Route to | Reason |
+|---|---|---|
+| Unsatisfiable class / profile violation | `ontology-architect` | Axiom-level fix. |
+| BFO misalignment / anti-pattern | `ontology-conceptualizer` | Conceptual model owns BFO + anti-patterns. |
+| Scope violation / missing CQ link | `ontology-requirements` | Requirements artifact is the source of truth. |
+| Missing reuse / stale import | `ontology-scout` / `ontology-curator` | Scout on module pick; curator on refresh. |
+| Mapping gate fail (`mapping-evaluation.md § 1`) | `ontology-mapper` | Mapper owns SSSOM + clique + gold-set QA. |
+| CQ SPARQL fails to parse / wrong shape | `sparql-expert` | Query author fix. |
+| Report severity ≥ ERROR | source skill of the offending axiom | Raise; do not fix locally. |
+
+Depth > 3 escalates per [`_shared/iteration-loopbacks.md`](_shared/iteration-loopbacks.md).
+
+## Worked Examples
+
+- [`_shared/worked-examples/ensemble/validator.md`](_shared/worked-examples/ensemble/validator.md) — seven-level run; injected failure on CQ-E-001 routes to architect (qualified cardinality not satisfied). *(Wave 4)*
+- [`_shared/worked-examples/microgrid/validator.md`](_shared/worked-examples/microgrid/validator.md) — EL-safe subset plus DL release gate; mapping-set validation using `mapping-evaluation.md` gates; diff against prior release. *(Wave 4)*

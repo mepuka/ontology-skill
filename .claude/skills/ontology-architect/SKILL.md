@@ -47,6 +47,8 @@ Read these files from `_shared/` before beginning work:
 - `_shared/relation-semantics.md` — object vs data property choice, characteristics matrix, property chains
 - `_shared/llm-verification-patterns.md` — every LLM-drafted axiom / template / KGCL patch must clear its tool gate before handoff
 - `_shared/iteration-loopbacks.md` — routes `profile_violation`, `unsatisfiable_class`, `construct_mismatch`, `robot_template_error` loopbacks to this skill
+- `_shared/pattern-catalog.md` — ODP instantiation (DOSDP, value partition, part-whole, role, participation, N-ary, information-realization); prefer DOSDP over freehand OWL for repeated patterns
+- `_shared/modularization-and-bridges.md` — import vs. bridge vs. shadow-axiom decisions; merge pitfalls; layering enforcement at file boundaries
 
 ## Core Workflow
 
@@ -422,3 +424,50 @@ This skill produces:
 | ROBOT template fails | Column headers don't match expected format | Check ROBOT template documentation for column syntax |
 | KGCL apply fails | Term not found or invalid KGCL syntax | Verify term exists with `runoak info`; check KGCL grammar |
 | OWLAPY JVM bridge error | Java not installed or JVM not found | Ensure JDK is installed and JAVA_HOME is set |
+
+## Progress Criteria
+
+Work is done when every box is checked. All gates are mandatory before handoff.
+
+- [ ] `.local/bin/robot validate-profile --profile {EL|QL|RL|DL}` passes on
+      the merged ontology — see [`_shared/owl-profile-playbook.md § 5`](_shared/owl-profile-playbook.md).
+- [ ] `.local/bin/robot reason --reasoner {ELK|HermiT}` passes; reasoner choice
+      matches declared profile + construct-support matrix.
+- [ ] `.local/bin/robot report --fail-on ERROR` passes on the merged ontology.
+- [ ] `pyshacl` passes for every shape graph drafted from property-design intent.
+- [ ] ROBOT / DOSDP templates cleared the preflight in
+      [`_shared/robot-template-preflight.md`](_shared/robot-template-preflight.md).
+- [ ] `cq-implementation-matrix.csv` maps every Must-Have CQ to implemented
+      axioms / shapes / tests.
+- [ ] Every ODP instantiation cites the row in [`_shared/pattern-catalog.md § 2`](_shared/pattern-catalog.md).
+- [ ] No Loopback Trigger below fires.
+
+## LLM Verification Required
+
+See [`_shared/llm-verification-patterns.md`](_shared/llm-verification-patterns.md).
+Every LLM-drafted artifact is Class A (tool-gated). No exceptions.
+
+| Operation | Class | Tool gate |
+|---|---|---|
+| OWL axiom draft | A | `robot validate-profile` → `robot reason` → `robot report` |
+| ROBOT / DOSDP template row | A | Preflight checks per [`_shared/robot-template-preflight.md`](_shared/robot-template-preflight.md) + `robot template` exit 0 |
+| KGCL patch | A | `kgcl-apply` round-trip; `robot diff` confirms intended change only |
+| SHACL shape draft | A | `pyshacl --data ontology.ttl --shapes shapes.ttl` exit 0 |
+
+## Loopback Triggers
+
+| Trigger | Route to | Reason |
+|---|---|---|
+| Incoming: `profile_violation` | `ontology-architect` | Axiom-level issue; fix pattern or widen profile in scope doc. |
+| Incoming: `unsatisfiable_class` | `ontology-architect` | Axiom-level conflict; trace disjointness + restrictions. |
+| Incoming: `construct_mismatch` | `ontology-architect` | Reasoner choice wrong for construct; switch to HermiT or drop construct. |
+| Incoming: `robot_template_error` | `ontology-architect` | Preflight the template, fix the offending row. |
+| Raised: axiom plan calls for a term not in conceptual model | `ontology-conceptualizer` | Conceptual model must be updated first; do not mint silently. |
+| Raised: no reusable term found for a needed concept | `ontology-scout` | Rescout before minting; architect does not search registries. |
+
+Depth > 3 escalates per [`_shared/iteration-loopbacks.md`](_shared/iteration-loopbacks.md).
+
+## Worked Examples
+
+- [`_shared/worked-examples/ensemble/architect.md`](_shared/worked-examples/ensemble/architect.md) — `StringQuartet hasMember exactly 4 Musician`: ELK silently skips qualified cardinality, HermiT catches; DOSDP for instrument-family. *(Wave 4)*
+- [`_shared/worked-examples/microgrid/architect.md`](_shared/worked-examples/microgrid/architect.md) — `hasPart ∘ locatedIn → locatedIn` stays EL-safe; SHACL for telemetry-packet structure; equivalence-bridge failure. *(Wave 4)*

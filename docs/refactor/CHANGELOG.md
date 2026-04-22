@@ -108,6 +108,44 @@ uv run ruff check .
 
 _In progress. Split into 3a (shared files + stubs), 3b (4 new sections on all 8 skills), 3c (per-skill workflow enhancements)._
 
+### Wave 3b — 4 new sections + Wave 3 citations on all 8 skills
+
+### Files modified
+- All 8 `.claude/skills/*/SKILL.md` files gained four new sections at the bottom, in order: `## Progress Criteria`, `## LLM Verification Required`, `## Loopback Triggers`, `## Worked Examples`. Each section is capped at ~20 lines and offloads detail to shared reference files.
+- Wave 3 citation matrix applied to Shared Reference Materials:
+  - `ontology-conceptualizer`: `pattern-catalog.md`, `modularization-and-bridges.md`
+  - `ontology-architect`: `pattern-catalog.md`, `modularization-and-bridges.md`
+  - `ontology-mapper`: `mapping-evaluation.md`, `sssom-semapv-recipes.md`
+  - `ontology-validator`: `mapping-evaluation.md`
+  - `ontology-scout`: `modularization-and-bridges.md`
+
+### Decisions / gotchas
+- Progress Criteria items are tool-verifiable (paired command, artifact path) per CONVENTIONS.md § 11 — no advisory language.
+- LLM Verification tables classify each operation per the Class A/B/C/D taxonomy in `llm-verification-patterns.md § 2`.
+- Loopback Triggers distinguish *incoming* (what this skill receives) from *raised* (what this skill sends upstream).
+- Worked-Examples links point to Wave 4 files not yet created; every link is marked `*(Wave 4)*` for clarity.
+- `ontology-validator` Loopback Triggers table is the primary raiser; it routes failures per class to architect / conceptualizer / requirements / scout / curator / mapper / sparql-expert.
+
+### Definition-of-done checks (all pass)
+```bash
+# All 4 new sections present in every SKILL.md
+for skill in ontology-{requirements,scout,conceptualizer,architect,mapper,validator,curator} sparql-expert; do
+  for section in "Progress Criteria" "LLM Verification Required" "Loopback Triggers" "Worked Examples"; do
+    grep -q "^## $section" ".claude/skills/$skill/SKILL.md" || echo "MISSING: $skill / $section"
+  done
+done
+# Wave 3 citations present in the matching skills
+grep -l "pattern-catalog" .claude/skills/ontology-{conceptualizer,architect}/SKILL.md
+grep -l "modularization-and-bridges" .claude/skills/ontology-{scout,conceptualizer,architect}/SKILL.md
+grep -l "mapping-evaluation" .claude/skills/ontology-{mapper,validator}/SKILL.md
+grep -l "sssom-semapv-recipes" .claude/skills/ontology-mapper/SKILL.md
+# Routing still passes, ruff clean
+uv run python scripts/validate_description_routing.py
+uv run ruff check .
+```
+
+---
+
 ### Wave 3a — 4 new shared files + worked-example stubs
 
 ### Files created

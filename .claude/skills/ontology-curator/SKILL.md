@@ -304,3 +304,49 @@ This skill produces:
 | oaklib cannot parse ontology | Malformed Turtle | Run `robot validate` to find syntax errors |
 | Reasoner fails after changes | Change introduced inconsistency | Review KGCL patch; revert problematic change |
 | No replacement term for deprecation | Gap in the ontology | Create the replacement term first (via architect), then deprecate |
+
+## Progress Criteria
+
+Work is done when every box is checked. No change ships without an artifact.
+
+- [ ] Change classified as annotation / structural / semantic / mapping / release-infra
+      (recorded in `docs/change-log/{date}-{id}.md`).
+- [ ] KGCL patch at `ontologies/{name}/changes/*.kgcl`; `runoak apply-changes --dry-run` clean.
+- [ ] `robot diff` between `release/prior.ttl` and post-change shows only intended axiom deltas.
+- [ ] `robot reason` + `robot report --fail-on ERROR` pass on the post-change ontology.
+- [ ] `docs/change-approval.yaml` carries reviewer + ISO date + impacted CQ list.
+- [ ] For import-refresh changes: `docs/imports-manifest.yaml` regenerated + full CQ regression rerun
+      per [`_shared/odk-and-imports.md`](_shared/odk-and-imports.md).
+- [ ] Release-infra changes (versioning, PURL, content negotiation): release notes in
+      `release/notes/{version}.md` with migration pointers for consumers.
+- [ ] No Loopback Trigger below fires.
+
+## LLM Verification Required
+
+See [`_shared/llm-verification-patterns.md`](_shared/llm-verification-patterns.md).
+Never replaces `robot diff`, reasoner, report, or obsolete-term / replacement check.
+
+| Operation | Class | Tool gate |
+|---|---|---|
+| KGCL change plan drafting | A | `runoak apply-changes --dry-run` round-trip + `robot diff` |
+| Deprecation rationale | B | Replacement IRI resolves; rationale stored with change record |
+| Release-note authoring | B | Every structural change in `robot diff` appears in the notes |
+| Import-refresh triage | B | Obsolete-term + replacement check before mapping-regression loopback |
+
+## Loopback Triggers
+
+| Trigger | Route to | Reason |
+|---|---|---|
+| Incoming: `stale_import` | `ontology-curator` | Curator owns the refresh cycle. |
+| Incoming: `change_classification` | `ontology-curator` | Classification is curator's artifact. |
+| Incoming: `release_gate` | `ontology-curator` | Release workflow is curator's domain. |
+| Raised: import refresh introduced new CQ breakage | `ontology-requirements` | CQ may need to evolve; do not paper over. |
+| Raised: refresh invalidated mapping rows | `ontology-mapper` | Mapper re-runs gates after obsolete/replacement remap. |
+| Raised: structural change causes reasoner failure | `ontology-architect` | Axiom-level fix. |
+
+Depth > 3 escalates per [`_shared/iteration-loopbacks.md`](_shared/iteration-loopbacks.md).
+
+## Worked Examples
+
+- [`_shared/worked-examples/ensemble/curator.md`](_shared/worked-examples/ensemble/curator.md) — deprecation of an experimental role subclass + replacement pointer + CQ-impact analysis. *(Wave 4)*
+- [`_shared/worked-examples/microgrid/curator.md`](_shared/worked-examples/microgrid/curator.md) — OEO import refresh; obsolete-term cascade to mapper; release-notes provenance. *(Wave 4)*

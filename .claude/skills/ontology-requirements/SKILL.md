@@ -282,3 +282,46 @@ This skill produces:
 | CQ cannot be expressed in SPARQL | CQ is too vague or beyond OWL expressivity | Decompose into simpler CQs or mark as Won't Have |
 | Duplicate CQs detected | Stakeholder overlap | Merge and reference all source stakeholders |
 | Pre-glossary has conflicting terms | Polysemy in domain language | Flag for conceptualizer to disambiguate |
+
+## Progress Criteria
+
+Work is done when every box is checked. Each item is tool-verifiable.
+
+- [ ] `docs/orsd.md` exists with scope, use cases, non-goals, stakeholder list.
+- [ ] `docs/competency-questions.yaml` parses and every CQ carries `priority`,
+      `expected_answer_shape`, `testability`, `owner`.
+- [ ] Every Must-Have CQ has a matching `tests/cq-*.sparql` that passes
+      `prepareQuery` — see [`_shared/cq-traceability.md`](_shared/cq-traceability.md).
+- [ ] `docs/traceability-matrix.csv` links stakeholder-need → use case → CQ → term placeholder → test.
+- [ ] `docs/requirements-approval.yaml` exists with reviewer, ISO date, and
+      the CQ-freeze commit SHA.
+- [ ] No Loopback Trigger below fires.
+
+## LLM Verification Required
+
+See [`_shared/llm-verification-patterns.md`](_shared/llm-verification-patterns.md).
+Never replaces `prepareQuery` parsing or CQ manifest consistency check.
+
+| Operation | Class | Tool gate |
+|---|---|---|
+| CQ → SPARQL draft | A | `prepareQuery` parse + run on fixture when present |
+| Sample-answer generation | B | Evidence = CQ text + fixture graph + expected shape |
+| Traceability row (stakeholder → CQ → term) | B | Every row names source stakeholder + source CQ id |
+| ORSD non-goal phrasing | B | Reviewer signature in `requirements-approval.yaml` |
+
+## Loopback Triggers
+
+This skill owns scope + CQ concerns. Downstream skills raise these back to it.
+
+| Trigger | Route to | Reason |
+|---|---|---|
+| Incoming: `scope_violation` (from any skill) | `ontology-requirements` | Scope is the requirements artifact; fix here, not downstream. |
+| Incoming: `missing_cq_link` (from validator / architect / mapper) | `ontology-requirements` | A satisfied-claim without an executable CQ is a requirements gap. |
+| Raised: CQ truly unanswerable by any ontology construct | (stop) | Mark `Won't-Have`; escalate to human per anti-thrash guard. |
+
+Depth > 3 on the same CQ escalates per [`_shared/iteration-loopbacks.md`](_shared/iteration-loopbacks.md).
+
+## Worked Examples
+
+- [`_shared/worked-examples/ensemble/requirements.md`](_shared/worked-examples/ensemble/requirements.md) — CQs CQ-E-001..005, ORSD non-goals, and CQ-E-001 as the priority case (Must-Have, qualified-cardinality target). *(Wave 4)*
+- [`_shared/worked-examples/microgrid/requirements.md`](_shared/worked-examples/microgrid/requirements.md) — CQs CQ-M-001..005; stakeholder-need traceability for the dispatch-event CQ-M-002. *(Wave 4)*

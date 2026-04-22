@@ -38,6 +38,8 @@ Read these files from `_shared/` before beginning work:
 - `_shared/naming-conventions.md` — to understand label standards for matching
 - `_shared/llm-verification-patterns.md` — Class-B prompt template for verifying lexmatch candidate pairs; Class-C triggers for cross-domain exactMatch and clique > 3
 - `_shared/iteration-loopbacks.md` — raises `mapping_confidence`, `missing_semapv`, `mapping_clique`, `mapping_conflict`, `cross_domain_exactMatch` loopbacks back to this skill
+- `_shared/mapping-evaluation.md` — pre-merge gate checklist, confidence tiers, clique SPARQL, cross-domain exactMatch rule, OAEI precision/recall, QA report format
+- `_shared/sssom-semapv-recipes.md` — required YAML header, SEMAPV catalog, lexmatch / LLM-verified / manual recipes, OWL translation presets
 
 ## Core Workflow
 
@@ -285,3 +287,51 @@ Every mapping row must include:
 | Lexmatch produces no candidates | Vocabularies use different naming conventions | Try synonym matching, broaden match rules |
 | Transitive closure creates false equivalences | Over-use of exactMatch | Downgrade to closeMatch for uncertain pairs |
 | Target term is obsoleted | Target ontology was updated | Find replacement via `obo:IAO_0100001` property |
+
+## Progress Criteria
+
+Work is done when every box is checked. Each item is tool-verifiable.
+
+- [ ] `sssom-py validate` passes; required YAML header present per
+      [`_shared/sssom-semapv-recipes.md § 2`](_shared/sssom-semapv-recipes.md).
+- [ ] Every row carries `mapping_justification`, `confidence`, reviewer/author,
+      `mapping_date`, `mapping_tool` per safety rule 13.
+- [ ] Entity-existence check passes: every CURIE resolves via `runoak info`.
+- [ ] Obsolete-term report generated; any row pointing to a deprecated term
+      carries a replacement note.
+- [ ] Clique report generated; no clique > 3 promoted without human review per
+      [`_shared/mapping-evaluation.md § 3`](_shared/mapping-evaluation.md).
+- [ ] Cross-domain `exactMatch` rows carry a reviewer signature.
+- [ ] If a gold/dev set exists: precision ≥ 0.85, recall ≥ 0.70, F1 ≥ 0.80.
+- [ ] QA report at `mappings/reports/{date}-{set-id}.md` per § 6.
+- [ ] No Loopback Trigger below fires.
+
+## LLM Verification Required
+
+See [`_shared/llm-verification-patterns.md`](_shared/llm-verification-patterns.md).
+Never replaces `sssom validate`, entity-existence, or clique checks.
+
+| Operation | Class | Tool gate |
+|---|---|---|
+| Mapping predicate selection | B | Class B prompt + evidence (labels, defs, parents); `confidence ≥ 0.90` for `exactMatch` |
+| Cross-domain `exactMatch` | C | Named reviewer, ISO date, rationale in `mapping-reviews/` |
+| Bridge-ontology conversion | A | `robot reason` on merged source + target + bridge; no new unsatisfiables |
+| Confidence override | B | Written rationale + diff against raw tool output |
+
+## Loopback Triggers
+
+| Trigger | Route to | Reason |
+|---|---|---|
+| Incoming: `mapping_confidence` | `ontology-mapper` | Mapper owns confidence tier policy. |
+| Incoming: `missing_semapv` | `ontology-mapper` | SEMAPV gap is a mapper artifact bug. |
+| Incoming: `mapping_clique` (> 3) | `ontology-mapper` | Clique resolution is a mapper decision. |
+| Incoming: `mapping_conflict` | `ontology-mapper` | Predicate conflict reconciled here. |
+| Incoming: `cross_domain_exactMatch` | `ontology-mapper` | Cross-domain rule owned here; Class C review. |
+| Raised: source or target term is obsolete in upstream | `ontology-curator` | Import refresh is curator's job; wait for refresh, then remap. |
+
+Depth > 3 escalates per [`_shared/iteration-loopbacks.md`](_shared/iteration-loopbacks.md).
+
+## Worked Examples
+
+- [`_shared/worked-examples/ensemble/mapper.md`](_shared/worked-examples/ensemble/mapper.md) — MIMO↔music-ontology lexmatch + Class B review on one MEDIUM row; clique check on violinist↔fiddler↔player. *(Wave 4)*
+- [`_shared/worked-examples/microgrid/mapper.md`](_shared/worked-examples/microgrid/mapper.md) — cross-domain `exactMatch` between device class and `schema.org` Product caught by the cross-domain rule. *(Wave 4)*
