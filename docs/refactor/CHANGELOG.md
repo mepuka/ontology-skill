@@ -251,4 +251,100 @@ uv run ruff check .
 
 ## Wave 4 — Worked examples + publication/provenance + GitHub Actions
 
-_Pending._
+_Complete — tagged `wave-4-complete`. Split into 3 groups: 4.A (16 worked-
+example files), 4.B (2 new shared files), 4.C (final E2E verification +
+tag). 19 commits in this wave: 16 per-file commits for Group A + 1 bundle
+commit for Group B + CHANGELOG + handoff._
+
+**Wave 4 summary:** Populated all 16 worked-example files (ensemble ×
+8 + microgrid × 8), added two new shared reference files
+(`provenance-and-publication.md`, `github-actions-template.md`) that
+Wave 3c SKILL.md redlines cite, and ran the final E2E verification.
+Branch is now ready for squash-merge to `main`.
+
+### Group A — 16 worked-example files
+
+Each file walks 6–10 Core Workflow steps from its skill's SKILL.md, shows
+concrete artifact fragments (YAML, CSV, SPARQL, TTL) for each step, and
+includes a pitfall callout tied to research report §§ A.1–A.8.
+
+Per-file size: 108–199 lines. Larger than the handoff's initial 40–80-line
+target — the increase is justified because each file walks 6–10 steps
+with artifact fragments rather than prose summaries. Per-file commits
+give clean rollback points for any reviewer concerns.
+
+| Commit | File | Signature pitfall |
+|--------|------|-------------------|
+| `6050a9a` | `ensemble/requirements.md` | Bad-CQ retrofit (falsifiable criterion) |
+| `2ee8687` | `ensemble/scout.md` | Weak-vocab license-rejection; schema.org → bridge |
+| `d5b8502` | `ensemble/conceptualizer.md` | Role-type confusion (StringPlayer); OWA closure review |
+| `c390ff9` | `ensemble/architect.md` | **ELK silently skips qualified cardinality** |
+| `308f72e` | `ensemble/mapper.md` | **exactMatch clique contamination** (violinist↔fiddler↔player) |
+| `04311dc` | `ensemble/validator.md` | Canonical L0→L1→L2→L4→L3→L4.5→L5.5→L6 order; injected CQ-E-001 regime fail |
+| `79a7f5e` | `ensemble/curator.md` | Deprecate-not-delete (Safety Rule #4) |
+| `9a6a79e` | `ensemble/sparql.md` | **COUNT aggregate vs row-shape mismatch** |
+| `442a939` | `microgrid/requirements.md` | Retrofit-gate trip prevents retroactive CQs |
+| `516c336` | `microgrid/scout.md` | **BFO leak via IAO_0000030** (workspace memory) |
+| `552a183` | `microgrid/conceptualizer.md` | Dispatch-event vs dispatch-role ambiguity; EL-safe closure |
+| `1de3fa9` | `microgrid/architect.md` | **Equivalence-bridge failure** (BFO category mismatch) |
+| `0e7a6d1` | `microgrid/mapper.md` | **Cross-domain exactMatch floor** (schema:Product refused) |
+| `6d0ef94` | `microgrid/validator.md` | Dual-reasoner (ELK + HermiT); mapping-gates interleaved |
+| `6bbb0d8` | `microgrid/curator.md` | **OEO import-refresh chain** (6-step sequence) |
+| `131ca57` | `microgrid/sparql.md` | **Entailment regime mismatch** on CQ-M-001 chain |
+
+### Group B — 2 new shared reference files
+
+| Commit | File | Cited by |
+|--------|------|----------|
+| `fe2404e` | `_shared/provenance-and-publication.md` | curator Step 5.5 / 5.6, validator release-gate |
+| `fe2404e` | `_shared/github-actions-template.md` | validator L0–L6, curator release-infra |
+
+`provenance-and-publication.md` gives concrete shape to curator Step 5.6's
+`release/{version}-publication-check.yaml` (previously specification-only)
+plus PURL / w3id / content-negotiation / registry guidance.
+
+`github-actions-template.md` is a paste-able `.github/workflows/` template
+that implements validator's L0–L6 command order, SSSOM validate + clique
+check, release-publication check on tagged commits, and Level 8 failure-
+routing hints in the job names.
+
+### Decisions / gotchas
+- Per-file commits for Group A (16 commits) vs clustered per-scenario
+  (2 commits). Chose per-file for reviewability — each file stands alone
+  with a thematic commit message. Total Wave 4 commit count: 19.
+- Every worked-example file cites the exact Step / Level numbers from the
+  corresponding SKILL.md, carries the artifact shapes as code fences
+  (not prose paraphrase), and embeds ≥ 1 pitfall per the research
+  report's "Worked examples to add" sub-sections.
+- Cross-skill round-trips work: ensemble/architect.md's handoff-manifest
+  shape matches Wave 3c's architect Step 8 spec; microgrid/curator.md's
+  import-refresh chain matches Wave 3c's curator Step 8 diagram;
+  ensemble/mapper.md's clique SPARQL matches validator L5.5 probe output.
+- The two new shared files close the last open citations from Wave 3c
+  (curator Step 5.6 reference to `provenance-and-publication.md` + `github-
+  actions-template.md`). No dangling citations remain.
+
+### Definition-of-done checks (all pass)
+```bash
+# Every worked-example file exists
+for scenario in ensemble microgrid; do
+  for skill in requirements scout conceptualizer architect mapper validator curator sparql; do
+    test -f ".claude/skills/_shared/worked-examples/$scenario/$skill.md" \
+      || echo "MISSING: $scenario/$skill.md"
+  done
+done
+
+# New shared files exist
+test -f .claude/skills/_shared/provenance-and-publication.md
+test -f .claude/skills/_shared/github-actions-template.md
+
+# Wave 3c signature headings preserved (SKILL.md files unchanged since wave-3-complete)
+git diff --stat wave-3-complete..HEAD -- '.claude/skills/*/SKILL.md'   # empty
+
+# Routing + lint + types still pass
+uv run python scripts/validate_description_routing.py                   # OK
+uv run ruff check .                                                     # clean
+uv run mypy src/                                                        # no issues
+```
+
+---
