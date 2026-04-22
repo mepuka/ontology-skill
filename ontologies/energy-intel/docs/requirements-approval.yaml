@@ -11,11 +11,9 @@
 reviewer: "kokokessy@gmail.com"
 reviewed_at: "2026-04-22"
 
-# cq_freeze_commit is the git SHA of the commit that freezes the 14 CQs.
-# Populate with `git rev-parse HEAD` after the requirements-phase commit lands.
-# A placeholder is recorded here; the reviewer updates it in the same commit
-# that signs the approval, or in a follow-on commit that only touches this file.
-cq_freeze_commit: "TBD — update after requirements-phase commit is created"
+# cq_freeze_commit is the git SHA of the commit that froze the 14 CQs.
+# feat/energy-intel @ f6d025d landed the 22 requirements artifacts on 2026-04-22.
+cq_freeze_commit: "f6d025d"
 
 scope_gate:
   scope_fit: approved
