@@ -106,7 +106,70 @@ uv run ruff check .
 
 ## Wave 3 — Per-skill section additions + quality gates
 
-_In progress. Split into 3a (shared files + stubs), 3b (4 new sections on all 8 skills), 3c (per-skill workflow enhancements)._
+_Complete — tagged `wave-3-complete`. Split into 3a (4 shared files + 2 worked-example stubs), 3b (4 new bottom sections on all 8 skills + Wave 3 citations), 3c (Core Workflow redlines on all 8 skills). 10 commits in this wave._
+
+**Wave 3 summary:** Added 4 new shared reference files (pattern-catalog, mapping-evaluation, sssom-semapv-recipes, modularization-and-bridges). Added 4 new bottom sections (Progress Criteria, LLM Verification Required, Loopback Triggers, Worked Examples) to all 8 SKILL.md files with Wave 3 citations applied per matrix. Restructured `## Core Workflow` on all 8 skills per research report §§ A.1–A.8 — 38 new Step / Level headings landed across the 8 skills, each tool-gated with a named artifact.
+
+### Wave 3c — Core Workflow redlines on all 8 skills
+
+### Files modified
+One per-skill commit per SKILL.md; all changes confined to each skill's
+`## Core Workflow` section and adjacent Outputs/Handoff rows.
+
+- `ontology-requirements` (`e7fa93a`) — adds Step 0 (scope/retrofit gate),
+  explicit non-goals in Step 1, Step 2.5 (CQ quality scoring), updated
+  Step 5 schema (priority + owner + testability + expected_answer_shape),
+  Step 7.5 (SPARQL preflight via sparql-expert), Step 9 (approval artifact).
+- `sparql-expert` (`a1be8da`) — adds Step 0 (query purpose), CQ
+  decomposition in Step 1, Step 2.5 (entailment regime), Step 4.5
+  (expected-results contract), mandatory Step 5 execution, Step 5.5
+  (result sanity check); removes the old standalone "Entailment Regime
+  Awareness" section (subsumed).
+- `ontology-scout` (`043ad01`) — adds Step 0 (source availability),
+  reframed Step 2 as 6-dimension Reuse-Decision Matrix with mandatory
+  rejection rationale, Step 3.5 (module vs import vs bridge), Step 5
+  upgraded to ODP/DOSDP selection with variable bindings, Step 6
+  (imports-manifest update).
+- `ontology-mapper` (`3142afe`) — phase banner (candidate → curation →
+  evaluation → repair), Step 0 (mapping context), Step 3 LLM verification
+  with evidence rubric, Step 5 SSSOM metadata gate, Step 5.1 (entity
+  existence + obsolete-term), Step 5.6 (OAEI), Step 7 (mapping
+  maintenance), Step 8 (bridge safety gate).
+- `ontology-curator` (`1b2c867`) — Step 0 (change intake + impact scope
+  with 6 categories), Step 1.5 (CQ + mapping impact analysis), Step 3.5
+  (approval artifact blocks apply-changes), Step 5.6 (publication
+  metadata check), Step 6.5 (consumer release notes with diff
+  provenance), Step 8 (import-refresh workflow as orchestration chain).
+- `ontology-conceptualizer` (`5cf3851`) — Step 0 (inbound gate), Step 3.1
+  (BFO ambiguity register with Class C escalation), Step 4.1
+  (relation-semantics sheet), Step 5.1 (closure / OWA review + CQ
+  coverage map), Step 6.1 (anti-pattern review artifact).
+- `ontology-validator` (`15503fd`) — Step 0 (artifact type), explicit
+  mandatory Command Order and severity thresholds (ERROR/WARN/INFO),
+  Level 0 (syntax + profile + import-closure preflight), Level 3.5
+  (SHACL coverage), Level 4.5 (CQ manifest integrity + stale detection),
+  Level 5.5 (anti-pattern pack), Level 8 (loopback routing table).
+- `ontology-architect` (`4c23f79`) — Step 0 (build regime: standalone
+  POD vs ODK), construct-support matrix in Step 1, Step 2.5
+  (import/declaration preflight), "prefer ROBOT/DOSDP" note on Step 3,
+  Step 3.5 (ROBOT template preflight), Step 6.5 (SHACL from
+  property-design intent), Step 7.1 (profile-specific reasoner gate with
+  pairing table), Step 8 (handoff packaging manifest).
+
+### Decisions / gotchas
+- Some "new shared-reference dependencies" listed in research report §§ A.1–A.8 were consolidated into existing Wave 2 shared files (e.g., `odk-and-imports.md` subsumes the `imports-management.md`/`odk-integration.md` split the report suggested). No new shared files were created in Wave 3c.
+- Wave 3c references artifacts that Wave 4 will populate (e.g., `docs/requirements-approval.yaml`, `docs/bfo-alignment.md` ambiguity register, `validation/handoff-manifest.yaml`). These are specification-only until worked examples show them in context.
+- Every Wave 3c commit is one skill at a time per the handoff's recommended split. Reviewing diffs one-skill-at-a-time gives clean rollback points.
+- The sparql-expert redline is the only one that removes existing content (the old "Entailment Regime Awareness" standalone section, now subsumed by Step 2.5). All other redlines are additive to the Core Workflow.
+
+### Definition-of-done checks (all pass)
+```bash
+# All 38 Wave 3c signature headings land in their skills (see verification script)
+# Core Workflow order makes sense when read top-to-bottom for each skill
+# Routing + lint clean
+uv run python scripts/validate_description_routing.py
+uv run ruff check .
+```
 
 ### Wave 3b — 4 new sections + Wave 3 citations on all 8 skills
 
