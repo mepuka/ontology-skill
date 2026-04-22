@@ -1,10 +1,16 @@
 ---
 name: sparql-expert
 description: >
-  Expert system for SPARQL 1.1 and SPARQL-star query generation,
-  validation, and execution. Handles differences between GraphDB,
-  Stardog, Fuseki, and local rdflib graphs. Use when querying
-  knowledge graphs or debugging SPARQL.
+  Designs, validates, runs, and debugs SPARQL 1.1 and SPARQL-star queries
+  for ontology engineering: CQ tests, anti-pattern checks, coverage
+  metrics, mapping clique analysis, import diagnostics, ROBOT query,
+  and rdflib graphs. Handles dialect differences between GraphDB,
+  Stardog, Fuseki, and local rdflib files; preflights every query
+  against fixtures; records entailment regime and expected-results
+  contract. Use for query generation, SPARQL syntax validation,
+  execution, debugging SPARQL, converting CQs to queries, optimizing
+  property paths, querying knowledge graphs, or explaining empty / slow
+  query results.
 ---
 
 # SPARQL Expert
@@ -32,6 +38,9 @@ Read these files from `_shared/` before beginning work:
 - `_shared/namespaces.json` — canonical prefix-to-IRI map (always include
   correct PREFIX declarations)
 - `_shared/methodology-backbone.md` — lifecycle context (cross-cutting)
+- `_shared/closure-and-open-world.md` — why a syntactically correct query returns zero rows (OWA vs CWA) and when entailment regime matters
+- `_shared/cq-traceability.md` — the CQ manifest and expected-results-contract format that sparql-expert must satisfy
+- `_shared/iteration-loopbacks.md` — routes `sparql_parse` and `sparql_shape` loopbacks to this skill
 
 ## Core Workflow
 

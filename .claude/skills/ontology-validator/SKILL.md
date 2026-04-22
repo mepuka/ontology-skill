@@ -1,10 +1,14 @@
 ---
 name: ontology-validator
 description: >
-  Comprehensive ontology validation and quality assurance. Runs OWL
-  reasoners, SHACL validation, CQ test suites, and ROBOT quality reports.
-  Computes quality metrics and generates diff reports. Use when checking
-  ontology quality or before committing changes.
+  Runs ontology and mapping quality gates: OWL reasoners, OWL profile
+  validation, ROBOT quality reports, SHACL / pyshacl validation, CQ
+  acceptance test suites, anti-pattern SPARQL, SSSOM validation,
+  computes quality metrics, and generates diff reports for release
+  audit. Use for comprehensive ontology validation and quality
+  assurance before committing changes, releases, or after structural
+  changes; when auditing an existing ontology, validating mappings,
+  debugging reasoner / SHACL / CQ failures, or checking CI readiness.
 ---
 
 # Ontology Validator
@@ -32,6 +36,11 @@ Read these files from `_shared/` before beginning work:
 - `_shared/quality-checklist.md` — the full validation checklist
 - `_shared/anti-patterns.md` — anti-pattern detection queries
 - `_shared/naming-conventions.md` — naming compliance checks
+- `_shared/shacl-patterns.md` — shape severity thresholds, SPARQL-based constraints, pass/fail conventions
+- `_shared/closure-and-open-world.md` — how OWA/CWA interact across reasoner and SHACL passes; explains why an axiom may satisfy OWL but fail SHACL
+- `_shared/llm-verification-patterns.md` — why validator never paraphrases tool output; rules for attaching raw logs
+- `_shared/cq-traceability.md` — the CQ manifest schema; validator reads to know expected-results contract per CQ
+- `_shared/iteration-loopbacks.md` — validator is the primary raiser of loopbacks; see routing table for per-failure-type owners
 
 ## Consistency vs. Validity (OWA vs. CWA)
 

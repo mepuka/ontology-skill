@@ -1,10 +1,15 @@
 ---
 name: ontology-curator
 description: >
-  Manages ontology maintenance, evolution, and versioning. Handles term
-  deprecation, KGCL change management, diff generation, and release
-  workflows. Use when maintaining, updating, versioning, or documenting
-  an existing ontology.
+  Maintains existing ontologies through classified KGCL change
+  proposals, term deprecation, reparenting, and renaming; import
+  refresh against the imports-manifest; diff generation; versioning;
+  release workflows (preparation + release notes + FAIR / OBO
+  publication: PURL, content negotiation). Owns KGCL change management
+  and the maintenance / evolution of ontology artifacts. Use for
+  maintaining, updating, versioning, documenting, deprecating,
+  renaming, reparenting, refreshing imports, preparing release
+  workflows, or communicating ontology changes to consumers.
 ---
 
 # Ontology Curator
@@ -35,6 +40,8 @@ Read these files from `_shared/` before beginning work:
 - `_shared/naming-conventions.md` — naming standards for renames
 - `_shared/quality-checklist.md` — validation requirements after changes
 - `_shared/namespaces.json` — canonical prefixes
+- `_shared/odk-and-imports.md` — refresh cadence, imports-manifest.yaml regeneration, staleness detection; regeneration is a release gate
+- `_shared/iteration-loopbacks.md` — routes `stale_import`, `change_classification`, `release_gate` loopbacks to this skill
 
 ## Core Workflow
 

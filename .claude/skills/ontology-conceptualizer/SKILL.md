@@ -1,10 +1,16 @@
 ---
 name: ontology-conceptualizer
 description: >
-  Builds conceptual models from requirements. Creates glossaries,
-  taxonomies, and property designs. Aligns to BFO upper ontology.
-  Detects modeling anti-patterns. Use when designing the structure
-  of an ontology before formalization.
+  Builds a conceptual model from requirements and reuse findings:
+  glossaries, taxonomies / class hierarchies, property designs, module
+  and layer design, and a BFO upper ontology category decision
+  (continuant vs occurrent; quality vs role vs disposition). Aligns to
+  BFO, detects modeling anti-patterns, resolves SHACL-vs-OWL intent,
+  drafts an axiom plan, and reviews closure / open-world coverage. Use
+  when designing the structure of an ontology before formalization,
+  transforming CQs into conceptual models, aligning to BFO, resolving
+  role-vs-type or object-vs-aggregate ambiguity, choosing domain/range
+  vs SHACL, or selecting axiom patterns from CQs.
 ---
 
 # Ontology Conceptualizer
@@ -35,6 +41,10 @@ Read these files from `_shared/` before beginning work:
 - `_shared/axiom-patterns.md` — OWL pattern catalog for axiom planning
 - `_shared/anti-patterns.md` — modeling mistakes to detect and prevent
 - `_shared/naming-conventions.md` — term naming standards
+- `_shared/bfo-decision-recipes.md` — three decision recipes (continuant/occurrent, independent/dependent, quality/role/disposition); ambiguity register schema
+- `_shared/relation-semantics.md` — object vs data property decision, RO cheat sheet, characteristics matrix
+- `_shared/closure-and-open-world.md` — OWA vs CWA, closure patterns, when to specify SHACL vs OWL universal
+- `_shared/iteration-loopbacks.md` — routing of `bfo_misalignment`, `closure_gap`, `anti_pattern` loopbacks to this skill
 
 ## Core Workflow
 

@@ -1,10 +1,15 @@
 ---
 name: ontology-architect
 description: >
-  Specializes in Programmatic Ontology Development (POD). Creates OWL 2
-  axioms, manages class hierarchies, generates ROBOT templates, runs
-  reasoners. Uses ROBOT, oaklib, KGCL, OWLAPY, owlready2, and LinkML.
-  Use when creating or modifying ontology axioms.
+  Formalizes an approved conceptual model as programmatic OWL 2 artifacts
+  using Programmatic Ontology Development (POD). Creates OWL 2 axioms,
+  manages class hierarchies, generates and preflights ROBOT templates,
+  writes KGCL patches, drafts SHACL shapes from property-design intent,
+  and runs reasoners under the targeted OWL profile (EL/QL/RL/DL). Uses
+  ROBOT, oaklib, KGCL, OWLAPY, owlready2, LinkML, and rdflib. Use when
+  creating or modifying ontology axioms, formalizing a model, adding
+  classes/properties/restrictions, fixing unsatisfiable classes,
+  validating OWL profile, or debugging reasoner / template failures.
 ---
 
 # Ontology Architect (POD)
@@ -35,6 +40,13 @@ Read these files from `_shared/` before beginning work:
 - `_shared/naming-conventions.md` — naming and ID minting standards
 - `_shared/namespaces.json` — canonical prefixes
 - `_shared/quality-checklist.md` — validation requirements after changes
+- `_shared/owl-profile-playbook.md` — profile decision, construct-support matrix, merge-then-validate-profile preflight, reasoner pairing
+- `_shared/robot-template-preflight.md` — preflight checklist, header syntax, CURIE resolution, SPLIT handling, merge-mode safety
+- `_shared/odk-and-imports.md` — ODK vs standalone-POD choice for the project; when to add an import before minting a new term
+- `_shared/closure-and-open-world.md` — when to add closure axioms vs pair with SHACL; allValuesFrom and DisjointUnion recipes
+- `_shared/relation-semantics.md` — object vs data property choice, characteristics matrix, property chains
+- `_shared/llm-verification-patterns.md` — every LLM-drafted axiom / template / KGCL patch must clear its tool gate before handoff
+- `_shared/iteration-loopbacks.md` — routes `profile_violation`, `unsatisfiable_class`, `construct_mismatch`, `robot_template_error` loopbacks to this skill
 
 ## Core Workflow
 

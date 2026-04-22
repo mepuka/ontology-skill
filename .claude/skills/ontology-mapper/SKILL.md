@@ -1,10 +1,14 @@
 ---
 name: ontology-mapper
 description: >
-  Manages cross-ontology mapping and alignment. Generates, validates, and
-  maintains SSSOM mapping sets. Runs lexical matching via oaklib and
-  LLM-assisted verification. Use when working with ontology mappings,
-  alignment, or cross-references.
+  Generates, verifies, evaluates, and maintains cross-ontology mapping
+  and alignment using SSSOM, lexical matching via oaklib (lexmatch), and
+  LLM-assisted verification and semantic review. Produces mapping sets
+  with SEMAPV justification, confidence, and reviewer provenance; runs
+  exactMatch clique checks and (where a gold/dev set exists) OAEI-style
+  precision/recall. Use for SSSOM mapping sets, cross-references, xrefs,
+  bridge ontologies, validating mappings, remapping obsolete terms, or
+  reviewing exactMatch / sameAs safety.
 ---
 
 # Ontology Mapper
@@ -32,6 +36,8 @@ Read these files from `_shared/` before beginning work:
 - `_shared/methodology-backbone.md` — lifecycle phase context (Phase 5: Integration)
 - `_shared/namespaces.json` — canonical prefixes including sssom and semapv
 - `_shared/naming-conventions.md` — to understand label standards for matching
+- `_shared/llm-verification-patterns.md` — Class-B prompt template for verifying lexmatch candidate pairs; Class-C triggers for cross-domain exactMatch and clique > 3
+- `_shared/iteration-loopbacks.md` — raises `mapping_confidence`, `missing_semapv`, `mapping_clique`, `mapping_conflict`, `cross_domain_exactMatch` loopbacks back to this skill
 
 ## Core Workflow
 

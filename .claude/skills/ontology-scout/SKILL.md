@@ -1,10 +1,15 @@
 ---
 name: ontology-scout
 description: >
-  Searches for and evaluates reusable ontological resources. Queries
-  OLS, BioPortal, OBO Foundry, and LOV. Extracts ontology modules via
-  ROBOT. Finds applicable Ontology Design Patterns. Use when looking
-  for existing ontologies to reuse or align with.
+  Searches, finds, evaluates, and imports reusable ontological resources
+  before new term creation. Queries OLS, BioPortal, OBO Foundry, LOV,
+  schema.org, and domain registries; checks term existence, license,
+  maintenance cadence, BFO/RO fit; picks an import strategy
+  (MIREOT/STAR/BOT/TOP) and extracts ontology modules via ROBOT;
+  recommends applicable Ontology Design Patterns (ODP) / DOSDP patterns.
+  Use when looking for existing ontologies to reuse or align with, for
+  import planning, upstream term checks, ODP selection, or
+  import-refresh triage.
 ---
 
 # Ontology Scout (Reuse Advisor)
@@ -33,6 +38,10 @@ Read these files from `_shared/` before beginning work:
 - `_shared/bfo-categories.md` — needed to evaluate BFO alignment of candidates
 - `_shared/naming-conventions.md` — to assess naming quality of candidates
 - `_shared/namespaces.json` — standard prefixes for search queries
+- `_shared/odk-and-imports.md` — ODK vs standalone-POD choice; MIREOT/STAR/BOT/TOP extraction methods; imports-manifest.yaml schema and refresh cadence
+- `_shared/owl-profile-playbook.md` — profile constraints inform import-size and term-selection trade-offs
+- `_shared/iteration-loopbacks.md` — raises `missing_reuse`, `bad_module`, `import_provenance` loopbacks back to scout
+- `_shared/llm-verification-patterns.md` — when reuse recommendations and ODP picks require LLM-verified evidence
 
 ## Core Workflow
 

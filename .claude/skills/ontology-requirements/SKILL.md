@@ -1,10 +1,15 @@
 ---
 name: ontology-requirements
 description: >
-  Manages ontology requirements specification. Elicits, refines, and
-  formalizes competency questions (CQs). Generates ORSD documents and
-  CQ test suites. Use when starting a new ontology, defining scope, or
-  creating acceptance tests.
+  Elicits, refines, and formalizes ontology requirements specification
+  and competency questions (CQs). Writes ORSD documents (scope, use
+  cases, non-goals), converts stakeholder questions into validated
+  SPARQL acceptance tests (CQ test suites), and maintains a
+  stakeholder-need → CQ → term → SPARQL traceability matrix. Use when
+  starting a new ontology, defining scope, creating acceptance tests,
+  refreshing stale CQs, generating cq-*.sparql tests, building a
+  traceability matrix, or preventing retroactive requirements after
+  modeling has begun.
 ---
 
 # Ontology Requirements Engineer
@@ -33,6 +38,9 @@ Read these files from `_shared/` before beginning work:
 - `_shared/methodology-backbone.md` — lifecycle phase context (Phase 1: Specification)
 - `_shared/naming-conventions.md` — term standards for the pre-glossary
 - `_shared/namespaces.json` — standard prefixes for SPARQL test queries
+- `_shared/cq-traceability.md` — trace chain from stakeholder need → use case → CQ → term → SPARQL; CSV schema and maintenance triggers
+- `_shared/iteration-loopbacks.md` — how downstream skills raise `missing_cq_link` / `scope_violation` loopbacks back to this skill
+- `_shared/llm-verification-patterns.md` — when LLM output (CQ-to-SPARQL drafts, sample answers) requires tool-gated verification
 
 ## Core Workflow
 
