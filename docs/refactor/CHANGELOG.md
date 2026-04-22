@@ -106,7 +106,45 @@ uv run ruff check .
 
 ## Wave 3 — Per-skill section additions + quality gates
 
-_Pending._
+_In progress. Split into 3a (shared files + stubs), 3b (4 new sections on all 8 skills), 3c (per-skill workflow enhancements)._
+
+### Wave 3a — 4 new shared files + worked-example stubs
+
+### Files created
+- **Shared reference files (4):**
+  - `.claude/skills/_shared/pattern-catalog.md` — ODP catalog (DOSDP, value partition, part-whole, role, participation, N-ary, information-realization) with CQ→pattern matrix and profile-compatibility quick-check. Referenced by conceptualizer + architect.
+  - `.claude/skills/_shared/mapping-evaluation.md` — pre-merge gate checklist, confidence tiers, clique SPARQL, cross-domain exactMatch rule, OAEI-style precision/recall with thresholds, QA report format. Referenced by mapper + validator.
+  - `.claude/skills/_shared/sssom-semapv-recipes.md` — required YAML header, SEMAPV justification catalog, lexmatch→SSSOM recipe, Class B LLM-verified recipe, manual curation recipe, OWL translation. Referenced by mapper.
+  - `.claude/skills/_shared/modularization-and-bridges.md` — module granularity rules, split triggers, layering, import vs. bridge vs. copy decision tree, bridge patterns (SKOS / equivalence / alignment), bridge safety gate. Referenced by scout + conceptualizer + architect.
+- **Worked-example stubs (2 dirs + 2 READMEs):**
+  - `.claude/skills/_shared/worked-examples/ensemble/README.md` — Music Ensemble scope, 5 CQs (CQ-E-001..005), target axiom patterns. Wave 4 fills in 8 per-skill files.
+  - `.claude/skills/_shared/worked-examples/microgrid/README.md` — Community Microgrid scope, 5 CQs (CQ-M-001..005), target axiom patterns. Wave 4 fills in 8 per-skill files.
+
+### Files modified
+- None in Wave 3a. Skill-file modifications land in Wave 3b (4 new sections) and Wave 3c (per-skill enhancements).
+
+### Decisions / gotchas
+- `pattern-catalog.md` is intentionally ODP-level and *complements* the existing `axiom-patterns.md`. No duplication: the pattern catalog cites the axiom catalog for the atomic building blocks.
+- `mapping-evaluation.md` and `sssom-semapv-recipes.md` split the mapping surface into **authoring** (recipes) and **evaluation** (gates). Both cite `llm-verification-patterns.md` for the Class B prompt template.
+- `modularization-and-bridges.md` is the *when/why* file; `odk-and-imports.md` remains the *how* file (MIREOT/STAR/BOT/TOP mechanics).
+- Wave 3a cites are **not yet** added to the 8 SKILL.md files — that lands in Wave 3b together with the 4 new sections. This keeps the commit scope clean.
+
+### Definition-of-done checks (all pass)
+```bash
+# 4 new shared files exist
+for f in pattern-catalog mapping-evaluation sssom-semapv-recipes modularization-and-bridges; do
+  test -f ".claude/skills/_shared/$f.md" || echo "MISSING: $f"
+done
+# Worked-example stubs present
+test -d .claude/skills/_shared/worked-examples/ensemble
+test -f .claude/skills/_shared/worked-examples/ensemble/README.md
+test -d .claude/skills/_shared/worked-examples/microgrid
+test -f .claude/skills/_shared/worked-examples/microgrid/README.md
+# Routing still passes
+uv run python scripts/validate_description_routing.py
+# ruff clean
+uv run ruff check .
+```
 
 ---
 
