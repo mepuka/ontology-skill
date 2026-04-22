@@ -1,10 +1,16 @@
 ---
 name: ontology-conceptualizer
 description: >
-  Builds conceptual models from requirements. Creates glossaries,
-  taxonomies, and property designs. Aligns to BFO upper ontology.
-  Detects modeling anti-patterns. Use when designing the structure
-  of an ontology before formalization.
+  Builds a conceptual model from requirements and reuse findings:
+  glossaries, taxonomies / class hierarchies, property designs, module
+  and layer design, and a BFO upper ontology category decision
+  (continuant vs occurrent; quality vs role vs disposition). Aligns to
+  BFO, detects modeling anti-patterns, resolves SHACL-vs-OWL intent,
+  drafts an axiom plan, and reviews closure / open-world coverage. Use
+  when designing the structure of an ontology before formalization,
+  transforming CQs into conceptual models, aligning to BFO, resolving
+  role-vs-type or object-vs-aggregate ambiguity, choosing domain/range
+  vs SHACL, or selecting axiom patterns from CQs.
 ---
 
 # Ontology Conceptualizer
@@ -35,8 +41,28 @@ Read these files from `_shared/` before beginning work:
 - `_shared/axiom-patterns.md` — OWL pattern catalog for axiom planning
 - `_shared/anti-patterns.md` — modeling mistakes to detect and prevent
 - `_shared/naming-conventions.md` — term naming standards
+- `_shared/bfo-decision-recipes.md` — three decision recipes (continuant/occurrent, independent/dependent, quality/role/disposition); ambiguity register schema
+- `_shared/relation-semantics.md` — object vs data property decision, RO cheat sheet, characteristics matrix
+- `_shared/closure-and-open-world.md` — OWA vs CWA, closure patterns, when to specify SHACL vs OWL universal
+- `_shared/iteration-loopbacks.md` — routing of `bfo_misalignment`, `closure_gap`, `anti_pattern` loopbacks to this skill
+- `_shared/pattern-catalog.md` — ODP selection from CQs (value partition, part-whole, role, participation, N-ary, information-realization); cite the pattern before authoring the axiom plan
+- `_shared/modularization-and-bridges.md` — module granularity, split triggers, layer assignment, import-vs-bridge decision for the conceptual model
 
 ## Core Workflow
+
+### Step 0: Verify Inbound Gate
+
+Before glossary work begins, confirm the two upstream artifacts are present
+and approved. If either is missing, raise a loopback instead of proceeding.
+
+| Artifact | Owner skill | What to check |
+|----------|-------------|---------------|
+| `docs/requirements-approval.yaml` | `ontology-requirements` | Exists with reviewer + ISO date + CQ-freeze commit SHA |
+| `docs/reuse-report.md` + `docs/imports-manifest.yaml` | `ontology-scout` | Reuse decisions + manifest rows for every import |
+| `docs/competency-questions.yaml` | `ontology-requirements` | Every Must-Have CQ has `priority`, `owner`, `testability`, `expected_answer_shape` |
+
+Silent start without these is a `scope_violation` or `missing_reuse`
+loopback — route back to the source skill.
 
 ### Step 1: Glossary of Terms
 
@@ -101,6 +127,29 @@ For each top-level domain class, apply the BFO decision procedure from
 
 Document each alignment decision with rationale in `ontologies/{name}/docs/bfo-alignment.md`.
 
+### Step 3.1: BFO Ambiguity Register (mandatory checkpoint)
+
+Not every domain class lands cleanly on a BFO category. Score each top-level
+class on ambiguity (0 = obvious placement, 3 = genuine conceptual tension).
+Every class scored ≥ 2 MUST go to Class C human review per
+[`_shared/llm-verification-patterns.md`](_shared/llm-verification-patterns.md).
+
+Register format (`docs/bfo-alignment.md` ambiguity section):
+
+| Class | Candidate categories | Ambiguity | Reviewer | Decision | Rationale |
+|-------|----------------------|-----------|----------|----------|-----------|
+| `:MusicEnsemble` | material entity, object aggregate, social role | 2 | jdoe@example.org | object aggregate | Ensemble persists while membership changes; see Orchestra example |
+| `:DispatchEvent` | process, process boundary | 1 | — | process | Has temporal extent > 0 |
+
+Rules:
+
+- Any ambiguity = 2 or 3 without a named reviewer blocks handoff.
+- The rationale must cite the decision recipe in
+  [`_shared/bfo-decision-recipes.md`](_shared/bfo-decision-recipes.md) or a
+  concrete worked example.
+- Low-confidence BFO picks that are NOT flagged here fail the anti-pattern
+  scan downstream (unreviewed BFO ambiguity).
+
 ### Step 4: Property Design
 
 For each property:
@@ -153,6 +202,26 @@ of why narrow domain/range declarations cause unintended classification.
 
 Output as `ontologies/{name}/docs/property-design.yaml`.
 
+### Step 4.1: Relation-Semantics Sheet
+
+For every property in `property-design.yaml`, produce a row in the relation
+semantics sheet per
+[`_shared/relation-semantics.md`](_shared/relation-semantics.md):
+
+| Property | Object vs Data | RO parent (if applicable) | Characteristics | Intent | Notes |
+|----------|-----------------|----------------------------|-----------------|--------|-------|
+| `:hasMember` | object | `RO:0002351 has_member` | inverse-functional, irreflexive | infer | member/part distinction called out |
+| `:hasIdentifier` | data | — | functional | validate (SHACL) | string datatype, unique per class |
+
+Rules:
+
+- Every object property maps to an RO parent (or gives a rationale for not).
+- `intent:` values are `infer | validate | restrict | annotate`, matching the
+  OWL-vs-SHACL decision from Step 4.
+- Characteristics (functional, inverse-functional, transitive, symmetric,
+  asymmetric, reflexive, irreflexive) are declared explicitly — silent
+  omission is not the same as "not applicable."
+
 ### Step 5: Axiom Pattern Selection
 
 For each CQ, determine the needed axiom pattern from
@@ -171,6 +240,41 @@ For each CQ, determine the needed axiom pattern from
 
 Output as `ontologies/{name}/docs/axiom-plan.yaml`.
 
+### Step 5.1: Closure / Open-World Review + CQ Coverage Map
+
+Every Must-Have CQ from `docs/competency-questions.yaml` MUST appear as an
+entry in `axiom-plan.yaml`. This is the CQ coverage map — validator reads
+it to enforce that no Must-Have CQ is forgotten during formalization.
+
+```yaml
+# axiom-plan.yaml excerpt
+- cq_id: CQ-E-001
+  pattern: qualified_cardinality
+  axiom: "StringQuartet EquivalentTo (Ensemble and hasMember exactly 4 Musician)"
+  profile: OWL-DL          # pattern forces out of EL
+  closure_required: false
+```
+
+For every pattern, walk through
+[`_shared/closure-and-open-world.md`](_shared/closure-and-open-world.md)
+and record two things:
+
+1. **Closure decision.** Does the CQ's expected answer depend on the
+   ontology being "complete" about some relation? If yes, either add a
+   closure axiom (universal restriction + enumerated fillers or
+   DisjointUnion) or defer closure to SHACL. Record which.
+2. **OWA trap check.** Does the CQ return "no" / empty because the
+   ontology lacks a fact, not because the fact is false? If yes, the CQ
+   is not an OWL acceptance test — escalate back to requirements (the
+   CQ needs either SHACL phrasing or a closure axiom).
+
+Coverage rules:
+
+- Every Must-Have `cq_id` must appear. Missing rows raise
+  `missing_cq_link` back to `ontology-requirements`.
+- Could-Have / Should-Have CQs may appear; if not, mark `deferred` with
+  reason.
+
 ### Step 6: Anti-Pattern Detection
 
 Review the conceptual model against `_shared/anti-patterns.md`. Check for:
@@ -187,6 +291,34 @@ Review the conceptual model against `_shared/anti-patterns.md`. Check for:
 10. Domain/range overcommitment
 
 Flag any detected anti-patterns and recommend corrections.
+
+### Step 6.1: Anti-Pattern Review Artifact
+
+Detection without a written outcome is a silent pass. Capture every anti-
+pattern check — including "none found" — in
+`docs/anti-pattern-review.md`:
+
+```markdown
+# Anti-pattern review — {ontology}
+Reviewer: jdoe@example.org
+Reviewed at: 2026-04-21
+Conceptual-model commit: abc1234
+
+## Per-pattern results
+| # | Pattern | Detection mode | Finding | Resolution |
+|---|---------|----------------|---------|------------|
+| 1 | Singleton hierarchy | SPARQL probe | :RareClass has only :SubA | Either add :SubB or merge with parent |
+| 2 | Role-type confusion | manual | `:StudentRole` modeled as subclass of `:Person` | Refactor to a role pattern per pattern-catalog § 2 |
+| 3 | Process-object confusion | manual | none found | — |
+...
+
+## Open items
+- Pattern #1 deferred to architect for the :RareClass merge; tracked as
+  follow-up CQ-054 escalation.
+```
+
+The validator reads this file as evidence that the anti-pattern scan was
+performed. Missing file → `anti_pattern` loopback back to conceptualizer.
 
 ## Tool Commands
 
@@ -252,3 +384,48 @@ This skill produces:
 | Conflicting CQ requirements | Stakeholder disagreement | Escalate to user for priority decision |
 | Anti-pattern cannot be resolved | Genuine modeling dilemma | Document the trade-off and let user decide |
 | Pre-glossary terms missing from reuse report | Scout didn't find matches | Mark as "new term needed" in glossary |
+
+## Progress Criteria
+
+Work is done when every box is checked.
+
+- [ ] `docs/glossary.csv` complete; every row links to at least one CQ.
+- [ ] `docs/conceptual-model.yaml` encodes taxonomy, property design,
+      layer assignment per [`_shared/modularization-and-bridges.md § 2`](_shared/modularization-and-bridges.md).
+- [ ] `docs/bfo-alignment.md` carries an ambiguity register; ambiguity ≥ 2 rows
+      have Class-C reviewer signatures.
+- [ ] `docs/property-design.yaml` declares `intent:` = infer / validate / restrict / annotate
+      for every property (decides OWL vs SHACL per architect handoff).
+- [ ] `docs/axiom-plan.yaml` cites an ODP from [`_shared/pattern-catalog.md § 2`](_shared/pattern-catalog.md)
+      per CQ and names the target OWL profile.
+- [ ] `docs/anti-pattern-review.md` lists each anti-pattern, detection mode, result.
+- [ ] `docs/conceptual-model-review.md` exists with reviewer + ISO date.
+
+## LLM Verification Required
+
+See [`_shared/llm-verification-patterns.md`](_shared/llm-verification-patterns.md).
+Never replaces the anti-pattern SPARQL scan or architect's reasoner/report gates.
+
+| Operation | Class | Tool gate |
+|---|---|---|
+| BFO placement (ambiguity ≥ 2) | C | Named reviewer, ISO date, rationale in bfo-alignment.md |
+| Genus-differentia definitions | B | Evidence = parent class, closest sibling, discriminating axiom |
+| Axiom-plan ODP pick | B | Cite the catalog row + axiom-pattern number |
+| Domain/range vs SHACL intent | B | Decision record in property-design.yaml with reason |
+
+## Loopback Triggers
+
+| Trigger | Route to | Reason |
+|---|---|---|
+| Incoming: `bfo_misalignment` | `ontology-conceptualizer` | BFO placement is owned here; reviewer signs off. |
+| Incoming: `closure_gap` | `ontology-conceptualizer` | Closure intent is a conceptualization decision. |
+| Incoming: `anti_pattern` | `ontology-conceptualizer` | Anti-pattern scan + resolution is owned here. |
+| Raised: needed term not in reuse report | `ontology-scout` | Missing reuse — rescout before minting. |
+| Raised: CQ phrasing can't be mapped to a pattern | `ontology-requirements` | Sharpen CQ wording; do not paper over. |
+
+Depth > 3 escalates per [`_shared/iteration-loopbacks.md`](_shared/iteration-loopbacks.md).
+
+## Worked Examples
+
+- [`_shared/worked-examples/ensemble/conceptualizer.md`](_shared/worked-examples/ensemble/conceptualizer.md) — picking value-partition for pitch, role for ensemble seat, N-ary for performance; closure review for `hasMember`. *(Wave 4)*
+- [`_shared/worked-examples/microgrid/conceptualizer.md`](_shared/worked-examples/microgrid/conceptualizer.md) — part-whole topology; BFO placement for dispatch event vs. dispatch role; OEO layering decision. *(Wave 4)*

@@ -13,7 +13,7 @@ import yaml
 from rdflib import Graph
 
 TESTS_DIR = Path(__file__).parent.parent / "tests"
-MERGED = Path("/tmp/enews-merged-v03.ttl")
+MERGED = Path("/tmp/enews-merged-v03.ttl")  # noqa: S108  # developer-local scratch path
 
 
 def load_manifest() -> dict:

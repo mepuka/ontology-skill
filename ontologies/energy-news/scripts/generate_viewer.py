@@ -36,7 +36,7 @@ def short(uri: URIRef | str) -> str:
     """Get a short display name from a URI."""
     s = str(uri)
     if "#" in s:
-        return s.split("#")[-1]
+        return s.rsplit("#", 1)[-1]
     return s.rsplit("/", 1)[-1]
 
 
