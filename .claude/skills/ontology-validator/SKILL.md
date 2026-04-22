@@ -62,6 +62,65 @@ It can also pass SHACL and still be logically inconsistent.
 
 ## Core Workflow
 
+### Step 0: Artifact Type Classification
+
+Classify the input before any gate fires. Artifact type selects which
+levels apply:
+
+| Artifact | Levels that apply |
+|----------|-------------------|
+| Ontology (TBox) | L0 → L6, plus L7 diff for releases |
+| Mapping set | L0 (schema / prefix preflight), mapping gates per `mapping-evaluation.md`, plus L8 loopback |
+| Bridge ontology | L0 → L1 on merged source + target + bridge (consistency + conservativity per `ontology-mapper § Step 8`) |
+| Import closure | L0 (resolve imports), L2 report on merged closure, L7 diff vs. previous manifest |
+| Release artifact | All levels, plus L7 diff and publication metadata |
+
+Record the artifact type at the top of the validation report; missing type
+triggers an immediate handback to the upstream skill.
+
+### Command Order (mandatory)
+
+Run gates in this exact order. Stop-on-ERROR semantics apply to each step:
+
+```text
+L0 preflight → L1 reason → L2 report → L4 verify (CQ) → L3 pyshacl → L4.5 CQ regression
+                                                         ↓
+                                                      L5.5 anti-pattern pack → L6 diff
+```
+
+Severity thresholds (applied per level):
+
+| Severity | Meaning | Action |
+|----------|---------|--------|
+| ERROR | Blocks handoff; upstream skill must fix | Loopback per L8 |
+| WARN  | Tracked; not blocking but must appear in report | Log and carry forward |
+| INFO  | Informational | Logged only |
+
+Exit codes from the tools are authoritative — not narrative interpretation.
+
+### Level 0: Syntax / Profile / Import-Closure Preflight
+
+Before any reasoner runs, confirm the artifact is parseable, declares the
+intended OWL profile, and resolves its imports:
+
+```bash
+# 0a. Syntax parse
+robot validate --input ontology.ttl > validation/syntax.log
+
+# 0b. Profile validation — no reasoner, just construct check
+.local/bin/robot validate-profile --profile {EL|QL|RL|DL} \
+  --input ontology.ttl \
+  --output validation/profile-validate.txt
+
+# 0c. Import closure resolution
+robot merge --input ontology.ttl --collapse-import-closure true \
+  --output validation/merged.ttl 2> validation/import.log
+```
+
+A profile violation here is an ERROR and loops back to `ontology-architect`
+(`profile_violation`). Do NOT proceed to Level 1 with an open L0 failure —
+reasoning on an unresolved closure produces misleading results.
+
 ### Step 1: Logical Validation (Level 1)
 
 ```bash
@@ -106,6 +165,27 @@ Standard shapes:
 - No orphan classes (every class has a parent)
 - Domain/range constraints satisfied
 
+### Level 3.5: SHACL Shape Coverage Check
+
+Count how many property-design intent rows in
+`docs/property-design.yaml` (from the conceptualizer) are covered by a
+generated shape:
+
+```bash
+uv run python scripts/shacl_coverage.py \
+  --property-design ontologies/{name}/docs/property-design.yaml \
+  --shapes ontologies/{name}/shapes/ \
+  --out validation/shacl-coverage.json
+```
+
+Rules:
+
+- Every row with `intent: validate` MUST have a matching shape. Missing
+  coverage is an ERROR and loops back to `ontology-architect`.
+- `intent: infer / annotate` rows do not require shapes.
+- Missing SHACL is a FAIL unless explicitly waived in
+  `docs/validation-waivers.yaml` with owner, rationale, and expiry.
+
 ### Step 4: CQ Test Suite (Level 4)
 
 ```bash
@@ -118,6 +198,28 @@ robot verify --input ontology.ttl \
 For each test:
 - Enumerative CQs: verify non-empty results
 - Constraint CQs: verify zero violations (zero-result queries pass)
+
+### Level 4.5: CQ Manifest Integrity + Stale-CQ Detection
+
+Before declaring the CQ suite pass, audit the manifest itself:
+
+```bash
+uv run python scripts/cq_manifest_check.py \
+  --manifest ontologies/{name}/tests/cq-test-manifest.yaml \
+  --ontology ontologies/{name}/{name}.ttl \
+  --axiom-plan ontologies/{name}/docs/axiom-plan.yaml \
+  --out validation/cq-manifest-audit.json
+```
+
+Gate checks:
+
+- Every `.sparql` test file referenced in the manifest actually exists.
+- Every Must-Have CQ from `competency-questions.yaml` is referenced by the
+  manifest (missing → `missing_cq_link` loopback to `ontology-requirements`).
+- Every CQ carries `parse_status: ok`, `expected_results_contract`, and
+  `entailment` (absent/invalid → `sparql_shape` loopback to `sparql-expert`).
+- Stale-CQ detection: flag CQs whose `required_classes` / `required_properties`
+  no longer exist in the ontology. Upstream term renames should surface here.
 
 ### Step 5: Coverage Metrics (Level 5)
 
@@ -132,6 +234,32 @@ Calculate and report:
 | SHACL conformance | PASS | `pyshacl` |
 | Unsatisfiable classes | 0 | `robot reason` |
 | Orphan classes | 0 | SPARQL check |
+
+### Level 5.5: Anti-Pattern Detection Pack
+
+Run the full SPARQL anti-pattern pack from
+[`_shared/anti-patterns.md`](_shared/anti-patterns.md) against the reasoned
+ontology. Each probe produces a results file even when empty:
+
+```bash
+mkdir -p validation/anti-pattern-results
+for probe in singleton-hierarchy orphan-class missing-disjointness \
+             domain-range-overcommit quality-as-class \
+             role-as-subclass process-as-material; do
+  robot query --input validation/merged.ttl \
+    --query sparql/anti-patterns/${probe}.sparql \
+    --output validation/anti-pattern-results/${probe}.csv
+done
+```
+
+Rules:
+
+- Every probe runs and produces a CSV (including empty CSVs for zero
+  hits). Absent results file → `anti_pattern` loopback to
+  `ontology-conceptualizer`.
+- Anti-pattern hits are ERRORs unless the conceptualizer's
+  `docs/anti-pattern-review.md` explicitly lists a resolution for that
+  class. Unresolved hits block handoff.
 
 ### Step 6: Evaluation Dimensions (Level 6)
 
@@ -150,6 +278,33 @@ judgments with rationale.
 robot diff --left previous.ttl --right ontology.ttl \
   --format markdown --output diff.md
 ```
+
+### Level 8: Loopback Routing
+
+The validator does not fix anything (except trivial annotation gaps). For
+every ERROR and every WARN above threshold, the validation report carries
+a routing row pointing to the owner skill and the required fix artifact.
+This is how the report hands work back to the pipeline instead of trying
+to fix it locally.
+
+| Failure class (from the levels above) | Owner skill | Required fix artifact |
+|----------------------------------------|-------------|-----------------------|
+| L0 syntax / profile violation | `ontology-architect` | Updated axiom or profile declaration |
+| L0 unresolved import | `ontology-curator` | Regenerated `imports-manifest.yaml` + extracted module |
+| L1 unsatisfiable class | `ontology-architect` | Axiom diff that eliminates the contradiction |
+| L2 ROBOT report ERROR | source skill of the offending axiom | New KGCL patch with fix |
+| L3 SHACL violation | `ontology-architect` | Updated shape OR ontology fix |
+| L3.5 SHACL missing | `ontology-architect` | Shapes for every `intent: validate` row |
+| L4 CQ fail | `ontology-architect` (axiom) or `sparql-expert` (query) — classify from the failure | Per-CQ delta report |
+| L4.5 missing CQ link | `ontology-requirements` | Manifest row + traceability update |
+| L4.5 stale CQ | `ontology-requirements` | Refreshed `required_classes` / `required_properties` |
+| L5.5 anti-pattern hit | `ontology-conceptualizer` | Updated `anti-pattern-review.md` with resolution |
+| Mapping gate fail | `ontology-mapper` | Updated SSSOM row or mapping-evaluation report |
+| L7 unannotated breaking change | `ontology-curator` | Updated release notes (Step 6.5) |
+
+The routing table mirrors `## Loopback Triggers` at the bottom of this
+skill and the canonical routing in
+[`_shared/iteration-loopbacks.md`](_shared/iteration-loopbacks.md).
 
 ## Tool Commands
 
