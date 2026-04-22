@@ -65,7 +65,42 @@ uv run ruff check .
 
 ## Wave 2 — OWL-strategy shared files + skill descriptions
 
-_Pending._
+| Commit | Summary |
+|--------|---------|
+| `43df6c6` | `refactor(skills): wave 2a — 9 shared reference files for OWL strategy` |
+| `4323edf` | `refactor(skills): wave 2b — skill descriptions + routing validator` |
+
+Tag: `wave-2-complete`.
+
+### Files created
+- **Shared reference files (9):** `llm-verification-patterns.md`, `owl-profile-playbook.md`, `closure-and-open-world.md`, `shacl-patterns.md`, `robot-template-preflight.md`, `odk-and-imports.md`, `relation-semantics.md`, `bfo-decision-recipes.md`, `cq-traceability.md`.
+- **`scripts/validate_description_routing.py`** — enforces invariant #4 (baseline trigger tokens preserved) and warns on routing collisions.
+
+### Files modified
+- All 8 `SKILL.md` descriptions rewritten (preserving every baseline trigger keyword; validated automatically).
+- All 8 `SKILL.md` `## Shared Reference Materials` sections extended with citations per the Wave 2 matrix.
+
+### Decisions / gotchas
+- Hyphenated phrases like `upper-ontology` are tokenized as a single token by the routing validator. Normalized to `upper ontology` (space-separated) in the conceptualizer description to preserve the `upper` trigger word.
+- `EXPECTED_OVERLAP` raised to 10 for `architect ↔ conceptualizer` and `architect ↔ validator` pairs — they share the largest legitimate vocabulary (axioms, profile, reasoner, SHACL) and the routing validator treats those as expected rather than collisions.
+- `via` added to `GENERIC_TOKENS` — it's filler, not a trigger.
+
+### Definition-of-done checks (all pass)
+```bash
+# All 9 shared files exist and are cited from ≥1 SKILL.md
+for f in llm-verification-patterns owl-profile-playbook closure-and-open-world \
+         shacl-patterns robot-template-preflight odk-and-imports relation-semantics \
+         bfo-decision-recipes cq-traceability; do
+  test -f ".claude/skills/_shared/$f.md" && grep -l "$f" .claude/skills/*/SKILL.md >/dev/null
+done
+# All 8 descriptions changed since wave-1-complete
+[ "$(git diff --stat wave-1-complete..HEAD -- '.claude/skills/*/SKILL.md' | grep -c 'SKILL.md')" -eq 8 ]
+# Routing validator passes
+uv run python scripts/validate_description_routing.py
+# ruff clean
+uv run ruff check .
+```
+
 
 ---
 
