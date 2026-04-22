@@ -46,6 +46,24 @@ Read these files from `_shared/` before beginning work:
 
 ## Core Workflow
 
+### Step 0: Tool / Source Availability Check
+
+Before searching, confirm which sources are reachable. Registry outages are
+common; reuse analysis done against a stale or unreachable registry must be
+declared, not silently degraded.
+
+| Source | How to probe | Fallback when down |
+|--------|--------------|--------------------|
+| OLS | `runoak -i ols: search` (one cheap term) | Local SQLite OBO cache (`sqlite:obo:{id}`) |
+| BioPortal | `runoak -i bioportal: search` (requires API key) | Cached mirror or skip — document skip |
+| OBO Foundry | `runoak -i obo: ontologies` | Local OBO cache |
+| LOV / schema.org | `curl` a canonical IRI | Snapshot in `imports/` if previously fetched |
+| Domain registries (OEO, MIMO, etc.) | canonical endpoints | Pinned local copy |
+
+Record each source queried, access timestamp, and status
+(`up` / `cached` / `unavailable`) in the reuse report header. A reuse report
+with no source-freshness record is incomplete.
+
 ### Always-Reuse Baseline
 
 Before domain-specific search, assume these foundational ontologies are
@@ -81,24 +99,33 @@ Also check specialized repositories when relevant:
 - IBC AgroPortal
 - Google Dataset Search (for ontology-linked datasets)
 
-### Step 2: Evaluate Candidates
+### Step 2: Evaluate Candidates (Reuse-Decision Matrix)
 
-Score each candidate ontology on nine dimensions:
+Every candidate is scored on six decision dimensions. Each dimension is
+recorded with evidence in `docs/reuse-report.md` as a row per candidate.
 
-| Criterion | Weight | How to Assess |
-|-----------|--------|--------------|
-| Coverage | High | % of pre-glossary terms found in the ontology |
-| Quality | High | OBO Dashboard score, label/definition coverage, ROBOT report |
-| License | Required | Must be open (CC-BY or CC0 preferred) |
-| Community | Medium | Active maintenance, GitHub activity, publications |
-| BFO Alignment | Medium | Already aligned to BFO? Uses RO relations? |
-| Syntactic correctness | Required | `robot validate --input candidate.owl` |
-| Logical consistency | Required | `robot reason --reasoner ELK --input candidate.owl` |
-| Modularization | Medium | Can modules be imported independently? |
-| Metadata completeness | Medium | `robot report --input candidate.owl` + header metadata checks |
+| Dimension | What to assess | How to measure |
+|-----------|----------------|----------------|
+| Scope fit (coverage) | Does the candidate cover the pre-glossary terms you need? | % of pre-glossary matched; CQ-probe answer rate from Step 3 |
+| License | Is the license compatible with the project license? | `dcterms:license` header + project policy; blocking if incompatible |
+| Maintenance | Is it actively maintained? | Last-release date, issue cadence, publication trail |
+| Import size | What footprint does reuse drag in? | Triple count, transitive-import count, class count after `robot extract` |
+| Identifier policy | Stable IRIs? Deprecation policy? Version IRIs? | Check `owl:versionIRI`, PURL stability, `obo:IAO_0100001` use on obsoletes |
+| Profile implications | Does it push the project off its target OWL profile? | `robot validate-profile` on a merged sample; watch non-EL axioms if ELK-targeted |
 
-Even when a candidate is not reusable, keep it as a benchmark reference for
-coverage and modeling comparison.
+Run the quality / consistency / metadata checks alongside the matrix — they
+surface issues that populate the matrix rows:
+
+- `robot validate --input candidate.owl` (syntactic correctness)
+- `robot reason --reasoner ELK --input candidate.owl` (logical consistency)
+- `robot report --input candidate.owl` (quality + metadata)
+- `runoak -i candidate.owl statistics` (label / definition coverage)
+- BFO / RO alignment: does it subclass BFO and use RO relations?
+
+**Rejection rationale is mandatory.** Every candidate that is not selected
+MUST have a written rejection rationale row in the matrix. Silent exclusion
+is an anti-pattern (see anti-patterns below). Even rejected candidates may
+serve as benchmark references — record why and keep the link.
 
 ### Step 3: Reuse Decision
 
@@ -121,6 +148,23 @@ candidate (or extracted module) to test practical fit:
 - Draft quick probe queries (or adapt existing CQ drafts).
 - Record whether the candidate can answer each probe fully, partially, or not
   at all.
+
+### Step 3.5: Module vs Import vs Bridge
+
+Before extracting, decide the reuse shape for each selected candidate.
+Consult [`_shared/modularization-and-bridges.md § 6`](_shared/modularization-and-bridges.md)
+for the full decision tree. Record the choice per candidate in the reuse
+report:
+
+| Reuse shape | When to pick it | Downstream skill impact |
+|-------------|-----------------|-------------------------|
+| Full import (`owl:imports`) | Candidate is cohesive, small-to-moderate, and aligned with the target profile | Architect imports IRI; curator tracks upstream version |
+| Module extraction | Candidate covers needed terms but the full footprint violates scope / profile / size | Architect imports the extracted module; manifest records extraction method |
+| Bridge ontology | Two ontologies must stay separate but need equivalence / subclass links | Hand off to `ontology-mapper` for SSSOM bridge authoring |
+| Copy (last resort) | Upstream is unmaintained / license-blocked, terms are copied with attribution | Curator owns maintenance; record why import was rejected |
+
+A recorded decision is mandatory. "Full import" without justification is
+treated the same as silent exclusion — it fails the Progress Criteria.
 
 ### Step 4: Module Extraction
 
@@ -164,18 +208,53 @@ robot extract --method MIREOT \
   --output imports/go_import.owl
 ```
 
-### Step 5: ODP Search
+### Step 5: ODP / DOSDP Selection
 
-Search for applicable Ontology Design Patterns:
+Map each CQ onto an Ontology Design Pattern (ODP) or DOSDP pattern. Pattern
+name-dropping is not a recommendation — each pick needs an instantiation
+template with variable bindings, an example row, and the downstream axiom
+pattern it will implement.
 
-- **Part-Whole**: Modeling mereological relationships
-- **N-ary Relation**: Relations with >2 participants
-- **Value Partition**: Quality values as controlled vocabularies
-- **Participation**: Continuant participation in processes
-- **Information Realization**: GDC/ICE patterns
-- **Role**: Social/contextual properties
+For each recommended pattern, record:
 
-Document which ODPs apply and how they should be instantiated.
+| Field | Content |
+|-------|---------|
+| `source` | Catalog row: [`_shared/pattern-catalog.md § 2`](_shared/pattern-catalog.md) or external DOSDP URL |
+| `pattern_name` | `value-partition`, `part-whole`, `role`, `participation`, `n-ary-relation`, `information-realization`, etc. |
+| `applicable_cqs` | CQ IDs that this pattern serves |
+| `variables` | Named variables with types (e.g. `{Whole: owl:Class, Part: owl:Class}`) |
+| `example_instantiation` | One concrete binding (e.g. `Whole: :Orchestra, Part: :Musician`) |
+| `downstream_axiom_pattern` | Which axiom pattern from [`_shared/axiom-patterns.md`](_shared/axiom-patterns.md) the architect will use |
+| `tool_template` | DOSDP YAML file path if available, else "freehand OWL" |
+
+Output to `docs/odp-recommendations.md`. Patterns without all fields fail
+Progress Criteria.
+
+### Step 6: Import Manifest Update
+
+Every selected candidate and module extraction updates
+`docs/imports-manifest.yaml` per
+[`_shared/odk-and-imports.md`](_shared/odk-and-imports.md):
+
+```yaml
+imports:
+  - source_iri: http://purl.obolibrary.org/obo/ro.owl
+    pinned_version: 2024-04-24
+    extraction_method: STAR          # full_import | STAR | MIREOT | BOT | TOP | bridge | copy
+    term_file: imports/ro_terms.txt
+    license: CC0-1.0
+    refresh_policy: quarterly        # manual | monthly | quarterly | on_upstream_release
+    source_freshness: "2026-04-21 up"  # from Step 0
+    rejection_rationale: null        # populated only for rejected candidates
+  - source_iri: http://example.org/weak-music-vocab.owl
+    pinned_version: 2019-07-01
+    extraction_method: rejected
+    rejection_rationale: "Unmaintained since 2019; license ND; no BFO alignment"
+```
+
+The curator's refresh workflow reads this manifest. A scout report without a
+manifest update — or a manifest row missing `pinned_version` — fails the
+Progress Criteria.
 
 ## Tool Commands
 
