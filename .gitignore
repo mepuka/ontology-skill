@@ -67,6 +67,8 @@ ontologies/*/imports/oeo-carrier-subset.ttl
 ontologies/*/validation/merged-*.ttl
 ontologies/*/validation/reasoned-*.ttl
 ontologies/*/validation/report-*.tsv
+!ontologies/*/validation/report-allowlist.tsv
 ontologies/*/validation/merge-*.log
 ontologies/*/validation/reason-*.log
-ontologies/*/validation/profile-validate-*.{txt,log}
+ontologies/*/validation/profile-validate-project-only.txt
+ontologies/*/validation/profile-validate-*.log

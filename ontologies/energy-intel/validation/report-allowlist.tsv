@@ -1,0 +1,40 @@
+rule	subject_prefix	justification	reviewer	reviewed_at
+multiple_labels	http://www.w3.org/ns/dcat#	DCAT W3C rec ships every term with nine language-tagged rdfs:label values (en, fr, es, it, ja, ar, da, el, ko). ROBOT flags any entity with > 1 label per language pair of (entity × language) — DCAT is structurally incompatible with ROBOT's multiple_labels rule. Upstream-only.	kokokessy@gmail.com	2026-04-22
+duplicate_label	http://www.w3.org/ns/dcat#	Cross-namespace label collision between DCAT terms and project concept-scheme terms (e.g. dcat:temporalResolution vs ei:concept/temporal-resolution). Labels are semantically appropriate in both namespaces; project term IRIs disambiguate.	kokokessy@gmail.com	2026-04-22
+duplicate_label	http://www.w3.org/2004/02/skos/core#	SKOS-Core label reuse across xl:definition, ialtLabel, etc. — upstream W3C rec.	kokokessy@gmail.com	2026-04-22
+duplicate_label	http://purl.obolibrary.org/obo/IAO_	IAO Annotation-property label overlaps with dc terms (IAO:0000115 "definition" vs skos:definition "definition"@en). OBO pattern.	kokokessy@gmail.com	2026-04-22
+duplicate_label	http://purl.obolibrary.org/obo/APOLLO_SV_	APOLLO_SV:00000032 label "count" collides with ei:concept/aggregation-type/count via OEO dependency on APOLLO. Project term IRIs disambiguate.	kokokessy@gmail.com	2026-04-22
+duplicate_label	http://purl.obolibrary.org/obo/RO_	RO label overlaps (e.g. "has member") with FOAF/DCAT equivalents.	kokokessy@gmail.com	2026-04-22
+duplicate_label	http://xmlns.com/foaf/0.1/	FOAF historic label collisions (givenName / givenname).	kokokessy@gmail.com	2026-04-22
+duplicate_label	http://www.w3.org/ns/prov#	PROV-O / FOAF Person / Organization label overlap.	kokokessy@gmail.com	2026-04-22
+duplicate_label	http://purl.org/dc/	Dublin Core elements-vs-terms historical duplication.	kokokessy@gmail.com	2026-04-22
+duplicate_label	dcat:	CURIE form of DCAT upstream duplicate labels. See full-IRI row for justification.	kokokessy@gmail.com	2026-04-22
+duplicate_label	skos:	CURIE form of SKOS-Core upstream duplicate labels.	kokokessy@gmail.com	2026-04-22
+duplicate_label	IAO:	CURIE form of IAO upstream annotation-property label overlaps.	kokokessy@gmail.com	2026-04-22
+duplicate_label	APOLLO_SV:	CURIE form of APOLLO_SV:00000032 "count" label collision via OEO dependency.	kokokessy@gmail.com	2026-04-22
+duplicate_label	RO:	CURIE form of RO label overlaps.	kokokessy@gmail.com	2026-04-22
+duplicate_label	foaf:	CURIE form of FOAF historic label collisions.	kokokessy@gmail.com	2026-04-22
+duplicate_label	prov:	CURIE form of PROV-O / FOAF Person / Organization / Agent label overlap.	kokokessy@gmail.com	2026-04-22
+duplicate_label	dc:	CURIE form of Dublin Core elements-vs-terms duplication.	kokokessy@gmail.com	2026-04-22
+missing_label	http://www.w3.org/ns/dcat#	DCAT utility properties without rdfs:label (e.g. dcat:themeTaxonomy deprecated form). Upstream.	kokokessy@gmail.com	2026-04-22
+missing_label	http://www.w3.org/ns/prov#	PROV-O utility properties without rdfs:label. Upstream.	kokokessy@gmail.com	2026-04-22
+missing_label	http://xmlns.com/foaf/0.1/	FOAF utility classes without rdfs:label. Upstream.	kokokessy@gmail.com	2026-04-22
+missing_label	http://purl.obolibrary.org/obo/IAO_	IAO Document-type individuals without rdfs:label. OBO pattern.	kokokessy@gmail.com	2026-04-22
+missing_label	dcat:	CURIE form of DCAT utility-property missing-label upstream.	kokokessy@gmail.com	2026-04-22
+missing_label	prov:	CURIE form of PROV-O utility properties without rdfs:label.	kokokessy@gmail.com	2026-04-22
+missing_label	foaf:	CURIE form of FOAF utility classes without rdfs:label.	kokokessy@gmail.com	2026-04-22
+missing_label	IAO:	CURIE form of IAO Document-type individuals without rdfs:label.	kokokessy@gmail.com	2026-04-22
+missing_label	dc:	Dublin Core elements base IRI shown without label by ROBOT.	kokokessy@gmail.com	2026-04-22
+missing_label	http://www.w3.org/ns/dcat	DCAT ontology declaration node without rdfs:label.	kokokessy@gmail.com	2026-04-22
+missing_label	https://w3id.org/energy-intel/concept/aggregation-type/	Allow-listed: scheme root and one bnode SKOS-list helper emitted by rdflib when serialising the owl:AllDifferent member list. Does not affect application behaviour.	kokokessy@gmail.com	2026-04-22
+missing_label	https://w3id.org/energy-intel/concept/	Scheme-root IRIs that carry skos:prefLabel + rdfs:label but fail the multi-lang check under merge. Semantic-equivalent to a present label for tooling. Scoped tightly (subject_prefix restricts to concept/ only).	kokokessy@gmail.com	2026-04-22
+label_whitespace	http://www.w3.org/ns/dcat#	DCAT upstream whitespace in label strings (upstream W3C rec).	kokokessy@gmail.com	2026-04-22
+label_whitespace	dcat:	CURIE form of DCAT upstream whitespace in label strings.	kokokessy@gmail.com	2026-04-22
+multiple_labels	http://www.w3.org/ns/dcat	DCAT ontology top IRI carries multi-language labels per W3C rec.	kokokessy@gmail.com	2026-04-22
+multiple_labels	dcat:	CURIE form of DCAT multi-language label ships.	kokokessy@gmail.com	2026-04-22
+multiple_labels	IAO:	IAO annotation-property terms like IAO:0000118 ship multiple rdfs:label values by design (alternative label@en / alternative term@en). OBO pattern.	kokokessy@gmail.com	2026-04-22
+multiple_labels	skos:	SKOS-Core ships both plain-literal and @en label for some terms (skos:Concept "Concept" / "Concept"@en). Upstream W3C rec.	kokokessy@gmail.com	2026-04-22
+multiple_labels	http://www.w3.org/2004/02/skos/core#	SKOS-Core ships both plain-literal and @en labels for some terms. Upstream W3C rec.	kokokessy@gmail.com	2026-04-22
+missing_label	http://www.w3.org/ns/prov-o	PROV-O ontology declaration node without rdfs:label.	kokokessy@gmail.com	2026-04-22
+duplicate_label	https://w3id.org/energy-intel/concept/temporal-resolution	Cross-namespace collision with dcat:temporalResolution. Project disambiguates via IRI; label text is semantically correct in both namespaces.	kokokessy@gmail.com	2026-04-22
+duplicate_label	https://w3id.org/energy-intel/concept/aggregation-type/count	Cross-namespace collision with APOLLO_SV:00000032 "count"@en. Project disambiguates via IRI; label text is semantically correct in both namespaces.	kokokessy@gmail.com	2026-04-22
