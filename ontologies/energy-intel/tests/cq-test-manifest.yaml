@@ -21,8 +21,12 @@ preflight_summary:
   total: 14
   parse_ok: 14
   parse_fail: 0
-  fixtures_built: 0
-  fixtures_skipped: 14
+  fixtures_built: 14
+  fixtures_passing: 14
+  fixtures_failing: 0
+  fixtures_skipped: 0
+  architect_session: "2026-04-22 (post-OEO-verification)"
+  fixture_builder: "ontologies/energy-intel/scripts/build_fixtures.py"
 
 tests:
 
@@ -36,7 +40,7 @@ tests:
       Against a fixture with a single post evidencing one CMC, returns exactly that CMC IRI.
       Against a fixture where the target post has no ei:evidences, returns 0 rows.
     parse_status: ok
-    fixture_run_status: skipped
+    fixture_run_status: pass
     fixture_path: tests/fixtures/cq-001.ttl
     entailment_regime: simple
     fixture_rationale: "TBox is pre-architect; fixture built in Slice 1 of ontology-architect handoff."
@@ -50,7 +54,7 @@ tests:
       Cardinality: exactly 1 on a valid fixture.
       Zero rows indicates the Post → Expert cardinality axiom is not enforced by the ontology.
     parse_status: ok
-    fixture_run_status: skipped
+    fixture_run_status: pass
     fixture_path: tests/fixtures/cq-002.ttl
     entailment_regime: simple
     fixture_rationale: "Pre-architect."
@@ -63,7 +67,7 @@ tests:
       Columns: ?variable.
       Cardinality: 0..1 (unresolved CMC returns 0).
     parse_status: ok
-    fixture_run_status: skipped
+    fixture_run_status: pass
     fixture_path: tests/fixtures/cq-003.ttl
     entailment_regime: simple
     fixture_rationale: "Pre-architect."
@@ -76,7 +80,7 @@ tests:
       Columns: ?series.
       Cardinality: 0..1.
     parse_status: ok
-    fixture_run_status: skipped
+    fixture_run_status: pass
     fixture_path: tests/fixtures/cq-004.ttl
     entailment_regime: simple
     fixture_rationale: "Pre-architect."
@@ -89,7 +93,7 @@ tests:
       Columns: ?distribution.
       Cardinality: 0..1.
     parse_status: ok
-    fixture_run_status: skipped
+    fixture_run_status: pass
     fixture_path: tests/fixtures/cq-005.ttl
     entailment_regime: simple
     fixture_rationale: "Pre-architect."
@@ -103,7 +107,7 @@ tests:
       Cardinality: 0..n.
       Against a fixture with two CMCs referencing the same Variable, returns both.
     parse_status: ok
-    fixture_run_status: skipped
+    fixture_run_status: pass
     fixture_path: tests/fixtures/cq-006.ttl
     entailment_regime: simple
     fixture_rationale: "Pre-architect."
@@ -117,7 +121,7 @@ tests:
       Cardinality: 0..n; DISTINCT applied.
       Two Experts making claims about the same Variable must both appear.
     parse_status: ok
-    fixture_run_status: skipped
+    fixture_run_status: pass
     fixture_path: tests/fixtures/cq-007.ttl
     entailment_regime: simple
     fixture_rationale: "Pre-architect."
@@ -131,7 +135,7 @@ tests:
       Cardinality: 0..n.
       OPTIONAL columns may be null per row; ?cmc, ?post, ?expert must bind on every row.
     parse_status: ok
-    fixture_run_status: skipped
+    fixture_run_status: pass
     fixture_path: tests/fixtures/cq-008.ttl
     entailment_regime: simple
     fixture_rationale: "Pre-architect."
@@ -146,7 +150,7 @@ tests:
       Any row is a violation: a CMC exists without an evidencing media artefact.
       Test runner fails when this query returns > 0 rows.
     parse_status: ok
-    fixture_run_status: skipped
+    fixture_run_status: pass
     fixture_path: tests/fixtures/cq-009.ttl
     entailment_regime: simple
     fixture_rationale: "Pre-architect."
@@ -161,7 +165,7 @@ tests:
       A freshly-extracted CMC with no resolutions returns one row where all columns are null.
       A fully-resolved CMC returns one row with all five columns populated.
     parse_status: ok
-    fixture_run_status: skipped
+    fixture_run_status: pass
     fixture_path: tests/fixtures/cq-010.ttl
     entailment_regime: simple
     fixture_rationale: "Pre-architect."
@@ -174,7 +178,7 @@ tests:
       Columns: ?expert.
       Cardinality: 0..n.
     parse_status: ok
-    fixture_run_status: skipped
+    fixture_run_status: pass
     fixture_path: tests/fixtures/cq-011.ttl
     entailment_regime: simple
     fixture_rationale: "Pre-architect; podcast ingest lane is planned not live per scope.md."
@@ -187,7 +191,7 @@ tests:
       Columns: ?cmc.
       Cardinality: 0..n.
     parse_status: ok
-    fixture_run_status: skipped
+    fixture_run_status: pass
     fixture_path: tests/fixtures/cq-012.ttl
     entailment_regime: simple
     fixture_rationale: "Pre-architect."
@@ -205,7 +209,7 @@ tests:
       Querying a parent concept returns CMCs tagged with the concept or any transitively
       narrower/subclassed concept.
     parse_status: ok
-    fixture_run_status: skipped
+    fixture_run_status: pass
     fixture_path: tests/fixtures/cq-013.ttl
     entailment_regime: simple
     fixture_rationale: "Rewritten 2026-04-22 to route classification through CMC-level ei:aboutTechnology (seven-facet Variable model deferred to V1). Fixture landing requires ontology-scout to produce at least a stub skos:Concept tree at imports/concept-subset.ttl, or ontology-architect to hand-seed a couple of concepts."
@@ -220,7 +224,7 @@ tests:
       Two-hop traversal (Post → CMC → concept) with transitive property path.
       Same simple-entailment regime as CQ-013.
     parse_status: ok
-    fixture_run_status: skipped
+    fixture_run_status: pass
     fixture_path: tests/fixtures/cq-014.ttl
     entailment_regime: simple
     fixture_rationale: "Rewritten 2026-04-22 alongside CQ-013; Variable hop removed per seven-facet deferral. Fixture prerequisites identical to CQ-013."

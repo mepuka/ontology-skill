@@ -1,0 +1,91 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/energy-intel/concept/aggregation-type/AllDifferent> a owl:AllDifferent ;
+    owl:distinctMembers <https://w3id.org/energy-intel/concept/aggregation-type/AllDifferent/members> .
+
+<https://w3id.org/energy-intel/modules/concept-schemes/aggregation-type> a owl:Ontology ;
+    dcterms:created "2026-04-22"^^xsd:date ;
+    dcterms:description "Value Partition ODP F.1 scheme enumerating the five canonical aggregation-type concepts. Replaces dropped oeo-aggregation-2.11.0 import (OEO v2.11.0 asserted subtree of 1 — see imports/oeo-seed-verification.md)."@en ;
+    dcterms:title "energy-intel — Aggregation Type ConceptScheme"@en ;
+    rdfs:comment "Hand-seeded SKOS ConceptScheme per Value Partition ODP F.1. See docs/axiom-plan.md Foundational section and imports-manifest.yaml."@en ;
+    owl:versionInfo "v0 (2026-04-22)" .
+
+<https://w3id.org/energy-intel/concept/aggregation-type/AllDifferent/members> rdf:first <https://w3id.org/energy-intel/concept/aggregation-type/sum> ;
+    rdf:rest ( <https://w3id.org/energy-intel/concept/aggregation-type/average> <https://w3id.org/energy-intel/concept/aggregation-type/minimum> <https://w3id.org/energy-intel/concept/aggregation-type/maximum> <https://w3id.org/energy-intel/concept/aggregation-type/count> ) .
+
+<https://w3id.org/energy-intel/concept/aggregation-type/average> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "average"@en ;
+    skos:definition "An aggregation that returns the arithmetic mean of the input values."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/aggregation-type> ;
+    skos:prefLabel "average"@en ;
+    skos:related <https://w3id.org/energy-intel/concept/aggregation-type/count>,
+        <https://w3id.org/energy-intel/concept/aggregation-type/maximum>,
+        <https://w3id.org/energy-intel/concept/aggregation-type/minimum>,
+        <https://w3id.org/energy-intel/concept/aggregation-type/sum> ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/aggregation-type> .
+
+<https://w3id.org/energy-intel/concept/aggregation-type/count> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "count"@en ;
+    skos:definition "An aggregation that returns the cardinality of the input sample."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/aggregation-type> ;
+    skos:prefLabel "count"@en ;
+    skos:related <https://w3id.org/energy-intel/concept/aggregation-type/average>,
+        <https://w3id.org/energy-intel/concept/aggregation-type/maximum>,
+        <https://w3id.org/energy-intel/concept/aggregation-type/minimum>,
+        <https://w3id.org/energy-intel/concept/aggregation-type/sum> ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/aggregation-type> .
+
+<https://w3id.org/energy-intel/concept/aggregation-type/maximum> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "maximum"@en ;
+    skos:definition "An aggregation that returns the largest value among the input values."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/aggregation-type> ;
+    skos:prefLabel "maximum"@en ;
+    skos:related <https://w3id.org/energy-intel/concept/aggregation-type/average>,
+        <https://w3id.org/energy-intel/concept/aggregation-type/count>,
+        <https://w3id.org/energy-intel/concept/aggregation-type/minimum>,
+        <https://w3id.org/energy-intel/concept/aggregation-type/sum> ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/aggregation-type> .
+
+<https://w3id.org/energy-intel/concept/aggregation-type/minimum> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "minimum"@en ;
+    skos:definition "An aggregation that returns the smallest value among the input values."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/aggregation-type> ;
+    skos:prefLabel "minimum"@en ;
+    skos:related <https://w3id.org/energy-intel/concept/aggregation-type/average>,
+        <https://w3id.org/energy-intel/concept/aggregation-type/count>,
+        <https://w3id.org/energy-intel/concept/aggregation-type/maximum>,
+        <https://w3id.org/energy-intel/concept/aggregation-type/sum> ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/aggregation-type> .
+
+<https://w3id.org/energy-intel/concept/aggregation-type/sum> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "sum"@en ;
+    skos:definition "An aggregation that returns the additive total of the input values."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/aggregation-type> ;
+    skos:prefLabel "sum"@en ;
+    skos:related <https://w3id.org/energy-intel/concept/aggregation-type/average>,
+        <https://w3id.org/energy-intel/concept/aggregation-type/count>,
+        <https://w3id.org/energy-intel/concept/aggregation-type/maximum>,
+        <https://w3id.org/energy-intel/concept/aggregation-type/minimum> ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/aggregation-type> .
+
+<https://w3id.org/energy-intel/concept/aggregation-type> a owl:NamedIndividual,
+        skos:ConceptScheme ;
+    rdfs:label "aggregation type"@en ;
+    dcterms:title "aggregation type"@en ;
+    skos:definition "The canonical aggregation kind applied when producing a summary value from an input sample."@en ;
+    skos:hasTopConcept <https://w3id.org/energy-intel/concept/aggregation-type/average>,
+        <https://w3id.org/energy-intel/concept/aggregation-type/count>,
+        <https://w3id.org/energy-intel/concept/aggregation-type/maximum>,
+        <https://w3id.org/energy-intel/concept/aggregation-type/minimum>,
+        <https://w3id.org/energy-intel/concept/aggregation-type/sum> ;
+    skos:prefLabel "aggregation type"@en .

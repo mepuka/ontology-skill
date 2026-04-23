@@ -1,0 +1,48 @@
+@prefix bfo: <http://purl.obolibrary.org/obo/BFO_> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ei: <https://w3id.org/energy-intel/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ei:Expert a owl:Class ;
+    rdfs:label "Expert"@en ;
+    rdfs:subClassOf foaf:Person ;
+    owl:disjointWith ei:Organization ;
+    skos:definition "A person who authors posts or speaks in podcast segments that evidence CanonicalMeasurementClaims about energy."@en .
+
+ei:PublisherRole a owl:Class ;
+    rdfs:label "publisher role"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty bfo:0000052 ;
+            owl:someValuesFrom ei:Organization ],
+        bfo:0000023 ;
+    owl:disjointWith ei:DataProviderRole ;
+    skos:definition "A BFO role inhering in an Organization that publishes Posts or Distributions that evidence CMCs."@en .
+
+<https://w3id.org/energy-intel/modules/agent> a owl:Ontology ;
+    dcterms:created "2026-04-22"^^xsd:date ;
+    dcterms:creator "energy-intel / ontology-architect"@en ;
+    dcterms:description "Expert, Organization, and the BFO-role pattern for publisher / data-provider roles."@en ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:title "energy-intel — agent module"@en ;
+    owl:imports <http://purl.obolibrary.org/obo/bfo.owl>,
+        foaf: ;
+    owl:versionInfo "v0 (2026-04-22)" .
+
+ei:DataProviderRole a owl:Class ;
+    rdfs:label "data provider role"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty bfo:0000052 ;
+            owl:someValuesFrom ei:Organization ],
+        bfo:0000023 ;
+    skos:definition "A BFO role inhering in an Organization that acts as the authoritative data source referenced by one or more CMCs."@en .
+
+ei:Organization a owl:Class ;
+    rdfs:label "Organization"@en ;
+    rdfs:subClassOf [ a owl:Class ;
+            owl:intersectionOf ( foaf:Organization bfo:0000027 ) ] ;
+    skos:definition "An organized group of persons (company, agency, research institute) that can bear a PublisherRole or DataProviderRole. Modeled as a FOAF Organization that is also a BFO ObjectAggregate."@en .

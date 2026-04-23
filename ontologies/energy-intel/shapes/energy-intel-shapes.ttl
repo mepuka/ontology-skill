@@ -1,0 +1,50 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ei: <https://w3id.org/energy-intel/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/energy-intel/shape/CMCEvidenceSource> a sh:NodeShape ;
+    rdfs:label "CQ-009: CMC has inbound ei:evidences from EvidenceSource"@en ;
+    sh:property [ sh:class ei:EvidenceSource ;
+            sh:message "Every CanonicalMeasurementClaim must be evidenced by at least one ei:EvidenceSource (CQ-009 invariant)."@en ;
+            sh:minCount 1 ;
+            sh:path [ sh:inversePath ei:evidences ] ] ;
+    sh:targetClass ei:CanonicalMeasurementClaim .
+
+<https://w3id.org/energy-intel/shape/DidSchemeOnAuthoredBy> a sh:NodeShape ;
+    rdfs:label "S-1: DID-scheme URI on authoredBy"@en ;
+    sh:property [ sh:message "ei:authoredBy value must be a DID IRI (did:plc:... or did:web:...)."@en ;
+            sh:nodeKind sh:IRI ;
+            sh:path ei:authoredBy ;
+            sh:pattern "^did:(plc|web):[A-Za-z0-9._:%-]+$" ;
+            sh:severity sh:Violation ] ;
+    sh:targetClass ei:Post .
+
+<https://w3id.org/energy-intel/shape/IntervalOrdering> a sh:NodeShape ;
+    rdfs:label "S-3: ClaimTemporalWindow interval ordering"@en ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+            sh:message "ei:intervalEnd must be >= ei:intervalStart when both are present."@en ;
+            sh:prefixes <https://w3id.org/energy-intel/shapes/prefix-decl> ;
+            sh:select "SELECT $this ?start ?end WHERE { $this ei:intervalStart ?start ; ei:intervalEnd ?end . FILTER(?end < ?start) }" ] ;
+    sh:targetClass ei:ClaimTemporalWindow .
+
+<https://w3id.org/energy-intel/shape/JsonParseableRawDims> a sh:NodeShape ;
+    rdfs:label "S-2: JSON-parseable rawDims on CMC"@en ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+            sh:message "ei:rawDims must be a JSON object or array literal (leading brace or bracket)."@en ;
+            sh:prefixes <https://w3id.org/energy-intel/shapes/prefix-decl> ;
+            sh:select "SELECT $this ?value WHERE { $this ei:rawDims ?value . FILTER(! regex(str(?value), '^\\\\s*[\\\\{\\\\[]')) }" ] ;
+    sh:targetClass ei:CanonicalMeasurementClaim .
+
+<https://w3id.org/energy-intel/shapes/energy-intel-shapes> a owl:Ontology ;
+    dcterms:description "First-batch SHACL shapes for energy-intel V0 — DID-scheme URIs on authors, JSON-parseable raw dimensions, interval ordering, and CQ-009 CMC-evidence invariant."@en ;
+    dcterms:title "energy-intel — SHACL shapes (V0)"@en ;
+    owl:versionInfo "v0 (2026-04-22)" .
+
+<https://w3id.org/energy-intel/shapes/prefix-decl> a owl:Ontology ;
+    sh:declare [ sh:namespace "http://www.w3.org/2001/XMLSchema#"^^xsd:anyURI ;
+            sh:prefix "xsd" ],
+        [ sh:namespace "https://w3id.org/energy-intel/"^^xsd:anyURI ;
+            sh:prefix "ei" ] .

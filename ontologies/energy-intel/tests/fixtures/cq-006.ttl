@@ -1,0 +1,36 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ei: <https://w3id.org/energy-intel/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://id.skygest.io/post/post_01J_a> a owl:NamedIndividual,
+        ei:Post ;
+    ei:authoredBy <https://id.skygest.io/expert/did-plc-aauthor> ;
+    ei:evidences <https://id.skygest.io/cmc/cmc_01J_claim_a> .
+
+<https://id.skygest.io/post/post_01J_b> a owl:NamedIndividual,
+        ei:Post ;
+    ei:authoredBy <https://id.skygest.io/expert/did-plc-bauthor> ;
+    ei:evidences <https://id.skygest.io/cmc/cmc_01J_claim_b> .
+
+<https://w3id.org/energy-intel/tests/fixtures/cq-006> a owl:Ontology ;
+    dcterms:created "2026-04-22"^^xsd:date ;
+    dcterms:description "Two CMCs reference the same Variable (inverse walk)."@en ;
+    dcterms:title "cq-006 fixture"@en .
+
+<https://id.skygest.io/cmc/cmc_01J_claim_a> a owl:NamedIndividual,
+        ei:CanonicalMeasurementClaim ;
+    ei:referencesVariable <https://id.skygest.io/variable/var_01J_solar_installed_capacity> .
+
+<https://id.skygest.io/cmc/cmc_01J_claim_b> a owl:NamedIndividual,
+        ei:CanonicalMeasurementClaim ;
+    ei:referencesVariable <https://id.skygest.io/variable/var_01J_solar_installed_capacity> .
+
+<https://id.skygest.io/expert/did-plc-aauthor> a owl:NamedIndividual,
+        ei:Expert .
+
+<https://id.skygest.io/expert/did-plc-bauthor> a owl:NamedIndividual,
+        ei:Expert .
+
+<https://id.skygest.io/variable/var_01J_solar_installed_capacity> a owl:NamedIndividual,
+        ei:Variable .

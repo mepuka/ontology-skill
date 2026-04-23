@@ -55,3 +55,18 @@ ontologies/*/data/oxigraph/
 docs/*.pdf
 ontologies/*/release/pao-docs.html
 .rlm/
+
+# Large full upstream ontology snapshots (rebuilt on-demand from pinned versions)
+ontologies/*/imports/oeo-full.owl
+
+# ROBOT-derived MIREOT subsets (rebuilt via `uv run python ontologies/*/scripts/run_gates.py`)
+ontologies/*/imports/oeo-technology-subset.ttl
+ontologies/*/imports/oeo-carrier-subset.ttl
+
+# Machine-generated validation artefacts (rebuilt by run_gates.py; not source-of-truth)
+ontologies/*/validation/merged-*.ttl
+ontologies/*/validation/reasoned-*.ttl
+ontologies/*/validation/report-*.tsv
+ontologies/*/validation/merge-*.log
+ontologies/*/validation/reason-*.log
+ontologies/*/validation/profile-validate-*.{txt,log}
