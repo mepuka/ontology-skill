@@ -72,79 +72,66 @@ imports:
   # ---------- Domain ----------
 
   - id: oeo-technology-2.11.0
-    source_iri: http://openenergy-platform.org/ontology/oeo/oeo-full.owl
+    source_iri: https://openenergyplatform.org/ontology/oeo/oeo-full.owl
     pinned_version: "2.11.0"
     extraction_method: BOT
     term_file: imports/oeo-technology-terms.txt
     module_file: imports/oeo-technology-subset.ttl
     license: CC-BY-4.0
     refresh_cadence_days: 90
-    source_freshness: "2026-04-22 cached (2023-02-01 mirror snapshot)"
+    source_freshness: "2026-04-22 verified against v2.11.0 tarball; subset ~90 classes"
     rejection_rationale: null
     seed_terms:
-      # Provisional. Architect re-verifies against v2.11.0 before extract.
-      - "http://openenergy-platform.org/ontology/oeo/OEO_00000011"   # energy converting component (candidate root)
-      - "http://openenergy-platform.org/ontology/oeo/OEO_00010385"   # energy transformation function (backup candidate)
+      # Dual-root BOT extract approved 2026-04-22 post-verification
+      # (imports/oeo-seed-verification.md). Verified namespace is HTTPS
+      # without hyphen.
+      - "https://openenergyplatform.org/ontology/oeo/OEO_00020267"   # energy technology (plan-specification, 37 subs)
+      - "https://openenergyplatform.org/ontology/oeo/OEO_00000011"   # energy converting component (material-entity, 50 subs)
     extraction_command: |
-      # Architect: run this ONLY after verifying seed IRIs via:
-      #   .local/bin/robot query --input oeo.owl \
-      #     --query tests/scout/verify-oeo-seeds.rq /tmp/oeo-seed-labels.tsv
+      # Architect already ran this after seed-IRI verification (see
+      # imports/oeo-seed-verification.md). Local oeo-full.owl is built
+      # from OEO v2.11.0 source tarball via `robot merge`.
       .local/bin/robot extract \
         --method BOT \
-        --input-iri http://openenergy-platform.org/ontology/oeo/oeo-full.owl \
-        --term-file ontologies/energy-intel/imports/oeo-technology-terms.txt \
+        --input ontologies/energy-intel/imports/oeo-full.owl \
+        --term https://openenergyplatform.org/ontology/oeo/OEO_00020267 \
+        --term https://openenergyplatform.org/ontology/oeo/OEO_00000011 \
         --output ontologies/energy-intel/imports/oeo-technology-subset.ttl
     notes: |
-      scope.md § Open q #1 originally suggested OEO_00000030 as the energy-
-      technology root; that IRI labels "oil power unit" (not a root). Fixed
-      candidate set above. Architect runs `robot query` to confirm before
-      `robot extract`.
-      BOT extraction pulls the root + all descendants + ancestors. Size
-      estimate: 150–400 classes.
+      Dual-root extract (plan-spec tier + material-entity tier) per
+      oeo-seed-verification.md. Combined transitive closure ~90 classes;
+      comfortably under the 400-class abort threshold. Scope original
+      OEO_00000030 ("oil power unit") was wrong — not a root.
 
   - id: oeo-carrier-2.11.0
-    source_iri: http://openenergy-platform.org/ontology/oeo/oeo-full.owl
+    source_iri: https://openenergyplatform.org/ontology/oeo/oeo-full.owl
     pinned_version: "2.11.0"
     extraction_method: BOT
     term_file: imports/oeo-carrier-terms.txt
     module_file: imports/oeo-carrier-subset.ttl
     license: CC-BY-4.0
     refresh_cadence_days: 90
-    source_freshness: "2026-04-22 cached"
+    source_freshness: "2026-04-22 verified against v2.11.0 tarball"
     rejection_rationale: null
     seed_terms:
-      - "http://openenergy-platform.org/ontology/oeo/OEO_00020039"   # energy carrier
+      - "https://openenergyplatform.org/ontology/oeo/OEO_00020039"   # energy carrier
     extraction_command: |
       .local/bin/robot extract \
         --method BOT \
-        --input-iri http://openenergy-platform.org/ontology/oeo/oeo-full.owl \
-        --term-file ontologies/energy-intel/imports/oeo-carrier-terms.txt \
+        --input ontologies/energy-intel/imports/oeo-full.owl \
+        --term https://openenergyplatform.org/ontology/oeo/OEO_00020039 \
         --output ontologies/energy-intel/imports/oeo-carrier-subset.ttl
     notes: |
-      Small subtree (~20–60 classes). Architect decides whether to also pull
-      OEO_00000151 (energy carrier disposition); recommendation: skip in V0,
-      add in V1 when CMC-level dispositions matter.
+      Single-root. Asserted subtree size of 5 (verified 2026-04-22) plus
+      transitive closure. OEO_00000151 (energy carrier disposition) deferred
+      to V1 per conceptualizer handoff.
 
-  - id: oeo-aggregation-2.11.0
-    source_iri: http://openenergy-platform.org/ontology/oeo/oeo-full.owl
-    pinned_version: "2.11.0"
-    extraction_method: BOT
-    term_file: imports/oeo-aggregation-terms.txt
-    module_file: imports/oeo-aggregation-subset.ttl
-    license: CC-BY-4.0
-    refresh_cadence_days: 90
-    source_freshness: "2026-04-22 cached"
-    rejection_rationale: null
-    seed_terms:
-      - "http://openenergy-platform.org/ontology/oeo/OEO_00140068"   # aggregation type (candidate)
-    extraction_command: |
-      .local/bin/robot extract \
-        --method BOT \
-        --input-iri http://openenergy-platform.org/ontology/oeo/oeo-full.owl \
-        --term-file ontologies/energy-intel/imports/oeo-aggregation-terms.txt \
-        --output ontologies/energy-intel/imports/oeo-aggregation-subset.ttl
-    notes: |
-      Small subtree (~5–20 classes). Architect verifies OEO_00140068 label.
+  # NOTE: oeo-aggregation-2.11.0 row REMOVED 2026-04-22 per parent-approved
+  # decision. OEO v2.11.0 OEO_00140068 "aggregation type" has an asserted
+  # subtree of 1 (just the root). Replaced by hand-seeded SKOS ConceptScheme
+  # at modules/concept-schemes/aggregation-type.ttl using Value Partition
+  # ODP F.1 — same pattern as ei-temporal-resolution-v0 below. Curator
+  # to file upstream OEO issue requesting aggregation-type branch.
 
   # ---------- Hand-seeded (NOT an extract) ----------
 
@@ -170,6 +157,29 @@ imports:
       a five-value SKOS Concept scheme in the energy-intel namespace. Curator
       files an upstream issue with OEO requesting a temporal-resolution
       branch so we can migrate in a future release.
+
+  - id: ei-aggregation-type-v0
+    source_iri: null
+    pinned_version: "v0"
+    extraction_method: hand_seed
+    term_file: null
+    module_file: modules/concept-schemes/aggregation-type.ttl
+    license: inherits energy-intel license
+    refresh_cadence_days: 0
+    source_freshness: "2026-04-22 up (local)"
+    rejection_rationale: null
+    seed_terms:
+      - "https://w3id.org/energy-intel/concept/aggregation-type/sum"
+      - "https://w3id.org/energy-intel/concept/aggregation-type/average"
+      - "https://w3id.org/energy-intel/concept/aggregation-type/minimum"
+      - "https://w3id.org/energy-intel/concept/aggregation-type/maximum"
+      - "https://w3id.org/energy-intel/concept/aggregation-type/count"
+    extraction_command: "# Hand-seeded by architect as a SKOS ConceptScheme + value partition per ODP F.1 (replaces dropped oeo-aggregation-2.11.0 import)."
+    notes: |
+      Post-verification 2026-04-22: OEO v2.11.0 OEO_00140068 has no asserted
+      subclasses. Hand-seeded scheme of five canonical aggregation concepts
+      (sum, average, minimum, maximum, count). Curator to file upstream
+      OEO issue requesting aggregation-type sub-concepts so we can migrate.
 
   # ---------- Units + quantity ----------
 

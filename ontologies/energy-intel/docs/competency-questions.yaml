@@ -15,7 +15,7 @@
 #   prov:  http://www.w3.org/ns/prov#
 #   foaf:  http://xmlns.com/foaf/0.1/
 #   dcat:  http://www.w3.org/ns/dcat#
-#   oeo:   http://openenergy-platform.org/ontology/oeo/
+#   oeo:   https://openenergyplatform.org/ontology/oeo/    # HTTPS, no hyphen — canonical form verified against OEO v2.11.0 2026-04-22
 #   ei:    https://w3id.org/energy-intel/
 
 cqs:
