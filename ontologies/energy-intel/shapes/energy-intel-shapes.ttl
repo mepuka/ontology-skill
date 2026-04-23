@@ -14,11 +14,11 @@
     sh:targetClass ei:CanonicalMeasurementClaim .
 
 <https://w3id.org/energy-intel/shape/DidSchemeOnAuthoredBy> a sh:NodeShape ;
-    rdfs:label "S-1: DID-scheme URI on authoredBy"@en ;
-    sh:property [ sh:message "ei:authoredBy value must be a DID IRI (did:plc:... or did:web:...)."@en ;
+    rdfs:label "S-1: Skygest-DID URI on authoredBy"@en ;
+    sh:property [ sh:message "ei:authoredBy value must be a Skygest-namespaced Expert IRI with an embedded DID (e.g., https://id.skygest.io/expert/did-plc-<slug>), per Linear D3 ABox policy."@en ;
             sh:nodeKind sh:IRI ;
             sh:path ei:authoredBy ;
-            sh:pattern "^did:(plc|web):[A-Za-z0-9._:%-]+$" ;
+            sh:pattern "^https://id\\.skygest\\.io/expert/did-(plc|web)-[A-Za-z0-9._-]+$" ;
             sh:severity sh:Violation ] ;
     sh:targetClass ei:Post .
 

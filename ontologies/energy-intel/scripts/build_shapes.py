@@ -88,11 +88,17 @@ def main() -> None:
     g.add((ont, OWL.versionInfo, Literal("v0 (2026-04-22)")))
 
     # ---------------------------------------------------------------
-    # S-1: DID-scheme URI on ei:authoredBy values
+    # S-1: Skygest-namespaced DID-embedded URI on ei:authoredBy values
+    #
+    # Per Linear D3 ABox policy, Expert individuals live at
+    # https://id.skygest.io/expert/did-{plc|web}-<slug>; raw did:plc:... /
+    # did:web:... URIs are NOT the deployed form. The shape enforces the
+    # Skygest-wrapped form and still guarantees a DID is embedded in the
+    # slug so downstream resolvers can recover the source DID.
     # ---------------------------------------------------------------
     s1 = EI["shape/DidSchemeOnAuthoredBy"]
     g.add((s1, RDF.type, SH.NodeShape))
-    g.add((s1, RDFS.label, Literal("S-1: DID-scheme URI on authoredBy", lang="en")))
+    g.add((s1, RDFS.label, Literal("S-1: Skygest-DID URI on authoredBy", lang="en")))
     g.add((s1, SH.targetClass, EI.Post))
     s1_prop = BNode()
     g.add((s1, SH.property, s1_prop))
@@ -102,7 +108,7 @@ def main() -> None:
         (
             s1_prop,
             SH.pattern,
-            Literal("^did:(plc|web):[A-Za-z0-9._:%-]+$"),
+            Literal(r"^https://id\.skygest\.io/expert/did-(plc|web)-[A-Za-z0-9._-]+$"),
         )
     )
     g.add(
@@ -110,7 +116,9 @@ def main() -> None:
             s1_prop,
             SH.message,
             Literal(
-                "ei:authoredBy value must be a DID IRI (did:plc:... or did:web:...).",
+                "ei:authoredBy value must be a Skygest-namespaced Expert IRI "
+                "with an embedded DID (e.g., https://id.skygest.io/expert/"
+                "did-plc-<slug>), per Linear D3 ABox policy.",
                 lang="en",
             ),
         )

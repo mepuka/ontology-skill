@@ -1,28 +1,5 @@
-@prefix ei: <https://w3id.org/energy-intel/> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 [] a sh:ValidationReport ;
-    sh:conforms false ;
-    sh:result [ a sh:ValidationResult ;
-            sh:focusNode <https://id.skygest.io/post/post_01J_b> ;
-            sh:resultMessage "ei:authoredBy value must be a DID IRI (did:plc:... or did:web:...)."@en ;
-            sh:resultPath ei:authoredBy ;
-            sh:resultSeverity sh:Violation ;
-            sh:sourceConstraintComponent sh:PatternConstraintComponent ;
-            sh:sourceShape _:nee74cb58a1044cb1937048a9670ec81fb3 ;
-            sh:value <https://id.skygest.io/expert/did-plc-bauthor> ],
-        [ a sh:ValidationResult ;
-            sh:focusNode <https://id.skygest.io/post/post_01J_a> ;
-            sh:resultMessage "ei:authoredBy value must be a DID IRI (did:plc:... or did:web:...)."@en ;
-            sh:resultPath ei:authoredBy ;
-            sh:resultSeverity sh:Violation ;
-            sh:sourceConstraintComponent sh:PatternConstraintComponent ;
-            sh:sourceShape _:nee74cb58a1044cb1937048a9670ec81fb3 ;
-            sh:value <https://id.skygest.io/expert/did-plc-aauthor> ] .
-
-_:nee74cb58a1044cb1937048a9670ec81fb3 sh:message "ei:authoredBy value must be a DID IRI (did:plc:... or did:web:...)."@en ;
-    sh:nodeKind sh:IRI ;
-    sh:path ei:authoredBy ;
-    sh:pattern "^did:(plc|web):[A-Za-z0-9._:%-]+$" ;
-    sh:severity sh:Violation .
+    sh:conforms true .

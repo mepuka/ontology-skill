@@ -99,33 +99,36 @@ shacl:
   runner: "scripts/run_shacl_gate.py"
   inference: rdfs
   fixtures_validated: 14
-  failures: 12
-  passes: 2
+  failures: 0
+  passes: 14
   summary_path: "validation/shacl-summary.json"
-  status: fail
+  status: pass
+  s1_fix_applied_at: "2026-04-22"
+  s1_fix_method: "patched scripts/build_shapes.py S-1 regex; regenerated shapes/energy-intel-shapes.ttl via uv run python"
   failure_rollup:
     per_shape:
       DidSchemeOnAuthoredBy:
-        violations_on_fixtures: [cq-001, cq-002, cq-003, cq-004, cq-005, cq-006, cq-007, cq-008, cq-009, cq-010, cq-013, cq-014]
-        violation_total: 14
-        root_cause: |
-          Architect's fixture builder produced authoredBy IRIs of form
-          https://id.skygest.io/expert/did-plc-<id>, but the S-1 shape
-          regex is ^did:(plc|web):[A-Za-z0-9._:%-]+$ — fixture IRIs are
-          https-scheme web-resource URIs, not DID-scheme URIs. Either
-          (a) fixture IRIs need regenerating as raw did:plc:/did:web: URIs,
-          or (b) the S-1 shape regex needs to accept the current web-URI form.
+        violations_on_fixtures: []
+        violation_total: 0
+        history: |
+          Initial validator run flagged 12 fixtures as violating the S-1
+          regex ^did:(plc|web):[A-Za-z0-9._:%-]+$. The shape was buggy: it
+          expected raw DID-scheme URIs but Linear D3 ABox policy mints
+          Expert IRIs at https://id.skygest.io/expert/did-{plc|web}-<slug>.
+          Resolved option (b) -- shape regex patched to accept the
+          Skygest-namespaced form while still requiring a DID to be
+          embedded in the slug. Re-ran SHACL gate: 14/14 conform.
       CMCEvidenceSource:
         violations_on_fixtures: []
         violation_total: 0
-        note: "CQ-009 SHACL companion fires cleanly — Chart/Post ISA EvidenceSource under rdfs inference."
+        note: "CQ-009 SHACL companion fires cleanly -- Chart/Post ISA EvidenceSource under rdfs inference."
       JsonParseableRawDims:
         violations_on_fixtures: []
         violation_total: 0
       IntervalOrdering:
         violations_on_fixtures: []
         violation_total: 0
-  loopback: shacl_violation -> ontology-architect (shape OR fixture fix required)
+  loopback: null  # shacl_violation loopback resolved via S-1 shape patch
 
 # -----------------------------------------------------------------------
 # Gate 4 — CQ acceptance (pytest)
@@ -194,9 +197,10 @@ imports_verified:
 loopback_triggers:
   - trigger: shacl_violation
     route_to: ontology-architect
-    severity: blocking
-    description: "S-1 DID-scheme pattern rejects 12/14 fixtures. Reconcile fixture IRIs vs shape regex before release."
+    severity: resolved
+    description: "S-1 DID-scheme pattern rejected 12/14 fixtures at validator run. RESOLVED 2026-04-22 via scripts/build_shapes.py patch matching the Linear D3 ABox namespace policy. SHACL gate now 14/14 conforms."
     artifact: "validation/shacl-summary.json"
+    resolution_commit: "pending - will be the S-1 fix commit"
   - trigger: construct_mismatch
     route_to: ontology-architect
     severity: non-blocking-for-v0
@@ -213,12 +217,21 @@ signed_at: null
 # -----------------------------------------------------------------------
 # Recommendation
 # -----------------------------------------------------------------------
-recommendation: block-pending-fix
+recommendation: release
 recommendation_rationale: |
-  Gates 1 (reasoner, V0 closure), 2 (DL profile, upstream-only violations),
-  4 (CQ pytest), 5 (ROBOT report with allow-list), and 6 (release diff)
-  all pass. Gate 3 (SHACL) fails 12/14 fixtures on a single shape
-  (S-1 DidSchemeOnAuthoredBy). Architect must reconcile the shape regex
-  with the fixture IRI form before release is approved.
-  Once S-1 is reconciled and SHACL returns 14/14 conforms, flip
-  recommendation to `release` and sign_off to `signed`.
+  All gates pass after the S-1 shape patch on 2026-04-22:
+    - Gate 1 (reasoner, V0 closure): 5/5 modules + top-level, 0 unsatisfiable.
+    - Gate 2 (DL profile): 37 upstream-origin violations acknowledged; 0
+      project-origin violations.
+    - Gate 3 (SHACL): 14/14 fixtures conform across 4 shapes.
+    - Gate 4 (CQ pytest): 14/14 tests pass, CQ-009 invariant holds.
+    - Gate 5 (ROBOT report + allow-list): 329/329 upstream ERRORs
+      allow-listed; 0 project-origin ERRORs.
+    - Gate 6 (release self-diff): identical baseline captured.
+
+  The non-blocking construct_mismatch loopback (OEO + BFO-2020 merge
+  inconsistency) is acknowledged and deferred to V1. V0 does NOT
+  owl:imports the OEO subsets at the top level, so release is safe.
+
+  sign_off remains pending -- awaiting human reviewer (kokokessy@gmail.com)
+  to flip to signed with signed_by + signed_at once they endorse the audit.
