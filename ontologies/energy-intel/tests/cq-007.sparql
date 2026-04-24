@@ -1,0 +1,14 @@
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ei:   <https://w3id.org/energy-intel/>
+
+# CQ-007 (must_have, UC-003)
+# For a given Variable, which distinct Experts have made CMCs referencing it?
+# Expected: 0..n distinct rows.
+# Derivation: direct_lookup (two-hop join).
+
+SELECT DISTINCT ?expert WHERE {
+  ?cmc  ei:referencesVariable <https://id.skygest.io/variable/var_01J_solar_installed_capacity> .
+  ?post ei:evidences           ?cmc ;
+        ei:authoredBy          ?expert .
+  ?expert a ei:Expert .
+}

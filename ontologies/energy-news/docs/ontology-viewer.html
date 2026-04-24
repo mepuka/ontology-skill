@@ -1,0 +1,2653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Energy News Ontology Viewer</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  background: #f5f6fa; color: #2d3436; line-height: 1.6; }
+header { background: #1e272e; color: white; padding: 1.5rem 2rem; }
+header h1 { font-size: 1.8rem; font-weight: 700; }
+header p { opacity: 0.8; margin-top: 0.3rem; font-size: 0.95rem; }
+.container { max-width: 1200px; margin: 0 auto; padding: 1.5rem; }
+
+/* Stats cards */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem; margin-bottom: 1.5rem; }
+.stat-card { background: white; border-radius: 10px; padding: 1.2rem;
+  text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.stat-card .num { font-size: 2rem; font-weight: 800; color: #0984e3; }
+.stat-card .lbl { font-size: 0.85rem; color: #636e72; text-transform: uppercase;
+  letter-spacing: 0.5px; }
+
+/* Panels */
+.panel { background: white; border-radius: 10px; margin-bottom: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06); overflow: hidden; }
+.panel-header { padding: 1rem 1.5rem; cursor: pointer; display: flex;
+  align-items: center; justify-content: space-between; border-bottom: 1px solid #eee;
+  user-select: none; }
+.panel-header:hover { background: #f8f9fa; }
+.panel-header h2 { font-size: 1.15rem; font-weight: 600; }
+.panel-header .chevron { transition: transform 0.2s; font-size: 1.2rem; color: #636e72; }
+.panel-header.collapsed .chevron { transform: rotate(-90deg); }
+.panel-body { padding: 1.5rem; }
+.panel-body.hidden { display: none; }
+
+/* Badges */
+.badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px;
+  font-size: 0.75rem; font-weight: 600; margin-left: 0.3rem; }
+.badge-green { background: #00b894; color: white; }
+.badge-amber { background: #fdcb6e; color: #2d3436; }
+.badge-blue { background: #0984e3; color: white; }
+.badge-purple { background: #6c5ce7; color: white; }
+.badge-red { background: #d63031; color: white; }
+.badge-gray { background: #b2bec3; color: white; }
+
+/* Class tree */
+.tree { padding-left: 0; }
+.tree ul { padding-left: 1.5rem; }
+.tree li { list-style: none; padding: 0.3rem 0; }
+.class-node { display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.3rem 0.7rem; border-radius: 6px; font-size: 0.9rem; }
+.class-node.shaped { background: #d4edda; }
+.class-node.unshaped { background: #fff3cd; }
+.class-node .cls-name { font-weight: 600; }
+.tree details > summary { cursor: pointer; list-style: none; }
+.tree details > summary::-webkit-details-marker { display: none; }
+.tree details > summary::before { content: '\25B6'; display: inline-block;
+  margin-right: 0.4rem; font-size: 0.7rem; transition: transform 0.15s; color: #636e72; }
+.tree details[open] > summary::before { transform: rotate(90deg); }
+.def-tooltip { display: none; position: absolute; background: #2d3436; color: white;
+  padding: 0.5rem 0.8rem; border-radius: 6px; font-size: 0.8rem; max-width: 400px;
+  z-index: 100; line-height: 1.4; }
+.class-node:hover .def-tooltip { display: block; }
+.class-node { position: relative; }
+
+/* Property table */
+table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+th { text-align: left; padding: 0.6rem 0.8rem; background: #f8f9fa;
+  border-bottom: 2px solid #dfe6e9; font-weight: 600; font-size: 0.8rem;
+  text-transform: uppercase; letter-spacing: 0.3px; color: #636e72; }
+td { padding: 0.6rem 0.8rem; border-bottom: 1px solid #eee; }
+tr:hover { background: #f8f9fa; }
+
+/* Shape cards */
+.shape-card { border: 1px solid #dfe6e9; border-radius: 8px; padding: 1rem;
+  margin-bottom: 0.8rem; }
+.shape-card h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+.shape-card .constraint { font-size: 0.85rem; padding: 0.2rem 0;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace; }
+
+/* Topic tree */
+.topic-tree { column-count: 2; column-gap: 2rem; }
+@media (max-width: 768px) { .topic-tree { column-count: 1; } }
+.topic-group { break-inside: avoid; margin-bottom: 1rem; }
+.topic-group h3 { font-size: 0.95rem; color: #0984e3; margin-bottom: 0.3rem;
+  padding: 0.3rem 0.6rem; background: #e3f2fd; border-radius: 4px;
+  display: inline-block; }
+.topic-leaf { font-size: 0.85rem; padding: 0.15rem 0 0.15rem 1.2rem; color: #555; }
+.topic-leaf .alt { color: #999; font-style: italic; }
+
+/* Individual chips */
+.ind-group { margin-bottom: 1rem; }
+.ind-group h3 { font-size: 0.95rem; margin-bottom: 0.5rem; color: #636e72; }
+.chip-list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.chip { padding: 0.3rem 0.7rem; background: #eee; border-radius: 20px;
+  font-size: 0.85rem; cursor: default; position: relative; }
+.chip:hover { background: #d5d8dc; }
+.chip .chip-tip { display: none; position: absolute; bottom: 100%; left: 0;
+  background: #2d3436; color: white; padding: 0.4rem 0.6rem; border-radius: 6px;
+  font-size: 0.78rem; max-width: 300px; white-space: normal; z-index: 50;
+  margin-bottom: 0.3rem; }
+.chip:hover .chip-tip { display: block; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Energy News Ontology Viewer</h1>
+  <p>v0.3.0 &mdash; Phase 1 Pre-ABox Readiness &mdash; 1966 triples</p>
+</header>
+<div class="container" id="app"></div>
+
+<script>
+const DATA = {
+  "stats": {
+    "class_count": 23,
+    "property_count": 44,
+    "shape_count": 15,
+    "topic_count": 92,
+    "individual_count": 43,
+    "triple_count": 1966
+  },
+  "classes": [
+    {
+      "uri": "Article",
+      "label": "article",
+      "definition": "A GenericallyDependentContinuant that represents a news article referenced by an embedded link in a social media post",
+      "bfo_parent": "GDC",
+      "parents": [
+        "schema:NewsArticle"
+      ]
+    },
+    {
+      "uri": "AuthorAccount",
+      "label": "author account",
+      "definition": "A GenericallyDependentContinuant that represents a social media account that shares energy news",
+      "bfo_parent": "GDC",
+      "parents": []
+    },
+    {
+      "uri": "CapacityMeasurement",
+      "label": "capacity measurement",
+      "definition": "A GenericallyDependentContinuant representing a quantified metric of power generation or storage capability measured in MW, GW, MWh, or equivalent units",
+      "bfo_parent": "GDC",
+      "parents": []
+    },
+    {
+      "uri": "EmbeddedExternalLink",
+      "label": "embedded external link",
+      "definition": "A GenericallyDependentContinuant representing a hyperlink embedded within a Post pointing to an external web resource with link metadata such as title, description, and URI",
+      "bfo_parent": "GDC",
+      "parents": []
+    },
+    {
+      "uri": "EnergyEvent",
+      "label": "energy event",
+      "definition": "A Process representing a significant occurrence in the energy sector including conferences, policy announcements, regulatory decisions, and market disruptions",
+      "bfo_parent": "Process",
+      "parents": []
+    },
+    {
+      "uri": "EnergyProject",
+      "label": "energy project",
+      "definition": "A Process representing the planning, permitting, construction, and commissioning activity for developing energy infrastructure such as power plants, renewable installations, and grid upgrades",
+      "bfo_parent": "Process",
+      "parents": []
+    },
+    {
+      "uri": "EnergyTechnology",
+      "label": "energy technology",
+      "definition": "A GenericallyDependentContinuant representing a class of technological innovations used in energy generation, storage, transmission, or efficiency",
+      "bfo_parent": "GDC",
+      "parents": []
+    },
+    {
+      "uri": "EnergyTopic",
+      "label": "energy topic",
+      "definition": "An owl:Class whose instances are skos:Concept individuals representing subject areas within the energy sector used to classify news articles",
+      "bfo_parent": "GDC",
+      "parents": []
+    },
+    {
+      "uri": "Feed",
+      "label": "feed",
+      "definition": "A GenericallyDependentContinuant that represents a curated social media feed for energy content",
+      "bfo_parent": "GDC",
+      "parents": []
+    },
+    {
+      "uri": "GeographicEntity",
+      "label": "geographic entity",
+      "definition": "A Site that represents a country region or subnational area relevant to energy news coverage",
+      "bfo_parent": "Site",
+      "parents": [
+        "schema:Place"
+      ]
+    },
+    {
+      "uri": "GridZone",
+      "label": "grid zone",
+      "definition": "A GeographicEntity that represents a region with defined electrical grid boundaries managed by a specific operator",
+      "bfo_parent": "",
+      "parents": [
+        "GeographicEntity"
+      ]
+    },
+    {
+      "uri": "MarketInstrument",
+      "label": "market instrument",
+      "definition": "A GenericallyDependentContinuant representing a financial or trading mechanism for energy commodities, capacity, or credits including carbon permits, PPAs, and RECs",
+      "bfo_parent": "GDC",
+      "parents": []
+    },
+    {
+      "uri": "MediaAttachment",
+      "label": "media attachment",
+      "definition": "A GenericallyDependentContinuant representing a multimedia object such as an image, video, or document attached to or embedded in a Post",
+      "bfo_parent": "GDC",
+      "parents": []
+    },
+    {
+      "uri": "Organization",
+      "label": "organization",
+      "definition": "An Object that represents a company agency or institutional body mentioned in energy news",
+      "bfo_parent": "Object",
+      "parents": []
+    },
+    {
+      "uri": "PolicyInstrument",
+      "label": "policy instrument",
+      "definition": "A GenericallyDependentContinuant representing a regulatory, legislative, or economic tool used to incentivize, mandate, or restrict energy production or technology adoption",
+      "bfo_parent": "GDC",
+      "parents": []
+    },
+    {
+      "uri": "Post",
+      "label": "post",
+      "definition": "A GenericallyDependentContinuant that represents a social media post sharing energy content",
+      "bfo_parent": "GDC",
+      "parents": []
+    },
+    {
+      "uri": "PowerPlant",
+      "label": "power plant",
+      "definition": "An Object representing a facility that generates electricity or thermal energy, characterized by fuel type, capacity, and operational status",
+      "bfo_parent": "Object",
+      "parents": []
+    },
+    {
+      "uri": "PriceDataPoint",
+      "label": "price data point",
+      "definition": "A GenericallyDependentContinuant representing a quantified price or cost metric for energy, technology, or commodities at a specific point in time",
+      "bfo_parent": "GDC",
+      "parents": []
+    },
+    {
+      "uri": "ProjectStatus",
+      "label": "project status",
+      "definition": "A GenericallyDependentContinuant representing a categorical characterization of an energy project phase from planning through decommissioning",
+      "bfo_parent": "GDC",
+      "parents": []
+    },
+    {
+      "uri": "Publication",
+      "label": "publication",
+      "definition": "An Object that represents a news media outlet or website that publishes articles",
+      "bfo_parent": "Object",
+      "parents": [
+        "schema:NewsMediaOrganization"
+      ]
+    },
+    {
+      "uri": "RegulatoryBody",
+      "label": "regulatory body",
+      "definition": "An Organization with authority to create, enforce, or adjudicate energy policy and grid operations within a defined jurisdiction",
+      "bfo_parent": "",
+      "parents": [
+        "Organization"
+      ]
+    },
+    {
+      "uri": "RenewableInstallation",
+      "label": "renewable installation",
+      "definition": "An Object representing a specific renewable energy facility such as a solar array, wind farm, or geothermal plant, characterized by technology type and capacity",
+      "bfo_parent": "Object",
+      "parents": []
+    },
+    {
+      "uri": "SocialMediaPlatform",
+      "label": "social media platform",
+      "definition": "An owl:Class whose instances are named individuals representing social media platforms",
+      "bfo_parent": "GDC",
+      "parents": []
+    }
+  ],
+  "properties": [
+    {
+      "uri": "mimeType",
+      "label": "MIME type",
+      "type": "Data",
+      "domain": "MediaAttachment",
+      "range": "string",
+      "functional": true,
+      "definition": "The MIME type of the media attachment such as image/jpeg or video/mp4"
+    },
+    {
+      "uri": "altText",
+      "label": "alt text",
+      "type": "Data",
+      "domain": "MediaAttachment",
+      "range": "string",
+      "functional": true,
+      "definition": "The alternative text description for the media attachment"
+    },
+    {
+      "uri": "capacityUnit",
+      "label": "capacity unit",
+      "type": "Data",
+      "domain": "CapacityMeasurement",
+      "range": "string",
+      "functional": true,
+      "definition": "The unit of measurement for capacity such as MW, GW, MWh, or GWh"
+    },
+    {
+      "uri": "createdAt",
+      "label": "created at",
+      "type": "Data",
+      "domain": "Post",
+      "range": "dateTime",
+      "functional": true,
+      "definition": "The timestamp when a Post was created"
+    },
+    {
+      "uri": "description",
+      "label": "description",
+      "type": "Data",
+      "domain": "Article",
+      "range": "string",
+      "functional": true,
+      "definition": "The description or summary text of an Article"
+    },
+    {
+      "uri": "displayName",
+      "label": "display name",
+      "type": "Data",
+      "domain": "AuthorAccount",
+      "range": "string",
+      "functional": false,
+      "definition": "The display name of an AuthorAccount"
+    },
+    {
+      "uri": "handle",
+      "label": "handle",
+      "type": "Data",
+      "domain": "AuthorAccount",
+      "range": "string",
+      "functional": true,
+      "definition": "The handle or username string for an AuthorAccount"
+    },
+    {
+      "uri": "likeCount",
+      "label": "like count",
+      "type": "Data",
+      "domain": "Post",
+      "range": "nonNegativeInteger",
+      "functional": false,
+      "definition": "The number of likes on a Post"
+    },
+    {
+      "uri": "linkUri",
+      "label": "link URI",
+      "type": "Data",
+      "domain": "EmbeddedExternalLink",
+      "range": "anyURI",
+      "functional": true,
+      "definition": "The target URI of the embedded external link"
+    },
+    {
+      "uri": "linkDescription",
+      "label": "link description",
+      "type": "Data",
+      "domain": "EmbeddedExternalLink",
+      "range": "string",
+      "functional": true,
+      "definition": "The preview description text of the embedded external link"
+    },
+    {
+      "uri": "linkTitle",
+      "label": "link title",
+      "type": "Data",
+      "domain": "EmbeddedExternalLink",
+      "range": "string",
+      "functional": true,
+      "definition": "The preview title text of the embedded external link"
+    },
+    {
+      "uri": "measurementDate",
+      "label": "measurement date",
+      "type": "Data",
+      "domain": "CapacityMeasurement",
+      "range": "dateTime",
+      "functional": true,
+      "definition": "The date when the capacity measurement was recorded"
+    },
+    {
+      "uri": "mediaUri",
+      "label": "media URI",
+      "type": "Data",
+      "domain": "MediaAttachment",
+      "range": "anyURI",
+      "functional": true,
+      "definition": "The URI of the media resource such as an image or video"
+    },
+    {
+      "uri": "postText",
+      "label": "post text",
+      "type": "Data",
+      "domain": "Post",
+      "range": "string",
+      "functional": false,
+      "definition": "The text content of a Post"
+    },
+    {
+      "uri": "priceCurrency",
+      "label": "price currency",
+      "type": "Data",
+      "domain": "PriceDataPoint",
+      "range": "string",
+      "functional": true,
+      "definition": "The ISO 4217 currency code for the price value such as USD, EUR, or GBP"
+    },
+    {
+      "uri": "priceDate",
+      "label": "price date",
+      "type": "Data",
+      "domain": "PriceDataPoint",
+      "range": "dateTime",
+      "functional": true,
+      "definition": "The date when the price was recorded or observed"
+    },
+    {
+      "uri": "priceValue",
+      "label": "price value",
+      "type": "Data",
+      "domain": "PriceDataPoint",
+      "range": "float",
+      "functional": true,
+      "definition": "The numeric price or cost value"
+    },
+    {
+      "uri": "publishedDate",
+      "label": "published date",
+      "type": "Data",
+      "domain": "Article",
+      "range": "dateTime",
+      "functional": true,
+      "definition": "The publication date of an Article"
+    },
+    {
+      "uri": "replyCount",
+      "label": "reply count",
+      "type": "Data",
+      "domain": "Post",
+      "range": "nonNegativeInteger",
+      "functional": false,
+      "definition": "The number of replies to a Post"
+    },
+    {
+      "uri": "repostCount",
+      "label": "repost count",
+      "type": "Data",
+      "domain": "Post",
+      "range": "nonNegativeInteger",
+      "functional": false,
+      "definition": "The number of reposts of a Post"
+    },
+    {
+      "uri": "siteDomain",
+      "label": "site domain",
+      "type": "Data",
+      "domain": "Publication",
+      "range": "string",
+      "functional": true,
+      "definition": "The domain name string of a Publication"
+    },
+    {
+      "uri": "thumbnailUri",
+      "label": "thumbnail URI",
+      "type": "Data",
+      "domain": "EmbeddedExternalLink",
+      "range": "anyURI",
+      "functional": true,
+      "definition": "The URI of the preview thumbnail image for the embedded external link"
+    },
+    {
+      "uri": "title",
+      "label": "title",
+      "type": "Data",
+      "domain": "Article",
+      "range": "string",
+      "functional": true,
+      "definition": "The headline or title string of an Article"
+    },
+    {
+      "uri": "url",
+      "label": "url",
+      "type": "Data",
+      "domain": "Article",
+      "range": "anyURI",
+      "functional": true,
+      "definition": "The URL of an Article"
+    },
+    {
+      "uri": "valueInMW",
+      "label": "value in MW",
+      "type": "Data",
+      "domain": "CapacityMeasurement",
+      "range": "float",
+      "functional": true,
+      "definition": "The numeric capacity value expressed in megawatts"
+    },
+    {
+      "uri": "aboutProject",
+      "label": "about project",
+      "type": "Object",
+      "domain": "Article",
+      "range": "EnergyProject",
+      "functional": false,
+      "definition": "Links an Article to an EnergyProject it covers"
+    },
+    {
+      "uri": "coversTechnology",
+      "label": "covers technology",
+      "type": "Object",
+      "domain": "Article",
+      "range": "EnergyTechnology",
+      "functional": false,
+      "definition": "Links an Article to an EnergyTechnology it discusses"
+    },
+    {
+      "uri": "coversTopic",
+      "label": "covers topic",
+      "type": "Object",
+      "domain": "Article",
+      "range": "EnergyTopic",
+      "functional": false,
+      "definition": "Links an Article to an EnergyTopic individual it covers"
+    },
+    {
+      "uri": "developedThrough",
+      "label": "developed through",
+      "type": "Object",
+      "domain": "BFO_0000030",
+      "range": "EnergyProject",
+      "functional": false,
+      "definition": "Links a physical energy facility (PowerPlant or RenewableInstallation) to the EnergyProject development process that produced it"
+    },
+    {
+      "uri": "hasCapacity",
+      "label": "has capacity",
+      "type": "Object",
+      "domain": "EnergyProject",
+      "range": "CapacityMeasurement",
+      "functional": false,
+      "definition": "Links an EnergyProject to its capacity measurement"
+    },
+    {
+      "uri": "hasEmbed",
+      "label": "has embed",
+      "type": "Object",
+      "domain": "Post",
+      "range": "EmbeddedExternalLink",
+      "functional": false,
+      "definition": "Links a Post to its embedded external link"
+    },
+    {
+      "uri": "hasGeographicFocus",
+      "label": "has geographic focus",
+      "type": "Object",
+      "domain": "Article",
+      "range": "GeographicEntity",
+      "functional": false,
+      "definition": "Links an Article to a GeographicEntity representing its geographic focus"
+    },
+    {
+      "uri": "hasMedia",
+      "label": "has media",
+      "type": "Object",
+      "domain": "Post",
+      "range": "MediaAttachment",
+      "functional": false,
+      "definition": "Links a Post to its media attachments"
+    },
+    {
+      "uri": "hasSector",
+      "label": "has sector",
+      "type": "Object",
+      "domain": "Organization",
+      "range": "EnergyTopic",
+      "functional": false,
+      "definition": "Links an Organization to an EnergyTopic sector it operates in"
+    },
+    {
+      "uri": "hasStatus",
+      "label": "has status",
+      "type": "Object",
+      "domain": "EnergyProject",
+      "range": "ProjectStatus",
+      "functional": true,
+      "definition": "Links an EnergyProject to its current status"
+    },
+    {
+      "uri": "hasTechnology",
+      "label": "has technology",
+      "type": "Object",
+      "domain": "Thing",
+      "range": "EnergyTechnology",
+      "functional": false,
+      "definition": "Links a RenewableInstallation to its technology type"
+    },
+    {
+      "uri": "isReplyTo",
+      "label": "is reply to",
+      "type": "Object",
+      "domain": "Post",
+      "range": "Post",
+      "functional": false,
+      "definition": "Links a reply Post to the parent Post it responds to"
+    },
+    {
+      "uri": "jurisdiction",
+      "label": "jurisdiction",
+      "type": "Object",
+      "domain": "Thing",
+      "range": "GeographicEntity",
+      "functional": false,
+      "definition": "Links a RegulatoryBody or PolicyInstrument to the GeographicEntity representing its jurisdictional scope"
+    },
+    {
+      "uri": "mentionsOrganization",
+      "label": "mentions organization",
+      "type": "Object",
+      "domain": "Article",
+      "range": "Organization",
+      "functional": false,
+      "definition": "Links an Article to an Organization mentioned in its coverage"
+    },
+    {
+      "uri": "onPlatform",
+      "label": "on platform",
+      "type": "Object",
+      "domain": "Thing",
+      "range": "SocialMediaPlatform",
+      "functional": true,
+      "definition": "Links an AuthorAccount or Feed to the SocialMediaPlatform it belongs to"
+    },
+    {
+      "uri": "operatedBy",
+      "label": "operated by",
+      "type": "Object",
+      "domain": "Thing",
+      "range": "Organization",
+      "functional": false,
+      "definition": "Links a GridZone to its operating organization"
+    },
+    {
+      "uri": "postedBy",
+      "label": "posted by",
+      "type": "Object",
+      "domain": "Post",
+      "range": "AuthorAccount",
+      "functional": true,
+      "definition": "Links a Post to the AuthorAccount who created it"
+    },
+    {
+      "uri": "publishedBy",
+      "label": "published by",
+      "type": "Object",
+      "domain": "Article",
+      "range": "Publication",
+      "functional": true,
+      "definition": "Links an Article to the Publication that published it"
+    },
+    {
+      "uri": "sharesArticle",
+      "label": "shares article",
+      "type": "Object",
+      "domain": "Post",
+      "range": "Article",
+      "functional": true,
+      "definition": "Links a Post to the Article it shares via embedded link"
+    }
+  ],
+  "shapes": [
+    {
+      "name": "ArticleShape",
+      "targetClass": "Article",
+      "constraints": [
+        {
+          "path": "coversTopic",
+          "minCount": 1,
+          "class": "EnergyTopic"
+        },
+        {
+          "path": "description",
+          "maxCount": 1
+        },
+        {
+          "path": "publishedBy",
+          "maxCount": 1
+        },
+        {
+          "path": "publishedDate",
+          "maxCount": 1
+        },
+        {
+          "path": "title",
+          "maxCount": 1
+        },
+        {
+          "path": "url",
+          "minCount": 1,
+          "maxCount": 1,
+          "datatype": "anyURI"
+        }
+      ],
+      "hasSparql": true
+    },
+    {
+      "name": "AuthorAccountShape",
+      "targetClass": "AuthorAccount",
+      "constraints": [
+        {
+          "path": "handle",
+          "minCount": 1,
+          "maxCount": 1,
+          "datatype": "string"
+        },
+        {
+          "path": "onPlatform",
+          "minCount": 1,
+          "maxCount": 1,
+          "class": "SocialMediaPlatform"
+        }
+      ],
+      "hasSparql": false
+    },
+    {
+      "name": "CapacityMeasurementShape",
+      "targetClass": "CapacityMeasurement",
+      "constraints": [
+        {
+          "path": "capacityUnit",
+          "minCount": 1,
+          "maxCount": 1,
+          "datatype": "string"
+        },
+        {
+          "path": "measurementDate",
+          "maxCount": 1,
+          "datatype": "dateTime"
+        },
+        {
+          "path": "valueInMW",
+          "minCount": 1,
+          "maxCount": 1,
+          "datatype": "float"
+        }
+      ],
+      "hasSparql": false
+    },
+    {
+      "name": "EmbeddedExternalLinkShape",
+      "targetClass": "EmbeddedExternalLink",
+      "constraints": [
+        {
+          "path": "linkDescription",
+          "maxCount": 1,
+          "datatype": "string"
+        },
+        {
+          "path": "linkTitle",
+          "maxCount": 1,
+          "datatype": "string"
+        },
+        {
+          "path": "linkUri",
+          "minCount": 1,
+          "maxCount": 1,
+          "datatype": "anyURI"
+        },
+        {
+          "path": "thumbnailUri",
+          "maxCount": 1,
+          "datatype": "anyURI"
+        }
+      ],
+      "hasSparql": false
+    },
+    {
+      "name": "EnergyProjectShape",
+      "targetClass": "EnergyProject",
+      "constraints": [
+        {
+          "path": "hasCapacity",
+          "class": "CapacityMeasurement"
+        },
+        {
+          "path": "hasStatus",
+          "maxCount": 1,
+          "class": "ProjectStatus"
+        },
+        {
+          "path": "label",
+          "minCount": 1
+        }
+      ],
+      "hasSparql": false
+    },
+    {
+      "name": "EnergyTopicInstanceShape",
+      "targetClass": "EnergyTopic",
+      "constraints": [
+        {
+          "path": "definition",
+          "minCount": 1
+        },
+        {
+          "path": "inScheme",
+          "minCount": 1
+        },
+        {
+          "path": "label",
+          "minCount": 1
+        }
+      ],
+      "hasSparql": false
+    },
+    {
+      "name": "FeedShape",
+      "targetClass": "Feed",
+      "constraints": [
+        {
+          "path": "label",
+          "minCount": 1
+        },
+        {
+          "path": "onPlatform",
+          "minCount": 1,
+          "maxCount": 1,
+          "class": "SocialMediaPlatform"
+        }
+      ],
+      "hasSparql": false
+    },
+    {
+      "name": "GeographicEntityShape",
+      "targetClass": "GeographicEntity",
+      "constraints": [
+        {
+          "path": "label",
+          "minCount": 1
+        }
+      ],
+      "hasSparql": false
+    },
+    {
+      "name": "MediaAttachmentShape",
+      "targetClass": "MediaAttachment",
+      "constraints": [
+        {
+          "path": "altText",
+          "maxCount": 1,
+          "datatype": "string"
+        },
+        {
+          "path": "mediaUri",
+          "minCount": 1,
+          "maxCount": 1,
+          "datatype": "anyURI"
+        },
+        {
+          "path": "mimeType",
+          "maxCount": 1,
+          "datatype": "string"
+        }
+      ],
+      "hasSparql": false
+    },
+    {
+      "name": "OrganizationShape",
+      "targetClass": "Organization",
+      "constraints": [
+        {
+          "path": "definition",
+          "minCount": 1
+        },
+        {
+          "path": "label",
+          "minCount": 1
+        }
+      ],
+      "hasSparql": false
+    },
+    {
+      "name": "PostShape",
+      "targetClass": "Post",
+      "constraints": [
+        {
+          "path": "createdAt",
+          "maxCount": 1,
+          "datatype": "dateTime"
+        },
+        {
+          "path": "postText",
+          "maxCount": 1,
+          "datatype": "string"
+        },
+        {
+          "path": "postedBy",
+          "minCount": 1,
+          "maxCount": 1,
+          "class": "AuthorAccount"
+        },
+        {
+          "path": "sharesArticle",
+          "maxCount": 1
+        }
+      ],
+      "hasSparql": false
+    },
+    {
+      "name": "PowerPlantShape",
+      "targetClass": "PowerPlant",
+      "constraints": [
+        {
+          "path": "hasTechnology",
+          "class": "EnergyTechnology"
+        },
+        {
+          "path": "label",
+          "minCount": 1
+        },
+        {
+          "path": "operatedBy",
+          "class": "Organization"
+        }
+      ],
+      "hasSparql": false
+    },
+    {
+      "name": "PublicationShape",
+      "targetClass": "Publication",
+      "constraints": [
+        {
+          "path": "siteDomain",
+          "minCount": 1,
+          "maxCount": 1,
+          "datatype": "string"
+        }
+      ],
+      "hasSparql": false
+    },
+    {
+      "name": "RenewableInstallationShape",
+      "targetClass": "RenewableInstallation",
+      "constraints": [
+        {
+          "path": "hasTechnology",
+          "class": "EnergyTechnology"
+        },
+        {
+          "path": "label",
+          "minCount": 1
+        },
+        {
+          "path": "operatedBy",
+          "class": "Organization"
+        }
+      ],
+      "hasSparql": false
+    },
+    {
+      "name": "SocialMediaPlatformShape",
+      "targetClass": "SocialMediaPlatform",
+      "constraints": [
+        {
+          "path": "label",
+          "minCount": 1
+        }
+      ],
+      "hasSparql": false
+    }
+  ],
+  "topics": [
+    {
+      "uri": "AIAndDataCenterDemand",
+      "label": "AI and data center energy demand",
+      "definition": "A skos:Concept representing electricity demand from artificial intelligence workloads, data centers, and large-scale computing infrastructure",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "AI energy",
+        "AI power demand",
+        "data center power"
+      ]
+    },
+    {
+      "uri": "COPClimateConference",
+      "label": "COP climate conference",
+      "definition": "A skos:Concept representing United Nations Climate Change Conference proceedings and outcomes",
+      "broader": [
+        "ClimateAndEmissions"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "COP",
+        "COP30",
+        "UNFCCC",
+        "climate summit"
+      ]
+    },
+    {
+      "uri": "Energiewende",
+      "label": "Energiewende",
+      "definition": "A skos:Concept representing Germany's energy transition policy framework and its global influence",
+      "broader": [
+        "EnergyPolicy"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "German energy transition"
+      ]
+    },
+    {
+      "uri": "IRAPolicy",
+      "label": "Inflation Reduction Act policy",
+      "definition": "A skos:Concept representing policies, subsidies, and tax credits established by the U.S. Inflation Reduction Act",
+      "broader": [
+        "EnergyPolicy"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "IRA",
+        "Inflation Reduction Act",
+        "clean energy tax credits"
+      ]
+    },
+    {
+      "uri": "LNGTradeAndInfrastructure",
+      "label": "LNG trade and infrastructure",
+      "definition": "A skos:Concept representing the international trade, pricing, and physical infrastructure for liquefied natural gas",
+      "broader": [
+        "EnergyTradeAndSupplyChains"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "LNG terminal",
+        "LNG trade",
+        "liquefied natural gas trade"
+      ]
+    },
+    {
+      "uri": "Affordability",
+      "label": "affordability",
+      "definition": "A skos:Concept representing energy affordability bills rate increases and energy poverty",
+      "broader": [
+        "EnergyJustice"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "energy bills",
+        "energy poverty",
+        "rate hike"
+      ]
+    },
+    {
+      "uri": "Agrivoltaics",
+      "label": "agrivoltaics",
+      "definition": "A skos:Concept representing co-location of solar panels and agriculture",
+      "broader": [
+        "EnvironmentAndLandUse"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "agrivoltaic",
+        "solar farming"
+      ]
+    },
+    {
+      "uri": "AviationDecarbonization",
+      "label": "aviation decarbonization",
+      "definition": "A skos:Concept representing decarbonization of the aviation sector through sustainable fuels and electric aircraft",
+      "broader": [
+        "SectoralDecarbonization"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "SAF",
+        "e-fuel",
+        "sustainable aviation fuel"
+      ]
+    },
+    {
+      "uri": "BatteryRecycling",
+      "label": "battery recycling",
+      "definition": "A skos:Concept representing recycling, reuse, and circular economy practices for energy storage batteries",
+      "broader": [
+        "EnergyStorage"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "battery circular economy",
+        "second life battery"
+      ]
+    },
+    {
+      "uri": "BiomassAndBioenergy",
+      "label": "biomass and bioenergy",
+      "definition": "A skos:Concept representing energy derived from biological materials including biomass combustion, biofuels, and biogas production",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "bioenergy",
+        "biofuel",
+        "biogas",
+        "biomass"
+      ]
+    },
+    {
+      "uri": "BuildingElectrification",
+      "label": "building electrification",
+      "definition": "A skos:Concept representing switching buildings from gas to electric systems",
+      "broader": [
+        "BuildingsAndEfficiency"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "building electrification",
+        "gas-to-electric"
+      ]
+    },
+    {
+      "uri": "BuildingsAndEfficiency",
+      "label": "buildings and efficiency",
+      "definition": "A skos:Concept representing building energy performance retrofits and distributed generation",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "building energy",
+        "energy efficiency"
+      ]
+    },
+    {
+      "uri": "CarbonCapture",
+      "label": "carbon capture",
+      "definition": "A skos:Concept representing carbon capture utilization and storage technologies",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "CCS",
+        "CCUS",
+        "carbon capture"
+      ]
+    },
+    {
+      "uri": "CarbonMarkets",
+      "label": "carbon markets",
+      "definition": "A skos:Concept representing emissions trading systems, carbon credit markets, and cap-and-trade mechanisms",
+      "broader": [
+        "EnergyMarkets"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "ETS",
+        "cap-and-trade",
+        "carbon credits",
+        "carbon trading"
+      ]
+    },
+    {
+      "uri": "ClimateAndEmissions",
+      "label": "climate and emissions",
+      "definition": "A skos:Concept representing climate change and greenhouse gas emissions in the energy context",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "GHG",
+        "climate",
+        "emissions"
+      ]
+    },
+    {
+      "uri": "Coal",
+      "label": "coal",
+      "definition": "A skos:Concept representing coal extraction and coal-fired power generation",
+      "broader": [
+        "Fossil"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "coal power",
+        "coal-fired"
+      ]
+    },
+    {
+      "uri": "Commodity",
+      "label": "commodity",
+      "definition": "A skos:Concept representing oil futures gas spot prices and energy commodity trading",
+      "broader": [
+        "EnergyMarkets"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "commodity trading",
+        "gas prices",
+        "oil futures"
+      ]
+    },
+    {
+      "uri": "CommunityEnergy",
+      "label": "community energy",
+      "definition": "A skos:Concept representing community-owned energy projects and cooperatives",
+      "broader": [
+        "EnergyJustice"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "community solar",
+        "cooperative energy"
+      ]
+    },
+    {
+      "uri": "CorporateDeals",
+      "label": "corporate deals",
+      "definition": "A skos:Concept representing acquisitions mergers and corporate stakes in energy companies",
+      "broader": [
+        "EnergyFinance"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "M&A",
+        "acquisition",
+        "merger"
+      ]
+    },
+    {
+      "uri": "CriticalMinerals",
+      "label": "critical minerals",
+      "definition": "A skos:Concept representing critical minerals required for energy technologies",
+      "broader": [
+        "EnergyGeopolitics"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "cobalt",
+        "lithium",
+        "rare earth",
+        "silicon"
+      ]
+    },
+    {
+      "uri": "DataCenterDemand",
+      "label": "data center demand",
+      "definition": "A skos:Concept representing electricity demand from data centers and artificial intelligence workloads",
+      "broader": [
+        "AIAndDataCenterDemand"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "AI energy demand",
+        "data center energy"
+      ]
+    },
+    {
+      "uri": "Decarbonization",
+      "label": "decarbonization",
+      "definition": "A skos:Concept representing strategies and progress toward reducing carbon emissions",
+      "broader": [
+        "ClimateAndEmissions"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "carbon reduction",
+        "decarbonisation"
+      ]
+    },
+    {
+      "uri": "DemandResponse",
+      "label": "demand response",
+      "definition": "A skos:Concept representing programs and technologies that adjust electricity consumption in response to grid conditions or price signals",
+      "broader": [
+        "DistributedEnergyAndFlexibility"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "DR",
+        "demand flexibility",
+        "load management"
+      ]
+    },
+    {
+      "uri": "DirectAirCapture",
+      "label": "direct air capture",
+      "definition": "A skos:Concept representing technologies that capture carbon dioxide directly from ambient air",
+      "broader": [
+        "CarbonCapture"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "DAC",
+        "carbon removal"
+      ]
+    },
+    {
+      "uri": "DistributedEnergyAndFlexibility",
+      "label": "distributed energy and grid flexibility",
+      "definition": "A skos:Concept representing distributed energy resources, demand-side flexibility, virtual power plants, and decentralized grid management",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "DER",
+        "distributed energy resources",
+        "grid flexibility"
+      ]
+    },
+    {
+      "uri": "Distribution",
+      "label": "distribution",
+      "definition": "A skos:Concept representing local electricity distribution networks",
+      "broader": [
+        "GridAndInfrastructure"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "local grid",
+        "power distribution"
+      ]
+    },
+    {
+      "uri": "EfficiencyRecords",
+      "label": "efficiency records",
+      "definition": "A skos:Concept representing technology efficiency records and breakthrough achievements",
+      "broader": [
+        "ResearchAndInnovation"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "solar efficiency",
+        "technology record"
+      ]
+    },
+    {
+      "uri": "ElectricTransport",
+      "label": "electric transport",
+      "definition": "A skos:Concept representing electrification of ships ferries buses and other transport",
+      "broader": [
+        "Electrification"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "e-mobility",
+        "electric bus",
+        "electric ferry"
+      ]
+    },
+    {
+      "uri": "ElectricVehicles",
+      "label": "electric vehicles",
+      "definition": "A skos:Concept representing battery and plug-in electric vehicles",
+      "broader": [
+        "Electrification"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "BEV",
+        "EV",
+        "electric car"
+      ]
+    },
+    {
+      "uri": "Electrification",
+      "label": "electrification",
+      "definition": "A skos:Concept representing the electrification of transport buildings and industry",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "electric transition",
+        "electrification"
+      ]
+    },
+    {
+      "uri": "EmissionsTracking",
+      "label": "emissions tracking",
+      "definition": "A skos:Concept representing monitoring and reporting of greenhouse gas emissions",
+      "broader": [
+        "ClimateAndEmissions"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "GHG monitoring",
+        "emissions reporting"
+      ]
+    },
+    {
+      "uri": "EnergyAccess",
+      "label": "energy access",
+      "definition": "A skos:Concept representing access to modern energy services",
+      "broader": [
+        "EnergyJustice"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "energy access",
+        "modern energy"
+      ]
+    },
+    {
+      "uri": "EnergyFinance",
+      "label": "energy finance",
+      "definition": "A skos:Concept representing investment funding and financial deals in the energy sector",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "energy funding",
+        "energy investment"
+      ]
+    },
+    {
+      "uri": "EnergyGeopolitics",
+      "label": "energy geopolitics",
+      "definition": "A skos:Concept representing geopolitical dimensions of energy supply trade and security",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "energy geopolitics",
+        "energy security"
+      ]
+    },
+    {
+      "uri": "EnergyJobs",
+      "label": "energy jobs",
+      "definition": "A skos:Concept representing employment in the energy sector",
+      "broader": [
+        "WorkforceAndManufacturing"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "clean energy jobs",
+        "energy employment"
+      ]
+    },
+    {
+      "uri": "EnergyJustice",
+      "label": "energy justice",
+      "definition": "A skos:Concept representing equity access and justice dimensions of energy systems",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "energy equity",
+        "just transition"
+      ]
+    },
+    {
+      "uri": "EnergyMarkets",
+      "label": "energy markets",
+      "definition": "A skos:Concept representing pricing trading and wholesale electricity and commodity markets",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "energy markets",
+        "power markets"
+      ]
+    },
+    {
+      "uri": "EnergyPolicy",
+      "label": "energy policy",
+      "definition": "A skos:Concept representing government policy affecting the energy sector",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "energy policy"
+      ]
+    },
+    {
+      "uri": "EnergySecurityAndResilience",
+      "label": "energy security and resilience",
+      "definition": "A skos:Concept representing energy supply security, grid resilience against disruptions, and energy independence strategies",
+      "broader": [
+        "EnergyGeopolitics"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "blackout prevention",
+        "energy independence",
+        "grid resilience"
+      ]
+    },
+    {
+      "uri": "EnergyStorage",
+      "label": "energy storage",
+      "definition": "A skos:Concept representing battery storage and other energy storage technologies",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "BESS",
+        "battery storage",
+        "storage"
+      ]
+    },
+    {
+      "uri": "EnergyTradeAndSupplyChains",
+      "label": "energy trade and supply chains",
+      "definition": "A skos:Concept representing international energy commodity trade, physical infrastructure for energy transport, and supply chain logistics",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "energy logistics",
+        "energy supply chain",
+        "energy trade"
+      ]
+    },
+    {
+      "uri": "EnvironmentAndLandUse",
+      "label": "environment and land use",
+      "definition": "A skos:Concept representing environmental impacts and land use of energy projects",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "environmental impact",
+        "land use"
+      ]
+    },
+    {
+      "uri": "EVCharging",
+      "label": "ev charging",
+      "definition": "A skos:Concept representing electric vehicle charging infrastructure and networks",
+      "broader": [
+        "Electrification"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "EV charger",
+        "EVSE",
+        "charging station"
+      ]
+    },
+    {
+      "uri": "Fossil",
+      "label": "fossil",
+      "definition": "A skos:Concept representing energy derived from geological carbon deposits including coal oil and natural gas",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "conventional energy",
+        "fossil fuel"
+      ]
+    },
+    {
+      "uri": "FuelCell",
+      "label": "fuel cell",
+      "definition": "A skos:Concept representing electrochemical devices that convert hydrogen or other fuels into electricity",
+      "broader": [
+        "Hydrogen"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "PEMFC",
+        "SOFC",
+        "hydrogen fuel cell"
+      ]
+    },
+    {
+      "uri": "Fusion",
+      "label": "fusion",
+      "definition": "A skos:Concept representing nuclear fusion energy research and development",
+      "broader": [
+        "Nuclear"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "fusion energy",
+        "nuclear fusion"
+      ]
+    },
+    {
+      "uri": "Geothermal",
+      "label": "geothermal",
+      "definition": "A skos:Concept representing heat energy extracted from the earth",
+      "broader": [
+        "Renewable"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "geothermal energy"
+      ]
+    },
+    {
+      "uri": "GreenHydrogen",
+      "label": "green hydrogen",
+      "definition": "A skos:Concept representing hydrogen produced via electrolysis powered by renewable energy sources",
+      "broader": [
+        "Hydrogen"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "electrolytic hydrogen",
+        "green H2",
+        "renewable hydrogen"
+      ]
+    },
+    {
+      "uri": "GridAndInfrastructure",
+      "label": "grid and infrastructure",
+      "definition": "A skos:Concept representing power grid and electricity delivery infrastructure",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "electricity infrastructure",
+        "grid",
+        "power grid"
+      ]
+    },
+    {
+      "uri": "GridModernization",
+      "label": "grid modernization",
+      "definition": "A skos:Concept representing modernization of electrical grid infrastructure including smart grid technologies and advanced metering",
+      "broader": [
+        "GridAndInfrastructure"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "advanced metering",
+        "grid upgrade",
+        "smart grid"
+      ]
+    },
+    {
+      "uri": "GridOperator",
+      "label": "grid operator",
+      "definition": "A skos:Concept representing independent system operators and regional transmission organizations",
+      "broader": [
+        "GridAndInfrastructure"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "ISO",
+        "RTO",
+        "grid operator"
+      ]
+    },
+    {
+      "uri": "HeatPumps",
+      "label": "heat pumps",
+      "definition": "A skos:Concept representing heat pump technology for building heating and cooling",
+      "broader": [
+        "Electrification"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "heat pump"
+      ]
+    },
+    {
+      "uri": "Hydro",
+      "label": "hydro",
+      "definition": "A skos:Concept representing conventional and pumped-storage hydroelectric power",
+      "broader": [
+        "Renewable"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "hydroelectric",
+        "hydropower"
+      ]
+    },
+    {
+      "uri": "Hydrogen",
+      "label": "hydrogen",
+      "definition": "A skos:Concept representing hydrogen as an energy carrier across production methods",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "H2",
+        "blue hydrogen",
+        "green hydrogen"
+      ]
+    },
+    {
+      "uri": "IndustrialDecarbonization",
+      "label": "industrial decarbonization",
+      "definition": "A skos:Concept representing decarbonization of heavy industry including steel, cement, and chemical manufacturing",
+      "broader": [
+        "SectoralDecarbonization"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "cement decarbonization",
+        "green steel",
+        "industrial heat"
+      ]
+    },
+    {
+      "uri": "Interconnection",
+      "label": "interconnection",
+      "definition": "A skos:Concept representing generator interconnection queues and processes",
+      "broader": [
+        "GridAndInfrastructure"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "grid connection",
+        "interconnection queue"
+      ]
+    },
+    {
+      "uri": "LaborRelations",
+      "label": "labor relations",
+      "definition": "A skos:Concept representing unions and worker organizing in the energy sector",
+      "broader": [
+        "WorkforceAndManufacturing"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "energy unions",
+        "worker organizing"
+      ]
+    },
+    {
+      "uri": "Legislation",
+      "label": "legislation",
+      "definition": "A skos:Concept representing laws and legislative acts affecting energy",
+      "broader": [
+        "EnergyPolicy"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "clean energy standard",
+        "energy law"
+      ]
+    },
+    {
+      "uri": "LongDurationStorage",
+      "label": "long duration energy storage",
+      "definition": "A skos:Concept representing energy storage technologies designed to discharge over periods exceeding four hours",
+      "broader": [
+        "EnergyStorage"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "LDES",
+        "compressed air storage",
+        "flow battery",
+        "iron-air battery"
+      ]
+    },
+    {
+      "uri": "Manufacturing",
+      "label": "manufacturing",
+      "definition": "A skos:Concept representing energy equipment manufacturing and factories",
+      "broader": [
+        "WorkforceAndManufacturing"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "energy manufacturing",
+        "factory"
+      ]
+    },
+    {
+      "uri": "MaritimeDecarbonization",
+      "label": "maritime decarbonization",
+      "definition": "A skos:Concept representing decarbonization of maritime shipping through alternative fuels and efficiency measures",
+      "broader": [
+        "SectoralDecarbonization"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "ammonia fuel",
+        "green shipping",
+        "maritime fuel"
+      ]
+    },
+    {
+      "uri": "Microgrid",
+      "label": "microgrid",
+      "definition": "A skos:Concept representing localized energy grids that can operate independently from the main grid",
+      "broader": [
+        "DistributedEnergyAndFlexibility"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "community microgrid",
+        "islanded grid"
+      ]
+    },
+    {
+      "uri": "NaturalGas",
+      "label": "natural gas",
+      "definition": "A skos:Concept representing natural gas including liquefied natural gas and pipeline gas",
+      "broader": [
+        "Fossil"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "LNG",
+        "gas",
+        "natural gas"
+      ]
+    },
+    {
+      "uri": "NetZero",
+      "label": "net zero",
+      "definition": "A skos:Concept representing net-zero emissions targets and commitments",
+      "broader": [
+        "ClimateAndEmissions"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "net zero target",
+        "net-zero"
+      ]
+    },
+    {
+      "uri": "Nuclear",
+      "label": "nuclear",
+      "definition": "A skos:Concept representing energy from nuclear fission and fusion reactions",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "atomic energy",
+        "nuclear energy",
+        "nuclear power"
+      ]
+    },
+    {
+      "uri": "OffshoreWind",
+      "label": "offshore wind",
+      "definition": "A skos:Concept representing fixed-bottom and floating offshore wind energy generation",
+      "broader": [
+        "Renewable"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "floating wind",
+        "ocean wind",
+        "offshore wind farm"
+      ]
+    },
+    {
+      "uri": "Oil",
+      "label": "oil",
+      "definition": "A skos:Concept representing crude oil extraction refining and petroleum products",
+      "broader": [
+        "Fossil"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "crude oil",
+        "petroleum"
+      ]
+    },
+    {
+      "uri": "Patent",
+      "label": "patent",
+      "definition": "A skos:Concept representing intellectual property and patents in energy technology",
+      "broader": [
+        "ResearchAndInnovation"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "IP",
+        "energy patent"
+      ]
+    },
+    {
+      "uri": "Permitting",
+      "label": "permitting",
+      "definition": "A skos:Concept representing permitting and siting processes for energy projects",
+      "broader": [
+        "EnergyPolicy"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "permitting process",
+        "siting"
+      ]
+    },
+    {
+      "uri": "Perovskite",
+      "label": "perovskite solar",
+      "definition": "A skos:Concept representing perovskite and tandem solar cell research and commercialization",
+      "broader": [
+        "ResearchAndInnovation"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "next-gen PV",
+        "perovskite",
+        "tandem solar cell"
+      ]
+    },
+    {
+      "uri": "PowerPurchaseAgreement",
+      "label": "power purchase agreement",
+      "definition": "A skos:Concept representing power purchase agreements between generators and offtakers",
+      "broader": [
+        "EnergyMarkets"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "PPA",
+        "offtake agreement"
+      ]
+    },
+    {
+      "uri": "ProjectFinance",
+      "label": "project finance",
+      "definition": "A skos:Concept representing financing of specific energy projects",
+      "broader": [
+        "EnergyFinance"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "project funding",
+        "project investment"
+      ]
+    },
+    {
+      "uri": "PublicFunding",
+      "label": "public funding",
+      "definition": "A skos:Concept representing government subsidies tax credits and grants for energy",
+      "broader": [
+        "EnergyFinance"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "grant",
+        "subsidy",
+        "tax credit"
+      ]
+    },
+    {
+      "uri": "PumpedHydroStorage",
+      "label": "pumped hydro storage",
+      "definition": "A skos:Concept representing pumped hydroelectric energy storage systems",
+      "broader": [
+        "EnergyStorage"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "PHES",
+        "pumped hydro",
+        "pumped storage"
+      ]
+    },
+    {
+      "uri": "Regulation",
+      "label": "regulation",
+      "definition": "A skos:Concept representing regulatory actions by energy regulatory bodies",
+      "broader": [
+        "EnergyPolicy"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "FERC",
+        "NERC",
+        "PUC",
+        "energy regulation"
+      ]
+    },
+    {
+      "uri": "Renewable",
+      "label": "renewable",
+      "definition": "A skos:Concept representing energy generated from naturally replenishing sources such as solar wind and hydro",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "clean energy",
+        "renewables"
+      ]
+    },
+    {
+      "uri": "ResearchAndInnovation",
+      "label": "research and innovation",
+      "definition": "A skos:Concept representing research development breakthroughs and patents in energy technology",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "energy R&D",
+        "energy innovation"
+      ]
+    },
+    {
+      "uri": "Retrofits",
+      "label": "retrofits",
+      "definition": "A skos:Concept representing energy efficiency retrofits of existing buildings",
+      "broader": [
+        "BuildingsAndEfficiency"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "building retrofit",
+        "energy retrofit"
+      ]
+    },
+    {
+      "uri": "RooftopSolar",
+      "label": "rooftop solar",
+      "definition": "A skos:Concept representing rooftop and distributed solar installations on buildings",
+      "broader": [
+        "BuildingsAndEfficiency"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "distributed solar",
+        "rooftop PV"
+      ]
+    },
+    {
+      "uri": "SectoralDecarbonization",
+      "label": "sectoral decarbonization",
+      "definition": "A skos:Concept representing decarbonization efforts in specific economic sectors including heavy industry, maritime transport, and aviation",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "deep decarbonization",
+        "hard-to-abate sectors"
+      ]
+    },
+    {
+      "uri": "SMR",
+      "label": "smr",
+      "definition": "A skos:Concept representing small modular reactor technology designs",
+      "broader": [
+        "Nuclear"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "small modular reactor"
+      ]
+    },
+    {
+      "uri": "Solar",
+      "label": "solar",
+      "definition": "A skos:Concept representing solar photovoltaic and concentrated solar power generation",
+      "broader": [
+        "Renewable"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "PV",
+        "photovoltaic",
+        "solar energy"
+      ]
+    },
+    {
+      "uri": "SupplyChain",
+      "label": "supply chain",
+      "definition": "A skos:Concept representing energy equipment and fuel supply chains",
+      "broader": [
+        "EnergyGeopolitics"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "energy supply chain"
+      ]
+    },
+    {
+      "uri": "Tariff",
+      "label": "tariff",
+      "definition": "A skos:Concept representing trade tariffs on energy equipment and materials",
+      "broader": [
+        "EnergyPolicy"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "energy tariffs",
+        "trade tariffs"
+      ]
+    },
+    {
+      "uri": "TradeAndSanctions",
+      "label": "trade and sanctions",
+      "definition": "A skos:Concept representing energy trade disputes and sanctions regimes",
+      "broader": [
+        "EnergyGeopolitics"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "energy sanctions",
+        "trade dispute"
+      ]
+    },
+    {
+      "uri": "Transmission",
+      "label": "transmission",
+      "definition": "A skos:Concept representing high-voltage transmission lines and transmission planning",
+      "broader": [
+        "GridAndInfrastructure"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "high-voltage lines",
+        "power transmission"
+      ]
+    },
+    {
+      "uri": "VirtualPowerPlant",
+      "label": "virtual power plant",
+      "definition": "A skos:Concept representing aggregated distributed energy resources managed as a single dispatchable unit",
+      "broader": [
+        "DistributedEnergyAndFlexibility"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "VPP",
+        "aggregated DER"
+      ]
+    },
+    {
+      "uri": "WasteAndPollution",
+      "label": "waste and pollution",
+      "definition": "A skos:Concept representing waste disposal and pollution from energy production",
+      "broader": [
+        "EnvironmentAndLandUse"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "energy waste",
+        "pollution"
+      ]
+    },
+    {
+      "uri": "WaterUse",
+      "label": "water use",
+      "definition": "A skos:Concept representing water consumption by energy facilities",
+      "broader": [
+        "EnvironmentAndLandUse"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "cooling water",
+        "water consumption"
+      ]
+    },
+    {
+      "uri": "WholesaleMarkets",
+      "label": "wholesale markets",
+      "definition": "A skos:Concept representing wholesale electricity markets and capacity auctions",
+      "broader": [
+        "EnergyMarkets"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "auction",
+        "capacity market",
+        "wholesale electricity"
+      ]
+    },
+    {
+      "uri": "Wind",
+      "label": "wind",
+      "definition": "A skos:Concept representing onshore and offshore wind power generation",
+      "broader": [
+        "Renewable"
+      ],
+      "isTop": false,
+      "altLabels": [
+        "wind energy",
+        "wind power"
+      ]
+    },
+    {
+      "uri": "WorkforceAndManufacturing",
+      "label": "workforce and manufacturing",
+      "definition": "A skos:Concept representing jobs labor and manufacturing in the energy sector",
+      "broader": [],
+      "isTop": true,
+      "altLabels": [
+        "energy manufacturing",
+        "energy workforce"
+      ]
+    }
+  ],
+  "individuals": {
+    "Organization": [
+      {
+        "uri": "org_caiso",
+        "label": "California ISO",
+        "definition": "An Organization operating the California Independent System Operator managing the state electricity grid",
+        "sectors": [
+          "grid and infrastructure"
+        ]
+      },
+      {
+        "uri": "org_ercot",
+        "label": "ERCOT",
+        "definition": "An Organization operating the Electric Reliability Council of Texas managing the Texas interconnection",
+        "sectors": [
+          "grid and infrastructure"
+        ]
+      },
+      {
+        "uri": "org_eni",
+        "label": "Eni",
+        "definition": "An Organization representing Eni the Italian multinational oil and gas company",
+        "sectors": [
+          "fossil"
+        ]
+      },
+      {
+        "uri": "org_entergy",
+        "label": "Entergy",
+        "definition": "An Organization representing the Entergy utility company",
+        "sectors": [
+          "fossil"
+        ]
+      },
+      {
+        "uri": "org_equinor",
+        "label": "Equinor",
+        "definition": "An Organization representing Equinor the Norwegian state energy company active in offshore wind and fossil fuels",
+        "sectors": [
+          "renewable"
+        ]
+      },
+      {
+        "uri": "org_miso",
+        "label": "MISO",
+        "definition": "An Organization operating the Midcontinent Independent System Operator across 15 US states and Manitoba",
+        "sectors": [
+          "grid and infrastructure"
+        ]
+      },
+      {
+        "uri": "org_meta",
+        "label": "Meta",
+        "definition": "An Organization representing Meta Platforms a major data center operator driving energy demand",
+        "sectors": [
+          "AI and data center energy demand"
+        ]
+      },
+      {
+        "uri": "org_nipsco",
+        "label": "NIPSCO",
+        "definition": "An Organization representing NIPSCO the Northern Indiana utility company",
+        "sectors": [
+          "grid and infrastructure"
+        ]
+      },
+      {
+        "uri": "org_pjm",
+        "label": "PJM Interconnection",
+        "definition": "An Organization operating the PJM regional transmission organization serving 13 US states",
+        "sectors": [
+          "grid and infrastructure"
+        ]
+      },
+      {
+        "uri": "org_redwood",
+        "label": "Redwood Materials",
+        "definition": "An Organization representing Redwood Materials a battery recycling and materials company",
+        "sectors": [
+          "energy storage"
+        ]
+      },
+      {
+        "uri": "org_snam",
+        "label": "Snam",
+        "definition": "An Organization representing Snam the Italian natural gas infrastructure operator",
+        "sectors": [
+          "energy trade and supply chains"
+        ]
+      },
+      {
+        "uri": "org_orsted",
+        "label": "\u00d8rsted",
+        "definition": "An Organization representing \u00d8rsted the Danish multinational offshore wind energy company",
+        "sectors": [
+          "renewable"
+        ]
+      }
+    ],
+    "RegulatoryBody": [
+      {
+        "uri": "org_cpuc",
+        "label": "California Public Utilities Commission",
+        "definition": "A RegulatoryBody representing the California Public Utilities Commission regulating energy utilities",
+        "sectors": [
+          "regulation"
+        ]
+      },
+      {
+        "uri": "org_doe",
+        "label": "U.S. Department of Energy",
+        "definition": "A RegulatoryBody representing the United States Department of Energy",
+        "sectors": [
+          "energy policy"
+        ]
+      },
+      {
+        "uri": "org_interior",
+        "label": "U.S. Interior Department",
+        "definition": "A RegulatoryBody representing the U.S. Department of the Interior responsible for offshore energy permitting",
+        "sectors": [
+          "energy policy"
+        ]
+      }
+    ],
+    "GeographicEntity": [
+      {
+        "uri": "geo_alberta",
+        "label": "Alberta",
+        "definition": "A GeographicEntity representing the Canadian province of Alberta a major oil, wind, and carbon policy market"
+      },
+      {
+        "uri": "geo_california",
+        "label": "California",
+        "definition": "A GeographicEntity representing the U.S. state of California a major solar, storage, and grid innovation market"
+      },
+      {
+        "uri": "geo_china",
+        "label": "China",
+        "definition": "A GeographicEntity representing China the global leader in renewable energy manufacturing and critical minerals"
+      },
+      {
+        "uri": "geo_eu",
+        "label": "European Union",
+        "definition": "A GeographicEntity representing the European Union with its carbon border tax and energy policy framework"
+      },
+      {
+        "uri": "geo_germany",
+        "label": "Germany",
+        "definition": "A GeographicEntity representing Germany a leader in the Energiewende energy transition"
+      },
+      {
+        "uri": "geo_india",
+        "label": "India",
+        "definition": "A GeographicEntity representing India with major solar manufacturing and coal transition dynamics"
+      },
+      {
+        "uri": "geo_louisiana",
+        "label": "Louisiana",
+        "definition": "A GeographicEntity representing the U.S. state of Louisiana with gas plants, LNG, and data center development"
+      },
+      {
+        "uri": "geo_north_sea",
+        "label": "North Sea",
+        "definition": "A GeographicEntity representing the North Sea basin a critical region for offshore wind and oil and gas"
+      },
+      {
+        "uri": "geo_texas",
+        "label": "Texas",
+        "definition": "A GeographicEntity representing the U.S. state of Texas home to ERCOT, major wind and gas production"
+      },
+      {
+        "uri": "geo_uk",
+        "label": "United Kingdom",
+        "definition": "A GeographicEntity representing the United Kingdom a major offshore wind and North Sea energy market"
+      }
+    ],
+    "Publication": [
+      {
+        "uri": "pub_cnbc",
+        "label": "CNBC",
+        "definition": "A Publication representing CNBC business news",
+        "siteDomain": "cnbc.com"
+      },
+      {
+        "uri": "pub_electrek",
+        "label": "Electrek",
+        "definition": "A Publication representing Electrek a news outlet covering electric transport and clean energy",
+        "siteDomain": "electrek.co"
+      },
+      {
+        "uri": "pub_energy_monitor",
+        "label": "Energy Monitor",
+        "definition": "A Publication representing Energy Monitor a clean energy data and news platform",
+        "siteDomain": "energymonitor.ai"
+      },
+      {
+        "uri": "pub_ft",
+        "label": "Financial Times",
+        "definition": "A Publication representing the Financial Times newspaper",
+        "siteDomain": "ft.com"
+      },
+      {
+        "uri": "pub_inside_climate",
+        "label": "Inside Climate News",
+        "definition": "A Publication representing Inside Climate News a nonprofit climate and energy journalism outlet",
+        "siteDomain": "insideclimatenews.org"
+      },
+      {
+        "uri": "pub_rto_insider",
+        "label": "RTO Insider",
+        "definition": "A Publication representing RTO Insider covering regional transmission organizations and wholesale energy markets",
+        "siteDomain": "rtoinsider.com"
+      },
+      {
+        "uri": "pub_reuters",
+        "label": "Reuters",
+        "definition": "A Publication representing the Reuters news agency",
+        "siteDomain": "reuters.com"
+      },
+      {
+        "uri": "pub_guardian",
+        "label": "The Guardian",
+        "definition": "A Publication representing The Guardian newspaper",
+        "siteDomain": "theguardian.com"
+      },
+      {
+        "uri": "pub_utility_dive",
+        "label": "Utility Dive",
+        "definition": "A Publication representing Utility Dive an energy industry news outlet",
+        "siteDomain": "utilitydive.com"
+      },
+      {
+        "uri": "pub_wired",
+        "label": "Wired",
+        "definition": "A Publication representing Wired magazine",
+        "siteDomain": "wired.com"
+      }
+    ],
+    "SocialMediaPlatform": [
+      {
+        "uri": "Bluesky",
+        "label": "Bluesky",
+        "definition": "A SocialMediaPlatform individual representing the Bluesky social network"
+      },
+      {
+        "uri": "Twitter",
+        "label": "Twitter",
+        "definition": "A SocialMediaPlatform individual representing the Twitter/X social network"
+      }
+    ],
+    "Feed": [],
+    "ProjectStatus": [
+      {
+        "uri": "status_Decommissioned",
+        "label": "decommissioned",
+        "definition": "A ProjectStatus indicating the project has been permanently shut down and removed"
+      },
+      {
+        "uri": "status_Mothballed",
+        "label": "mothballed",
+        "definition": "A ProjectStatus indicating the project is temporarily shut down but could restart"
+      },
+      {
+        "uri": "status_Operational",
+        "label": "operational",
+        "definition": "A ProjectStatus indicating the project is completed and generating energy"
+      },
+      {
+        "uri": "status_Planning",
+        "label": "planning",
+        "definition": "A ProjectStatus indicating the project is in early planning and permitting phases"
+      },
+      {
+        "uri": "status_UnderConstruction",
+        "label": "under construction",
+        "definition": "A ProjectStatus indicating the project is actively being built"
+      },
+      {
+        "uri": "status_UnderReview",
+        "label": "under review",
+        "definition": "A ProjectStatus indicating the project is undergoing regulatory or environmental review"
+      }
+    ]
+  }
+};
+
+function togglePanel(el) {
+  const body = el.nextElementSibling;
+  body.classList.toggle('hidden');
+  el.classList.toggle('collapsed');
+}
+
+function renderStats(stats) {
+  const items = [
+    ['Classes', stats.class_count, '#0984e3'],
+    ['Properties', stats.property_count, '#00b894'],
+    ['SHACL Shapes', stats.shape_count, '#6c5ce7'],
+    ['Energy Topics', stats.topic_count, '#e17055'],
+    ['Ref. Individuals', stats.individual_count, '#fdcb6e'],
+    ['Triples', stats.triple_count, '#636e72'],
+  ];
+  return '<div class="stats">' + items.map(([lbl, num, color]) =>
+    `<div class="stat-card"><div class="num" style="color:${color}">${num}</div>` +
+    `<div class="lbl">${lbl}</div></div>`
+  ).join('') + '</div>';
+}
+
+function renderClassTree(classes, shapedClasses) {
+  // Build hierarchy: group by BFO parent, then show subclasses
+  const bfoGroups = {};
+  const childMap = {};
+
+  classes.forEach(c => {
+    if (c.bfo_parent) bfoGroups[c.bfo_parent] = bfoGroups[c.bfo_parent] || [];
+    if (c.bfo_parent && c.parents.length === 0) {
+      bfoGroups[c.bfo_parent].push(c);
+    }
+    c.parents.forEach(p => {
+      childMap[p] = childMap[p] || [];
+      childMap[p].push(c);
+    });
+  });
+
+  // Also add classes with enews parents to their BFO group via parent
+  classes.forEach(c => {
+    if (c.parents.length > 0 && !c.bfo_parent) {
+      // Find parent's BFO group
+      const parent = classes.find(p => p.uri === c.parents[0]);
+      if (parent && parent.bfo_parent) {
+        // Already handled as child
+      }
+    }
+  });
+
+  function renderNode(c) {
+    const shaped = shapedClasses.has(c.uri);
+    const cls = shaped ? 'shaped' : 'unshaped';
+    const badge = shaped ? '<span class="badge badge-green">SHACL</span>' : '<span class="badge badge-amber">no shape</span>';
+    const children = childMap[c.uri] || [];
+    const defText = c.definition ? `<span class="def-tooltip">${c.definition}</span>` : '';
+
+    let html = `<span class="class-node ${cls}"><span class="cls-name">${c.label}</span>${badge}${defText}</span>`;
+
+    if (children.length > 0) {
+      html = `<details open><summary>${html}</summary><ul>` +
+        children.map(ch => `<li>${renderNode(ch)}</li>`).join('') +
+        `</ul></details>`;
+    }
+    return html;
+  }
+
+  let html = '<div class="tree"><ul>';
+  const bfoOrder = ['Process', 'Site', 'Object', 'GDC'];
+  bfoOrder.forEach(bfo => {
+    const group = bfoGroups[bfo] || [];
+    if (group.length === 0) return;
+    html += `<li><details open><summary><span class="badge badge-purple">${bfo}</span></summary><ul>`;
+    group.forEach(c => {
+      html += `<li>${renderNode(c)}</li>`;
+    });
+    html += '</ul></details></li>';
+  });
+  html += '</ul></div>';
+  return html;
+}
+
+function renderProperties(props) {
+  let html = '<table><thead><tr><th>Name</th><th>Type</th><th>Domain</th><th>Range</th><th>Traits</th></tr></thead><tbody>';
+  props.forEach(p => {
+    const typeBadge = p.type === 'Object'
+      ? '<span class="badge badge-blue">OBJ</span>'
+      : '<span class="badge badge-green">DATA</span>';
+    const traits = p.functional ? '<span class="badge badge-gray">functional</span>' : '';
+    html += `<tr><td title="${p.definition}"><strong>${p.label}</strong></td>` +
+      `<td>${typeBadge}</td><td>${p.domain || '&mdash;'}</td>` +
+      `<td>${p.range || '&mdash;'}</td><td>${traits}</td></tr>`;
+  });
+  html += '</tbody></table>';
+  return html;
+}
+
+function renderShapes(shapes) {
+  return shapes.map(s => {
+    const sparqlNote = s.hasSparql ? ' <span class="badge badge-purple">+ SPARQL</span>' : '';
+    const rows = s.constraints.map(c => {
+      const parts = [`<strong>${c.path}</strong>`];
+      if (c.minCount !== undefined) parts.push(`min: ${c.minCount}`);
+      if (c.maxCount !== undefined) parts.push(`max: ${c.maxCount}`);
+      if (c.datatype) parts.push(`type: ${c.datatype}`);
+      if (c['class']) parts.push(`class: ${c['class']}`);
+      return `<div class="constraint">${parts.join(' &nbsp;|&nbsp; ')}</div>`;
+    }).join('');
+    return `<div class="shape-card"><h3>${s.name} &rarr; <span class="badge badge-blue">${s.targetClass}</span>${sparqlNote}</h3>${rows}</div>`;
+  }).join('');
+}
+
+function renderTopics(topics) {
+  const topTopics = topics.filter(t => t.isTop);
+  const childMap = {};
+  topics.forEach(t => {
+    t.broader.forEach(b => {
+      childMap[b] = childMap[b] || [];
+      childMap[b].push(t);
+    });
+  });
+
+  return '<div class="topic-tree">' + topTopics.map(top => {
+    const children = childMap[top.uri] || [];
+    const childHtml = children.map(c => {
+      const alts = c.altLabels.length > 0 ? ` <span class="alt">(${c.altLabels.join(', ')})</span>` : '';
+      return `<div class="topic-leaf" title="${c.definition}">${c.label}${alts}</div>`;
+    }).join('');
+    return `<div class="topic-group"><h3>${top.label}</h3>${childHtml}</div>`;
+  }).join('') + '</div>';
+}
+
+function renderIndividuals(groups) {
+  const labels = {
+    'Organization': 'Organizations',
+    'RegulatoryBody': 'Regulatory Bodies',
+    'GeographicEntity': 'Geographic Entities',
+    'Publication': 'Publications',
+    'SocialMediaPlatform': 'Social Media Platforms',
+    'Feed': 'Feeds',
+    'ProjectStatus': 'Project Statuses',
+  };
+  return Object.entries(groups).map(([key, items]) => {
+    if (items.length === 0) return '';
+    const chips = items.map(i => {
+      let extra = '';
+      if (i.siteDomain) extra = ` (${i.siteDomain})`;
+      if (i.sectors) extra = ` [${i.sectors.join(', ')}]`;
+      const tip = i.definition ? `<span class="chip-tip">${i.definition}</span>` : '';
+      return `<span class="chip">${i.label}${extra}${tip}</span>`;
+    }).join('');
+    return `<div class="ind-group"><h3>${labels[key] || key} (${items.length})</h3><div class="chip-list">${chips}</div></div>`;
+  }).join('');
+}
+
+function render() {
+  const shapedClasses = new Set(DATA.shapes.map(s => s.targetClass));
+  const app = document.getElementById('app');
+
+  let html = renderStats(DATA.stats);
+
+  const panels = [
+    ['Class Hierarchy', renderClassTree(DATA.classes, shapedClasses)],
+    ['Properties (' + DATA.properties.length + ')', renderProperties(DATA.properties)],
+    ['SHACL Shapes (' + DATA.shapes.length + ')', renderShapes(DATA.shapes)],
+    ['Energy Topics (' + DATA.topics.length + ')', renderTopics(DATA.topics)],
+    ['Reference Individuals', renderIndividuals(DATA.individuals)],
+  ];
+
+  panels.forEach(([title, content]) => {
+    html += `<div class="panel">` +
+      `<div class="panel-header" onclick="togglePanel(this)"><h2>${title}</h2><span class="chevron">&#9660;</span></div>` +
+      `<div class="panel-body">${content}</div></div>`;
+  });
+
+  app.innerHTML = html;
+}
+
+render();
+</script>
+</body>
+</html>

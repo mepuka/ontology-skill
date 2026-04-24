@@ -1,0 +1,466 @@
+# energy-intel — Imports Manifest (scout phase)
+#
+# Authored: 2026-04-22 by ontology-scout
+# Source of truth: this file. Architect consumes on first TBox slice; curator
+# consumes on refresh. Schema follows _shared/odk-and-imports.md § 3.
+#
+# Notes:
+#   * Every row has: source_iri, pinned_version, extraction_method, term_file,
+#     module_file, license, refresh_cadence_days, source_freshness,
+#     rejection_rationale (null on selected imports).
+#   * extraction_method is one of:
+#       full_import | MIREOT | STAR | BOT | TOP | SUBSET | bridge | rejected
+#   * Architect will run the `robot extract` commands documented under
+#     `extraction_command:` to produce `module_file`. Scout does not run the
+#     extracts (scope constraint).
+#   * `pinned_version` is the upstream release tag or versionIRI date. All
+#     values verified 2026-04-22 against live upstream registries except where
+#     `source_freshness` is marked `cached`.
+
+imports:
+
+  # ---------- Upper / foundational ----------
+
+  - id: bfo-2020
+    source_iri: http://purl.obolibrary.org/obo/bfo.owl
+    pinned_version: "2020"
+    extraction_method: full_import
+    term_file: null
+    module_file: imports/bfo-2020.ttl
+    license: CC-BY-4.0
+    refresh_cadence_days: 365
+    source_freshness: "2026-04-22 up"
+    rejection_rationale: null
+    seed_terms:
+      - "http://purl.obolibrary.org/obo/BFO_0000023"   # role
+      - "http://purl.obolibrary.org/obo/BFO_0000027"   # object aggregate
+      - "http://purl.obolibrary.org/obo/BFO_0000020"   # specifically dependent continuant
+    extraction_command: "# full import — no extract needed. Architect declares owl:imports <http://purl.obolibrary.org/obo/bfo.owl>."
+    notes: |
+      BFO 2020 is the ISO 21838-2:2021 standard upper ontology. Small vocabulary
+      (~50 classes). Use owl:imports directly. Verified labels/defs against
+      OLS4 v2 2026-04-22.
+
+  - id: iao-2026-03
+    source_iri: http://purl.obolibrary.org/obo/iao.owl
+    pinned_version: "v2026-03-30"
+    extraction_method: MIREOT
+    term_file: imports/iao-terms.txt
+    module_file: imports/iao-subset.ttl
+    license: CC-BY-4.0
+    refresh_cadence_days: 120
+    source_freshness: "2026-04-22 up"
+    rejection_rationale: null
+    seed_terms:
+      - "http://purl.obolibrary.org/obo/IAO_0000030"   # information content entity
+      - "http://purl.obolibrary.org/obo/IAO_0000310"   # document
+      - "http://purl.obolibrary.org/obo/IAO_0000101"   # image
+      - "http://purl.obolibrary.org/obo/IAO_0000027"   # data entity (alt: data item)
+      - "http://purl.obolibrary.org/obo/IAO_0000300"   # textual entity (architect verifies exists in v2026-03-30)
+    extraction_command: |
+      .local/bin/robot extract \
+        --method MIREOT \
+        --input-iri http://purl.obolibrary.org/obo/iao.owl \
+        --lower-terms ontologies/energy-intel/imports/iao-terms.txt \
+        --output ontologies/energy-intel/imports/iao-subset.ttl
+    notes: |
+      MIREOT chosen to keep footprint minimal. Seeds are the five classes
+      referenced in reuse-report § B. Architect verifies IAO_0000300 existence
+      in v2026-03-30; if it has been merged into IAO_0000030, drop the seed
+      and use the general ICE for Excerpt.
+
+  # ---------- Domain ----------
+
+  - id: oeo-technology-2.11.0
+    source_iri: https://openenergyplatform.org/ontology/oeo/oeo-full.owl
+    pinned_version: "2.11.0"
+    extraction_method: BOT
+    term_file: imports/oeo-technology-terms.txt
+    module_file: imports/oeo-technology-subset.ttl
+    license: CC-BY-4.0
+    refresh_cadence_days: 90
+    source_freshness: "2026-04-22 verified against v2.11.0 tarball; subset ~90 classes"
+    rejection_rationale: null
+    seed_terms:
+      # Dual-root BOT extract approved 2026-04-22 post-verification
+      # (imports/oeo-seed-verification.md). Verified namespace is HTTPS
+      # without hyphen.
+      - "https://openenergyplatform.org/ontology/oeo/OEO_00020267"   # energy technology (plan-specification, 37 subs)
+      - "https://openenergyplatform.org/ontology/oeo/OEO_00000011"   # energy converting component (material-entity, 50 subs)
+    extraction_command: |
+      # Architect already ran this after seed-IRI verification (see
+      # imports/oeo-seed-verification.md). Local oeo-full.owl is built
+      # from OEO v2.11.0 source tarball via `robot merge`.
+      .local/bin/robot extract \
+        --method BOT \
+        --input ontologies/energy-intel/imports/oeo-full.owl \
+        --term https://openenergyplatform.org/ontology/oeo/OEO_00020267 \
+        --term https://openenergyplatform.org/ontology/oeo/OEO_00000011 \
+        --output ontologies/energy-intel/imports/oeo-technology-subset.ttl
+    notes: |
+      Dual-root extract (plan-spec tier + material-entity tier) per
+      oeo-seed-verification.md. Combined transitive closure ~90 classes;
+      comfortably under the 400-class abort threshold. Scope original
+      OEO_00000030 ("oil power unit") was wrong — not a root.
+
+  - id: oeo-carrier-2.11.0
+    source_iri: https://openenergyplatform.org/ontology/oeo/oeo-full.owl
+    pinned_version: "2.11.0"
+    extraction_method: BOT
+    term_file: imports/oeo-carrier-terms.txt
+    module_file: imports/oeo-carrier-subset.ttl
+    license: CC-BY-4.0
+    refresh_cadence_days: 90
+    source_freshness: "2026-04-22 verified against v2.11.0 tarball"
+    rejection_rationale: null
+    seed_terms:
+      - "https://openenergyplatform.org/ontology/oeo/OEO_00020039"   # energy carrier
+    extraction_command: |
+      .local/bin/robot extract \
+        --method BOT \
+        --input ontologies/energy-intel/imports/oeo-full.owl \
+        --term https://openenergyplatform.org/ontology/oeo/OEO_00020039 \
+        --output ontologies/energy-intel/imports/oeo-carrier-subset.ttl
+    notes: |
+      Single-root. Asserted subtree size of 5 (verified 2026-04-22) plus
+      transitive closure. OEO_00000151 (energy carrier disposition) deferred
+      to V1 per conceptualizer handoff.
+
+  # NOTE: oeo-aggregation-2.11.0 row REMOVED 2026-04-22 per parent-approved
+  # decision. OEO v2.11.0 OEO_00140068 "aggregation type" has an asserted
+  # subtree of 1 (just the root). Replaced by hand-seeded SKOS ConceptScheme
+  # at modules/concept-schemes/aggregation-type.ttl using Value Partition
+  # ODP F.1 — same pattern as ei-temporal-resolution-v0 below. Curator
+  # to file upstream OEO issue requesting aggregation-type branch.
+
+  # ---------- Hand-seeded (NOT an extract) ----------
+
+  - id: ei-temporal-resolution-v0
+    source_iri: null
+    pinned_version: "v0"
+    extraction_method: hand_seed
+    term_file: null
+    module_file: modules/concept-schemes/temporal-resolution.ttl
+    license: inherits energy-intel license
+    refresh_cadence_days: 0
+    source_freshness: "2026-04-22 up (local)"
+    rejection_rationale: null
+    seed_terms:
+      - "https://w3id.org/energy-intel/concept/temporal-resolution/hourly"
+      - "https://w3id.org/energy-intel/concept/temporal-resolution/daily"
+      - "https://w3id.org/energy-intel/concept/temporal-resolution/monthly"
+      - "https://w3id.org/energy-intel/concept/temporal-resolution/quarterly"
+      - "https://w3id.org/energy-intel/concept/temporal-resolution/annual"
+    extraction_command: "# Hand-seeded by architect as a SKOS ConceptScheme + value partition per ODP F.1."
+    notes: |
+      OEO v2.11.0 has no temporal-resolution taxonomy. Architect hand-seeds
+      a five-value SKOS Concept scheme in the energy-intel namespace. Curator
+      files an upstream issue with OEO requesting a temporal-resolution
+      branch so we can migrate in a future release.
+
+  - id: ei-aggregation-type-v0
+    source_iri: null
+    pinned_version: "v0"
+    extraction_method: hand_seed
+    term_file: null
+    module_file: modules/concept-schemes/aggregation-type.ttl
+    license: inherits energy-intel license
+    refresh_cadence_days: 0
+    source_freshness: "2026-04-22 up (local)"
+    rejection_rationale: null
+    seed_terms:
+      - "https://w3id.org/energy-intel/concept/aggregation-type/sum"
+      - "https://w3id.org/energy-intel/concept/aggregation-type/average"
+      - "https://w3id.org/energy-intel/concept/aggregation-type/minimum"
+      - "https://w3id.org/energy-intel/concept/aggregation-type/maximum"
+      - "https://w3id.org/energy-intel/concept/aggregation-type/count"
+    extraction_command: "# Hand-seeded by architect as a SKOS ConceptScheme + value partition per ODP F.1 (replaces dropped oeo-aggregation-2.11.0 import)."
+    notes: |
+      Post-verification 2026-04-22: OEO v2.11.0 OEO_00140068 has no asserted
+      subclasses. Hand-seeded scheme of five canonical aggregation concepts
+      (sum, average, minimum, maximum, count). Curator to file upstream
+      OEO issue requesting aggregation-type sub-concepts so we can migrate.
+
+  # ---------- Units + quantity ----------
+
+  - id: qudt-units-2.1
+    source_iri: http://qudt.org/2.1/vocab/unit
+    pinned_version: "2.1"
+    extraction_method: MIREOT
+    term_file: imports/qudt-terms.txt
+    module_file: imports/qudt-units-subset.ttl
+    license: CC-BY-4.0
+    refresh_cadence_days: 180
+    source_freshness: "2026-04-22 up"
+    rejection_rationale: null
+    seed_terms:
+      # Provisional — architect tightens from Skygest corpus observations:
+      - "http://qudt.org/vocab/unit/GW"
+      - "http://qudt.org/vocab/unit/MW"
+      - "http://qudt.org/vocab/unit/KiloW"
+      - "http://qudt.org/vocab/unit/W"
+      - "http://qudt.org/vocab/unit/TW-HR"      # TWh
+      - "http://qudt.org/vocab/unit/GW-HR"      # GWh
+      - "http://qudt.org/vocab/unit/MW-HR"      # MWh
+      - "http://qudt.org/vocab/unit/KiloW-HR"   # kWh
+      - "http://qudt.org/vocab/unit/PJ"         # petajoule
+      - "http://qudt.org/vocab/unit/J"
+      - "http://qudt.org/vocab/unit/TON_Metric"
+      - "http://qudt.org/vocab/unit/KiloGM"
+      - "http://qudt.org/vocab/unit/GM"
+      - "http://qudt.org/vocab/unit/BBL_UK_PET"
+      - "http://qudt.org/vocab/unit/BTU_IT"
+      - "http://qudt.org/vocab/unit/HZ"
+      - "http://qudt.org/vocab/unit/V"
+      - "http://qudt.org/vocab/unit/A"
+      - "http://qudt.org/vocab/unit/PERCENT"
+    extraction_command: |
+      .local/bin/robot extract \
+        --method MIREOT \
+        --input-iri http://qudt.org/2.1/vocab/unit \
+        --lower-terms ontologies/energy-intel/imports/qudt-terms.txt \
+        --output ontologies/energy-intel/imports/qudt-units-subset.ttl
+    notes: |
+      V0 targets units-only. Quantity-kind MIREOT deferred to V1 (when the
+      seven-facet Variable model lands). scope.md § Open q #4 resolved.
+
+  # ---------- Data + provenance + people ----------
+
+  - id: dcat-3
+    source_iri: http://www.w3.org/ns/dcat
+    pinned_version: "3"
+    extraction_method: full_import
+    term_file: null
+    module_file: imports/dcat-3.ttl
+    license: W3C-Document
+    refresh_cadence_days: 365
+    source_freshness: "2026-04-22 up"
+    rejection_rationale: null
+    seed_terms:
+      - "http://www.w3.org/ns/dcat#Catalog"
+      - "http://www.w3.org/ns/dcat#CatalogRecord"
+      - "http://www.w3.org/ns/dcat#Dataset"
+      - "http://www.w3.org/ns/dcat#Distribution"
+      - "http://www.w3.org/ns/dcat#DataService"
+      - "http://www.w3.org/ns/dcat#DatasetSeries"
+    extraction_command: "# owl:imports <http://www.w3.org/ns/dcat>"
+    notes: |
+      Full DCAT 3 at user-directive fidelity. Vocab is small (~100 terms) so
+      full import is cheap. DCAT 3 does NOT declare dcat:Agent (scope.md open
+      q #3 resolved: that's a spec-gap, not an energy-intel bug).
+
+  - id: prov-o
+    source_iri: http://www.w3.org/ns/prov-o
+    pinned_version: "2013-04-30"   # W3C Rec date
+    extraction_method: full_import
+    term_file: null
+    module_file: imports/prov-o.ttl
+    license: W3C-Document
+    refresh_cadence_days: 365
+    source_freshness: "2026-04-22 up"
+    rejection_rationale: null
+    seed_terms:
+      - "http://www.w3.org/ns/prov#Entity"
+      - "http://www.w3.org/ns/prov#Activity"
+      - "http://www.w3.org/ns/prov#Agent"
+      - "http://www.w3.org/ns/prov#wasDerivedFrom"
+      - "http://www.w3.org/ns/prov#wasAttributedTo"
+      - "http://www.w3.org/ns/prov#wasGeneratedBy"
+    extraction_command: "# owl:imports <http://www.w3.org/ns/prov-o>"
+    notes: |
+      Small. Full import. Used for CMC provenance annotations (wasGeneratedBy
+      on CMCs in V0; full Activity individuals on ABox).
+
+  - id: skos-core
+    source_iri: http://www.w3.org/2004/02/skos/core
+    pinned_version: "2009-08-18"
+    extraction_method: full_import
+    term_file: null
+    module_file: imports/skos-core.ttl
+    license: W3C-Document
+    refresh_cadence_days: 365
+    source_freshness: "2026-04-22 up"
+    rejection_rationale: null
+    seed_terms:
+      - "http://www.w3.org/2004/02/skos/core#Concept"
+      - "http://www.w3.org/2004/02/skos/core#ConceptScheme"
+      - "http://www.w3.org/2004/02/skos/core#broader"
+      - "http://www.w3.org/2004/02/skos/core#narrower"
+      - "http://www.w3.org/2004/02/skos/core#exactMatch"
+      - "http://www.w3.org/2004/02/skos/core#closeMatch"
+      - "http://www.w3.org/2004/02/skos/core#broadMatch"
+      - "http://www.w3.org/2004/02/skos/core#narrowMatch"
+      - "http://www.w3.org/2004/02/skos/core#altLabel"
+    extraction_command: "# owl:imports <http://www.w3.org/2004/02/skos/core>"
+    notes: |
+      Range for ei:aboutTechnology (V0); alias semantics per Linear D4.
+
+  - id: foaf
+    source_iri: http://xmlns.com/foaf/0.1/
+    pinned_version: "0.99"
+    extraction_method: full_import
+    term_file: null
+    module_file: imports/foaf.ttl
+    license: CC-BY-1.0
+    refresh_cadence_days: 365
+    source_freshness: "2026-04-22 up"
+    rejection_rationale: null
+    seed_terms:
+      - "http://xmlns.com/foaf/0.1/Agent"
+      - "http://xmlns.com/foaf/0.1/Organization"
+      - "http://xmlns.com/foaf/0.1/Person"
+    extraction_command: "# owl:imports <http://xmlns.com/foaf/0.1/>"
+    notes: |
+      Used as parent of ei:Expert (foaf:Person) and ei:Organization
+      (foaf:Organization).
+
+  - id: dcterms
+    source_iri: http://purl.org/dc/terms/
+    pinned_version: "2020-01-20"
+    extraction_method: full_import
+    term_file: null
+    module_file: imports/dcterms.ttl
+    license: public-domain
+    refresh_cadence_days: 365
+    source_freshness: "2026-04-22 up"
+    rejection_rationale: null
+    seed_terms:
+      - "http://purl.org/dc/terms/title"
+      - "http://purl.org/dc/terms/description"
+      - "http://purl.org/dc/terms/modified"
+      - "http://purl.org/dc/terms/license"
+      - "http://purl.org/dc/terms/creator"
+      - "http://purl.org/dc/terms/publisher"
+    extraction_command: "# owl:imports <http://purl.org/dc/terms/>"
+    notes: |
+      DCAT pulls dcterms transitively; manifest row kept for explicit
+      provenance.
+
+  # ---------- Bridge (mapper will author) ----------
+
+  - id: prov-foaf-agent-bridge
+    source_iri: null
+    pinned_version: "v0"
+    extraction_method: bridge
+    term_file: null
+    module_file: mappings/prov-foaf-bridge.ttl
+    license: inherits energy-intel license
+    refresh_cadence_days: 0
+    source_freshness: "2026-04-22 up (local)"
+    rejection_rationale: null
+    seed_terms:
+      - "http://xmlns.com/foaf/0.1/Agent"
+      - "http://www.w3.org/ns/prov#Agent"
+    extraction_command: "# Mapper authors a bridge .ttl asserting prov:Agent owl:equivalentClass foaf:Agent; scout does not write OWL."
+    notes: |
+      Scope open q #3 resolved. The de-facto alignment used by DCAT-AP
+      implementations, SPAR, and most PROV consumers. Step 3.5 safety gate
+      (reasoner on merged FOAF + PROV + bridge) MUST run before publish.
+      Mapper skill owns the bridge file.
+
+  # ---------- Rejected ----------
+
+  - id: qudt-full-schema
+    source_iri: http://qudt.org/schema/qudt
+    pinned_version: "3.2.1"
+    extraction_method: rejected
+    term_file: null
+    module_file: null
+    license: CC-BY-4.0
+    refresh_cadence_days: null
+    source_freshness: "2026-04-22 up"
+    rejection_rationale: |
+      Full QUDT schema is >100k triples and imports coordinate-system, physical-
+      constants, and datatype vocabularies out of scope for energy-intel V0.
+      Units-only MIREOT (see id: qudt-units-2.1) covers CQ-008 surface-form
+      unit tokens. Re-evaluate at V1 when the seven-facet Variable model lands.
+    seed_terms: []
+    extraction_command: null
+    notes: |
+      Not silent exclusion — documented for curator refresh policy audit.
+
+  - id: schema-org-core
+    source_iri: https://schema.org/version/latest/schemaorg-current-https.ttl
+    pinned_version: "latest (2026)"
+    extraction_method: rejected
+    term_file: null
+    module_file: null
+    license: CC-BY-SA-3.0
+    refresh_cadence_days: null
+    source_freshness: "2026-04-22 up"
+    rejection_rationale: |
+      Redundant with DCAT 3 + FOAF + IAO for V0. scope.md § Reused external
+      ontologies does not include schema.org. Re-enters as a *projection
+      target* (Linear D6 JSON-LD export codec) when curator lands that
+      workstream; not as an import.
+    seed_terms: []
+    extraction_command: null
+    notes: |
+
+  - id: oeoex
+    source_iri: https://github.com/OpenEnergyPlatform/oeo-extended
+    pinned_version: "experimental"
+    extraction_method: rejected
+    term_file: null
+    module_file: null
+    license: CC-BY-4.0
+    refresh_cadence_days: null
+    source_freshness: "2026-04-22 up"
+    rejection_rationale: |
+      Experimental OEO extension repo without release cadence suitable for
+      downstream. Core OEO v2.11.0 covers V0 needs. Revisit on scope-refresh.
+    seed_terms: []
+    extraction_command: null
+    notes: |
+
+  - id: owl-time
+    source_iri: http://www.w3.org/2006/time
+    pinned_version: "2017-10-19"
+    extraction_method: rejected
+    term_file: null
+    module_file: null
+    license: W3C-Document
+    refresh_cadence_days: null
+    source_freshness: "2026-04-22 up"
+    rejection_rationale: |
+      V0 uses ei:ClaimTemporalWindow with ei:intervalStart / ei:intervalEnd
+      (scope.md § CMC details). No CQ requires transitive temporal inference
+      (before / after / during) in V0. Revisit when CQ-future needs OWL-Time
+      semantics.
+    seed_terms: []
+    extraction_command: null
+    notes: |
+
+  - id: sosa-ssn
+    source_iri: http://www.w3.org/ns/sosa/
+    pinned_version: "W3C-REC-2017"
+    extraction_method: rejected
+    term_file: null
+    module_file: null
+    license: W3C-Document
+    refresh_cadence_days: null
+    source_freshness: "2026-04-22 up"
+    rejection_rationale: |
+      ei:Observation is thin in V0 (no CQs hit it). SOSA's sosa:Observation +
+      sosa:FeatureOfInterest model would only pay off once the data-ingest
+      lane is live. Revisit then.
+    seed_terms: []
+    extraction_command: null
+    notes: |
+
+  - id: rdf-data-cube
+    source_iri: http://purl.org/linked-data/cube
+    pinned_version: "2014-01-16"
+    extraction_method: rejected
+    term_file: null
+    module_file: null
+    license: W3C-Document
+    refresh_cadence_days: null
+    source_freshness: "2026-04-22 up"
+    rejection_rationale: |
+      scope.md non-goal #6 takes SPARQL/SHACL/RDF runtime off the table. qb's
+      DataStructureDefinition machinery is not needed in V0; consumers get
+      generated TypeScript.
+    seed_terms: []
+    extraction_command: null
+    notes: |

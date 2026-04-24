@@ -1,0 +1,91 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/energy-intel/concept/temporal-resolution/AllDifferent> a owl:AllDifferent ;
+    owl:distinctMembers <https://w3id.org/energy-intel/concept/temporal-resolution/AllDifferent/members> .
+
+<https://w3id.org/energy-intel/modules/concept-schemes/temporal-resolution> a owl:Ontology ;
+    dcterms:created "2026-04-22"^^xsd:date ;
+    dcterms:description "Value Partition ODP F.1 scheme enumerating the five canonical temporal-resolution concepts used on CMC and Series."@en ;
+    dcterms:title "energy-intel — Temporal Resolution ConceptScheme"@en ;
+    rdfs:comment "Hand-seeded SKOS ConceptScheme per Value Partition ODP F.1. See docs/axiom-plan.md Foundational section and imports-manifest.yaml."@en ;
+    owl:versionInfo "v0 (2026-04-22)" .
+
+<https://w3id.org/energy-intel/concept/temporal-resolution/AllDifferent/members> rdf:first <https://w3id.org/energy-intel/concept/temporal-resolution/hourly> ;
+    rdf:rest ( <https://w3id.org/energy-intel/concept/temporal-resolution/daily> <https://w3id.org/energy-intel/concept/temporal-resolution/monthly> <https://w3id.org/energy-intel/concept/temporal-resolution/quarterly> <https://w3id.org/energy-intel/concept/temporal-resolution/annual> ) .
+
+<https://w3id.org/energy-intel/concept/temporal-resolution/annual> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "annual"@en ;
+    skos:definition "A temporal resolution of one calendar year per observation bucket."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/temporal-resolution> ;
+    skos:prefLabel "annual"@en ;
+    skos:related <https://w3id.org/energy-intel/concept/temporal-resolution/daily>,
+        <https://w3id.org/energy-intel/concept/temporal-resolution/hourly>,
+        <https://w3id.org/energy-intel/concept/temporal-resolution/monthly>,
+        <https://w3id.org/energy-intel/concept/temporal-resolution/quarterly> ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/temporal-resolution> .
+
+<https://w3id.org/energy-intel/concept/temporal-resolution/daily> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "daily"@en ;
+    skos:definition "A temporal resolution of one day per observation bucket."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/temporal-resolution> ;
+    skos:prefLabel "daily"@en ;
+    skos:related <https://w3id.org/energy-intel/concept/temporal-resolution/annual>,
+        <https://w3id.org/energy-intel/concept/temporal-resolution/hourly>,
+        <https://w3id.org/energy-intel/concept/temporal-resolution/monthly>,
+        <https://w3id.org/energy-intel/concept/temporal-resolution/quarterly> ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/temporal-resolution> .
+
+<https://w3id.org/energy-intel/concept/temporal-resolution/hourly> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "hourly"@en ;
+    skos:definition "A temporal resolution of one hour per observation bucket."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/temporal-resolution> ;
+    skos:prefLabel "hourly"@en ;
+    skos:related <https://w3id.org/energy-intel/concept/temporal-resolution/annual>,
+        <https://w3id.org/energy-intel/concept/temporal-resolution/daily>,
+        <https://w3id.org/energy-intel/concept/temporal-resolution/monthly>,
+        <https://w3id.org/energy-intel/concept/temporal-resolution/quarterly> ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/temporal-resolution> .
+
+<https://w3id.org/energy-intel/concept/temporal-resolution/monthly> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "monthly"@en ;
+    skos:definition "A temporal resolution of one calendar month per observation bucket."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/temporal-resolution> ;
+    skos:prefLabel "monthly"@en ;
+    skos:related <https://w3id.org/energy-intel/concept/temporal-resolution/annual>,
+        <https://w3id.org/energy-intel/concept/temporal-resolution/daily>,
+        <https://w3id.org/energy-intel/concept/temporal-resolution/hourly>,
+        <https://w3id.org/energy-intel/concept/temporal-resolution/quarterly> ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/temporal-resolution> .
+
+<https://w3id.org/energy-intel/concept/temporal-resolution/quarterly> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "quarterly"@en ;
+    skos:definition "A temporal resolution of one calendar quarter per observation bucket."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/temporal-resolution> ;
+    skos:prefLabel "quarterly"@en ;
+    skos:related <https://w3id.org/energy-intel/concept/temporal-resolution/annual>,
+        <https://w3id.org/energy-intel/concept/temporal-resolution/daily>,
+        <https://w3id.org/energy-intel/concept/temporal-resolution/hourly>,
+        <https://w3id.org/energy-intel/concept/temporal-resolution/monthly> ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/temporal-resolution> .
+
+<https://w3id.org/energy-intel/concept/temporal-resolution> a owl:NamedIndividual,
+        skos:ConceptScheme ;
+    rdfs:label "temporal resolution"@en ;
+    dcterms:title "temporal resolution"@en ;
+    skos:definition "The canonical temporal-resolution kind of an observation or claim."@en ;
+    skos:hasTopConcept <https://w3id.org/energy-intel/concept/temporal-resolution/annual>,
+        <https://w3id.org/energy-intel/concept/temporal-resolution/daily>,
+        <https://w3id.org/energy-intel/concept/temporal-resolution/hourly>,
+        <https://w3id.org/energy-intel/concept/temporal-resolution/monthly>,
+        <https://w3id.org/energy-intel/concept/temporal-resolution/quarterly> ;
+    skos:prefLabel "temporal resolution"@en .

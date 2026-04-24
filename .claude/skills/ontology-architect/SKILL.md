@@ -1,10 +1,15 @@
 ---
 name: ontology-architect
 description: >
-  Specializes in Programmatic Ontology Development (POD). Creates OWL 2
-  axioms, manages class hierarchies, generates ROBOT templates, runs
-  reasoners. Uses ROBOT, oaklib, KGCL, OWLAPY, owlready2, and LinkML.
-  Use when creating or modifying ontology axioms.
+  Formalizes an approved conceptual model as programmatic OWL 2 artifacts
+  using Programmatic Ontology Development (POD). Creates OWL 2 axioms,
+  manages class hierarchies, generates and preflights ROBOT templates,
+  writes KGCL patches, drafts SHACL shapes from property-design intent,
+  and runs reasoners under the targeted OWL profile (EL/QL/RL/DL). Uses
+  ROBOT, oaklib, KGCL, OWLAPY, owlready2, LinkML, and rdflib. Use when
+  creating or modifying ontology axioms, formalizing a model, adding
+  classes/properties/restrictions, fixing unsatisfiable classes,
+  validating OWL profile, or debugging reasoner / template failures.
 ---
 
 # Ontology Architect (POD)
@@ -35,8 +40,37 @@ Read these files from `_shared/` before beginning work:
 - `_shared/naming-conventions.md` — naming and ID minting standards
 - `_shared/namespaces.json` — canonical prefixes
 - `_shared/quality-checklist.md` — validation requirements after changes
+- `_shared/owl-profile-playbook.md` — profile decision, construct-support matrix, merge-then-validate-profile preflight, reasoner pairing
+- `_shared/robot-template-preflight.md` — preflight checklist, header syntax, CURIE resolution, SPLIT handling, merge-mode safety
+- `_shared/odk-and-imports.md` — ODK vs standalone-POD choice for the project; when to add an import before minting a new term
+- `_shared/closure-and-open-world.md` — when to add closure axioms vs pair with SHACL; allValuesFrom and DisjointUnion recipes
+- `_shared/relation-semantics.md` — object vs data property choice, characteristics matrix, property chains
+- `_shared/llm-verification-patterns.md` — every LLM-drafted axiom / template / KGCL patch must clear its tool gate before handoff
+- `_shared/iteration-loopbacks.md` — routes `profile_violation`, `unsatisfiable_class`, `construct_mismatch`, `robot_template_error` loopbacks to this skill
+- `_shared/pattern-catalog.md` — ODP instantiation (DOSDP, value partition, part-whole, role, participation, N-ary, information-realization); prefer DOSDP over freehand OWL for repeated patterns
+- `_shared/modularization-and-bridges.md` — import vs. bridge vs. shadow-axiom decisions; merge pitfalls; layering enforcement at file boundaries
 
 ## Core Workflow
+
+Workflow order reflects the "profile+reasoner pick → pattern/template
+strategy → encode → mandatory gates → package" sequence. Each encoded
+artifact (OWL axiom, ROBOT template row, KGCL patch, SHACL shape) is
+Class A under [`_shared/llm-verification-patterns.md`](_shared/llm-verification-patterns.md) —
+tool-gated before handoff. No exceptions.
+
+### Step 0: Determine Project Build Regime
+
+Pick the build regime before anything else. Everything downstream (edit
+file path, release pipeline, import refresh) depends on this:
+
+| Regime | Signals | Implications |
+|--------|---------|--------------|
+| Standalone POD | Plain `ontologies/{name}/{name}.ttl`, custom `scripts/build.py` | Apply ROBOT commands directly; pyshacl via CLI; curator owns release pipeline |
+| ODK-managed | `src/ontology/` tree, `ontologies/{name}/Makefile`, `.github/workflows/qc.yml` | Work in `src/ontology/{name}-edit.owl`; run `sh run.sh make`; ODK handles merge/release |
+
+Record the choice in `docs/build-regime.yaml`. Standalone POD projects
+stay the default; ODK is activated only when the project is already ODK-
+shaped or the team commits to the full ODK pipeline.
 
 ### Step 1: Select OWL 2 Profile
 
@@ -57,6 +91,32 @@ Reasoning strategy options:
 
 Default to OWL 2 DL unless there is a clear scalability or deployment reason
 to choose a restricted profile.
+
+#### Construct-Support Matrix (flag non-EL axioms if ELK targeted)
+
+Before encoding any axiom, check it against the construct-support matrix
+in [`_shared/owl-profile-playbook.md § 3`](_shared/owl-profile-playbook.md).
+Constructs that exceed the declared profile fail silently in some
+reasoners — ELK skips qualified cardinality and universals without error.
+
+For every `axiom-plan.yaml` row, stamp the matrix column:
+
+| Axiom pattern | EL | QL | RL | DL |
+|---------------|----|----|----|----|
+| SubClassOf (simple) | ✓ | ✓ | ✓ | ✓ |
+| `some` / existential restriction | ✓ | ✓ | ✓ | ✓ |
+| `only` / universal restriction | ✗ | ✗ | ✗ | ✓ |
+| `exactly N` / qualified cardinality | ✗ | ✗ | ✗ | ✓ |
+| Complement / `not` | ✗ | ✗ | ✗ | ✓ |
+| DisjointClasses, DisjointUnion | partial | ✗ | ✓ | ✓ |
+| Property chain | partial | ✗ | ✓ | ✓ |
+| Inverse property (`inverseOf`) | ✗ | ✓ | ✓ | ✓ |
+
+If your declared profile is EL and the plan carries `✗` rows, you have
+two choices: (a) widen the profile + pair with a DL reasoner (HermiT /
+Pellet) before release, or (b) refactor the pattern (e.g., universal to
+DisjointUnion in EL-safe cases). Escalate as `construct_mismatch` if the
+plan can't be reconciled.
 
 ### Step 2: Create Ontology Header
 
@@ -91,7 +151,45 @@ Metadata consistency rule:
   use the same conventions in generated templates and KGCL patches.
 - Include PROV-O fields when provenance tracking is required by the project.
 
-### Step 3: Bulk Term Creation via ROBOT Template
+### Step 2.5: Import / Declaration Preflight
+
+Before minting any new term, confirm every IRI you will reference is
+either (a) already declared in the project, (b) resolvable through an
+already-imported module, or (c) added as a new import via the scout's
+`imports-manifest.yaml`.
+
+Preflight checks:
+
+```bash
+# 1. List every IRI that the axiom plan references
+uv run python scripts/axiom_plan_iri_extract.py \
+  --plan ontologies/{name}/docs/axiom-plan.yaml \
+  > /tmp/referenced-iris.txt
+
+# 2. Resolve each through the merged import closure
+robot merge --input ontologies/{name}/{name}.ttl \
+  --input ontologies/{name}/imports/*.owl \
+  --output /tmp/merged-for-preflight.ttl
+
+# 3. Check every reference exists (via oaklib)
+while read iri; do
+  uv run runoak -i /tmp/merged-for-preflight.ttl info "$iri" \
+    > /dev/null 2>&1 || echo "MISSING: $iri"
+done < /tmp/referenced-iris.txt
+```
+
+If a reference is MISSING: either add an import row via `ontology-scout`
+(`missing_reuse` loopback) or mint a new term within the project
+namespace. Do not silently fall through — a silent reference that
+doesn't resolve becomes an ERROR at validator Level 0.
+
+### Step 3: Bulk Term Creation via ROBOT Template (or DOSDP)
+
+**Prefer ROBOT templates and DOSDP over freehand OWL.** Templates are
+easier to review, round-trip through TSV/YAML, and leave audit rows that
+map CQ → pattern → axiom. Freehand `rdflib` or OWLAPY (Step 5) is an
+escape hatch for patterns that neither ROBOT templates nor DOSDP
+support — use it, but record the rationale in the axiom plan.
 
 For adding >5 terms from the glossary, generate a ROBOT template TSV:
 
@@ -134,8 +232,25 @@ These issues are learned through experience and not well-documented:
   it, labels are untagged string literals, causing issues with tools that
   filter by language.
 
-**Pre-flight check**: Before running `robot template`, verify that all column
-headers parse correctly and all CURIEs resolve against declared prefixes.
+### Step 3.5: ROBOT Template Preflight (mandatory before `robot template`)
+
+Every ROBOT template or DOSDP pattern MUST clear the preflight in
+[`_shared/robot-template-preflight.md`](_shared/robot-template-preflight.md)
+before `robot template` runs:
+
+| Preflight row | Check |
+|----------------|-------|
+| Header syntax | Column-definition row parses; no typos in `SC %`, `A rdfs:label`, `EC %`, etc. |
+| CURIE resolution | Every CURIE in the template resolves against declared prefixes |
+| Required cells | No row in a required column is empty (silent-skip anti-pattern) |
+| SPLIT delimiters | Multi-value columns declare `SPLIT=\|` if applicable |
+| Language tags | `A rdfs:label@en` where language is required |
+| Merge mode | `--merge-before` or `--merge-after` chosen explicitly; default merge is deletion-safe |
+
+Record the preflight results as
+`validation/robot-template-preflight/{template-name}.log`. Skipping the
+preflight is a safety violation — `robot template` on an unchecked TSV
+can silently drop rows or produce blank IRIs.
 
 ### Step 4: Individual Changes via KGCL
 
@@ -270,6 +385,40 @@ uv run gen-shacl schema.yaml > shapes.ttl
 uv run gen-python schema.yaml > models.py
 ```
 
+### Step 6.5: Generate SHACL Shapes from Property-Design Intent
+
+Every row in `docs/property-design.yaml` with `intent: validate` gets a
+SHACL shape. Shapes come from the property-design intent — do not invent
+them at release time. Output to `ontologies/{name}/shapes/{name}-shapes.ttl`.
+
+Pattern:
+
+```turtle
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix : <http://example.org/ontology/> .
+
+:InstrumentShape a sh:NodeShape ;
+    sh:targetClass :Instrument ;
+    sh:property [
+        sh:path :hasIdentifier ;
+        sh:datatype xsd:string ;
+        sh:minCount 1 ;
+        sh:maxCount 1 ;
+        sh:message "Every Instrument must have exactly one identifier" ;
+    ] .
+```
+
+Rules:
+
+- Every `intent: validate` row in `property-design.yaml` must have a
+  matching `sh:property` entry. Missing coverage is caught by validator
+  L3.5.
+- `intent: infer` rows do NOT get shapes — they get OWL restrictions
+  (Step 3 / Step 5).
+- Run `pyshacl --data ontology.ttl --shapes shapes.ttl` before handoff.
+  Any violation is either an ontology bug or a shape bug; fix before
+  release.
+
 ### Step 7: Verify (after structural changes)
 
 Reasoning strategy depends on context:
@@ -302,6 +451,84 @@ uv run pyshacl -s shapes/ontology-shapes.ttl -i rdfs ontology.ttl -f human
 **Materialization decision**: The ODK default is to include inferred axioms
 in the release file (`robot reason --output`). If consumers will reason
 independently, ship asserted-only and document this in the release notes.
+
+### Step 7.1: Profile-Specific Reasoner Gate (mandatory before handoff)
+
+Before handoff to `ontology-validator`, the architect MUST show that the
+ontology passes all three gates against the merged artifact, in order:
+
+```bash
+# merged artifact for all three gates
+robot merge --input ontologies/{name}/{name}.ttl \
+  --input ontologies/{name}/imports/*.owl \
+  --output validation/merged.ttl
+
+# Gate 1: profile validation (per declared OWL profile)
+.local/bin/robot validate-profile --profile {EL|QL|RL|DL} \
+  --input validation/merged.ttl \
+  --output validation/profile-validate.txt
+
+# Gate 2: reasoner classification (pair reasoner to profile)
+robot reason --reasoner {ELK|HermiT} \
+  --input validation/merged.ttl \
+  --output validation/reasoned.ttl \
+  --dump-unsatisfiable validation/unsatisfiable.txt
+
+# Gate 3: quality report, fail on ERROR
+robot report --input validation/merged.ttl \
+  --fail-on ERROR \
+  --output validation/robot-report.tsv
+```
+
+Reasoner pairing (from `owl-profile-playbook.md`):
+
+| Declared profile | Approved reasoners | Why |
+|------------------|---------------------|-----|
+| OWL 2 EL | ELK | Fast, profile-complete |
+| OWL 2 DL | HermiT, Pellet, Openllet | Full DL closure; catches what ELK silently skips |
+| OWL 2 RL | Rule engines, RL-compatible reasoners | Rule-style inference |
+| OWL 2 QL | Ontop | OBDA rewriting |
+
+Using an ELK-only gate on a DL ontology is an anti-pattern. If non-EL
+axioms exist (per Step 1 construct-support matrix), either widen the
+profile or re-run Gate 2 with HermiT before handoff.
+
+### Step 8: Handoff Packaging
+
+Validator handoff is a package, not a file. Produce
+`validation/handoff-manifest.yaml`:
+
+```yaml
+handoff_id: HOF-2026-04-21-001
+artifact_under_test: ontologies/{name}/{name}.ttl
+merged_artifact: validation/merged.ttl
+declared_profile: OWL-DL
+reasoner: HermiT
+raw_logs:
+  profile_validate: validation/profile-validate.txt
+  reasoner_log: validation/reasoner.log
+  robot_report: validation/robot-report.tsv
+  pyshacl: validation/shacl-results.ttl
+  robot_template_preflight:
+    - validation/robot-template-preflight/instruments.log
+generated_artifacts:
+  templates:
+    - ontologies/{name}/{name}-template.tsv
+  shapes:
+    - ontologies/{name}/shapes/{name}-shapes.ttl
+  kgcl_patches:
+    - ontologies/{name}/{name}-changes.kgcl
+  reference_individuals:
+    - ontologies/{name}/{name}-reference-individuals.ttl
+cq_implementation_matrix: ontologies/{name}/docs/cq-implementation-matrix.csv
+```
+
+Rules:
+
+- Raw logs are attached verbatim — the validator (Class D) never paraphrases.
+- Every Must-Have CQ appears in `cq-implementation-matrix.csv` with the
+  axioms / shapes / tests that implement it.
+- Missing package fields block validator ingestion.
 
 ## Tool Commands
 
@@ -410,3 +637,50 @@ This skill produces:
 | ROBOT template fails | Column headers don't match expected format | Check ROBOT template documentation for column syntax |
 | KGCL apply fails | Term not found or invalid KGCL syntax | Verify term exists with `runoak info`; check KGCL grammar |
 | OWLAPY JVM bridge error | Java not installed or JVM not found | Ensure JDK is installed and JAVA_HOME is set |
+
+## Progress Criteria
+
+Work is done when every box is checked. All gates are mandatory before handoff.
+
+- [ ] `.local/bin/robot validate-profile --profile {EL|QL|RL|DL}` passes on
+      the merged ontology — see [`_shared/owl-profile-playbook.md § 5`](_shared/owl-profile-playbook.md).
+- [ ] `.local/bin/robot reason --reasoner {ELK|HermiT}` passes; reasoner choice
+      matches declared profile + construct-support matrix.
+- [ ] `.local/bin/robot report --fail-on ERROR` passes on the merged ontology.
+- [ ] `pyshacl` passes for every shape graph drafted from property-design intent.
+- [ ] ROBOT / DOSDP templates cleared the preflight in
+      [`_shared/robot-template-preflight.md`](_shared/robot-template-preflight.md).
+- [ ] `cq-implementation-matrix.csv` maps every Must-Have CQ to implemented
+      axioms / shapes / tests.
+- [ ] Every ODP instantiation cites the row in [`_shared/pattern-catalog.md § 2`](_shared/pattern-catalog.md).
+- [ ] No Loopback Trigger below fires.
+
+## LLM Verification Required
+
+See [`_shared/llm-verification-patterns.md`](_shared/llm-verification-patterns.md).
+Every LLM-drafted artifact is Class A (tool-gated). No exceptions.
+
+| Operation | Class | Tool gate |
+|---|---|---|
+| OWL axiom draft | A | `robot validate-profile` → `robot reason` → `robot report` |
+| ROBOT / DOSDP template row | A | Preflight checks per [`_shared/robot-template-preflight.md`](_shared/robot-template-preflight.md) + `robot template` exit 0 |
+| KGCL patch | A | `kgcl-apply` round-trip; `robot diff` confirms intended change only |
+| SHACL shape draft | A | `pyshacl --data ontology.ttl --shapes shapes.ttl` exit 0 |
+
+## Loopback Triggers
+
+| Trigger | Route to | Reason |
+|---|---|---|
+| Incoming: `profile_violation` | `ontology-architect` | Axiom-level issue; fix pattern or widen profile in scope doc. |
+| Incoming: `unsatisfiable_class` | `ontology-architect` | Axiom-level conflict; trace disjointness + restrictions. |
+| Incoming: `construct_mismatch` | `ontology-architect` | Reasoner choice wrong for construct; switch to HermiT or drop construct. |
+| Incoming: `robot_template_error` | `ontology-architect` | Preflight the template, fix the offending row. |
+| Raised: axiom plan calls for a term not in conceptual model | `ontology-conceptualizer` | Conceptual model must be updated first; do not mint silently. |
+| Raised: no reusable term found for a needed concept | `ontology-scout` | Rescout before minting; architect does not search registries. |
+
+Depth > 3 escalates per [`_shared/iteration-loopbacks.md`](_shared/iteration-loopbacks.md).
+
+## Worked Examples
+
+- [`_shared/worked-examples/ensemble/architect.md`](_shared/worked-examples/ensemble/architect.md) — `StringQuartet hasMember exactly 4 Musician`: ELK silently skips qualified cardinality, HermiT catches; DOSDP for instrument-family. *(Wave 4)*
+- [`_shared/worked-examples/microgrid/architect.md`](_shared/worked-examples/microgrid/architect.md) — `hasPart ∘ locatedIn → locatedIn` stays EL-safe; SHACL for telemetry-packet structure; equivalence-bridge failure. *(Wave 4)*

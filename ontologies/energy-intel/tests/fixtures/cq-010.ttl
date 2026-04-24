@@ -1,0 +1,41 @@
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ei: <https://w3id.org/energy-intel/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://id.skygest.io/post/post_01J_example> a owl:NamedIndividual,
+        ei:Post ;
+    ei:authoredBy <https://id.skygest.io/expert/did-plc-a5kyzplew76jaj4dhnqsosjv> ;
+    ei:evidences <https://id.skygest.io/cmc/cmc_01J_example> .
+
+<https://w3id.org/energy-intel/tests/fixtures/cq-010> a owl:Ontology ;
+    dcterms:created "2026-04-22"^^xsd:date ;
+    dcterms:description "Full resolution fixture for CMC_MAIN: all five references populated."@en ;
+    dcterms:title "cq-010 fixture"@en .
+
+<https://id.skygest.io/agent/ag_01J_eia> a owl:NamedIndividual,
+        ei:Organization .
+
+<https://id.skygest.io/cmc/cmc_01J_example> a owl:NamedIndividual,
+        ei:CanonicalMeasurementClaim ;
+    ei:referencesAgent <https://id.skygest.io/agent/ag_01J_eia> ;
+    ei:referencesDataset <https://id.skygest.io/dataset/ds_01J_eia_pv> ;
+    ei:referencesDistribution <https://id.skygest.io/distribution/dist_01J_eia_pv_monthly> ;
+    ei:referencesSeries <https://id.skygest.io/series/ser_01J_solar_us_monthly> ;
+    ei:referencesVariable <https://id.skygest.io/variable/var_01J_solar_installed_capacity> .
+
+<https://id.skygest.io/dataset/ds_01J_eia_pv> a owl:NamedIndividual,
+        dcat:Dataset .
+
+<https://id.skygest.io/distribution/dist_01J_eia_pv_monthly> a owl:NamedIndividual,
+        dcat:Distribution .
+
+<https://id.skygest.io/expert/did-plc-a5kyzplew76jaj4dhnqsosjv> a owl:NamedIndividual,
+        ei:Expert .
+
+<https://id.skygest.io/series/ser_01J_solar_us_monthly> a owl:NamedIndividual,
+        ei:Series .
+
+<https://id.skygest.io/variable/var_01J_solar_installed_capacity> a owl:NamedIndividual,
+        ei:Variable .

@@ -1,0 +1,119 @@
+{
+  "shapes_file": "shapes/energy-intel-shapes.ttl",
+  "fixtures_validated": 14,
+  "failures": 0,
+  "results": [
+    {
+      "cq": "cq-001",
+      "fixture_path": "tests/fixtures/cq-001.ttl",
+      "conforms": true,
+      "violations": 0,
+      "status": "pass",
+      "results_graph": "validation/shacl-results-cq-001.ttl"
+    },
+    {
+      "cq": "cq-002",
+      "fixture_path": "tests/fixtures/cq-002.ttl",
+      "conforms": true,
+      "violations": 0,
+      "status": "pass",
+      "results_graph": "validation/shacl-results-cq-002.ttl"
+    },
+    {
+      "cq": "cq-003",
+      "fixture_path": "tests/fixtures/cq-003.ttl",
+      "conforms": true,
+      "violations": 0,
+      "status": "pass",
+      "results_graph": "validation/shacl-results-cq-003.ttl"
+    },
+    {
+      "cq": "cq-004",
+      "fixture_path": "tests/fixtures/cq-004.ttl",
+      "conforms": true,
+      "violations": 0,
+      "status": "pass",
+      "results_graph": "validation/shacl-results-cq-004.ttl"
+    },
+    {
+      "cq": "cq-005",
+      "fixture_path": "tests/fixtures/cq-005.ttl",
+      "conforms": true,
+      "violations": 0,
+      "status": "pass",
+      "results_graph": "validation/shacl-results-cq-005.ttl"
+    },
+    {
+      "cq": "cq-006",
+      "fixture_path": "tests/fixtures/cq-006.ttl",
+      "conforms": true,
+      "violations": 0,
+      "status": "pass",
+      "results_graph": "validation/shacl-results-cq-006.ttl"
+    },
+    {
+      "cq": "cq-007",
+      "fixture_path": "tests/fixtures/cq-007.ttl",
+      "conforms": true,
+      "violations": 0,
+      "status": "pass",
+      "results_graph": "validation/shacl-results-cq-007.ttl"
+    },
+    {
+      "cq": "cq-008",
+      "fixture_path": "tests/fixtures/cq-008.ttl",
+      "conforms": true,
+      "violations": 0,
+      "status": "pass",
+      "results_graph": "validation/shacl-results-cq-008.ttl"
+    },
+    {
+      "cq": "cq-009",
+      "fixture_path": "tests/fixtures/cq-009.ttl",
+      "conforms": true,
+      "violations": 0,
+      "status": "pass",
+      "results_graph": "validation/shacl-results-cq-009.ttl"
+    },
+    {
+      "cq": "cq-010",
+      "fixture_path": "tests/fixtures/cq-010.ttl",
+      "conforms": true,
+      "violations": 0,
+      "status": "pass",
+      "results_graph": "validation/shacl-results-cq-010.ttl"
+    },
+    {
+      "cq": "cq-011",
+      "fixture_path": "tests/fixtures/cq-011.ttl",
+      "conforms": true,
+      "violations": 0,
+      "status": "pass",
+      "results_graph": "validation/shacl-results-cq-011.ttl"
+    },
+    {
+      "cq": "cq-012",
+      "fixture_path": "tests/fixtures/cq-012.ttl",
+      "conforms": true,
+      "violations": 0,
+      "status": "pass",
+      "results_graph": "validation/shacl-results-cq-012.ttl"
+    },
+    {
+      "cq": "cq-013",
+      "fixture_path": "tests/fixtures/cq-013.ttl",
+      "conforms": true,
+      "violations": 0,
+      "status": "pass",
+      "results_graph": "validation/shacl-results-cq-013.ttl"
+    },
+    {
+      "cq": "cq-014",
+      "fixture_path": "tests/fixtures/cq-014.ttl",
+      "conforms": true,
+      "violations": 0,
+      "status": "pass",
+      "results_graph": "validation/shacl-results-cq-014.ttl"
+    }
+  ]
+}

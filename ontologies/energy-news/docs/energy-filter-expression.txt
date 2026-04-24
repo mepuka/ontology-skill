@@ -1,0 +1,155 @@
+(
+  authorin:abbiebennett.bsky.social,akshatrathi.bsky.social,aleach.ca,alicemhancock.bsky.social,altenergy.bsky.social,anikanpatel.carbonbrief.org,bigearthdata.ai,brianscheid.bsky.social,campbellenergy.bsky.social,canarymedia.com,carbonbrief.org,chelseaeharvey.bsky.social,ckemfert.bsky.social,cleanenergy.org,cleanenergywire.bsky.social,cleantechnica.bsky.social,climatenews.bsky.social,costasamaras.com,drpauldorfman.bsky.social,drsimevans.carbonbrief.org,earthsciinfo.bsky.social,electrek.co,enerdata.bsky.social,energyinnovation.org,energylawjeff.bsky.social,energyvoice.com,ethanhowl.bsky.social,euenergy.bsky.social,gasbuddyguy.bsky.social,gavinjmaguire.bsky.social,greencollective.io,grist.org,gruberte.bsky.social,hannahdaly.ie,hanseric.bsky.social,hausfath.bsky.social,heatmap.news,iea.org,insideclimatenews.org,insideevs.com,janrosenow.bsky.social,javierblas.bsky.social,jeffstjohn.bsky.social,jessedjenkins.com,jrfhanger.bsky.social,justingerdes.bsky.social,ketanjoshi.co,latitudemedia.bsky.social,leohickman.carbonbrief.org,liamdenning.bsky.social,longtail.news,lovering.bsky.social,mikemunsell.bsky.social,nathanielbullard.com,opinion.bloomberg.com,patrickgaley.bsky.social,rebleber.bsky.social,renewableenergy.bsky.social,robinsonmeyer.bsky.social,rtoinsider.bsky.social,sammyroth.bsky.social,severinborenstein.bsky.social,shedrills.bsky.social,sjcasey.bsky.social,sstapczynski.bsky.social,thedriven.io,theenergymix.com,torsolarfred.bsky.social,ucenergyinstitute.bsky.social,volts.wtf,wettengel.bsky.social,windpowermonthly.bsky.social,worldnuclearnews.bsky.social,yalee360.bsky.social
+)
+OR
+(
+  NOT authorin:abbiebennett.bsky.social,akshatrathi.bsky.social,aleach.ca,alicemhancock.bsky.social,altenergy.bsky.social,anikanpatel.carbonbrief.org,bigearthdata.ai,brianscheid.bsky.social,campbellenergy.bsky.social,canarymedia.com,carbonbrief.org,chelseaeharvey.bsky.social,ckemfert.bsky.social,cleanenergy.org,cleanenergywire.bsky.social,cleantechnica.bsky.social,climatenews.bsky.social,costasamaras.com,drpauldorfman.bsky.social,drsimevans.carbonbrief.org,earthsciinfo.bsky.social,electrek.co,enerdata.bsky.social,energyinnovation.org,energylawjeff.bsky.social,energyvoice.com,ethanhowl.bsky.social,euenergy.bsky.social,gasbuddyguy.bsky.social,gavinjmaguire.bsky.social,greencollective.io,grist.org,gruberte.bsky.social,hannahdaly.ie,hanseric.bsky.social,hausfath.bsky.social,heatmap.news,iea.org,insideclimatenews.org,insideevs.com,janrosenow.bsky.social,javierblas.bsky.social,jeffstjohn.bsky.social,jessedjenkins.com,jrfhanger.bsky.social,justingerdes.bsky.social,ketanjoshi.co,latitudemedia.bsky.social,leohickman.carbonbrief.org,liamdenning.bsky.social,longtail.news,lovering.bsky.social,mikemunsell.bsky.social,nathanielbullard.com,opinion.bloomberg.com,patrickgaley.bsky.social,rebleber.bsky.social,renewableenergy.bsky.social,robinsonmeyer.bsky.social,rtoinsider.bsky.social,sammyroth.bsky.social,severinborenstein.bsky.social,shedrills.bsky.social,sjcasey.bsky.social,sstapczynski.bsky.social,thedriven.io,theenergymix.com,torsolarfred.bsky.social,ucenergyinstitute.bsky.social,volts.wtf,wettengel.bsky.social,windpowermonthly.bsky.social,worldnuclearnews.bsky.social,yalee360.bsky.social
+  AND
+  (
+    hashtagin:#solar,#wind,#renewables,#cleanenergy,#EV,#EVs,#electricvehicles,#heatpump,#heatpumps,#nuclear,#hydrogen,#naturalgas,#LNG,#coal,#offshorewind,#onshorewind,#BESS,#geothermal,#energystorage,#gridmodernization,#netzero,#decarbonization,#climatechange,#carbonemissions,#energypolicy,#IRA,#FERC,#energytransition,#cleanpower,#powergrid,#electricgrid,#energysecurity,#criticalMinerals,#carbonmarkets,#carboncapture,#CCS,#DAC,#energyefficiency,#rooftopsolar,#communitysolar,#agrivoltaics,#perovskite,#SMR,#fusion,#greenenergy,#sustainability,#energyaccess,#energyjustice,#energypoverty,#electrification,#EVcharging,#biomass,#bioenergy,#offshore,#onshore,#interconnection,#transmission,#microgrid,#DER,#energyfinance,#projectfinance,#cleantech,#energy,#oil,#gas,#OPEC,#climate,#grid,#battery,#lithium,#uranium,#powerplant,#electricity,#carbon,#emissions,#methane,#fossilfuels,#oilandgas,#greenhydrogen,#solarenergy,#windenergy,#windpower,#solarpower,#nuclearenergy,#nuclearpower
+
+    OR
+
+    link-contains:electrek.co
+    OR link-contains:canarymedia.com
+    OR link-contains:utilitydive.com
+    OR link-contains:rechargenews.com
+    OR link-contains:pv-magazine.com
+    OR link-contains:windpowermonthly.com
+    OR link-contains:energymonitor.ai
+    OR link-contains:oilprice.com
+    OR link-contains:woodmac.com
+    OR link-contains:iea.org
+    OR link-contains:eia.gov
+    OR link-contains:energy.gov
+    OR link-contains:ferc.gov
+    OR link-contains:irena.org
+    OR link-contains:nrel.gov
+    OR link-contains:greentechmedia.com
+    OR link-contains:renewableenergyworld.com
+    OR link-contains:cleantechnica.com
+    OR link-contains:insideclimatenews.org
+    OR link-contains:rtoinsider.com
+    OR link-contains:powermag.com
+    OR link-contains:energyintel.com
+    OR link-contains:platts.com
+    OR link-contains:bnef.com
+    OR link-contains:carbonbrief.org
+    OR link-contains:eenews.net
+    OR link-contains:heatmap.news
+    OR link-contains:grist.org
+    OR link-contains:thedriven.io
+    OR link-contains:volts.wtf
+    OR link-contains:canary.media
+    OR link-contains:latitudemedia.com
+    OR link-contains:insideevs.com
+    OR link-contains:energyvoice.com
+
+    OR
+
+    contains:"solar power"
+    OR contains:"solar energy"
+    OR contains:"solar panel"
+    OR contains:"solar farm"
+    OR contains:"wind power"
+    OR contains:"wind energy"
+    OR contains:"wind farm"
+    OR contains:"wind turbine"
+    OR contains:"offshore wind"
+    OR contains:"energy storage"
+    OR contains:"battery storage"
+    OR contains:"energy transition"
+    OR contains:"clean energy"
+    OR contains:"renewable energy"
+    OR contains:"electric vehicle"
+    OR contains:"heat pump"
+    OR contains:"nuclear power"
+    OR contains:"nuclear energy"
+    OR contains:"natural gas"
+    OR contains:"carbon capture"
+    OR contains:"carbon emissions"
+    OR contains:"net zero"
+    OR contains:"net-zero"
+    OR contains:"decarbonization"
+    OR contains:"power grid"
+    OR contains:"electric grid"
+    OR contains:"green hydrogen"
+    OR contains:"energy policy"
+    OR contains:"energy security"
+    OR contains:"critical minerals"
+    OR contains:"oil and gas"
+    OR contains:"crude oil"
+    OR contains:"OPEC"
+    OR contains:"LNG"
+    OR contains:"coal plant"
+    OR contains:"coal power"
+    OR contains:"geothermal"
+    OR contains:"hydroelectric"
+    OR contains:"EV charging"
+    OR contains:"charging station"
+    OR contains:"fuel cell"
+    OR contains:"electrolyzer"
+    OR contains:"grid modernization"
+    OR contains:"smart grid"
+    OR contains:"transmission line"
+    OR contains:"power purchase agreement"
+    OR contains:"energy market"
+    OR contains:"electricity market"
+    OR contains:"Inflation Reduction Act"
+    OR contains:"climate change"
+    OR contains:"greenhouse gas"
+    OR contains:"Paris Agreement"
+    OR contains:"data center energy"
+    OR contains:"data center power"
+    OR contains:"AI energy"
+    OR contains:"energy demand"
+    OR contains:"power outage"
+    OR contains:"electricity rate"
+    OR contains:"utility bills"
+    OR contains:"community solar"
+    OR contains:"rooftop solar"
+    OR contains:"small modular reactor"
+    OR contains:"fusion energy"
+    OR contains:"nuclear fusion"
+    OR contains:"energy independence"
+    OR contains:"oil price"
+    OR contains:"gas price"
+    OR contains:"oil pipeline"
+    OR contains:"gas pipeline"
+    OR contains:"carbon tax"
+    OR contains:"carbon market"
+    OR contains:"emissions trading"
+    OR contains:"gigafactory"
+    OR contains:"battery manufacturing"
+    OR contains:"electric bus"
+    OR contains:"electric truck"
+    OR contains:"sustainable aviation fuel"
+    OR contains:"green steel"
+    OR contains:"industrial decarbonization"
+    OR contains:"energy poverty"
+    OR contains:"energy justice"
+    OR contains:"photovoltaic"
+    OR contains:"lithium-ion"
+    OR contains:"grid-scale battery"
+    OR contains:"virtual power plant"
+    OR contains:"demand response"
+    OR contains:"microgrid"
+    OR contains:"distributed energy"
+    OR contains:"building electrification"
+    OR contains:"carbon neutral"
+    OR contains:"ERCOT"
+    OR contains:"FERC"
+    OR contains:"CAISO"
+    OR contains:"PJM"
+    OR contains:"interconnection queue"
+    OR contains:"permitting reform"
+    OR contains:"energy bill"
+    OR contains:"clean electricity"
+    OR contains:"biofuel"
+    OR contains:"biomass energy"
+    OR contains:"ammonia fuel"
+    OR contains:"rare earth"
+    OR contains:"cobalt supply"
+    OR contains:"lithium supply"
+  )
+)

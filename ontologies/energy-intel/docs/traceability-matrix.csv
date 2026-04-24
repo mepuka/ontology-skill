@@ -1,0 +1,15 @@
+stakeholder_need,use_case_id,cq_id,ontology_terms,sparql_test
+"Extract a CanonicalMeasurementClaim from every curated social-media post that cites energy data",UC-001,CQ-001,"Post;CanonicalMeasurementClaim;evidences",ontologies/energy-intel/tests/cq-001.sparql
+"Attribute every post to the authoring Expert",UC-001,CQ-002,"Post;Expert;authoredBy",ontologies/energy-intel/tests/cq-002.sparql
+"Guarantee every CanonicalMeasurementClaim has at least one evidencing media artefact (invariant)",UC-001,CQ-009,"CanonicalMeasurementClaim;Post;Chart;PodcastSegment;evidences",ontologies/energy-intel/tests/cq-009.sparql
+"Resolve an expert claim to the Variable it references",UC-002,CQ-003,"CanonicalMeasurementClaim;Variable;referencesVariable",ontologies/energy-intel/tests/cq-003.sparql
+"Resolve an expert claim to the Series it references",UC-002,CQ-004,"CanonicalMeasurementClaim;Series;referencesSeries",ontologies/energy-intel/tests/cq-004.sparql
+"Resolve an expert claim to the Distribution it references",UC-002,CQ-005,"CanonicalMeasurementClaim;dcat:Distribution;referencesDistribution",ontologies/energy-intel/tests/cq-005.sparql
+"Expose the full multi-grain resolution shape (Agent, Distribution, Dataset, Variable, Series) for any claim",UC-002,CQ-010,"CanonicalMeasurementClaim;foaf:Agent;dcat:Distribution;dcat:Dataset;Variable;Series;referencesAgent;referencesDistribution;referencesDataset;referencesVariable;referencesSeries",ontologies/energy-intel/tests/cq-010.sparql
+"Find every expert claim referencing a given Variable (cross-expert join base)",UC-003,CQ-006,"Variable;CanonicalMeasurementClaim;referencesVariable",ontologies/energy-intel/tests/cq-006.sparql
+"Enumerate distinct Experts who have made claims about a given Variable",UC-003,CQ-007,"Variable;CanonicalMeasurementClaim;Post;Expert;referencesVariable;evidences;authoredBy",ontologies/energy-intel/tests/cq-007.sparql
+"Return the full cross-expert join payload (cmc+post+expert+asserted value/unit/time) for a given Variable",UC-003,CQ-008,"Variable;CanonicalMeasurementClaim;Post;Expert;referencesVariable;evidences;authoredBy;assertedValue;assertedUnit;assertedTime",ontologies/energy-intel/tests/cq-008.sparql
+"Attribute a podcast segment to its speaker(s)",UC-004,CQ-011,"PodcastSegment;Expert;spokenBy",ontologies/energy-intel/tests/cq-011.sparql
+"Link a podcast segment to any claim it evidences",UC-004,CQ-012,"PodcastSegment;CanonicalMeasurementClaim;evidences",ontologies/energy-intel/tests/cq-012.sparql
+"Retrieve CanonicalMeasurementClaims classified as being about a given energy-technology concept (transitive)",UC-005,CQ-013,"CanonicalMeasurementClaim;skos:Concept;aboutTechnology;skos:broader;rdfs:subClassOf",ontologies/energy-intel/tests/cq-013.sparql
+"Retrieve Posts whose claims are classified under a given energy-technology concept (transitive)",UC-005,CQ-014,"Post;CanonicalMeasurementClaim;skos:Concept;evidences;aboutTechnology;skos:broader;rdfs:subClassOf",ontologies/energy-intel/tests/cq-014.sparql

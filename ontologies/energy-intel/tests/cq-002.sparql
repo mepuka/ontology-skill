@@ -1,0 +1,13 @@
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ei:   <https://w3id.org/energy-intel/>
+
+# CQ-002 (must_have, UC-001)
+# For a given Post, which Expert authored it?
+# Expected: exactly 1 row, per_row = [expert].
+# Derivation: direct_lookup.
+
+SELECT ?expert WHERE {
+  <https://id.skygest.io/post/post_01J_example> ei:authoredBy ?expert .
+  ?expert a ei:Expert .
+}

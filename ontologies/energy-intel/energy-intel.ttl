@@ -1,0 +1,28 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ei: <https://w3id.org/energy-intel/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ei:energy-intel a owl:Ontology ;
+    dcterms:created "2026-04-22"^^xsd:date ;
+    dcterms:creator "energy-intel / ontology-architect"@en ;
+    dcterms:description "Top-level energy-intel ontology. Imports the four authored modules (agent, media, measurement, data) and the declared external ontologies listed in imports-manifest.yaml."@en ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:title "energy-intel — top-level ontology"@en ;
+    owl:imports <http://purl.obolibrary.org/obo/bfo.owl>,
+        <http://purl.obolibrary.org/obo/iao.owl>,
+        dcterms:,
+        <http://www.w3.org/2004/02/skos/core>,
+        <http://www.w3.org/ns/dcat>,
+        <http://www.w3.org/ns/prov-o>,
+        foaf:,
+        <https://w3id.org/energy-intel/modules/agent>,
+        <https://w3id.org/energy-intel/modules/concept-schemes/aggregation-type>,
+        <https://w3id.org/energy-intel/modules/concept-schemes/technology-seeds>,
+        <https://w3id.org/energy-intel/modules/concept-schemes/temporal-resolution>,
+        <https://w3id.org/energy-intel/modules/data>,
+        <https://w3id.org/energy-intel/modules/measurement>,
+        <https://w3id.org/energy-intel/modules/media> ;
+    owl:versionIRI <https://w3id.org/energy-intel/v0/2026-04-22> ;
+    owl:versionInfo "v0 (2026-04-22)" .

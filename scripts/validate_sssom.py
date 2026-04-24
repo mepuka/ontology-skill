@@ -18,8 +18,8 @@ def main() -> int:
 
     errors = 0
     for path in sys.argv[1:]:
-        result = subprocess.run(
-            ["sssom", "validate", path],
+        result = subprocess.run(  # noqa: S603  # pre-commit hook; args from staged file list
+            ["sssom", "validate", path],  # noqa: S607  # `sssom` resolved via project venv PATH
             capture_output=True,
             text=True,
             check=False,

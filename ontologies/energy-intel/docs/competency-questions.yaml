@@ -1,0 +1,444 @@
+# energy-intel — Competency Questions (Steps 2, 3, 4, 5)
+#
+# 14 CQs formalized. 10 Must-Have, 4 Should-Have.
+# Each CQ carries priority, owner, testability, expected_answer_shape,
+# sample_answer, derivation_method, out_of_scope, sparql, and the
+# conceptualizer-handoff fields (required_classes, required_properties,
+# required_axioms).
+#
+# Prefixes used in SPARQL bodies (full declarations in every tests/cq-*.sparql):
+#   rdf:   http://www.w3.org/1999/02/22-rdf-syntax-ns#
+#   rdfs:  http://www.w3.org/2000/01/rdf-schema#
+#   owl:   http://www.w3.org/2002/07/owl#
+#   xsd:   http://www.w3.org/2001/XMLSchema#
+#   skos:  http://www.w3.org/2004/02/skos/core#
+#   prov:  http://www.w3.org/ns/prov#
+#   foaf:  http://xmlns.com/foaf/0.1/
+#   dcat:  http://www.w3.org/ns/dcat#
+#   oeo:   https://openenergyplatform.org/ontology/oeo/    # HTTPS, no hyphen — canonical form verified against OEO v2.11.0 2026-04-22
+#   ei:    https://w3id.org/energy-intel/
+
+cqs:
+
+  # =====================================================
+  # UC-001: CMC extraction from a post
+  # =====================================================
+
+  - id: CQ-001
+    source_use_case: UC-001
+    natural_language: "For a given Post, which CanonicalMeasurementClaims does it evidence?"
+    type: relational
+    priority: must_have
+    owner: "kokokessy@gmail.com"
+    testability: executable
+    expected_answer_shape:
+      cardinality: "0..n"
+      per_row: [cmc]
+    sample_answer:
+      - {cmc: "https://id.skygest.io/cmc/cmc_01J_example_ember_814gw"}
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Re-extraction logic (runtime concern)."
+      - "Chart-rendering or pixel metadata."
+    sparql: |
+      SELECT ?cmc WHERE {
+        <https://id.skygest.io/post/post_01J_example> ei:evidences ?cmc .
+        ?cmc a ei:CanonicalMeasurementClaim .
+      }
+    required_classes: [ei:Post, ei:CanonicalMeasurementClaim]
+    required_properties: [ei:evidences]
+    required_axioms:
+      - "ei:evidences rdfs:domain (ei:Post ∪ ei:Chart ∪ ei:PodcastSegment)"
+      - "ei:evidences rdfs:range  ei:CanonicalMeasurementClaim"
+
+  - id: CQ-002
+    source_use_case: UC-001
+    natural_language: "For a given Post, which Expert authored it?"
+    type: relational
+    priority: must_have
+    owner: "kokokessy@gmail.com"
+    testability: executable
+    expected_answer_shape:
+      cardinality: "1..1"
+      per_row: [expert]
+    sample_answer:
+      - {expert: "https://id.skygest.io/expert/did-plc-a5kyzplew76jaj4dhnqsosjv"}
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Anonymous posts (every Post in Skygest has an attributable Expert)."
+    sparql: |
+      SELECT ?expert WHERE {
+        <https://id.skygest.io/post/post_01J_example> ei:authoredBy ?expert .
+        ?expert a ei:Expert .
+      }
+    required_classes: [ei:Post, ei:Expert]
+    required_properties: [ei:authoredBy]
+    required_axioms:
+      - "ei:authoredBy rdfs:domain ei:Post"
+      - "ei:authoredBy rdfs:range  ei:Expert"
+      - "ei:Post ⊑ ei:authoredBy exactly 1 ei:Expert"
+
+  - id: CQ-009
+    source_use_case: UC-001
+    natural_language: "Is there any CanonicalMeasurementClaim that evidences no media artifact (invariant violation)?"
+    type: constraint
+    priority: must_have
+    owner: "kokokessy@gmail.com"
+    testability: executable
+    expected_answer_shape:
+      cardinality: "exact_0"
+      per_row: [cmc]
+    sample_answer: []
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Runtime data quality (this is a TBox invariant)."
+    sparql: |
+      SELECT ?cmc WHERE {
+        ?cmc a ei:CanonicalMeasurementClaim .
+        FILTER NOT EXISTS { ?media ei:evidences ?cmc . }
+      }
+    required_classes: [ei:CanonicalMeasurementClaim]
+    required_properties: [ei:evidences]
+    required_axioms:
+      - "ei:CanonicalMeasurementClaim ⊑ (inverse ei:evidences) min 1 (ei:Post ∪ ei:Chart ∪ ei:PodcastSegment)"
+
+  # =====================================================
+  # UC-002: Multi-grain resolution
+  # =====================================================
+
+  - id: CQ-003
+    source_use_case: UC-002
+    natural_language: "For a given CanonicalMeasurementClaim, which Variable does it reference (if any)?"
+    type: relational
+    priority: must_have
+    owner: "kokokessy@gmail.com"
+    testability: executable
+    expected_answer_shape:
+      cardinality: "0..1"
+      per_row: [variable]
+    sample_answer:
+      - {variable: "https://id.skygest.io/variable/var_01J_solar_installed_capacity"}
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Resolution *algorithm* — that's the resolver Worker, not the ontology."
+    sparql: |
+      SELECT ?variable WHERE {
+        <https://id.skygest.io/cmc/cmc_01J_example> ei:referencesVariable ?variable .
+        ?variable a ei:Variable .
+      }
+    required_classes: [ei:CanonicalMeasurementClaim, ei:Variable]
+    required_properties: [ei:referencesVariable]
+    required_axioms:
+      - "ei:referencesVariable rdfs:domain ei:CanonicalMeasurementClaim"
+      - "ei:referencesVariable rdfs:range  ei:Variable"
+      - "ei:CanonicalMeasurementClaim ⊑ ei:referencesVariable max 1 ei:Variable"
+
+  - id: CQ-004
+    source_use_case: UC-002
+    natural_language: "For a given CanonicalMeasurementClaim, which Series does it reference (if any)?"
+    type: relational
+    priority: must_have
+    owner: "kokokessy@gmail.com"
+    testability: executable
+    expected_answer_shape:
+      cardinality: "0..1"
+      per_row: [series]
+    sample_answer:
+      - {series: "https://id.skygest.io/series/ser_01J_solar_us_monthly"}
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Resolution algorithm."
+    sparql: |
+      SELECT ?series WHERE {
+        <https://id.skygest.io/cmc/cmc_01J_example> ei:referencesSeries ?series .
+        ?series a ei:Series .
+      }
+    required_classes: [ei:CanonicalMeasurementClaim, ei:Series]
+    required_properties: [ei:referencesSeries]
+    required_axioms:
+      - "ei:referencesSeries rdfs:domain ei:CanonicalMeasurementClaim"
+      - "ei:referencesSeries rdfs:range  ei:Series"
+      - "ei:CanonicalMeasurementClaim ⊑ ei:referencesSeries max 1 ei:Series"
+
+  - id: CQ-005
+    source_use_case: UC-002
+    natural_language: "For a given CanonicalMeasurementClaim, which Distribution does it reference (if any)?"
+    type: relational
+    priority: must_have
+    owner: "kokokessy@gmail.com"
+    testability: executable
+    expected_answer_shape:
+      cardinality: "0..1"
+      per_row: [distribution]
+    sample_answer:
+      - {distribution: "https://id.skygest.io/distribution/dist_01J_eia_pv_monthly"}
+    derivation_method: direct_lookup
+    out_of_scope: []
+    sparql: |
+      SELECT ?distribution WHERE {
+        <https://id.skygest.io/cmc/cmc_01J_example> ei:referencesDistribution ?distribution .
+        ?distribution a dcat:Distribution .
+      }
+    required_classes: [ei:CanonicalMeasurementClaim, "dcat:Distribution"]
+    required_properties: [ei:referencesDistribution]
+    required_axioms:
+      - "ei:referencesDistribution rdfs:domain ei:CanonicalMeasurementClaim"
+      - "ei:referencesDistribution rdfs:range  dcat:Distribution"
+      - "ei:CanonicalMeasurementClaim ⊑ ei:referencesDistribution max 1 dcat:Distribution"
+
+  - id: CQ-010
+    source_use_case: UC-002
+    natural_language: "For a given CanonicalMeasurementClaim, what is the full set of currently-resolved references — which of Agent, Distribution, Dataset, Variable, Series are populated?"
+    type: relational
+    priority: must_have
+    owner: "kokokessy@gmail.com"
+    testability: executable
+    expected_answer_shape:
+      cardinality: "0..1"
+      per_row: [agent, dist, dataset, var, series]
+    sample_answer:
+      - {agent: "https://id.skygest.io/agent/ag_eia", dist: "https://id.skygest.io/distribution/dist_eia_pv", dataset: null, var: "https://id.skygest.io/variable/var_solar_cap", series: null}
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Per-reference confidence score — runtime annotation, not TBox."
+    sparql: |
+      SELECT ?agent ?dist ?dataset ?var ?series WHERE {
+        <https://id.skygest.io/cmc/cmc_01J_example> a ei:CanonicalMeasurementClaim .
+        OPTIONAL { <https://id.skygest.io/cmc/cmc_01J_example> ei:referencesAgent        ?agent   . }
+        OPTIONAL { <https://id.skygest.io/cmc/cmc_01J_example> ei:referencesDistribution ?dist    . }
+        OPTIONAL { <https://id.skygest.io/cmc/cmc_01J_example> ei:referencesDataset      ?dataset . }
+        OPTIONAL { <https://id.skygest.io/cmc/cmc_01J_example> ei:referencesVariable     ?var     . }
+        OPTIONAL { <https://id.skygest.io/cmc/cmc_01J_example> ei:referencesSeries       ?series  . }
+      }
+    required_classes: [ei:CanonicalMeasurementClaim, ei:Variable, ei:Series, "dcat:Distribution", "dcat:Dataset", "foaf:Agent"]
+    required_properties: [ei:referencesAgent, ei:referencesDistribution, ei:referencesDataset, ei:referencesVariable, ei:referencesSeries]
+    required_axioms:
+      - "Each ei:references* property has cardinality max 1 on ei:CanonicalMeasurementClaim."
+
+  # =====================================================
+  # UC-003: Cross-expert join via Variable
+  # =====================================================
+
+  - id: CQ-006
+    source_use_case: UC-003
+    natural_language: "For a given Variable, which CanonicalMeasurementClaims reference it?"
+    type: enumerative
+    priority: must_have
+    owner: "kokokessy@gmail.com"
+    testability: executable
+    expected_answer_shape:
+      cardinality: "0..n"
+      per_row: [cmc]
+    sample_answer:
+      - {cmc: "https://id.skygest.io/cmc/cmc_01J_claim_a"}
+      - {cmc: "https://id.skygest.io/cmc/cmc_01J_claim_b"}
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Asserted-value aggregation — that's a reporting query, not a CQ."
+    sparql: |
+      SELECT ?cmc WHERE {
+        ?cmc ei:referencesVariable <https://id.skygest.io/variable/var_01J_solar_installed_capacity> .
+        ?cmc a ei:CanonicalMeasurementClaim .
+      }
+    required_classes: [ei:Variable, ei:CanonicalMeasurementClaim]
+    required_properties: [ei:referencesVariable]
+    required_axioms: []
+
+  - id: CQ-007
+    source_use_case: UC-003
+    natural_language: "For a given Variable, which distinct Experts have made CanonicalMeasurementClaims referencing it?"
+    type: enumerative
+    priority: must_have
+    owner: "kokokessy@gmail.com"
+    testability: executable
+    expected_answer_shape:
+      cardinality: "0..n"
+      per_row: [expert]
+    sample_answer:
+      - {expert: "https://id.skygest.io/expert/did-plc-a5kyzplew76jaj4dhnqsosjv"}
+      - {expert: "https://id.skygest.io/expert/did-plc-other"}
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Expert agreement / disagreement judgement — editorial concern."
+    sparql: |
+      SELECT DISTINCT ?expert WHERE {
+        ?cmc ei:referencesVariable <https://id.skygest.io/variable/var_01J_solar_installed_capacity> .
+        ?post ei:evidences ?cmc ;
+              ei:authoredBy ?expert .
+      }
+    required_classes: [ei:Variable, ei:CanonicalMeasurementClaim, ei:Post, ei:Expert]
+    required_properties: [ei:referencesVariable, ei:evidences, ei:authoredBy]
+    required_axioms: []
+
+  - id: CQ-008
+    source_use_case: UC-003
+    natural_language: "For a given Variable, return every expert claim that references it, with source Post, asserting Expert, and any asserted value / unit / time — the cross-expert join payload."
+    type: enumerative
+    priority: must_have
+    owner: "kokokessy@gmail.com"
+    testability: executable
+    expected_answer_shape:
+      cardinality: "0..n"
+      per_row: [cmc, post, expert, assertedValue, assertedUnit, assertedTime]
+    sample_answer:
+      - {cmc: "https://id.skygest.io/cmc/cmc_a", post: "https://id.skygest.io/post/p_a", expert: "https://id.skygest.io/expert/did_a", assertedValue: "814", assertedUnit: "GW", assertedTime: "2025"}
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Value normalization (GW → MW conversion) — that's a runtime concern."
+    sparql: |
+      SELECT ?cmc ?post ?expert ?assertedValue ?assertedUnit ?assertedTime WHERE {
+        ?cmc ei:referencesVariable <https://id.skygest.io/variable/var_01J_solar_installed_capacity> ;
+             a ei:CanonicalMeasurementClaim .
+        ?post ei:evidences ?cmc ;
+              ei:authoredBy ?expert .
+        OPTIONAL { ?cmc ei:assertedValue ?assertedValue . }
+        OPTIONAL { ?cmc ei:assertedUnit  ?assertedUnit  . }
+        OPTIONAL { ?cmc ei:assertedTime  ?assertedTime  . }
+      }
+    required_classes: [ei:Variable, ei:CanonicalMeasurementClaim, ei:Post, ei:Expert]
+    required_properties: [ei:referencesVariable, ei:evidences, ei:authoredBy, ei:assertedValue, ei:assertedUnit, ei:assertedTime]
+    required_axioms: []
+
+  # =====================================================
+  # UC-004: Podcast segment attribution
+  # =====================================================
+
+  - id: CQ-011
+    source_use_case: UC-004
+    natural_language: "For a given PodcastSegment, which Expert(s) spoke it?"
+    type: enumerative
+    priority: should_have
+    owner: "kokokessy@gmail.com"
+    testability: executable
+    expected_answer_shape:
+      cardinality: "0..n"
+      per_row: [expert]
+    sample_answer:
+      - {expert: "https://id.skygest.io/expert/did_host"}
+      - {expert: "https://id.skygest.io/expert/did_guest"}
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Speaker diarization — that's a vision / audio enrichment concern."
+    sparql: |
+      SELECT ?expert WHERE {
+        <https://id.skygest.io/podcast-segment/seg_01J_example> ei:spokenBy ?expert .
+        ?expert a ei:Expert .
+      }
+    required_classes: [ei:PodcastSegment, ei:Expert]
+    required_properties: [ei:spokenBy]
+    required_axioms:
+      - "ei:spokenBy rdfs:domain ei:PodcastSegment"
+      - "ei:spokenBy rdfs:range  ei:Expert"
+
+  - id: CQ-012
+    source_use_case: UC-004
+    natural_language: "For a given PodcastSegment, which CanonicalMeasurementClaims does it evidence?"
+    type: enumerative
+    priority: should_have
+    owner: "kokokessy@gmail.com"
+    testability: executable
+    expected_answer_shape:
+      cardinality: "0..n"
+      per_row: [cmc]
+    sample_answer:
+      - {cmc: "https://id.skygest.io/cmc/cmc_01J_from_segment"}
+    derivation_method: direct_lookup
+    out_of_scope: []
+    sparql: |
+      SELECT ?cmc WHERE {
+        <https://id.skygest.io/podcast-segment/seg_01J_example> ei:evidences ?cmc .
+        ?cmc a ei:CanonicalMeasurementClaim .
+      }
+    required_classes: [ei:PodcastSegment, ei:CanonicalMeasurementClaim]
+    required_properties: [ei:evidences]
+    required_axioms:
+      - "ei:PodcastSegment ⊑ ei:evidences only ei:CanonicalMeasurementClaim (range constraint shared with ei:Post, ei:Chart)."
+
+  # =====================================================
+  # UC-005: Topic-scoped expert-take retrieval via OEO
+  # =====================================================
+
+  - id: CQ-013
+    source_use_case: UC-005
+    natural_language: "For a given energy-technology concept (skos:Concept in V0; OEO technology class via punning after MIREOT import), which CanonicalMeasurementClaims are classified as being about it (transitively)?"
+    type: enumerative
+    priority: should_have
+    owner: "kokokessy@gmail.com"
+    testability: executable
+    expected_answer_shape:
+      cardinality: "0..n"
+      per_row: [cmc]
+    sample_answer:
+      - {cmc: "https://id.skygest.io/cmc/cmc_01J_example_wind_claim_a"}
+      - {cmc: "https://id.skygest.io/cmc/cmc_01J_example_wind_claim_b"}
+    derivation_method: inference
+    out_of_scope:
+      - "Non-OEO technology vocabularies pre-MIREOT."
+    sparql: |
+      SELECT ?cmc WHERE {
+        ?cmc ei:aboutTechnology ?concept ;
+             a ei:CanonicalMeasurementClaim .
+        ?concept (skos:broader|rdfs:subClassOf)* <https://w3id.org/energy-intel/concept/wind> .
+      }
+    required_classes: [ei:CanonicalMeasurementClaim, "skos:Concept"]
+    required_properties: [ei:aboutTechnology, "skos:broader"]
+    required_axioms:
+      - "ei:aboutTechnology rdfs:domain ei:CanonicalMeasurementClaim"
+      - "ei:aboutTechnology rdfs:range  skos:Concept"
+    notes: |
+      Rewritten 2026-04-22 per interview decision to defer the seven-facet
+      Variable model: technology classification moved from Variable facet
+      to CMC-level. The SPARQL uses a union property path
+      (skos:broader | rdfs:subClassOf)* that works both against a
+      hand-seeded skos:Concept hierarchy in V0 and against the imported
+      OEO class hierarchy (via punning) once ontology-scout lands the
+      MIREOT extract at imports/oeo-subset.ttl.
+
+  - id: CQ-014
+    source_use_case: UC-005
+    natural_language: "For a given energy-technology concept, which Posts evidence a CanonicalMeasurementClaim classified as being about it (transitively)?"
+    type: enumerative
+    priority: should_have
+    owner: "kokokessy@gmail.com"
+    testability: executable
+    expected_answer_shape:
+      cardinality: "0..n"
+      per_row: [post]
+    sample_answer:
+      - {post: "https://id.skygest.io/post/post_01J_wind_814gw"}
+    derivation_method: inference
+    out_of_scope: []
+    sparql: |
+      SELECT DISTINCT ?post WHERE {
+        ?post ei:evidences      ?cmc .
+        ?cmc  ei:aboutTechnology ?concept .
+        ?concept (skos:broader|rdfs:subClassOf)* <https://w3id.org/energy-intel/concept/wind> .
+      }
+    required_classes: [ei:Post, ei:CanonicalMeasurementClaim, "skos:Concept"]
+    required_properties: [ei:evidences, ei:aboutTechnology, "skos:broader"]
+    required_axioms: []
+    notes: |
+      Rewritten 2026-04-22 to match CQ-013's new structure. Two-hop walk
+      via CMC-level ei:aboutTechnology (Variable no longer carries the
+      technology facet in V0).
+
+# Prioritization summary (Step 4 MoSCoW)
+#
+# must_have  (10): CQ-001, CQ-002, CQ-003, CQ-004, CQ-005, CQ-006, CQ-007, CQ-008, CQ-009, CQ-010
+# should_have (4): CQ-011, CQ-012, CQ-013, CQ-014
+# could_have  (0): none carried in V0 — defer until cross-expert join works.
+# wont_have   (0): explicit non-goals are captured in scope.md § "Out-of-scope", not as wont_have CQs.
+#
+# Waived or rejected candidate CQs (Step 2.5 rewrites)
+#
+# - "What CanonicalMeasurementClaims exist?" — rejected. Fails the
+#   `falsifiable` criterion (returns everything or empty-if-graph-empty; no
+#   per-assertion falsification shape). Replaced by CQ-009, which tests
+#   the invariant that every CMC has at least one evidencing artifact.
+# - "What does a Post say?" — rejected. Fails the `atomic` and `scoped`
+#   criteria; post-text semantics is a runtime-NLP concern, not an
+#   ontology CQ.
+# - "What is the confidence score of a resolved reference?" — rejected
+#   for this phase. Fails `scoped`: confidence is a runtime annotation,
+#   not a TBox relation. Captured under scope.md § "Out-of-scope" as a
+#   deferred concern.

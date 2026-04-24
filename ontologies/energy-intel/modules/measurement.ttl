@@ -1,0 +1,188 @@
+@prefix bfo: <http://purl.obolibrary.org/obo/BFO_> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ei: <https://w3id.org/energy-intel/> .
+@prefix iao: <http://purl.obolibrary.org/obo/IAO_> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ei:aboutTechnology a owl:ObjectProperty ;
+    rdfs:label "about technology"@en ;
+    rdfs:comment "CMC-level technology classification. Range skos:Concept; OEO technology classes appear as punned individuals post-MIREOT (see docs/axiom-plan.md § CQ-013)."@en ;
+    rdfs:domain ei:CanonicalMeasurementClaim ;
+    rdfs:range skos:Concept .
+
+ei:assertedTime a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "asserted time"@en ;
+    rdfs:comment "The temporal region the CMC's value refers to."@en ;
+    rdfs:domain ei:CanonicalMeasurementClaim ;
+    rdfs:range ei:ClaimTemporalWindow .
+
+ei:assertedUnit a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "asserted unit"@en ;
+    rdfs:comment "Raw asserted unit token (e.g., 'GW', 'TWh')."@en ;
+    rdfs:domain ei:CanonicalMeasurementClaim ;
+    rdfs:range xsd:string .
+
+ei:assertedValue a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "asserted value"@en ;
+    rdfs:comment "The raw asserted value of the claim, preserving either the numeric form (xsd:decimal) or the source string form (xsd:string)."@en ;
+    rdfs:domain ei:CanonicalMeasurementClaim ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:unionOf ( xsd:decimal xsd:string ) ] .
+
+ei:implementsVariable a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "implements variable"@en ;
+    rdfs:comment "A Series implements exactly one Variable. Thin V0 relation; full seven-facet form deferred."@en ;
+    rdfs:domain ei:Series ;
+    rdfs:range ei:Variable .
+
+ei:intervalEnd a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "interval end"@en ;
+    rdfs:domain ei:ClaimTemporalWindow ;
+    rdfs:range xsd:dateTime .
+
+ei:intervalStart a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "interval start"@en ;
+    rdfs:domain ei:ClaimTemporalWindow ;
+    rdfs:range xsd:dateTime .
+
+<https://w3id.org/energy-intel/modules/measurement> a owl:Ontology ;
+    dcterms:created "2026-04-22"^^xsd:date ;
+    dcterms:creator "energy-intel / ontology-architect"@en ;
+    dcterms:description "CanonicalMeasurementClaim, Observation, Variable (thin), Series (thin), ClaimTemporalWindow, and the ei:references* family of resolution properties."@en ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:title "energy-intel — measurement module"@en ;
+    owl:imports <http://www.w3.org/2004/02/skos/core>,
+        <http://www.w3.org/ns/dcat>,
+        <https://w3id.org/energy-intel/modules/media> ;
+    owl:versionInfo "v0 (2026-04-22)" .
+
+ei:publishedInDataset a owl:ObjectProperty ;
+    rdfs:label "published in dataset"@en ;
+    rdfs:comment "A Series is published within a DCAT Dataset. Inverse of ei:hasSeries (declared in data module)."@en ;
+    rdfs:domain ei:Series ;
+    rdfs:range dcat:Dataset .
+
+ei:rawDims a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "raw dimensions"@en ;
+    rdfs:comment "JSON-encoded dictionary of free-form dimensional annotations from the extractor (e.g., region, subsector). Parseability validated by SHACL shape S-2."@en ;
+    rdfs:domain ei:CanonicalMeasurementClaim ;
+    rdfs:range xsd:string .
+
+ei:rawLabel a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "raw label"@en ;
+    rdfs:comment "Verbatim surface-form label captured at extraction time."@en ;
+    rdfs:domain ei:CanonicalMeasurementClaim ;
+    rdfs:range xsd:string .
+
+ei:evidences a owl:ObjectProperty ;
+    rdfs:label "evidences"@en ;
+    rdfs:comment "An EvidenceSource (Post, MediaAttachment, PodcastSegment) evidences one or more CMCs extracted from it."@en ;
+    rdfs:domain ei:EvidenceSource ;
+    rdfs:range ei:CanonicalMeasurementClaim .
+
+ei:referencesAgent a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "references agent"@en ;
+    rdfs:domain ei:CanonicalMeasurementClaim ;
+    rdfs:range ei:Organization ;
+    rdfs:subPropertyOf ei:references .
+
+ei:referencesDataset a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "references dataset"@en ;
+    rdfs:domain ei:CanonicalMeasurementClaim ;
+    rdfs:range dcat:Dataset ;
+    rdfs:subPropertyOf ei:references .
+
+ei:referencesDistribution a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "references distribution"@en ;
+    rdfs:domain ei:CanonicalMeasurementClaim ;
+    rdfs:range dcat:Distribution ;
+    rdfs:subPropertyOf ei:references .
+
+ei:referencesSeries a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "references series"@en ;
+    rdfs:domain ei:CanonicalMeasurementClaim ;
+    rdfs:range ei:Series ;
+    rdfs:subPropertyOf ei:references .
+
+ei:referencesVariable a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "references variable"@en ;
+    rdfs:domain ei:CanonicalMeasurementClaim ;
+    rdfs:range ei:Variable ;
+    rdfs:subPropertyOf ei:references .
+
+ei:Observation a owl:Class ;
+    rdfs:label "observation"@en ;
+    rdfs:subClassOf iao:0000030 ;
+    skos:definition "A single time-indexed numeric reading belonging to a Series. Thin in V0 (no CQs hit Observation directly)."@en .
+
+ei:ClaimTemporalWindow a owl:Class ;
+    rdfs:label "claim temporal window"@en ;
+    rdfs:subClassOf bfo:0000008 ;
+    skos:definition "The temporal region a CMC refers to (a single year, a range of months, an exact timestamp). Per bfo-alignment.md parented to bfo:TemporalRegion, NOT an ICE."@en .
+
+ei:Variable a owl:Class ;
+    rdfs:label "variable"@en ;
+    rdfs:subClassOf iao:0000030 ;
+    skos:definition "A measurable energy quantity (e.g., 'installed solar PV capacity, United States, monthly'). Thin in V0 — the seven-facet form is deferred to V1."@en .
+
+ei:Series a owl:Class ;
+    rdfs:label "series"@en ;
+    rdfs:subClassOf iao:0000030 ;
+    skos:definition "A time-indexed sequence of Observations implementing a Variable. Thin in V0 — full seven-facet form deferred to V1."@en .
+
+ei:references a owl:ObjectProperty ;
+    rdfs:label "references"@en ;
+    rdfs:comment "Parent of every CMC-level resolution property."@en ;
+    rdfs:domain ei:CanonicalMeasurementClaim ;
+    rdfs:subPropertyOf iao:0000136 .
+
+ei:CanonicalMeasurementClaim a owl:Class ;
+    rdfs:label "canonical measurement claim"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass ei:Series ;
+            owl:onProperty ei:referencesSeries ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass ei:Variable ;
+            owl:onProperty ei:referencesVariable ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass ei:Organization ;
+            owl:onProperty ei:referencesAgent ],
+        [ a owl:Restriction ;
+            owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass ei:EvidenceSource ;
+            owl:onProperty [ owl:inverseOf ei:evidences ] ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass dcat:Distribution ;
+            owl:onProperty ei:referencesDistribution ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass dcat:Dataset ;
+            owl:onProperty ei:referencesDataset ],
+        iao:0000030 ;
+    owl:disjointWith ei:Observation ;
+    skos:definition "A numeric / categorical claim about an energy variable extracted from a post or podcast segment, with its source evidence, asserted value / unit / time, and (optionally) resolved references to a Variable, Series, Distribution, Dataset, Agent."@en .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( ei:CanonicalMeasurementClaim ei:Observation ei:Variable ei:Series ei:ClaimTemporalWindow ) .

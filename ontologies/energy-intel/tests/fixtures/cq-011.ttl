@@ -1,0 +1,24 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ei: <https://w3id.org/energy-intel/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://id.skygest.io/podcast-segment/seg_01J_example> a owl:NamedIndividual,
+        ei:PodcastSegment ;
+    ei:partOfEpisode <https://id.skygest.io/podcast-episode/ep_01J> ;
+    ei:spokenBy <https://id.skygest.io/expert/did-plc-guest>,
+        <https://id.skygest.io/expert/did-plc-host> .
+
+<https://w3id.org/energy-intel/tests/fixtures/cq-011> a owl:Ontology ;
+    dcterms:created "2026-04-22"^^xsd:date ;
+    dcterms:description "Podcast segment with two distinct speakers (multi-speaker case)."@en ;
+    dcterms:title "cq-011 fixture"@en .
+
+<https://id.skygest.io/expert/did-plc-guest> a owl:NamedIndividual,
+        ei:Expert .
+
+<https://id.skygest.io/expert/did-plc-host> a owl:NamedIndividual,
+        ei:Expert .
+
+<https://id.skygest.io/podcast-episode/ep_01J> a owl:NamedIndividual,
+        ei:PodcastEpisode .

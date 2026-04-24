@@ -1,0 +1,12 @@
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ei:   <https://w3id.org/energy-intel/>
+
+# CQ-009 (must_have, UC-001)
+# INVARIANT: No CanonicalMeasurementClaim lacks an evidencing media artefact.
+# Expected: exactly 0 rows. Any row returned is a TBox invariant violation.
+# Derivation: direct_lookup with negation.
+
+SELECT ?cmc WHERE {
+  ?cmc a ei:CanonicalMeasurementClaim .
+  FILTER NOT EXISTS { ?media ei:evidences ?cmc . }
+}

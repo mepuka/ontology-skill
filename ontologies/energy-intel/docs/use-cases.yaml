@@ -1,0 +1,143 @@
+# energy-intel — Use Case Catalog (Step 1.5)
+#
+# Each use case drives 3–10 CQs. Structured per the `ontology-requirements`
+# skill template. `related_cqs` is populated after Step 2 CQ elicitation.
+#
+# Actor roles (collapsed for this single-stakeholder phase):
+#   - enrichment_pipeline   : automated (Cloudflare Worker / enrichment chain)
+#   - resolver              : skygest-resolver Worker (Stages 1-3)
+#   - editorial_agent       : AI-at-runtime via Claude Code MCP session
+#   - mcp_client            : any caller of the MCP tool surface
+#
+# Priority tiers per MoSCoW (Step 4): must_have | should_have | could_have | wont_have.
+
+use_cases:
+
+  - id: UC-001
+    name: "Extract a CanonicalMeasurementClaim from a Bluesky post that embeds an energy chart"
+    actor: enrichment_pipeline
+    goal: >
+      Produce a CanonicalMeasurementClaim instance linked to the source Post
+      (and any embedded Chart). Populate any references to Variable /
+      Series / Distribution / Agent that can be resolved deterministically
+      at extraction time. Preserve raw surface text for downstream review.
+    preconditions:
+      - "Post has been ingested and has a stable `at://` URI."
+      - "Vision enrichment has produced chart metadata (title, axis labels, visible URLs, organization mentions) if the post embeds a chart."
+      - "Source-attribution enrichment has produced ranked `providerCandidates`."
+    main_flow:
+      - "Read Post URI, vision output, source-attribution output."
+      - "Classify the source modality (chart | text | podcast-clip | mixed)."
+      - "Extract any asserted value, unit, and time label from vision title + axis labels + post text."
+      - "Mint a CMC with `ei:evidences` linking to the Post (and Chart if present)."
+      - "Attach raw surface text via `ei:rawLabel` and raw dimension pairs via `ei:rawDims`."
+      - "Set initial `ei:resolutionState` to `source_only`."
+    postconditions:
+      - "CanonicalMeasurementClaim exists and validates against the TBox (required cardinalities met)."
+      - "Post → `ei:evidences` → CMC link is traversable in both directions."
+    related_cqs: [CQ-001, CQ-002, CQ-009]
+    priority: must_have
+    source_modalities_supported: [at-bluesky-post, x-twitter-post, pod-podcast-segment]
+
+  - id: UC-002
+    name: "Resolve a CanonicalMeasurementClaim to Variable / Series / Distribution / Agent at multi-grain"
+    actor: resolver
+    goal: >
+      Take a CMC plus post context and produce a set of resolved references
+      at one or more grains (Agent, Distribution, Dataset, Variable, Series)
+      with confidence and evidence trace. Partial resolution is the
+      expected case, not a degraded case (per Linear H-R-3).
+    preconditions:
+      - "CMC exists with `ei:resolutionState = source_only`."
+      - "The registry (Agent, Dataset, Distribution, Variable, Series) is populated enough for the post's citations to have a chance of matching."
+    main_flow:
+      - "Stage 1 deterministic match: URL-exact against Distributions, DOI parse → Datasets, structured-identifier match → Variables, `providerCandidates` → Agents."
+      - "For residuals, Stage 2 structured semantic match via the seven-facet Variable composition decomposition."
+      - "If Stage 2 produces residuals worth escalating, dispatch Stage 3 LLM rerank asynchronously."
+      - "Merge resolved references into the CMC via `ei:referencesVariable`, `ei:referencesSeries`, `ei:referencesDistribution`, `ei:referencesAgent`."
+      - "Update `ei:resolutionState` to `partially_resolved` or `resolved`."
+    postconditions:
+      - "CMC has 0..n resolved references, each property cardinality 0..1."
+      - "Every resolution carries a `prov:wasDerivedFrom` or evidence-trace annotation on the corresponding link."
+    related_cqs: [CQ-003, CQ-004, CQ-005, CQ-010]
+    priority: must_have
+
+  - id: UC-003
+    name: "Find every CanonicalMeasurementClaim across experts that references the same Variable (cross-expert join)"
+    actor: mcp_client
+    goal: >
+      Given a Variable IRI, return the set of CMCs (across all experts and
+      all posts) that reference it, along with the source Post, the Expert
+      who authored it, and any asserted value / unit / time. This is the
+      product-value query surface from Linear H-DL-6 ("optimize for the
+      join, not the average row").
+    preconditions:
+      - "Registry contains the target Variable."
+      - "At least some CMCs have been resolved to that Variable."
+    main_flow:
+      - "SPARQL walk: Variable ←[ei:referencesVariable] CMC ←[ei:evidences] Post →[ei:authoredBy] Expert."
+      - "Return tuples {cmc, post, expert, assertedValue?, assertedUnit?, assertedTime?}."
+    postconditions:
+      - "Query returns 0..n rows; 0 is a valid (cold-start) outcome."
+    related_cqs: [CQ-006, CQ-007, CQ-008]
+    priority: must_have
+
+  - id: UC-004
+    name: "Attribute a PodcastSegment to its speaker and link any CanonicalMeasurementClaim it evidences"
+    actor: editorial_agent
+    goal: >
+      For a given PodcastSegment, return the speaking Expert, the parent
+      PodcastEpisode, and any CMC that cites the segment as evidence.
+      Supports the podcast ingest lane from the Linear Podcast Content
+      Pipeline design.
+    preconditions:
+      - "PodcastEpisode has been ingested with segment boundaries."
+      - "Speaker diarization has associated segments with Expert DIDs."
+      - "CMCs extracted from podcast segments link via `ei:evidences`."
+    main_flow:
+      - "SPARQL walk: PodcastSegment →[ei:spokenBy] Expert."
+      - "PodcastSegment →[ei:partOf] PodcastEpisode."
+      - "CMC →[ei:evidences] PodcastSegment (inverse walk for CMCs)."
+    postconditions:
+      - "Return tuple {segment, expert, episode, cmcs[]}."
+    related_cqs: [CQ-011, CQ-012]
+    priority: should_have
+
+  - id: UC-005
+    name: "Retrieve all Posts whose CMC is classified under a given energy-technology concept (transitively)"
+    actor: editorial_agent
+    goal: >
+      Given an energy-technology concept (a `skos:Concept` in V0, an OEO class
+      via OWL 2 punning once `ontology-scout` lands the MIREOT subset),
+      return every Post whose CMC carries that concept (or any transitively
+      narrower / subclassed concept) via `ei:aboutTechnology`. Powers
+      topic-scoped expert-take retrieval during editorial curation sessions.
+    preconditions:
+      - "A hand-seeded `skos:Concept` tree is present in V0 (ontology-architect seeds a handful to bootstrap); OEO MIREOT subtree lands later via ontology-scout."
+      - "Resolved CMCs carry `ei:aboutTechnology` populated during extraction / enrichment."
+    main_flow:
+      - "SPARQL walk: concept ←[(skos:broader | rdfs:subClassOf)*]← ?concept ←[ei:aboutTechnology]← CMC ←[ei:evidences]← Post."
+      - "Return Post set with metadata."
+    postconditions:
+      - "0..n Posts returned; transitive concept membership is respected via the union property path."
+    related_cqs: [CQ-013, CQ-014]
+    priority: should_have
+    notes: >
+      Rewritten 2026-04-22 after seven-facet Variable deferral: classification
+      now lives at the claim grain (CMC), not the variable grain.
+
+# Step 1.5 notes
+#
+# - Actor 'enrichment_pipeline' and 'resolver' are automated (runtime); their
+#   CQs still need a testable SPARQL shape because the ontology is the
+#   contract the runtime must satisfy. The CQ may assert "for every post of
+#   type X, there exists a CMC with property Y populated."
+#
+# - Single-stakeholder phase: no cross-stakeholder deduplication required
+#   in Step 2. A second review pass is added to the definition of done
+#   once a second domain expert is onboarded (post-V1).
+#
+# - Defer (captured but explicitly non-goal per scope.md § 5):
+#     * Narrative / Story / ArgumentPattern / Edition assembly use cases.
+#     * Newsletter edition compilation use cases.
+#     * Full social-graph traversal (follows, likes, reposts).

@@ -1,0 +1,18 @@
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ei:   <https://w3id.org/energy-intel/>
+
+# CQ-008 (must_have, UC-003)
+# Full cross-expert join payload for a given Variable: cmc, post, expert,
+# and asserted value/unit/time where present.
+# Expected: 0..n rows.
+# Derivation: direct_lookup with OPTIONAL fields.
+
+SELECT ?cmc ?post ?expert ?assertedValue ?assertedUnit ?assertedTime WHERE {
+  ?cmc  ei:referencesVariable <https://id.skygest.io/variable/var_01J_solar_installed_capacity> ;
+        a ei:CanonicalMeasurementClaim .
+  ?post ei:evidences  ?cmc ;
+        ei:authoredBy ?expert .
+  OPTIONAL { ?cmc ei:assertedValue ?assertedValue . }
+  OPTIONAL { ?cmc ei:assertedUnit  ?assertedUnit  . }
+  OPTIONAL { ?cmc ei:assertedTime  ?assertedTime  . }
+}

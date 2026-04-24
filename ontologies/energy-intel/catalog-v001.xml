@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+  <!-- energy-intel internal modules -->
+  <uri name="https://w3id.org/energy-intel/modules/agent" uri="modules/agent.ttl"/>
+  <uri name="https://w3id.org/energy-intel/modules/media" uri="modules/media.ttl"/>
+  <uri name="https://w3id.org/energy-intel/modules/measurement" uri="modules/measurement.ttl"/>
+  <uri name="https://w3id.org/energy-intel/modules/data" uri="modules/data.ttl"/>
+  <uri name="https://w3id.org/energy-intel/modules/concept-schemes/temporal-resolution"
+       uri="modules/concept-schemes/temporal-resolution.ttl"/>
+  <uri name="https://w3id.org/energy-intel/modules/concept-schemes/aggregation-type"
+       uri="modules/concept-schemes/aggregation-type.ttl"/>
+  <uri name="https://w3id.org/energy-intel/modules/concept-schemes/technology-seeds"
+       uri="modules/concept-schemes/technology-seeds.ttl"/>
+</catalog>

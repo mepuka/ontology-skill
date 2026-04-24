@@ -33,6 +33,19 @@ Every SKILL.md must contain these sections, in this order:
 8. **Handoff** — What the next skill in the pipeline expects to receive
 9. **Anti-Patterns to Avoid** — Skill-specific mistakes
 10. **Error Handling** — What to do when things fail
+11. **Progress Criteria** — Checklist of artifacts and validation commands
+    that must pass before the skill hands off. Replaces advisory phrasing
+    ("ensure", "consider") with tool-checkable conditions.
+12. **LLM Verification Required** — Table of operations where LLM judgment
+    is used and the tool gates that must still run. LLM verification NEVER
+    replaces `robot reason`, `robot report`, or `pyshacl` — see
+    `_shared/llm-verification-patterns.md`.
+13. **Loopback Triggers** — Table mapping failure conditions observed by
+    this skill to the upstream skill that owns the fix. See
+    `_shared/iteration-loopbacks.md` for the depth-3 anti-thrash guard.
+14. **Worked Examples** — Concrete walkthroughs for both the Music Ensemble
+    and Community Microgrid domains under
+    `_shared/worked-examples/{ensemble,microgrid}/`.
 
 See `SKILL-TEMPLATE.md` for the skeleton.
 
@@ -53,6 +66,9 @@ All skills must use these canonical terms consistently:
 | taxonomy | hierarchy, tree | The SubClassOf structure |
 | ontology | knowledge graph (when referring to TBox) | The formal model (TBox + ABox) |
 | deprecate | delete, remove, obsolete (as verb) | Mark term as `owl:deprecated true` |
+| maintain / maintenance | housekeeping, upkeep | Ongoing curatorial work (deprecation, import refresh, release, release-note provenance). Routes to `ontology-curator`. |
+| curate | groom, tend | Any of: deprecate, replace, refresh imports, publish release. Routes to `ontology-curator`. |
+| evolve / evolution | update, change, revise | Versioned structural or mapping change. Routes to `ontology-curator` (change classification), then `ontology-architect` or `ontology-mapper` per change type. |
 | mapping | alignment, cross-reference | A correspondence between terms (SSSOM) |
 | reasoner | classifier, inference engine | Software that computes entailments (ELK, HermiT) |
 
@@ -147,6 +163,84 @@ These rules apply to every skill. Violations are never acceptable.
    before making changes
 10. **Back up before bulk operations** — create a checkpoint before
     ROBOT template or batch KGCL application
+11. **LLM-generated artifacts must pass their tool gates before handoff.**
+    OWL axioms, SHACL shapes, ROBOT templates, KGCL patches, SPARQL tests,
+    and SSSOM mappings produced or proposed by an LLM are never accepted
+    on LLM confidence alone. The gate is: reasoner passes for OWL; pyshacl
+    passes for SHACL; `robot template` emits the expected TTL with zero
+    CURIE-resolution errors; `kgcl-apply` round-trips cleanly; SPARQL
+    parses and returns the expected-results shape; `sssom-py validate`
+    passes plus required metadata present.
+12. **Every satisfied CQ links to an executable check.** A CQ cannot be
+    marked satisfied unless it is paired with an executable SPARQL query
+    (for ABox CQs) or an entailment check (for TBox CQs). See
+    `_shared/cq-traceability.md`.
+13. **Accepted SSSOM mappings carry provenance.** Every row in a merged
+    mapping set must have `mapping_justification` (SEMAPV CURIE),
+    `confidence`, `creator_id` / `reviewer_id`, `mapping_date`, and
+    `mapping_tool` populated. LLM-only rows require human review before
+    promotion to the main mapping file.
+14. **`skos:exactMatch` clique size > 3 requires human review before merge.**
+    Cliques indicate either true equivalence (rare across ontologies) or
+    an identifier collision. See `_shared/mapping-evaluation.md`.
+15. **Import refresh regenerates manifest and reruns CQ regression.**
+    Any change to `imports/*.ttl` or the import module list must (a)
+    regenerate `imports-manifest.yaml` capturing each import's source,
+    extraction method, and date; (b) rerun the full CQ test suite
+    against the refreshed ontology. Stale imports are a curation bug,
+    not a ROBOT-report warning to defer.
+16. **No skill silently accepts an upstream artifact that failed a
+    declared gate.** If a prior skill's Progress Criteria checklist is
+    incomplete or any declared verification gate is failed/skipped, the
+    downstream skill must refuse and loop back via the protocol in
+    `_shared/iteration-loopbacks.md` — never "fix it quietly" in its
+    own phase.
+
+## Iteration and Loopback Protocol
+
+Skills are not strictly linear. When a downstream skill detects that an
+upstream artifact fails a declared gate, it raises a **loopback** rather
+than patching the artifact locally. See
+[`_shared/iteration-loopbacks.md`](_shared/iteration-loopbacks.md) for
+the full protocol, anti-thrash guard, and examples.
+
+### Loopback record
+
+Every loopback produces an entry in `docs/loopbacks/{date}-{short-id}.md`
+with these fields:
+
+| Field | Meaning |
+|-------|---------|
+| `rejecting_skill` | Skill that detected the gate failure |
+| `source_skill` | Skill that produced the failing artifact |
+| `artifact` | Path to the failing artifact |
+| `failure_type` | One of: *unsatisfiable class*, *scope violation*, *missing CQ link*, *profile violation*, *SHACL violation*, *mapping conflict*, *missing provenance*, *stale import*, *routing collision* |
+| `evidence` | Log/report path that demonstrates the failure |
+| `required_fix` | Concrete change the source skill must make |
+| `retry_gate` | Exact command the downstream skill will rerun on return |
+
+### Default routing table
+
+The downstream skill routes loopbacks to these owners unless an explicit
+override is specified in `_shared/iteration-loopbacks.md`:
+
+| Failure type | Routes to |
+|--------------|-----------|
+| scope ambiguity, missing CQ, non-goal violation | `ontology-requirements` |
+| missing reuse, bad module selection, import provenance | `ontology-scout` |
+| role/type confusion, BFO misalignment, taxonomy error, closure gap | `ontology-conceptualizer` |
+| axiom-level issue: unsatisfiability, profile violation, construct/reasoner mismatch, ROBOT-template failure | `ontology-architect` |
+| mapping confidence, SEMAPV missing, clique > 3, cross-domain exactMatch | `ontology-mapper` |
+| CQ query fails to parse or returns wrong shape | `sparql-expert` |
+| change classification, release gate, stale import trigger | `ontology-curator` |
+| quality-report violation with severity ≥ ERROR | source skill of the violating axiom (validator raises; architect or mapper fixes) |
+
+### Anti-thrash guard
+
+A loopback cycle that exceeds depth 3 between the same two skills must
+be escalated to human review (append `[ESCALATE]` to the loopback
+record). Common causes: disagreement on BFO placement, mapping target
+scope, or CQ wording. Do not continue looping.
 
 ## Output Artifact Standards
 

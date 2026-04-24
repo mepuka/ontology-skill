@@ -1,0 +1,161 @@
+@prefix bfo: <http://purl.obolibrary.org/obo/BFO_> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ei: <https://w3id.org/energy-intel/> .
+@prefix iao: <http://purl.obolibrary.org/obo/IAO_> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ei:excerptFrom a owl:ObjectProperty ;
+    rdfs:label "excerpt from"@en ;
+    rdfs:comment "Optional pointer from an excerpt to the source document."@en ;
+    rdfs:domain ei:Excerpt ;
+    rdfs:range iao:0000030 .
+
+ei:hasSegmentIndex a owl:DatatypeProperty,
+        owl:FunctionalProperty ;
+    rdfs:label "has segment index"@en ;
+    rdfs:comment "0-based ordinal position of the segment within its episode."@en ;
+    rdfs:domain ei:PodcastSegment ;
+    rdfs:range xsd:integer .
+
+ei:inConversation a owl:ObjectProperty ;
+    rdfs:label "in conversation"@en ;
+    rdfs:comment "A Post belongs to a Conversation (SocialThread in V0)."@en ;
+    rdfs:domain ei:Post ;
+    rdfs:range ei:Conversation .
+
+<https://w3id.org/energy-intel/modules/media> a owl:Ontology ;
+    dcterms:created "2026-04-22"^^xsd:date ;
+    dcterms:creator "energy-intel / ontology-architect"@en ;
+    dcterms:description "Post, MediaAttachment (Chart / Screenshot / Excerpt / GenericImageAttachment), Conversation / SocialThread / PodcastEpisode / PodcastSegment, and the abstract EvidenceSource."@en ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:title "energy-intel — media module"@en ;
+    owl:imports <http://purl.obolibrary.org/obo/iao.owl>,
+        <https://w3id.org/energy-intel/modules/agent> ;
+    owl:versionInfo "v0 (2026-04-22)" .
+
+ei:presents a owl:ObjectProperty ;
+    rdfs:label "presents"@en ;
+    rdfs:comment "A Post presents one or more MediaAttachments."@en ;
+    rdfs:domain ei:Post ;
+    rdfs:range ei:MediaAttachment .
+
+ei:repliesTo a owl:AsymmetricProperty,
+        owl:IrreflexiveProperty,
+        owl:ObjectProperty ;
+    rdfs:label "replies to"@en ;
+    rdfs:comment "Reply edge in a SocialThread. Irreflexive and asymmetric (a Post cannot reply to itself)."@en ;
+    rdfs:domain ei:Post ;
+    rdfs:range ei:Post .
+
+ei:screenshotOf a owl:ObjectProperty ;
+    rdfs:label "screenshot of"@en ;
+    rdfs:comment "Optional pointer from a screenshot to the ICE it captures."@en ;
+    rdfs:domain ei:Screenshot ;
+    rdfs:range iao:0000030 .
+
+ei:spokenBy a owl:ObjectProperty ;
+    rdfs:label "spoken by"@en ;
+    rdfs:comment "Binary participation shortcut for podcast speakers (multi-speaker segments allowed; no cardinality axiom)."@en ;
+    rdfs:domain ei:PodcastSegment ;
+    rdfs:range ei:Expert .
+
+ei:Chart a owl:Class ;
+    rdfs:label "chart"@en ;
+    rdfs:subClassOf iao:0000101,
+        ei:MediaAttachment ;
+    skos:definition "A data-visualisation image attached to a Post. Re-parented to iao:Image."@en .
+
+ei:GenericImageAttachment a owl:Class ;
+    rdfs:label "generic image attachment"@en ;
+    rdfs:subClassOf iao:0000101,
+        ei:MediaAttachment ;
+    skos:definition "Catch-all image attachment not classifiable as Chart or Screenshot (renamed from ei:Image 2026-04-22)."@en .
+
+ei:SocialThread a owl:Class ;
+    rdfs:label "social thread"@en ;
+    rdfs:subClassOf ei:Conversation ;
+    skos:definition "A directed sequence of Posts forming a reply / quote / repost graph on a social platform."@en .
+
+ei:authoredBy a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "authored by"@en ;
+    rdfs:comment "Shortcut form of participation (ODP F.4). Every Post has exactly one author in V0."@en ;
+    rdfs:domain ei:Post ;
+    rdfs:range ei:Expert .
+
+ei:partOfEpisode a owl:AsymmetricProperty,
+        owl:FunctionalProperty,
+        owl:IrreflexiveProperty,
+        owl:ObjectProperty ;
+    rdfs:label "part of episode"@en ;
+    rdfs:comment "Part-whole for podcast segments. Renamed from ei:partOf 2026-04-22 per property-design § 8. Transitivity inherited from bfo:BFO_0000050."@en ;
+    rdfs:domain ei:PodcastSegment ;
+    rdfs:range ei:PodcastEpisode ;
+    rdfs:subPropertyOf bfo:0000050 .
+
+ei:Excerpt a owl:Class ;
+    rdfs:label "excerpt"@en ;
+    rdfs:subClassOf iao:0000300,
+        ei:MediaAttachment ;
+    skos:definition "A text excerpt (quote / paragraph / table cell) embedded in or attached to a Post. Re-parented to iao:TextualEntity."@en .
+
+ei:Screenshot a owl:Class ;
+    rdfs:label "screenshot"@en ;
+    rdfs:subClassOf iao:0000101,
+        ei:MediaAttachment ;
+    skos:definition "A raster capture of a displayed document, UI, or data table."@en .
+
+ei:Conversation a owl:Class ;
+    rdfs:label "conversation"@en ;
+    rdfs:subClassOf iao:0000030 ;
+    skos:definition "Abstract parent of multi-turn communicative artefacts (social threads, podcast episodes)."@en .
+
+ei:EvidenceSource a owl:Class ;
+    rdfs:label "evidence source"@en ;
+    rdfs:subClassOf iao:0000030 ;
+    skos:definition "Abstract parent of any information content entity that can stand as the evidencing artefact for a CanonicalMeasurementClaim. Three asserted subclasses in V0: Post, MediaAttachment, PodcastSegment."@en .
+
+ei:PodcastEpisode a owl:Class ;
+    rdfs:label "podcast episode"@en ;
+    rdfs:subClassOf iao:0000310,
+        ei:Conversation ;
+    skos:definition "A discrete podcast episode, modeled as both an iao:Document and a Conversation."@en .
+
+ei:PodcastSegment a owl:Class ;
+    rdfs:label "podcast segment"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onClass ei:PodcastEpisode ;
+            owl:onProperty ei:partOfEpisode ;
+            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
+        iao:0000030,
+        ei:EvidenceSource ;
+    skos:definition "A bounded temporal span of a PodcastEpisode that can evidence a CMC and can be spoken by one or more Experts."@en .
+
+ei:MediaAttachment a owl:Class ;
+    rdfs:label "media attachment"@en ;
+    rdfs:subClassOf iao:0000030,
+        ei:EvidenceSource ;
+    skos:definition "Abstract parent of image/text artefacts attached to a Post and potentially evidencing a CMC."@en .
+
+ei:Post a owl:Class ;
+    rdfs:label "post"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onClass ei:Expert ;
+            owl:onProperty ei:authoredBy ;
+            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
+        iao:0000310,
+        ei:EvidenceSource ;
+    skos:definition "A social-media or short-form document authored by an Expert that may evidence CMCs. Re-parented to iao:Document and ei:EvidenceSource."@en .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( ei:Chart ei:Screenshot ei:Excerpt ei:GenericImageAttachment ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( ei:SocialThread ei:PodcastEpisode ) .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( ei:Post ei:MediaAttachment ei:PodcastSegment ) .

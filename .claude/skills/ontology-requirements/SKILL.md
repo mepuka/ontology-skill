@@ -1,10 +1,15 @@
 ---
 name: ontology-requirements
 description: >
-  Manages ontology requirements specification. Elicits, refines, and
-  formalizes competency questions (CQs). Generates ORSD documents and
-  CQ test suites. Use when starting a new ontology, defining scope, or
-  creating acceptance tests.
+  Elicits, refines, and formalizes ontology requirements specification
+  and competency questions (CQs). Writes ORSD documents (scope, use
+  cases, non-goals), converts stakeholder questions into validated
+  SPARQL acceptance tests (CQ test suites), and maintains a
+  stakeholder-need → CQ → term → SPARQL traceability matrix. Use when
+  starting a new ontology, defining scope, creating acceptance tests,
+  refreshing stale CQs, generating cq-*.sparql tests, building a
+  traceability matrix, or preventing retroactive requirements after
+  modeling has begun.
 ---
 
 # Ontology Requirements Engineer
@@ -33,8 +38,22 @@ Read these files from `_shared/` before beginning work:
 - `_shared/methodology-backbone.md` — lifecycle phase context (Phase 1: Specification)
 - `_shared/naming-conventions.md` — term standards for the pre-glossary
 - `_shared/namespaces.json` — standard prefixes for SPARQL test queries
+- `_shared/cq-traceability.md` — trace chain from stakeholder need → use case → CQ → term → SPARQL; CSV schema and maintenance triggers
+- `_shared/iteration-loopbacks.md` — how downstream skills raise `missing_cq_link` / `scope_violation` loopbacks back to this skill
+- `_shared/llm-verification-patterns.md` — when LLM output (CQ-to-SPARQL drafts, sample answers) requires tool-gated verification
 
 ## Core Workflow
+
+### Step 0: Scope / Requirements-Gate Detection
+
+Before drafting CQs, answer three gating questions. Each needs a one-line
+justification captured in the scope-gate section of `docs/scope.md`:
+
+| Gate | Question | If NO |
+|------|----------|-------|
+| Scope fit | Is the user's problem actually an ontology problem (shared vocabulary, inter-operability, reasoning)? | Route out: mapping-only work → `ontology-mapper`; app-logic → not an ontology task. |
+| Retrofit check | Has any modeling (classes, properties, axioms) already started? | Produce `docs/requirements-retrofit-note.md` listing what exists; flag every CQ inferred from existing structure. Do not proceed silently. |
+| Stakeholder availability | Is there at least one reachable domain expert for the Must-Have use cases? | Escalate; un-reviewable CQs are not requirements. |
 
 ### Step 1: Domain Scoping
 
@@ -42,9 +61,11 @@ Gather from the user:
 - Domain description and intended use cases
 - Key stakeholders and their information needs
 - What is IN scope and what is OUT of scope
+- **Explicit non-goals** — concrete questions the ontology will NOT answer, each with a rationale. Non-goals bound the design space; they are not the same as "Won't-Have CQs."
 - Known constraints (OWL profile, size, existing systems)
 
-Produce `ontologies/{name}/docs/scope.md` documenting scope decisions.
+Produce `ontologies/{name}/docs/scope.md` with scope decisions, non-goals,
+and the Step 0 gate results.
 
 ### Step 1.5: Use Case Development
 
@@ -93,6 +114,24 @@ these types:
 | Constraint | "Can X and Y co-occur?" | "Can an instrument be both wind and string?" |
 | Temporal | "When does X occur relative to Y?" | "When was the instrument first manufactured?" |
 
+### Step 2.5: CQ Quality Scoring
+
+Before a CQ advances to formalization, score it on six criteria:
+
+| Criterion | Pass condition |
+|-----------|----------------|
+| Atomic | Asks one question, not a compound of several |
+| Answerable | Some SPARQL shape can return a result from an instance graph |
+| Falsifiable | Can return an empty / zero / wrong-shape result when the ontology is incomplete |
+| Scoped | Stays inside `docs/scope.md`; cites which in-scope item it covers |
+| Prioritized | MoSCoW tier assigned with rationale |
+| Sample-bearing | At least one concrete `sample_answer` specified |
+
+A CQ that fails any criterion goes back to Step 2 or is marked `won't_have`
+with the reason recorded. Capture scoring in `docs/cq-quality.csv` with
+columns `cq_id, atomic, answerable, falsifiable, scoped, prioritized,
+sample_bearing, decision`.
+
 ### Step 3: CQ Refinement
 
 - Decompose compound questions into atomic CQs
@@ -113,14 +152,20 @@ Classify each CQ:
 
 ### Step 5: Formalization
 
-For each Must/Should CQ, produce a structured entry:
+For each Must/Should CQ, produce a structured entry. Every entry MUST carry
+`priority`, `owner`, `testability`, and `expected_answer_shape`:
 
 ```yaml
 - id: CQ-001
   source_use_case: UC-001
   natural_language: "What instruments exist in the ontology?"
   type: enumerative
-  priority: must_have
+  priority: must_have          # must_have | should_have | could_have | wont_have
+  owner: "jdoe@example.org"    # named accountable reviewer
+  testability: executable      # executable | fixture_required | manual_review
+  expected_answer_shape:
+    cardinality: "1..n"        # boolean | exact_N | at_least_N | 1..n | 0..n
+    per_row: [instrument, label]
   sample_answer:
     - instrument: ex:Violin_001
       label: "student violin 001"
@@ -135,12 +180,15 @@ For each Must/Should CQ, produce a structured entry:
       ?instrument rdf:type :Instrument ;
                   rdfs:label ?label .
     }
-  expected_result: non_empty
   required_classes:
     - Instrument
   required_properties: []
   required_axioms: []
 ```
+
+The `expected_answer_shape` and `testability` fields drive the SPARQL preflight
+in Step 7.5 and the expected-results contract described in
+[`_shared/cq-traceability.md`](_shared/cq-traceability.md).
 
 ### Step 6: Pre-Glossary Extraction
 
@@ -159,6 +207,23 @@ For each formalized CQ:
 - Enumerative CQs: SELECT query expecting non-empty results
 - Constraint CQs: SELECT query expecting zero rows (zero violations)
 - Generate `ontologies/{name}/tests/cq-test-manifest.yaml` linking CQs to test files
+
+### Step 7.5: SPARQL Preflight (handoff to `sparql-expert`)
+
+Every CQ query is preflighted before the traceability matrix closes:
+
+1. Route to `sparql-expert` for parse validation and expected-results-contract alignment.
+2. Run against `tests/fixtures/{cq-id}.ttl` if present; otherwise record
+   `fixture_run_status: skipped` with rationale.
+3. Record `parse_status`, `fixture_run_status`, and `expected_results_contract`
+   in `tests/cq-test-manifest.yaml` per
+   [`_shared/cq-traceability.md`](_shared/cq-traceability.md).
+4. Parse failure → loopback `sparql_parse` to `sparql-expert`.
+5. Result shape does not match the expected-results contract → loopback
+   `sparql_shape` to `sparql-expert`.
+
+No CQ advances to Step 8 with a failing preflight. This gate enforces that
+"a CQ without a runnable SPARQL" is an incomplete requirement.
 
 ### Step 8: Traceability Matrix
 
@@ -181,6 +246,29 @@ Rules:
 - Every stakeholder need must map to at least one use case and CQ.
 - Every CQ must map to at least one ontology term and test query.
 - Update this matrix whenever CQs are added, merged, or deprecated.
+
+### Step 9: Requirements Approval Artifact
+
+Before handoff, write `docs/requirements-approval.yaml`:
+
+```yaml
+reviewer: "jdoe@example.org"
+reviewed_at: "2026-04-21"
+cq_freeze_commit: "abc1234"
+scope_gate:
+  scope_fit: approved      # approved | flagged
+  retrofit_note: false     # true if docs/requirements-retrofit-note.md exists
+  stakeholder_available: true
+approved_cq_ids: [CQ-001, CQ-002]
+waived_cqs: []             # explicitly dropped, with rationale
+notes: |
+  Free-form reviewer comments.
+```
+
+No handoff to `ontology-scout` or `ontology-conceptualizer` until:
+- This file exists with a named reviewer and an ISO date.
+- Every Must-Have CQ has `parse_status: ok` in the manifest (Step 7.5).
+- The traceability matrix (Step 8) lists every approved CQ.
 
 ## Tool Commands
 
@@ -218,14 +306,17 @@ This skill produces:
 
 | Artifact | Location | Format | Description |
 |----------|----------|--------|-------------|
-| Scope document | `ontologies/{name}/docs/scope.md` | Markdown | In/out scope, constraints, stakeholders |
+| Scope document | `ontologies/{name}/docs/scope.md` | Markdown | In/out scope, non-goals, constraints, stakeholders, Step 0 gate results |
+| Retrofit note (if applicable) | `ontologies/{name}/docs/requirements-retrofit-note.md` | Markdown | Inventory of pre-existing structure when modeling started before requirements |
 | Use case catalog | `ontologies/{name}/docs/use-cases.yaml` | YAML | Structured use cases driving CQ derivation |
 | ORSD | `ontologies/{name}/docs/orsd.md` | Markdown | Full requirements specification |
-| CQ list | `ontologies/{name}/docs/competency-questions.yaml` | YAML | Structured CQ definitions with SPARQL |
+| CQ list | `ontologies/{name}/docs/competency-questions.yaml` | YAML | Structured CQ definitions (priority, owner, testability, expected_answer_shape, SPARQL) |
+| CQ quality scoring | `ontologies/{name}/docs/cq-quality.csv` | CSV | Per-CQ pass/fail on the six Step 2.5 criteria |
 | Pre-glossary | `ontologies/{name}/docs/pre-glossary.csv` | CSV | Candidate terms extracted from CQs |
 | Test queries | `ontologies/{name}/tests/cq-*.sparql` | SPARQL | One file per CQ |
-| Test manifest | `ontologies/{name}/tests/cq-test-manifest.yaml` | YAML | Maps CQ IDs to test files and expectations |
+| Test manifest | `ontologies/{name}/tests/cq-test-manifest.yaml` | YAML | Maps CQ IDs to test files + preflight status + expected-results contract |
 | Traceability matrix | `ontologies/{name}/docs/traceability-matrix.csv` | CSV | End-to-end trace: need -> use case -> CQ -> term -> test |
+| Requirements approval | `ontologies/{name}/docs/requirements-approval.yaml` | YAML | Reviewer + ISO date + CQ-freeze commit SHA; blocks handoff without it |
 
 ## Handoff
 
@@ -274,3 +365,46 @@ This skill produces:
 | CQ cannot be expressed in SPARQL | CQ is too vague or beyond OWL expressivity | Decompose into simpler CQs or mark as Won't Have |
 | Duplicate CQs detected | Stakeholder overlap | Merge and reference all source stakeholders |
 | Pre-glossary has conflicting terms | Polysemy in domain language | Flag for conceptualizer to disambiguate |
+
+## Progress Criteria
+
+Work is done when every box is checked. Each item is tool-verifiable.
+
+- [ ] `docs/orsd.md` exists with scope, use cases, non-goals, stakeholder list.
+- [ ] `docs/competency-questions.yaml` parses and every CQ carries `priority`,
+      `expected_answer_shape`, `testability`, `owner`.
+- [ ] Every Must-Have CQ has a matching `tests/cq-*.sparql` that passes
+      `prepareQuery` — see [`_shared/cq-traceability.md`](_shared/cq-traceability.md).
+- [ ] `docs/traceability-matrix.csv` links stakeholder-need → use case → CQ → term placeholder → test.
+- [ ] `docs/requirements-approval.yaml` exists with reviewer, ISO date, and
+      the CQ-freeze commit SHA.
+- [ ] No Loopback Trigger below fires.
+
+## LLM Verification Required
+
+See [`_shared/llm-verification-patterns.md`](_shared/llm-verification-patterns.md).
+Never replaces `prepareQuery` parsing or CQ manifest consistency check.
+
+| Operation | Class | Tool gate |
+|---|---|---|
+| CQ → SPARQL draft | A | `prepareQuery` parse + run on fixture when present |
+| Sample-answer generation | B | Evidence = CQ text + fixture graph + expected shape |
+| Traceability row (stakeholder → CQ → term) | B | Every row names source stakeholder + source CQ id |
+| ORSD non-goal phrasing | B | Reviewer signature in `requirements-approval.yaml` |
+
+## Loopback Triggers
+
+This skill owns scope + CQ concerns. Downstream skills raise these back to it.
+
+| Trigger | Route to | Reason |
+|---|---|---|
+| Incoming: `scope_violation` (from any skill) | `ontology-requirements` | Scope is the requirements artifact; fix here, not downstream. |
+| Incoming: `missing_cq_link` (from validator / architect / mapper) | `ontology-requirements` | A satisfied-claim without an executable CQ is a requirements gap. |
+| Raised: CQ truly unanswerable by any ontology construct | (stop) | Mark `Won't-Have`; escalate to human per anti-thrash guard. |
+
+Depth > 3 on the same CQ escalates per [`_shared/iteration-loopbacks.md`](_shared/iteration-loopbacks.md).
+
+## Worked Examples
+
+- [`_shared/worked-examples/ensemble/requirements.md`](_shared/worked-examples/ensemble/requirements.md) — CQs CQ-E-001..005, ORSD non-goals, and CQ-E-001 as the priority case (Must-Have, qualified-cardinality target). *(Wave 4)*
+- [`_shared/worked-examples/microgrid/requirements.md`](_shared/worked-examples/microgrid/requirements.md) — CQs CQ-M-001..005; stakeholder-need traceability for the dispatch-event CQ-M-002. *(Wave 4)*

@@ -1,0 +1,12 @@
+PREFIX rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ei:   <https://w3id.org/energy-intel/>
+
+# CQ-003 (must_have, UC-002)
+# For a given CanonicalMeasurementClaim, which Variable does it reference?
+# Expected: 0..1 rows.
+# Derivation: direct_lookup.
+
+SELECT ?variable WHERE {
+  <https://id.skygest.io/cmc/cmc_01J_example> ei:referencesVariable ?variable .
+  ?variable a ei:Variable .
+}

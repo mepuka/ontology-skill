@@ -1,0 +1,23 @@
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ei: <https://w3id.org/energy-intel/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ei:hasSeries a owl:ObjectProperty ;
+    rdfs:label "has series"@en ;
+    rdfs:comment "Extension property: a DCAT Dataset exposes one or more energy-intel Series. Inverse of ei:publishedInDataset."@en ;
+    rdfs:domain dcat:Dataset ;
+    rdfs:range ei:Series ;
+    owl:inverseOf ei:publishedInDataset .
+
+<https://w3id.org/energy-intel/modules/data> a owl:Ontology ;
+    dcterms:created "2026-04-22"^^xsd:date ;
+    dcterms:creator "energy-intel / ontology-architect"@en ;
+    dcterms:description "DCAT 3 extension: ei:hasSeries (Dataset → Series) and the inverse declaration of ei:publishedInDataset. No local DCAT subclasses."@en ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:title "energy-intel — data module"@en ;
+    owl:imports <http://www.w3.org/ns/dcat>,
+        <https://w3id.org/energy-intel/modules/measurement> ;
+    owl:versionInfo "v0 (2026-04-22)" .
