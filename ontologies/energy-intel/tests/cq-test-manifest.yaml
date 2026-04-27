@@ -18,15 +18,17 @@
 # fixture. See _shared/cq-traceability.md § expected-results contract.
 
 preflight_summary:
-  total: 14
-  parse_ok: 14
+  total: 19
+  parse_ok: 19
   parse_fail: 0
-  fixtures_built: 14
-  fixtures_passing: 14
+  fixtures_built: 19
+  fixtures_passing: 19
   fixtures_failing: 0
-  fixtures_skipped: 0
-  architect_session: "2026-04-22 (post-OEO-verification)"
+  fixtures_skipped: 0  # all V1 fixtures land 2026-04-27
+  architect_session: "2026-04-22 (V0 post-OEO-verification); V1 architect 2026-04-27"
   fixture_builder: "ontologies/energy-intel/scripts/build_fixtures.py"
+  v1_requirements_session: "2026-04-27 (CQ-015..019 added; preflight ok)"
+  v1_architect_session: "2026-04-27 (V1 fixtures + axioms + shapes landed)"
 
 tests:
 
@@ -228,6 +230,85 @@ tests:
     fixture_path: tests/fixtures/cq-014.ttl
     entailment_regime: simple
     fixture_rationale: "Rewritten 2026-04-22 alongside CQ-013; Variable hop removed per seven-facet deferral. Fixture prerequisites identical to CQ-013."
+
+  - id: CQ-015
+    file: tests/cq-015.sparql
+    kind: select
+    expected: "0..n CMCs tagged with the parent OEO technology or any narrower descendant"
+    expected_results_contract: |
+      Columns: ?cmc.
+      Cardinality: 0..n.
+      Transitive walk over ei:aboutTechnology/(skos:broader|rdfs:subClassOf)*.
+      Against a fixture binding an OEO subtree class (here oeo:OEO_00020267 itself, the
+      energy-technology root), returns every CMC tagged that class or any
+      transitive descendant. Empty-path match suffices when fixture tags the root.
+    parse_status: ok
+    fixture_run_status: pass
+    fixture_path: tests/fixtures/cq-015.ttl
+    entailment_regime: simple
+    fixture_rationale: "V1 OEO MIREOT subset (BFO+RO-stripped) wired in V1 architect (2026-04-27). Fixture tags CMC directly with oeo:OEO_00020267 because V0 BOT extract pulls upward parent path only, not descendants."
+
+  - id: CQ-016
+    file: tests/cq-016.sparql
+    kind: select
+    expected: "0..n CMCs whose ei:canonicalUnit equals the bound qudt:Unit IRI"
+    expected_results_contract: |
+      Columns: ?cmc.
+      Cardinality: 0..n.
+      Direct lookup on ei:canonicalUnit (V1 new property; range qudt:Unit).
+      Bound IRI is unit:GigaW (NOT unit:GW — V0 manifest's IRI was wrong; QUDT
+      2.1 uses SI-prefix-as-word naming).
+    parse_status: ok
+    fixture_run_status: pass
+    fixture_path: tests/fixtures/cq-016.ttl
+    entailment_regime: simple
+    fixture_rationale: "ei:canonicalUnit minted in V1 architect (2026-04-27); fixture binds unit:GigaW from the qudt-units-subset import."
+
+  - id: CQ-017
+    file: tests/cq-017.sparql
+    kind: select
+    expected: "0..n (CMC, unit) pairs whose unit hasQuantityKind matches"
+    expected_results_contract: |
+      Columns: ?cmc ?unit.
+      Cardinality: 0..n.
+      Inference path: CMC -> ei:canonicalUnit -> qudt:hasQuantityKind.
+      QUDT subset declares qudt:hasQuantityKind on every imported Unit;
+      fixture only adds the CMC-side ei:canonicalUnit triple.
+    parse_status: ok
+    fixture_run_status: pass
+    fixture_path: tests/fixtures/cq-017.ttl
+    entailment_regime: simple
+    fixture_rationale: "QUDT QuantityKind kept (per scout SQ-2 GO decision); CQ-017 stays should_have. Architect uses imported qudt:hasQuantityKind directly — no local ei:hasQuantityKind."
+
+  - id: CQ-018
+    file: tests/cq-018.sparql
+    kind: select
+    expected: "0..n distinct foaf:Person individuals bearing ei:EnergyExpertRole and authoring at least one Post"
+    expected_results_contract: |
+      Columns: ?person.
+      Cardinality: 0..n; DISTINCT applied.
+      Direct lookup on the role-bearer pattern.
+      Confirms V1 Expert refactor structurally reaches the right entities.
+    parse_status: ok
+    fixture_run_status: pass
+    fixture_path: tests/fixtures/cq-018.ttl
+    entailment_regime: simple
+    fixture_rationale: "ei:EnergyExpertRole minted in V1 architect (2026-04-27); fixture asserts foaf:Person + bfo:0000053 + EnergyExpertRole + Post(authoredBy=Person) triangle."
+
+  - id: CQ-019
+    file: tests/cq-019.sparql
+    kind: select
+    expected: "0..n distinct (person, cmc) pairs"
+    expected_results_contract: |
+      Columns: ?person ?cmc.
+      Cardinality: 0..n; DISTINCT applied.
+      Integration check: composes the role-bearing pattern (CQ-018) with
+      the transitive OEO walk (CQ-015).
+    parse_status: ok
+    fixture_run_status: pass
+    fixture_path: tests/fixtures/cq-019.ttl
+    entailment_regime: simple
+    fixture_rationale: "Composes CQ-018 role-bearer triangle with CQ-015 OEO subtree tag in a single fixture."
 
 # Loopback triggers recorded for this manifest
 #

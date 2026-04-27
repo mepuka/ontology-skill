@@ -1,0 +1,17 @@
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+PREFIX ei:    <https://w3id.org/energy-intel/>
+PREFIX oeo:   <https://openenergyplatform.org/ontology/oeo/>
+
+# CQ-015 (must_have, UC-006)
+# What CMCs are about a given OEO technology or any of its narrower OEO subclasses?
+# Expected: 0..n rows.
+# Derivation: inference via transitive property path under simple entailment.
+# Bound to oeo:OEO_00020267 (energy technology root, per scout V1 § SQ-1).
+# Architect / fixture rebinds to a more specific descendant per use case.
+
+SELECT ?cmc WHERE {
+  ?cmc a ei:CanonicalMeasurementClaim ;
+       ei:aboutTechnology/(skos:broader|rdfs:subClassOf)* oeo:OEO_00020267 .
+}

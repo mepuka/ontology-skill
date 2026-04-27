@@ -1,0 +1,18 @@
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ei:    <https://w3id.org/energy-intel/>
+PREFIX unit:  <http://qudt.org/vocab/unit/>
+
+# CQ-016 (must_have, UC-007)
+# What CMCs canonicalize to a given qudt:Unit IRI?
+# Expected: 0..n rows.
+# Derivation: direct_lookup on ei:canonicalUnit (V1 new property).
+# V1 architect note: the conceptualizer handoff (V1) flagged that the V0
+# requirements draft used unit:GW; QUDT 2.1 actually exposes power-of-ten
+# watt units as unit:GigaW / unit:MegaW / unit:TeraW (SI-prefix-as-word
+# convention). Per imports-manifest-v1.yaml § seed_units, unit:GigaW is the
+# bound IRI here. Fixtures and SHACL S-V1-1 align on the same IRI form.
+
+SELECT ?cmc WHERE {
+  ?cmc a ei:CanonicalMeasurementClaim ;
+       ei:canonicalUnit unit:GigaW .
+}

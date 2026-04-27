@@ -1,0 +1,1038 @@
+@prefix bfo: <http://purl.obolibrary.org/obo/BFO_> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ei: <https://w3id.org/energy-intel/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix qkind: <http://qudt.org/vocab/quantitykind/> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+qudt:hasQuantityKind a owl:ObjectProperty ;
+    rdfs:label "has quantity kind"@en .
+
+unit:A a qudt:Unit ;
+    rdfs:label "أمبير"@ar,
+        "ампер"@bg,
+        "ampér"@cs,
+        "Ampere"@de,
+        "αμπέρ"@el,
+        "ampere"@en,
+        "amperio"@es,
+        "آمپر"@fa,
+        "ampère"@fr,
+        "אמפר"@he,
+        "एम्पीयर"@hi,
+        "amper"@hu,
+        "ampere"@it,
+        "アンペア"@ja,
+        "amperium"@la,
+        "ampere"@ms,
+        "amper"@pl,
+        "ampere"@pt,
+        "amper"@ro,
+        "ампер"@ru,
+        "amper"@sl,
+        "amper"@tr,
+        "安培"@zh ;
+    dcterms:description """$\\textit{Ampere}$, often shortened to $\\text{amp}$,
+is the SI unit of electric current and is one of the seven SI base units defined as:
+
+$$\\text{A} \\equiv \\frac{\\textit{C}}{\\textit{s}}
+\\equiv \\frac{\\textit{coulomb}}{\\textit{second}}
+\\equiv \\frac{\\text{joule}}{\\text{weber}}$$
+
+Note that SI supports only the use of symbols and deprecates the use of any abbreviations for units.
+"""^^qudt:LatexString ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/CGS-EMU>,
+        <http://qudt.org/vocab/sou/CGS-GAUSS>,
+        <http://qudt.org/vocab/sou/PLANCK>,
+        <http://qudt.org/vocab/sou/SI> ;
+    qudt:conversionMultiplier 1.0 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E1L0I0M0H0T0D0> ;
+    qudt:hasQuantityKind qkind:CurrentLinkage,
+        qkind:DisplacementCurrent,
+        qkind:ElectricCurrent,
+        qkind:ElectricCurrentPhasor,
+        qkind:MagneticTension,
+        qkind:MagnetomotiveForce,
+        qkind:TotalCurrent ;
+    qudt:symbol "A" ;
+    skos:altLabel "amp" .
+
+unit:BBL a qudt:Unit ;
+    rdfs:label "Barrel"@en ;
+    dcterms:description "A barrel is one of several units of volume, with dry barrels, fluid barrels (UK beer barrel, U.S. beer barrel), oil barrel, etc. The volume of some barrel units is double others, with various volumes in the range of about 100-200 litres (22-44 imp gal; 26-53 US gal)."^^rdf:HTML ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/USCS> ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L3I0M0H0T0D0> ;
+    qudt:hasQuantityKind qkind:Volume ;
+    qudt:symbol "bbl" .
+
+unit:BBL_UK_PET a qudt:Unit ;
+    rdfs:label "Barrel (UK Petroleum)"@en ;
+    dcterms:description "unit of the volume for crude oil according to the Imperial system of units"^^rdf:HTML ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/IMPERIAL> ;
+    qudt:conversionMultiplier 0.1591132 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L3I0M0H0T0D0> ;
+    qudt:hasQuantityKind qkind:Volume ;
+    qudt:plainTextDescription "unit of the volume for crude oil according to the Imperial system of units" ;
+    qudt:symbol "bbl{UK petroleum}" .
+
+unit:BTU_IT a qudt:Unit ;
+    rdfs:label "British Thermal Unit (International Definition)"@en ;
+    dcterms:description """$\\textit{British Thermal Unit}$ (BTU or Btu) is a traditional unit of energy equal to about $1.0550558526 \\textit{ kilojoule}$.
+  It is approximately the amount of energy needed to heat 1 pound (0.454 kg) of water from $39^{\\circ}{F}$ to $40^{\\circ}{F}$ .
+  The unit is most often used in the power, steam generation, heating and air conditioning industries.
+  In scientific contexts the BTU has largely been replaced by the SI unit of energy, the $joule$, though it may be used as a measure of agricultural energy production (BTU/kg).
+  It is still used unofficially in metric English-speaking countries (such as Canada), and remains the standard unit of classification for air conditioning units manufactured and sold in many non-English-speaking metric countries.
+  """^^qudt:LatexString ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/IMPERIAL>,
+        <http://qudt.org/vocab/sou/USCS> ;
+    qudt:conversionMultiplier 1055.05585262 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-2D0> ;
+    qudt:hasQuantityKind qkind:Energy,
+        qkind:ThermalEnergy ;
+    qudt:symbol "Btu{IT}" .
+
+unit:GM a qudt:Unit ;
+    rdfs:label "Gram"@en ;
+    dcterms:description "A unit of mass in the metric system. The name comes from the Greek gramma, a small weight identified in later Roman and Byzantine times with the Latin scripulum or scruple (the English scruple is equal to about 1.3 grams). The gram was originally defined to be the mass of one cubic centimeter of pure water, but to provide precise standards it was necessary to construct physical objects of specified mass. One gram is now defined to be 1/1000 of the mass of the standard kilogram, a platinum-iridium bar carefully guarded by the International Bureau of Weights and Measures in Paris for more than a century. (The kilogram, rather than the gram, is considered the base unit of mass in the SI.) The gram is a small mass, equal to about 15.432 grains or 0.035 273 966 ounce. "^^rdf:HTML ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/CGS>,
+        <http://qudt.org/vocab/sou/CGS-EMU>,
+        <http://qudt.org/vocab/sou/CGS-GAUSS>,
+        <http://qudt.org/vocab/sou/SI> ;
+    qudt:conversionMultiplier 0.001 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M1H0T0D0> ;
+    qudt:hasQuantityKind qkind:Mass ;
+    qudt:symbol "g" .
+
+unit:GigaJ a qudt:Unit ;
+    rdfs:label "Gigajoule"@en ;
+    dcterms:description "1,000,000,000-fold of the SI derived unit joule"^^rdf:HTML ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/CGS>,
+        <http://qudt.org/vocab/sou/CGS-EMU>,
+        <http://qudt.org/vocab/sou/CGS-GAUSS>,
+        <http://qudt.org/vocab/sou/SI> ;
+    qudt:conversionMultiplier 1000000000.0 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-2D0> ;
+    qudt:hasQuantityKind qkind:Energy,
+        qkind:ThermalEnergy ;
+    qudt:plainTextDescription "1 000 000 000-fold of the SI derived unit joule" ;
+    qudt:symbol "GJ" .
+
+unit:GigaW-HR a qudt:Unit ;
+    rdfs:label "Gigawatt Hour"@en ;
+    dcterms:description """
+  A $\\textit{Gigawatt Hour}$ is the 1,000,000,000-fold of the product of the SI derived unit watt and the unit hour.
+  """^^qudt:LatexString ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/CGS>,
+        <http://qudt.org/vocab/sou/CGS-EMU>,
+        <http://qudt.org/vocab/sou/CGS-GAUSS>,
+        <http://qudt.org/vocab/sou/SI> ;
+    qudt:conversionMultiplier 3600000000000.0 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-2D0> ;
+    qudt:hasQuantityKind qkind:Energy ;
+    qudt:plainTextDescription "1 000 000 000-fold of the product of the SI derived unit watt and the unit hour" ;
+    qudt:symbol "GW·h" .
+
+unit:HZ a qudt:DerivedUnit,
+        qudt:Unit ;
+    rdfs:label "هرتز"@ar,
+        "херц"@bg,
+        "hertz"@cs,
+        "Hertz"@de,
+        "χερτζ"@el,
+        "hertz"@en,
+        "hercio"@es,
+        "هرتز"@fa,
+        "hertz"@fr,
+        "הרץ"@he,
+        "हर्ट्ज"@hi,
+        "hertz"@hu,
+        "hertz"@it,
+        "ヘルツ"@ja,
+        "hertzium"@la,
+        "hertz"@ms,
+        "herc"@pl,
+        "hertz"@pt,
+        "hertz"@ro,
+        "герц"@ru,
+        "hertz"@sl,
+        "hertz"@tr,
+        "赫兹"@zh ;
+    dcterms:description """
+  $\\textit{Hertz}$ (symbol $Hz$) is the SI unit of frequency defined as the number of cycles per second of a periodic phenomenon.
+  One of its most common uses is the description of the sine wave, particularly those used in radio and audio applications, such as the frequency of musical tones.
+  The word $\\bf{hertz}$ is named for Heinrich Rudolf Hertz, who was the first to conclusively prove the existence of electromagnetic waves.
+  """^^qudt:LatexString ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/CGS>,
+        <http://qudt.org/vocab/sou/CGS-EMU>,
+        <http://qudt.org/vocab/sou/CGS-GAUSS>,
+        <http://qudt.org/vocab/sou/IMPERIAL>,
+        <http://qudt.org/vocab/sou/SI>,
+        <http://qudt.org/vocab/sou/USCS> ;
+    qudt:conversionMultiplier 1.0 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M0H0T-1D0> ;
+    qudt:hasQuantityKind qkind:Frequency,
+        qkind:RotationalFrequency,
+        qkind:RotationalVelocity ;
+    qudt:symbol "Hz" .
+
+unit:J a qudt:DerivedUnit,
+        qudt:Unit ;
+    rdfs:label "джаул"@bg,
+        "joule"@cs,
+        "Joule"@de,
+        "τζάουλ"@el,
+        "joule"@en,
+        "julio"@es,
+        "ژول"@fa,
+        "joule"@fr,
+        "जूल"@hi,
+        "joule"@hu,
+        "joule"@it,
+        "ジュール"@ja,
+        "joulium"@la,
+        "joule"@ms,
+        "dżul"@pl,
+        "joule"@pt,
+        "joule"@ro,
+        "джоуль"@ru,
+        "joule"@sl,
+        "joule"@tr,
+        "焦耳"@zh ;
+    dcterms:description """$\\textit{Joule}$ is the SI unit of work or energy, defined to be the work done by a force of one newton acting to move an object through a distance of one meter in the direction in which the force is applied.
+  Equivalently, since kinetic energy is one half the mass times the square of the velocity, one joule is the kinetic energy of a mass of two kilograms moving at a velocity of $1 m/s$.
+  """^^qudt:LatexString ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/CGS>,
+        <http://qudt.org/vocab/sou/CGS-EMU>,
+        <http://qudt.org/vocab/sou/CGS-GAUSS>,
+        <http://qudt.org/vocab/sou/SI> ;
+    qudt:conversionMultiplier 1.0 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-2D0> ;
+    qudt:hasQuantityKind qkind:Energy,
+        qkind:ExchangeIntegral,
+        qkind:HamiltonFunction,
+        qkind:LagrangeFunction,
+        qkind:LevelWidth,
+        qkind:ThermalEnergy ;
+    qudt:plainTextDescription "The SI unit of work or energy, defined to be the work done by a force of one newton acting to move an object through a distance of one meter in the direction in which the force is applied. Equivalently, since kinetic energy is one half the mass times the square of the velocity, one joule is the kinetic energy of a mass of two kilograms moving at a velocity of 1 m/s. This is the same as 107 ergs in the CGS system, or approximately 0.737 562 foot-pound in the traditional English system. In other energy units, one joule equals about 9.478 170 x 10-4 Btu, 0.238 846 (small) calories, or 2.777 778 x 10-4 watt hour. The joule is named for the British physicist James Prescott Joule (1818-1889), who demonstrated the equivalence of mechanical and thermal energy in a famous experiment in 1843. " ;
+    qudt:symbol "J" .
+
+unit:KiloGM a qudt:Unit ;
+    rdfs:label "كيلوغرام"@ar,
+        "килограм"@bg,
+        "kilogram"@cs,
+        "Kilogramm"@de,
+        "χιλιόγραμμο"@el,
+        "kilogram"@en,
+        "kilogramo"@es,
+        "کیلوگرم"@fa,
+        "kilogramme"@fr,
+        "קילוגרם"@he,
+        "किलोग्राम"@hi,
+        "kilogramm*"@hu,
+        "chilogrammo"@it,
+        "キログラム"@ja,
+        "chiliogramma"@la,
+        "kilogram"@ms,
+        "kilogram"@pl,
+        "quilograma"@pt,
+        "kilogram"@ro,
+        "килограмм"@ru,
+        "kilogram"@sl,
+        "kilogram"@tr,
+        "公斤"@zh ;
+    dcterms:description "The kilogram or kilogramme (SI symbol: kg), also known as the kilo, is the base unit of mass in the International System of Units and is defined as being equal to the mass of the International Prototype Kilogram (IPK), which is almost exactly equal to the mass of one liter of water. The avoirdupois (or international) pound, used in both the Imperial system and U.S. customary units, is defined as exactly 0.45359237 kg, making one kilogram approximately equal to 2.2046 avoirdupois pounds."^^rdf:HTML ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/CGS>,
+        <http://qudt.org/vocab/sou/CGS-EMU>,
+        <http://qudt.org/vocab/sou/CGS-GAUSS>,
+        <http://qudt.org/vocab/sou/SI> ;
+    qudt:conversionMultiplier 1.0 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M1H0T0D0> ;
+    qudt:hasQuantityKind qkind:CO2Equivalent,
+        qkind:Mass ;
+    qudt:plainTextDescription "The kilogram or kilogramme (SI symbol: kg), also known as the kilo, is the base unit of mass in the International System of Units and is defined as being equal to the mass of the International Prototype Kilogram (IPK), which is almost exactly equal to the mass of one liter of water. The avoirdupois (or international) pound, used in both the Imperial system and U.S. customary units, is defined as exactly 0.45359237 kg, making one kilogram approximately equal to 2.2046 avoirdupois pounds." ;
+    qudt:symbol "kg" .
+
+unit:KiloGM-PER-J a qudt:DerivedUnit,
+        qudt:Unit ;
+    rdfs:label "Kilogram per Joule"@en ;
+    dcterms:description "SI base unit kilogram divided by the SI base unit joule"^^rdf:HTML ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/CGS>,
+        <http://qudt.org/vocab/sou/CGS-EMU>,
+        <http://qudt.org/vocab/sou/CGS-GAUSS>,
+        <http://qudt.org/vocab/sou/SI> ;
+    qudt:conversionMultiplier 1.0 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L-2I0M0H0T2D0> ;
+    qudt:hasQuantityKind qkind:MassPerEnergy ;
+    qudt:plainTextDescription "SI base unit kilogram divided by the SI base unit joule" ;
+    qudt:symbol "kg/J" .
+
+unit:KiloMOL a qudt:Unit ;
+    rdfs:label "Kilomole"@en ;
+    dcterms:description "1 000-fold of the SI base unit mol"^^rdf:HTML ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/SI> ;
+    qudt:conversionMultiplier 1000.0 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A1E0L0I0M0H0T0D0> ;
+    qudt:hasQuantityKind qkind:AmountOfSubstance ;
+    qudt:plainTextDescription "1 000-fold of the SI base unit mol" ;
+    qudt:symbol "kmol" .
+
+unit:KiloW a qudt:DerivedUnit,
+        qudt:Unit ;
+    rdfs:label "Kilowatt"@en ;
+    dcterms:description """
+  The unit $\\textit{Kilowatt}$ is a derived unit of power in the International System of Units (SI).
+  The unit, defined as 1,000 joule per second, measures the rate of energy conversion or transfer.
+  """^^qudt:LatexString ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/CGS>,
+        <http://qudt.org/vocab/sou/CGS-EMU>,
+        <http://qudt.org/vocab/sou/CGS-GAUSS>,
+        <http://qudt.org/vocab/sou/PLANCK>,
+        <http://qudt.org/vocab/sou/SI> ;
+    qudt:conversionMultiplier 1000.0 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-3D0> ;
+    qudt:hasQuantityKind qkind:ActivePower,
+        qkind:Power ;
+    qudt:symbol "kW" .
+
+unit:KiloW-HR a qudt:Unit ;
+    rdfs:label "Kilowatthour"@en ;
+    dcterms:description "The kilowatt hour, or kilowatt-hour, (symbol $kW \\cdot h$, $kW h$ or $kWh$) is a unit of energy equal to 1000 watt hours or 3.6 megajoules. For constant power, energy in watt hours is the product of power in watts and time in hours. The kilowatt hour is most commonly known as a billing unit for energy delivered to consumers by electric utilities."^^qudt:LatexString ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/CGS>,
+        <http://qudt.org/vocab/sou/CGS-EMU>,
+        <http://qudt.org/vocab/sou/CGS-GAUSS>,
+        <http://qudt.org/vocab/sou/SI> ;
+    qudt:conversionMultiplier 3600000.0 ;
+    qudt:expression "$kW-h$"^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-2D0> ;
+    qudt:hasQuantityKind qkind:Energy ;
+    qudt:symbol "kW·h" .
+
+unit:MegaW a qudt:Unit ;
+    rdfs:label "MegaW"@en ;
+    dcterms:description "1,000,000-fold of the derived unit watt" ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/CGS>,
+        <http://qudt.org/vocab/sou/CGS-EMU>,
+        <http://qudt.org/vocab/sou/CGS-GAUSS>,
+        <http://qudt.org/vocab/sou/PLANCK>,
+        <http://qudt.org/vocab/sou/SI> ;
+    qudt:conversionMultiplier 1000000.0 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-3D0> ;
+    qudt:hasQuantityKind qkind:ActivePower,
+        qkind:Power ;
+    qudt:symbol "MW" .
+
+unit:MegaW-HR a qudt:Unit ;
+    rdfs:label "Megawatt Hour"@en ;
+    dcterms:description "1,000,000-fold of the product of the SI derived unit watt and the unit hour"^^rdf:HTML ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/CGS>,
+        <http://qudt.org/vocab/sou/CGS-EMU>,
+        <http://qudt.org/vocab/sou/CGS-GAUSS>,
+        <http://qudt.org/vocab/sou/SI> ;
+    qudt:conversionMultiplier 3600000000.0 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-2D0> ;
+    qudt:hasQuantityKind qkind:Energy ;
+    qudt:plainTextDescription "1 000 000-fold of the product of the SI derived unit watt and the unit hour" ;
+    qudt:symbol "MW·h" .
+
+unit:PERCENT a qudt:Unit ;
+    rdfs:label "Percent"@en ;
+    dcterms:description "\"Percent\" is a unit for  'Dimensionless Ratio' expressed as $\\%$."^^qudt:LatexString ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/ASU>,
+        <http://qudt.org/vocab/sou/CGS>,
+        <http://qudt.org/vocab/sou/CGS-EMU>,
+        <http://qudt.org/vocab/sou/CGS-ESU>,
+        <http://qudt.org/vocab/sou/CGS-GAUSS>,
+        <http://qudt.org/vocab/sou/IMPERIAL>,
+        <http://qudt.org/vocab/sou/PLANCK>,
+        <http://qudt.org/vocab/sou/SI> ;
+    qudt:conversionMultiplier 0.01 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M0H0T0D1> ;
+    qudt:hasQuantityKind qkind:DimensionlessRatio,
+        qkind:LengthPercentage,
+        qkind:OpeningRatio,
+        qkind:PressurePercentage,
+        qkind:Prevalence,
+        qkind:Reflectance,
+        qkind:RelativeHumidity,
+        qkind:RelativeLuminousFlux,
+        qkind:RelativePartialPressure,
+        qkind:ResistancePercentage,
+        qkind:TimePercentage,
+        qkind:VoltagePercentage ;
+    qudt:symbol "%" .
+
+unit:PetaJ a qudt:Unit ;
+    rdfs:label "Petajoule"@en ;
+    dcterms:description "1,000,000,000,000,000-fold of the derived SI unit joule"^^rdf:HTML ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/CGS>,
+        <http://qudt.org/vocab/sou/CGS-EMU>,
+        <http://qudt.org/vocab/sou/CGS-GAUSS>,
+        <http://qudt.org/vocab/sou/SI> ;
+    qudt:conversionMultiplier 1000000000000000.0 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-2D0> ;
+    qudt:hasQuantityKind qkind:Energy ;
+    qudt:plainTextDescription "1,000,000,000,000,000-fold of the derived SI unit joule" ;
+    qudt:symbol "PJ" .
+
+unit:TON_Metric a qudt:Unit ;
+    rdfs:label "Metric Ton"@en ;
+    dcterms:description "The tonne (SI unit symbol: t) is a metric system unit of mass equal to 1,000 kilograms (2,204.6 pounds). It is a non-SI unit accepted for use with SI. To avoid confusion with the ton, it is also known as the metric tonne and metric ton in the United States[3] and occasionally in the United Kingdom. In SI units and prefixes, the tonne is a megagram (Mg), a rarely-used symbol, easily confused with mg, for milligram."^^rdf:HTML ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/CGS>,
+        <http://qudt.org/vocab/sou/CGS-EMU>,
+        <http://qudt.org/vocab/sou/CGS-GAUSS>,
+        <http://qudt.org/vocab/sou/SI> ;
+    qudt:conversionMultiplier 1000.0 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M1H0T0D0> ;
+    qudt:hasQuantityKind qkind:Mass ;
+    qudt:plainTextDescription "1,000-fold of the SI base unit kilogram" ;
+    qudt:symbol "t" ;
+    skos:altLabel "metric-tonne" .
+
+unit:TeraJ a qudt:Unit ;
+    rdfs:label "Terajoule"@en ;
+    dcterms:description "1 000 000 000 000-fold of the SI derived unit joule"^^rdf:HTML ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/CGS>,
+        <http://qudt.org/vocab/sou/CGS-EMU>,
+        <http://qudt.org/vocab/sou/CGS-GAUSS>,
+        <http://qudt.org/vocab/sou/SI> ;
+    qudt:conversionMultiplier 1000000000000.0 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-2D0> ;
+    qudt:hasQuantityKind qkind:Energy ;
+    qudt:plainTextDescription "1,000,000,000,000-fold of the SI derived unit joule" ;
+    qudt:symbol "TJ" .
+
+unit:TeraW a qudt:Unit ;
+    rdfs:label "Terawatt"@en ;
+    dcterms:description "1,000,000,000,000-fold of the SI derived unit watt"^^rdf:HTML ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/CGS>,
+        <http://qudt.org/vocab/sou/CGS-EMU>,
+        <http://qudt.org/vocab/sou/CGS-GAUSS>,
+        <http://qudt.org/vocab/sou/PLANCK>,
+        <http://qudt.org/vocab/sou/SI> ;
+    qudt:conversionMultiplier 1000000000000.0 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-3D0> ;
+    qudt:hasQuantityKind qkind:ActivePower,
+        qkind:Power ;
+    qudt:plainTextDescription "1,000,000,000,000-fold of the SI derived unit watt" ;
+    qudt:symbol "TW" .
+
+unit:TeraW-HR a qudt:Unit ;
+    rdfs:label "Terawatt Hour"@en ;
+    dcterms:description "1,000,000,000,000-fold of the product of the SI derived unit watt and the unit hour"^^rdf:HTML ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/CGS>,
+        <http://qudt.org/vocab/sou/CGS-EMU>,
+        <http://qudt.org/vocab/sou/CGS-GAUSS>,
+        <http://qudt.org/vocab/sou/SI> ;
+    qudt:conversionMultiplier 3600000000000000.0 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-2D0> ;
+    qudt:hasQuantityKind qkind:Energy ;
+    qudt:plainTextDescription "1,000,000,000,000-fold of the product of the SI derived unit watt and the unit hour" ;
+    qudt:symbol "TW·h" .
+
+unit:V a qudt:Unit ;
+    rdfs:label "فولت"@ar,
+        "волт"@bg,
+        "volt"@cs,
+        "Volt"@de,
+        "βολτ"@el,
+        "volt"@en,
+        "voltio"@es,
+        "ولت"@fa,
+        "volt"@fr,
+        "וולט"@he,
+        "वोल्ट"@hi,
+        "volt"@hu,
+        "volt"@it,
+        "ボルト"@ja,
+        "voltium"@la,
+        "volt"@ms,
+        "wolt"@pl,
+        "volt"@pt,
+        "volt"@ro,
+        "вольт"@ru,
+        "volt"@sl,
+        "volt"@tr,
+        "伏特"@zh ;
+    dcterms:description """$\\textit{Volt}$ is the SI unit of electric potential.
+  Separating electric charges creates potential energy, which can be measured in energy units such as joules.
+  Electric potential is defined as the amount of potential energy present per unit of charge.
+  Electric potential is measured in volts, with one volt representing a potential of one joule per coulomb of charge.
+  The name of the unit honors the Italian scientist Count Alessandro Volta (1745-1827), the inventor of the first battery.
+  The volt also may be expressed with a variety of other units.
+  For example, a volt is also equal to one watt per ampere ($W/A$) and one joule per ampere per second ($J/A/s$).
+  """^^qudt:LatexString ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/CGS-EMU>,
+        <http://qudt.org/vocab/sou/CGS-GAUSS>,
+        <http://qudt.org/vocab/sou/PLANCK>,
+        <http://qudt.org/vocab/sou/SI> ;
+    qudt:conversionMultiplier 1.0 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E-1L2I0M1H0T-3D0> ;
+    qudt:hasQuantityKind qkind:ElectricPotential,
+        qkind:ElectricPotentialDifference,
+        qkind:EnergyPerElectricCharge,
+        qkind:Voltage ;
+    qudt:symbol "V" .
+
+unit:W a qudt:DerivedUnit,
+        qudt:Unit ;
+    rdfs:label "واط"@ar,
+        "ват"@bg,
+        "watt"@cs,
+        "Watt"@de,
+        "βατ"@el,
+        "watt"@en,
+        "vatio"@es,
+        "وات"@fa,
+        "watt"@fr,
+        "ואט"@he,
+        "वाट"@hi,
+        "watt"@hu,
+        "watt"@it,
+        "ワット"@ja,
+        "wattium"@la,
+        "watt"@ms,
+        "wat"@pl,
+        "watt"@pt,
+        "watt"@ro,
+        "ватт"@ru,
+        "watt"@sl,
+        "watt"@tr,
+        "瓦特"@zh ;
+    dcterms:description "The SI unit of power. Power is the rate at which work is done, or (equivalently) the rate at which energy is expended. One watt is equal to a power rate of one joule of work per second of time. This unit is used both in mechanics and in electricity, so it links the mechanical and electrical units to one another. In mechanical terms, one watt equals about 0.001 341 02 horsepower (hp) or 0.737 562 foot-pound per second (lbf/s). In electrical terms, one watt is the power produced by a current of one ampere flowing through an electric potential of one volt. The name of the unit honors James Watt (1736-1819), the British engineer whose improvements to the steam engine are often credited with igniting the Industrial Revolution."^^rdf:HTML ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/CGS>,
+        <http://qudt.org/vocab/sou/CGS-EMU>,
+        <http://qudt.org/vocab/sou/CGS-GAUSS>,
+        <http://qudt.org/vocab/sou/PLANCK>,
+        <http://qudt.org/vocab/sou/SI> ;
+    qudt:conversionMultiplier 1.0 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-3D0> ;
+    qudt:hasQuantityKind qkind:ActivePower,
+        qkind:Power ;
+    qudt:symbol "W" .
+
+<https://id.skygest.io/post/post_01J_example> a owl:NamedIndividual,
+        ei:Post ;
+    ei:authoredBy <https://id.skygest.io/expert/did-plc-a5kyzplew76jaj4dhnqsosjv> ;
+    ei:evidences <https://id.skygest.io/cmc/cmc_01J_example> .
+
+<https://w3id.org/energy-intel/imports/qudt-units-subset> a owl:Ontology ;
+    dcterms:created "2026-04-27"^^xsd:date ;
+    dcterms:description "Narrow MIREOT-style slice of QUDT 2.1 vocab/unit and vocab/quantitykind covering every unit referenced by V1 sample claims, plus the qudt:QuantityKind individual that each unit declares via qudt:hasQuantityKind. Built by scripts/build_v1_imports.py."@en ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:source <https://qudt.org/2.1/vocab/quantitykind>,
+        <https://qudt.org/2.1/vocab/unit> ;
+    dcterms:title "energy-intel — QUDT units + quantity kinds (V1 subset)"@en ;
+    owl:versionInfo "v1 (2026-04-27)" .
+
+<https://w3id.org/energy-intel/tests/fixtures/cq-016> a owl:Ontology ;
+    dcterms:created "2026-04-22"^^xsd:date ;
+    dcterms:description "CMC has ei:canonicalUnit set to a QUDT-imported unit. Direct lookup on ei:canonicalUnit returns the CMC."@en ;
+    dcterms:title "cq-016 fixture"@en .
+
+qkind:AmountOfSubstance a qudt:QuantityKind ;
+    rdfs:label "كمية المادة"@ar,
+        "Количество вещество"@bg,
+        "Látkové množství"@cs,
+        "Stoffmenge"@de,
+        "Ποσότητα Ουσίας"@el,
+        "amount of substance"@en,
+        "cantidad de sustancia"@es,
+        "مقدار ماده"@fa,
+        "quantité de matière"@fr,
+        "כמות חומר"@he,
+        "पदार्थ की मात्रा"@hi,
+        "anyagmennyiség"@hu,
+        "quantità di sostanza"@it,
+        "物質量"@ja,
+        "quantitas substantiae"@la,
+        "Jumlah bahan"@ms,
+        "liczność materii"@pl,
+        "quantidade de substância"@pt,
+        "cantitate de substanță"@ro,
+        "Количество вещества"@ru,
+        "množina snovi"@sl,
+        "madde miktarı"@tr,
+        "物质的量"@zh ;
+    dcterms:description """
+  $\\textit{Amount of Substance}$ is a standards-defined quantity that measures the size of an ensemble of elementary entities,
+   such as atoms, molecules, electrons, and other particles.
+  It is sometimes referred to as chemical amount.
+
+  The International System of Units (SI) defines the amount of substance to be proportional to the number of elementary entities present.
+  The SI unit for amount of substance is mole.
+  It has the unit symbol $mol$.
+
+  The mole is defined as the amount of substance that contains an equal number of elementary entities as there are atoms in 0.012kg of the isotope carbon-12.
+  This number is called Avogadro's number and has the value $6.02214179(30) \\times 10^{23}$.
+
+  The only other unit of amount of substance in current use is the $pound-mole$ with the symbol $lb-mol$,
+   which is sometimes used in chemical engineering in the United States.
+  One $pound-mole$ is exactly $453.59237 mol$.
+  """^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A1E0L0I0M0H0T0D0> ;
+    qudt:symbol "n" ;
+    skos:altLabel "chemical amount"@en,
+        "quantità chimica"@it,
+        "quantità di materia"@it,
+        "jumlah kimia"@ms .
+
+qkind:CO2Equivalent a qudt:QuantityKind ;
+    rdfs:label "CO2Equivalent" ;
+    dcterms:description """The CO2 equivalent is a measure used to compare the emissions from various greenhouse gases
+  on the basis of their global-warming potential (GWP), by converting amounts of other gases to the equivalent amount
+  of carbon dioxide with the same global warming potential."""^^rdf:HTML ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M1H0T0D0> ;
+    skos:broader qkind:Equivalent_Mass .
+
+qkind:CurrentLinkage a qudt:QuantityKind ;
+    rdfs:label "Current Linkage"@en ;
+    dcterms:description "\"Current Linkage\" is the net electric current through a surface delimited by a closed loop."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E1L0I0M0H0T0D0> ;
+    qudt:plainTextDescription "\"Current Linkage\" is the net electric current through a surface delimited by a closed loop." .
+
+qkind:DisplacementCurrent a qudt:QuantityKind ;
+    rdfs:label "Displacement Current"@en ;
+    dcterms:description "\"Displacement Current\" is a quantity appearing in Maxwell's equations that is defined in terms of the rate of change of electric displacement field. Displacement current has the units of electric current density, and it has an associated magnetic field just as actual currents do. However it is not an electric current of moving charges, but a time-varying electric field. In materials, there is also a contribution from the slight motion of charges bound in atoms, dielectric polarization."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E1L0I0M0H0T0D0> ;
+    qudt:plainTextDescription "\"Displacement Current\" is a quantity appearing in Maxwell's equations that is defined in terms of the rate of change of electric displacement field. Displacement current has the units of electric current density, and it has an associated magnetic field just as actual currents do. However it is not an electric current of moving charges, but a time-varying electric field. In materials, there is also a contribution from the slight motion of charges bound in atoms, dielectric polarization." ;
+    qudt:symbol "I_D" .
+
+qkind:ElectricCurrent a qudt:QuantityKind ;
+    rdfs:label "تيار كهربائي"@ar,
+        "Електрически ток"@bg,
+        "Elektrický proud"@cs,
+        "elektrische Stromstärke"@de,
+        "Ένταση ηλεκτρικού ρεύματος"@el,
+        "electric current"@en,
+        "corriente eléctrica"@es,
+        "جریان الکتریکی"@fa,
+        "intensité de courant électrique"@fr,
+        "זרם חשמלי"@he,
+        "विद्युत धारा"@hi,
+        "elektromos áramerősség"@hu,
+        "corrente elettrica"@it,
+        "電流"@ja,
+        "fluxio electrica"@la,
+        "Arus elektrik"@ms,
+        "prąd elektryczny"@pl,
+        "corrente elétrica"@pt,
+        "curent electric"@ro,
+        "Сила электрического тока"@ru,
+        "električni tok"@sl,
+        "elektrik akımı"@tr,
+        "电流"@zh ;
+    dcterms:description """
+  The quantity kind $\\textit{Electric Current}$ is the flow (movement) of electric charge.
+  The amount of electric current through some surface, for example, a section through a copper conductor,
+   is defined as the amount of electric charge flowing through that surface over time.
+  Current is a scalar-valued quantity.
+  Electric current is one of the base quantities in the International System of Quantities, ISQ,
+   on which the International System of Units, SI, is based.
+  """^^rdf:HTML ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E1L0I0M0H0T0D0> ;
+    qudt:plainTextDescription "\"Electric Current\" is the flow (movement) of electric charge. The amount of electric current through some surface, for example, a section through a copper conductor, is defined as the amount of electric charge flowing through that surface over time. Current is a scalar-valued quantity. Electric current is one of the base quantities in the International System of Quantities, ISQ, on which the International System of Units, SI, is based. " ;
+    qudt:symbol "I" .
+
+qkind:ElectricCurrentPhasor a qudt:QuantityKind ;
+    rdfs:label "Electric Current Phasor"@en ;
+    dcterms:description "\"Electric Current Phasor\" is a representation of current as a sinusoidal integral quantity using a complex quantity whose argument is equal to the initial phase and whose modulus is equal to the root-mean-square value. A phasor is a constant complex number, usually expressed in exponential form, representing the complex amplitude (magnitude and phase) of a sinusoidal function of time. Phasors are used by electrical engineers to simplify computations involving sinusoids, where they can often reduce a differential equation problem to an algebraic one."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E1L0I0M0H0T0D0> ;
+    qudt:plainTextDescription "\"Electric Current Phasor\" is a representation of current as a sinusoidal integral quantity using a complex quantity whose argument is equal to the initial phase and whose modulus is equal to the root-mean-square value. A phasor is a constant complex number, usually expressed in exponential form, representing the complex amplitude (magnitude and phase) of a sinusoidal function of time. Phasors are used by electrical engineers to simplify computations involving sinusoids, where they can often reduce a differential equation problem to an algebraic one." .
+
+qkind:ElectricPotential a qudt:QuantityKind ;
+    rdfs:label "كمون كهربائي"@ar,
+        "Електрически потенциал"@bg,
+        "elektrický potenciál"@cs,
+        "elektrisches Potenzial"@de,
+        "electric potential"@en,
+        "potencial eléctrico"@es,
+        "پتانسیل الکتریکی"@fa,
+        "potentiel électrique"@fr,
+        "מתח חשמלי (הפרש פוטנציאלים)"@he,
+        "विद्युत विभव"@hi,
+        "elektromos feszültség , elektromos potenciálkülönbség"@hu,
+        "potenziale elettrico"@it,
+        "電位"@ja,
+        "tensio electrica"@la,
+        "Keupayaan elektrik"@ms,
+        "potencjał elektryczny"@pl,
+        "potencial elétrico"@pt,
+        "potențial electric"@ro,
+        "электростатический потенциал"@ru,
+        "električni potencial"@sl,
+        "elektrik potansiyeli"@tr,
+        "電勢"@zh ;
+    dcterms:description "The Electric Potential is a scalar valued quantity associated with an electric field. The electric potential $\\phi(x)$ at a point, $x$, is formally defined as the line integral of the electric field taken along a path from x to the point at infinity. If the electric field is static, that is time independent, then the choice of the path is arbitrary; however if the electric field is time dependent, taking the integral a different paths will produce different results."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E-1L2I0M1H0T-3D0> ;
+    qudt:symbol "V" ;
+    skos:altLabel "vis electromotrix"@la .
+
+qkind:ElectricPotentialDifference a qudt:QuantityKind ;
+    rdfs:label "جهد كهربائي"@ar,
+        "elektrické napětí"@cs,
+        "elektrische Spannung"@de,
+        "electric potential difference"@en,
+        "tensión eléctrica"@es,
+        "ولتاژ/ اختلاف پتانسیل"@fa,
+        "tension électrique"@fr,
+        "विभवांतर"@hi,
+        "differenza di potenziale elettrico"@it,
+        "電圧"@ja,
+        "Voltan Perbezaan keupayaan elektrik"@ms,
+        "napięcie elektryczne"@pl,
+        "tensão elétrica (diferença de potencial)"@pt,
+        "diferență de potențial electric"@ro,
+        "электрическое напряжение"@ru,
+        "električna napetost"@sl,
+        "gerilim"@tr,
+        "電壓"@zh ;
+    dcterms:description "\"Electric Potential Difference\" is a scalar valued quantity associated with an electric field."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E-1L2I0M1H0T-3D0> ;
+    qudt:plainTextDescription "\"Electric Potential Difference\" is a scalar valued quantity associated with an electric field." ;
+    qudt:symbol "V_{ab}" ;
+    skos:altLabel "tension"@en,
+        "tensione elettrica"@it,
+        "ketegangan"@ms,
+        "tensiune"@ro .
+
+qkind:EnergyPerElectricCharge a qudt:QuantityKind ;
+    rdfs:label "Energy per electric charge"@en ;
+    dcterms:description "Voltage is a representation of the electric potential energy per unit charge. If a unit of electrical charge were placed in a location, the voltage indicates the potential energy of it at that point. In other words, it is a measurement of the energy contained within an electric field, or an electric circuit, at a given point. Voltage is a scalar quantity. The SI unit of voltage is the volt, such that $1 volt = 1 joule/coulomb$."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E-1L2I0M1H0T-3D0> ;
+    qudt:symbol "V" .
+
+qkind:ExchangeIntegral a qudt:QuantityKind ;
+    rdfs:label "Exchange Integral"@en ;
+    dcterms:description "\"Exchange Integral\" is the constituent of the interaction energy between the spins of adjacent electrons in matter arising from the overlap of electron state functions."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-2D0> ;
+    qudt:plainTextDescription "\"Exchange Integral\" is the constituent of the interaction energy between the spins of adjacent electrons in matter arising from the overlap of electron state functions." ;
+    qudt:symbol "K" .
+
+qkind:Frequency a qudt:QuantityKind ;
+    rdfs:label "التردد لدى نظام الوحدات الدولي"@ar,
+        "Честота"@bg,
+        "Frekvence"@cs,
+        "Frequenz"@de,
+        "Συχνότητα"@el,
+        "frequency"@en,
+        "frecuencia"@es,
+        "بسامد"@fa,
+        "fréquence"@fr,
+        "תדירות"@he,
+        "आवृत्ति"@hi,
+        "frekvencia"@hu,
+        "frequenza"@it,
+        "周波数"@ja,
+        "frequentia"@la,
+        "Frekuensi"@ms,
+        "częstotliwość"@pl,
+        "frequência"@pt,
+        "frecvență"@ro,
+        "Частота"@ru,
+        "frekvenca"@sl,
+        "frekans"@tr,
+        "频率"@zh ;
+    dcterms:description "\"Frequency\" is the number of occurrences of a repeating event per unit time. The repetition of the events may be periodic (that is. the length of time between event repetitions is fixed) or aperiodic (i.e. the length of time between event repetitions varies). Therefore, we distinguish between periodic and aperiodic frequencies. In the SI system, periodic frequency is measured in hertz (Hz) or multiples of hertz, while aperiodic frequency is measured in becquerel (Bq).  In spectroscopy, $\\nu$ is mostly used. Light passing through different media keeps its frequency, but not its wavelength or wavenumber."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M0H0T-1D0> ;
+    skos:broader qkind:InverseTime .
+
+qkind:HamiltonFunction a qudt:QuantityKind ;
+    rdfs:label "Hamilton Function"@en ;
+    dcterms:description "The Hamilton–Jacobi equation (HJE) is a necessary condition describing extremal geometry in generalizations of problems from the calculus of variations."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-2D0> ;
+    qudt:plainTextDescription "The Hamilton–Jacobi equation (HJE) is a necessary condition describing extremal geometry in generalizations of problems from the calculus of variations." ;
+    qudt:symbol "H" .
+
+qkind:LagrangeFunction a qudt:QuantityKind ;
+    rdfs:label "Lagrange Function"@en ;
+    dcterms:description "The Lagrange Function is a function that summarizes the dynamics of the system."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-2D0> ;
+    qudt:plainTextDescription "The Lagrange Function is a function that summarizes the dynamics of the system." ;
+    qudt:symbol "L" .
+
+qkind:LengthPercentage a qudt:QuantityKind ;
+    rdfs:label "Length Percentage"@en ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M0H0T0D1> ;
+    skos:broader qkind:DimensionlessRatio .
+
+qkind:LevelWidth a qudt:QuantityKind ;
+    rdfs:label "Level Width"@en ;
+    dcterms:description "The \"Level Width\" is the uncertainty in the energy of a quantum-mechanical system having discrete energy levels in a state that is not strictly stationary. The system may be an atom, a molecule, or an atomic nucleus."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-2D0> ;
+    qudt:plainTextDescription "The \"Level Width\" is the uncertainty in the energy of a quantum-mechanical system having discrete energy levels in a state that is not strictly stationary. The system may be an atom, a molecule, or an atomic nucleus." .
+
+qkind:MagneticTension a qudt:QuantityKind ;
+    rdfs:label "Magnetic Tension"@en ;
+    dcterms:description "\"Magnetic Tension\" is a scalar quantity equal to the line integral of the magnetic field strength $\\mathbf{H}$ along a specified path linking two points a and b."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E1L0I0M0H0T0D0> ;
+    qudt:plainTextDescription "Magnetic Tension is a scalar quantity equal to the line integral of the magnetic field strength H along a specified path linking two points a and b." ;
+    qudt:symbol "U_m" .
+
+qkind:MagnetomotiveForce a qudt:QuantityKind ;
+    rdfs:label "Magnetomotive Force"@en ;
+    dcterms:description """
+$\\text{Magnetomotive Force}$, also referred to as ($mmf$), is the ability of an electric circuit to produce magnetic flux.
+  Just as the ability of a battery to produce electric current is called its electromotive force
+  or emf, mmf is taken as the work required to move a unit magnet pole from any point through any path
+  which links the electric circuit back the same point in the presence of the magnetic force produced
+  by the electric current in the circuit.
+$\\text{Magnetomotive Force}$ is the scalar line integral of the magnetic field strength along a closed path.
+  """^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E1L0I0M0H0T0D0> .
+
+qkind:MassPerEnergy a qudt:QuantityKind ;
+    rdfs:label "Mass per Energy"@en ;
+    dcterms:description "Mass per Energy ($m/E$) is a physical quantity that bridges mass and energy. The SI unit is $kg/J$ or equivalently $s^2/m^2$."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L-2I0M0H0T2D0> ;
+    qudt:plainTextDescription "Mass per Energy is a physical quantity that can be used to relate the energy of a system to its mass." .
+
+qkind:OpeningRatio a qudt:QuantityKind ;
+    rdfs:label "Opening Ratio"@en ;
+    dcterms:description """In the context of mechanical systems, "opening ratio" might refer to the proportion of time
+  or the extent to which a valve or gate is open relative to its maximum capacity.""" ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M0H0T0D1> ;
+    qudt:plainTextDescription """In the context of mechanical systems, "opening ratio" might refer to the proportion of time
+  or the extent to which a valve or gate is open relative to its maximum capacity.""" ;
+    skos:broader qkind:DimensionlessRatio .
+
+qkind:PressurePercentage a qudt:QuantityKind ;
+    rdfs:label "Pressure Percentage"@en ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M0H0T0D1> ;
+    skos:broader qkind:DimensionlessRatio .
+
+qkind:Prevalence a qudt:QuantityKind ;
+    rdfs:label "Prevalence"@en ;
+    dcterms:description "In epidemiology, prevalence is the proportion of a particular population found to be affected by a medical condition (typically a disease or a risk factor such as smoking or seatbelt use) at a specific time. (Wikipedia)"^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M0H0T0D1> ;
+    qudt:plainTextDescription "In epidemiology, prevalence is the proportion of a particular population found to be affected by a medical condition (typically a disease or a risk factor such as smoking or seatbelt use) at a specific time. (Wikipedia)" ;
+    skos:broader qkind:DimensionlessRatio .
+
+qkind:Reflectance a qudt:QuantityKind ;
+    rdfs:label "Reflectance"@en ;
+    dcterms:description "Reflectance generally refers to the fraction of incident power that is reflected at an interface, while the term \"reflection coefficient\" is used for the fraction of electric field reflected. Reflectance is always a real number between zero and 1.0."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M0H0T0D1> ;
+    qudt:plainTextDescription "Reflectance generally refers to the fraction of incident power that is reflected at an interface, while the term \"reflection coefficient\" is used for the fraction of electric field reflected. Reflectance is always a real number between zero and 1.0." ;
+    skos:broader qkind:DimensionlessRatio .
+
+qkind:RelativeHumidity a qudt:QuantityKind ;
+    rdfs:label "Relative Humidity"@en ;
+    dcterms:description """
+  $\\textit{Relative Humidity}$ is the ratio of the partial pressure of water vapor in an air-water mixture to the saturated vapor pressure of water at a prescribed temperature.
+  The relative humidity of air depends not only on temperature but also on the pressure of the system of interest.
+  $$$$
+  $\\textit{Relative Humidity}$ is also referred to as $\\textit{Relative Partial Pressure}$.
+  $$$$
+  Relative partial pressure is often referred to as $RH$ and expressed in percent.
+  """^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M0H0T0D1> ;
+    skos:altLabel "RH" ;
+    skos:broader qkind:RelativePartialPressure .
+
+qkind:RelativeLuminousFlux a qudt:QuantityKind ;
+    rdfs:label "Relative Luminous Flux"@en ;
+    dcterms:description "Relative Luminous Flux or Relative Luminous Power is the measure of the perceived power of light. It differs from radiant flux, the measure of the total power of light emitted, in that luminous flux is adjusted to reflect the varying sensitivity of the human eye to different wavelengths of light. It is expressed as a percentage or fraction of full power."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M0H0T0D1> ;
+    qudt:plainTextDescription "Relative Luminous Flux or Relative Luminous Power is the measure of the perceived power of light. It differs from radiant flux, the measure of the total power of light emitted, in that luminous flux is adjusted to reflect the varying sensitivity of the human eye to different wavelengths of light. It is expressed as a percentage or fraction of full power." ;
+    skos:broader qkind:DimensionlessRatio .
+
+qkind:ResistancePercentage a qudt:QuantityKind ;
+    rdfs:label "Resistance Percentage"@en ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M0H0T0D1> ;
+    skos:broader qkind:DimensionlessRatio .
+
+qkind:RotationalFrequency a qudt:QuantityKind ;
+    rdfs:label "RotationalFrequency"@en ;
+    dcterms:description "A measure of the number of cycles that an item revolves per time period."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M0H0T-1D0> ;
+    qudt:plainTextDescription "IfcRotationalFrequencyMeasure is a measure of the number of cycles that an item revolves in unit time. Usually measured in cycles/s." .
+
+qkind:RotationalVelocity a qudt:QuantityKind ;
+    rdfs:label "RotationalFrequency"@en ;
+    dcterms:description "A measure of the number of cycles that an item revolves per time period."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M0H0T-1D0> ;
+    qudt:plainTextDescription "IfcRotationalFrequencyMeasure is a measure of the number of cycles that an item revolves in unit time. Usually measured in cycles/s." .
+
+qkind:TimePercentage a qudt:QuantityKind ;
+    rdfs:label "Time Percentage"@en ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M0H0T0D1> ;
+    skos:broader qkind:DimensionlessRatio .
+
+qkind:TotalCurrent a qudt:QuantityKind ;
+    rdfs:label "Total Current"@en ;
+    dcterms:description "\"Total Current\" is the sum of the electric current that is flowing through a surface and the displacement current."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E1L0I0M0H0T0D0> ;
+    qudt:plainTextDescription "\"Total Current\" is the sum of the electric current that is flowing through a surface and the displacement current." ;
+    qudt:symbol "I_{tot}" .
+
+qkind:Voltage a qudt:QuantityKind ;
+    rdfs:label "Voltage"@en ;
+    dcterms:description """$\\textit{Voltage}$, also referred to as $\\textit{Electric Tension}$, is the difference between electrical potentials of two points. For an electric field within a medium, $U_{ab} = - \\int_{r_a}^{r_b} E . {dr}$, where $E$ is electric field strength.
+For an irrotational electric field, the voltage is independent of the path between the two points $a$ and $b$."""^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E-1L2I0M1H0T-3D0> ;
+    qudt:symbol "U" .
+
+qkind:VoltagePercentage a qudt:QuantityKind ;
+    rdfs:label "Voltage Percentage"@en ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M0H0T0D1> ;
+    skos:broader qkind:DimensionlessRatio .
+
+unit:GigaW a qudt:Unit ;
+    rdfs:label "Gigawatt"@en ;
+    dcterms:description "1,000,000,000-fold of the SI derived unit watt"^^rdf:HTML ;
+    qudt:applicableSystem <http://qudt.org/vocab/sou/CGS>,
+        <http://qudt.org/vocab/sou/CGS-EMU>,
+        <http://qudt.org/vocab/sou/CGS-GAUSS>,
+        <http://qudt.org/vocab/sou/PLANCK>,
+        <http://qudt.org/vocab/sou/SI> ;
+    qudt:conversionMultiplier 1000000000.0 ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-3D0> ;
+    qudt:hasQuantityKind qkind:ActivePower,
+        qkind:Power ;
+    qudt:plainTextDescription "1 000 000 000-fold of the SI derived unit watt" ;
+    qudt:symbol "GW" .
+
+<https://id.skygest.io/cmc/cmc_01J_example> a owl:NamedIndividual,
+        ei:CanonicalMeasurementClaim ;
+    ei:assertedUnit "GW" ;
+    ei:assertedValue 814.0 ;
+    ei:canonicalUnit unit:GigaW .
+
+<https://id.skygest.io/expert/did-plc-a5kyzplew76jaj4dhnqsosjv> a owl:NamedIndividual,
+        foaf:Person,
+        ei:Expert ;
+    bfo:0000053 <https://id.skygest.io/expert/did-plc-a5kyzplew76jaj4dhnqsosjv#energy-expert-role> .
+
+<https://id.skygest.io/expert/did-plc-a5kyzplew76jaj4dhnqsosjv#energy-expert-role> a owl:NamedIndividual,
+        ei:EnergyExpertRole .
+
+qkind:RelativePartialPressure a qudt:QuantityKind ;
+    rdfs:label "Relative Partial Pressure"@en ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M0H0T0D1> ;
+    skos:altLabel "RH" ;
+    skos:broader qkind:PressureRatio .
+
+qkind:Volume a qudt:QuantityKind ;
+    rdfs:label "Volume"@en ;
+    dcterms:description "The volume of a solid object is the three-dimensional concept of how much space it occupies, often quantified numerically. One-dimensional figures (such as lines) and two-dimensional shapes (such as squares) are assigned zero volume in the three-dimensional space."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L3I0M0H0T0D0> ;
+    qudt:plainTextDescription "The volume of a solid object is the three-dimensional concept of how much space it occupies, often quantified numerically. One-dimensional figures (such as lines) and two-dimensional shapes (such as squares) are assigned zero volume in the three-dimensional space." .
+
+qkind:Mass a qudt:QuantityKind ;
+    rdfs:label "كتلة"@ar,
+        "Маса"@bg,
+        "Hmotnost"@cs,
+        "Masse"@de,
+        "Μάζα"@el,
+        "mass"@en,
+        "masa"@es,
+        "جرم"@fa,
+        "masse"@fr,
+        "מסה"@he,
+        "भार"@hi,
+        "tömeg"@hu,
+        "massa"@it,
+        "質量"@ja,
+        "massa"@la,
+        "Jisim"@ms,
+        "masa"@pl,
+        "massa"@pt,
+        "masă"@ro,
+        "Масса"@ru,
+        "masa"@sl,
+        "kütle"@tr,
+        "质量"@zh ;
+    dcterms:description "In physics, mass, more specifically inertial mass, can be defined as a quantitative measure of an object's resistance to acceleration. The SI unit of mass is the kilogram ($kg$)"^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M1H0T0D0> ;
+    qudt:symbol "m" .
+
+qkind:ThermalEnergy a qudt:QuantityKind ;
+    rdfs:label "Thermal Energy"@en ;
+    dcterms:description "\"Thermal Energy\" is the portion of the thermodynamic or internal energy of a system that is responsible for the temperature of the system. From a macroscopic thermodynamic description, the thermal energy of a system is given by its constant volume specific heat capacity C(T), a temperature coefficient also called thermal capacity, at any given absolute temperature (T): $U_{thermal} = C(T) \\cdot T$."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-2D0> ;
+    skos:broader qkind:Energy .
+
+qkind:ActivePower a qudt:QuantityKind ;
+    rdfs:label "Active Power"@en ;
+    dcterms:description """
+  An $Active Power$ is, under periodic conditions, the mean value, taken over one period $T$, of the instantaneous power $p$.
+  In complex notation, $P = \\mathbf{Re} \\; \\underline{S}$, where $\\underline{S}$ is $\\textit{complex power}$.
+  """^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-3D0> ;
+    qudt:symbol "P" ;
+    skos:broader qkind:ComplexPower .
+
+qkind:Power a qudt:QuantityKind ;
+    rdfs:label "القدرة"@ar,
+        "Мощност"@bg,
+        "Výkon"@cs,
+        "Leistung"@de,
+        "Ισχύς"@el,
+        "power"@en,
+        "potencia"@es,
+        "توان، نرخ جریان گرما"@fa,
+        "puissance"@fr,
+        "הספק"@he,
+        "शक्ति"@hi,
+        "teljesítmény , hőáramlás"@hu,
+        "potenza"@it,
+        "電力・仕事率"@ja,
+        "potentia"@la,
+        "Kuasa"@ms,
+        "moc"@pl,
+        "potência"@pt,
+        "putere"@ro,
+        "Мощность"@ru,
+        "moč"@sl,
+        "güç"@tr,
+        "功率、热流"@zh ;
+    dcterms:description "Power is the rate at which work is performed or energy is transmitted, or the amount of energy required or expended for a given unit of time. As a rate of change of work done or the energy of a subsystem, power is: $P = W/t$, where $P$ is power, $W$ is work and {t} is time."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-3D0> ;
+    qudt:symbol "P" ;
+    skos:altLabel "विकिरणी बहाव"@hi,
+        "strumień promieniowania"@pl,
+        "flux energetic"@ro,
+        "ısı akış oranı"@tr .
+
+qkind:DimensionlessRatio a qudt:QuantityKind ;
+    rdfs:label "Dimensionless Ratio"@en ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L0I0M0H0T0D1> ;
+    skos:broader qkind:Dimensionless .
+
+qkind:Energy a qudt:QuantityKind ;
+    rdfs:label "الطاقة"@ar,
+        "Енергия"@bg,
+        "Energie"@cs,
+        "Energie"@de,
+        "Έργο - Ενέργεια"@el,
+        "energy"@en,
+        "energia"@es,
+        "انرژی"@fa,
+        "énergie"@fr,
+        "אנרגיה ועבודה"@he,
+        "ऊर्जा"@hi,
+        "energia , munka , hő"@hu,
+        "energia"@it,
+        "エネルギー"@ja,
+        "energia"@la,
+        "Tenaga"@ms,
+        "energia"@pl,
+        "energia"@pt,
+        "energie"@ro,
+        "Энергия"@ru,
+        "energija"@sl,
+        "enerji"@tr,
+        "能量"@zh ;
+    dcterms:description "Energy is the quantity characterizing the ability of a system to do work."^^qudt:LatexString ;
+    qudt:hasDimensionVector <http://qudt.org/vocab/dimensionvector/A0E0L2I0M1H0T-2D0> ;
+    qudt:plainTextDescription "Energy is the quantity characterizing the ability of a system to do work." ;
+    qudt:symbol "E" .
+
+qudt:Unit a owl:Class .
+
+qudt:QuantityKind a owl:Class .

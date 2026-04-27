@@ -1,6 +1,8 @@
+@prefix bfo: <http://purl.obolibrary.org/obo/BFO_> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix ei: <https://w3id.org/energy-intel/> .
 @prefix ei-concept: <https://w3id.org/energy-intel/concept/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
@@ -27,7 +29,12 @@
     ei:aboutTechnology ei-concept:onshore-wind .
 
 <https://id.skygest.io/expert/did-plc-a5kyzplew76jaj4dhnqsosjv> a owl:NamedIndividual,
-        ei:Expert .
+        foaf:Person,
+        ei:Expert ;
+    bfo:0000053 <https://id.skygest.io/expert/did-plc-a5kyzplew76jaj4dhnqsosjv#energy-expert-role> .
+
+<https://id.skygest.io/expert/did-plc-a5kyzplew76jaj4dhnqsosjv#energy-expert-role> a owl:NamedIndividual,
+        ei:EnergyExpertRole .
 
 ei-concept:offshore-wind a owl:NamedIndividual,
         skos:Concept ;

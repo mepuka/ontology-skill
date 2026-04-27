@@ -18,10 +18,18 @@ from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.namespace import DCAT, DCTERMS, OWL, RDF, RDFS, SKOS, XSD
 
 EI = Namespace("https://w3id.org/energy-intel/")
+FOAF = Namespace("http://xmlns.com/foaf/0.1/")
+BFO = Namespace("http://purl.obolibrary.org/obo/BFO_")
+QUDT = Namespace("http://qudt.org/schema/qudt/")
+UNIT = Namespace("http://qudt.org/vocab/unit/")
+QK = Namespace("http://qudt.org/vocab/quantitykind/")
+OEO = Namespace("https://openenergyplatform.org/ontology/oeo/")
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 FIXTURE_DIR = PROJECT_ROOT / "tests" / "fixtures"
 SPARQL_DIR = PROJECT_ROOT / "tests"
 CONCEPT_SEEDS = PROJECT_ROOT / "modules" / "concept-schemes" / "technology-seeds.ttl"
+QUDT_SUBSET = PROJECT_ROOT / "imports" / "qudt-units-subset.ttl"
+OEO_TECH_SUBSET = PROJECT_ROOT / "imports" / "oeo-technology-subset-fixed.ttl"
 
 # -------------------------------------------------------------------
 # Canonical ABox IRIs (match the ones in tests/cq-*.sparql)
@@ -48,6 +56,12 @@ def _base_graph() -> Graph:
     g.bind("xsd", XSD)
     g.bind("rdfs", RDFS)
     g.bind("dcterms", DCTERMS)
+    g.bind("foaf", FOAF)
+    g.bind("bfo", BFO)
+    g.bind("qudt", QUDT)
+    g.bind("unit", UNIT)
+    g.bind("qkind", QK)
+    g.bind("oeo", OEO)
     return g
 
 
@@ -60,12 +74,29 @@ def add_header(g: Graph, cq_id: str, description: str) -> None:
 
 
 def _post(g: Graph, post: URIRef, expert: URIRef) -> None:
-    """Add a Post + author + type triples."""
+    """Add a Post + author + type triples.
+
+    V1 update: every authored Expert now carries an explicit
+    ``foaf:Person`` type and an ``bfo:0000053 ?role`` triple where
+    ``?role a ei:EnergyExpertRole``. This is additive — V0 SPARQL still
+    matches because ``?expert a ei:Expert`` is preserved — and it lines
+    up the fixture with the V1 ``Expert ≡ foaf:Person ⊓ ∃bfo:0000053.EnergyExpertRole``
+    EquivalentTo definition. SHACL S-V1-3 (Post.authoredBy bears EnergyExpertRole)
+    requires these triples explicitly because pyshacl runs with rdfs
+    entailment, not OWL-DL classification.
+    """
     g.add((post, RDF.type, EI.Post))
     g.add((post, RDF.type, OWL.NamedIndividual))
     g.add((post, EI.authoredBy, expert))
     g.add((expert, RDF.type, EI.Expert))
+    g.add((expert, RDF.type, FOAF.Person))
     g.add((expert, RDF.type, OWL.NamedIndividual))
+    # Mint a deterministic role IRI per expert so multiple posts by the same
+    # expert share the role individual.
+    role = URIRef(str(expert) + "#energy-expert-role")
+    g.add((role, RDF.type, EI.EnergyExpertRole))
+    g.add((role, RDF.type, OWL.NamedIndividual))
+    g.add((expert, BFO["0000053"], role))
 
 
 def _cmc(g: Graph, cmc: URIRef) -> None:
@@ -268,7 +299,13 @@ def cq011() -> None:
     for suffix in ("host", "guest"):
         expert = URIRef(f"https://id.skygest.io/expert/did-plc-{suffix}")
         g.add((expert, RDF.type, EI.Expert))
+        g.add((expert, RDF.type, FOAF.Person))
         g.add((expert, RDF.type, OWL.NamedIndividual))
+        # V1: role-bearer triple so SHACL S-V1-4 stays clean.
+        role = URIRef(str(expert) + "#energy-expert-role")
+        g.add((role, RDF.type, EI.EnergyExpertRole))
+        g.add((role, RDF.type, OWL.NamedIndividual))
+        g.add((expert, BFO["0000053"], role))
         g.add((SEG_MAIN, EI.spokenBy, expert))
     # Segment needs a parent episode for ei:partOfEpisode exactly 1
     episode = URIRef("https://id.skygest.io/podcast-episode/ep_01J")
@@ -344,6 +381,138 @@ def cq014() -> None:
 
 
 # -------------------------------------------------------------------
+# V1 fixtures (cq015..cq019)
+# -------------------------------------------------------------------
+
+
+def cq015() -> None:
+    """OEO technology subtree fixture for CQ-015.
+
+    Asserts a CMC ``ei:aboutTechnology`` an OEO class that is a
+    transitive descendant of ``oeo:OEO_00020267`` (energy technology).
+    The fixture imports the OEO technology subset to make the property
+    path resolvable. Per Linear D3 ABox policy the CMC IRI uses the
+    Skygest-namespaced ``https://id.skygest.io/{kind}/{ulid}`` form.
+    """
+    g = _base_graph()
+    add_header(
+        g,
+        "cq-015",
+        "CMC tagged with an OEO technology subtree class. Transitive walk "
+        "via ei:aboutTechnology/(skos:broader|rdfs:subClassOf)* to the "
+        "energy-technology root returns this CMC.",
+    )
+    # Inline the OEO technology subset so the rdfs:subClassOf* path is
+    # resolvable inside the fixture-only graph.
+    g.parse(OEO_TECH_SUBSET, format="turtle")
+    _cmc(g, CMC_MAIN)
+    # The V0 BOT extract is bottom-up (drags parent path of seed terms);
+    # OEO_00020267 has no descendants in the subset. The transitive
+    # ``rdfs:subClassOf*`` walk reaches itself with the empty path, so
+    # tagging the CMC directly with the energy-technology root is
+    # sufficient to satisfy CQ-015 against the V1 import. When V1.x
+    # extends the OEO seed list with concrete technologies (solar-PV,
+    # onshore-wind, etc.), this fixture rebinds to the more specific
+    # descendant — the SPARQL pattern remains unchanged.
+    g.add((CMC_MAIN, EI.aboutTechnology, OEO["OEO_00020267"]))
+    # CMC must have an evidencing source (CQ-009 invariant).
+    _post(g, POST_MAIN, EXPERT_MAIN)
+    g.add((POST_MAIN, EI.evidences, CMC_MAIN))
+    g.serialize(FIXTURE_DIR / "cq-015.ttl", format="turtle")
+
+
+def cq016() -> None:
+    """ei:canonicalUnit direct-lookup fixture for CQ-016.
+
+    The CQ-016 SPARQL queries ``?cmc ei:canonicalUnit unit:GW``. Per
+    imports-manifest-v1.yaml the V0-style ``unit:GW`` IRI does not exist
+    in QUDT 2.1; the correct IRI is ``unit:GigaW``. We use the correct
+    IRI here AND keep the SPARQL query bound to the V1 corrected name.
+    """
+    g = _base_graph()
+    add_header(
+        g,
+        "cq-016",
+        "CMC has ei:canonicalUnit set to a QUDT-imported unit. Direct "
+        "lookup on ei:canonicalUnit returns the CMC.",
+    )
+    # Inline QUDT subset so that unit:GigaW resolves.
+    g.parse(QUDT_SUBSET, format="turtle")
+    _cmc(g, CMC_MAIN)
+    g.add((CMC_MAIN, EI.canonicalUnit, UNIT.GigaW))
+    g.add((CMC_MAIN, EI.assertedUnit, Literal("GW")))
+    g.add((CMC_MAIN, EI.assertedValue, Literal("814", datatype=XSD.decimal)))
+    _post(g, POST_MAIN, EXPERT_MAIN)
+    g.add((POST_MAIN, EI.evidences, CMC_MAIN))
+    g.serialize(FIXTURE_DIR / "cq-016.ttl", format="turtle")
+
+
+def cq017() -> None:
+    """ei:canonicalUnit -> qudt:hasQuantityKind chain fixture for CQ-017.
+
+    The QUDT subset already declares ``unit:GigaW qudt:hasQuantityKind
+    qkind:Power``; the fixture only adds the CMC-side
+    ``ei:canonicalUnit unit:GigaW`` triple.
+    """
+    g = _base_graph()
+    add_header(
+        g,
+        "cq-017",
+        "CMC -> ei:canonicalUnit -> qudt:hasQuantityKind chain. The "
+        "QUDT subset declares unit:GigaW qudt:hasQuantityKind qkind:Power; "
+        "fixture only adds the CMC-side triple.",
+    )
+    g.parse(QUDT_SUBSET, format="turtle")
+    _cmc(g, CMC_MAIN)
+    g.add((CMC_MAIN, EI.canonicalUnit, UNIT.GigaW))
+    g.add((CMC_MAIN, EI.assertedUnit, Literal("GW")))
+    g.add((CMC_MAIN, EI.assertedValue, Literal("814", datatype=XSD.decimal)))
+    _post(g, POST_MAIN, EXPERT_MAIN)
+    g.add((POST_MAIN, EI.evidences, CMC_MAIN))
+    g.serialize(FIXTURE_DIR / "cq-017.ttl", format="turtle")
+
+
+def cq018() -> None:
+    """V1 role-bearer triangle fixture for CQ-018.
+
+    Asserts ``?p a foaf:Person ; bfo:0000053 ?role . ?role a
+    ei:EnergyExpertRole . ?post ei:authoredBy ?p`` to validate the role-
+    bearing path. Reuses ``_post`` which now lays down the role-bearer
+    triples for every authored expert.
+    """
+    g = _base_graph()
+    add_header(
+        g,
+        "cq-018",
+        "Person + EnergyExpertRole + Post(authoredBy=Person) triangle. "
+        "Direct lookup on the V1 role-bearer pattern.",
+    )
+    _post(g, POST_MAIN, EXPERT_MAIN)
+    g.serialize(FIXTURE_DIR / "cq-018.ttl", format="turtle")
+
+
+def cq019() -> None:
+    """V1 integration fixture composing CQ-018 + CQ-015.
+
+    A Post by a role-bearing Expert evidences a CMC ``ei:aboutTechnology``
+    an OEO descendant of the energy-technology root.
+    """
+    g = _base_graph()
+    add_header(
+        g,
+        "cq-019",
+        "Composes CQ-018 (Person + EnergyExpertRole + Post) with CQ-015 "
+        "(CMC.aboutTechnology a transitive descendant of OEO_00020267).",
+    )
+    g.parse(OEO_TECH_SUBSET, format="turtle")
+    _cmc(g, CMC_MAIN)
+    g.add((CMC_MAIN, EI.aboutTechnology, OEO["OEO_00020267"]))
+    _post(g, POST_MAIN, EXPERT_MAIN)
+    g.add((POST_MAIN, EI.evidences, CMC_MAIN))
+    g.serialize(FIXTURE_DIR / "cq-019.ttl", format="turtle")
+
+
+# -------------------------------------------------------------------
 # Verification
 # -------------------------------------------------------------------
 
@@ -406,6 +575,12 @@ CONTRACTS = {
     "cq-012": "exactly_1",
     "cq-013": "ge_1",
     "cq-014": "ge_1",
+    # V1
+    "cq-015": "ge_1",
+    "cq-016": "exactly_1",
+    "cq-017": "ge_1",
+    "cq-018": "exactly_1",
+    "cq-019": "ge_1",
 }
 
 
@@ -426,6 +601,12 @@ def main() -> int:
         cq012,
         cq013,
         cq014,
+        # V1
+        cq015,
+        cq016,
+        cq017,
+        cq018,
+        cq019,
     ]
     for b in builders:
         b()

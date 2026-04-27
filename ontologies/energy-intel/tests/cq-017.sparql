@@ -1,0 +1,18 @@
+PREFIX rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX ei:         <https://w3id.org/energy-intel/>
+PREFIX qudt:       <http://qudt.org/schema/qudt/>
+PREFIX qudt-qkdv:  <http://qudt.org/vocab/quantitykind/>
+
+# CQ-017 (should_have, UC-007)
+# What CMCs measure quantities of a given qudt:QuantityKind?
+# Expected: 0..n rows.
+# Derivation: inference via CMC -> ei:canonicalUnit -> qudt:hasQuantityKind.
+# Conditional on scout recommending QuantityKind import. If dropped, this
+# CQ moves to wont_have during V1 scout phase.
+# QuantityKind IRI placeholder.
+
+SELECT ?cmc ?unit WHERE {
+  ?cmc a ei:CanonicalMeasurementClaim ;
+       ei:canonicalUnit ?unit .
+  ?unit qudt:hasQuantityKind qudt-qkdv:Power .
+}

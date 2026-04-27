@@ -40,8 +40,17 @@ RO = Namespace("http://purl.obolibrary.org/obo/RO_")
 FOAF = Namespace("http://xmlns.com/foaf/0.1/")
 DCAT = Namespace("http://www.w3.org/ns/dcat#")
 PROV = Namespace("http://www.w3.org/ns/prov#")
+QUDT = Namespace("http://qudt.org/schema/qudt/")
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+# -------------------------------------------------------------------
+# V1 ontology version metadata (set 2026-04-27)
+# -------------------------------------------------------------------
+V1_VERSION_INFO = "v1 (2026-04-27)"
+V1_CREATED = "2026-04-22"  # original V0 created date carried forward
+V1_MODIFIED = "2026-04-27"
+V1_TOP_VERSION_IRI = "https://w3id.org/energy-intel/v1/2026-04-27"
 
 # -------------------------------------------------------------------
 # Shared axiom helpers
@@ -58,6 +67,7 @@ def bind_common(g: Graph) -> None:
     g.bind("foaf", FOAF)
     g.bind("dcat", DCAT)
     g.bind("prov", PROV)
+    g.bind("qudt", QUDT)
     g.bind("owl", OWL)
     g.bind("rdfs", RDFS)
     g.bind("rdf", RDF)
@@ -76,8 +86,9 @@ def module_header(
     g.add((ontology_iri, RDF.type, OWL.Ontology))
     g.add((ontology_iri, DCTERMS.title, Literal(title, lang="en")))
     g.add((ontology_iri, DCTERMS.description, Literal(description, lang="en")))
-    g.add((ontology_iri, OWL.versionInfo, Literal("v0 (2026-04-22)")))
-    g.add((ontology_iri, DCTERMS.created, Literal("2026-04-22", datatype=XSD.date)))
+    g.add((ontology_iri, OWL.versionInfo, Literal(V1_VERSION_INFO)))
+    g.add((ontology_iri, DCTERMS.created, Literal(V1_CREATED, datatype=XSD.date)))
+    g.add((ontology_iri, DCTERMS.modified, Literal(V1_MODIFIED, datatype=XSD.date)))
     g.add(
         (
             ontology_iri,
@@ -254,6 +265,30 @@ def subclass_intersection(g: Graph, cls: URIRef, members: list[URIRef]) -> None:
     g.add((cls, RDFS.subClassOf, inter))
 
 
+def equivalent_class_intersection_of(g: Graph, cls: URIRef, members: list) -> None:
+    """``cls owl:equivalentClass [ owl:intersectionOf ( m1 m2 ... ) ]``.
+
+    ``members`` may be a heterogeneous list of named classes (URIRefs) and
+    anonymous restrictions (BNodes). Used for V1 A2: the
+    ``ei:Expert ≡ foaf:Person ⊓ (bfo:0000053 some ei:EnergyExpertRole)`` axiom.
+    """
+    inter = BNode()
+    g.add((inter, RDF.type, OWL.Class))
+    list_node = BNode()
+    Collection(g, list_node, members)
+    g.add((inter, OWL.intersectionOf, list_node))
+    g.add((cls, OWL.equivalentClass, inter))
+
+
+def restriction_some(g: Graph, prop: URIRef, filler: URIRef) -> BNode:
+    """Return a BNode for ``[ a owl:Restriction ; owl:onProperty P ; owl:someValuesFrom F ]``."""
+    r = BNode()
+    g.add((r, RDF.type, OWL.Restriction))
+    g.add((r, OWL.onProperty, prop))
+    g.add((r, OWL.someValuesFrom, filler))
+    return r
+
+
 def disjoint_classes(g: Graph, members: list[URIRef]) -> None:
     """``DisjointClasses(c1, c2, ..., cn)`` via owl:AllDisjointClasses."""
     bn = BNode()
@@ -285,13 +320,35 @@ def build_agent() -> Path:
     )
 
     # Classes -------------------------------------------------------
+
+    # V1 A1: mint EnergyExpertRole as a BFO role inhering in foaf:Person.
+    declare_class(
+        g,
+        EI.EnergyExpertRole,
+        "energy expert role",
+        "A BFO role inhering in a foaf:Person who publishes energy-domain "
+        "claims (on social media, podcasts, or articles) that an editorial "
+        "pipeline extracts as CanonicalMeasurementClaims.",
+        parents=[BFO["0000023"]],  # bfo:Role
+    )
+    subclass_some(g, EI.EnergyExpertRole, BFO["0000052"], FOAF.Person)  # inheres_in
+
+    # V1 A2: ei:Expert is the defined kind = (foaf:Person ⊓ ∃bfo:0000053.EnergyExpertRole).
+    # Expert is no longer asserted ``rdfs:subClassOf foaf:Person`` — that
+    # subsumption is entailed by the equivalent-class axiom.
     declare_class(
         g,
         EI.Expert,
         "Expert",
-        "A person who authors posts or speaks in podcast segments that "
-        "evidence CanonicalMeasurementClaims about energy.",
-        parents=[FOAF.Person],
+        "A foaf:Person who bears at least one ei:EnergyExpertRole. Defined "
+        "(equivalent-class) so the reasoner classifies any role-bearer as an "
+        "Expert. V1 redefinition supersedes V0 ``rdfs:subClassOf foaf:Person``.",
+    )
+    expert_role_restriction = restriction_some(g, BFO["0000053"], EI.EnergyExpertRole)
+    equivalent_class_intersection_of(
+        g,
+        EI.Expert,
+        [FOAF.Person, expert_role_restriction],
     )
 
     declare_class(
@@ -326,10 +383,17 @@ def build_agent() -> Path:
     subclass_some(g, EI.DataProviderRole, BFO["0000052"], EI.Organization)
 
     # Disjointness --------------------------------------------------
-    # Expert DisjointWith Organization  (persons vs aggregates)
+    # Expert DisjointWith Organization  (persons vs aggregates) — carry forward from V0.
     g.add((EI.Expert, OWL.disjointWith, EI.Organization))
-    # PublisherRole DisjointWith DataProviderRole
+    # PublisherRole DisjointWith DataProviderRole — V0 binary disjointness retained.
     g.add((EI.PublisherRole, OWL.disjointWith, EI.DataProviderRole))
+    # V1 A3: three-way role disjointness (defense-in-depth per
+    # anti-pattern-review-v1.md § 3). Subsumes the V0 binary axiom but does
+    # not contradict it.
+    disjoint_classes(
+        g,
+        [EI.EnergyExpertRole, EI.PublisherRole, EI.DataProviderRole],
+    )
 
     out = PROJECT_ROOT / "modules" / "agent.ttl"
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -467,28 +531,38 @@ def build_media() -> Path:
     disjoint_classes(g, [EI.SocialThread, EI.PodcastEpisode])
 
     # Object properties --------------------------------------------
+    # V1 A6: ei:authoredBy range widened from ei:Expert to foaf:Person.
+    # The Post-level restriction is also updated (was: exactly 1 ei:Expert;
+    # now: exactly 1 foaf:Person). This matches the V1 ontological reality
+    # — Posts on the platform are authored by Persons, and the SHACL shape
+    # S-V1-3 carries the runtime-level "must bear EnergyExpertRole" check.
     declare_object_property(
         g,
         EI.authoredBy,
         "authored by",
         domain=EI.Post,
-        range_=EI.Expert,
+        range_=FOAF.Person,
         functional=True,
         comment=(
-            "Shortcut form of participation (ODP F.4). Every Post has exactly one author in V0."
+            "Shortcut form of participation (ODP F.4). Every Post has exactly "
+            "one author. V1: range widened from ei:Expert to foaf:Person; the "
+            "role-bearing companion check moves to SHACL S-V1-3."
         ),
     )
-    subclass_qcr(g, EI.Post, EI.authoredBy, EI.Expert, "exactly", 1)
+    subclass_qcr(g, EI.Post, EI.authoredBy, FOAF.Person, "exactly", 1)
 
+    # V1 A7: ei:spokenBy range widened from ei:Expert to foaf:Person.
     declare_object_property(
         g,
         EI.spokenBy,
         "spoken by",
         domain=EI.PodcastSegment,
-        range_=EI.Expert,
+        range_=FOAF.Person,
         comment=(
             "Binary participation shortcut for podcast speakers (multi-speaker "
-            "segments allowed; no cardinality axiom)."
+            "segments allowed; no cardinality axiom). V1: range widened to "
+            "foaf:Person; SHACL S-V1-4 carries the EnergyExpertRole-bearer "
+            "warning at runtime."
         ),
     )
 
@@ -592,11 +666,13 @@ def build_measurement() -> Path:
         "energy-intel — measurement module",
         "CanonicalMeasurementClaim, Observation, Variable (thin), Series "
         "(thin), ClaimTemporalWindow, and the ei:references* family of "
-        "resolution properties.",
+        "resolution properties. V1 adds ei:canonicalUnit -> qudt:Unit.",
         imports=[
             URIRef("https://w3id.org/energy-intel/modules/media"),
             URIRef("http://www.w3.org/ns/dcat"),
             URIRef("http://www.w3.org/2004/02/skos/core"),
+            # V1 — QUDT units subset for ei:canonicalUnit range.
+            URIRef("https://w3id.org/energy-intel/imports/qudt-units-subset"),
         ],
     )
 
@@ -864,6 +940,34 @@ def build_measurement() -> Path:
         comment="Raw asserted unit token (e.g., 'GW', 'TWh').",
     )
 
+    # V1 A4: ei:canonicalUnit -- functional object property linking a CMC
+    # to the canonical qudt:Unit IRI its assertedUnit string resolves to.
+    declare_object_property(
+        g,
+        EI.canonicalUnit,
+        "canonical unit",
+        domain=EI.CanonicalMeasurementClaim,
+        range_=QUDT.Unit,
+        functional=True,
+        comment=(
+            "Links a CanonicalMeasurementClaim to the canonical qudt:Unit IRI "
+            "that the claim's surface-form ei:assertedUnit string resolves to. "
+            "Functional: a CMC has at most one canonical unit."
+        ),
+    )
+    # V1 A5: CMC SubClassOf (canonicalUnit max 1 qudt:Unit). Although the
+    # property is Functional (max-1 globally), the qualified-cardinality
+    # restriction makes the resolution-grain invariant explicit at the CMC
+    # level and lines up with the existing references* restrictions.
+    subclass_qcr(
+        g,
+        EI.CanonicalMeasurementClaim,
+        EI.canonicalUnit,
+        QUDT.Unit,
+        "max",
+        1,
+    )
+
     # ei:intervalStart / ei:intervalEnd (on ClaimTemporalWindow)
     declare_data_property(
         g,
@@ -968,8 +1072,9 @@ def build_top_level() -> Path:
         ont,
         "energy-intel — top-level ontology",
         "Top-level energy-intel ontology. Imports the four authored modules "
-        "(agent, media, measurement, data) and the declared external ontologies "
-        "listed in imports-manifest.yaml.",
+        "(agent, media, measurement, data), the hand-seeded SKOS schemes, "
+        "and the declared external ontologies (V1 adds three: BFO+RO-stripped "
+        "OEO technology / carrier subsets and a narrow QUDT 2.1 unit subset).",
         imports=[
             # Four authored modules
             URIRef("https://w3id.org/energy-intel/modules/agent"),
@@ -988,9 +1093,13 @@ def build_top_level() -> Path:
             URIRef("http://www.w3.org/2004/02/skos/core"),
             URIRef("http://xmlns.com/foaf/0.1/"),
             URIRef("http://purl.org/dc/terms/"),
+            # V1 imports (per imports-manifest-v1.yaml).
+            URIRef("https://w3id.org/energy-intel/imports/oeo-technology-subset"),
+            URIRef("https://w3id.org/energy-intel/imports/oeo-carrier-subset"),
+            URIRef("https://w3id.org/energy-intel/imports/qudt-units-subset"),
         ],
     )
-    g.add((ont, OWL.versionIRI, URIRef("https://w3id.org/energy-intel/v0/2026-04-22")))
+    g.add((ont, OWL.versionIRI, URIRef(V1_TOP_VERSION_IRI)))
 
     out = PROJECT_ROOT / "energy-intel.ttl"
     g.serialize(destination=out, format="turtle")

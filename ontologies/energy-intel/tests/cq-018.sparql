@@ -1,0 +1,20 @@
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX foaf:  <http://xmlns.com/foaf/0.1/>
+PREFIX bfo:   <http://purl.obolibrary.org/obo/BFO_>
+PREFIX ei:    <https://w3id.org/energy-intel/>
+
+# CQ-018 (must_have, UC-008)
+# Which foaf:Person individuals bear ei:EnergyExpertRole and have authored
+# at least one Post?
+# Expected: 0..n rows; DISTINCT to dedupe across multiple authored Posts.
+# Derivation: direct_lookup on the role-bearer pattern.
+# Confirms V1 Expert refactor is reachable via SPARQL: Person bearing
+# EnergyExpertRole, joined to Post via ei:authoredBy.
+
+SELECT DISTINCT ?person WHERE {
+  ?person a foaf:Person ;
+          bfo:0000053 ?role .
+  ?role   a ei:EnergyExpertRole .
+  ?post   a ei:Post ;
+          ei:authoredBy ?person .
+}

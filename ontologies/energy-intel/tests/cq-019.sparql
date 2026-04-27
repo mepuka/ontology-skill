@@ -1,0 +1,25 @@
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+PREFIX foaf:  <http://xmlns.com/foaf/0.1/>
+PREFIX bfo:   <http://purl.obolibrary.org/obo/BFO_>
+PREFIX ei:    <https://w3id.org/energy-intel/>
+PREFIX oeo:   <https://openenergyplatform.org/ontology/oeo/>
+
+# CQ-019 (should_have, UC-008 + UC-006)
+# Which energy experts (Person + role) have authored CMCs about a given
+# OEO technology (or any of its narrower OEO subclasses)?
+# Expected: 0..n rows.
+# Derivation: inference via role-bearing + transitive technology walk.
+# Integration check: V1 model is correct iff CQ-018 + CQ-015 compose.
+
+SELECT DISTINCT ?person ?cmc WHERE {
+  ?person a foaf:Person ;
+          bfo:0000053 ?role .
+  ?role   a ei:EnergyExpertRole .
+  ?post   a ei:Post ;
+          ei:authoredBy ?person ;
+          ei:evidences  ?cmc .
+  ?cmc    a ei:CanonicalMeasurementClaim ;
+          ei:aboutTechnology/(skos:broader|rdfs:subClassOf)* oeo:OEO_00020267 .
+}

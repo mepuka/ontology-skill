@@ -7,17 +7,12 @@
 
 <https://id.skygest.io/post/post_01J_example> a owl:NamedIndividual,
         ei:Post ;
-    ei:authoredBy <https://id.skygest.io/expert/did-plc-a5kyzplew76jaj4dhnqsosjv> ;
-    ei:evidences <https://id.skygest.io/cmc/cmc_01J_example> .
+    ei:authoredBy <https://id.skygest.io/expert/did-plc-a5kyzplew76jaj4dhnqsosjv> .
 
-<https://w3id.org/energy-intel/tests/fixtures/cq-003> a owl:Ontology ;
+<https://w3id.org/energy-intel/tests/fixtures/cq-018> a owl:Ontology ;
     dcterms:created "2026-04-22"^^xsd:date ;
-    dcterms:description "CMC references a Variable."@en ;
-    dcterms:title "cq-003 fixture"@en .
-
-<https://id.skygest.io/cmc/cmc_01J_example> a owl:NamedIndividual,
-        ei:CanonicalMeasurementClaim ;
-    ei:referencesVariable <https://id.skygest.io/variable/var_01J_solar_installed_capacity> .
+    dcterms:description "Person + EnergyExpertRole + Post(authoredBy=Person) triangle. Direct lookup on the V1 role-bearer pattern."@en ;
+    dcterms:title "cq-018 fixture"@en .
 
 <https://id.skygest.io/expert/did-plc-a5kyzplew76jaj4dhnqsosjv> a owl:NamedIndividual,
         foaf:Person,
@@ -26,6 +21,3 @@
 
 <https://id.skygest.io/expert/did-plc-a5kyzplew76jaj4dhnqsosjv#energy-expert-role> a owl:NamedIndividual,
         ei:EnergyExpertRole .
-
-<https://id.skygest.io/variable/var_01J_solar_installed_capacity> a owl:NamedIndividual,
-        ei:Variable .

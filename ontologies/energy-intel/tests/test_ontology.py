@@ -63,6 +63,12 @@ EXPECTED_BANDS: dict[str, tuple[int, int | None]] = {
     "CQ-012": (0, None),  # 0..n
     "CQ-013": (0, None),  # 0..n transitive walk
     "CQ-014": (0, None),  # 0..n distinct
+    # V1
+    "CQ-015": (0, None),  # 0..n CMCs tagged with OEO subtree
+    "CQ-016": (0, None),  # 0..n CMCs canonicalising to the bound unit
+    "CQ-017": (0, None),  # 0..n (CMC, unit) pairs whose unit hasQuantityKind matches
+    "CQ-018": (0, None),  # 0..n distinct Persons bearing EnergyExpertRole + authoring a Post
+    "CQ-019": (0, None),  # 0..n distinct (person, cmc) pairs
 }
 
 # Per-CQ expected column order. Must match the manifest row contract.
@@ -81,6 +87,12 @@ EXPECTED_COLUMNS: dict[str, tuple[str, ...]] = {
     "CQ-012": ("cmc",),
     "CQ-013": ("cmc",),
     "CQ-014": ("post",),
+    # V1
+    "CQ-015": ("cmc",),
+    "CQ-016": ("cmc",),
+    "CQ-017": ("cmc", "unit"),
+    "CQ-018": ("person",),
+    "CQ-019": ("person", "cmc"),
 }
 
 

@@ -77,8 +77,8 @@ def run_gate() -> int:
         out_path = VALIDATION_DIR / f"shacl-results-{cq_id}.ttl"
         results_graph.serialize(destination=out_path, format="turtle")
 
-        # Count violations from the results graph.
-        violations = list(
+        # Count violations and warnings from the results graph.
+        viol_q = list(
             results_graph.query(
                 """
                 PREFIX sh: <http://www.w3.org/ns/shacl#>
@@ -88,10 +88,24 @@ def run_gate() -> int:
                 """
             )
         )
-        n_violations = int(violations[0][0]) if violations else 0
+        n_violations = int(viol_q[0][0]) if viol_q else 0
 
-        status = "pass" if conforms else "fail"
-        if not conforms:
+        warn_q = list(
+            results_graph.query(
+                """
+                PREFIX sh: <http://www.w3.org/ns/shacl#>
+                SELECT (COUNT(?r) AS ?n)
+                WHERE { ?r a sh:ValidationResult ;
+                           sh:resultSeverity sh:Warning . }
+                """
+            )
+        )
+        n_warnings = int(warn_q[0][0]) if warn_q else 0
+
+        # The gate only fails on Violations. Warnings are informational
+        # (S-V1-2 resolvability gate, S-V1-4 podcast-speaker hint).
+        status = "pass" if n_violations == 0 else "fail"
+        if n_violations > 0:
             any_fail = True
 
         results.append(
@@ -100,12 +114,18 @@ def run_gate() -> int:
                 "fixture_path": str(fixture.relative_to(PROJECT_ROOT)),
                 "conforms": conforms,
                 "violations": n_violations,
+                "warnings": n_warnings,
                 "status": status,
                 "results_graph": str(out_path.relative_to(PROJECT_ROOT)),
             }
         )
 
-        sym = "PASS" if conforms else f"FAIL ({n_violations} viol)"
+        if n_violations > 0:
+            sym = f"FAIL ({n_violations} viol)"
+        elif n_warnings > 0:
+            sym = f"PASS ({n_warnings} warn)"
+        else:
+            sym = "PASS"
         print(f"  {cq_id}  {sym}")
 
     summary_path = VALIDATION_DIR / "shacl-summary.json"
