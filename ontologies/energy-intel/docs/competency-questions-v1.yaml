@@ -1,0 +1,168 @@
+# V1 Competency Questions — `energy-intel`
+#
+# Inherits V0 CQs CQ-001..CQ-014 unchanged from `competency-questions.yaml`.
+# This file documents only the V1 additions (CQ-015..CQ-019).
+#
+# Authored: 2026-04-27 by ontology-requirements (V1 iteration)
+# Product owner / sole reviewer: kokokessy@gmail.com
+# Use-case anchor: see `use-cases-v1.yaml` (UC-006..UC-008)
+
+- id: CQ-015
+  source_use_case: UC-006
+  natural_language: "What CMCs are about a given OEO technology or any of its narrower OEO subclasses?"
+  type: relational
+  priority: must_have
+  owner: "kokokessy@gmail.com"
+  testability: fixture_required
+  expected_answer_shape:
+    cardinality: "0..n"
+    per_row: [cmc]
+  sample_answer:
+    - cmc: "https://id.skygest.io/cmc/cmc_01J_solar_us_capacity"
+  derivation_method: inference  # transitive property path under simple entailment
+  out_of_scope:
+    - "Energy carriers (covered by aboutTechnology when carrier IRIs are values)"
+    - "QUDT unit hierarchy"
+  required_classes:
+    - CanonicalMeasurementClaim
+    - skos:Concept   # placeholder for OEO classes accessed via punning
+  required_properties:
+    - aboutTechnology
+    - skos:broader
+    - rdfs:subClassOf
+  required_axioms:
+    - "OWL 2 punning enabled (workspace-wide; declared in V0)"
+    - "OEO subset imports active (V1 architect lands)"
+  notes: |
+    Replaces V0's CQ-013 placeholder hierarchy with real OEO. CQ-013
+    continues to function via the same SPARQL path (skos:broader |
+    rdfs:subClassOf)*; CQ-015 is the explicit OEO-anchored variant whose
+    fixture binds an OEO IRI rather than a hand-seeded skos:Concept.
+
+- id: CQ-016
+  source_use_case: UC-007
+  natural_language: "What CMCs canonicalize to a given qudt:Unit IRI?"
+  type: relational
+  priority: must_have
+  owner: "kokokessy@gmail.com"
+  testability: fixture_required
+  expected_answer_shape:
+    cardinality: "0..n"
+    per_row: [cmc]
+  sample_answer:
+    - cmc: "https://id.skygest.io/cmc/cmc_01J_solar_us_capacity"
+  derivation_method: direct_lookup
+  out_of_scope:
+    - "Surface-token-only matching (handled by ei:assertedUnit, not ei:canonicalUnit)"
+    - "Cross-unit conversion arithmetic (V1 does not transform values)"
+  required_classes:
+    - CanonicalMeasurementClaim
+    - qudt:Unit
+  required_properties:
+    - canonicalUnit
+  required_axioms:
+    - "ei:canonicalUnit object property; range qudt:Unit; max 1 on CMC"
+    - "QUDT unit subset imported (V1 architect lands)"
+  notes: |
+    Architect choice between adding ei:canonicalUnit as a new property
+    (recommended) vs. retyping ei:assertedUnit (breaks V0 contract) is
+    settled in scope-v1.md § Open question 4: keep ei:assertedUnit
+    string; add ei:canonicalUnit IRI separately.
+
+- id: CQ-017
+  source_use_case: UC-007
+  natural_language: "What CMCs measure quantities of a given qudt:QuantityKind?"
+  type: relational
+  priority: should_have
+  owner: "kokokessy@gmail.com"
+  testability: fixture_required
+  expected_answer_shape:
+    cardinality: "0..n"
+    per_row: [cmc, unit]
+  sample_answer:
+    - cmc: "https://id.skygest.io/cmc/cmc_01J_solar_us_capacity"
+      unit: "http://qudt.org/vocab/unit/GW"
+  derivation_method: inference  # walks CMC -> canonicalUnit -> qudt:hasQuantityKind
+  out_of_scope:
+    - "Cross-quantity-kind unit conversion"
+  required_classes:
+    - CanonicalMeasurementClaim
+    - qudt:Unit
+    - qudt:QuantityKind
+  required_properties:
+    - canonicalUnit
+    - qudt:hasQuantityKind
+  required_axioms:
+    - "QUDT QuantityKind imported (V1 scout decision)"
+  notes: |
+    Conditional on scout recommending QuantityKind import. If scout
+    recommends Unit-only (cheaper, less expressive), this CQ is dropped
+    or marked won't_have. Won't gate V1 release.
+
+- id: CQ-018
+  source_use_case: UC-008
+  natural_language: "Which foaf:Person individuals bear ei:EnergyExpertRole and have authored at least one Post?"
+  type: enumerative
+  priority: must_have
+  owner: "kokokessy@gmail.com"
+  testability: fixture_required
+  expected_answer_shape:
+    cardinality: "0..n"
+    per_row: [person]
+  sample_answer:
+    - person: "https://id.skygest.io/expert/did-plc-a5kyzplew76jaj4dhnqsosjv"
+  derivation_method: direct_lookup
+  out_of_scope:
+    - "Sub-classification of role (analyst vs journalist vs academic) — V2+"
+    - "Organization-level publisher / data-provider roles (V0 already covers)"
+  required_classes:
+    - foaf:Person
+    - EnergyExpertRole
+    - Post
+  required_properties:
+    - "bfo:0000053 (bearerOf) — already in BFO-2020 import"
+    - authoredBy
+  required_axioms:
+    - "ei:EnergyExpertRole subClassOf bfo:0000023 (BFO Role)"
+    - "ei:authoredBy range widens to foaf:Person (was ei:Expert in V0)"
+  notes: |
+    Confirms the V1 role-bearing pattern is reachable via SPARQL. The
+    Linear D3 ABox URI form for Person is preserved
+    (https://id.skygest.io/expert/did-{plc|web}-<slug> — Linear policy
+    keeps the /expert/ slug as the stable identifier even after the
+    typing changes from ei:Expert class to foaf:Person + role).
+
+- id: CQ-019
+  source_use_case: UC-008
+  natural_language: "Which energy experts (Person + role) have authored CMCs about a given OEO technology?"
+  type: relational
+  priority: should_have
+  owner: "kokokessy@gmail.com"
+  testability: fixture_required
+  expected_answer_shape:
+    cardinality: "0..n"
+    per_row: [person, cmc]
+  sample_answer:
+    - person: "https://id.skygest.io/expert/did-plc-a5kyzplew76jaj4dhnqsosjv"
+      cmc: "https://id.skygest.io/cmc/cmc_01J_solar_us_capacity"
+  derivation_method: inference  # role pattern + transitive technology walk
+  out_of_scope:
+    - "Sub-classification of role (V2+)"
+  required_classes:
+    - foaf:Person
+    - EnergyExpertRole
+    - Post
+    - CanonicalMeasurementClaim
+  required_properties:
+    - "bfo:0000053 (bearerOf)"
+    - authoredBy
+    - evidences
+    - aboutTechnology
+    - "skos:broader OR rdfs:subClassOf"
+  required_axioms:
+    - "All from CQ-015 + CQ-018 combined"
+  notes: |
+    Integration check. V1 model is correct iff CQ-018 (role pattern) and
+    CQ-015 (OEO walk) compose without breaking each other. should_have
+    rather than must_have because the individual must_have CQs cover the
+    parts; this is the integration smoke test.

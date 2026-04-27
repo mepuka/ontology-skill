@@ -1,0 +1,6 @@
+cq_id,atomic,answerable,falsifiable,scoped,prioritized,sample_bearing,decision,notes
+CQ-015,pass,pass,pass,pass,pass,pass,advance,"Single relational lookup with transitive walk; falsifiable via empty result when no CMC tagged. Stays inside V1 scope-v1.md § OEO MIREOT import."
+CQ-016,pass,pass,pass,pass,pass,pass,advance,"Direct lookup on canonicalUnit; falsifiable when ei:canonicalUnit unwired. Inside V1 § QUDT crosswalk."
+CQ-017,pass,pass,pass,pass,pass,pass,advance,"Inference via canonicalUnit -> qudt:hasQuantityKind; falsifiable. should_have because dependent on scout's QuantityKind decision; will be marked wont_have if scout drops QuantityKind."
+CQ-018,pass,pass,pass,pass,pass,pass,advance,"Single enumeration over Persons bearing role; falsifiable when role pattern unwired. Inside V1 § Expert role refactor."
+CQ-019,pass,pass,pass,pass,pass,pass,advance,"Composite walk over role + OEO; falsifiable independently of CQ-015 and CQ-018. should_have as the integration check."

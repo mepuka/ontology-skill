@@ -2,4 +2,15 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 [] a sh:ValidationReport ;
-    sh:conforms true .
+    sh:conforms false ;
+    sh:result [ a sh:ValidationResult ;
+            sh:focusNode <https://id.skygest.io/cmc/cmc_01J_claim_a> ;
+            sh:resultMessage "CMC has ei:assertedUnit set but no ei:canonicalUnit — the resolvability stage has not yet promoted this claim. UC-007." ;
+            sh:resultSeverity sh:Warning ;
+            sh:sourceConstraint [ a sh:SPARQLConstraint ;
+                    sh:message "CMC has ei:assertedUnit set but no ei:canonicalUnit — the resolvability stage has not yet promoted this claim. UC-007."@en ;
+                    sh:prefixes <https://w3id.org/energy-intel/shapes/prefix-decl-v1> ;
+                    sh:select "SELECT $this WHERE { $this ei:assertedUnit ?au . FILTER NOT EXISTS { $this ei:canonicalUnit ?cu . } }" ] ;
+            sh:sourceConstraintComponent sh:SPARQLConstraintComponent ;
+            sh:sourceShape <https://w3id.org/energy-intel/shape/ResolvabilityGate> ;
+            sh:value <https://id.skygest.io/cmc/cmc_01J_claim_a> ] .

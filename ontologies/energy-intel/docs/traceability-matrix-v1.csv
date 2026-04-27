@@ -1,0 +1,6 @@
+stakeholder_need,use_case_id,cq_id,ontology_terms,sparql_test
+"Resolve technology classification of CMCs against real OEO classes (replaces V0 skos:Concept placeholder)",UC-006,CQ-015,"CanonicalMeasurementClaim;aboutTechnology;skos:broader;rdfs:subClassOf;OEO_technology_classes",ontologies/energy-intel/tests/cq-015.sparql
+"Canonicalize asserted unit tokens to QUDT IRIs for cross-claim unit unification",UC-007,CQ-016,"CanonicalMeasurementClaim;canonicalUnit;qudt:Unit",ontologies/energy-intel/tests/cq-016.sparql
+"Aggregate CMCs by underlying QuantityKind (e.g., all power-quantity CMCs)",UC-007,CQ-017,"CanonicalMeasurementClaim;canonicalUnit;qudt:hasQuantityKind;qudt:QuantityKind",ontologies/energy-intel/tests/cq-017.sparql
+"Identify recognized energy experts (foaf:Person bearing role) for editorial audit",UC-008,CQ-018,"foaf:Person;EnergyExpertRole;Post;authoredBy;bfo:0000053",ontologies/energy-intel/tests/cq-018.sparql
+"Cross-cut energy-expert role-bearing with OEO technology classification (integration check)",UC-008,CQ-019,"foaf:Person;EnergyExpertRole;Post;authoredBy;evidences;CanonicalMeasurementClaim;aboutTechnology;OEO_technology_classes",ontologies/energy-intel/tests/cq-019.sparql

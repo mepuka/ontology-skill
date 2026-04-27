@@ -1,0 +1,74 @@
+# V1 Use Cases — `energy-intel`
+#
+# Inherits V0 use cases UC-001..UC-005 unchanged from `use-cases.yaml`.
+# This file documents only the V1 additions (UC-006..UC-008) driving
+# new CQs CQ-015..CQ-019.
+#
+# Authored: 2026-04-27 by ontology-requirements (V1 iteration)
+# Product owner: kokokessy@gmail.com
+
+- id: UC-006
+  name: "Classify a CMC by OEO technology and roll up by sub-technology"
+  actor: "Discourse engine query layer"
+  goal: "Given a parent OEO technology class (e.g., 'solar photovoltaic generation'), return every CMC tagged with that technology or any of its narrower OEO subclasses."
+  preconditions:
+    - "OEO technology subset is owl:imports'ed (V1 OEO import landed, BFO conflict resolved)."
+    - "ei:aboutTechnology values include OEO class IRIs admitted via OWL 2 punning."
+    - "CMCs in the graph have at least one ei:aboutTechnology assertion."
+  main_flow:
+    - "Caller supplies a parent OEO technology IRI."
+    - "System walks (skos:broader | rdfs:subClassOf)* from that parent."
+    - "System returns the set of CMCs tagged with the parent or any descendant."
+  postconditions:
+    - "Caller has a transitive technology-rolled-up CMC set."
+  related_cqs: [CQ-015]
+  priority: must_have
+  rationale: |
+    V0 used skos:Concept placeholders for ei:aboutTechnology ranges. V1 OEO
+    import replaces placeholders with real OEO classes. This use case is the
+    end-to-end check that the OEO import + punning + transitive walk all
+    work against a non-trivial technology hierarchy.
+
+- id: UC-007
+  name: "Canonicalize a CMC's asserted unit token to a QUDT IRI"
+  actor: "Discourse engine resolution layer (extractor + post-processor)"
+  goal: "Given a CMC whose ei:assertedUnit is a surface token like 'GW' or 'gigawatt', resolve to a canonical qudt:Unit IRI so two CMCs with synonymous tokens land on the same canonical unit."
+  preconditions:
+    - "QUDT 2.1 unit subset imports are landed (V1 QUDT import)."
+    - "ei:canonicalUnit property exists on CMC (V1 architect adds)."
+    - "Either the extractor or a separate canonicalization step has populated ei:canonicalUnit."
+  main_flow:
+    - "Caller supplies a qudt:Unit IRI (e.g., unit:GW)."
+    - "System returns every CMC whose ei:canonicalUnit IRI matches."
+  postconditions:
+    - "Caller has a CMC set unified by canonical unit, not surface form."
+  related_cqs: [CQ-016, CQ-017]
+  priority: must_have
+  rationale: |
+    The cross-expert join in V0's CQ-006/CQ-007/CQ-008 joins on canonical
+    Variable but two claims about the same Variable can disagree on unit
+    (TWh vs GWh; GW vs gigawatts). Canonical-unit resolution is the missing
+    link. CQ-017 (QuantityKind grouping) is should_have because it depends
+    on scout's QuantityKind decision.
+
+- id: UC-008
+  name: "Identify energy experts (Person + role) and audit their authored claims"
+  actor: "Editorial review layer"
+  goal: "Find every foaf:Person that bears ei:EnergyExpertRole and list the CMCs they have authored or spoken in podcast segments about, so editorial review can audit a recognized expert's claim history."
+  preconditions:
+    - "ei:EnergyExpertRole class is declared (V1 architect adds)."
+    - "Posts and PodcastSegments carry ei:authoredBy / ei:spokenBy with foaf:Person targets."
+    - "Each Person who is a recognized expert has bfo:0000053 ei:EnergyExpertRole asserted."
+  main_flow:
+    - "Caller asks for all bearers of ei:EnergyExpertRole."
+    - "System returns the Person set; per Person, joins to their authored Posts and any CMCs evidenced."
+  postconditions:
+    - "Caller has a Person → Role → Post → CMC walk for editorial audit."
+  related_cqs: [CQ-018, CQ-019]
+  priority: must_have
+  rationale: |
+    Closes the V0 expert-as-class anti-pattern. CQ-018 establishes that the
+    role pattern is reachable via SPARQL; CQ-019 cross-cuts UC-006 (OEO)
+    and UC-008 (role) to confirm the V1 model composes end-to-end. CQ-019
+    is should_have because UC-008 + UC-006 individually are must_have but
+    their composition is integration coverage.

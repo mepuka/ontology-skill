@@ -1,6 +1,6 @@
-Violations: 829
+Violations: 1336
 -----------------
-ERROR:      329
-WARN:       415
-INFO:       85
-2026-04-22 21:53:31,881 ERROR org.obolibrary.robot.ReportCommand - Report failed!
+ERROR:      687
+WARN:       469
+INFO:       180
+2026-04-27 08:41:49,177 ERROR org.obolibrary.robot.ReportCommand - Report failed!

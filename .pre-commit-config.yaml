@@ -15,7 +15,7 @@ repos:
         args: [--allow-multiple-documents]
       - id: check-toml
       - id: check-added-large-files
-        args: [--maxkb=1000]   # accommodates self-contained ontology fixtures that bundle OEO/QUDT closure for pytest isolation; large derived imports are gitignored
+        args: [--maxkb=2000]   # accommodates self-contained ontology fixtures that bundle OEO/QUDT closure for pytest isolation, and ROBOT diff Markdown release artefacts; large derived imports are gitignored
       - id: check-merge-conflict
       - id: debug-statements
 

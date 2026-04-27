@@ -1,0 +1,10 @@
+term,category,source_cq,notes
+EnergyExpertRole,class,CQ-018;CQ-019,"BFO Role specialization; subClassOf bfo:0000023; inheres in foaf:Person via bfo:0000052."
+canonicalUnit,property,CQ-016;CQ-017,"Object property on CMC; range qudt:Unit; max 1; new in V1."
+hasQuantityKind,property,CQ-017,"Reuses qudt:hasQuantityKind on qudt:Unit. Conditional on scout QuantityKind decision."
+foaf:Person,class,CQ-018;CQ-019,"Already imported via foaf in V0; range of authoredBy / spokenBy widens to foaf:Person in V1 (was ei:Expert)."
+bfo:0000053,property,CQ-018;CQ-019,"BFO bearerOf — already in BFO-2020 import; reused for Person bearer-of EnergyExpertRole pattern."
+qudt:Unit,class,CQ-016;CQ-017,"QUDT 2.1 import (V1 scout decides depth); range of ei:canonicalUnit."
+qudt:QuantityKind,class,CQ-017,"Conditional V1 import; only if scout recommends."
+oeo:EnergyTechnology,class,CQ-015;CQ-019,"Placeholder — concrete OEO seed IRI list pending scout. Range of ei:aboutTechnology widens to OEO classes (via punning) in V1."
+oeo:EnergyCarrier,class,CQ-015,"Placeholder — concrete OEO carrier IRIs pending scout. Same widening as oeo:EnergyTechnology."

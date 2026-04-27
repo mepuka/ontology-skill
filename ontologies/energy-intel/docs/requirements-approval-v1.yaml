@@ -1,0 +1,102 @@
+# V1 Requirements Approval — `energy-intel`
+#
+# Sign-off artefact for V1 requirements phase. Blocks handoff to
+# ontology-scout (Phase 2) until reviewer endorses.
+
+iteration: v1
+predecessor_release: v0.1.0
+target_release: v0.2.0
+reviewer: "kokokessy@gmail.com"
+reviewed_at: "2026-04-27"
+cq_freeze_commit: "36d1952d9659d336aa8529880ac9fba68ab20aa0"   # main HEAD at V1 requirements start
+
+scope_gate:
+  scope_fit: approved
+  retrofit_note: false
+  stakeholder_available: true
+  scope_doc: "docs/scope-v1.md"
+
+approved_cq_ids:
+  - CQ-015   # must_have: OEO-anchored technology walk
+  - CQ-016   # must_have: QUDT canonical unit lookup
+  - CQ-018   # must_have: Person + EnergyExpertRole pattern reachable via SPARQL
+  - CQ-017   # should_have: QUDT QuantityKind grouping (conditional on scout)
+  - CQ-019   # should_have: role × OEO integration check
+
+waived_cqs: []   # none waived at requirements; scout may downgrade CQ-017 to wont_have
+
+inherited_v0_cqs:
+  - CQ-001..CQ-014    # all 14 V0 CQs continue to apply; V1 must not break them
+  - revalidation_gate: "validator's L4 pytest must report 14/14 V0 CQs PASS in addition to V1 CQs"
+
+preflight_status:
+  total: 5
+  parse_ok: 5
+  parse_fail: 0
+  manifest_path: "tests/cq-test-manifest.yaml"
+  preflight_runner: "uv run python -c 'from rdflib.plugins.sparql import prepareQuery; ...'"
+  preflight_evidence: "All 5 V1 SPARQL files parse_ok at 2026-04-27."
+
+artifacts:
+  scope: "docs/scope-v1.md"
+  use_cases: "docs/use-cases-v1.yaml"
+  competency_questions: "docs/competency-questions-v1.yaml"
+  cq_quality: "docs/cq-quality-v1.csv"
+  pre_glossary: "docs/pre-glossary-v1.csv"
+  traceability: "docs/traceability-matrix-v1.csv"
+  test_files:
+    - "tests/cq-015.sparql"
+    - "tests/cq-016.sparql"
+    - "tests/cq-017.sparql"
+    - "tests/cq-018.sparql"
+    - "tests/cq-019.sparql"
+
+handoff_to_scout:
+  blocking_questions:
+    - id: SQ-1
+      question: "Concrete OEO seed-IRI list for V1 technology + carrier subtree."
+      target: "imports-manifest-v1.yaml diff with rationale per seed."
+    - id: SQ-2
+      question: "QUDT depth — qudt:Unit only, or qudt:Unit + qudt:QuantityKind?"
+      target: "Recommendation in scout reuse-report-v1.md with size-cost analysis."
+    - id: SQ-3
+      question: "BFO conflict remediation: confirm `robot remove --term BFO_* --axioms structural` over imports/oeo-{technology,carrier}-subset.ttl produces a clean closure when merged with V0 BFO-2020."
+      target: "Remediation script + reasoner-clean evidence in scout phase."
+  inputs_for_scout:
+    - "docs/scope-v1.md"
+    - "docs/pre-glossary-v1.csv"
+    - "docs/competency-questions-v1.yaml"
+    - "imports-manifest.yaml (V0 baseline)"
+    - "imports/oeo-technology-subset.ttl, imports/oeo-carrier-subset.ttl (V0 BOT extracts; need BFO remediation)"
+
+handoff_to_conceptualizer:
+  blocking_questions:
+    - id: CQ-Q-1
+      question: "ei:Expert fate: deprecate cleanly with fixture migration, OR keep as defined equivalent class (foaf:Person ⊓ bearerOf-some-EnergyExpertRole)?"
+      target: "Decision in conceptual-model-v1.md § Expert refactor with rationale."
+    - id: CQ-Q-2
+      question: "ei:canonicalUnit on CMC: max 1 (functional)? Range qudt:Unit only or also accept qudt:QuantityKind?"
+      target: "Decision in property-design-v1.md."
+    - id: CQ-Q-3
+      question: "Punning regression: confirm HermiT stays clean once OEO classes appear as ei:aboutTechnology values."
+      target: "Reasoner trace in validation-v1/."
+
+notes: |
+  V1 inherits V0 baseline cleanly. Three workstreams (OEO import, QUDT
+  crosswalk, Expert role refactor) are independent enough that the V1
+  architect can stage them in any order, but the validator gate requires
+  all three to land before the V1 release diff can be signed.
+
+  V1 explicitly does not touch:
+  - Seven-facet Variable model (still V2+)
+  - SHACL coverage backfill for the seven `intent: validate` properties
+    not yet shaped in V0 (deferred per product-owner directive 2026-04-26)
+  - Expert subrole taxonomy (single role only per directive)
+
+  Sign-off below remains `pending` until reviewer endorses. Validator will
+  re-validate the full V0 + V1 CQ suite at release gate per
+  scope-v1.md § V0 CQ revalidation guarantee.
+
+sign_off: signed
+signed_by: "kokokessy@gmail.com"
+signed_at: "2026-04-27"

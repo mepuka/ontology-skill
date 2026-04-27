@@ -1,6 +1,6 @@
 {
   "shapes_file": "shapes/energy-intel-shapes.ttl",
-  "fixtures_validated": 14,
+  "fixtures_validated": 19,
   "failures": 0,
   "results": [
     {
@@ -8,6 +8,7 @@
       "fixture_path": "tests/fixtures/cq-001.ttl",
       "conforms": true,
       "violations": 0,
+      "warnings": 0,
       "status": "pass",
       "results_graph": "validation/shacl-results-cq-001.ttl"
     },
@@ -16,6 +17,7 @@
       "fixture_path": "tests/fixtures/cq-002.ttl",
       "conforms": true,
       "violations": 0,
+      "warnings": 0,
       "status": "pass",
       "results_graph": "validation/shacl-results-cq-002.ttl"
     },
@@ -24,6 +26,7 @@
       "fixture_path": "tests/fixtures/cq-003.ttl",
       "conforms": true,
       "violations": 0,
+      "warnings": 0,
       "status": "pass",
       "results_graph": "validation/shacl-results-cq-003.ttl"
     },
@@ -32,6 +35,7 @@
       "fixture_path": "tests/fixtures/cq-004.ttl",
       "conforms": true,
       "violations": 0,
+      "warnings": 0,
       "status": "pass",
       "results_graph": "validation/shacl-results-cq-004.ttl"
     },
@@ -40,6 +44,7 @@
       "fixture_path": "tests/fixtures/cq-005.ttl",
       "conforms": true,
       "violations": 0,
+      "warnings": 0,
       "status": "pass",
       "results_graph": "validation/shacl-results-cq-005.ttl"
     },
@@ -48,6 +53,7 @@
       "fixture_path": "tests/fixtures/cq-006.ttl",
       "conforms": true,
       "violations": 0,
+      "warnings": 0,
       "status": "pass",
       "results_graph": "validation/shacl-results-cq-006.ttl"
     },
@@ -56,14 +62,16 @@
       "fixture_path": "tests/fixtures/cq-007.ttl",
       "conforms": true,
       "violations": 0,
+      "warnings": 0,
       "status": "pass",
       "results_graph": "validation/shacl-results-cq-007.ttl"
     },
     {
       "cq": "cq-008",
       "fixture_path": "tests/fixtures/cq-008.ttl",
-      "conforms": true,
+      "conforms": false,
       "violations": 0,
+      "warnings": 1,
       "status": "pass",
       "results_graph": "validation/shacl-results-cq-008.ttl"
     },
@@ -72,6 +80,7 @@
       "fixture_path": "tests/fixtures/cq-009.ttl",
       "conforms": true,
       "violations": 0,
+      "warnings": 0,
       "status": "pass",
       "results_graph": "validation/shacl-results-cq-009.ttl"
     },
@@ -80,6 +89,7 @@
       "fixture_path": "tests/fixtures/cq-010.ttl",
       "conforms": true,
       "violations": 0,
+      "warnings": 0,
       "status": "pass",
       "results_graph": "validation/shacl-results-cq-010.ttl"
     },
@@ -88,6 +98,7 @@
       "fixture_path": "tests/fixtures/cq-011.ttl",
       "conforms": true,
       "violations": 0,
+      "warnings": 0,
       "status": "pass",
       "results_graph": "validation/shacl-results-cq-011.ttl"
     },
@@ -96,6 +107,7 @@
       "fixture_path": "tests/fixtures/cq-012.ttl",
       "conforms": true,
       "violations": 0,
+      "warnings": 0,
       "status": "pass",
       "results_graph": "validation/shacl-results-cq-012.ttl"
     },
@@ -104,6 +116,7 @@
       "fixture_path": "tests/fixtures/cq-013.ttl",
       "conforms": true,
       "violations": 0,
+      "warnings": 0,
       "status": "pass",
       "results_graph": "validation/shacl-results-cq-013.ttl"
     },
@@ -112,8 +125,54 @@
       "fixture_path": "tests/fixtures/cq-014.ttl",
       "conforms": true,
       "violations": 0,
+      "warnings": 0,
       "status": "pass",
       "results_graph": "validation/shacl-results-cq-014.ttl"
+    },
+    {
+      "cq": "cq-015",
+      "fixture_path": "tests/fixtures/cq-015.ttl",
+      "conforms": true,
+      "violations": 0,
+      "warnings": 0,
+      "status": "pass",
+      "results_graph": "validation/shacl-results-cq-015.ttl"
+    },
+    {
+      "cq": "cq-016",
+      "fixture_path": "tests/fixtures/cq-016.ttl",
+      "conforms": true,
+      "violations": 0,
+      "warnings": 0,
+      "status": "pass",
+      "results_graph": "validation/shacl-results-cq-016.ttl"
+    },
+    {
+      "cq": "cq-017",
+      "fixture_path": "tests/fixtures/cq-017.ttl",
+      "conforms": true,
+      "violations": 0,
+      "warnings": 0,
+      "status": "pass",
+      "results_graph": "validation/shacl-results-cq-017.ttl"
+    },
+    {
+      "cq": "cq-018",
+      "fixture_path": "tests/fixtures/cq-018.ttl",
+      "conforms": true,
+      "violations": 0,
+      "warnings": 0,
+      "status": "pass",
+      "results_graph": "validation/shacl-results-cq-018.ttl"
+    },
+    {
+      "cq": "cq-019",
+      "fixture_path": "tests/fixtures/cq-019.ttl",
+      "conforms": true,
+      "violations": 0,
+      "warnings": 0,
+      "status": "pass",
+      "results_graph": "validation/shacl-results-cq-019.ttl"
     }
   ]
 }

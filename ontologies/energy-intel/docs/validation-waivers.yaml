@@ -1,0 +1,145 @@
+# energy-intel — Validation Waivers
+#
+# Authored: 2026-04-27 by ontology-curator (V1 iteration; v0.2.0 release)
+# Source:   validator-to-curator-handoff-v1.md § 4 V1-CUR-2 + property-design.md § 3-4
+#
+# This file is the canonical record of `intent: validate` properties whose
+# SHACL coverage is intentionally deferred to a future minor release. Each
+# row carries:
+#   * shape:     short-name of the SHACL shape that would carry the rule
+#   * property:  the ei:-namespaced data/object property the shape constrains
+#   * owner:     skill that must author the shape when expiry hits
+#   * rationale: why the deferral is acceptable for v0.2.0
+#   * expiry:    the release tag at or before which the shape MUST land
+#   * source:    pointer to the property-design row + reviewer artefact
+#
+# Validator gate L3.5 (SHACL coverage) reads this file. A row that has
+# expired without a corresponding shape in shapes/energy-intel-shapes.ttl
+# becomes a release blocker; an unexpired row is acknowledged and skipped.
+#
+# Curator obligation: review at every release-prep cycle. Promote each row
+# to a real SHACL shape (intent: validate -> intent: implemented) before
+# the expiry release tag.
+
+waivers:
+
+  # ---------------------------------------------------------------------
+  # V0 carry-forward (filed at V0 sign-off; carried into V1)
+  # ---------------------------------------------------------------------
+
+  - shape: assertedValue_datatype
+    property: ei:assertedValue
+    owner: ontology-architect
+    rationale: |
+      V0/V1 ship `ei:assertedValue` as the datatype-union range
+      (xsd:decimal ∪ xsd:string). Stricter datatype validation
+      (numeric-vs-categorical surface-form check) deferred to V2 numeric
+      refactor when the seven-facet Variable model lands and surface forms
+      are typed. Current V1 fixtures store both forms verbatim.
+    expiry: "v0.3.0"
+    source: docs/property-design.md § 3 row ei:assertedValue
+    intent: validate
+    status: deferred
+
+  - shape: intervalStart_format
+    property: ei:intervalStart
+    owner: ontology-architect
+    rationale: |
+      xsd:dateTime / xsd:date format check deferred. Current V1 fixtures
+      use plain literal strings on intervalStart; the V0 ordering shape
+      (S-V0-4 IntervalOrdering) only constrains start ≤ end, not format.
+      Ships when the V2 ABox lane lands.
+    expiry: "v0.3.0"
+    source: docs/property-design.md § 3 row ei:intervalStart
+    intent: validate
+    status: deferred
+
+  - shape: intervalEnd_format
+    property: ei:intervalEnd
+    owner: ontology-architect
+    rationale: |
+      Same as intervalStart_format. xsd:dateTime / xsd:date format check
+      deferred; ordering with intervalStart already covered by S-V0-4
+      IntervalOrdering.
+    expiry: "v0.3.0"
+    source: docs/property-design.md § 3 row ei:intervalEnd
+    intent: validate
+    status: deferred
+
+  - shape: hasSegmentIndex_integer_monotonic
+    property: ei:hasSegmentIndex
+    owner: ontology-architect
+    rationale: |
+      PodcastSegment.hasSegmentIndex shape (sh:datatype xsd:integer +
+      sh:minInclusive 0 + monotonic-within-episode constraint) deferred
+      until V2 podcast-ingest lane lands and the ABox starts emitting
+      segment-indexed fixtures at scale.
+    expiry: "v0.3.0"
+    source: docs/property-design.md § 4 row ei:hasSegmentIndex
+    intent: validate
+    status: deferred
+
+  - shape: screenshotOf_uri_well_formedness
+    property: ei:screenshotOf
+    owner: ontology-architect
+    rationale: |
+      sh:nodeKind sh:IRI + sh:pattern URI-well-formedness check on
+      Screenshot media attachments deferred. V1 fixtures use compact
+      example URIs that pass naive checks; rich validation deferred until
+      V2 media-attachment lane is ABox-active.
+    expiry: "v0.3.0"
+    source: docs/property-design.md § 4 row ei:screenshotOf
+    intent: validate
+    status: deferred
+
+  - shape: excerptFrom_uri_well_formedness
+    property: ei:excerptFrom
+    owner: ontology-architect
+    rationale: |
+      Same as screenshotOf_uri_well_formedness — URI well-formedness
+      deferred for media-attachment URIs. Implementation strategy will
+      mirror the screenshotOf shape.
+    expiry: "v0.3.0"
+    source: docs/property-design.md § 4 row ei:excerptFrom
+    intent: validate
+    status: deferred
+
+  # ---------------------------------------------------------------------
+  # V1 carry-forward (filed at v0.2.0; first defer cycle)
+  # ---------------------------------------------------------------------
+
+  - shape: assertedUnit_datatype_or_qudt_iri
+    property: ei:assertedUnit
+    owner: ontology-architect
+    rationale: |
+      V0 modelled ei:assertedUnit as xsd:string (surface token like "GW",
+      "TWh"). V1 added the resolvability gate (S-V1-2 ResolvabilityGate)
+      as a Warning when assertedUnit exists without canonicalUnit. The
+      stricter constraint (assertedUnit MUST be one of: a recognised
+      surface form OR a qudt:Unit IRI) is deferred until V2 when the unit
+      resolution table is canonicalised into the project ABox.
+    expiry: "v0.3.0"
+    source: docs/property-design-v1.md § 0 (assertedUnit / canonicalUnit pairing)
+    intent: validate
+    status: deferred
+
+# ---------------------------------------------------------------------
+# Cross-reference with carried V0/V1 deferral list (validator handoff § 4)
+# ---------------------------------------------------------------------
+# All four families called out in validator-to-curator-handoff-v1.md § 4
+# V1-CUR-2 are present above:
+#   1. assertedValue_datatype        -> ei:assertedValue
+#   2. intervalStart/End_format      -> ei:intervalStart, ei:intervalEnd
+#   3. hasSegmentIndex_integer_...   -> ei:hasSegmentIndex
+#   4. screenshotOf/excerptFrom_uri  -> ei:screenshotOf, ei:excerptFrom
+# Plus the V1 addition (assertedUnit_datatype_or_qudt_iri) — 7 rows total.
+
+policy:
+  expiry_action: |
+    On each release-prep cycle, curator MUST audit this file. Any row
+    whose `expiry` matches the current release MUST either be (a) promoted
+    to a real shape in shapes/energy-intel-shapes.ttl, or (b) re-justified
+    with a fresh expiry pointer and reviewer signature.
+  reviewer: kokokessy@gmail.com
+  reviewed_at: "2026-04-27"
+  next_review_at: "v0.3.0 release-prep cycle"

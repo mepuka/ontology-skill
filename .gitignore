@@ -79,3 +79,9 @@ ontologies/*/validation/merge-*.log
 ontologies/*/validation/reason-*.log
 ontologies/*/validation/profile-validate-project-only.txt
 ontologies/*/validation/profile-validate-*.log
+
+# Per-release validation evidence directories (architect + validator gate runs;
+# rebuilt on demand; reports cite these but the report is the source of truth)
+ontologies/*/validation/v1/
+ontologies/*/validation/v1-bfo-remediation/
+ontologies/*/validation/merged-top-level-with-oeo.ttl
