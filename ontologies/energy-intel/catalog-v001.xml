@@ -11,4 +11,11 @@
        uri="modules/concept-schemes/aggregation-type.ttl"/>
   <uri name="https://w3id.org/energy-intel/modules/concept-schemes/technology-seeds"
        uri="modules/concept-schemes/technology-seeds.ttl"/>
+  <!-- V1 imports (added 2026-04-27 by ontology-architect) -->
+  <uri name="https://w3id.org/energy-intel/imports/oeo-technology-subset"
+       uri="imports/oeo-technology-subset-fixed.ttl"/>
+  <uri name="https://w3id.org/energy-intel/imports/oeo-carrier-subset"
+       uri="imports/oeo-carrier-subset-fixed.ttl"/>
+  <uri name="https://w3id.org/energy-intel/imports/qudt-units-subset"
+       uri="imports/qudt-units-subset.ttl"/>
 </catalog>

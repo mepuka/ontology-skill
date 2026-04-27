@@ -1,0 +1,213 @@
+# energy-intel — Imports Manifest Index (v0.2.0 release)
+#
+# Authored: 2026-04-27 by ontology-curator
+#
+# Why an index instead of a folded manifest?
+# ------------------------------------------
+# V0 manifest (`imports-manifest.yaml`) and V1 delta manifest
+# (`imports-manifest-v1.yaml`) describe the same import graph at two
+# different points in time. The V1 delta intentionally shadows V0 rows
+# whose `extraction_method` changed (OEO subsets: BOT -> BOT_post_strip;
+# QUDT: rejected/MIREOT -> programmatic_slice).
+#
+# Folding them into one file would lose the audit trail of "this row
+# changed extraction method between V0 and V1 because of construct_mismatch
+# remediation". Per `_shared/odk-and-imports.md § 3` the manifest is the
+# canonical refresh trigger; preserving the delta as a separate file keeps
+# the change auditable for the next refresh cycle.
+#
+# This index file points downstream consumers (scout / mapper / validator /
+# curator) at the right manifest for their use case.
+
+release: v0.2.0
+release_date: "2026-04-27"
+authored_by: ontology-curator
+schema_version: "1.0"
+
+manifests:
+
+  - id: v0-baseline
+    file: imports-manifest.yaml
+    role: V0 baseline manifest
+    authored_at: "2026-04-22"
+    authored_by: ontology-scout
+    commit: "36d1952"
+    description: |
+      V0 baseline manifest. Source-of-truth for any row not restated in
+      `imports-manifest-v1.yaml`. Carries the rejected V0 entries
+      (qudt-full-schema, schema-org-core, oeoex, owl-time, sosa-ssn,
+      rdf-data-cube) with their rejection rationales — the V1 delta
+      does not restate these, so they live only here.
+
+  - id: v1-delta
+    file: imports-manifest-v1.yaml
+    role: V1 delta manifest
+    authored_at: "2026-04-27"
+    authored_by: ontology-scout
+    description: |
+      V1 delta manifest. Restates only `added` / `status_changed` /
+      `rejected` entries vs V0. Three rows shadow V0:
+        * oeo-technology-2.11.0 (status_changed: BOT -> BOT_post_strip)
+        * oeo-carrier-2.11.0   (status_changed: BOT -> BOT_post_strip)
+        * qudt-units-2.1       (status_changed: full_import -> programmatic_slice)
+      Reads V0 manifest as `baseline_manifest` reference.
+
+# ---------------------------------------------------------------------
+# Refresh-cadence consolidated table (v0.2.0 release-time)
+# ---------------------------------------------------------------------
+# This is the canonical refresh schedule, consolidated from V0 + V1
+# manifest rows. Validator-to-curator-handoff-v1.md sets these cadences;
+# the curator's policy is to monitor each upstream and re-pin when the
+# cadence elapses or when an upstream releases a major version.
+
+refresh_cadences:
+
+  - import_id: bfo-2020
+    cadence_days: 365
+    rationale: "BFO 2020 is ISO 21838-2:2021. Upstream cadence is multi-year."
+    next_check_due: "2027-04-22"
+    manifest: imports-manifest.yaml
+
+  - import_id: iao-2026-03
+    cadence_days: 120
+    rationale: "Active OBO development; 120-day cadence per V0 curator handoff."
+    next_check_due: "2026-08-20"
+    manifest: imports-manifest.yaml
+
+  - import_id: oeo-technology-2.11.0
+    cadence_days: 90
+    rationale: |
+      Raised from V0's 180-day cadence to 90 days because V1 ships the
+      BFO+RO strip pipeline; any OEO upstream change that introduces NEW
+      BFO/RO IRIs would leak through scripts/build_v1_imports.py and
+      reintroduce the V0 construct_mismatch. Aggressive cadence until the
+      strip pipeline is settled.
+    next_check_due: "2026-07-26"
+    manifest: imports-manifest-v1.yaml
+
+  - import_id: oeo-carrier-2.11.0
+    cadence_days: 90
+    rationale: "Same as oeo-technology-2.11.0; shares the BFO+RO strip pipeline."
+    next_check_due: "2026-07-26"
+    manifest: imports-manifest-v1.yaml
+
+  - import_id: qudt-units-2.1
+    cadence_days: 180
+    rationale: |
+      QUDT 2.1 stable; cadence 180 days. If QUDT 3.x lands, scout
+      escalates: schema rename + breaking changes likely.
+    next_check_due: "2026-10-24"
+    manifest: imports-manifest-v1.yaml
+
+  - import_id: dcat-3
+    cadence_days: 365
+    rationale: "DCAT 3 is W3C Rec; 365-day cadence."
+    next_check_due: "2027-04-22"
+    manifest: imports-manifest.yaml
+
+  - import_id: prov-o
+    cadence_days: 365
+    rationale: "PROV-O is W3C Rec 2013; very stable."
+    next_check_due: "2027-04-22"
+    manifest: imports-manifest.yaml
+
+  - import_id: skos-core
+    cadence_days: 365
+    rationale: "SKOS-Core is W3C Rec 2009; effectively frozen."
+    next_check_due: "2027-04-22"
+    manifest: imports-manifest.yaml
+
+  - import_id: foaf
+    cadence_days: 365
+    rationale: "FOAF 0.99 effectively frozen; community-maintained."
+    next_check_due: "2027-04-22"
+    manifest: imports-manifest.yaml
+
+  - import_id: dcterms
+    cadence_days: 365
+    rationale: "DCMI Terms; mature W3C-aligned vocabulary."
+    next_check_due: "2027-04-22"
+    manifest: imports-manifest.yaml
+
+  - import_id: ei-temporal-resolution-v0
+    cadence_days: 0
+    rationale: |
+      Hand-seeded SKOS scheme local to energy-intel. Cadence 0 (always
+      up). Curator files upstream OEO issue requesting a temporal-
+      resolution branch so this can migrate.
+    next_check_due: "n/a (local)"
+    manifest: imports-manifest.yaml
+
+  - import_id: ei-aggregation-type-v0
+    cadence_days: 0
+    rationale: |
+      Hand-seeded SKOS scheme. Same status as ei-temporal-resolution-v0;
+      curator tracks upstream OEO request.
+    next_check_due: "n/a (local)"
+    manifest: imports-manifest.yaml
+
+  - import_id: prov-foaf-agent-bridge
+    cadence_days: 0
+    rationale: |
+      Mapper-authored bridge .ttl. Local; refreshed only when FOAF or
+      PROV-O changes. Bound to dcat-3 / prov-o / foaf cadences.
+    next_check_due: "n/a (local)"
+    manifest: imports-manifest.yaml
+
+# ---------------------------------------------------------------------
+# Refresh policy (curator audit)
+# ---------------------------------------------------------------------
+refresh_policy:
+  default_action_on_cadence_breach: |
+    On cadence elapse: curator runs `uv run runoak ... compare` against
+    the upstream's latest release. Any non-trivial diff triggers a
+    `robot diff` + KGCL patch + scout-loopback for re-extract + mapper
+    loopback for any mappings whose subject/object source moved + full
+    validator regression.
+  oeo_specific:
+    bfo_ro_leak_check: |
+      Both OEO subsets are stripped by IRI list, NOT by namespace prefix.
+      If OEO upstream introduces NEW BFO or RO IRIs in a future release,
+      `scripts/build_v1_imports.py` will leak them. Curator MUST compare
+      the BFO/RO IRI set in the new OEO subset against
+      `imports/upper-axiom-leak-terms.txt` at every OEO refresh and extend
+      the strip list accordingly.
+    descendants_check: |
+      V0/V1 BOT extract pulls only the parent path. OEO_00020267
+      (energy-technology), OEO_00020039 (energy-carrier), and
+      OEO_00000011 (energy-converting-component) all have 0 descendants
+      in the subset. At next refresh, choose: (a) re-extract with TOP+BOT
+      to drag descendants, OR (b) extend the seed list with concrete
+      technologies (solar-pv, onshore-wind, lithium-ion-battery).
+      Tracked as V1-CUR-1.
+  qudt_specific:
+    si_prefix_naming_lint: |
+      QUDT 2.1 uses SI-prefix-as-word naming: `unit:GigaW`, not `unit:GW`;
+      `unit:MegaW`, not `unit:MW`; `unit:TeraW-HR`, not `unit:TW-HR`.
+      Validator V1 already corrected `tests/cq-016.sparql`. At next
+      QUDT refresh, curator runs a pre-commit lint that greps for the
+      bad forms (`unit:[GMTk]W(\b|[^a-zA-Z])` excluding correct prefixes).
+      Tracked as V1-CUR-4.
+
+# ---------------------------------------------------------------------
+# Open questions carried into v0.3.0
+# ---------------------------------------------------------------------
+open_questions:
+  - id: V1-IM-Q1
+    source: imports-manifest-v1.yaml § open_questions
+    question: |
+      Should V1 promote `imports/oeo-{technology,carrier}-subset-fixed.ttl`
+      to canonical names (delete the unfixed V0 subsets)?
+    curator_disposition: |
+      DEFER to v0.3.0. Keep both pairs in v0.2.0; deprecate V0 unfixed at
+      first release that ships V1 if no consumer regression. Replacement
+      pointer via dcterms:isReplacedBy in the V0 file's ontology header.
+
+  - id: V1-CUR-1
+    source: validator-to-curator-handoff-v1.md § 4
+    question: |
+      OEO subset is upward-only; CQ-015 / CQ-019 fixtures bind the root
+      directly. Re-extract with TOP+BOT or extend seed list?
+    curator_disposition: |
+      Track for v0.3.0. Open Linear issue with severity=info, owner=scout
+      at next sprint planning.

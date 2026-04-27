@@ -59,9 +59,16 @@ ontologies/*/release/pao-docs.html
 # Large full upstream ontology snapshots (rebuilt on-demand from pinned versions)
 ontologies/*/imports/oeo-full.owl
 
-# ROBOT-derived MIREOT subsets (rebuilt via `uv run python ontologies/*/scripts/run_gates.py`)
+# ROBOT-derived MIREOT subsets (rebuilt via `uv run python ontologies/*/scripts/run_gates.py`
+# or scripts/build_v1_imports.py)
 ontologies/*/imports/oeo-technology-subset.ttl
 ontologies/*/imports/oeo-carrier-subset.ttl
+ontologies/*/imports/oeo-technology-subset-fixed.ttl
+ontologies/*/imports/oeo-carrier-subset-fixed.ttl
+ontologies/*/imports/qudt-units-subset.ttl
+
+# Cached upstream vocab sources (large; rebuilt via build scripts, manifest pins versions)
+ontologies/*/imports/qudt-source/
 
 # Machine-generated validation artefacts (rebuilt by run_gates.py; not source-of-truth)
 ontologies/*/validation/merged-*.ttl

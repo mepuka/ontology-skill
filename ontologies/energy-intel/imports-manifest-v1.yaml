@@ -1,0 +1,310 @@
+# energy-intel — Imports Manifest (V1 delta)
+#
+# Authored: 2026-04-27 by ontology-scout (V1 iteration)
+# Predecessor: imports-manifest.yaml (V0 baseline; commit 36d1952)
+#
+# This file documents only V1 *additions* and *changed-status* entries.
+# The V0 manifest stays the source of truth for everything not restated
+# here. The architect / curator merge by row id; rows below override the
+# matching id in the V0 manifest.
+#
+# Schema: same as V0 (_shared/odk-and-imports.md § 3) plus:
+#   * v1_change_type: added | status_changed | rejected
+#   * v1_rationale:   short note pointing at reuse-report-v1.md anchor
+#
+# Build script: scripts/build_v1_imports.py — reproduces every row marked
+# `built_by: scripts/build_v1_imports.py`.
+
+baseline_manifest: imports-manifest.yaml
+baseline_commit: "36d1952d9659d336aa8529880ac9fba68ab20aa0"
+authored_at: "2026-04-27"
+authored_by: ontology-scout
+build_script: scripts/build_v1_imports.py
+reuse_report: docs/reuse-report-v1.md
+
+imports:
+
+  # ===================================================================
+  # OEO subsets — STATUS CHANGED from "on disk, not imported" to
+  # "BFO+RO-stripped variant, importable, HermiT-clean".
+  # ===================================================================
+
+  - id: oeo-technology-2.11.0
+    v1_change_type: status_changed
+    v1_rationale: |
+      V0 BOT extract is on disk but never `owl:imports`-ed because merging
+      with V0 BFO-2020 closure produced a HermiT "inconsistent ontology"
+      verdict. Validator's V0->curator handoff § 6 raised
+      `construct_mismatch` and recommended "remove BFO_* axioms". Scout
+      empirically confirms BFO removal alone is INSUFFICIENT: the OEO
+      `exogenous data` -> `has role` -> `independent continuant` chain
+      conflicts with the BFO `independent / generically-dependent` disjoint.
+      Scout SQ-3 evidence: stripping BFO_* AND RO_* via
+      `robot remove --term-file ... --trim true --preserve-structure false`
+      produces a HermiT-clean closure (0 unsat).
+      See reuse-report-v1.md § SQ-3.
+
+    source_iri: https://openenergyplatform.org/ontology/oeo/oeo-full.owl
+    pinned_version: "2.11.0"
+    extraction_method: BOT_post_strip
+    term_file: imports/upper-axiom-leak-terms.txt   # 29 BFO + 28 RO IRIs
+    module_file: imports/oeo-technology-subset-fixed.ttl
+    license: CC-BY-4.0
+    refresh_cadence_days: 90
+    source_freshness: "2026-04-27 verified against v2.11.0 release tag (last published 2026-03-04)"
+    rejection_rationale: null
+    seed_terms:
+      # IDENTICAL to V0 (verified against local oeo-full.owl 2026-04-27).
+      # Both seeds present, owl:Class, not owl:deprecated, labels match.
+      - "https://openenergyplatform.org/ontology/oeo/OEO_00020267"   # energy technology
+      - "https://openenergyplatform.org/ontology/oeo/OEO_00000011"   # energy converting component
+    seed_evidence:
+      verified_at: "2026-04-27"
+      method: "rdflib parse of imports/oeo-full.owl + label/parent check"
+      results:
+        - iri: "https://openenergyplatform.org/ontology/oeo/OEO_00020267"
+          label: "energy technology"
+          parent: "https://openenergyplatform.org/ontology/oeo/OEO_00000407"   # technology
+          deprecated: false
+          owl_class: true
+        - iri: "https://openenergyplatform.org/ontology/oeo/OEO_00000011"
+          label: "energy converting component"
+          parent: "https://openenergyplatform.org/ontology/oeo/OEO_00000061"   # artificial object
+          deprecated: false
+          owl_class: true
+    extraction_command: |
+      # Step 1: V0 BOT extract is already on disk at imports/oeo-technology-subset.ttl.
+      # Step 2: V1 strip.
+      .local/bin/robot remove \
+        --input ontologies/energy-intel/imports/oeo-technology-subset.ttl \
+        --term-file ontologies/energy-intel/imports/upper-axiom-leak-terms.txt \
+        --trim true \
+        --preserve-structure false \
+        --output ontologies/energy-intel/imports/oeo-technology-subset-fixed.ttl
+    pre_strip_class_count: 446
+    post_strip_class_count: 336
+    notes: |
+      * The `term_file` is a list of IRIs to *strip*, not seeds. It contains
+        29 BFO classes/properties and 28 RO object properties — every upper-
+        ontology IRI that BOT extraction transitively dragged in and that
+        creates conflicts with V0's BFO-2020 import.
+      * Architect imports `imports/oeo-technology-subset-fixed.ttl` (NOT the
+        V0 `oeo-technology-subset.ttl`).
+      * Both V0 root seeds remain present after stripping; the OEO class
+        hierarchy walk for CQ-015 is preserved.
+
+  - id: oeo-carrier-2.11.0
+    v1_change_type: status_changed
+    v1_rationale: |
+      Same construct_mismatch / BFO+RO conflict as oeo-technology-2.11.0.
+      Same remediation. Both subsets share the same BFO+RO term list.
+      See reuse-report-v1.md § SQ-3.
+    source_iri: https://openenergyplatform.org/ontology/oeo/oeo-full.owl
+    pinned_version: "2.11.0"
+    extraction_method: BOT_post_strip
+    term_file: imports/upper-axiom-leak-terms.txt
+    module_file: imports/oeo-carrier-subset-fixed.ttl
+    license: CC-BY-4.0
+    refresh_cadence_days: 90
+    source_freshness: "2026-04-27 verified against v2.11.0 release tag"
+    rejection_rationale: null
+    seed_terms:
+      - "https://openenergyplatform.org/ontology/oeo/OEO_00020039"   # energy carrier
+    seed_evidence:
+      verified_at: "2026-04-27"
+      results:
+        - iri: "https://openenergyplatform.org/ontology/oeo/OEO_00020039"
+          label: "energy carrier"
+          parent: "http://purl.obolibrary.org/obo/BFO_0000040"   # material entity (BFO 2020)
+          deprecated: false
+          owl_class: true
+          subtree_size_post_strip: "preserved (5 asserted subs + transitive closure)"
+    extraction_command: |
+      .local/bin/robot remove \
+        --input ontologies/energy-intel/imports/oeo-carrier-subset.ttl \
+        --term-file ontologies/energy-intel/imports/upper-axiom-leak-terms.txt \
+        --trim true \
+        --preserve-structure false \
+        --output ontologies/energy-intel/imports/oeo-carrier-subset-fixed.ttl
+    notes: |
+      Architect imports `imports/oeo-carrier-subset-fixed.ttl`.
+
+  # ===================================================================
+  # QUDT — STATUS CHANGED from "rejected (full schema, too big)" to
+  # "narrow vocab/unit + vocab/quantitykind slice imported".
+  # ===================================================================
+
+  - id: qudt-units-2.1
+    v1_change_type: status_changed
+    v1_rationale: |
+      V0 left QUDT 2.1 unimported with `ei:assertedUnit xsd:string`. V1
+      adds `ei:canonicalUnit -> qudt:Unit` (CQ-016) and (per scout SQ-2)
+      `ei:hasQuantityKind -> qudt:QuantityKind` on Variable (CQ-017).
+      Scout decision: extract BOTH qudt:Unit AND qudt:QuantityKind,
+      slicing only the units actually used by V1 sample claims plus the
+      QuantityKinds those units `qudt:hasQuantityKind`. Total subset size:
+      859 triples (56 KB) — well below the 400-class threshold and orders
+      of magnitude smaller than the full QUDT vocab/unit (2.4 MB) or
+      vocab/quantitykind (1.7 MB). See reuse-report-v1.md § SQ-2 for the
+      cost-benefit analysis.
+    source_iri:
+      - "https://qudt.org/2.1/vocab/unit"
+      - "https://qudt.org/2.1/vocab/quantitykind"
+    pinned_version: "2.1"
+    extraction_method: programmatic_slice
+    term_file: scripts/build_v1_imports.py    # seeds embedded as QUDT_UNIT_SEEDS tuple
+    module_file: imports/qudt-units-subset.ttl
+    license: CC-BY-4.0
+    refresh_cadence_days: 180
+    source_freshness: "2026-04-27 fetched live; cached at imports/qudt-source/"
+    rejection_rationale: null
+    seed_units:
+      # Seeds verified present in QUDT 2.1 vocab/unit on 2026-04-27.
+      # NOTE: V0 manifest's seed list (`unit:GW`, `unit:MW`, `unit:TW-HR`)
+      # was WRONG — those IRIs do not exist in QUDT 2.1. The correct names
+      # use the SI-prefix-as-word convention (GigaW, MegaW, TeraW-HR).
+      power: ["GigaW", "MegaW", "TeraW", "KiloW", "W"]
+      energy_watt_hour: ["TeraW-HR", "GigaW-HR", "MegaW-HR", "KiloW-HR"]
+      energy_joule: ["PetaJ", "TeraJ", "GigaJ", "J", "BTU_IT"]
+      mass: ["TON_Metric", "KiloGM", "GM"]
+      volume: ["BBL", "BBL_UK_PET"]
+      intensity: ["KiloGM-PER-J"]
+      electrical: ["HZ", "V", "A"]
+      misc: ["PERCENT", "KiloMOL"]
+    seed_quantitykinds:
+      # Pulled transitively from `qudt:hasQuantityKind` triples on the seed
+      # units (39 distinct QKs because some units like `A` declare multiple
+      # QK linkages — ElectricCurrent, ElectricCurrentPhasor, etc.).
+      core_relevant_to_v1:
+        - "Power"
+        - "ActivePower"
+        - "Energy"
+        - "ThermalEnergy"
+        - "Mass"
+        - "MassPerEnergy"
+        - "Volume"
+        - "Frequency"
+        - "ElectricCurrent"
+        - "ElectricPotential"
+        - "Voltage"
+        - "DimensionlessRatio"
+        - "AmountOfSubstance"
+      transitively_pulled_low_priority:
+        - "DisplacementCurrent"
+        - "ElectricCurrentPhasor"
+        - "ElectricPotentialDifference"
+        - "EnergyPerElectricCharge"
+        - "ExchangeIntegral"
+        - "HamiltonFunction"
+        - "LagrangeFunction"
+        - "LengthPercentage"
+        - "LevelWidth"
+        - "MagneticTension"
+        - "MagnetomotiveForce"
+        - "OpeningRatio"
+        - "PressurePercentage"
+        - "Prevalence"
+        - "Reflectance"
+        - "RelativeHumidity"
+        - "RelativeLuminousFlux"
+        - "RelativePartialPressure"
+        - "ResistancePercentage"
+        - "RotationalFrequency"
+        - "RotationalVelocity"
+        - "TimePercentage"
+        - "TotalCurrent"
+        - "VoltagePercentage"
+        - "CO2Equivalent"
+        - "CurrentLinkage"
+    extraction_command: |
+      # Programmatic slice (rdflib). See scripts/build_v1_imports.py:
+      uv run python ontologies/energy-intel/scripts/build_v1_imports.py
+      # The script:
+      #   1. Fetches QUDT 2.1 vocab/unit + vocab/quantitykind to imports/qudt-source/.
+      #   2. Pulls qudt:Unit triples for each seed in QUDT_UNIT_SEEDS.
+      #   3. Pulls qudt:QuantityKind triples for every QK transitively
+      #      reached via qudt:hasQuantityKind on a seed unit.
+      #   4. Filters annotation noise (keeps label, symbol, hasQuantityKind,
+      #      hasDimensionVector, conversionMultiplier, dcterms:description).
+      #   5. Writes imports/qudt-units-subset.ttl.
+    triple_count: 859
+    file_size_bytes: 56534
+    notes: |
+      * Architect imports `imports/qudt-units-subset.ttl`.
+      * Conceptualizer property-design call: `ei:canonicalUnit` ranges over
+        `qudt:Unit` (CQ-016 must_have); `ei:hasQuantityKind` (range
+        `qudt:QuantityKind`) decision is GO per scout SQ-2 — CQ-017 stays
+        `should_have` not dropped to `wont_have`.
+
+  # ===================================================================
+  # Removed entries: qudt-full-schema (still rejected, no change). Other
+  # rejected V0 rows (schema-org-core, oeoex, owl-time, sosa-ssn,
+  # rdf-data-cube) carry forward from V0 unchanged.
+  # ===================================================================
+
+# -------------------------------------------------------------------
+# V1 holdovers (unchanged from V0 manifest, listed for clarity)
+# -------------------------------------------------------------------
+v1_unchanged_imports:
+  - bfo-2020                  # full_import; refresh 365 days
+  - iao-2026-03               # MIREOT; refresh 120 days
+  - dcat-3                    # full_import; refresh 365 days
+  - prov-o                    # full_import; refresh 365 days
+  - skos-core                 # full_import; refresh 365 days
+  - foaf                      # full_import; refresh 365 days
+  - dcterms                   # full_import; refresh 365 days
+  - ei-temporal-resolution-v0 # hand_seed
+  - ei-aggregation-type-v0    # hand_seed
+  - prov-foaf-agent-bridge    # bridge (mapper authors)
+
+# -------------------------------------------------------------------
+# Refresh-policy notes for V1 (curator audit)
+# -------------------------------------------------------------------
+refresh_policy_notes: |
+  * OEO 2.11.0 -> 90-day cadence (per validator handoff). Re-run
+    scripts/build_v1_imports.py on each refresh; it re-strips BFO+RO
+    and re-validates HermiT.
+  * QUDT 2.1 -> 180-day cadence. Re-run scripts/build_v1_imports.py;
+    if QUDT releases 3.x, scout escalates: schema rename + breaking
+    changes likely.
+  * Both BFO and RO are stripped by IRI list, not by namespace prefix.
+    If OEO upstream introduces NEW BFO or RO IRIs in a future release,
+    scripts/build_v1_imports.py will leak them. Curator must compare
+    the BFO/RO IRI set in the OEO subset against
+    imports/upper-axiom-leak-terms.txt at every OEO refresh.
+
+# -------------------------------------------------------------------
+# Open questions (carry-forward to architect / conceptualizer)
+# -------------------------------------------------------------------
+open_questions:
+  - id: V1-IM-Q1
+    question: |
+      Should V1 promote `imports/oeo-{technology,carrier}-subset-fixed.ttl`
+      to canonical names (delete the unfixed V0 subsets)?
+    answer_owner: curator
+    scout_recommendation: |
+      Keep both pairs in V0.x, deprecate V0 unfixed at first release that
+      ships V1; replacement-pointer via dcterms:isReplacedBy in the V0
+      file's ontology header.
+
+  - id: V1-IM-Q2
+    question: |
+      Are the 25 transitively-pulled low-priority QuantityKinds (Reflectance,
+      RotationalVelocity, etc.) acceptable bloat, or should they be
+      stripped?
+    answer_owner: conceptualizer
+    scout_recommendation: |
+      KEEP. They cost <100 triples, never appear in CMC range constraints
+      (only the unit-side declares them via qudt:hasQuantityKind), and
+      removing them would force a second pass over the QUDT graph. The
+      cost is negligible.
+
+  - id: V1-IM-Q3
+    question: |
+      Should we expose `ei:hasQuantityKind` on `Variable` (V2 facet) or
+      on `CanonicalMeasurementClaim`?
+    answer_owner: conceptualizer
+    scout_recommendation: |
+      On Variable per scope-v1.md § 2 line 54. CMC already routes through
+      Variable for cross-expert join semantics (Linear D7); replicating
+      hasQuantityKind on CMC would create two sources of truth.
