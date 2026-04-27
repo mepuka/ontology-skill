@@ -7,8 +7,9 @@
 ei:energy-intel a owl:Ontology ;
     dcterms:created "2026-04-22"^^xsd:date ;
     dcterms:creator "energy-intel / ontology-architect"@en ;
-    dcterms:description "Top-level energy-intel ontology. Imports the four authored modules (agent, media, measurement, data) and the declared external ontologies listed in imports-manifest.yaml."@en ;
+    dcterms:description "Top-level energy-intel ontology. Imports the four authored modules (agent, media, measurement, data), the hand-seeded SKOS schemes, and the declared external ontologies (V1 adds three: BFO+RO-stripped OEO technology / carrier subsets and a narrow QUDT 2.1 unit subset)."@en ;
     dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:modified "2026-04-27"^^xsd:date ;
     dcterms:title "energy-intel — top-level ontology"@en ;
     owl:imports <http://purl.obolibrary.org/obo/bfo.owl>,
         <http://purl.obolibrary.org/obo/iao.owl>,
@@ -17,6 +18,9 @@ ei:energy-intel a owl:Ontology ;
         <http://www.w3.org/ns/dcat>,
         <http://www.w3.org/ns/prov-o>,
         foaf:,
+        <https://w3id.org/energy-intel/imports/oeo-carrier-subset>,
+        <https://w3id.org/energy-intel/imports/oeo-technology-subset>,
+        <https://w3id.org/energy-intel/imports/qudt-units-subset>,
         <https://w3id.org/energy-intel/modules/agent>,
         <https://w3id.org/energy-intel/modules/concept-schemes/aggregation-type>,
         <https://w3id.org/energy-intel/modules/concept-schemes/technology-seeds>,
@@ -24,5 +28,5 @@ ei:energy-intel a owl:Ontology ;
         <https://w3id.org/energy-intel/modules/data>,
         <https://w3id.org/energy-intel/modules/measurement>,
         <https://w3id.org/energy-intel/modules/media> ;
-    owl:versionIRI <https://w3id.org/energy-intel/v0/2026-04-22> ;
-    owl:versionInfo "v0 (2026-04-22)" .
+    owl:versionIRI <https://w3id.org/energy-intel/v1/2026-04-27> ;
+    owl:versionInfo "v1 (2026-04-27)" .

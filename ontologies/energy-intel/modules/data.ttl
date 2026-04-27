@@ -17,7 +17,8 @@ ei:hasSeries a owl:ObjectProperty ;
     dcterms:creator "energy-intel / ontology-architect"@en ;
     dcterms:description "DCAT 3 extension: ei:hasSeries (Dataset → Series) and the inverse declaration of ei:publishedInDataset. No local DCAT subclasses."@en ;
     dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:modified "2026-04-27"^^xsd:date ;
     dcterms:title "energy-intel — data module"@en ;
     owl:imports <http://www.w3.org/ns/dcat>,
         <https://w3id.org/energy-intel/modules/measurement> ;
-    owl:versionInfo "v0 (2026-04-22)" .
+    owl:versionInfo "v1 (2026-04-27)" .

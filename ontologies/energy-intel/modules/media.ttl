@@ -1,6 +1,7 @@
 @prefix bfo: <http://purl.obolibrary.org/obo/BFO_> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix ei: <https://w3id.org/energy-intel/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix iao: <http://purl.obolibrary.org/obo/IAO_> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
@@ -32,10 +33,11 @@ ei:inConversation a owl:ObjectProperty ;
     dcterms:creator "energy-intel / ontology-architect"@en ;
     dcterms:description "Post, MediaAttachment (Chart / Screenshot / Excerpt / GenericImageAttachment), Conversation / SocialThread / PodcastEpisode / PodcastSegment, and the abstract EvidenceSource."@en ;
     dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:modified "2026-04-27"^^xsd:date ;
     dcterms:title "energy-intel — media module"@en ;
     owl:imports <http://purl.obolibrary.org/obo/iao.owl>,
         <https://w3id.org/energy-intel/modules/agent> ;
-    owl:versionInfo "v0 (2026-04-22)" .
+    owl:versionInfo "v1 (2026-04-27)" .
 
 ei:presents a owl:ObjectProperty ;
     rdfs:label "presents"@en ;
@@ -59,9 +61,9 @@ ei:screenshotOf a owl:ObjectProperty ;
 
 ei:spokenBy a owl:ObjectProperty ;
     rdfs:label "spoken by"@en ;
-    rdfs:comment "Binary participation shortcut for podcast speakers (multi-speaker segments allowed; no cardinality axiom)."@en ;
+    rdfs:comment "Binary participation shortcut for podcast speakers (multi-speaker segments allowed; no cardinality axiom). V1: range widened to foaf:Person; SHACL S-V1-4 carries the EnergyExpertRole-bearer warning at runtime."@en ;
     rdfs:domain ei:PodcastSegment ;
-    rdfs:range ei:Expert .
+    rdfs:range foaf:Person .
 
 ei:Chart a owl:Class ;
     rdfs:label "chart"@en ;
@@ -83,9 +85,9 @@ ei:SocialThread a owl:Class ;
 ei:authoredBy a owl:FunctionalProperty,
         owl:ObjectProperty ;
     rdfs:label "authored by"@en ;
-    rdfs:comment "Shortcut form of participation (ODP F.4). Every Post has exactly one author in V0."@en ;
+    rdfs:comment "Shortcut form of participation (ODP F.4). Every Post has exactly one author. V1: range widened from ei:Expert to foaf:Person; the role-bearing companion check moves to SHACL S-V1-3."@en ;
     rdfs:domain ei:Post ;
-    rdfs:range ei:Expert .
+    rdfs:range foaf:Person .
 
 ei:partOfEpisode a owl:AsymmetricProperty,
         owl:FunctionalProperty,
@@ -144,7 +146,7 @@ ei:MediaAttachment a owl:Class ;
 ei:Post a owl:Class ;
     rdfs:label "post"@en ;
     rdfs:subClassOf [ a owl:Restriction ;
-            owl:onClass ei:Expert ;
+            owl:onClass foaf:Person ;
             owl:onProperty ei:authoredBy ;
             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
         iao:0000310,
@@ -152,10 +154,10 @@ ei:Post a owl:Class ;
     skos:definition "A social-media or short-form document authored by an Expert that may evidence CMCs. Re-parented to iao:Document and ei:EvidenceSource."@en .
 
 [] a owl:AllDisjointClasses ;
-    owl:members ( ei:Chart ei:Screenshot ei:Excerpt ei:GenericImageAttachment ) .
+    owl:members ( ei:SocialThread ei:PodcastEpisode ) .
 
 [] a owl:AllDisjointClasses ;
-    owl:members ( ei:SocialThread ei:PodcastEpisode ) .
+    owl:members ( ei:Chart ei:Screenshot ei:Excerpt ei:GenericImageAttachment ) .
 
 [] a owl:AllDisjointClasses ;
     owl:members ( ei:Post ei:MediaAttachment ei:PodcastSegment ) .

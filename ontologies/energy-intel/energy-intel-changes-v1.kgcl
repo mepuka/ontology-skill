@@ -1,0 +1,166 @@
+# energy-intel V1 KGCL change log
+#
+# Authored: 2026-04-27 by ontology-architect (V1 iteration)
+# Source: docs/conceptualizer-to-architect-handoff-v1.md § 2 (axiom obligations A1..A8)
+#
+# Curator audit (2026-04-27, v0.2.0 release-prep): every cited source/target
+# term in the blocks below resolves against the V1 closure (see
+# docs/curator-log-v1.md § KGCL audit). Blocks A1..A8 + the 5 SHACL shape
+# annotations all check out. KGCL audit verdict: PASS.
+#
+# V0 baseline:
+#   * Tag:           v0.1.0
+#   * Commit:        36d1952  (release-time HEAD on `main`)
+#   * Predecessor:   dc123d4  (architect TBox land); 21089da (S-1 SHACL patch)
+#   * versionIRI:    https://w3id.org/energy-intel/v0/2026-04-22
+#
+# V1 release target:
+#   * Tag:           v0.2.0
+#   * versionIRI:    https://w3id.org/energy-intel/v1/2026-04-27
+#
+# These KGCL patches describe the structural changes between V0 (commit
+# 36d1952, dated 2026-04-22) and V1 (2026-04-27). They are recorded in
+# KGCL form for human review and curator audit; the changes are
+# materialised by `scripts/build_modules.py` (the source of truth), not
+# by `runoak apply` against this file. KGCL is the abstract specification
+# layer; the build script is the runnable implementation.
+#
+# Each block is preceded by a short rationale and pinned to its V1 axiom
+# obligation (A-row in the conceptualizer handoff).
+#
+# Apply only on a fresh checkout of V0 — running these against an
+# already-V1 module set is a no-op (idempotent).
+
+# ===================================================================
+# A1 — Mint ei:EnergyExpertRole
+# ===================================================================
+# Source: bfo-alignment-v1.md § 1; conceptualizer-to-architect-handoff-v1.md § 2 A1
+# Module:  modules/agent.ttl
+
+create class https://w3id.org/energy-intel/EnergyExpertRole label "energy expert role"@en
+create edge https://w3id.org/energy-intel/EnergyExpertRole rdfs:subClassOf http://purl.obolibrary.org/obo/BFO_0000023
+create definition "A BFO role inhering in a foaf:Person who publishes energy-domain claims (on social media, podcasts, or articles) that an editorial pipeline extracts as CanonicalMeasurementClaims." for https://w3id.org/energy-intel/EnergyExpertRole
+
+# Subclass-some restriction asserting the role inheres in a Person
+# (mirrors the V0 PublisherRole / DataProviderRole shape on Organization).
+# KGCL does not yet have first-class restriction syntax; record as a
+# free-form annotation for human review.
+add_axiom EnergyExpertRole rdfs:subClassOf [a owl:Restriction; owl:onProperty bfo:0000052; owl:someValuesFrom foaf:Person]
+
+# ===================================================================
+# A2 — Redefine ei:Expert as defined equivalent class
+# ===================================================================
+# Source: conceptual-model-v1.md § 2 (CQ-Q-1); bfo-alignment-v1.md § 2;
+#         conceptualizer-to-architect-handoff-v1.md § 2 A2
+# Module:  modules/agent.ttl
+#
+# V0 form: ``ei:Expert rdfs:subClassOf foaf:Person ; owl:disjointWith ei:Organization``
+# V1 form: ``ei:Expert ≡ foaf:Person ⊓ (∃bfo:0000053 . ei:EnergyExpertRole)``
+#          (Drop V0 SubClassOf assertion — entailed by EquivalentTo.)
+#          (Keep V0 disjointWith ei:Organization carry-forward.)
+
+remove_edge https://w3id.org/energy-intel/Expert rdfs:subClassOf http://xmlns.com/foaf/0.1/Person
+add_axiom ei:Expert owl:equivalentClass [owl:intersectionOf (foaf:Person [a owl:Restriction; owl:onProperty bfo:0000053; owl:someValuesFrom ei:EnergyExpertRole])]
+# (ei:Expert owl:disjointWith ei:Organization carries forward unchanged.)
+
+# ===================================================================
+# A3 — Three-way role disjointness
+# ===================================================================
+# Source: anti-pattern-review-v1.md § 3; conceptualizer-to-architect-handoff-v1.md § 2 A3
+# Module:  modules/agent.ttl
+
+add_axiom AllDisjointClasses(ei:EnergyExpertRole, ei:PublisherRole, ei:DataProviderRole)
+
+# ===================================================================
+# A4 — Mint ei:canonicalUnit
+# ===================================================================
+# Source: property-design-v1.md § 1; conceptualizer-to-architect-handoff-v1.md § 2 A4
+# Module:  modules/measurement.ttl
+
+create object_property https://w3id.org/energy-intel/canonicalUnit label "canonical unit"@en
+create edge https://w3id.org/energy-intel/canonicalUnit rdfs:domain https://w3id.org/energy-intel/CanonicalMeasurementClaim
+create edge https://w3id.org/energy-intel/canonicalUnit rdfs:range http://qudt.org/schema/qudt/Unit
+add_axiom canonicalUnit a owl:FunctionalProperty
+create definition "Links a CanonicalMeasurementClaim to the canonical qudt:Unit IRI that the claim's surface-form ei:assertedUnit string resolves to. Functional: a CMC has at most one canonical unit." for https://w3id.org/energy-intel/canonicalUnit
+
+# ===================================================================
+# A5 — CMC max-cardinality restriction for canonicalUnit
+# ===================================================================
+# Source: property-design-v1.md § 1; shacl-vs-owl-v1.md § 1 O-V1-3;
+#         conceptualizer-to-architect-handoff-v1.md § 2 A5
+# Module:  modules/measurement.ttl
+
+add_axiom ei:CanonicalMeasurementClaim rdfs:subClassOf [a owl:Restriction; owl:onProperty ei:canonicalUnit; owl:maxQualifiedCardinality 1; owl:onClass qudt:Unit]
+
+# ===================================================================
+# A6 — Widen ei:authoredBy range (Expert -> foaf:Person)
+# ===================================================================
+# Source: property-design-v1.md § 3.1; conceptualizer-to-architect-handoff-v1.md § 2 A6
+# Module:  modules/media.ttl
+#
+# Also: update the Post SubClassOf restriction's onClass from ei:Expert
+# to foaf:Person.
+
+remove_edge https://w3id.org/energy-intel/authoredBy rdfs:range https://w3id.org/energy-intel/Expert
+create edge https://w3id.org/energy-intel/authoredBy rdfs:range http://xmlns.com/foaf/0.1/Person
+
+# Post SubClassOf restriction update:
+remove_axiom ei:Post rdfs:subClassOf [a owl:Restriction; owl:onProperty ei:authoredBy; owl:onClass ei:Expert; owl:qualifiedCardinality 1]
+add_axiom ei:Post rdfs:subClassOf [a owl:Restriction; owl:onProperty ei:authoredBy; owl:onClass foaf:Person; owl:qualifiedCardinality 1]
+
+# ===================================================================
+# A7 — Widen ei:spokenBy range (Expert -> foaf:Person)
+# ===================================================================
+# Source: property-design-v1.md § 3.2; conceptualizer-to-architect-handoff-v1.md § 2 A7
+# Module:  modules/media.ttl
+
+remove_edge https://w3id.org/energy-intel/spokenBy rdfs:range https://w3id.org/energy-intel/Expert
+create edge https://w3id.org/energy-intel/spokenBy rdfs:range http://xmlns.com/foaf/0.1/Person
+
+# ===================================================================
+# A8 — Wire three new owl:imports at top-level
+# ===================================================================
+# Source: imports-manifest-v1.yaml; conceptualizer-to-architect-handoff-v1.md § 2 A8
+# Files:  energy-intel.ttl + catalog-v001.xml + (regenerated) measurement.ttl owl:imports
+
+# Top-level imports:
+add_axiom ei:energy-intel owl:imports https://w3id.org/energy-intel/imports/oeo-technology-subset
+add_axiom ei:energy-intel owl:imports https://w3id.org/energy-intel/imports/oeo-carrier-subset
+add_axiom ei:energy-intel owl:imports https://w3id.org/energy-intel/imports/qudt-units-subset
+
+# Measurement module also imports the QUDT subset (its qudt:Unit range):
+add_axiom ei:modules/measurement owl:imports https://w3id.org/energy-intel/imports/qudt-units-subset
+
+# Top-level versionIRI bumped from V0 to V1:
+remove_axiom ei:energy-intel owl:versionIRI https://w3id.org/energy-intel/v0/2026-04-22
+add_axiom ei:energy-intel owl:versionIRI https://w3id.org/energy-intel/v1/2026-04-27
+
+# ===================================================================
+# A9 — (no-op) qudt:hasQuantityKind reused
+# ===================================================================
+# Source: property-design-v1.md § 4
+# No KGCL action — architect uses imported qudt:hasQuantityKind directly.
+
+# ===================================================================
+# Build-script side effects (recorded for completeness — not KGCL)
+# ===================================================================
+# - imports/oeo-technology-subset-fixed.ttl re-annotated with ontology IRI
+#   `https://w3id.org/energy-intel/imports/oeo-technology-subset` (was the
+#   shared OEO root). Done by scripts/build_v1_imports.py:reannotate_ontology_iri.
+# - imports/oeo-carrier-subset-fixed.ttl: same treatment with IRI
+#   `https://w3id.org/energy-intel/imports/oeo-carrier-subset`.
+# - catalog-v001.xml gained three <uri> rows mapping the project-namespaced
+#   import IRIs to local file paths.
+
+# ===================================================================
+# SHACL shape additions (S-V1-1 through S-V1-5)
+# ===================================================================
+# Source: shacl-vs-owl-v1.md § 2; conceptualizer-to-architect-handoff-v1.md § 3
+# Implemented in scripts/build_shapes.py — recorded here as KGCL annotations
+# for completeness; not applied via runoak apply.
+
+add_axiom ei:shape/CanonicalUnitInQudtSubset a sh:NodeShape           # S-V1-1
+add_axiom ei:shape/ResolvabilityGate a sh:NodeShape                    # S-V1-2
+add_axiom ei:shape/PostAuthorBearsEnergyExpertRole a sh:NodeShape      # S-V1-3
+add_axiom ei:shape/PodcastSpeakerBearsEnergyExpertRole a sh:NodeShape  # S-V1-4
+add_axiom ei:shape/AboutTechnologyInRecognizedVocab a sh:NodeShape     # S-V1-5

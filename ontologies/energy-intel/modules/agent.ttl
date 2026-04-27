@@ -10,9 +10,23 @@
 
 ei:Expert a owl:Class ;
     rdfs:label "Expert"@en ;
-    rdfs:subClassOf foaf:Person ;
     owl:disjointWith ei:Organization ;
-    skos:definition "A person who authors posts or speaks in podcast segments that evidence CanonicalMeasurementClaims about energy."@en .
+    owl:equivalentClass [ a owl:Class ;
+            owl:intersectionOf ( foaf:Person [ a owl:Restriction ;
+                        owl:onProperty bfo:0000053 ;
+                        owl:someValuesFrom ei:EnergyExpertRole ] ) ] ;
+    skos:definition "A foaf:Person who bears at least one ei:EnergyExpertRole. Defined (equivalent-class) so the reasoner classifies any role-bearer as an Expert. V1 redefinition supersedes V0 ``rdfs:subClassOf foaf:Person``."@en .
+
+<https://w3id.org/energy-intel/modules/agent> a owl:Ontology ;
+    dcterms:created "2026-04-22"^^xsd:date ;
+    dcterms:creator "energy-intel / ontology-architect"@en ;
+    dcterms:description "Expert, Organization, and the BFO-role pattern for publisher / data-provider roles."@en ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:modified "2026-04-27"^^xsd:date ;
+    dcterms:title "energy-intel — agent module"@en ;
+    owl:imports <http://purl.obolibrary.org/obo/bfo.owl>,
+        foaf: ;
+    owl:versionInfo "v1 (2026-04-27)" .
 
 ei:PublisherRole a owl:Class ;
     rdfs:label "publisher role"@en ;
@@ -23,16 +37,6 @@ ei:PublisherRole a owl:Class ;
     owl:disjointWith ei:DataProviderRole ;
     skos:definition "A BFO role inhering in an Organization that publishes Posts or Distributions that evidence CMCs."@en .
 
-<https://w3id.org/energy-intel/modules/agent> a owl:Ontology ;
-    dcterms:created "2026-04-22"^^xsd:date ;
-    dcterms:creator "energy-intel / ontology-architect"@en ;
-    dcterms:description "Expert, Organization, and the BFO-role pattern for publisher / data-provider roles."@en ;
-    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
-    dcterms:title "energy-intel — agent module"@en ;
-    owl:imports <http://purl.obolibrary.org/obo/bfo.owl>,
-        foaf: ;
-    owl:versionInfo "v0 (2026-04-22)" .
-
 ei:DataProviderRole a owl:Class ;
     rdfs:label "data provider role"@en ;
     rdfs:subClassOf [ a owl:Restriction ;
@@ -41,8 +45,19 @@ ei:DataProviderRole a owl:Class ;
         bfo:0000023 ;
     skos:definition "A BFO role inhering in an Organization that acts as the authoritative data source referenced by one or more CMCs."@en .
 
+ei:EnergyExpertRole a owl:Class ;
+    rdfs:label "energy expert role"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty bfo:0000052 ;
+            owl:someValuesFrom foaf:Person ],
+        bfo:0000023 ;
+    skos:definition "A BFO role inhering in a foaf:Person who publishes energy-domain claims (on social media, podcasts, or articles) that an editorial pipeline extracts as CanonicalMeasurementClaims."@en .
+
 ei:Organization a owl:Class ;
     rdfs:label "Organization"@en ;
     rdfs:subClassOf [ a owl:Class ;
             owl:intersectionOf ( foaf:Organization bfo:0000027 ) ] ;
     skos:definition "An organized group of persons (company, agency, research institute) that can bear a PublisherRole or DataProviderRole. Modeled as a FOAF Organization that is also a BFO ObjectAggregate."@en .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( ei:EnergyExpertRole ei:PublisherRole ei:DataProviderRole ) .

@@ -4,6 +4,7 @@
 @prefix ei: <https://w3id.org/energy-intel/> .
 @prefix iao: <http://purl.obolibrary.org/obo/IAO_> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix qudt: <http://qudt.org/schema/qudt/> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
@@ -59,13 +60,15 @@ ei:intervalStart a owl:DatatypeProperty,
 <https://w3id.org/energy-intel/modules/measurement> a owl:Ontology ;
     dcterms:created "2026-04-22"^^xsd:date ;
     dcterms:creator "energy-intel / ontology-architect"@en ;
-    dcterms:description "CanonicalMeasurementClaim, Observation, Variable (thin), Series (thin), ClaimTemporalWindow, and the ei:references* family of resolution properties."@en ;
+    dcterms:description "CanonicalMeasurementClaim, Observation, Variable (thin), Series (thin), ClaimTemporalWindow, and the ei:references* family of resolution properties. V1 adds ei:canonicalUnit -> qudt:Unit."@en ;
     dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:modified "2026-04-27"^^xsd:date ;
     dcterms:title "energy-intel — measurement module"@en ;
     owl:imports <http://www.w3.org/2004/02/skos/core>,
         <http://www.w3.org/ns/dcat>,
+        <https://w3id.org/energy-intel/imports/qudt-units-subset>,
         <https://w3id.org/energy-intel/modules/media> ;
-    owl:versionInfo "v0 (2026-04-22)" .
+    owl:versionInfo "v1 (2026-04-27)" .
 
 ei:publishedInDataset a owl:ObjectProperty ;
     rdfs:label "published in dataset"@en ;
@@ -86,6 +89,13 @@ ei:rawLabel a owl:DatatypeProperty,
     rdfs:comment "Verbatim surface-form label captured at extraction time."@en ;
     rdfs:domain ei:CanonicalMeasurementClaim ;
     rdfs:range xsd:string .
+
+ei:canonicalUnit a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "canonical unit"@en ;
+    rdfs:comment "Links a CanonicalMeasurementClaim to the canonical qudt:Unit IRI that the claim's surface-form ei:assertedUnit string resolves to. Functional: a CMC has at most one canonical unit."@en ;
+    rdfs:domain ei:CanonicalMeasurementClaim ;
+    rdfs:range qudt:Unit .
 
 ei:evidences a owl:ObjectProperty ;
     rdfs:label "evidences"@en ;
@@ -158,28 +168,32 @@ ei:CanonicalMeasurementClaim a owl:Class ;
     rdfs:label "canonical measurement claim"@en ;
     rdfs:subClassOf [ a owl:Restriction ;
             owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-            owl:onClass ei:Series ;
-            owl:onProperty ei:referencesSeries ],
-        [ a owl:Restriction ;
-            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-            owl:onClass ei:Variable ;
-            owl:onProperty ei:referencesVariable ],
-        [ a owl:Restriction ;
-            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-            owl:onClass ei:Organization ;
-            owl:onProperty ei:referencesAgent ],
+            owl:onClass dcat:Dataset ;
+            owl:onProperty ei:referencesDataset ],
         [ a owl:Restriction ;
             owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
             owl:onClass ei:EvidenceSource ;
             owl:onProperty [ owl:inverseOf ei:evidences ] ],
         [ a owl:Restriction ;
             owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-            owl:onClass dcat:Distribution ;
-            owl:onProperty ei:referencesDistribution ],
+            owl:onClass ei:Series ;
+            owl:onProperty ei:referencesSeries ],
         [ a owl:Restriction ;
             owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-            owl:onClass dcat:Dataset ;
-            owl:onProperty ei:referencesDataset ],
+            owl:onClass qudt:Unit ;
+            owl:onProperty ei:canonicalUnit ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass ei:Organization ;
+            owl:onProperty ei:referencesAgent ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass ei:Variable ;
+            owl:onProperty ei:referencesVariable ],
+        [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass dcat:Distribution ;
+            owl:onProperty ei:referencesDistribution ],
         iao:0000030 ;
     owl:disjointWith ei:Observation ;
     skos:definition "A numeric / categorical claim about an energy variable extracted from a post or podcast segment, with its source evidence, asserted value / unit / time, and (optionally) resolved references to a Variable, Series, Distribution, Dataset, Agent."@en .

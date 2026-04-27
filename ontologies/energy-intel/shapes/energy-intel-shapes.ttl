@@ -1,9 +1,20 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix ei: <https://w3id.org/energy-intel/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix unit: <http://qudt.org/vocab/unit/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/energy-intel/shape/AboutTechnologyInRecognizedVocab> a sh:NodeShape ;
+    rdfs:label "S-V1-5: ei:aboutTechnology value is in a recognised vocabulary"@en ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+            sh:message "ei:aboutTechnology value is neither a skos:Concept (V0 hand-seeded scheme) nor a transitive descendant of an imported OEO subtree root (energy-technology, energy-converting-component, energy-carrier)."@en ;
+            sh:prefixes <https://w3id.org/energy-intel/shapes/prefix-decl-v1> ;
+            sh:select "SELECT $this ?value WHERE { $this ei:aboutTechnology ?value . FILTER NOT EXISTS { ?value a skos:Concept . } FILTER NOT EXISTS {   ?value (rdfs:subClassOf|skos:broader)* ?root .   FILTER (?root = <https://openenergyplatform.org/ontology/oeo/OEO_00020267> || ?root = <https://openenergyplatform.org/ontology/oeo/OEO_00000011> || ?root = <https://openenergyplatform.org/ontology/oeo/OEO_00020039>) } }" ;
+            sh:severity sh:Violation ] ;
+    sh:targetClass ei:CanonicalMeasurementClaim .
 
 <https://w3id.org/energy-intel/shape/CMCEvidenceSource> a sh:NodeShape ;
     rdfs:label "CQ-009: CMC has inbound ei:evidences from EvidenceSource"@en ;
@@ -11,6 +22,15 @@
             sh:message "Every CanonicalMeasurementClaim must be evidenced by at least one ei:EvidenceSource (CQ-009 invariant)."@en ;
             sh:minCount 1 ;
             sh:path [ sh:inversePath ei:evidences ] ] ;
+    sh:targetClass ei:CanonicalMeasurementClaim .
+
+<https://w3id.org/energy-intel/shape/CanonicalUnitInQudtSubset> a sh:NodeShape ;
+    rdfs:label "S-V1-1: ei:canonicalUnit value must be one of the imported QUDT 2.1 units"@en ;
+    sh:property [ sh:in ( unit:GigaW unit:MegaW unit:TeraW unit:KiloW unit:W unit:TeraW-HR unit:GigaW-HR unit:MegaW-HR unit:KiloW-HR unit:PetaJ unit:TeraJ unit:GigaJ unit:J unit:BTU_IT unit:TON_Metric unit:KiloGM unit:GM unit:BBL unit:BBL_UK_PET unit:KiloGM-PER-J unit:HZ unit:V unit:A unit:PERCENT unit:KiloMOL ) ;
+            sh:message "ei:canonicalUnit value must be one of the imported QUDT 2.1 unit IRIs (25 frozen values per imports-manifest-v1.yaml). Use unit:GigaW (not unit:GW); the V0 manifest's IRIs were wrong."@en ;
+            sh:nodeKind sh:IRI ;
+            sh:path ei:canonicalUnit ;
+            sh:severity sh:Violation ] ;
     sh:targetClass ei:CanonicalMeasurementClaim .
 
 <https://w3id.org/energy-intel/shape/DidSchemeOnAuthoredBy> a sh:NodeShape ;
@@ -38,13 +58,63 @@
             sh:select "SELECT $this ?value WHERE { $this ei:rawDims ?value . FILTER(! regex(str(?value), '^\\\\s*[\\\\{\\\\[]')) }" ] ;
     sh:targetClass ei:CanonicalMeasurementClaim .
 
+<https://w3id.org/energy-intel/shape/PodcastSpeakerBearsEnergyExpertRole> a sh:NodeShape ;
+    rdfs:label "S-V1-4: PodcastSegment.spokenBy value should bear an ei:EnergyExpertRole"@en ;
+    sh:severity sh:Warning ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+            sh:message "PodcastSegment.spokenBy points to a foaf:Person without an ei:EnergyExpertRole (warning). Hosts and non-expert guests can speak in segments, so this is informational only."@en ;
+            sh:prefixes <https://w3id.org/energy-intel/shapes/prefix-decl-v1> ;
+            sh:select "SELECT $this ?speaker WHERE { $this ei:spokenBy ?speaker . FILTER NOT EXISTS { ?speaker bfo:0000053 ?role . ?role a ei:EnergyExpertRole . } }" ] ;
+    sh:targetClass ei:PodcastSegment .
+
+<https://w3id.org/energy-intel/shape/PostAuthorBearsEnergyExpertRole> a sh:NodeShape ;
+    rdfs:label "S-V1-3: Post.authoredBy value bears an ei:EnergyExpertRole"@en ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+            sh:message "Post.authoredBy must point to a foaf:Person who bears at least one ei:EnergyExpertRole via bfo:0000053. Required for Skygest ingest (CQ-018, scope-v1.md § In-scope)."@en ;
+            sh:prefixes <https://w3id.org/energy-intel/shapes/prefix-decl-v1> ;
+            sh:select "SELECT $this ?author WHERE { $this ei:authoredBy ?author . FILTER NOT EXISTS { ?author bfo:0000053 ?role . ?role a ei:EnergyExpertRole . } }" ;
+            sh:severity sh:Violation ] ;
+    sh:targetClass ei:Post .
+
+<https://w3id.org/energy-intel/shape/ResolvabilityGate> a sh:NodeShape ;
+    rdfs:label "S-V1-2: assertedUnit-without-canonicalUnit resolvability hint"@en ;
+    sh:severity sh:Warning ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+            sh:message "CMC has ei:assertedUnit set but no ei:canonicalUnit — the resolvability stage has not yet promoted this claim. UC-007."@en ;
+            sh:prefixes <https://w3id.org/energy-intel/shapes/prefix-decl-v1> ;
+            sh:select "SELECT $this WHERE { $this ei:assertedUnit ?au . FILTER NOT EXISTS { $this ei:canonicalUnit ?cu . } }" ] ;
+    sh:targetClass ei:CanonicalMeasurementClaim .
+
 <https://w3id.org/energy-intel/shapes/energy-intel-shapes> a owl:Ontology ;
-    dcterms:description "First-batch SHACL shapes for energy-intel V0 — DID-scheme URIs on authors, JSON-parseable raw dimensions, interval ordering, and CQ-009 CMC-evidence invariant."@en ;
-    dcterms:title "energy-intel — SHACL shapes (V0)"@en ;
-    owl:versionInfo "v0 (2026-04-22)" .
+    dcterms:description "SHACL shapes for energy-intel V0 + V1. V0: DID-scheme URIs on authors, JSON-parseable raw dimensions, interval ordering, and CQ-009 CMC-evidence invariant. V1 (per shacl-vs-owl-v1.md § 2): canonicalUnit-in-QUDT-subset, resolvability-gate, Post.authoredBy bears EnergyExpertRole, PodcastSegment.spokenBy bears EnergyExpertRole, and aboutTechnology-in-recognized-vocab."@en ;
+    dcterms:modified "2026-04-27"^^xsd:date ;
+    dcterms:title "energy-intel — SHACL shapes (V0 + V1)"@en ;
+    owl:versionInfo "v1 (2026-04-27)" .
 
 <https://w3id.org/energy-intel/shapes/prefix-decl> a owl:Ontology ;
     sh:declare [ sh:namespace "http://www.w3.org/2001/XMLSchema#"^^xsd:anyURI ;
             sh:prefix "xsd" ],
         [ sh:namespace "https://w3id.org/energy-intel/"^^xsd:anyURI ;
             sh:prefix "ei" ] .
+
+<https://w3id.org/energy-intel/shapes/prefix-decl-v1> a owl:Ontology ;
+    sh:declare [ sh:namespace "http://www.w3.org/2000/01/rdf-schema#"^^xsd:anyURI ;
+            sh:prefix "rdfs" ],
+        [ sh:namespace "https://w3id.org/energy-intel/"^^xsd:anyURI ;
+            sh:prefix "ei" ],
+        [ sh:namespace "http://www.w3.org/2001/XMLSchema#"^^xsd:anyURI ;
+            sh:prefix "xsd" ],
+        [ sh:namespace "http://www.w3.org/1999/02/22-rdf-syntax-ns#"^^xsd:anyURI ;
+            sh:prefix "rdf" ],
+        [ sh:namespace "http://qudt.org/schema/qudt/"^^xsd:anyURI ;
+            sh:prefix "qudt" ],
+        [ sh:namespace "http://xmlns.com/foaf/0.1/"^^xsd:anyURI ;
+            sh:prefix "foaf" ],
+        [ sh:namespace "http://www.w3.org/2004/02/skos/core#"^^xsd:anyURI ;
+            sh:prefix "skos" ],
+        [ sh:namespace "http://purl.obolibrary.org/obo/BFO_"^^xsd:anyURI ;
+            sh:prefix "bfo" ],
+        [ sh:namespace "http://qudt.org/vocab/unit/"^^xsd:anyURI ;
+            sh:prefix "unit" ],
+        [ sh:namespace "https://openenergyplatform.org/ontology/oeo/"^^xsd:anyURI ;
+            sh:prefix "oeo" ] .
