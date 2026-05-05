@@ -1,0 +1,174 @@
+# V2 Use Cases — `energy-intel` (Editorial Extension)
+#
+# Inherits V0 use cases UC-001..UC-005 unchanged from `use-cases.yaml`
+# and V1 use cases UC-006..UC-008 unchanged from `use-cases-v1.yaml`.
+# This file documents only the V2 additions (UC-009..UC-014) driving
+# new CQs CQ-N1..CQ-N8 and CQ-T1..CQ-T3.
+#
+# Authored: 2026-05-04 by ontology-requirements (V2 iteration)
+# Product owner: kokokessy@gmail.com
+# Source plan: /Users/pooks/Dev/skygest-cloudflare/docs/plans/2026-05-04-editorial-ontology-slice.md
+
+- id: UC-009
+  name: "Spawn a Narrative from picks with a deterministic IRI"
+  actor: "Editor (via skygest-editorial hydrate-story CLI → MCP client)"
+  goal: "Given a story file at narratives/{arc-slug}/stories/{story-stem}.md, mint or look up the canonical Narrative entity with IRI https://w3id.org/energy-intel/narrative/{story-stem}, regardless of which arc directory the file lives in."
+  preconditions:
+    - "Story file exists with a globally-unique stem (validated against source plan §S5 import contract)."
+    - "ei:Narrative class is declared (V2 architect lands)."
+    - "Deterministic IRI rule is encoded — story-stem (filename without extension) is the identity input; arc directory does NOT enter the IRI."
+  main_flow:
+    - "Editor spawns the story (hydrate-story CLI, eventually MCP `spawn_narrative`)."
+    - "Client derives the canonical Narrative IRI from the story stem."
+    - "Client looks up the Narrative by IRI; on miss, creates it; on hit, returns it (idempotent)."
+    - "Client populates Narrative fields (headline, question, trigger, status, argument-pattern IRI, topic IRIs)."
+  postconditions:
+    - "There is exactly one ei:Narrative entity per story stem."
+    - "Re-running the same import yields the same Narrative IRI (idempotent)."
+    - "Renaming a story file is an identity change unless an alias/redirect model is added (out-of-scope for V2)."
+  related_cqs: [CQ-N1]
+  priority: must_have
+  rationale: |
+    Deterministic identity is the foundation of the whole editorial slice:
+    without it, re-importing the same markdown corpus would create
+    duplicate Narratives, breaking the codegen contract on the cloudflare
+    side and causing the hydrate-story / import-narratives CLIs to
+    accumulate ghost entities. CQ-N1 is the executable acceptance test
+    for the identity rule.
+
+- id: UC-010
+  name: "Attach a post to a Narrative in a specific role and walk the membership"
+  actor: "Editor (curating posts into a story) and downstream readers (rendering the narrative)"
+  goal: "Given a (Narrative, Post, role) triple, store exactly one membership record carrying the role qualifier; allow forward walks (Narrative → posts) and reverse walks (Post → Narratives)."
+  preconditions:
+    - "ei:NarrativePostMembership class declared with predicates ei:hasNarrativePostMembership, ei:memberPost, ei:memberRole (V2 architect lands)."
+    - "ei:concept/narrative-role SKOS scheme declared with 4 instances: lead, supporting, counter, context."
+    - "SHACL ei:NarrativePostMembershipShape declared with sh:qualifiedMaxCount 1 per (Narrative, Post) pair."
+    - "Lead-uniqueness SHACL warning declared (at most one membership with memberRole=lead per Narrative)."
+  main_flow:
+    - "Editor calls attach_post_to_narrative(narrativeIri, postUri, role)."
+    - "Worker mints a deterministic NarrativePostMembership IRI from (narrativeIri, postUri); rejects creating a second membership for the same pair."
+    - "Worker links Narrative → membership and membership → Post + memberRole concept."
+    - "Reader query CQ-N2 walks Narrative → memberships → Post + role; CQ-N3 walks Post → memberships → Narrative + role."
+    - "Auto-derived expert mention list (CQ-N6) is computed by walking through contained posts to their authoredBy/spokenBy targets, surfacing the union as ei:narrativeMentionsExpert."
+  postconditions:
+    - "At most one NarrativePostMembership per (Narrative, Post) pair (SHACL-enforced)."
+    - "Re-attaching the same (narrative, post) with a different role atomically retracts the prior membership and inserts a new one (the runtime `replaceRoleLink` primitive — Phase 5 cloudflare-side concern, but the ontology shape supports it)."
+    - "Forward and reverse role-qualified walks return consistent results."
+  related_cqs: [CQ-N2, CQ-N3, CQ-N6, CQ-N7, CQ-N8]
+  priority: must_have
+  rationale: |
+    Reified n-ary relation (NarrativePostMembership) is the keystone
+    decision of source plan §3.3: 4 role-named predicates (leadPost,
+    supportingPost, counterPost, contextPost) would smuggle storage state
+    into predicate names (System Blueprint anti-pattern), break the SHACL
+    closed-shape constraint, and not absorb future first-class qualifier
+    storage cleanly. CQ-N2/N3/N6 verify the relation walks correctly in
+    both directions; CQ-N7/N8 verify the SHACL invariants hold.
+
+- id: UC-011
+  name: "Classify a Narrative by argument pattern and find all Narratives using a pattern"
+  actor: "Editor (assigning a pattern to a story) and reader (browsing narratives by argumentation style)"
+  goal: "Given an argument pattern (one of 7 stable concepts: deployment-milestone, emergent-technology-bulletin, geographic-energy-project, grid-snapshot, learning-curve, methodological-critique, structural-economic-analysis), find every Narrative that applies it; given a Narrative, retrieve its applied pattern."
+  preconditions:
+    - "ei:concept/argument-pattern SKOS scheme declared with 7 skos:Concept instances (V2 architect lands)."
+    - "ei:narrativeAppliesPattern object property declared (Narrative → skos:Concept in argument-pattern scheme, 0..1)."
+    - "Each declared pattern carries skos:prefLabel, skos:definition, optional skos:related, optional skos:editorialNote for status."
+  main_flow:
+    - "Editor calls set_narrative_pattern(narrativeIri, argumentPatternIri)."
+    - "System asserts ei:narrativeAppliesPattern triple."
+    - "Reader query CQ-N5 walks pattern → narratives that apply it."
+  postconditions:
+    - "At most one applied pattern per Narrative (cardinality 0..1)."
+    - "Pattern lifecycle (status=active|draft|deprecated) lives on the Concept via skos:editorialNote / owl:deprecated, not on the relationship."
+  related_cqs: [CQ-N5]
+  priority: must_have
+  rationale: |
+    Source plan §S4 / §3.2: ArgumentPattern shifted from owl:Class +
+    ABoxed individuals to a skos:ConceptScheme with skos:Concept
+    instances, matching how EnergyTopic is already modeled. This use case
+    confirms the SKOS-Concept lookup is reachable via SPARQL and matches
+    the existing topic SKOS pattern, resolving the prior ABoxed-individual
+    concern raised in modeling review.
+
+- id: UC-012
+  name: "Filter Narratives by topic via OEO IRIs or supplement IRIs"
+  actor: "Reader (browsing narratives by topic) and editorial review (auditing topic coverage)"
+  goal: "Given a topic IRI (an OEO class IRI like oeo:OEO_00010427 'solar power technology' OR a Skygest supplement IRI like ei:concept/data-center-demand), return all Narratives classified by it. Topic IRIs replace the V1 hand-rolled 30-topic / 92-concept catalog."
+  preconditions:
+    - "ei:narrativeAboutTopic object property declared (Narrative → EnergyTopic, many)."
+    - "Topic SKOS scheme(s) declared per Phase 2 decision (single or split + aggregator)."
+    - "OEO topic subset rebuilt from oeo-full.owl per the granularity contract (no NamedIndividuals)."
+    - "Editorial supplement IRIs declared with skos:notation carrying legacy slug for migration-period queries."
+  main_flow:
+    - "Reader queries CQ-N4 with a topic IRI."
+    - "System returns the set of Narratives carrying that ei:narrativeAboutTopic value."
+    - "Granularity contract (CQ-T3) holds: returned topic IRIs are owl:Class or skos:Concept, never owl:NamedIndividual."
+  postconditions:
+    - "Reader has the full set of Narratives about the topic."
+    - "Querying a Skygest supplement IRI works the same as querying an OEO IRI — the topic predicate is uniform across both."
+  related_cqs: [CQ-N4, CQ-T3]
+  priority: must_have
+  rationale: |
+    Source plan Q2: retire canonicalTopicOrder and conceptToCanonicalTopicSlug
+    as runtime authority; replace with OEO IRIs + supplements. This is
+    the largest piece of "ontology-shaped TS that is not actually
+    ontology" being cleaned up. CQ-N4 verifies the topic walk; CQ-T3
+    verifies the granularity contract is enforced (no inventory-record
+    NamedIndividuals leak into the runtime topic catalog).
+
+- id: UC-013
+  name: "Import existing markdown corpus atomically and idempotently"
+  actor: "Engineering / editorial (running import-narratives CLI against the existing /skygest-editorial corpus)"
+  goal: "Backfill 8 nested-layout Narratives plus their post memberships in a single atomic transaction (D1, cloudflare side); re-running the import is idempotent (deterministic IRIs); duplicate story stems raise a structured import error."
+  preconditions:
+    - "Phase 7 step 1 (cloudflare-side) has archived /skygest-editorial/stories/story-*.md to avoid 6 stem collisions."
+    - "All 8 nested-layout story stems are globally unique."
+    - "Deterministic Narrative IRI rule encoded (story-stem → IRI; arc directory does NOT enter the IRI)."
+    - "Deterministic NarrativePostMembership IRI rule encoded (sha-derived from (narrativeIri, postUri))."
+  main_flow:
+    - "Cloudflare-side NarrativeImportService receives a Schema-validated NarrativeImportBatch from skygest-editorial."
+    - "Service applies all writes atomically in a single D1 transaction (cloudflare-side concern; ontology shape supports it)."
+    - "Service rejects duplicate story stems with a structured error pointing at the offending stem."
+    - "On re-run, service produces zero new entities (deterministic IRIs hit existing entities)."
+  postconditions:
+    - "Importing the same editorial graph twice yields the same Narrative IRIs and the same active NarrativePostMembership relations."
+    - "No duplicate memberships per (Narrative, Post) pair (SHACL-enforced via CQ-N7)."
+  related_cqs: [CQ-N1, CQ-N7]
+  priority: must_have
+  rationale: |
+    The ontology cannot enforce atomicity (that's a D1 transaction
+    concern), but it can guarantee idempotency under re-import via
+    deterministic IRIs (CQ-N1) and at-most-one membership per pair via
+    SHACL (CQ-N7). This use case is the bridge between source plan §S5
+    (deterministic IRIs) and §3.3 (reified membership with cardinality
+    constraint). Phase 7 step 1 archival of the legacy flat directory
+    is a Gate C precondition on the cloudflare/editorial side.
+
+- id: UC-014
+  name: "Topic vocabulary lookup and migration query"
+  actor: "Engineering (during the slug → IRI cutover) and reader (browsing topic metadata)"
+  goal: "Given a topic IRI, return its label, alt-labels, broader/narrower in the SKOS scheme; given a legacy editorial slug from canonicalTopicOrder, return its canonical replacement IRI(s) (1-to-many is allowed for umbrella → leaves)."
+  preconditions:
+    - "Topic SKOS scheme(s) declared with skos:prefLabel, skos:altLabel, skos:broader, skos:narrower, skos:hasTopConcept."
+    - "Each editorial supplement IRI carries skos:notation with the legacy topic_slug per source plan §9 Q6 recommendation."
+    - "OEO IRIs are reused as-is (without skos:notation, since they were not slugs in the first place)."
+  main_flow:
+    - "CQ-T1: caller supplies a topic IRI; system returns label set, broader/narrower neighbours, and any altLabels."
+    - "CQ-T2: caller supplies a legacy slug (e.g., 'data-center-demand'); system returns the canonical IRI(s) — 1 IRI for 1-to-1 mappings, multiple for 1-to-many umbrella → leaves mappings."
+  postconditions:
+    - "The migration map (old slug → new IRI[s]) is queryable from the ontology itself, not just from a runtime lookup table."
+    - "Once the migration window closes, dropping the legacy column does not lose the slug→IRI evidence — it remains as skos:notation annotations."
+  related_cqs: [CQ-T1, CQ-T2, CQ-T3]
+  priority: should_have
+  rationale: |
+    Source plan §9 Q6 question: after the Pattern A migration window, is
+    the legacy topic_slug column dropped or retained indefinitely?
+    Recommendation in scope-v2.md is to annotate every supplement IRI
+    with skos:notation carrying the legacy slug, so the migration map is
+    queryable from the ontology itself. CQ-T2 is the executable check
+    that this annotation is reachable via SPARQL. should_have rather
+    than must_have because the cutover can ship without slug→IRI
+    queries (cloudflare side maintains its own dual-write window during
+    Pattern A migration), but the long-tail migration auditability is
+    only ontology-native if these CQs pass.

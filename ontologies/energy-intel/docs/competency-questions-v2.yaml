@@ -1,0 +1,415 @@
+# V2 Competency Questions — `energy-intel` (Editorial Extension)
+#
+# Inherits V0 CQs CQ-001..CQ-014 unchanged from `competency-questions.yaml`
+# and V1 CQs CQ-015..CQ-019 unchanged from `competency-questions-v1.yaml`.
+# This file documents only the V2 additions (CQ-N1..CQ-N8 and CQ-T1..CQ-T3).
+#
+# 11 V2 CQs formalized: 8 must_have, 3 should_have.
+# Each CQ carries priority, owner, testability, expected_answer_shape,
+# sample_answer, derivation_method, out_of_scope, sparql, and the
+# conceptualizer-handoff fields (required_classes, required_properties,
+# required_axioms).
+#
+# Authored: 2026-05-04 by ontology-requirements (V2 iteration)
+# Product owner / sole reviewer: kokokessy@gmail.com
+# Use-case anchors: see `use-cases-v2.yaml` (UC-009..UC-014)
+#
+# Prefixes used in SPARQL bodies (full declarations in every tests/cq-editorial-*.sparql):
+#   rdf:   http://www.w3.org/1999/02/22-rdf-syntax-ns#
+#   rdfs:  http://www.w3.org/2000/01/rdf-schema#
+#   owl:   http://www.w3.org/2002/07/owl#
+#   xsd:   http://www.w3.org/2001/XMLSchema#
+#   skos:  http://www.w3.org/2004/02/skos/core#
+#   foaf:  http://xmlns.com/foaf/0.1/
+#   oeo:   https://openenergyplatform.org/ontology/oeo/
+#   ei:    https://w3id.org/energy-intel/
+#   nrole: https://w3id.org/energy-intel/concept/narrative-role/
+#   apat:  https://w3id.org/energy-intel/concept/argument-pattern/
+
+cqs:
+
+  # =====================================================
+  # UC-009: Spawn a Narrative from picks (deterministic IRI)
+  # =====================================================
+
+  - id: CQ-N1
+    source_use_case: UC-009
+    natural_language: "Given a story stem S, return the Narrative entity bound to the deterministic IRI https://w3id.org/energy-intel/narrative/{S}."
+    type: relational
+    priority: must_have
+    owner: "kokokessy@gmail.com"
+    testability: fixture_required
+    expected_answer_shape:
+      cardinality: "0..1"
+      per_row: [narrative]
+    sample_answer:
+      - {narrative: "https://w3id.org/energy-intel/narrative/2026-04-06-tva-nuclear-costs"}
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Alias / redirect for renamed story stems (V3+ — V2 treats stem rename as identity change)."
+      - "Atomicity of the import transaction (D1 transaction, cloudflare-side concern)."
+    sparql: |
+      SELECT ?narrative WHERE {
+        BIND(IRI(CONCAT("https://w3id.org/energy-intel/narrative/",
+                        "2026-04-06-tva-nuclear-costs")) AS ?narrative)
+        ?narrative a ei:Narrative .
+      }
+    required_classes: [ei:Narrative]
+    required_properties: []
+    required_axioms:
+      - "ei:Narrative ⊑ iao:0000310 (iao:Document)"
+      - "Deterministic IRI rule: Narrative IRI = https://w3id.org/energy-intel/narrative/{story-stem} (encoded by the import pipeline; the ontology guarantees identity is stable across re-imports because the IRI itself is the join key)."
+
+  # =====================================================
+  # UC-010: Attach a post in a role and walk the membership
+  # =====================================================
+
+  - id: CQ-N2
+    source_use_case: UC-010
+    natural_language: "Given a Narrative, return all (Post, role) pairs from its NarrativePostMemberships."
+    type: enumerative
+    priority: must_have
+    owner: "kokokessy@gmail.com"
+    testability: fixture_required
+    expected_answer_shape:
+      cardinality: "0..n"
+      per_row: [post, role]
+    sample_answer:
+      - {post: "https://id.skygest.io/post/x-1886502618-status-2039766305071378920",
+         role: "https://w3id.org/energy-intel/concept/narrative-role/lead"}
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Order of posts within a Narrative — the cardinality is `many` and order is not preserved (per scope-v2.md Open Question 3)."
+    sparql: |
+      SELECT ?post ?role WHERE {
+        <https://w3id.org/energy-intel/narrative/2026-04-06-tva-nuclear-costs>
+          ei:hasNarrativePostMembership ?membership .
+        ?membership ei:memberPost ?post ;
+                    ei:memberRole ?role .
+      }
+    required_classes: [ei:Narrative, ei:NarrativePostMembership, ei:Post]
+    required_properties: [ei:hasNarrativePostMembership, ei:memberPost, ei:memberRole]
+    required_axioms:
+      - "ei:hasNarrativePostMembership rdfs:domain ei:Narrative ; rdfs:range ei:NarrativePostMembership"
+      - "ei:memberPost a owl:FunctionalProperty ; rdfs:domain ei:NarrativePostMembership ; rdfs:range ei:Post"
+      - "ei:memberRole a owl:FunctionalProperty ; rdfs:domain ei:NarrativePostMembership ; rdfs:range skos:Concept"
+
+  - id: CQ-N3
+    source_use_case: UC-010
+    natural_language: "Given a Post, return all Narratives that include it and the role it plays in each (reverse walk over NarrativePostMembership)."
+    type: enumerative
+    priority: must_have
+    owner: "kokokessy@gmail.com"
+    testability: fixture_required
+    expected_answer_shape:
+      cardinality: "0..n"
+      per_row: [narrative, role]
+    sample_answer:
+      - {narrative: "https://w3id.org/energy-intel/narrative/2026-04-06-tva-nuclear-costs",
+         role: "https://w3id.org/energy-intel/concept/narrative-role/lead"}
+    derivation_method: direct_lookup
+    out_of_scope: []
+    sparql: |
+      SELECT ?narrative ?role WHERE {
+        ?narrative ei:hasNarrativePostMembership ?membership ;
+                   a ei:Narrative .
+        ?membership ei:memberPost <https://id.skygest.io/post/x-1886502618-status-2039766305071378920> ;
+                    ei:memberRole ?role .
+      }
+    required_classes: [ei:Narrative, ei:NarrativePostMembership, ei:Post]
+    required_properties: [ei:hasNarrativePostMembership, ei:memberPost, ei:memberRole]
+    required_axioms: []
+
+  # =====================================================
+  # UC-012: Filter Narratives by topic
+  # =====================================================
+
+  - id: CQ-N4
+    source_use_case: UC-012
+    natural_language: "Given a topic IRI (an OEO class IRI or a Skygest supplement IRI), return all Narratives classified by it via ei:narrativeAboutTopic."
+    type: enumerative
+    priority: must_have
+    owner: "kokokessy@gmail.com"
+    testability: fixture_required
+    expected_answer_shape:
+      cardinality: "0..n"
+      per_row: [narrative]
+    sample_answer:
+      - {narrative: "https://w3id.org/energy-intel/narrative/2026-04-06-tva-nuclear-costs"}
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Transitive walk through skos:broader / rdfs:subClassOf (covered by V0 CQ-013 / CQ-014 patterns at CMC level; topic-level transitive walk is a V3+ concern)."
+    sparql: |
+      SELECT ?narrative WHERE {
+        ?narrative ei:narrativeAboutTopic <https://openenergyplatform.org/ontology/oeo/OEO_00010439> ;
+                   a ei:Narrative .
+      }
+    required_classes: [ei:Narrative]
+    required_properties: [ei:narrativeAboutTopic]
+    required_axioms:
+      - "ei:narrativeAboutTopic rdfs:domain ei:Narrative"
+      - "ei:narrativeAboutTopic rdfs:range owl:Thing (range constrained by SHACL to owl:Class ∪ skos:Concept; see CQ-T3)"
+
+  # =====================================================
+  # UC-011: Classify a Narrative by argument pattern
+  # =====================================================
+
+  - id: CQ-N5
+    source_use_case: UC-011
+    natural_language: "Given an argument pattern (skos:Concept in ei:concept/argument-pattern), return all Narratives applying it."
+    type: enumerative
+    priority: must_have
+    owner: "kokokessy@gmail.com"
+    testability: fixture_required
+    expected_answer_shape:
+      cardinality: "0..n"
+      per_row: [narrative]
+    sample_answer:
+      - {narrative: "https://w3id.org/energy-intel/narrative/2026-04-06-tva-nuclear-costs"}
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Pattern lifecycle (status: active|draft|deprecated) — captured on the Concept itself via skos:editorialNote / owl:deprecated, not on the relationship."
+      - "Pattern variants — captured as skos:altLabel on the Concept; not exposed as separate ontology terms."
+    sparql: |
+      SELECT ?narrative WHERE {
+        ?narrative ei:narrativeAppliesPattern
+          <https://w3id.org/energy-intel/concept/argument-pattern/structural-economic-analysis> ;
+          a ei:Narrative .
+      }
+    required_classes: [ei:Narrative, "skos:Concept", "skos:ConceptScheme"]
+    required_properties: [ei:narrativeAppliesPattern, "skos:inScheme"]
+    required_axioms:
+      - "ei:narrativeAppliesPattern rdfs:domain ei:Narrative ; rdfs:range skos:Concept"
+      - "ei:Narrative ⊑ ei:narrativeAppliesPattern max 1 skos:Concept (SHACL: 0..1 cardinality)"
+      - "SHACL: ei:narrativeAppliesPattern value MUST be skos:inScheme ei:concept/argument-pattern"
+
+  # =====================================================
+  # UC-010 (continued): Auto-derived expert mentions
+  # =====================================================
+
+  - id: CQ-N6
+    source_use_case: UC-010
+    natural_language: "Given a Narrative, return all distinct Experts mentioned — either via the explicit ei:narrativeMentionsExpert assertion or auto-derived from the authoredBy of contained posts."
+    type: enumerative
+    priority: should_have
+    owner: "kokokessy@gmail.com"
+    testability: fixture_required
+    expected_answer_shape:
+      cardinality: "0..n"
+      per_row: [expert]
+    sample_answer:
+      - {expert: "https://id.skygest.io/expert/did-x-1886502618"}
+    derivation_method: inference
+    out_of_scope:
+      - "Podcast-segment-derived expert mentions (V3+ — V2 only walks Post.authoredBy; podcast-segment spokenBy not yet attached to Narrative)."
+      - "Disagreement detection between mentioned experts (editorial concern, not ontological)."
+    sparql: |
+      SELECT DISTINCT ?expert WHERE {
+        {
+          <https://w3id.org/energy-intel/narrative/2026-04-06-tva-nuclear-costs>
+            ei:narrativeMentionsExpert ?expert .
+        } UNION {
+          <https://w3id.org/energy-intel/narrative/2026-04-06-tva-nuclear-costs>
+            ei:hasNarrativePostMembership/ei:memberPost/ei:authoredBy ?expert .
+        }
+      }
+    required_classes: [ei:Narrative, ei:NarrativePostMembership, ei:Post, "foaf:Person"]
+    required_properties: [ei:narrativeMentionsExpert, ei:hasNarrativePostMembership, ei:memberPost, ei:authoredBy]
+    required_axioms:
+      - "ei:narrativeMentionsExpert rdfs:domain ei:Narrative ; rdfs:range foaf:Person (range widened from V0 ei:Expert per V1 § Expert role refactor)"
+    notes: |
+      should_have rather than must_have because:
+      (a) ei:narrativeMentionsExpert is auto-derived at import time on
+          the cloudflare side (Phase 5 NarrativeWriteService responsibility),
+          which means in the steady state the explicit assertion is
+          available — the UNION fallback is a defense-in-depth path that
+          works even if the auto-derivation hasn't run yet.
+      (b) Editorial review only requires the expert mentions to be
+          surface-able somehow; the canonical ontology contract is the
+          membership walk in CQ-N2 / CQ-N3.
+
+  # =====================================================
+  # UC-010 / UC-013: SHACL invariants for membership
+  # =====================================================
+
+  - id: CQ-N7
+    source_use_case: UC-013
+    natural_language: "SHACL invariant: at most one NarrativePostMembership per (Narrative, Post) pair (no row should be returned by this verify query)."
+    type: constraint
+    priority: must_have
+    owner: "kokokessy@gmail.com"
+    testability: fixture_required
+    expected_answer_shape:
+      cardinality: "exact_0"
+      per_row: [narrative, post]
+    sample_answer: []
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Runtime atomicity of role-move (replaceRoleLink primitive is the cloudflare-side write API; the ontology only enforces the at-most-one invariant on the read side)."
+    sparql: |
+      SELECT ?narrative ?post WHERE {
+        ?narrative ei:hasNarrativePostMembership ?m1 ;
+                   ei:hasNarrativePostMembership ?m2 ;
+                   a ei:Narrative .
+        ?m1 ei:memberPost ?post .
+        ?m2 ei:memberPost ?post .
+        FILTER(?m1 != ?m2)
+      }
+    required_classes: [ei:Narrative, ei:NarrativePostMembership, ei:Post]
+    required_properties: [ei:hasNarrativePostMembership, ei:memberPost]
+    required_axioms:
+      - "SHACL ei:NarrativePostMembershipShape: sh:targetClass ei:NarrativePostMembership ; sh:property [ sh:path [ sh:inversePath ei:hasNarrativePostMembership ] ; sh:qualifiedValueShape [ sh:property [ sh:path ei:memberPost ; sh:hasValue ?post ] ] ; sh:qualifiedMaxCount 1 ] (closed-shape constraint)."
+
+  - id: CQ-N8
+    source_use_case: UC-010
+    natural_language: "SHACL warning: at most one NarrativePostMembership with memberRole=lead per Narrative (warning, not error — draft narratives may legitimately be in flux)."
+    type: constraint
+    priority: should_have
+    owner: "kokokessy@gmail.com"
+    testability: fixture_required
+    expected_answer_shape:
+      cardinality: "exact_0"
+      per_row: [narrative]
+    sample_answer: []
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Hard rejection of multi-lead narratives (V3+ — V2 surfaces a SHACL warning only, since draft / WIP narratives may legitimately have multiple lead candidates during editorial iteration)."
+    sparql: |
+      SELECT ?narrative WHERE {
+        ?narrative ei:hasNarrativePostMembership ?m1 ;
+                   ei:hasNarrativePostMembership ?m2 ;
+                   a ei:Narrative .
+        ?m1 ei:memberRole <https://w3id.org/energy-intel/concept/narrative-role/lead> .
+        ?m2 ei:memberRole <https://w3id.org/energy-intel/concept/narrative-role/lead> .
+        FILTER(?m1 != ?m2)
+      }
+    required_classes: [ei:Narrative, ei:NarrativePostMembership]
+    required_properties: [ei:hasNarrativePostMembership, ei:memberRole]
+    required_axioms:
+      - "SHACL warning shape (sh:severity sh:Warning) on ei:Narrative: at most one NarrativePostMembership where ei:memberRole = ei:concept/narrative-role/lead."
+
+  # =====================================================
+  # UC-014: Topic vocabulary lookup and migration
+  # =====================================================
+
+  - id: CQ-T1
+    source_use_case: UC-014
+    natural_language: "Given a topic IRI, return its preferred label, alt-labels, broader, and narrower neighbours in the SKOS scheme."
+    type: relational
+    priority: must_have
+    owner: "kokokessy@gmail.com"
+    testability: fixture_required
+    expected_answer_shape:
+      cardinality: "1..n"
+      per_row: [topic, prefLabel, altLabel, broader, narrower]
+    sample_answer:
+      - {topic: "https://openenergyplatform.org/ontology/oeo/OEO_00010427",
+         prefLabel: "solar power technology",
+         altLabel: null,
+         broader: null,
+         narrower: "https://openenergyplatform.org/ontology/oeo/OEO_00010428"}
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Cross-scheme alignment (V3+ — V2 stays within the topic SKOS scheme(s); cross-scheme exactMatch / closeMatch annotations are a mapper-skill concern)."
+    sparql: |
+      SELECT ?topic ?prefLabel ?altLabel ?broader ?narrower WHERE {
+        BIND(<https://openenergyplatform.org/ontology/oeo/OEO_00010427> AS ?topic)
+        ?topic skos:prefLabel ?prefLabel .
+        OPTIONAL { ?topic skos:altLabel ?altLabel . }
+        OPTIONAL { ?topic skos:broader  ?broader . }
+        OPTIONAL { ?topic skos:narrower ?narrower . }
+      }
+    required_classes: ["skos:Concept", "skos:ConceptScheme"]
+    required_properties: ["skos:prefLabel", "skos:altLabel", "skos:broader", "skos:narrower", "skos:inScheme"]
+    required_axioms: []
+
+  - id: CQ-T2
+    source_use_case: UC-014
+    natural_language: "Given an editorial slug from the legacy canonicalTopicOrder, return its canonical replacement IRI(s) via skos:notation. 1-to-many is allowed (umbrella → multiple OEO leaves)."
+    type: relational
+    priority: should_have
+    owner: "kokokessy@gmail.com"
+    testability: fixture_required
+    expected_answer_shape:
+      cardinality: "1..n"
+      per_row: [iri]
+    sample_answer:
+      - {iri: "https://w3id.org/energy-intel/concept/data-center-demand"}
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Migration of slugs that were never in canonicalTopicOrder (V2 only annotates the 30 canonical slugs)."
+      - "Reverse migration (IRI → slug) — not needed; the cloudflare side maintains its own dual-write window during Pattern A migration."
+    sparql: |
+      SELECT ?iri WHERE {
+        ?iri skos:notation "data-center-demand" .
+      }
+    required_classes: ["skos:Concept"]
+    required_properties: ["skos:notation"]
+    required_axioms:
+      - "Recommendation: each editorial supplement IRI carries skos:notation with the legacy topic_slug for migration-period queryability (per scope-v2.md Open Question 4)."
+
+  # =====================================================
+  # UC-012: Granularity contract validator
+  # =====================================================
+
+  - id: CQ-T3
+    source_use_case: UC-012
+    natural_language: "Granularity contract: every value of ei:narrativeAboutTopic MUST resolve to an owl:Class (via OEO scheme) or a skos:Concept (via supplement scheme); MUST NOT be a bare owl:NamedIndividual that is neither. This verify query returns any violation."
+    type: constraint
+    priority: must_have
+    owner: "kokokessy@gmail.com"
+    testability: fixture_required
+    expected_answer_shape:
+      cardinality: "exact_0"
+      per_row: [topic]
+    sample_answer: []
+    derivation_method: direct_lookup
+    out_of_scope:
+      - "Granularity at the editorial-slug level (e.g., 'is solar a topic or a sub-topic?') — that is a per-row mapping decision recorded in topic-vocabulary-mapping.md (Phase 2 deliverable), not a global SPARQL invariant."
+    sparql: |
+      SELECT ?topic WHERE {
+        ?narrative ei:narrativeAboutTopic ?topic .
+        FILTER NOT EXISTS { ?topic a owl:Class . }
+        FILTER NOT EXISTS { ?topic a skos:Concept . }
+      }
+    required_classes: ["owl:Class", "skos:Concept"]
+    required_properties: [ei:narrativeAboutTopic]
+    required_axioms:
+      - "SHACL editorial.ttl: sh:targetSubjectsOf ei:narrativeAboutTopic ; sh:property [ sh:path ei:narrativeAboutTopic ; sh:or ( [ sh:class owl:Class ] [ sh:class skos:Concept ] ) ; sh:severity sh:Violation ]"
+      - "Granularity contract recorded in scope-v2.md § In-scope item 3 and source plan §3.4."
+    notes: |
+      Encodes the granularity contract as an executable acceptance test
+      per handoff §"Phase 1 acceptance" requirement: "Granularity contract
+      for topic IRIs (see §3.4 of source plan) is encoded as a CQ that
+      any candidate IRI must pass." Punning is allowed at the OWL level
+      (an OEO term can be both owl:Class and owl:NamedIndividual when
+      used as a value), so the constraint is "MUST be Class or Concept"
+      not "MUST NOT be NamedIndividual" — the FILTER NOT EXISTS form
+      handles punning correctly.
+
+# Prioritization summary (Step 4 MoSCoW)
+#
+# must_have   (8): CQ-N1, CQ-N2, CQ-N3, CQ-N4, CQ-N5, CQ-N7, CQ-T1, CQ-T3
+# should_have (3): CQ-N6, CQ-N8, CQ-T2
+# could_have  (0): none — V2 keeps the editorial slice tight; expert
+#                  disagreement detection, podcast-segment-derived
+#                  mentions, transitive topic walks, and cross-scheme
+#                  alignment are all V3+ deferrals.
+# wont_have   (0): explicit non-goals are captured in scope-v2.md
+#                  § "Out-of-scope", not as wont_have CQs.
+#
+# Waived or rejected candidate CQs (Step 2.5)
+#
+# - "What is the trigger of a Narrative?" — rejected. Fails the `scoped`
+#   criterion: trigger stays free text on Narrative per source plan §2;
+#   not a typed enum or class. There is no ontology relation to query.
+# - "What edition (newsletter compile) does this Narrative belong to?"
+#   — rejected for V2. Fails `scoped`: Edition is explicitly out-of-scope
+#   per scope-v2.md § Out-of-scope item 1.
+# - "What entity_link_evidence record was the source of this NarrativePostMembership?"
+#   — rejected for V2. Fails `scoped`: EditorialPick / entity_link_evidence
+#   is a D1 row, not an ontology entity per scope-v2.md § Out-of-scope
+#   item 2.
+# - "Given a Narrative, what arc does it belong to?" — rejected. Fails
+#   `scoped`: arc is filesystem-only per source plan §S2; the arc
+#   directory IS the arc and does not enter the ontology in V2.

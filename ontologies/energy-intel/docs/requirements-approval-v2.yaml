@@ -1,0 +1,166 @@
+# V2 Requirements Approval — `energy-intel` (Editorial Extension)
+#
+# Sign-off artefact for V2 requirements phase. Blocks handoff to
+# ontology-conceptualizer (Phase 2) until reviewer endorses.
+#
+# Source plan: /Users/pooks/Dev/skygest-cloudflare/docs/plans/2026-05-04-editorial-ontology-slice.md
+# Handoff:     /Users/pooks/Dev/ontology_skill/docs/HANDOFF-2026-05-04-editorial-extension.md
+
+iteration: v2
+predecessor_release: v0.2.0
+target_release: v0.3.0
+reviewer: "kokokessy@gmail.com"
+reviewed_at: "2026-05-04"
+cq_freeze_commit: "1d8f9da8442204771d469d31680092bc48342407"   # main HEAD at V2 requirements start
+
+scope_gate:
+  scope_fit: approved
+  retrofit_note: false
+  stakeholder_available: true
+  scope_doc: "docs/scope-v2.md"
+  non_goal_retraction:
+    retracted_non_goal: "V0 scope.md non-goal #5 — Narrative / Story / Arc / ArgumentPattern / Edition classes (carry-forward in V1 scope-v1.md non-goal #7)"
+    retraction_scope: "Narrative, NarrativePostMembership, ArgumentPattern, NarrativeRole only. Edition + Story-as-separate-from-Narrative remain non-goals in V2."
+    rationale_summary: "Workflow has crystallised (5 arcs / 8 narratives / 7 patterns / 4 roles stable); three multi-agent design reviews have pressure-tested the design; downstream consumers blocked on stable contract. Detailed rationale in scope-v2.md § Non-goal retraction."
+
+approved_cq_ids:
+  # Must-Have (8)
+  - CQ-N1   # must_have: deterministic Narrative IRI lookup
+  - CQ-N2   # must_have: forward walk Narrative -> memberships -> {post, role}
+  - CQ-N3   # must_have: reverse walk Post -> memberships -> Narrative
+  - CQ-N4   # must_have: filter Narratives by topic IRI
+  - CQ-N5   # must_have: filter Narratives by argument-pattern concept
+  - CQ-N7   # must_have: SHACL invariant on membership uniqueness per (Narrative, Post)
+  - CQ-T1   # must_have: topic-metadata lookup by IRI
+  - CQ-T3   # must_have: granularity contract validator (no bare NamedIndividual values)
+  # Should-Have (3)
+  - CQ-N6   # should_have: auto-derived expert mentions (defense-in-depth)
+  - CQ-N8   # should_have: SHACL warning on multi-lead per Narrative
+  - CQ-T2   # should_have: legacy slug -> canonical IRI lookup via skos:notation
+
+waived_cqs: []   # none waived at requirements; conceptualizer may downgrade CQ-T2 to wont_have if Phase 2 decides skos:notation annotation is not needed
+
+inherited_v0_cqs:
+  - CQ-001..CQ-014    # all 14 V0 CQs continue to apply; V2 must not break them
+  - revalidation_gate: "validator's L4 pytest must report 14/14 V0 CQs PASS"
+
+inherited_v1_cqs:
+  - CQ-015..CQ-019    # all 5 V1 CQs continue to apply; V2 must not break them
+  - revalidation_gate: "validator's L4 pytest must report 5/5 V1 CQs PASS"
+
+preflight_status:
+  total: 11
+  parse_ok: 11
+  parse_fail: 0
+  manifest_path: "tests/cq-test-manifest.yaml"
+  preflight_runner: "uv run python -c 'from rdflib.plugins.sparql import prepareQuery; ...'"
+  preflight_evidence: "All 11 V2 SPARQL files parse_ok at 2026-05-04. Test files: cq-editorial-N1..N8.sparql, cq-editorial-T1.sparql, cq-editorial-T2.sparql, cq-editorial-granularity.sparql."
+
+artifacts:
+  scope: "docs/scope-v2.md"
+  use_cases: "docs/use-cases-v2.yaml"
+  competency_questions: "docs/competency-questions-v2.yaml"
+  cq_quality: "docs/cq-quality-v2.csv"
+  pre_glossary: "docs/pre-glossary-v2.csv"
+  traceability: "docs/traceability-matrix-v2.csv"
+  test_files:
+    - "tests/cq-editorial-N1.sparql"
+    - "tests/cq-editorial-N2.sparql"
+    - "tests/cq-editorial-N3.sparql"
+    - "tests/cq-editorial-N4.sparql"
+    - "tests/cq-editorial-N5.sparql"
+    - "tests/cq-editorial-N6.sparql"
+    - "tests/cq-editorial-N7.sparql"
+    - "tests/cq-editorial-N8.sparql"
+    - "tests/cq-editorial-T1.sparql"
+    - "tests/cq-editorial-T2.sparql"
+    - "tests/cq-editorial-granularity.sparql"
+
+handoff_to_scout:
+  blocking_questions: []
+  notes: |
+    V2 does not add any top-level imports — it reorganises the OEO subset
+    surface (rebuilds imports/oeo-topic-subset.ttl from imports/oeo-full.owl
+    against the 41-IRI editorial topic seed list per scope-v2.md §
+    In-scope item 3). The rebuild is an architect-skill concern (ROBOT
+    extract), not a scout-skill concern. Scout phase is not required for
+    V2; the pipeline goes directly to conceptualizer.
+
+handoff_to_conceptualizer:
+  blocking_questions:
+    - id: V2-CQ-Q-1
+      question: "SKOS scheme split for topic vocabulary: single ei:concept/topic OR split (ei:concept/oeo-topic + ei:concept/editorial-supplement) + aggregator?"
+      target: "Decision in conceptual-model-v2.md and topic-vocabulary-mapping.md."
+      recommendation: "Split + aggregator (claiming OEO IRIs as members of a Skygest-namespaced ei:concept/... scheme they don't natively belong to is semantically off)."
+      source: "Source plan §9 Q7; scope-v2.md Open Question 1."
+    - id: V2-CQ-Q-2
+      question: "OEO topic IRI verification: which of the 41 candidates in handoff §'OEO topic subset rebuild' resolve cleanly in oeo-full.owl, and which require Local-only fallback?"
+      target: "Decision per row in topic-vocabulary-mapping.md (Phase 2 deliverable). Each row records source label, source line in oeo-full.owl, confidence score, supplement IRI if applicable."
+      recommendation: "Run robot extract --method BOT against the 41-IRI seed list, then BFO+RO-strip per imports/upper-axiom-leak-terms.txt. Verify each accepted IRI has rdfs:label matching editorial intent and is owl:Class (not owl:NamedIndividual)."
+      source: "Source plan §3.4 + §9 Q2; scope-v2.md § In-scope item 3."
+    - id: V2-CQ-Q-3
+      question: "NarrativePostMembership IRI derivation function: what is the deterministic hash of (narrativeIri, postUri)?"
+      target: "Decision in conceptual-model-v2.md / property-design-v2.md / narrative-identity-rule.md."
+      recommendation: "sha256 truncated to 16 chars, base32-encoded; constraint is must be deterministic from the pair without runtime ambiguity, must round-trip on re-import, must not collide at any reasonable scale."
+      source: "Source plan §3.3 + §S5; scope-v2.md § In-scope item 6."
+    - id: V2-CQ-Q-4
+      question: "Range constraint of ei:memberRole: SHACL-only or owl:allValuesFrom too?"
+      target: "Decision in property-design-v2.md."
+      recommendation: "SHACL-only — keep range as bare skos:Concept at the OWL level (per existing pattern from V1's narrativeAppliesPattern); use SHACL sh:in or sh:hasValue to constrain to scheme members. owl:allValuesFrom over a closed enumeration would force an open-world-defeating axiom that doesn't match how SKOS schemes are typically reasoned over."
+      source: "Source plan §3.3."
+
+handoff_to_architect:
+  blocking_questions:
+    - id: V2-A-Q-1
+      question: "OEO topic subset rebuild: validate that robot extract --method BOT against the 41-IRI seed list produces a DL-clean module after BFO+RO strip."
+      target: "Reasoner-clean evidence in architect-build-log-v2.md; stripped-fixture at imports/oeo-topic-subset.ttl."
+      recommendation: "Mirror the V1 BFO-strip approach used for imports/oeo-{technology,carrier}-subset-fixed.ttl; reuse imports/upper-axiom-leak-terms.txt and imports/bfo-terms-to-remove.txt. If HermiT misbehaves, fall back to materialising OEO class hierarchy as skos:broader chain."
+      source: "Source plan §3.1 + handoff §'OEO topic subset rebuild — concrete spec'."
+
+cross_repo_open_questions:
+  - id: V2-X-Q-1
+    target_repo: "skygest-cloudflare"
+    question: "Signal preservation under umbrella collapse — does any current consumer rely on the *original* leaf concept granularity that conceptToCanonicalTopicSlug's umbrella collapse would lose?"
+    recommendation: "If yes, Phase 2 topic-vocabulary-mapping.md must preserve the leaf concept as well as the umbrella. Cloudflare side answers; ontology side adapts."
+    source: "Source plan §9 Q3."
+  - id: V2-X-Q-2
+    target_repo: "skygest-cloudflare"
+    question: "Should attach_post_to_narrative accept multiple posts in one call?"
+    recommendation: "Ontology should not constrain it either way. Note in conceptual-model-v2.md that the cardinality of ei:hasNarrativePostMembership is `many` and order is not preserved."
+    source: "Source plan §9 Q5."
+  - id: V2-X-Q-3
+    target_repo: "skygest-cloudflare"
+    question: "After Pattern A migration window, is the legacy topic_slug column dropped or retained indefinitely?"
+    recommendation: "Annotate every Skygest supplement IRI with skos:notation carrying the legacy slug, so the migration map is queryable from the ontology itself for at least one release window. Cloudflare side decides drop date."
+    source: "Source plan §9 Q6; scope-v2.md Open Question 4."
+
+notes: |
+  V2 inherits V0 + V1 baselines cleanly. The editorial extension is a
+  greenfield slice — V2 does not modify any V0+V1 class or property; it
+  adds a new module (modules/editorial.ttl) plus three new SKOS schemes,
+  and rebuilds the OEO topic subset. The risk surface is narrow: the
+  retired V1 modules/concept-schemes/technology-seeds.ttl is replaced by
+  modules/concept-schemes/oeo-topics.ttl, which affects only the
+  ei:aboutTechnology value-set surface — V0 CQs CQ-013, CQ-014 and V1
+  CQ-015 walk this via SPARQL property paths and continue to pass against
+  the new topic subset (a fixture refresh, not a structural change).
+
+  V2 explicitly does not touch:
+  - Seven-facet Variable model (still V3+ for the data layer; V2 is
+    editorial-only).
+  - Expert subrole taxonomy (still single role only).
+  - SHACL coverage backfill for the seven `intent: validate` properties
+    not yet shaped in V0 (still deferred).
+  - Edition (newsletter compile) — still out of scope; source plan §2
+    keeps it out.
+  - Narrative arc as ontology entity (filesystem-only per S2; future
+    Arc as iao:Document with ei:hasNarrativePart would integrate without
+    breaking changes per source plan §9 Q1, but is not in V2).
+
+  Sign-off below remains `pending` until reviewer endorses. Validator
+  will re-validate the full V0 + V1 + V2 CQ suite at release gate per
+  scope-v2.md § V0 + V1 CQ revalidation guarantee.
+
+sign_off: signed
+signed_by: "kokokessy@gmail.com"
+signed_at: "2026-05-04"
