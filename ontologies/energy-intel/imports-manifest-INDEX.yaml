@@ -1,6 +1,7 @@
-# energy-intel — Imports Manifest Index (v0.2.0 release)
+# energy-intel — Imports Manifest Index (v0.3.0 release)
 #
-# Authored: 2026-04-27 by ontology-curator
+# Authored: 2026-04-27 by ontology-curator (v0.2.0 release)
+# Updated:  2026-05-04 by ontology-curator (v0.3.0 release; V2 delta added)
 #
 # Why an index instead of a folded manifest?
 # ------------------------------------------
@@ -19,10 +20,12 @@
 # This index file points downstream consumers (scout / mapper / validator /
 # curator) at the right manifest for their use case.
 
-release: v0.2.0
-release_date: "2026-04-27"
+release: v0.3.0
+release_date: "2026-05-04"
 authored_by: ontology-curator
 schema_version: "1.0"
+prior_release: v0.2.0
+prior_release_date: "2026-04-27"
 
 manifests:
 
@@ -51,6 +54,20 @@ manifests:
         * oeo-carrier-2.11.0   (status_changed: BOT -> BOT_post_strip)
         * qudt-units-2.1       (status_changed: full_import -> programmatic_slice)
       Reads V0 manifest as `baseline_manifest` reference.
+
+  - id: v2-delta
+    file: imports-manifest-v2.yaml
+    role: V2 delta manifest
+    authored_at: "2026-05-04"
+    authored_by: ontology-curator
+    description: |
+      V2 delta manifest. Restates only `added` / `closure_changed`
+      entries vs V1+V0. Five rows added (oeo-topic-subset-2.11.0,
+      ei-argument-pattern-v2, ei-narrative-role-v2, ei-oeo-topics-v2,
+      ei-editorial-v2). One row closure_changed: ei-technology-seeds-v0
+      retired from owl:imports (file preserved on disk per safety rule
+      #4; tracked as V2-CUR-4 for v0.4.0 deprecation cycle).
+      Resolution: V2 > V1 > V0 by row id.
 
 # ---------------------------------------------------------------------
 # Refresh-cadence consolidated table (v0.2.0 release-time)
@@ -154,6 +171,53 @@ refresh_cadences:
     next_check_due: "n/a (local)"
     manifest: imports-manifest.yaml
 
+  # ---- V2 additions (2026-05-04) ----
+  - import_id: oeo-topic-subset-2.11.0
+    cadence_days: 90
+    rationale: |
+      Same OEO 2.11.0 source as oeo-technology + oeo-carrier; on the
+      same upstream cadence and the same BFO+RO strip-pipeline cadence
+      until the strip pipeline settles. Curator should refresh all
+      three OEO subsets in a single sprint.
+    next_check_due: "2026-08-02"
+    manifest: imports-manifest-v2.yaml
+
+  - import_id: ei-argument-pattern-v2
+    cadence_days: 0
+    rationale: "V2 hand-seeded SKOS scheme local to energy-intel (7 concepts)."
+    next_check_due: "n/a (local)"
+    manifest: imports-manifest-v2.yaml
+
+  - import_id: ei-narrative-role-v2
+    cadence_days: 0
+    rationale: "V2 hand-seeded SKOS scheme local to energy-intel (4 concepts)."
+    next_check_due: "n/a (local)"
+    manifest: imports-manifest-v2.yaml
+
+  - import_id: ei-oeo-topics-v2
+    cadence_days: 90
+    rationale: |
+      Hand-seeded scaffolding (3 schemes + 19 supplements) is local;
+      but the 41 OEO inScheme assertions track the OEO source and must
+      refresh on the same 90-day cadence as oeo-topic-subset.
+    next_check_due: "2026-08-02"
+    manifest: imports-manifest-v2.yaml
+
+  - import_id: ei-editorial-v2
+    cadence_days: 0
+    rationale: "V2 hand-seeded OWL module local to energy-intel (Narrative + 6 properties + restrictions)."
+    next_check_due: "n/a (local)"
+    manifest: imports-manifest-v2.yaml
+
+  - import_id: ei-technology-seeds-v0
+    cadence_days: 0
+    rationale: |
+      RETIRED FROM CLOSURE in V2 (closure_changed). File preserved on
+      disk per safety rule #4. v0.4.0 curator action: deprecate concepts
+      with dcterms:isReplacedBy oeo:OEO_xxx (V2-CUR-4).
+    next_check_due: "v0.4.0 (deprecation cycle)"
+    manifest: imports-manifest-v2.yaml
+
 # ---------------------------------------------------------------------
 # Refresh policy (curator audit)
 # ---------------------------------------------------------------------
@@ -190,7 +254,7 @@ refresh_policy:
       Tracked as V1-CUR-4.
 
 # ---------------------------------------------------------------------
-# Open questions carried into v0.3.0
+# Open questions carried into v0.4.0
 # ---------------------------------------------------------------------
 open_questions:
   - id: V1-IM-Q1
@@ -198,16 +262,52 @@ open_questions:
     question: |
       Should V1 promote `imports/oeo-{technology,carrier}-subset-fixed.ttl`
       to canonical names (delete the unfixed V0 subsets)?
-    curator_disposition: |
-      DEFER to v0.3.0. Keep both pairs in v0.2.0; deprecate V0 unfixed at
-      first release that ships V1 if no consumer regression. Replacement
-      pointer via dcterms:isReplacedBy in the V0 file's ontology header.
+    curator_disposition_v0_2_0: |
+      DEFER to v0.3.0. Keep both pairs in v0.2.0.
+    curator_disposition_v0_3_0: |
+      DEFER to v0.4.0. v0.3.0 added oeo-topic-subset alongside the V1
+      pairs; V0/V1 fixtures (cq-013, cq-015) still bind narrow roots.
+      Consolidation candidate for v0.4.0 alongside V2-IM-Q1.
 
   - id: V1-CUR-1
     source: validator-to-curator-handoff-v1.md § 4
     question: |
       OEO subset is upward-only; CQ-015 / CQ-019 fixtures bind the root
       directly. Re-extract with TOP+BOT or extend seed list?
-    curator_disposition: |
-      Track for v0.3.0. Open Linear issue with severity=info, owner=scout
-      at next sprint planning.
+    curator_disposition_v0_2_0: |
+      Track for v0.3.0.
+    curator_disposition_v0_3_0: |
+      PARTIALLY ADDRESSED in v0.3.0: oeo-topic-subset rebuilt with 41
+      seed IRIs (vs V1's narrower technology+carrier seeds). Subset
+      still upward-only (BOT extract); full TOP+BOT remains a v0.4.0
+      candidate.
+
+  - id: V2-IM-Q1
+    source: imports-manifest-v2.yaml § open_questions
+    question: |
+      Should v0.4.0 promote `imports/oeo-topic-subset.ttl` as the canonical
+      OEO subset and retire `oeo-technology-subset-fixed.ttl` /
+      `oeo-carrier-subset-fixed.ttl` from owl:imports?
+    curator_disposition_v0_3_0: |
+      DEFER to v0.4.0 — re-evaluate after V2 fixture suite has soaked
+      and consumer (skygest-cloudflare) confirms compatibility.
+
+  - id: V2-CUR-2
+    source: validator-to-curator-handoff-v2.md § 4 (residual)
+    question: |
+      Fold `imports/v2-extra-leak-terms.txt` (6 BFO IRIs) into canonical
+      `imports/upper-axiom-leak-terms.txt`?
+    curator_disposition_v0_3_0: |
+      DEFER to v0.4.0. Mechanical change; deferred to give the V2 strip
+      pipeline a soak cycle.
+
+  - id: V2-CUR-4
+    source: validator-to-curator-handoff-v2.md § 4 (residual)
+    question: |
+      Deprecate the 5 SKOS Concepts in technology-seeds.ttl with
+      `owl:deprecated true` + `dcterms:isReplacedBy oeo:OEO_xxx`
+      pointers?
+    curator_disposition_v0_3_0: |
+      DEFER to v0.4.0. Concepts retired from owl:imports closure but
+      file preserved per safety rule #4. v0.4.0 lands the deprecation
+      cycle.

@@ -84,4 +84,5 @@ ontologies/*/validation/profile-validate-*.log
 # rebuilt on demand; reports cite these but the report is the source of truth)
 ontologies/*/validation/v1/
 ontologies/*/validation/v1-bfo-remediation/
+ontologies/*/validation/v2/
 ontologies/*/validation/merged-top-level-with-oeo.ttl

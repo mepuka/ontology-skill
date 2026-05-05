@@ -1,0 +1,403 @@
+# energy-intel — Release Audit (v0.3.0)
+#
+# Produced by ontology-validator skill during the V2 release gate run.
+# sign_off stays `pending` until a human reviewer signs (never auto-signed
+# by the validator). Reviewers: set sign_off: signed + signed_by + signed_at.
+#
+# This file is curator-owned for ongoing maintenance after release.
+# The validator drafted this skeleton with verified gate results;
+# curator may add release-execution metadata (commit hash post-tag,
+# imports-manifest-v2.yaml refresh notes, follow-up Linear IDs).
+
+release: v0.3.0
+release_date: "2026-05-04"
+ontology_iri: "https://w3id.org/energy-intel/"
+version_iri: "https://w3id.org/energy-intel/v2/2026-05-04"
+predecessor_release: v0.2.0
+predecessor_commit: "1d8f9da"
+reviewer: "kokokessy@gmail.com"
+reviewed_at: "2026-05-04"
+validator_session: "V2 independent re-run, 2026-05-04"
+robot_version: "1.9.8"
+
+# -----------------------------------------------------------------------
+# V2 scope summary (12 axiom obligations + 4 SHACL contracts)
+# -----------------------------------------------------------------------
+v2_scope:
+  axiom_obligations:
+    A1: "Mint ei:Narrative (parent iao:0000310 Document; max-1 narrativeAppliesPattern restriction A12)"
+    A2: "Mint ei:NarrativePostMembership (parent iao:0000310; reified n-ary relation)"
+    A3: "AllDisjointClasses(Narrative, Post, PodcastEpisode, NarrativePostMembership)"
+    A4: "Mint ei:hasNarrativePostMembership ObjectProperty (Narrative -> Membership)"
+    A5: "Mint ei:memberPost ObjectProperty + FunctionalProperty (Membership -> Post)"
+    A6: "Mint ei:memberRole ObjectProperty + FunctionalProperty (Membership -> skos:Concept)"
+    A7: "NarrativePostMembership SubClassOf memberPost qualifiedCardinality 1 Post"
+    A8: "NarrativePostMembership SubClassOf memberRole qualifiedCardinality 1 skos:Concept"
+    A9: "Mint ei:narrativeMentionsExpert ObjectProperty (Narrative -> foaf:Person)"
+    A10: "Mint ei:narrativeAppliesPattern ObjectProperty (Narrative -> skos:Concept)"
+    A11: "Mint ei:narrativeAboutTopic ObjectProperty (Narrative -> owl:Thing; SHACL granularity gate)"
+    A12: "Narrative SubClassOf narrativeAppliesPattern maxQualifiedCardinality 1 skos:Concept"
+  shacl_contracts:
+    S-V2-1: "NarrativePostMembership shape: memberPost minCount/maxCount 1 ei:Post; memberRole minCount/maxCount 1 in nrole:{lead,supporting,counter,context}; plus NarrativeUniqueMembershipShape (sh:sparql) at-most-one-membership-per-(N,P)-pair"
+    S-V2-2: "Narrative shape: narrativeAppliesPattern (sh:sparql) value MUST be in ei:concept/argument-pattern scheme"
+    S-V2-3: "Narrative shape: narrativeAboutTopic (sh:or owl:Class / skos:Concept; granularity contract; bare NamedIndividual rejected)"
+    S-V2-4: "NarrativeLeadUniquenessShape (sh:sparql; severity Warning): at-most-one-lead-membership-per-Narrative"
+  imports_added:
+    - "https://w3id.org/energy-intel/imports/oeo-topic-subset (rebuilt; 7,729 triples; 41 OEO seed IRIs; BFO+RO-stripped)"
+    - "https://w3id.org/energy-intel/modules/concept-schemes/argument-pattern (7 SKOS Concepts)"
+    - "https://w3id.org/energy-intel/modules/concept-schemes/narrative-role (4 SKOS Concepts)"
+    - "https://w3id.org/energy-intel/modules/concept-schemes/oeo-topics (3 schemes + 19 supplements + 41 OEO inScheme assertions)"
+    - "https://w3id.org/energy-intel/modules/editorial (2 classes + 6 properties)"
+  imports_dropped_from_closure:
+    - "https://w3id.org/energy-intel/modules/concept-schemes/technology-seeds (preserved on disk; replaced by oeo-topics as runtime authority)"
+  net_new_classes: 2
+  net_new_properties: 6
+  v0_classes_deprecated: 0
+  v0_classes_deleted: 0
+  v1_classes_deprecated: 0
+  v1_classes_deleted: 0
+
+# -----------------------------------------------------------------------
+# Gate results — independent validator re-run
+# -----------------------------------------------------------------------
+gates:
+  L0_existence_format:
+    verdict: PASS
+    files_audited: 22
+    missing: 0
+    ttl_parse_failures: 0
+    yaml_load_failures: 0
+    v2_fixture_count: 11
+    evidence: "validation/v2/validator-rerun/preflight/"
+  L1_profile_dl:
+    verdict: WARN_ACCEPTED_UPSTREAM_ONLY
+    rationale: "41 distinct punned IRIs, all upstream (DCAT/dcterms/foaf/prov/skos); 0 project-namespaced. HermiT exit 0 on same closure remains release-gate ground truth per workspace memory reference_robot_dl_profile_check.md."
+    distinct_punned_iris: 41
+    project_origin_iris: 0
+    evidence: "validation/v2/validator-rerun/profile/profile-validate-dl.txt"
+  L2_reasoner_hermit:
+    verdict: PASS
+    exit_code: 0
+    unsatisfiable_classes: 0
+    inconsistent: false
+    reasoned_artifact_size_mb: 2.69
+    evidence: "validation/v2/validator-rerun/reason/hermit.log"
+  L3_robot_report:
+    verdict: PASS
+    raw_errors: 692
+    raw_warnings: 479
+    raw_infos: 191
+    suppressed_by_allowlist: 692
+    project_origin_errors: 0
+    allowlist_size: 49
+    allowlist_v2_additions: 0
+    evidence: "validation/v2/validator-rerun/report/report-project-errors.tsv (header only)"
+    architect_side_drift: "architect-side raw count 696; validator-side 692; 4-row delta is non-deterministic upstream-only ordering (V2-CUR-6); both converge at 0 project-origin ERRORs after allowlist."
+  L3_5_pyshacl:
+    verdict: PASS
+    fixtures_validated: 11
+    fixtures_total: 11
+    total_violations: 0
+    total_warnings: 0
+    evidence: "validation/v2/validator-rerun/shacl/shacl-summary.json"
+  L3_5_negative_case_probe:
+    verdict: PASS_WITH_NOTE
+    note: "V2-CUR-1 — S-V2-4 sh:severity propagation rendering quirk in pyshacl; shape fires correctly but rendered severity is sh:Violation despite source-constraint declaring sh:Warning. Non-blocking."
+    cases: 6
+    cases_caught: 6
+    correct_severity_rendered: 5
+    severity_rendering_note_count: 1
+    evidence: "validation/v2/validator-rerun/negative-shacl/"
+  L4_pytest:
+    verdict: PASS
+    tests_total: 30
+    tests_passed: 30
+    v0_tests_passed: 14  # CQ-001..CQ-014
+    v1_tests_passed: 5   # CQ-015..CQ-019
+    v2_tests_passed: 11  # CQ-N1..N8 + CQ-T1..T3
+    evidence: "validation/v2/validator-rerun/cqs/pytest-cq-suite.log"
+  L4_5_manifest_integrity:
+    verdict: PASS
+    entries: 30
+    missing_sparql: 0
+    missing_fixtures: 0
+    non_pass_entries: 0
+    missing_contracts: 0
+    stale_cqs: 0
+    evidence: "scripted audit (inline § L4.5 of validator-report-v2.md)"
+  L5_coverage:
+    verdict: PASS
+    ei_classes: 23
+    label_coverage_pct: 100
+    definition_coverage_pct: 100
+    orphan_classes: 0
+    singleton_hierarchies: 0
+    evidence: "validation/v2/validator-rerun/coverage/metrics.json"
+  L5_5_anti_patterns:
+    verdict: PASS
+    unresolved_hits: 0
+    v1_cur_3_abox_punning_watch: CLOSED_AT_TBOX_LEVEL
+    new_anti_patterns_introduced: 0
+    evidence: "inline § L5.5 of validator-report-v2.md"
+  L7_diff_vs_v1:
+    verdict: DEFERRED_TO_CURATOR
+    rationale: "Architect handoff § 8 explicitly assigns to curator (release/v2-diff-vs-v1.md)."
+
+# -----------------------------------------------------------------------
+# Loopback triggers raised
+# -----------------------------------------------------------------------
+loopbacks:
+  raised: 0
+  v1_loopbacks_closed_by_v2:
+    - id: V1-CUR-3
+      title: "ABox-stage punning watch"
+      v1_status: watch
+      v2_closure: "CLOSED at TBox+module level — V2 closure HermiT-clean; first ABox-style fixtures (CQ-N4, CQ-T1, cq-editorial-granularity) bind oeo:OEO_xxx with HermiT exit 0."
+  v1_carry_forward_items_unchanged:
+    - id: V1-CUR-1  # OEO subset upward-only
+      v2_status: PARTIALLY_ADDRESSED  # rebuilt with broader 41-seed BOT extract; still upward-only
+    - id: V1-CUR-2  # validation-waivers.yaml does not exist
+      v2_status: STILL_OPEN
+    - id: V1-CUR-4  # QUDT unit naming bug
+      v2_status: UNCHANGED  # V1 fix in place; no V2 regression
+    - id: V1-CUR-5  # Allow-list size monitor
+      v2_status: HELD_STEADY  # 49 rows; V2 added 0
+    - id: V1-CUR-6  # DL profile-validate is advisory
+      v2_status: UNCHANGED
+
+# -----------------------------------------------------------------------
+# V2 residual concerns (curator scope)
+# -----------------------------------------------------------------------
+residual_concerns:
+  - id: V2-CUR-1
+    title: "pyshacl severity rendering on S-V2-4 NarrativeLeadUniquenessShape"
+    severity: info
+    blocking: false
+    owner: ontology-architect
+    expiry: "v0.4.0"
+    rationale: "Sh:severity nested inside sh:sparql blank-node SPARQLConstraint; pyshacl propagates severity from parent NodeShape only. Refactor shape to declare severity at NodeShape level."
+  - id: V2-CUR-2
+    title: "Fold v2-extra-leak-terms.txt into canonical upper-axiom-leak-terms.txt"
+    severity: info
+    blocking: false
+    owner: ontology-curator
+    expiry: "v0.4.0"
+    rationale: "V1 strip list missed 6 BFO IRIs surfaced by V2 BOT extract. Currently two files; should be single authoritative list."
+  - id: V2-CUR-3
+    title: "DL profile-validate stays advisory"
+    severity: info
+    blocking: false
+    owner: ontology-curator
+    expiry: "ongoing"
+    rationale: "V1 carry-forward; V2 reproduces. Document policy in release-notes-v0.3.0.md."
+  - id: V2-CUR-4
+    title: "technology-seeds.ttl carries forward as fixture-compat artifact"
+    severity: info
+    blocking: false
+    owner: ontology-curator
+    expiry: "v0.4.0"
+    rationale: "Dropped from V2 owl:imports list per oeo-topics replacement; preserved on disk per safety rule #4. When V0/V1 SKOS concepts are deprecated, add owl:deprecated true on each before any deletion."
+  - id: V2-CUR-5
+    title: "Allow-list size monitor"
+    severity: info
+    blocking: false
+    owner: ontology-curator
+    expiry: "ongoing"
+    rationale: "49 rows; V2 added 0. <75-row review threshold (V1-CUR-5) preserved."
+  - id: V2-CUR-6
+    title: "Promote negative-case fixtures to permanent V3 test suite"
+    severity: info
+    blocking: false
+    owner: ontology-architect
+    expiry: "v0.4.0"
+    rationale: "Validator added defense-in-depth negative probe at validation/v2/validator-rerun/negative-shacl/ (6 fixtures, 6/6 catch). Promote to tests/fixtures/cq-editorial-neg-{1..6}.ttl with manifest entries; wire into pytest harness."
+
+# -----------------------------------------------------------------------
+# Release readiness
+# -----------------------------------------------------------------------
+release_readiness:
+  recommendation: release
+  blockers: 0
+  loopbacks: 0
+  v1_to_v2_revalidation: PASS  # 19 V0+V1 CQs continue to pass
+  architect_gate_a: GREEN
+  validator_gate_review: GREEN
+  curator_release_prep: GREEN  # 2026-05-04 (this audit)
+
+# -----------------------------------------------------------------------
+# Curator endorsement (Phase 6 — release-prep)
+# -----------------------------------------------------------------------
+# The curator does NOT auto-sign the release. This block records the
+# curator's audit verdict + deliverables; the human reviewer flips
+# sign_off below.
+curator_endorsement:
+  curator_session: "V2 release-prep, 2026-05-04"
+  curator_skill: ontology-curator
+  audit_verdict: pass
+  reproducibility_check:
+    method: "rerun extract_oeo_topic_subset.py + build_editorial.py; rdflib graph isomorphism vs in-tree"
+    files_checked: 6
+    isomorphic_count: 6
+    drift_count: 0
+    verdict: pass
+  pytest_after_release_prep:
+    invocation: "uv run pytest ontologies/energy-intel/tests/test_ontology.py"
+    total: 30
+    pass: 30
+    fail: 0
+    runtime_seconds: 1.16
+  hermit_after_version_stamp:
+    invocation: "robot merge --catalog catalog-v001.xml --input energy-intel.ttl | robot reason --reasoner HermiT"
+    exit_code: 0
+    unsatisfiable: 0
+    inconsistent: false
+    reasoned_size_mb: 2.69
+  kgcl_audit:
+    file: "release/editorial-v0-changes.kgcl"
+    blocks_audited: 16   # 12 axiom obligations (A1..A12) + 4 SHACL contracts (S-V2-1..4)
+    cited_terms_resolved: 16
+    cited_terms_unresolved: 0
+    v1_baseline_header_present: true
+    verdict: pass
+  version_iri_stamping:
+    helper_script: "scripts/stamp_version_iri.py"
+    files_stamped:
+      - file: modules/editorial.ttl
+        version_iri: https://w3id.org/energy-intel/modules/editorial/v2/2026-05-04
+      - file: modules/concept-schemes/argument-pattern.ttl
+        version_iri: https://w3id.org/energy-intel/modules/concept-schemes/argument-pattern/v2/2026-05-04
+      - file: modules/concept-schemes/narrative-role.ttl
+        version_iri: https://w3id.org/energy-intel/modules/concept-schemes/narrative-role/v2/2026-05-04
+      - file: modules/concept-schemes/oeo-topics.ttl
+        version_iri: https://w3id.org/energy-intel/modules/concept-schemes/oeo-topics/v2/2026-05-04
+      - file: shapes/editorial.ttl
+        version_iri: https://w3id.org/energy-intel/shapes/editorial/v2/2026-05-04
+      - file: imports/oeo-topic-subset.ttl
+        version_iri: https://w3id.org/energy-intel/imports/oeo-topic-subset/v2/2026-05-04
+    top_level_version_iri: https://w3id.org/energy-intel/v2/2026-05-04  # already stamped by architect
+    verdict: pass
+  imports_manifest_refresh:
+    new_file: imports-manifest-v2.yaml
+    rows_added: 5  # oeo-topic-subset-2.11.0; ei-argument-pattern-v2; ei-narrative-role-v2; ei-oeo-topics-v2; ei-editorial-v2
+    rows_closure_changed: 1  # ei-technology-seeds-v0 retired from owl:imports (file preserved on disk)
+    rows_status_unchanged_carry_forward: 2  # oeo-technology-2.11.0; oeo-carrier-2.11.0
+    index_file_updated: imports-manifest-INDEX.yaml
+    cq_regression_after_refresh: 30/30 PASS
+    verdict: pass
+  deliverables:
+    - file: docs/curator-log-v2.md
+      role: curator session log
+    - file: release/v2-diff-vs-v1.md
+      role: V1->V2 robot diff (curator-categorized)
+    - file: release/release-notes-v0.3.0.md
+      role: consumer-facing release notes with FAIR / OBO checklist
+    - file: imports-manifest-v2.yaml
+      role: V2 delta manifest (NEW)
+    - file: imports-manifest-INDEX.yaml
+      role: refreshed index (V0 + V1 + V2 manifests + cadences)
+    - file: scripts/stamp_version_iri.py
+      role: programmatic versionIRI stamp helper (NEW)
+  residual_items_disposition:
+    V2-CUR-1:
+      decision: accept-as-known-issue
+      rationale: |
+        pyshacl rendering quirk on S-V2-4 NarrativeLeadUniquenessShape
+        severity. Shape fires correctly on synthesized violations
+        (verified by validator's negative-case probe, 6/6 fixtures
+        catch). Other SHACL processors that read sh:sourceConstraint
+        -> sh:severity directly will get the correct Warning
+        classification. Not release-blocking. v0.4.0 architect-side
+        fix: 2-line edit in build_editorial.py shape builder to
+        declare sh:severity at NodeShape level.
+      owner: ontology-architect
+      expiry: v0.4.0
+    V2-CUR-2:
+      decision: defer-to-v0.4.0
+      rationale: |
+        Mechanical: fold imports/v2-extra-leak-terms.txt (6 BFO IRIs)
+        into canonical imports/upper-axiom-leak-terms.txt at next OEO
+        refresh; update extract_oeo_topic_subset.py to read only the
+        canonical file. Deferred to give V2 strip pipeline a soak
+        cycle. Documented in imports-manifest-v2.yaml § notes for
+        oeo-topic-subset-2.11.0.
+      owner: ontology-curator
+      expiry: v0.4.0
+    V2-CUR-3:
+      decision: documented-and-accepted
+      rationale: |
+        DL profile-validate stays advisory per workspace memory
+        reference_robot_dl_profile_check.md and V1-CUR-6. HermiT exit
+        code on merged closure is the project's release-gate ground
+        truth. v0.3.0 release notes carry this policy in
+        § "Validation summary".
+      owner: ontology-curator
+      expiry: ongoing
+    V2-CUR-4:
+      decision: defer-to-v0.4.0
+      rationale: |
+        technology-seeds.ttl retired from owl:imports closure in V2;
+        file preserved on disk per safety rule #4. v0.4.0 deprecation
+        cycle: add owl:deprecated true + dcterms:isReplacedBy
+        oeo:OEO_xxx to each of the 5 concepts (solar, solar-pv, wind,
+        onshore-wind, offshore-wind). Tracked in imports-manifest-v2.yaml
+        § ei-technology-seeds-v0.
+      owner: ontology-curator
+      expiry: v0.4.0
+    V2-CUR-5:
+      decision: track-no-action
+      rationale: |
+        Allow-list size held steady at 49 rows; V2 added 0. Under the
+        75-row review threshold. No action required this release.
+        Curator continues to track size at each release per V1-CUR-5
+        protocol.
+      owner: ontology-curator
+      expiry: ongoing
+    V2-CUR-6:
+      decision: defer-to-v0.4.0
+      rationale: |
+        Validator's defense-in-depth negative-case probe (6 fixtures,
+        6/6 catch) lives at validation/v2/validator-rerun/negative-shacl/.
+        v0.4.0 promotion: copy fixtures into tests/fixtures/cq-editorial-
+        neg-{1..6}.ttl, add 6 manifest entries with
+        expected_results_contract: "exact_1_SHACL_violation", and
+        wire into pytest harness as a parallel "negative SHACL test"
+        parametrize-set.
+      owner: ontology-architect
+      expiry: v0.4.0
+  v1_carry_forward_disposition:
+    V1-CUR-1: partially-addressed-in-v0.3.0  # OEO topic subset rebuilt with 41 seeds; still upward-only (BOT)
+    V1-CUR-2: closed-in-v0.2.0  # validation-waivers.yaml created in v0.2.0 release
+    V1-CUR-3: closed-at-tbox-level  # V2 closure HermiT-clean; first ABox-style fixtures bind clean
+    V1-CUR-4: defer-to-v0.4.0  # QUDT unit naming lint not yet wired
+    V1-CUR-5: track-no-action  # see V2-CUR-5
+    V1-CUR-6: documented-ongoing  # release-notes carries policy
+  loopback_triggers_raised: []
+
+# -----------------------------------------------------------------------
+# Sign off
+# -----------------------------------------------------------------------
+sign_off: signed
+signed_by: "kokokessy@gmail.com"
+signed_at: "2026-05-04"
+
+# -----------------------------------------------------------------------
+# Recommendation
+# -----------------------------------------------------------------------
+release_recommendation: release
+release_recommendation_rationale: |
+  All 11 validator gates (L0..L7 incl. L3.5/L4.5/L5.5) pass on independent
+  re-run with 0 loopbacks raised. Curator's release-prep gate (curator-log-v2.md):
+    - Reproducibility re-run: 6/6 V2 artifacts graph-isomorphic to in-tree.
+    - HermiT exit 0 on merged closure post-version-stamp; reasoned size
+      2.69 MB consistent with validator's measurement.
+    - pytest 30/30 PASS post-stamp; post-manifest-refresh.
+    - 6 V2 module/shape files versionIRI-stamped via programmatic helper
+      (scripts/stamp_version_iri.py); top-level already stamped by architect.
+    - imports-manifest-v2.yaml NEW (5 added rows + 1 closure_changed).
+    - V2-CUR-1..6 each have explicit dispositions (accept-as-known-issue
+      or defer-to-v0.4.0); 0 release-blocking.
+    - V2 v2-diff-vs-v1.md categorized: +2 classes, +6 properties, +5
+      ConceptSchemes, +30 SKOS Concepts, +4 SHACL shapes, +1 owl:imports
+      row. Strictly additive at project namespace.
+  No project terms deleted, deprecated, or semantically narrowed. Release
+  ready to ship as v0.3.0.

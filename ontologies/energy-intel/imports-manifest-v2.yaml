@@ -1,0 +1,306 @@
+# energy-intel — Imports Manifest (V2 delta)
+#
+# Authored: 2026-05-04 by ontology-curator (V2 release-prep)
+# Predecessor: imports-manifest-v1.yaml (V1; commit 1d8f9da)
+#
+# This file documents only V2 *additions* and *closure-changed* entries
+# (where a V1 row was retired from the import closure but the file
+# stays on disk). The V0 baseline + V1 delta + this V2 delta are joined
+# by the INDEX file. Rows below override the matching id in V1+V0
+# (resolution: V2 > V1 > V0) by row id.
+#
+# Schema: same as V0 (_shared/odk-and-imports.md § 3) plus:
+#   * v2_change_type: added | closure_changed | rejected
+#   * v2_rationale:   short note pointing at architect-build-log-v2.md anchor
+#
+# Build script: scripts/extract_oeo_topic_subset.py + scripts/build_editorial.py.
+
+baseline_manifest: imports-manifest.yaml
+v1_delta_manifest: imports-manifest-v1.yaml
+v1_baseline_commit: "1d8f9da8442204771d469d31680092bc48342407"
+authored_at: "2026-05-04"
+authored_by: ontology-curator
+build_scripts:
+  - scripts/extract_oeo_topic_subset.py
+  - scripts/build_editorial.py
+
+imports:
+
+  # ===================================================================
+  # ADDED — V2 net-new imports rows
+  # ===================================================================
+
+  - id: oeo-topic-subset-2.11.0
+    v2_change_type: added
+    v2_rationale: |
+      V2 editorial extension introduces ei:narrativeAboutTopic, whose
+      values are OEO classes admitted as runtime topic-catalog members
+      via OWL 2 punning (skos:Concept on each OEO IRI). To keep the
+      project closure HermiT-clean while exposing 41 broad-coverage
+      OEO classes (policy / market / climate / technology axes), the
+      architect rebuilds an OEO BOT subset over a curated 41-IRI seed
+      list and strips BFO+RO leak terms (V1 strip-list + 6 V2 extras).
+      Replaces the narrower V1 oeo-technology-subset / oeo-carrier-subset
+      role for editorial-graph topic anchors.
+      See architect-build-log-v2.md § 7 / 8.
+
+    source_iri: https://openenergyplatform.org/ontology/oeo/oeo-full.owl
+    pinned_version: "2.11.0"
+    extraction_method: BOT_post_strip
+    term_file: imports/oeo-topic-seeds.txt
+    strip_term_files:
+      - imports/upper-axiom-leak-terms.txt
+      - imports/v2-extra-leak-terms.txt
+    module_file: imports/oeo-topic-subset.ttl
+    module_iri: https://w3id.org/energy-intel/imports/oeo-topic-subset
+    license: CC-BY-4.0
+    refresh_cadence_days: 90
+    source_freshness: "2026-05-04 verified against v2.11.0 release tag"
+    rejection_rationale: null
+    seed_count: 41
+    triple_count: 7729
+    seed_terms_summary: |
+      41 OEO IRIs covering: energy carriers (coal, oil, nat-gas,
+      hydrogen, biomass, geothermal, solar, wind, hydro, nuclear),
+      technologies (PV, wind turbine, electrolyzer, battery, CCS),
+      market/policy (energy markets, capacity markets, ETS),
+      climate (climate change, GHG, decarbonisation), demand
+      (electrification, building, transport, industry), grids/storage,
+      and more. Full list at imports/oeo-topic-seeds.txt.
+    extraction_command: |
+      uv run python ontologies/energy-intel/scripts/extract_oeo_topic_subset.py
+      # Internally:
+      # 1. .local/bin/robot extract --method BOT
+      #    --input imports/oeo-full.owl
+      #    --term-file imports/oeo-topic-seeds.txt
+      #    --output _oeo-topic-subset-raw.ttl
+      # 2. .local/bin/robot remove
+      #    --term-file imports/upper-axiom-leak-terms.txt (57 terms)
+      #    --term-file imports/v2-extra-leak-terms.txt (6 terms)
+      #    --trim true --preserve-structure false
+      # 3. Add owl:Ontology header.
+      # 4. Verify all 41 seeds remain owl:Class; zero BFO refs;
+      #    granularity contract holds.
+    extracted_at: "2026-05-04"
+    notes: |
+      * The 6 V2-extra leak terms (`BFO_0000024`, `_0000027`, `_0000029`,
+        `_0000031`, `_0000040`, `_0000141`) are BFO IRIs that V2 BOT
+        extraction transitively pulled in but V1's strip list missed.
+        Curator action V2-CUR-2: at next OEO refresh, fold these into
+        the canonical upper-axiom-leak-terms.txt.
+      * Granularity contract (CQ-T3) verifier ensures every seed is
+        typed owl:Class (not bare NamedIndividual) post-extract.
+
+  - id: ei-argument-pattern-v2
+    v2_change_type: added
+    v2_rationale: |
+      V2 editorial extension declares 7 stable argument-pattern SKOS
+      Concepts (deployment-milestone, emergent-technology-bulletin,
+      geographic-energy-project, grid-snapshot, learning-curve,
+      methodological-critique, structural-economic-analysis). Replaces
+      the prior owl:Class + ABox-individuals modeling per source plan
+      §S4 / multi-agent design review. Adding a pattern is a PR, not a
+      runtime mutation.
+    source_iri: null
+    pinned_version: "v2"
+    extraction_method: hand_seed_skos
+    term_file: null
+    module_file: modules/concept-schemes/argument-pattern.ttl
+    module_iri: https://w3id.org/energy-intel/modules/concept-schemes/argument-pattern
+    license: inherits energy-intel license
+    refresh_cadence_days: 0
+    source_freshness: "2026-05-04 up (local)"
+    rejection_rationale: null
+    triple_count: 82
+    extraction_command: "Programmatic: scripts/build_editorial.py"
+    notes: |
+      Closed enumeration via SHACL S-V2-2 (sh:sparql; narrativeAppliesPattern
+      value MUST be in scheme).
+
+  - id: ei-narrative-role-v2
+    v2_change_type: added
+    v2_rationale: |
+      V2 editorial extension declares 4 narrative-role SKOS Concepts
+      used as values of ei:memberRole (lead, supporting, counter, context).
+      Closed enumeration per source plan §3.3.
+    source_iri: null
+    pinned_version: "v2"
+    extraction_method: hand_seed_skos
+    term_file: null
+    module_file: modules/concept-schemes/narrative-role.ttl
+    module_iri: https://w3id.org/energy-intel/modules/concept-schemes/narrative-role
+    license: inherits energy-intel license
+    refresh_cadence_days: 0
+    source_freshness: "2026-05-04 up (local)"
+    rejection_rationale: null
+    triple_count: 45
+    extraction_command: "Programmatic: scripts/build_editorial.py"
+    notes: |
+      Closed enumeration via SHACL S-V2-1 (memberRole sh:in nrole:{lead,
+      supporting,counter,context}).
+
+  - id: ei-oeo-topics-v2
+    v2_change_type: added
+    v2_rationale: |
+      V2 editorial extension declares 3 SKOS schemes (oeo-topic, editorial-
+      supplement, topic aggregator) + 19 editorial supplements (e.g.
+      "biomass (editorial umbrella)") + 41 OEO inScheme assertions for
+      runtime topic catalog. Backs ei:narrativeAboutTopic granularity
+      contract (S-V2-3).
+    source_iri: null
+    pinned_version: "v2"
+    extraction_method: hand_seed_skos
+    term_file: null
+    module_file: modules/concept-schemes/oeo-topics.ttl
+    module_iri: https://w3id.org/energy-intel/modules/concept-schemes/oeo-topics
+    license: inherits energy-intel license
+    refresh_cadence_days: 0
+    source_freshness: "2026-05-04 up (local)"
+    rejection_rationale: null
+    triple_count: 334
+    extraction_command: "Programmatic: scripts/build_editorial.py"
+    notes: |
+      Replaces the V0/V1 hand-seeded technology-seeds.ttl as runtime
+      topic authority. technology-seeds.ttl preserved on disk for
+      V0/V1 fixture compatibility (V2-CUR-4).
+
+  - id: ei-editorial-v2
+    v2_change_type: added
+    v2_rationale: |
+      V2 editorial extension module — declares ei:Narrative,
+      ei:NarrativePostMembership, and 6 object properties
+      (hasNarrativePostMembership, memberPost, memberRole,
+      narrativeMentionsExpert, narrativeAppliesPattern,
+      narrativeAboutTopic) plus cardinality restrictions A1..A12.
+      Top-level energy-intel.ttl owl:imports this module.
+    source_iri: null
+    pinned_version: "v2"
+    extraction_method: hand_seed_owl
+    term_file: null
+    module_file: modules/editorial.ttl
+    module_iri: https://w3id.org/energy-intel/modules/editorial
+    license: inherits energy-intel license
+    refresh_cadence_days: 0
+    source_freshness: "2026-05-04 up (local)"
+    rejection_rationale: null
+    triple_count: 76
+    extraction_command: "Programmatic: scripts/build_editorial.py"
+    notes: |
+      Module imports iao + agent + media (transitive: foaf, prov, etc).
+
+  # ===================================================================
+  # CLOSURE CHANGED — V1 row retired from owl:imports closure
+  # (file preserved on disk per safety rule #4)
+  # ===================================================================
+
+  - id: ei-technology-seeds-v0
+    v2_change_type: closure_changed
+    v2_rationale: |
+      V2 retires modules/concept-schemes/technology-seeds.ttl from
+      energy-intel.ttl owl:imports because oeo-topics.ttl replaces it
+      as runtime topic catalog authority. The file is PRESERVED on disk
+      per safety rule #4 (never delete terms). The 5 SKOS Concepts
+      (solar, solar-pv, wind, onshore-wind, offshore-wind) and the
+      ei:concept/technology ConceptScheme remain dereferenceable via
+      direct file load (V0/V1 fixtures cq-013, cq-015 still bind via
+      tests/test_ontology.py:TBOX_FILES). Tracked as V2-CUR-4 for
+      v0.4.0 deprecation cycle (add owl:deprecated true +
+      dcterms:isReplacedBy oeo:OEO_xxx per concept before any deletion).
+    source_iri: null
+    pinned_version: "v0"
+    extraction_method: hand_seed_skos_archived
+    term_file: null
+    module_file: modules/concept-schemes/technology-seeds.ttl
+    module_iri: https://w3id.org/energy-intel/modules/concept-schemes/technology-seeds
+    license: inherits energy-intel license
+    refresh_cadence_days: 0
+    source_freshness: "2026-05-04 file on disk; not in import closure"
+    rejection_rationale: |
+      RETIRED FROM CLOSURE only — NOT rejected at the file level.
+      File and concepts dereferenceable via direct load.
+    notes: |
+      v0.4.0 curator action: per V2-CUR-4 add `owl:deprecated true` and
+      `dcterms:isReplacedBy <oeo:OEO_xxx>` to each of the 5 concepts.
+      Do not remove the file.
+
+  # ===================================================================
+  # NO CHANGE — V1 OEO subsets still imported as authored
+  # ===================================================================
+  # imports-manifest-v1.yaml rows for oeo-technology-2.11.0 and
+  # oeo-carrier-2.11.0 carry forward UNCHANGED into V2 (they remain in
+  # owl:imports). Not restated here.
+
+# ---------------------------------------------------------------------
+# Refresh-cadence consolidated (V2 release-time addendum)
+# ---------------------------------------------------------------------
+v2_refresh_cadences_added:
+  - import_id: oeo-topic-subset-2.11.0
+    cadence_days: 90
+    rationale: |
+      Same OEO 2.11.0 source as oeo-technology + oeo-carrier; bound by the
+      same upstream cadence and the same BFO+RO strip-pipeline cadence
+      until the strip pipeline settles. Curator should refresh all three
+      OEO subsets in a single sprint.
+    next_check_due: "2026-08-02"
+    manifest: imports-manifest-v2.yaml
+
+  - import_id: ei-argument-pattern-v2
+    cadence_days: 0
+    rationale: "Hand-seeded SKOS scheme local to energy-intel."
+    next_check_due: "n/a (local)"
+    manifest: imports-manifest-v2.yaml
+
+  - import_id: ei-narrative-role-v2
+    cadence_days: 0
+    rationale: "Hand-seeded SKOS scheme local to energy-intel."
+    next_check_due: "n/a (local)"
+    manifest: imports-manifest-v2.yaml
+
+  - import_id: ei-oeo-topics-v2
+    cadence_days: 90
+    rationale: |
+      Hand-seeded scaffolding (3 schemes + 19 supplements) is local;
+      but the 41 OEO inScheme assertions track the OEO source and must
+      refresh on the same 90-day cadence as oeo-topic-subset.
+    next_check_due: "2026-08-02"
+    manifest: imports-manifest-v2.yaml
+
+  - import_id: ei-editorial-v2
+    cadence_days: 0
+    rationale: "Hand-seeded OWL module local to energy-intel."
+    next_check_due: "n/a (local)"
+    manifest: imports-manifest-v2.yaml
+
+# ---------------------------------------------------------------------
+# Open questions carried forward to v0.4.0
+# ---------------------------------------------------------------------
+open_questions:
+  - id: V2-IM-Q1
+    question: |
+      Should v0.4.0 promote `imports/oeo-topic-subset.ttl` as the canonical
+      OEO subset and retire `oeo-technology-subset-fixed.ttl` /
+      `oeo-carrier-subset-fixed.ttl` from owl:imports? V2 keeps all three
+      because V1 fixtures bind narrow technology / carrier roots; V3 may
+      consolidate.
+    curator_disposition: |
+      DEFER to v0.4.0. Re-evaluate after the V2 fixture suite has soaked
+      and consumer (skygest-cloudflare) confirms it can use oeo-topic-subset
+      for narrativeAboutTopic queries (fixtures in scope: CQ-N4, CQ-T1, T2).
+
+  - id: V2-CUR-2
+    question: |
+      Fold v2-extra-leak-terms.txt (6 BFO IRIs) into the canonical
+      upper-axiom-leak-terms.txt; update extract_oeo_topic_subset.py to
+      read only one file.
+    curator_disposition: |
+      DEFER to v0.4.0. Mechanical change; deferred to give the V2 strip
+      pipeline a soak cycle before consolidating.
+
+  - id: V2-CUR-4
+    question: |
+      Deprecate the 5 SKOS Concepts in technology-seeds.ttl with
+      replacement pointers to OEO IRIs?
+    curator_disposition: |
+      DEFER to v0.4.0. Add owl:deprecated true + dcterms:isReplacedBy
+      <oeo:OEO_xxx> per concept; do not remove the file. Validate via
+      runoak / robot.
