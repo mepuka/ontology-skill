@@ -1,0 +1,24 @@
+# CQ: CQ-N3
+# Kind: select
+# Expected: 0..n rows
+# Expected shape:
+#   Columns: ?narrative ?role
+#   Cardinality: 0..n
+#   Reverse walk over NarrativePostMembership: Post -> (inverse memberPost) -> Membership
+#   -> (inverse hasNarrativePostMembership) -> Narrative; project memberRole.
+#   Returns one row per (narrative, role) pair the bound Post participates in.
+# Source use case: UC-010 (Attach a post in a role and walk the membership)
+# Priority: must_have
+# Entailment regime: simple
+
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+PREFIX ei:    <https://w3id.org/energy-intel/>
+
+SELECT ?narrative ?role WHERE {
+  ?narrative ei:hasNarrativePostMembership ?membership ;
+             a ei:Narrative .
+  ?membership ei:memberPost <https://id.skygest.io/post/x-1886502618-status-2039766305071378920> ;
+              ei:memberRole ?role .
+}

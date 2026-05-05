@@ -1,0 +1,28 @@
+# CQ: CQ-T3 (granularity contract)
+# Kind: select  (constraint — verify-style: expects zero rows)
+# Expected: exact_0 rows on a well-formed corpus
+# Expected shape:
+#   Columns: ?topic
+#   Cardinality: exactly 0
+#   Any row indicates a value of ei:narrativeAboutTopic that is neither
+#   owl:Class nor skos:Concept — a violation of the granularity contract
+#   in scope-v2.md § In-scope item 3 / source plan §3.4. OWL 2 punning
+#   means an OEO term can be both owl:Class and owl:NamedIndividual
+#   simultaneously (when used as a value); the FILTER NOT EXISTS form
+#   handles punning correctly: the violation is "is neither typed as
+#   owl:Class nor as skos:Concept", not "is typed as owl:NamedIndividual".
+# Source use case: UC-012 (Filter Narratives by topic — granularity contract)
+# Priority: must_have
+# Entailment regime: simple
+
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:   <http://www.w3.org/2002/07/owl#>
+PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+PREFIX ei:    <https://w3id.org/energy-intel/>
+
+SELECT ?topic WHERE {
+  ?narrative ei:narrativeAboutTopic ?topic .
+  FILTER NOT EXISTS { ?topic a owl:Class . }
+  FILTER NOT EXISTS { ?topic a skos:Concept . }
+}

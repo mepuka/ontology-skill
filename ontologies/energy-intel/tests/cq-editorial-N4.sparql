@@ -1,0 +1,24 @@
+# CQ: CQ-N4
+# Kind: select
+# Expected: 0..n rows
+# Expected shape:
+#   Columns: ?narrative
+#   Cardinality: 0..n
+#   Direct lookup over ei:narrativeAboutTopic. The bound topic IRI is an
+#   OEO class IRI (here oeo:OEO_00010439 'nuclear power technology'); the
+#   query also works against Skygest supplement IRIs in ei:concept/...
+#   namespace.
+# Source use case: UC-012 (Filter Narratives by topic)
+# Priority: must_have
+# Entailment regime: simple
+
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+PREFIX oeo:   <https://openenergyplatform.org/ontology/oeo/>
+PREFIX ei:    <https://w3id.org/energy-intel/>
+
+SELECT ?narrative WHERE {
+  ?narrative ei:narrativeAboutTopic oeo:OEO_00010439 ;
+             a ei:Narrative .
+}

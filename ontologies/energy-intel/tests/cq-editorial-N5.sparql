@@ -1,0 +1,23 @@
+# CQ: CQ-N5
+# Kind: select
+# Expected: 0..n rows
+# Expected shape:
+#   Columns: ?narrative
+#   Cardinality: 0..n
+#   Direct lookup over ei:narrativeAppliesPattern. Bound pattern IRI is
+#   the structural-economic-analysis concept in scheme
+#   ei:concept/argument-pattern; rebinds against any of the 7 patterns.
+# Source use case: UC-011 (Classify a Narrative by argument pattern)
+# Priority: must_have
+# Entailment regime: simple
+
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+PREFIX ei:    <https://w3id.org/energy-intel/>
+
+SELECT ?narrative WHERE {
+  ?narrative ei:narrativeAppliesPattern
+    <https://w3id.org/energy-intel/concept/argument-pattern/structural-economic-analysis> ;
+    a ei:Narrative .
+}

@@ -42,7 +42,15 @@ TBOX_FILES: tuple[Path, ...] = (
     PROJECT_ROOT / "modules" / "data.ttl",
     PROJECT_ROOT / "modules" / "concept-schemes" / "temporal-resolution.ttl",
     PROJECT_ROOT / "modules" / "concept-schemes" / "aggregation-type.ttl",
+    # V0/V1 technology-seeds.ttl: retired from V2 top-level import closure;
+    # V0/V1 fixtures inline what they need from this scheme, so we keep loading
+    # it into the test TBox to preserve V0+V1 CQ revalidation guarantee.
     PROJECT_ROOT / "modules" / "concept-schemes" / "technology-seeds.ttl",
+    # V2 additions (2026-05-04)
+    PROJECT_ROOT / "modules" / "editorial.ttl",
+    PROJECT_ROOT / "modules" / "concept-schemes" / "argument-pattern.ttl",
+    PROJECT_ROOT / "modules" / "concept-schemes" / "narrative-role.ttl",
+    PROJECT_ROOT / "modules" / "concept-schemes" / "oeo-topics.ttl",
 )
 
 # Per-CQ expected (min_rows, max_rows) bands derived from the manifest's
@@ -69,6 +77,18 @@ EXPECTED_BANDS: dict[str, tuple[int, int | None]] = {
     "CQ-017": (0, None),  # 0..n (CMC, unit) pairs whose unit hasQuantityKind matches
     "CQ-018": (0, None),  # 0..n distinct Persons bearing EnergyExpertRole + authoring a Post
     "CQ-019": (0, None),  # 0..n distinct (person, cmc) pairs
+    # V2 editorial extension (2026-05-04)
+    "CQ-N1": (0, 1),  # 0..1 deterministic IRI lookup
+    "CQ-N2": (0, None),  # 0..n (post, role) pairs
+    "CQ-N3": (0, None),  # 0..n (narrative, role) pairs
+    "CQ-N4": (0, None),  # 0..n narratives by topic
+    "CQ-N5": (0, None),  # 0..n narratives by argument pattern
+    "CQ-N6": (0, None),  # 0..n distinct experts (UNION)
+    "CQ-N7": (0, 0),  # exact_0 — well-formed corpus has no duplicate memberships
+    "CQ-N8": (0, 0),  # exact_0 — well-formed corpus has no multi-lead
+    "CQ-T1": (1, None),  # 1..n topic-metadata rows (at least prefLabel)
+    "CQ-T2": (1, None),  # 1..n IRIs whose skos:notation matches the slug
+    "CQ-T3": (0, 0),  # exact_0 — granularity contract holds
 }
 
 # Per-CQ expected column order. Must match the manifest row contract.
@@ -93,6 +113,18 @@ EXPECTED_COLUMNS: dict[str, tuple[str, ...]] = {
     "CQ-017": ("cmc", "unit"),
     "CQ-018": ("person",),
     "CQ-019": ("person", "cmc"),
+    # V2 editorial extension (2026-05-04)
+    "CQ-N1": ("narrative",),
+    "CQ-N2": ("post", "role"),
+    "CQ-N3": ("narrative", "role"),
+    "CQ-N4": ("narrative",),
+    "CQ-N5": ("narrative",),
+    "CQ-N6": ("expert",),
+    "CQ-N7": ("narrative", "post"),
+    "CQ-N8": ("narrative",),
+    "CQ-T1": ("topic", "prefLabel", "altLabel", "broader", "narrower"),
+    "CQ-T2": ("iri",),
+    "CQ-T3": ("topic",),
 }
 
 

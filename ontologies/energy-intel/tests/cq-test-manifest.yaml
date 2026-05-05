@@ -18,17 +18,19 @@
 # fixture. See _shared/cq-traceability.md § expected-results contract.
 
 preflight_summary:
-  total: 19
-  parse_ok: 19
+  total: 30
+  parse_ok: 30
   parse_fail: 0
-  fixtures_built: 19
-  fixtures_passing: 19
+  fixtures_built: 30
+  fixtures_passing: 30
   fixtures_failing: 0
-  fixtures_skipped: 0  # all V1 fixtures land 2026-04-27
+  fixtures_skipped: 0   # V2 fixtures landed 2026-05-04
   architect_session: "2026-04-22 (V0 post-OEO-verification); V1 architect 2026-04-27"
   fixture_builder: "ontologies/energy-intel/scripts/build_fixtures.py"
   v1_requirements_session: "2026-04-27 (CQ-015..019 added; preflight ok)"
   v1_architect_session: "2026-04-27 (V1 fixtures + axioms + shapes landed)"
+  v2_requirements_session: "2026-05-04 (CQ-N1..N8, CQ-T1..T3 added; preflight ok 11/11)"
+  v2_architect_session: "2026-05-04 (V2 fixtures + axioms + shapes landed)"
 
 tests:
 
@@ -309,6 +311,181 @@ tests:
     fixture_path: tests/fixtures/cq-019.ttl
     entailment_regime: simple
     fixture_rationale: "Composes CQ-018 role-bearer triangle with CQ-015 OEO subtree tag in a single fixture."
+
+  # =====================================================
+  # V2 Editorial Extension (CQ-N1..N8, CQ-T1..T3)
+  # Added 2026-05-04 by ontology-requirements (V2)
+  # =====================================================
+
+  - id: CQ-N1
+    file: tests/cq-editorial-N1.sparql
+    kind: select
+    expected: "0..1 rows; exactly 1 when the story stem corresponds to an imported Narrative"
+    expected_results_contract: |
+      Columns: ?narrative.
+      Cardinality: 0..1.
+      Verifies the deterministic IRI rule (Narrative IRI = base + story-stem).
+      Test fixture binds story-stem "2026-04-06-tva-nuclear-costs" and asserts
+      the corresponding Narrative individual exists.
+    parse_status: ok
+    fixture_run_status: pass
+    fixture_path: tests/fixtures/cq-editorial-N1.ttl
+    entailment_regime: simple
+    fixture_rationale: "V2 architect session lands the fixture: declares ei:Narrative class plus an instance with the deterministic IRI."
+
+  - id: CQ-N2
+    file: tests/cq-editorial-N2.sparql
+    kind: select
+    expected: "0..n (post, role) pairs"
+    expected_results_contract: |
+      Columns: ?post ?role.
+      Cardinality: 0..n.
+      Forward walk Narrative -> hasNarrativePostMembership -> {memberPost, memberRole}.
+      Against a fixture with two memberships (lead + supporting), returns both rows.
+    parse_status: ok
+    fixture_run_status: pass
+    fixture_path: tests/fixtures/cq-editorial-N2.ttl
+    entailment_regime: simple
+    fixture_rationale: "V2 architect lands fixture: NarrativePostMembership instances with memberPost + memberRole."
+
+  - id: CQ-N3
+    file: tests/cq-editorial-N3.sparql
+    kind: select
+    expected: "0..n (narrative, role) pairs"
+    expected_results_contract: |
+      Columns: ?narrative ?role.
+      Cardinality: 0..n.
+      Reverse walk Post -> Membership -> Narrative; project memberRole.
+    parse_status: ok
+    fixture_run_status: pass
+    fixture_path: tests/fixtures/cq-editorial-N3.ttl
+    entailment_regime: simple
+    fixture_rationale: "V2 architect lands fixture: shared between CQ-N2/N3 (forward + reverse over same membership graph)."
+
+  - id: CQ-N4
+    file: tests/cq-editorial-N4.sparql
+    kind: select
+    expected: "0..n Narratives tagged with the bound topic"
+    expected_results_contract: |
+      Columns: ?narrative.
+      Cardinality: 0..n.
+      Direct lookup over ei:narrativeAboutTopic against an OEO IRI
+      (oeo:OEO_00010439 nuclear power technology).
+    parse_status: ok
+    fixture_run_status: pass
+    fixture_path: tests/fixtures/cq-editorial-N4.ttl
+    entailment_regime: simple
+    fixture_rationale: "V2 architect lands fixture with at least one Narrative tagged via ei:narrativeAboutTopic to a verified OEO topic IRI."
+
+  - id: CQ-N5
+    file: tests/cq-editorial-N5.sparql
+    kind: select
+    expected: "0..n Narratives applying the bound argument-pattern concept"
+    expected_results_contract: |
+      Columns: ?narrative.
+      Cardinality: 0..n.
+      Direct lookup over ei:narrativeAppliesPattern against
+      apat:structural-economic-analysis.
+    parse_status: ok
+    fixture_run_status: pass
+    fixture_path: tests/fixtures/cq-editorial-N5.ttl
+    entailment_regime: simple
+    fixture_rationale: "V2 architect lands fixture: argument-pattern SKOS scheme + 7 skos:Concept instances + at least one Narrative applying one of them."
+
+  - id: CQ-N6
+    file: tests/cq-editorial-N6.sparql
+    kind: select
+    expected: "0..n distinct experts via UNION over explicit assertion + property-path fallback"
+    expected_results_contract: |
+      Columns: ?expert.
+      Cardinality: 0..n; DISTINCT applied.
+      UNION of (a) explicit ei:narrativeMentionsExpert and (b) walk through
+      hasNarrativePostMembership/memberPost/authoredBy.
+    parse_status: ok
+    fixture_run_status: pass
+    fixture_path: tests/fixtures/cq-editorial-N6.ttl
+    entailment_regime: simple
+    fixture_rationale: "V2 architect lands fixture: optionally asserts ei:narrativeMentionsExpert + always asserts the membership chain; tests both branches of the UNION."
+
+  - id: CQ-N7
+    file: tests/cq-editorial-N7.sparql
+    kind: select
+    expected: "exact_0 rows on a well-formed fixture"
+    expected_results_contract: |
+      Columns: ?narrative ?post.
+      Cardinality: exactly 0.
+      Any row is a violation of the SHACL invariant
+      sh:qualifiedMaxCount 1 per (Narrative, Post) pair.
+      Test runner fails when this query returns > 0 rows.
+    parse_status: ok
+    fixture_run_status: pass
+    fixture_path: tests/fixtures/cq-editorial-N7.ttl
+    entailment_regime: simple
+    fixture_rationale: "V2 architect lands fixture: well-formed corpus with at most one membership per (narrative, post) pair (expects 0 violations)."
+
+  - id: CQ-N8
+    file: tests/cq-editorial-N8.sparql
+    kind: select
+    expected: "exact_0 rows on a well-formed fixture; >0 surfaces as SHACL warning"
+    expected_results_contract: |
+      Columns: ?narrative.
+      Cardinality: exactly 0 (well-formed); >0 surfaces as warning.
+      Constraint check for at-most-one lead role per Narrative.
+      SHACL severity is sh:Warning, not sh:Violation, so test runner
+      flags but does not fail when this query returns > 0 rows.
+    parse_status: ok
+    fixture_run_status: pass
+    fixture_path: tests/fixtures/cq-editorial-N8.ttl
+    entailment_regime: simple
+    fixture_rationale: "V2 architect lands fixture: well-formed corpus with single lead membership per Narrative."
+
+  - id: CQ-T1
+    file: tests/cq-editorial-T1.sparql
+    kind: select
+    expected: "1..n rows (at least one prefLabel; OPTIONAL columns may be null)"
+    expected_results_contract: |
+      Columns: ?topic ?prefLabel ?altLabel ?broader ?narrower.
+      Cardinality: 1..n.
+      Bound IRI is oeo:OEO_00010427 (solar power technology).
+      Cross-product expansion if multiple altLabels or neighbours.
+    parse_status: ok
+    fixture_run_status: pass
+    fixture_path: tests/fixtures/cq-editorial-T1.ttl
+    entailment_regime: simple
+    fixture_rationale: "V2 architect lands fixture: rebuilt OEO topic subset (imports/oeo-topic-subset.ttl) plus supplement scheme(s). Fixture binds against an accepted runtime topic IRI."
+
+  - id: CQ-T2
+    file: tests/cq-editorial-T2.sparql
+    kind: select
+    expected: "1..n IRIs whose skos:notation matches the bound legacy slug"
+    expected_results_contract: |
+      Columns: ?iri.
+      Cardinality: 1..n (1-to-many is allowed for umbrella -> multiple OEO leaves).
+      Bound literal is "data-center-demand"; rebinds against any of the
+      30 canonical slugs declared in V1's canonicalTopicOrder.
+    parse_status: ok
+    fixture_run_status: pass
+    fixture_path: tests/fixtures/cq-editorial-T2.ttl
+    entailment_regime: simple
+    fixture_rationale: "V2 architect lands fixture: each Skygest supplement IRI carries skos:notation with its legacy topic_slug per scope-v2.md Open Question 4."
+
+  - id: CQ-T3
+    file: tests/cq-editorial-granularity.sparql
+    kind: select
+    expected: "exact_0 rows on a well-formed corpus"
+    expected_results_contract: |
+      Columns: ?topic.
+      Cardinality: exactly 0.
+      Any row indicates a granularity-contract violation: a value of
+      ei:narrativeAboutTopic that is neither owl:Class nor skos:Concept.
+      OWL 2 punning is allowed (an OEO term can be both owl:Class and
+      owl:NamedIndividual when used as a value); the FILTER NOT EXISTS
+      form handles punning correctly.
+    parse_status: ok
+    fixture_run_status: pass
+    fixture_path: tests/fixtures/cq-editorial-granularity.ttl
+    entailment_regime: simple
+    fixture_rationale: "V2 architect lands fixture: well-formed corpus where every ei:narrativeAboutTopic value resolves to owl:Class (OEO IRIs) or skos:Concept (supplement IRIs)."
 
 # Loopback triggers recorded for this manifest
 #

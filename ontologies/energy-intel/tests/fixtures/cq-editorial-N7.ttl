@@ -1,0 +1,29 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ei: <https://w3id.org/energy-intel/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix nrole: <https://w3id.org/energy-intel/concept/narrative-role/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+<https://w3id.org/energy-intel/fixtures/cq-editorial-N7> a owl:Ontology ;
+    dcterms:description "V2 fixture for CQ acceptance testing. Asserts the minimum ABox needed for the corresponding cq-editorial-*.sparql to return its expected result shape."@en ;
+    dcterms:title "CQ-N7 fixture (well-formed: 0 violations)"@en .
+
+<https://w3id.org/energy-intel/narrative/2026-04-06-tva-nuclear-costs> a ei:Narrative ;
+    ei:hasNarrativePostMembership <https://w3id.org/energy-intel/narrative/2026-04-06-tva-nuclear-costs/membership/2ccc1ecaef99a5e3>,
+        <https://w3id.org/energy-intel/narrative/2026-04-06-tva-nuclear-costs/membership/ae2036c2db3d79f9> .
+
+<https://id.skygest.io/post/x-1886502618-status-2039766305071378920> a ei:Post ;
+    foaf:maker <https://id.skygest.io/expert/did-x-1886502618> ;
+    ei:authoredBy <https://id.skygest.io/expert/did-x-1886502618> .
+
+<https://id.skygest.io/post/x-1886502618-status-other> a ei:Post .
+
+<https://w3id.org/energy-intel/narrative/2026-04-06-tva-nuclear-costs/membership/2ccc1ecaef99a5e3> a ei:NarrativePostMembership ;
+    ei:memberPost <https://id.skygest.io/post/x-1886502618-status-2039766305071378920> ;
+    ei:memberRole nrole:lead .
+
+<https://w3id.org/energy-intel/narrative/2026-04-06-tva-nuclear-costs/membership/ae2036c2db3d79f9> a ei:NarrativePostMembership ;
+    ei:memberPost <https://id.skygest.io/post/x-1886502618-status-other> ;
+    ei:memberRole nrole:supporting .
+
+<https://id.skygest.io/expert/did-x-1886502618> a foaf:Person .

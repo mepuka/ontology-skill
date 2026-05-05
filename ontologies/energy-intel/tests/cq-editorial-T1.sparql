@@ -1,0 +1,26 @@
+# CQ: CQ-T1
+# Kind: select
+# Expected: 1..n rows
+# Expected shape:
+#   Columns: ?topic ?prefLabel ?altLabel ?broader ?narrower
+#   Cardinality: 1..n (at least one row carrying the prefLabel; OPTIONAL
+#                     columns may be null on individual rows; cross-product
+#                     of altLabels and broader/narrower expands the row count)
+#   Bound IRI is oeo:OEO_00010427 (solar power technology). Rebinds
+#   against any topic IRI in the runtime topic catalog.
+# Source use case: UC-014 (Topic vocabulary lookup and migration query)
+# Priority: must_have
+# Entailment regime: simple
+
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+PREFIX oeo:   <https://openenergyplatform.org/ontology/oeo/>
+
+SELECT ?topic ?prefLabel ?altLabel ?broader ?narrower WHERE {
+  BIND(oeo:OEO_00010427 AS ?topic)
+  ?topic skos:prefLabel ?prefLabel .
+  OPTIONAL { ?topic skos:altLabel ?altLabel . }
+  OPTIONAL { ?topic skos:broader  ?broader . }
+  OPTIONAL { ?topic skos:narrower ?narrower . }
+}

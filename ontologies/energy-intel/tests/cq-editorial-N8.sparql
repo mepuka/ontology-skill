@@ -1,0 +1,26 @@
+# CQ: CQ-N8
+# Kind: select  (constraint — verify-style: expects zero rows on well-formed corpus)
+# Expected: exact_0 rows on a well-formed fixture; non-zero rows surface as a SHACL warning
+# Expected shape:
+#   Columns: ?narrative
+#   Cardinality: exactly 0 (well-formed); >0 surfaces as warning
+#   Any row indicates a Narrative with two or more memberships carrying
+#   memberRole=lead. This is a SHACL warning (sh:Warning), not a violation,
+#   because draft narratives may legitimately have multiple lead candidates
+#   during editorial iteration.
+# Source use case: UC-010 (Attach a post in a role)
+# Priority: should_have
+# Entailment regime: simple
+
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ei:    <https://w3id.org/energy-intel/>
+
+SELECT ?narrative WHERE {
+  ?narrative ei:hasNarrativePostMembership ?m1 ;
+             ei:hasNarrativePostMembership ?m2 ;
+             a ei:Narrative .
+  ?m1 ei:memberRole <https://w3id.org/energy-intel/concept/narrative-role/lead> .
+  ?m2 ei:memberRole <https://w3id.org/energy-intel/concept/narrative-role/lead> .
+  FILTER(?m1 != ?m2)
+}

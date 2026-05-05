@@ -1,0 +1,11 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+<https://w3id.org/energy-intel/concept/data-center-demand> a skos:Concept ;
+    skos:notation "data-center-demand" ;
+    skos:prefLabel "data center demand"@en .
+
+<https://w3id.org/energy-intel/fixtures/cq-editorial-T2> a owl:Ontology ;
+    dcterms:description "V2 fixture for CQ acceptance testing. Asserts the minimum ABox needed for the corresponding cq-editorial-*.sparql to return its expected result shape."@en ;
+    dcterms:title "CQ-T2 fixture"@en .

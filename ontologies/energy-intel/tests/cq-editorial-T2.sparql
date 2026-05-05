@@ -1,0 +1,21 @@
+# CQ: CQ-T2
+# Kind: select
+# Expected: 1..n rows
+# Expected shape:
+#   Columns: ?iri
+#   Cardinality: 1..n (1-to-many is allowed for umbrella -> multiple OEO leaves)
+#   Looks up canonical replacement IRI(s) for a legacy editorial topic_slug
+#   via skos:notation. The bound literal is "data-center-demand"; rebinds
+#   against any of the 30 canonical slugs declared in V1's
+#   canonicalTopicOrder.
+# Source use case: UC-014 (Topic vocabulary lookup and migration query)
+# Priority: should_have
+# Entailment regime: simple
+
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
+
+SELECT ?iri WHERE {
+  ?iri skos:notation "data-center-demand" .
+}

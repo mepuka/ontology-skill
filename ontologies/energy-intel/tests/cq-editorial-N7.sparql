@@ -1,0 +1,26 @@
+# CQ: CQ-N7
+# Kind: select  (constraint — verify-style: expects zero rows)
+# Expected: exact_0 rows on a well-formed fixture
+# Expected shape:
+#   Columns: ?narrative ?post
+#   Cardinality: exactly 0
+#   Any row is a violation: a (Narrative, Post) pair has more than one
+#   NarrativePostMembership. The closed-shape SHACL invariant
+#   sh:qualifiedMaxCount 1 forbids this. Test runner fails when this
+#   query returns > 0 rows.
+# Source use case: UC-013 (Import existing markdown corpus atomically and idempotently)
+# Priority: must_have
+# Entailment regime: simple
+
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX ei:    <https://w3id.org/energy-intel/>
+
+SELECT ?narrative ?post WHERE {
+  ?narrative ei:hasNarrativePostMembership ?m1 ;
+             ei:hasNarrativePostMembership ?m2 ;
+             a ei:Narrative .
+  ?m1 ei:memberPost ?post .
+  ?m2 ei:memberPost ?post .
+  FILTER(?m1 != ?m2)
+}

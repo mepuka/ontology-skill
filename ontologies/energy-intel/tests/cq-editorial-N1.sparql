@@ -1,0 +1,22 @@
+# CQ: CQ-N1
+# Kind: select
+# Expected: 0..1 rows; exactly 1 when the story stem corresponds to an imported Narrative
+# Expected shape:
+#   Columns: ?narrative
+#   Cardinality: 0..1
+#   Verifies the deterministic IRI rule: Narrative IRI = https://w3id.org/energy-intel/narrative/{story-stem}.
+#   Story stem is bound here as a literal so the test rebinds against any fixture.
+# Source use case: UC-009 (Spawn a Narrative from picks)
+# Priority: must_have
+# Entailment regime: simple
+
+PREFIX rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:  <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:   <http://www.w3.org/2002/07/owl#>
+PREFIX ei:    <https://w3id.org/energy-intel/>
+
+SELECT ?narrative WHERE {
+  BIND(IRI(CONCAT("https://w3id.org/energy-intel/narrative/",
+                  "2026-04-06-tva-nuclear-costs")) AS ?narrative)
+  ?narrative a ei:Narrative .
+}
