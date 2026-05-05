@@ -1,0 +1,230 @@
+# energy-intel V2 editorial extension — KGCL change log
+#
+# Authored: 2026-05-04 by ontology-architect (V2 iteration)
+# Source: docs/conceptualizer-to-architect-handoff-v2.md § 2 (axiom obligations A1..A12)
+#         docs/axiom-plan-v2.md (CQ coverage map; SHACL S-V2-1..4)
+# Materialized by: scripts/build_editorial.py (the source of truth) +
+#                  scripts/extract_oeo_topic_subset.py (OEO subset rebuild).
+#
+# Curator audit: every cited source/target term in the blocks below resolves
+# against the V2 closure (verified by `just validate-editorial` on
+# 2026-05-04: ROBOT merge exit 0; HermiT reason exit 0; ROBOT report 0
+# project-origin ERRORs after allowlist; pyshacl 11/11 fixtures pass;
+# pytest 30/30 CQ tests pass).
+#
+# V1 baseline:
+#   * Tag:           v0.2.0
+#   * Commit:        1d8f9da  (release-time HEAD on `main` at V2 start)
+#   * versionIRI:    https://w3id.org/energy-intel/v1/2026-04-27
+#
+# V2 release target:
+#   * Tag:           v0.3.0
+#   * versionIRI:    https://w3id.org/energy-intel/v2/2026-05-04
+#
+# These KGCL patches describe the structural changes between V1 and V2.
+# They are recorded in KGCL form for human review and curator audit; the
+# changes are materialised by `scripts/build_editorial.py`, not by
+# `runoak apply` against this file. KGCL is the abstract specification
+# layer; the build script is the runnable implementation.
+#
+# Each block is preceded by a short rationale and pinned to its V2 axiom
+# obligation (A-row in the conceptualizer handoff).
+#
+# Apply only on a fresh checkout of V1 — running these against an
+# already-V2 module set is a no-op (idempotent).
+
+# ===================================================================
+# A1 — Mint ei:Narrative
+# ===================================================================
+# Source: bfo-alignment-v2.md § 1; conceptualizer-to-architect-handoff-v2.md § 2 A1
+# Module: modules/editorial.ttl (NEW)
+
+create class https://w3id.org/energy-intel/Narrative label "narrative"@en
+create edge https://w3id.org/energy-intel/Narrative rdfs:subClassOf http://purl.obolibrary.org/obo/IAO_0000310
+create definition "A written editorial unit about energy-domain events that have been curated by an editor. A Narrative groups posts that share an editorial through-line (a single argument or question) and applies an argument pattern to frame the discussion. Identified by a deterministic IRI derived from the story stem; the directory hierarchy on disk does not enter the IRI." for https://w3id.org/energy-intel/Narrative
+
+# ===================================================================
+# A2 — Mint ei:NarrativePostMembership
+# ===================================================================
+# Source: bfo-alignment-v2.md § 2; conceptualizer-to-architect-handoff-v2.md § 2 A2
+# Module: modules/editorial.ttl
+
+create class https://w3id.org/energy-intel/NarrativePostMembership label "narrative post membership"@en
+create edge https://w3id.org/energy-intel/NarrativePostMembership rdfs:subClassOf http://purl.obolibrary.org/obo/IAO_0000310
+create definition "An information artefact recording that a Narrative includes a Post in a specific role (lead, supporting, counter, or context). One individual per (Narrative, Post) pair. Identified by a deterministic IRI derived from sha256 of (narrativeIri, postUri). Reified rather than four role-named predicates because role-named predicates would smuggle storage state into predicate names (System Blueprint anti-pattern), would not absorb future first-class qualifier storage cleanly, and would block the SHACL closed-shape invariant sh:qualifiedMaxCount 1 per (Narrative, Post)." for https://w3id.org/energy-intel/NarrativePostMembership
+
+# ===================================================================
+# A3 — DisjointClasses(Narrative, Post, PodcastEpisode, NarrativePostMembership)
+# ===================================================================
+# Source: anti-pattern-review-v2.md § 1 row 4 (defense-in-depth); conceptualizer-handoff-v2.md § 2 A3
+# Module: modules/editorial.ttl
+
+# (KGCL has no native AllDisjointClasses primitive; emitted by build_editorial.py
+#  as an owl:AllDisjointClasses blank node with owl:members list. KGCL annotation:)
+# disjoint classes ( https://w3id.org/energy-intel/Narrative https://w3id.org/energy-intel/Post https://w3id.org/energy-intel/PodcastEpisode https://w3id.org/energy-intel/NarrativePostMembership )
+
+# ===================================================================
+# A4 — Mint ei:hasNarrativePostMembership
+# ===================================================================
+# Source: property-design-v2.md § 1; conceptualizer-handoff-v2.md § 2 A4
+# Module: modules/editorial.ttl
+
+create object property https://w3id.org/energy-intel/hasNarrativePostMembership label "has narrative-post membership"@en
+change object property domain https://w3id.org/energy-intel/hasNarrativePostMembership to https://w3id.org/energy-intel/Narrative
+change object property range https://w3id.org/energy-intel/hasNarrativePostMembership to https://w3id.org/energy-intel/NarrativePostMembership
+
+# ===================================================================
+# A5 — Mint ei:memberPost (FunctionalProperty)
+# ===================================================================
+# Source: property-design-v2.md § 2; conceptualizer-handoff-v2.md § 2 A5
+# Module: modules/editorial.ttl
+
+create object property https://w3id.org/energy-intel/memberPost label "member post"@en
+change object property domain https://w3id.org/energy-intel/memberPost to https://w3id.org/energy-intel/NarrativePostMembership
+change object property range https://w3id.org/energy-intel/memberPost to https://w3id.org/energy-intel/Post
+# (build_editorial.py emits owl:FunctionalProperty type triple)
+
+# ===================================================================
+# A6 — Mint ei:memberRole (FunctionalProperty)
+# ===================================================================
+# Source: property-design-v2.md § 3; conceptualizer-handoff-v2.md § 2 A6
+# Module: modules/editorial.ttl
+
+create object property https://w3id.org/energy-intel/memberRole label "member role"@en
+change object property domain https://w3id.org/energy-intel/memberRole to https://w3id.org/energy-intel/NarrativePostMembership
+change object property range https://w3id.org/energy-intel/memberRole to http://www.w3.org/2004/02/skos/core#Concept
+# (build_editorial.py emits owl:FunctionalProperty type triple; SHACL S-V2-1 enforces sh:in over the 4 narrative-role concepts)
+
+# ===================================================================
+# A7 — Cardinality restriction on NarrativePostMembership for memberPost
+# ===================================================================
+# Source: property-design-v2.md § 2; axiom-plan-v2.md § 3 A7
+# Module: modules/editorial.ttl
+# (KGCL: owl:qualifiedCardinality restriction emitted by build_editorial.py)
+
+# NarrativePostMembership rdfs:subClassOf [ owl:Restriction ; owl:onProperty ei:memberPost ; owl:qualifiedCardinality 1 ; owl:onClass ei:Post ]
+
+# ===================================================================
+# A8 — Cardinality restriction on NarrativePostMembership for memberRole
+# ===================================================================
+# Source: property-design-v2.md § 3; axiom-plan-v2.md § 3 A8
+# Module: modules/editorial.ttl
+
+# NarrativePostMembership rdfs:subClassOf [ owl:Restriction ; owl:onProperty ei:memberRole ; owl:qualifiedCardinality 1 ; owl:onClass skos:Concept ]
+
+# ===================================================================
+# A9 — Mint ei:narrativeMentionsExpert
+# ===================================================================
+# Source: property-design-v2.md § 4; conceptualizer-handoff-v2.md § 2 A9
+# Module: modules/editorial.ttl
+
+create object property https://w3id.org/energy-intel/narrativeMentionsExpert label "narrative mentions expert"@en
+change object property domain https://w3id.org/energy-intel/narrativeMentionsExpert to https://w3id.org/energy-intel/Narrative
+change object property range https://w3id.org/energy-intel/narrativeMentionsExpert to http://xmlns.com/foaf/0.1/Person
+
+# ===================================================================
+# A10 — Mint ei:narrativeAppliesPattern
+# ===================================================================
+# Source: property-design-v2.md § 5; conceptualizer-handoff-v2.md § 2 A10
+# Module: modules/editorial.ttl
+
+create object property https://w3id.org/energy-intel/narrativeAppliesPattern label "narrative applies pattern"@en
+change object property domain https://w3id.org/energy-intel/narrativeAppliesPattern to https://w3id.org/energy-intel/Narrative
+change object property range https://w3id.org/energy-intel/narrativeAppliesPattern to http://www.w3.org/2004/02/skos/core#Concept
+# (SHACL S-V2-2 constrains value to ei:concept/argument-pattern members)
+
+# ===================================================================
+# A11 — Mint ei:narrativeAboutTopic
+# ===================================================================
+# Source: property-design-v2.md § 6; conceptualizer-handoff-v2.md § 2 A11
+# Module: modules/editorial.ttl
+
+create object property https://w3id.org/energy-intel/narrativeAboutTopic label "narrative about topic"@en
+change object property domain https://w3id.org/energy-intel/narrativeAboutTopic to https://w3id.org/energy-intel/Narrative
+change object property range https://w3id.org/energy-intel/narrativeAboutTopic to http://www.w3.org/2002/07/owl#Thing
+# (Range is broad owl:Thing per anti-pattern #10 guard; SHACL S-V2-3 enforces granularity contract: owl:Class ∪ skos:Concept)
+
+# ===================================================================
+# A12 — Max-cardinality restriction on Narrative for narrativeAppliesPattern
+# ===================================================================
+# Source: property-design-v2.md § 5; axiom-plan-v2.md § 3 A12
+# Module: modules/editorial.ttl
+
+# Narrative rdfs:subClassOf [ owl:Restriction ; owl:onProperty ei:narrativeAppliesPattern ; owl:maxQualifiedCardinality 1 ; owl:onClass skos:Concept ]
+
+# ===================================================================
+# Concept-scheme additions (3 new SKOS schemes)
+# ===================================================================
+
+# 7 argument-pattern concepts
+create scheme https://w3id.org/energy-intel/concept/argument-pattern
+create concept https://w3id.org/energy-intel/concept/argument-pattern/deployment-milestone
+create concept https://w3id.org/energy-intel/concept/argument-pattern/emergent-technology-bulletin
+create concept https://w3id.org/energy-intel/concept/argument-pattern/geographic-energy-project
+create concept https://w3id.org/energy-intel/concept/argument-pattern/grid-snapshot
+create concept https://w3id.org/energy-intel/concept/argument-pattern/learning-curve
+create concept https://w3id.org/energy-intel/concept/argument-pattern/methodological-critique
+create concept https://w3id.org/energy-intel/concept/argument-pattern/structural-economic-analysis
+
+# 4 narrative-role concepts
+create scheme https://w3id.org/energy-intel/concept/narrative-role
+create concept https://w3id.org/energy-intel/concept/narrative-role/lead
+create concept https://w3id.org/energy-intel/concept/narrative-role/supporting
+create concept https://w3id.org/energy-intel/concept/narrative-role/counter
+create concept https://w3id.org/energy-intel/concept/narrative-role/context
+
+# 3 topic schemes (oeo-topic, editorial-supplement, topic aggregator) per V2-CQ-Q-1 split + aggregator decision
+create scheme https://w3id.org/energy-intel/concept/oeo-topic
+create scheme https://w3id.org/energy-intel/concept/editorial-supplement
+create scheme https://w3id.org/energy-intel/concept/topic
+
+# 19 editorial supplement concepts (covered by build_editorial.py EDITORIAL_SUPPLEMENTS list)
+create concept https://w3id.org/energy-intel/concept/data-center-demand
+create concept https://w3id.org/energy-intel/concept/distributed-energy
+create concept https://w3id.org/energy-intel/concept/grid-and-infrastructure
+create concept https://w3id.org/energy-intel/concept/electrification
+create concept https://w3id.org/energy-intel/concept/energy-efficiency
+create concept https://w3id.org/energy-intel/concept/energy-policy
+create concept https://w3id.org/energy-intel/concept/energy-markets
+create concept https://w3id.org/energy-intel/concept/energy-finance
+create concept https://w3id.org/energy-intel/concept/energy-geopolitics
+create concept https://w3id.org/energy-intel/concept/critical-minerals
+create concept https://w3id.org/energy-intel/concept/climate-and-emissions
+create concept https://w3id.org/energy-intel/concept/carbon-markets
+create concept https://w3id.org/energy-intel/concept/environment-and-land-use
+create concept https://w3id.org/energy-intel/concept/energy-justice
+create concept https://w3id.org/energy-intel/concept/sectoral-decarbonization
+create concept https://w3id.org/energy-intel/concept/workforce-and-manufacturing
+create concept https://w3id.org/energy-intel/concept/research-and-innovation
+create concept https://w3id.org/energy-intel/concept/energy-storage
+create concept https://w3id.org/energy-intel/concept/biomass
+
+# 41 OEO IRIs admitted to ei:concept/oeo-topic + ei:concept/topic via skos:inScheme
+# (build_editorial.py emits the inScheme triples; OEO classes themselves come from the rebuilt
+#  imports/oeo-topic-subset.ttl, extracted via robot extract --method BOT against
+#  imports/oeo-topic-seeds.txt and BFO+RO-stripped per imports/upper-axiom-leak-terms.txt
+#  + imports/v2-extra-leak-terms.txt)
+
+# ===================================================================
+# SHACL shape additions (S-V2-1..4)
+# ===================================================================
+# Source: property-design-v2.md §§ 3, 5, 6; axiom-plan-v2.md § 4 S-V2-1..4
+# Module: shapes/editorial.ttl (NEW)
+
+# S-V2-1 NarrativePostMembershipShape: sh:qualifiedMaxCount 1 per (Narrative, Post) pair
+# S-V2-2 NarrativeShape (narrativeAppliesPattern): sh:sparql scheme-membership check
+# S-V2-3 NarrativeShape (narrativeAboutTopic): sh:or (owl:Class ∪ skos:Concept) granularity contract
+# S-V2-4 NarrativeLeadUniquenessShape: sh:Warning at most one lead-role membership per Narrative
+
+# ===================================================================
+# Imports refresh
+# ===================================================================
+# Source: oeo-import-rebuild-plan.md
+# Module: top-level energy-intel.ttl + catalog-v001.xml
+
+# add owl:imports https://w3id.org/energy-intel/imports/oeo-topic-subset (rebuilt from imports/oeo-full.owl per oeo-import-rebuild-plan.md)
+# add owl:imports https://w3id.org/energy-intel/modules/editorial
+# add owl:imports https://w3id.org/energy-intel/modules/concept-schemes/argument-pattern
+# add owl:imports https://w3id.org/energy-intel/modules/concept-schemes/narrative-role
+# add owl:imports https://w3id.org/energy-intel/modules/concept-schemes/oeo-topics
+# remove owl:imports https://w3id.org/energy-intel/modules/concept-schemes/technology-seeds (RETIRED from V2 import closure; file kept on disk for V0/V1 fixture compat)

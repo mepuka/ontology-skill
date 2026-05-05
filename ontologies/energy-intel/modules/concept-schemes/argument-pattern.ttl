@@ -1,0 +1,98 @@
+@prefix apat: <https://w3id.org/energy-intel/concept/argument-pattern/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/energy-intel/modules/concept-schemes/argument-pattern> a owl:Ontology ;
+    dcterms:created "2026-05-04"^^xsd:date ;
+    dcterms:creator "energy-intel / ontology-architect"@en ;
+    dcterms:description "V2 SKOS ConceptScheme declaring the 7 stable argument patterns used by skygest-editorial to frame energy-domain narratives. Replaces the prior owl:Class + ABoxed individuals modeling per source plan §S4 / multi-agent design review. Adding a pattern is an ontology PR, not a runtime mutation."@en ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:modified "2026-05-04"^^xsd:date ;
+    dcterms:title "energy-intel — Argument Pattern ConceptScheme"@en ;
+    owl:versionIRI <https://w3id.org/energy-intel/modules/concept-schemes/argument-pattern/v2/2026-05-04> ;
+    owl:versionInfo "v2 (2026-05-04)" .
+
+apat:deployment-milestone a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "deployment milestone"@en ;
+    skos:altLabel "annual record"@en,
+        "displacement comparison"@en,
+        "geopolitical framing"@en,
+        "market share threshold"@en ;
+    skos:definition "Expert or institution posts new deployment figures — record capacity additions, market share thresholds, or cumulative installation milestones — to argue about the pace and scale of the energy transition. The editorial act is framing: which comparison metric the poster uses to contextualize the raw number."@en ;
+    skos:editorialNote "status: active"@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/argument-pattern> ;
+    skos:prefLabel "deployment milestone"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/argument-pattern> .
+
+apat:emergent-technology-bulletin a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "emergent technology bulletin"@en ;
+    skos:definition "New technology entering production. Signals not stories: an editorial flag that a previously-research-stage technology is reaching commercialization."@en ;
+    skos:editorialNote "status: active"@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/argument-pattern> ;
+    skos:prefLabel "emergent technology bulletin"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/argument-pattern> .
+
+apat:geographic-energy-project a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "geographic energy project"@en ;
+    skos:definition "Specific projects defined by location and physical parameters. Editorial framing typically emphasizes the geographic context, local economy, or grid-integration specifics."@en ;
+    skos:editorialNote "status: active"@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/argument-pattern> ;
+    skos:prefLabel "geographic energy project"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/argument-pattern> .
+
+apat:grid-snapshot a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "grid snapshot"@en ;
+    skos:altLabel "spot market analysis"@en ;
+    skos:definition "Short-term generation/price data used to make structural points. The editor extracts a representative slice of spot-market data and uses it to argue about a longer-running structural condition."@en ;
+    skos:editorialNote "status: active"@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/argument-pattern> ;
+    skos:prefLabel "grid snapshot"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/argument-pattern> .
+
+apat:learning-curve a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "learning curve"@en ;
+    skos:altLabel "historical trend"@en ;
+    skos:definition "Decades-long cost or deployment curves arguing inevitability. Editorial framing emphasizes the historical trajectory as evidence for future trends."@en ;
+    skos:editorialNote "status: active"@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/argument-pattern> ;
+    skos:prefLabel "learning curve"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/argument-pattern> .
+
+apat:methodological-critique a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "methodological critique"@en ;
+    skos:definition "Revealing how measurement/accounting choices shape political narratives. The editorial act is to surface that a debate hinges on methodology, not just ideology."@en ;
+    skos:editorialNote "status: active"@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/argument-pattern> ;
+    skos:prefLabel "methodological critique"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/argument-pattern> .
+
+apat:structural-economic-analysis a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "structural economic analysis"@en ;
+    skos:definition "Institutional data dissecting market mechanisms or policy. Editorial framing typically draws on utility planning documents, regulatory filings, or other primary economic sources to argue about underlying structural dynamics."@en ;
+    skos:editorialNote "status: active"@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/argument-pattern> ;
+    skos:prefLabel "structural economic analysis"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/argument-pattern> .
+
+<https://w3id.org/energy-intel/concept/argument-pattern> a owl:NamedIndividual,
+        skos:ConceptScheme ;
+    rdfs:label "argument pattern"@en ;
+    skos:definition "Controlled vocabulary of stable argument patterns the editorial pipeline uses to frame how an expert is using data to make a point. Each pattern's reference doc lives at /skygest-editorial/references/argument-patterns/{stem}.md."@en ;
+    skos:hasTopConcept apat:deployment-milestone,
+        apat:emergent-technology-bulletin,
+        apat:geographic-energy-project,
+        apat:grid-snapshot,
+        apat:learning-curve,
+        apat:methodological-critique,
+        apat:structural-economic-analysis ;
+    skos:prefLabel "argument pattern"@en .

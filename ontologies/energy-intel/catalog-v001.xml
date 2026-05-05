@@ -18,4 +18,15 @@
        uri="imports/oeo-carrier-subset-fixed.ttl"/>
   <uri name="https://w3id.org/energy-intel/imports/qudt-units-subset"
        uri="imports/qudt-units-subset.ttl"/>
+  <!-- V2 editorial extension (added 2026-05-04 by ontology-architect) -->
+  <uri name="https://w3id.org/energy-intel/modules/editorial"
+       uri="modules/editorial.ttl"/>
+  <uri name="https://w3id.org/energy-intel/modules/concept-schemes/argument-pattern"
+       uri="modules/concept-schemes/argument-pattern.ttl"/>
+  <uri name="https://w3id.org/energy-intel/modules/concept-schemes/narrative-role"
+       uri="modules/concept-schemes/narrative-role.ttl"/>
+  <uri name="https://w3id.org/energy-intel/modules/concept-schemes/oeo-topics"
+       uri="modules/concept-schemes/oeo-topics.ttl"/>
+  <uri name="https://w3id.org/energy-intel/imports/oeo-topic-subset"
+       uri="imports/oeo-topic-subset.ttl"/>
 </catalog>

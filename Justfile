@@ -26,7 +26,7 @@ update:
 # ---------------------------------------------------------------------------
 
 # Run all checks (lint, typecheck, test, ontology validation)
-check: lint typecheck test validate-energy-news validate-pao
+check: lint typecheck test validate-energy-news validate-pao validate-editorial
 
 # Lint with ruff
 lint:
@@ -153,6 +153,39 @@ validate-pao: build-pao
         --fail-on ERROR \
         --output ontologies/personal_agent_ontology/pao-report.tsv
     uv run pytest ontologies/personal_agent_ontology/tests/test_ontology.py -v
+
+# ---------------------------------------------------------------------------
+# energy-intel V2 editorial extension
+# ---------------------------------------------------------------------------
+
+# Rebuild OEO topic subset from imports/oeo-full.owl (V2 editorial extension)
+extract-oeo-topics:
+    @test -x {{robot_bin}} || just robot-install
+    uv run python ontologies/energy-intel/scripts/extract_oeo_topic_subset.py
+
+# Build V2 editorial-extension artifacts (modules, schemes, shapes, fixtures)
+build-editorial:
+    uv run python ontologies/energy-intel/scripts/build_editorial.py
+
+# Validate V2 editorial extension (extract + build + merge + reason + report + pyshacl + pytest)
+validate-editorial: build-editorial
+    @test -x {{robot_bin}} || just robot-install
+    @test -f ontologies/energy-intel/imports/oeo-topic-subset.ttl || just extract-oeo-topics
+    mkdir -p ontologies/energy-intel/validation/v2
+    cd {{justfile_directory()}} && {{robot_bin}} merge \
+        --catalog ontologies/energy-intel/catalog-v001.xml \
+        --input ontologies/energy-intel/energy-intel.ttl \
+        --output ontologies/energy-intel/validation/v2/merged-top-level.ttl
+    {{robot_bin}} reason --reasoner HermiT \
+        --input ontologies/energy-intel/validation/v2/merged-top-level.ttl \
+        --output ontologies/energy-intel/validation/v2/reasoned-top-level.ttl
+    cd {{justfile_directory()}} && {{robot_bin}} report \
+        --input ontologies/energy-intel/validation/v2/merged-top-level.ttl \
+        --output ontologies/energy-intel/validation/v2/report-top-level.tsv
+    cp ontologies/energy-intel/validation/v2/report-top-level.tsv \
+        ontologies/energy-intel/validation/report-top-level.tsv
+    uv run python ontologies/energy-intel/scripts/apply_report_allowlist.py
+    uv run pytest ontologies/energy-intel/tests/test_ontology.py -v
 
 # Generate pyLODE HTML documentation for Energy News Ontology
 doc-energy-news: build-energy-news

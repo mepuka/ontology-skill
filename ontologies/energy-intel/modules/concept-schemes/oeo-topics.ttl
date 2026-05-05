@@ -1,0 +1,405 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oeo: <https://openenergyplatform.org/ontology/oeo/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+oeo:OEO_00000088 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "coal" .
+
+oeo:OEO_00000115 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "oil" .
+
+oeo:OEO_00000191 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "geothermal" .
+
+oeo:OEO_00000220 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "hydrogen" .
+
+oeo:OEO_00000292 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "natural-gas" .
+
+oeo:OEO_00000384 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "solar" .
+
+oeo:OEO_00000446 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "wind" .
+
+oeo:OEO_00010138 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "carbon-capture" .
+
+oeo:OEO_00010139 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00010141 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00010424 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "wind" .
+
+oeo:OEO_00010426 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "offshore-wind" .
+
+oeo:OEO_00010427 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "solar" .
+
+oeo:OEO_00010428 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "solar" .
+
+oeo:OEO_00010430 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "geothermal" .
+
+oeo:OEO_00010431 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "hydro" .
+
+oeo:OEO_00010439 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "nuclear" .
+
+oeo:OEO_00010455 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00140049 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+<https://w3id.org/energy-intel/modules/concept-schemes/oeo-topics> a owl:Ontology ;
+    dcterms:created "2026-05-04"^^xsd:date ;
+    dcterms:creator "energy-intel / ontology-architect"@en ;
+    dcterms:description "V2 SKOS ConceptScheme module declaring the runtime topic catalog. Per V2-CQ-Q-1 (split + aggregator decision in conceptual-model-v2.md § 4), this module declares 3 schemes: ei:concept/oeo-topic (OEO IRIs admitted via punning), ei:concept/editorial-supplement (Skygest-coined umbrella concepts), and ei:concept/topic (aggregator). 19 supplement IRIs declared with skos:notation carrying legacy slug for migration. 41 OEO IRIs admitted via skos:inScheme + skos:topConceptOf assertions."@en ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:modified "2026-05-04"^^xsd:date ;
+    dcterms:title "energy-intel — OEO topics + editorial supplement ConceptSchemes"@en ;
+    owl:imports <https://w3id.org/energy-intel/imports/oeo-topic-subset> ;
+    owl:versionIRI <https://w3id.org/energy-intel/modules/concept-schemes/oeo-topics/v2/2026-05-04> ;
+    owl:versionInfo "v2 (2026-05-04)" .
+
+oeo:OEO_00000020 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00000143 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00000146 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00000199 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00000212 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00010212 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00010214 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00010258 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00010438 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "hydro" .
+
+oeo:OEO_00010485 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00020063 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00020065 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00020069 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00020075 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00020366 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00050000 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00110019 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00110020 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00140150 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00140151 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00240030 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+oeo:OEO_00310000 skos:inScheme <https://w3id.org/energy-intel/concept/oeo-topic>,
+        <https://w3id.org/energy-intel/concept/topic> .
+
+<https://w3id.org/energy-intel/concept/biomass> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "biomass (editorial umbrella)"@en ;
+    skos:closeMatch oeo:OEO_00010214,
+        oeo:OEO_00010258 ;
+    skos:definition "Editorial umbrella for biomass and bioenergy, broader than OEO_00010258/_00010214 alone — covers materials, conversion, and sustainability debates. Label disambiguated from OEO_00010214 (biomass material) and OEO_00010258 (bioenergy)."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/editorial-supplement>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "biomass" ;
+    skos:prefLabel "biomass (editorial umbrella)"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/editorial-supplement> .
+
+<https://w3id.org/energy-intel/concept/carbon-markets> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "carbon markets"@en ;
+    skos:closeMatch oeo:OEO_00020063,
+        oeo:OEO_00020075 ;
+    skos:definition "Editorial umbrella for carbon-credit and emissions-trading markets."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/editorial-supplement>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "carbon-markets" ;
+    skos:prefLabel "carbon markets"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/editorial-supplement> .
+
+<https://w3id.org/energy-intel/concept/climate-and-emissions> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "climate and emissions"@en ;
+    skos:closeMatch oeo:OEO_00000020,
+        oeo:OEO_00000199 ;
+    skos:definition "Editorial umbrella for climate policy outcomes, emissions tracking, and net-zero commitments."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/editorial-supplement>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "climate-and-emissions" ;
+    skos:prefLabel "climate and emissions"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/editorial-supplement> .
+
+<https://w3id.org/energy-intel/concept/critical-minerals> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "critical minerals"@en ;
+    skos:closeMatch oeo:OEO_00240030 ;
+    skos:definition "Editorial umbrella for critical-mineral extraction, processing, and market competition. Narrows OEO's bare 'mineral' to lithium / cobalt / rare-earth scope."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/editorial-supplement>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "critical-minerals" ;
+    skos:prefLabel "critical minerals"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/editorial-supplement> .
+
+<https://w3id.org/energy-intel/concept/data-center-demand> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "data center demand"@en ;
+    skos:closeMatch oeo:OEO_00310000 ;
+    skos:definition "Editorial umbrella for narratives about data center energy consumption and grid impact, including AI-workload framing."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/editorial-supplement>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "data-center-demand" ;
+    skos:prefLabel "data center demand"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/editorial-supplement> .
+
+<https://w3id.org/energy-intel/concept/distributed-energy> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "distributed energy"@en ;
+    skos:definition "Editorial umbrella for distributed energy resources (DERs), demand-response, microgrids, and virtual power plants."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/editorial-supplement>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "distributed-energy" ;
+    skos:prefLabel "distributed energy"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/editorial-supplement> .
+
+<https://w3id.org/energy-intel/concept/electrification> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "electrification"@en ;
+    skos:closeMatch oeo:OEO_00000146,
+        oeo:OEO_00000212 ;
+    skos:definition "Editorial umbrella for transport, building, and end-use electrification."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/editorial-supplement>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "electrification" ;
+    skos:prefLabel "electrification"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/editorial-supplement> .
+
+<https://w3id.org/energy-intel/concept/energy-efficiency> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "energy efficiency"@en ;
+    skos:definition "Editorial umbrella for efficiency retrofits, demand reduction, and performance gains. OEO_00140049 (energy conversion efficiency) is too narrow."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/editorial-supplement>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "energy-efficiency" ;
+    skos:prefLabel "energy efficiency"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/editorial-supplement> .
+
+<https://w3id.org/energy-intel/concept/energy-finance> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "energy finance"@en ;
+    skos:definition "Editorial umbrella for project finance, M&A, public funding, and clean-tech capital."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/editorial-supplement>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "energy-finance" ;
+    skos:prefLabel "energy finance"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/editorial-supplement> .
+
+<https://w3id.org/energy-intel/concept/energy-geopolitics> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "energy geopolitics"@en ;
+    skos:definition "Editorial umbrella for energy security, sanctions, trade, and supply-chain strategy."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/editorial-supplement>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "energy-geopolitics" ;
+    skos:prefLabel "energy geopolitics"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/editorial-supplement> .
+
+<https://w3id.org/energy-intel/concept/energy-justice> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "energy justice"@en ;
+    skos:definition "Editorial umbrella for affordability, access, community energy, and just-transition concerns."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/editorial-supplement>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "energy-justice" ;
+    skos:prefLabel "energy justice"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/editorial-supplement> .
+
+<https://w3id.org/energy-intel/concept/energy-markets> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "energy markets"@en ;
+    skos:closeMatch oeo:OEO_00020065,
+        oeo:OEO_00020069 ;
+    skos:definition "Editorial umbrella for power, fuel, and wholesale market structure and pricing."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/editorial-supplement>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "energy-markets" ;
+    skos:prefLabel "energy markets"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/editorial-supplement> .
+
+<https://w3id.org/energy-intel/concept/energy-policy> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "energy policy"@en ;
+    skos:closeMatch oeo:OEO_00140150,
+        oeo:OEO_00140151 ;
+    skos:definition "Editorial umbrella for energy policy, regulation, permitting, and government strategy."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/editorial-supplement>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "energy-policy" ;
+    skos:prefLabel "energy policy"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/editorial-supplement> .
+
+<https://w3id.org/energy-intel/concept/energy-storage> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "energy storage"@en ;
+    skos:closeMatch oeo:OEO_00010438,
+        oeo:OEO_00020366 ;
+    skos:definition "Editorial umbrella for energy storage, broader than OEO_00020366 (technology only) — covers markets, policy, geopolitics of storage."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/editorial-supplement>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "energy-storage" ;
+    skos:prefLabel "energy storage"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/editorial-supplement> .
+
+<https://w3id.org/energy-intel/concept/environment-and-land-use> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "environment and land use"@en ;
+    skos:definition "Editorial umbrella for land use, environmental review, water, and pollution impacts. OEO land-use sector NamedIndividuals dropped per granularity contract."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/editorial-supplement>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "environment-and-land-use" ;
+    skos:prefLabel "environment and land use"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/editorial-supplement> .
+
+<https://w3id.org/energy-intel/concept/grid-and-infrastructure> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "grid and infrastructure"@en ;
+    skos:closeMatch oeo:OEO_00000143,
+        oeo:OEO_00110019,
+        oeo:OEO_00110020 ;
+    skos:definition "Editorial umbrella for transmission, distribution, interconnection, and grid operations."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/editorial-supplement>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "grid-and-infrastructure" ;
+    skos:prefLabel "grid and infrastructure"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/editorial-supplement> .
+
+<https://w3id.org/energy-intel/concept/research-and-innovation> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "research and innovation"@en ;
+    skos:definition "Editorial umbrella for R&D, patents, and early-stage energy technology breakthroughs."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/editorial-supplement>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "research-and-innovation" ;
+    skos:prefLabel "research and innovation"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/editorial-supplement> .
+
+<https://w3id.org/energy-intel/concept/sectoral-decarbonization> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "sectoral decarbonization"@en ;
+    skos:closeMatch oeo:OEO_00010212 ;
+    skos:definition "Editorial umbrella for industrial, aviation, maritime, and cross-sector decarbonization pathways."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/editorial-supplement>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "sectoral-decarbonization" ;
+    skos:prefLabel "sectoral decarbonization"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/editorial-supplement> .
+
+<https://w3id.org/energy-intel/concept/workforce-and-manufacturing> a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "workforce and manufacturing"@en ;
+    skos:closeMatch oeo:OEO_00010485,
+        oeo:OEO_00050000 ;
+    skos:definition "Editorial umbrella for energy jobs, industrial buildout, and manufacturing capacity."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/editorial-supplement>,
+        <https://w3id.org/energy-intel/concept/topic> ;
+    skos:notation "workforce-and-manufacturing" ;
+    skos:prefLabel "workforce and manufacturing"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/editorial-supplement> .
+
+<https://w3id.org/energy-intel/concept/editorial-supplement> a owl:NamedIndividual,
+        skos:ConceptScheme ;
+    rdfs:label "editorial supplement topic"@en ;
+    skos:definition "Skygest-coined umbrella topic concepts. Each member is a skos:Concept individual in the https://w3id.org/energy-intel/concept/ namespace, carrying a skos:notation with the legacy editorial topic_slug."@en ;
+    skos:hasTopConcept <https://w3id.org/energy-intel/concept/biomass>,
+        <https://w3id.org/energy-intel/concept/carbon-markets>,
+        <https://w3id.org/energy-intel/concept/climate-and-emissions>,
+        <https://w3id.org/energy-intel/concept/critical-minerals>,
+        <https://w3id.org/energy-intel/concept/data-center-demand>,
+        <https://w3id.org/energy-intel/concept/distributed-energy>,
+        <https://w3id.org/energy-intel/concept/electrification>,
+        <https://w3id.org/energy-intel/concept/energy-efficiency>,
+        <https://w3id.org/energy-intel/concept/energy-finance>,
+        <https://w3id.org/energy-intel/concept/energy-geopolitics>,
+        <https://w3id.org/energy-intel/concept/energy-justice>,
+        <https://w3id.org/energy-intel/concept/energy-markets>,
+        <https://w3id.org/energy-intel/concept/energy-policy>,
+        <https://w3id.org/energy-intel/concept/energy-storage>,
+        <https://w3id.org/energy-intel/concept/environment-and-land-use>,
+        <https://w3id.org/energy-intel/concept/grid-and-infrastructure>,
+        <https://w3id.org/energy-intel/concept/research-and-innovation>,
+        <https://w3id.org/energy-intel/concept/sectoral-decarbonization>,
+        <https://w3id.org/energy-intel/concept/workforce-and-manufacturing> ;
+    skos:prefLabel "editorial supplement topic"@en .
+
+<https://w3id.org/energy-intel/concept/oeo-topic> a owl:NamedIndividual,
+        skos:ConceptScheme ;
+    rdfs:label "OEO topic"@en ;
+    skos:definition "OEO classes admitted as runtime topic catalog members. Each member is an OEO class IRI, admitted as a skos:Concept individual via OWL 2 punning."@en ;
+    skos:prefLabel "OEO topic"@en .
+
+<https://w3id.org/energy-intel/concept/topic> a owl:NamedIndividual,
+        skos:ConceptScheme ;
+    rdfs:label "energy topic (aggregator)"@en ;
+    skos:definition "Aggregator scheme over ei:concept/oeo-topic and ei:concept/editorial-supplement. Runtime queries (CQ-N4) target this scheme."@en ;
+    skos:prefLabel "energy topic (aggregator)"@en .

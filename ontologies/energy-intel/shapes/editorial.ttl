@@ -1,0 +1,83 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ei: <https://w3id.org/energy-intel/> .
+@prefix nrole: <https://w3id.org/energy-intel/concept/narrative-role/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ei:NarrativeLeadUniquenessShape a sh:NodeShape ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+            sh:message "More than one lead-role NarrativePostMembership on this Narrative (warning, not violation — draft narratives may legitimately have multiple lead candidates) (S-V2-4)."@en ;
+            sh:select """PREFIX ei: <https://w3id.org/energy-intel/>
+SELECT $this WHERE {
+  $this ei:hasNarrativePostMembership ?m1 ;
+        ei:hasNarrativePostMembership ?m2 .
+  ?m1 ei:memberRole <https://w3id.org/energy-intel/concept/narrative-role/lead> .
+  ?m2 ei:memberRole <https://w3id.org/energy-intel/concept/narrative-role/lead> .
+  FILTER(?m1 != ?m2)
+}""" ;
+            sh:severity sh:Warning ] ;
+    sh:targetClass ei:Narrative .
+
+ei:NarrativePostMembershipShape a sh:NodeShape ;
+    sh:property [ sh:class ei:Post ;
+            sh:maxCount 1 ;
+            sh:message "memberPost: exactly 1 ei:Post required per NarrativePostMembership"@en ;
+            sh:minCount 1 ;
+            sh:path ei:memberPost ;
+            sh:severity sh:Violation ],
+        [ sh:in ( nrole:lead nrole:supporting nrole:counter nrole:context ) ;
+            sh:maxCount 1 ;
+            sh:message "memberRole: exactly 1 value required, must be in ei:concept/narrative-role"@en ;
+            sh:minCount 1 ;
+            sh:path ei:memberRole ;
+            sh:severity sh:Violation ] ;
+    sh:targetClass ei:NarrativePostMembership .
+
+ei:NarrativeShape a sh:NodeShape ;
+    sh:property [ sh:message "narrativeAboutTopic value MUST be owl:Class or skos:Concept (granularity contract S-V2-3 / CQ-T3)."@en ;
+            sh:nodeKind sh:IRI ;
+            sh:or ( [ sh:class owl:Class ] [ sh:class skos:Concept ] ) ;
+            sh:path ei:narrativeAboutTopic ;
+            sh:severity sh:Violation ],
+        [ sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:path ei:narrativeAppliesPattern ;
+            sh:sparql [ a sh:SPARQLConstraint ;
+                    sh:message "narrativeAppliesPattern value MUST be in scheme ei:concept/argument-pattern (S-V2-2)."@en ;
+                    sh:select """PREFIX ei: <https://w3id.org/energy-intel/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+SELECT $this ?value WHERE {
+  $this ei:narrativeAppliesPattern ?value .
+  FILTER NOT EXISTS {
+    ?value skos:inScheme <https://w3id.org/energy-intel/concept/argument-pattern> .
+  }
+}""" ;
+                    sh:severity sh:Violation ] ] ;
+    sh:targetClass ei:Narrative .
+
+ei:NarrativeUniqueMembershipShape a sh:NodeShape ;
+    sh:sparql [ a sh:SPARQLConstraint ;
+            sh:message "At most one NarrativePostMembership per (Narrative, Post) pair (S-V2-1)."@en ;
+            sh:select """PREFIX ei: <https://w3id.org/energy-intel/>
+SELECT $this ?post WHERE {
+  $this ei:hasNarrativePostMembership ?m1 ;
+        ei:hasNarrativePostMembership ?m2 .
+  ?m1 ei:memberPost ?post .
+  ?m2 ei:memberPost ?post .
+  FILTER(?m1 != ?m2)
+}""" ;
+            sh:severity sh:Violation ] ;
+    sh:targetClass ei:Narrative .
+
+<https://w3id.org/energy-intel/shapes/editorial> a owl:Ontology ;
+    dcterms:created "2026-05-04"^^xsd:date ;
+    dcterms:creator "energy-intel / ontology-architect"@en ;
+    dcterms:description "V2 SHACL shapes for the editorial extension. Encodes 4 invariants: (S-V2-1) NarrativePostMembership uniqueness per (Narrative, Post) and memberPost / memberRole minCount + maxCount + memberRole value enumeration; (S-V2-2) narrativeAppliesPattern scheme membership (must be in ei:concept/argument-pattern); (S-V2-3) narrativeAboutTopic granularity contract (value MUST be owl:Class or skos:Concept; never bare NamedIndividual); (S-V2-4) at most one lead-role membership per Narrative (warning)."@en ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:modified "2026-05-04"^^xsd:date ;
+    dcterms:title "energy-intel — editorial SHACL shapes"@en ;
+    owl:versionIRI <https://w3id.org/energy-intel/shapes/editorial/v2/2026-05-04> ;
+    owl:versionInfo "v2 (2026-05-04)" .

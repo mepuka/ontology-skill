@@ -7,9 +7,9 @@
 ei:energy-intel a owl:Ontology ;
     dcterms:created "2026-04-22"^^xsd:date ;
     dcterms:creator "energy-intel / ontology-architect"@en ;
-    dcterms:description "Top-level energy-intel ontology. Imports the four authored modules (agent, media, measurement, data), the hand-seeded SKOS schemes, and the declared external ontologies (V1 adds three: BFO+RO-stripped OEO technology / carrier subsets and a narrow QUDT 2.1 unit subset)."@en ;
+    dcterms:description "Top-level energy-intel ontology. Imports the five authored modules (agent, media, measurement, data, editorial), the hand-seeded SKOS schemes (aggregation-type, temporal-resolution, argument-pattern, narrative-role, oeo-topics), and the declared external ontologies. V2 (2026-05-04) adds the editorial extension: ei:Narrative + ei:NarrativePostMembership classes, 6 object properties, 3 new SKOS schemes (argument-pattern, narrative-role, oeo-topics with split + aggregator structure), the rebuilt OEO topic subset, and SHACL editorial shapes. V2 retires V1's modules/concept-schemes/technology-seeds.ttl from the import closure (oeo-topics replaces it as runtime authority); the file is preserved on disk for V0/V1 fixture compatibility."@en ;
     dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
-    dcterms:modified "2026-04-27"^^xsd:date ;
+    dcterms:modified "2026-05-04"^^xsd:date ;
     dcterms:title "energy-intel — top-level ontology"@en ;
     owl:imports <http://purl.obolibrary.org/obo/bfo.owl>,
         <http://purl.obolibrary.org/obo/iao.owl>,
@@ -20,13 +20,17 @@ ei:energy-intel a owl:Ontology ;
         foaf:,
         <https://w3id.org/energy-intel/imports/oeo-carrier-subset>,
         <https://w3id.org/energy-intel/imports/oeo-technology-subset>,
+        <https://w3id.org/energy-intel/imports/oeo-topic-subset>,
         <https://w3id.org/energy-intel/imports/qudt-units-subset>,
         <https://w3id.org/energy-intel/modules/agent>,
         <https://w3id.org/energy-intel/modules/concept-schemes/aggregation-type>,
-        <https://w3id.org/energy-intel/modules/concept-schemes/technology-seeds>,
+        <https://w3id.org/energy-intel/modules/concept-schemes/argument-pattern>,
+        <https://w3id.org/energy-intel/modules/concept-schemes/narrative-role>,
+        <https://w3id.org/energy-intel/modules/concept-schemes/oeo-topics>,
         <https://w3id.org/energy-intel/modules/concept-schemes/temporal-resolution>,
         <https://w3id.org/energy-intel/modules/data>,
+        <https://w3id.org/energy-intel/modules/editorial>,
         <https://w3id.org/energy-intel/modules/measurement>,
         <https://w3id.org/energy-intel/modules/media> ;
-    owl:versionIRI <https://w3id.org/energy-intel/v1/2026-04-27> ;
-    owl:versionInfo "v1 (2026-04-27)" .
+    owl:versionIRI <https://w3id.org/energy-intel/v2/2026-05-04> ;
+    owl:versionInfo "v2 (2026-05-04)" .

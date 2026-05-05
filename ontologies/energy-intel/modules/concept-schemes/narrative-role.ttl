@@ -1,0 +1,58 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix nrole: <https://w3id.org/energy-intel/concept/narrative-role/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/energy-intel/modules/concept-schemes/narrative-role> a owl:Ontology ;
+    dcterms:created "2026-05-04"^^xsd:date ;
+    dcterms:creator "energy-intel / ontology-architect"@en ;
+    dcterms:description "V2 SKOS ConceptScheme declaring the 4 stable narrative-role concepts used as values of ei:memberRole on ei:NarrativePostMembership. Closed enumeration per source plan §3.3."@en ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:modified "2026-05-04"^^xsd:date ;
+    dcterms:title "energy-intel — Narrative Role ConceptScheme"@en ;
+    owl:versionIRI <https://w3id.org/energy-intel/modules/concept-schemes/narrative-role/v2/2026-05-04> ;
+    owl:versionInfo "v2 (2026-05-04)" .
+
+nrole:context a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "context"@en ;
+    skos:definition "A post that provides background information that helps the reader understand the Narrative — historical context, definitions, prior events — without itself being the central claim."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/narrative-role> ;
+    skos:prefLabel "context"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/narrative-role> .
+
+nrole:counter a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "counter"@en ;
+    skos:definition "A post that represents an opposing or alternative view to the Narrative's main argument. Editorial value: surfacing the disagreement is part of how the Narrative frames the debate."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/narrative-role> ;
+    skos:prefLabel "counter"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/narrative-role> .
+
+nrole:lead a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "lead"@en ;
+    skos:definition "The primary post the Narrative is built around. Typically the post that gives the Narrative its headline data point or argument. At most one lead per Narrative under SHACL S-V2-4 (warning, not violation)."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/narrative-role> ;
+    skos:prefLabel "lead"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/narrative-role> .
+
+nrole:supporting a owl:NamedIndividual,
+        skos:Concept ;
+    rdfs:label "supporting"@en ;
+    skos:definition "A post that reinforces the Narrative's argument with additional evidence, parallel data, or corroborating analysis."@en ;
+    skos:inScheme <https://w3id.org/energy-intel/concept/narrative-role> ;
+    skos:prefLabel "supporting"@en ;
+    skos:topConceptOf <https://w3id.org/energy-intel/concept/narrative-role> .
+
+<https://w3id.org/energy-intel/concept/narrative-role> a owl:NamedIndividual,
+        skos:ConceptScheme ;
+    rdfs:label "narrative role"@en ;
+    skos:definition "Closed enumeration of role qualifiers a Post can play in a Narrative: lead, supporting, counter, context."@en ;
+    skos:hasTopConcept nrole:context,
+        nrole:counter,
+        nrole:lead,
+        nrole:supporting ;
+    skos:prefLabel "narrative role"@en .

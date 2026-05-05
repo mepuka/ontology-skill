@@ -1,0 +1,85 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ei: <https://w3id.org/energy-intel/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix iao: <http://purl.obolibrary.org/obo/IAO_> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ei:hasNarrativePostMembership a owl:ObjectProperty ;
+    rdfs:label "has narrative-post membership"@en ;
+    rdfs:domain ei:Narrative ;
+    rdfs:range ei:NarrativePostMembership ;
+    skos:definition "Links a Narrative to a NarrativePostMembership record. A Narrative has zero or more memberships, one per post it includes. Order is not preserved; cardinality `many`. The closed-shape invariant sh:qualifiedMaxCount 1 per (Narrative, Post) pair is enforced via SHACL ei:NarrativePostMembershipShape."@en .
+
+<https://w3id.org/energy-intel/modules/editorial> a owl:Ontology ;
+    dcterms:created "2026-05-04"^^xsd:date ;
+    dcterms:creator "energy-intel / ontology-architect"@en ;
+    dcterms:description "V2 editorial extension. Declares ei:Narrative and ei:NarrativePostMembership classes (both ⊑ iao:Document) and the six object properties that compose the editorial graph: hasNarrativePostMembership, memberPost, memberRole, narrativeMentionsExpert, narrativeAppliesPattern, narrativeAboutTopic. NarrativePostMembership is a reified n-ary relation per source plan §3.3 / multi-agent BFO/OEO modeling review (avoids System Blueprint anti-pattern from role-named predicates)."@en ;
+    dcterms:license <https://creativecommons.org/licenses/by/4.0/> ;
+    dcterms:modified "2026-05-04"^^xsd:date ;
+    dcterms:title "energy-intel — editorial module"@en ;
+    owl:imports <http://purl.obolibrary.org/obo/iao.owl>,
+        <https://w3id.org/energy-intel/modules/agent>,
+        <https://w3id.org/energy-intel/modules/media> ;
+    owl:versionIRI <https://w3id.org/energy-intel/modules/editorial/v2/2026-05-04> ;
+    owl:versionInfo "v2 (2026-05-04)" .
+
+ei:narrativeAboutTopic a owl:ObjectProperty ;
+    rdfs:label "narrative about topic"@en ;
+    rdfs:domain ei:Narrative ;
+    rdfs:range owl:Thing ;
+    skos:definition "Links a Narrative to one or more topics. Topic IRIs are either OEO class IRIs (admitted via OWL 2 punning) or Skygest editorial supplement IRIs in the ei:concept/ namespace. SHACL granularity contract forbids bare owl:NamedIndividual values."@en .
+
+ei:narrativeMentionsExpert a owl:ObjectProperty ;
+    rdfs:label "narrative mentions expert"@en ;
+    rdfs:domain ei:Narrative ;
+    rdfs:range foaf:Person ;
+    skos:definition "Links a Narrative to an Expert mentioned in it. Auto-derived from contained posts at import time by walking hasNarrativePostMembership/memberPost/authoredBy. The fallback walk in CQ-N6 covers the case where auto-derivation has not run."@en .
+
+ei:memberPost a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "member post"@en ;
+    rdfs:domain ei:NarrativePostMembership ;
+    rdfs:range ei:Post ;
+    skos:definition "Functional pointer from a NarrativePostMembership to the Post it references. Each membership has exactly one post."@en .
+
+ei:memberRole a owl:FunctionalProperty,
+        owl:ObjectProperty ;
+    rdfs:label "member role"@en ;
+    rdfs:domain ei:NarrativePostMembership ;
+    rdfs:range skos:Concept ;
+    skos:definition "Functional role qualifier of a NarrativePostMembership. Constrained at the SHACL layer to values in the ei:concept/narrative-role scheme (lead, supporting, counter, context). Each membership has exactly one role."@en .
+
+ei:narrativeAppliesPattern a owl:ObjectProperty ;
+    rdfs:label "narrative applies pattern"@en ;
+    rdfs:domain ei:Narrative ;
+    rdfs:range skos:Concept ;
+    skos:definition "Optional pointer from a Narrative to the argument pattern it applies. Range is broad skos:Concept; SHACL constrains the value to be a member of ei:concept/argument-pattern."@en .
+
+ei:NarrativePostMembership a owl:Class ;
+    rdfs:label "narrative post membership"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:onClass skos:Concept ;
+            owl:onProperty ei:memberRole ;
+            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
+        [ a owl:Restriction ;
+            owl:onClass ei:Post ;
+            owl:onProperty ei:memberPost ;
+            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ],
+        iao:0000310 ;
+    skos:definition "An information artefact recording that a Narrative includes a Post in a specific role (lead, supporting, counter, or context). One individual per (Narrative, Post) pair. Identified by a deterministic IRI = {narrativeIri}/membership/{sha256(narrativeIri \\n postUri)[0:16]}. Reified rather than four role-named predicates because role-named predicates would smuggle storage state into predicate names (System Blueprint anti-pattern), would not absorb future first-class qualifier storage cleanly, and would block the SHACL closed-shape invariant sh:qualifiedMaxCount 1 per (Narrative, Post)."@en .
+
+ei:Narrative a owl:Class ;
+    rdfs:label "narrative"@en ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+            owl:onClass skos:Concept ;
+            owl:onProperty ei:narrativeAppliesPattern ],
+        iao:0000310 ;
+    skos:definition "A written editorial unit about energy-domain events that have been curated by an editor. A Narrative groups posts that share an editorial through-line (a single argument or question) and applies an argument pattern to frame the discussion. Identified by a deterministic IRI derived from the story stem; the directory hierarchy on disk does not enter the IRI."@en .
+
+[] a owl:AllDisjointClasses ;
+    owl:members ( ei:Narrative ei:Post ei:PodcastEpisode ei:NarrativePostMembership ) .
